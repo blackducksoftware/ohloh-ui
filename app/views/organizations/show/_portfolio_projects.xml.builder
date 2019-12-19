@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 xml = xml_instance
 
 xml.portfolio_projects do
@@ -12,7 +14,7 @@ xml.portfolio_projects do
       xml.activity project_activity_text(pro, false)
       xml.primary_language(pro.main_language || 'N/A')
       xml.i_use_this pro.user_count
-      xml.community_rating "#{pro.rating_average.to_f.round(1)}"
+      xml.community_rating pro.rating_average.to_f.round(1).to_s
       xml.twelve_mo_activity_and_year_on_year_change do
         xml.commits tms.commits_count
         xml.change_in_commits commits_diff

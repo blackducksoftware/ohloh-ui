@@ -1,12 +1,18 @@
-# rubocop:disable Metrics/ClassLength
+# frozen_string_literal: true
 
+# rubocop:disable Metrics/ClassLength
 class Project < ActiveRecord::Base
   has_one :create_edit, as: :target
-  acts_as_editable editable_attributes: [:name, :vanity_url, :organization_id, :best_analysis_id,
-                                         :description, :tag_list, :missing_source, :url, :download_url],
+  acts_as_editable editable_attributes: %i[name vanity_url organization_id best_analysis_id
+                                           description tag_list missing_source url download_url],
                    merge_within: 30.minutes
 
-  include ProjectAssociations, LinkAccessors, Tsearch, ProjectSearchables, ProjectScopes, ProjectJobs
+  include ProjectAssociations
+  include LinkAccessors
+  include Tsearch
+  include ProjectSearchables
+  include ProjectScopes
+  include ProjectJobs
 
   acts_as_protected
   acts_as_taggable
@@ -21,13 +27,13 @@ class Project < ActiveRecord::Base
   end
   before_validation :clean_strings_and_urls
   after_save :update_organzation_project_count
-  after_update :remove_people, if: -> (project) { project.deleted_changed? && project.deleted? }
-  after_update :recalc_tags_weight!, if: -> (project) { project.deleted_changed? }
+  after_update :remove_people, if: ->(project) { project.deleted_changed? && project.deleted? }
+  after_update :recalc_tags_weight!, if: ->(project) { project.deleted_changed? }
 
   attr_accessor :managed_by_creator
 
   def to_param
-    vanity_url.blank? ? id.to_s : vanity_url
+    vanity_url.presence || id.to_s
   end
 
   def related_by_stacks(limit = 12)
@@ -49,15 +55,16 @@ class Project < ActiveRecord::Base
   end
 
   def allow_undo_to_nil?(key)
-    ![:vanity_url, :name].include?(key)
+    !%i[vanity_url name].include?(key)
   end
 
   def allow_redo?(key)
-    (key == :organization_id && !organization_id.nil?) ? false : true
+    key == :organization_id && !organization_id.nil? ? false : true
   end
 
   def main_language
     return if best_analysis.nil? || best_analysis.main_language.nil?
+
     best_analysis.main_language.name
   end
 
@@ -98,7 +105,7 @@ class Project < ActiveRecord::Base
 
   class << self
     def search_and_sort(query, sort, page)
-      sort_by = (sort == 'relevance') ? nil : "by_#{sort}"
+      sort_by = sort == 'relevance' ? nil : "by_#{sort}"
       tsearch(query, sort_by)
         .includes(:best_analysis)
         .paginate(page: page, per_page: 20)
@@ -119,7 +126,8 @@ class Project < ActiveRecord::Base
   def update_organzation_project_count
     org = Organization.find_by(id: organization_id || organization_id_was)
     return unless org
-    org.update_attributes(editor_account: editor_account, projects_count: org.projects.count)
+
+    org.update(editor_account: editor_account, projects_count: org.projects.count)
   end
 
   def remove_people

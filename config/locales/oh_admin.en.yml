@@ -1,0 +1,8 @@
+en:
+  oh_admin:
+    broken_links:
+      index:
+        delete_confirmation: 'Are you sure you want to delete this broken link?'
+      destroy:
+        success: 'Broken Link deleted successfully.'
+        error: 'Unable to delete Broken Link.'

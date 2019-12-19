@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class NilAccount < NullObject
   attr_reader :id, :level, :activated_at
 
@@ -5,12 +7,7 @@ class NilAccount < NullObject
     Action.none
   end
 
-  def admin?
-  end
-
-  def id
-    nil
-  end
+  def admin?; end
 
   def access
     @access ||= Account::Access.new(self)

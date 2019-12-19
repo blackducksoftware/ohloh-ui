@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 class ForumsController < ApplicationController
   before_action :find_most_recent_topics_from_forum, only: :index
-  before_action :find_forum_record, except: [:index, :new, :create]
-  before_action :session_required, except: [:index, :show]
-  before_action :admin_session_required, except: [:index, :show]
+  before_action :find_forum_record, except: %i[index new create]
+  before_action :session_required, except: %i[index show]
+  before_action :admin_session_required, except: %i[index show]
 
   def index
     # General Discussion is not on the production website.

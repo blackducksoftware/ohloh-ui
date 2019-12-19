@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ButtonHelper
   def disabled_button(text, opts = {})
     css_class = "#{opts[:class]} #{needs_login_or_verification_or_default(:disabled)}".strip

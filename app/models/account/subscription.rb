@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Account::Subscription
   attr_reader :account
 

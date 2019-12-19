@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 para ''
 
 if job.project_id
   project = Project.find(job.project_id)
-  span "Project: "
+  span 'Project: '
   span link_to project.name, project_path(project)
   span link_to '(Jobs)', admin_project_jobs_path(project)
 end
@@ -13,9 +15,7 @@ if job.account_id
   span link_to '(Jobs)', admin_account_vita_jobs_path(account)
 end
 
-if job.code_location_id
-  span "CodeLocation: #{job.code_location.nice_url}"
-end
+span "CodeLocation: #{job.code_location.nice_url}" if job.code_location_id
 
 if job.organization_id
   span "Organization: #{job.organization.vanity_url}"

@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 module AffiliationValidation
   extend ActiveSupport::Concern
 
-  ALLOWED_AFFILIATION_TYPES = %w(unaffiliated other specified).freeze
+  ALLOWED_AFFILIATION_TYPES = %w[unaffiliated other specified].freeze
 
   included do
     validates :organization_name, length: { in: 3..85 },

@@ -61,7 +61,7 @@
 
 @updateSeverityFilter = (release) ->
   $('#vulnerability_filter_severity').prop('disabled', false)
-  $.each ['low', 'medium', 'high'], (index, severity) ->
+  $.each ['low', 'medium', 'high', 'unknown_severity'], (index, severity) ->
     $("#vulnerability_filter_severity option[value=#{severity}]").prop('disabled', release[severity] == 0)
 
 @updateBrowserHistory = (queryStr) ->
@@ -121,6 +121,11 @@ calculateLowVulns = (releaseData) ->
     obj.low
   )
 
+calculateUnknownSeverityVulns = (releaseData) ->
+  unknownVulns = releaseData.map((obj) ->
+    obj.unknown_severity
+  )
+
 renderNoData = (releases) ->
   chart = $('#vulnerability_all_version_chart').highcharts()
   renderer = new Highcharts.Renderer($('#vulnerability_all_version_chart')[0],10,10)
@@ -144,6 +149,9 @@ reRenderChart = (releases) ->
   }, false
   chart.series[2].update {
     data: calculateLowVulns(releases)
+  }, false
+  chart.series[3].update {
+    data: calculateUnknownSeverityVulns(releases)
   }, false
   chart.redraw()
 

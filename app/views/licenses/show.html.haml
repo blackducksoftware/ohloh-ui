@@ -23,7 +23,7 @@
 
 - else
   .margin_top_20
-  %p!= @license.description.to_s.gsub(/\n/, '<br/>').escape.sanitize
+  %p!= simple_format(html_escape(@license.description))
 
 - if @license.url.present?
   %p

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ActiveAdmin.register Vulnerability do
   filter :cve_id
   filter :generated_on

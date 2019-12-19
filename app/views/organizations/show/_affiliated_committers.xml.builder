@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 xml = xml_instance
 accs ||= @organization.affiliated_committers(1, 20)
 

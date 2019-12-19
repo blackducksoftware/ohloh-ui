@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class NilVita < NullObject
   def vita_fact
     NilVitaFact.new

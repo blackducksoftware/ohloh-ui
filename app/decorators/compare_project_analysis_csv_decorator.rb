@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CompareProjectAnalysisCsvDecorator
   include ActionView::Helpers::DateHelper
   include ActionView::Helpers::NumberHelper
@@ -38,6 +40,7 @@ class CompareProjectAnalysisCsvDecorator
     require_best_analysis do |a|
       f = a.factoids.find { |factoid| factoid.is_a?(FactoidComments) }
       return t('compares.project_cells.comments.no_comments_found') unless a.relative_comments && f
+
       t("compares.project_cells.comments.#{f.class.name.gsub('FactoidComments', '').underscore}")
     end
   end
@@ -108,21 +111,21 @@ class CompareProjectAnalysisCsvDecorator
     if !@project.best_analysis.nil? && @project.best_analysis.last_commit_time
       yield @project.best_analysis
     else
-      (@project.enlistments.count > 0) ? t('compares.pending') : t('compares.no_data')
+      @project.enlistments.count.positive? ? t('compares.pending') : t('compares.no_data')
     end
   end
 
   def require_twelve_month
     require_best_analysis do
       tms = @project.best_analysis.twelve_month_summary
-      (tms && tms.committer_count > 0) ? yield(tms) : t('compares.no_activity')
+      (tms&.committer_count).positive? ? yield(tms) : t('compares.no_activity')
     end
   end
 
   def require_thirty_day
     require_best_analysis do
       tds = @project.best_analysis.thirty_day_summary
-      (tds && tds.committer_count > 0) ? yield(tds) : t('compares.no_activity')
+      (tds&.committer_count).positive? ? yield(tds) : t('compares.no_activity')
     end
   end
 end

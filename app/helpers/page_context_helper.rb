@@ -1,9 +1,12 @@
+# frozen_string_literal: true
+
 module PageContextHelper
   include ForumsHelper
 
   def account_context
-    @account ||= @parent if @parent && @parent.is_a?(Account)
+    @account ||= @parent if @parent&.is_a?(Account)
     return if @account.blank?
+
     set_page_context(footer_menu_list: @account.decorate.sidebar_for(current_user),
                      select_footer_nav: :account_summary,
                      select_top_menu_nav: :select_people,
@@ -11,25 +14,27 @@ module PageContextHelper
   end
 
   def organization_context
-    @organization ||= @parent if @parent && @parent.is_a?(Organization)
+    @organization ||= @parent if @parent&.is_a?(Organization)
     return if @organization.blank?
-    set_page_context(footer_menu_list:  @organization.decorate.sidebar,
-                     select_footer_nav:  :org_summary,
-                     select_top_menu_nav:  :select_organizations,
+
+    set_page_context(footer_menu_list: @organization.decorate.sidebar,
+                     select_footer_nav: :org_summary,
+                     select_top_menu_nav: :select_organizations,
                      page_header: 'organizations/show/header')
   end
 
   def project_context
-    @project ||= @parent if @parent && @parent.is_a?(Project)
+    @project ||= @parent if @parent&.is_a?(Project)
     return if @project.blank?
-    set_page_context(footer_menu_list:  @project.decorate.sidebar,
-                     select_footer_nav:  :project_summary,
-                     select_top_menu_nav:  :select_projects,
+
+    set_page_context(footer_menu_list: @project.decorate.sidebar,
+                     select_footer_nav: :project_summary,
+                     select_top_menu_nav: :select_projects,
                      page_header: 'projects/show/header')
   end
 
   def forum_context
-    set_page_context(footer_menu_list:  forums_sidebar)
+    set_page_context(footer_menu_list: forums_sidebar)
   end
 
   def tool_context

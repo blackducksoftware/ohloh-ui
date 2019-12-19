@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 para ''
 
-active_admin_form_for :job, method: :put do |f|
+active_admin_form_for :job, method: :put do |_f|
   inputs 'Update' do
     input :priority, as: :number, input_html: { class: 'short_field_width' }
     input :wait_until, as: :datepicker, input_html: { class: 'short_field_width' }

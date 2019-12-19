@@ -1,6 +1,10 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class RssFeedTest < ActiveSupport::TestCase
+  before { Feedjira.logger.stubs(:warn) }
+
   it 'should validate RSS feed' do
     rss_feed = build(:rss_feed, url: 'invalid_url')
     rss_feed.wont_be :valid?
@@ -46,7 +50,7 @@ class RssFeedTest < ActiveSupport::TestCase
       before = Time.current - 4.hours
       rss_feed = create(:rss_feed)
       project = create(:project)
-      project.update_attributes(updated_at: before)
+      project.update(updated_at: before)
       project.reload.updated_at.to_i.must_equal before.to_i
       create(:rss_subscription, rss_feed: rss_feed, project: project)
       rss_feed.url = 'http://www.vcrlocalhost.org/feed.rss'
@@ -60,7 +64,7 @@ class RssFeedTest < ActiveSupport::TestCase
       before = Time.current - 4.hours
       rss_feed = create(:rss_feed)
       project = create(:project)
-      project.update_attributes(updated_at: before)
+      project.update(updated_at: before)
       project.reload.updated_at.to_i.must_equal before.to_i
       create(:rss_subscription, rss_feed: rss_feed, project: project)
       rss_feed.url = 'http://www.vcrlocalhost.org/feed.rss'
@@ -87,7 +91,7 @@ class RssFeedTest < ActiveSupport::TestCase
         before = Time.current - 4.hours
         rss_feed = create(:rss_feed, url: 'http://www.vcrlocalhost.org/feed.rss', next_fetch: Time.current + 1.day)
         project = create(:project)
-        project.update_attributes(updated_at: before)
+        project.update(updated_at: before)
         create(:rss_subscription, rss_feed: rss_feed, project: project)
         rss_feed.rss_articles.must_equal []
         project.reload.updated_at.to_i.must_equal before.to_i
@@ -97,7 +101,7 @@ class RssFeedTest < ActiveSupport::TestCase
 
         rss_feed = create(:rss_feed, url: 'http://www.vcrlocalhost.org/feed.rss')
         project = create(:project)
-        project.update_attributes(updated_at: before)
+        project.update(updated_at: before)
         create(:rss_subscription, rss_feed: rss_feed, project: project)
         rss_feed.rss_articles.must_equal []
         project.reload.updated_at.to_i.must_equal before.to_i
@@ -112,7 +116,7 @@ class RssFeedTest < ActiveSupport::TestCase
         before = Time.current - 4.hours
         rss_feed = create(:rss_feed, url: 'http://www.vcrlocalhost.org/feed.rss', next_fetch: Time.current - 1.day)
         project = create(:project)
-        project.update_attributes(updated_at: before)
+        project.update(updated_at: before)
         create(:rss_subscription, rss_feed: rss_feed, project: project, deleted: true)
         rss_feed.rss_articles.must_equal []
         project.reload.updated_at.to_i.must_equal before.to_i
@@ -122,7 +126,7 @@ class RssFeedTest < ActiveSupport::TestCase
 
         rss_feed = create(:rss_feed, url: 'http://www.vcrlocalhost.org/feed.rss', next_fetch: Time.current - 1.day)
         project = create(:project)
-        project.update_attributes(updated_at: before)
+        project.update(updated_at: before)
         create(:rss_subscription, rss_feed: rss_feed, project: project, deleted: false)
         rss_feed.rss_articles.must_equal []
         project.reload.updated_at.to_i.must_equal before.to_i

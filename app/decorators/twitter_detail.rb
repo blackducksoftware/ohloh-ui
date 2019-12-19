@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class TwitterDetail < Cherry::Decorator
   include ActionView::Helpers::TextHelper
 
@@ -5,9 +7,11 @@ class TwitterDetail < Cherry::Decorator
 
   def description
     return '' unless markup
+
     name_fact = best_vita.vita_fact
     content = markup.first_line.to_s
     return content if name_fact.nil?
+
     content + commits_to(name_fact) + language_experience_text + badges_text
   end
 
@@ -26,6 +30,7 @@ class TwitterDetail < Cherry::Decorator
 
   def language_experience_text
     return '' unless most_experienced_language
+
     I18n.t('accounts.show.experience_in', nice_name: most_experienced_language.nice_name)
   end
 

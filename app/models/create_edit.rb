@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 class CreateEdit < Edit
   def do_undo
-    target.update_attributes!(deleted: true)
+    target.update!(deleted: true)
   end
 
   def do_redo
-    target.update_attributes!(deleted: false)
+    target.update!(deleted: false)
   end
 
   def allow_undo?

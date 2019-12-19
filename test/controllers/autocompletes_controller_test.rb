@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 describe 'AutocompletesController' do
@@ -71,7 +73,7 @@ describe 'AutocompletesController' do
 
       resp = JSON.parse(response.body)
       resp.length.must_equal 2
-      resp.map { |hsh| hsh['value'] }.must_equal %w(Foo Foobar)
+      resp.map { |hsh| hsh['value'] }.must_equal %w[Foo Foobar]
     end
 
     it 'must handle a blank exclude_project_id' do
@@ -91,7 +93,7 @@ describe 'AutocompletesController' do
       get :project, term: 'foo', format: :json
 
       resp = JSON.parse(response.body)
-      resp.map { |hsh| hsh['value'] }.must_equal %w(Foo Foobar)
+      resp.map { |hsh| hsh['value'] }.must_equal %w[Foo Foobar]
     end
   end
 
@@ -103,23 +105,23 @@ describe 'AutocompletesController' do
       get :project_duplicates, term: 'foo', format: :json
 
       resp = JSON.parse(response.body)
-      resp.map { |hsh| hsh['value'] }.must_equal %w(Foo Foobar)
+      resp.map { |hsh| hsh['value'] }.must_equal %w[Foo Foobar]
     end
   end
 
   describe 'licenses' do
     it 'must render valid licenses json' do
-      license_1 = create(:license, name: 'ACMIT')
+      license1 = create(:license, name: 'ACMIT')
       create(:license, name: 'ACBSD')
-      license_3 = create(:license, name: 'ACMit v2')
+      license3 = create(:license, name: 'ACMit v2')
 
       get :licenses, term: 'acmit', format: :json
 
       must_respond_with :ok
       resp = JSON.parse(response.body)
       resp.length.must_equal 2
-      [resp[0]['id'].to_i, resp[1]['id'].to_i].sort.must_equal [license_1.id, license_3.id].sort
-      [resp[0]['name'], resp[1]['name']].sort.must_equal [license_1.name, license_3.name].sort
+      [resp[0]['id'].to_i, resp[1]['id'].to_i].sort.must_equal [license1.id, license3.id].sort
+      [resp[0]['name'], resp[1]['name']].sort.must_equal [license1.name, license3.name].sort
     end
   end
 

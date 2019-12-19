@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Markup < ActiveRecord::Base
   before_save :sanitize_html
 

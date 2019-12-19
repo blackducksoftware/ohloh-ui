@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Person::Builder
   class << self
     def rebuild_kudos
@@ -6,7 +8,6 @@ class Person::Builder
       Person.find_each(batch_size: 10_000) do |person|
         kudo_score = KudoScore.find_by_account_or_name_and_project(person) ||
                      NilKudoScore.new
-
         person.update_columns(
           kudo_score: kudo_score.score, kudo_position: kudo_score.position,
           kudo_rank: kudo_score.rank, popularity_factor: person.searchable_factor

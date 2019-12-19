@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class KudoTest < ActiveSupport::TestCase
@@ -93,21 +95,21 @@ class KudoTest < ActiveSupport::TestCase
     end
   end
 
-  describe '#find_by_sender_and_target' do
+  describe '#find_for_sender_and_target' do
     it 'must find users by account' do
       kudo = create(:kudo)
-      found_kudo = Kudo.find_by_sender_and_target(kudo.sender, kudo.account)
+      found_kudo = Kudo.find_for_sender_and_target(kudo.sender, kudo.account)
       kudo.id.must_equal found_kudo.id
     end
 
     it 'must find users by person' do
       kudo = create(:kudo_with_name, account: nil)
-      found_kudo = Kudo.find_by_sender_and_target(kudo.sender, kudo.person)
+      found_kudo = Kudo.find_for_sender_and_target(kudo.sender, kudo.person)
       kudo.id.must_equal found_kudo.id
     end
 
     it 'must error if the target is not a supported data type' do
-      proc { Kudo.find_by_sender_and_target(create(:kudo).sender, 'hello') }.must_raise RuntimeError
+      proc { Kudo.find_for_sender_and_target(create(:kudo).sender, 'hello') }.must_raise RuntimeError
     end
   end
 end

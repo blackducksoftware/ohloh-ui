@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateCodeLocationTarballsTable < ActiveRecord::Migration
   def change
     create_table :code_location_tarballs do |t|

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class ApplicationHelperTest < ActionView::TestCase
@@ -68,12 +70,6 @@ class ApplicationHelperTest < ActionView::TestCase
       number_with_delimiter(50_000).must_equal '50,000'
       number_with_delimiter(500).must_equal '500'
       number_with_delimiter(500, delimiter: '_').must_equal '500'
-    end
-  end
-
-  describe 'strip_tags_and_escaped_html' do
-    it 'must remove html tags' do
-      strip_tags_and_escaped_html('<p>test</p>').must_equal 'test'
     end
   end
 

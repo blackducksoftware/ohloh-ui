@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :contribution do
     association :person
@@ -6,8 +8,8 @@ FactoryBot.define do
     association :contributor_fact
 
     after(:create) do |instance|
-      instance.update_attributes(person: create(:person))
-      instance.update_attributes(project: instance.project)
+      instance.update(person: create(:person))
+      instance.update(project: instance.project)
     end
   end
 end

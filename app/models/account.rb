@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Account < ActiveRecord::Base
   include AffiliationValidation
   include AccountValidations
@@ -23,7 +25,7 @@ class Account < ActiveRecord::Base
   end
 
   def to_param
-    (login && login.match(Patterns::DEFAULT_PARAM_FORMAT)) ? login : id.to_s
+    login&.match(Patterns::DEFAULT_PARAM_FORMAT) ? login : id.to_s
   end
 
   # It's optional, but used if present by acts_as_editable.
@@ -71,6 +73,7 @@ class Account < ActiveRecord::Base
   def most_experienced_language
     language_facts = best_vita.vita_language_facts.ordered
     return if language_facts.empty?
+
     language_facts.first.language
   end
 
@@ -82,6 +85,7 @@ class Account < ActiveRecord::Base
   def first_commit_date
     first_checkin = best_vita.vita_fact.first_checkin
     return if first_checkin.blank?
+
     first_checkin.to_date.beginning_of_month
   end
 
@@ -103,15 +107,15 @@ class Account < ActiveRecord::Base
     end
 
     def hamster
-      Account.find_by_login('ohloh_slave')
+      Account.find_by(login: 'ohloh_slave')
     end
 
     def uber_data_crawler
-      @uber_data_crawler ||= Account.find_by_login('uber_data_crawler')
+      @uber_data_crawler ||= Account.find_by(login: 'uber_data_crawler')
     end
 
     def non_human_ids
-      where(login: %w(ohloh_slave uber_data_crawler)).pluck(:id)
+      where(login: %w[ohloh_slave uber_data_crawler]).pluck(:id)
     end
 
     def fetch_by_login_or_email(username_or_email)

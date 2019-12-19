@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class RemoveConstraintsFromSecurityTables < ActiveRecord::Migration
   def change
     remove_index :releases, column: :kb_release_id

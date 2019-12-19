@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 ActiveAdmin.register VitaJob do
   menu false
   config.sort_order = 'current_step_at_desc'
 
-  belongs_to :account, finder: :find_by_login, optional: :true
+  belongs_to :account, finder: :find_by_login, optional: true
 
   permit_params :status, :priority, :wait_until, :current_step_at, :notes
 
@@ -13,8 +15,9 @@ ActiveAdmin.register VitaJob do
   actions :all, except: :new
 
   action_item :manually_schedule, only: :index do
-    link_to 'Manually Create Vita Job', manually_schedule_admin_account_vita_jobs_path(account),
-            method: :post if params[:account_id]
+    if params[:account_id]
+      link_to 'Manually Create Vita Job', manually_schedule_admin_account_vita_jobs_path(account), method: :post
+    end
   end
 
   index do
@@ -30,24 +33,14 @@ ActiveAdmin.register VitaJob do
     column 'Progress' do |job|
       "#{job.current_step? ? job.current_step : '-'} of #{job.max_steps? ? job.max_steps : '-'}"
     end
-    column :status do |job|
-      span job.job_status.try(:name)
-      if job.slave_id
-        span 'on'
-        span link_to job.slave.hostname, admin_slafe_path(job.slave)
-      end
-    end
     column 'Owners' do |job|
       span link_to "Account #{job.account.login}", account_path(job.account) if job.account_id
-    end
-    column 'Log' do |job|
-      span link_to 'Slave Log', admin_job_slave_logs_path(job)
     end
   end
 
   controller do
     def manually_schedule
-      account = Account.find_by_login(params[:account_id])
+      account = Account.find_by(login: params[:account_id])
       VitaJob.create(account: account, priority: 0)
       redirect_to admin_account_vita_jobs_path(account), flash: { success: 'Vita Job has been created manually.' }
     end

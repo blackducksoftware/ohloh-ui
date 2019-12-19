@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # rubocop: disable Metrics/ModuleLength
 module ApplicationHelper
   include EmailObfuscation
@@ -7,14 +9,17 @@ module ApplicationHelper
 
   def error_tag(model, attr, opts = {})
     return '' if model.nil?
+
     err = model.errors[attr]
     return '' if err.blank?
+
     haml_tag 'p', [err].flatten.join('<br />').html_safe, opts.reverse_merge(class: 'error').merge(rel: attr)
   end
 
   def password_error_tag(model, attr, opts = {})
     err = model.errors[attr]
     return '' if err.blank? || err == ["can't be blank"]
+
     err = err.first if err.size == 2
     haml_tag 'p', [err].flatten.join('<br />').html_safe, opts.reverse_merge(class: 'error').merge(rel: attr)
   end
@@ -28,12 +33,14 @@ module ApplicationHelper
 
   def find_nag_reminder
     return unless current_user
+
     current_user.actions.where(status: [Action::STATUSES[:nag_once], Action::STATUSES[:remind]]).first
   end
 
   def expander(text, min = 250, max = 350, regex = /\s/, regex_offset = -1)
     return unless text
-    text = text.escape.sanitize
+
+    text = text.sanitize
     return text.html_safe if text.length < max
 
     l = (text[0..min].rindex(regex) || min + 1) + regex_offset
@@ -46,7 +53,7 @@ module ApplicationHelper
   end
 
   def pluralize_with_delimiter(count, singular, plural = nil)
-    number_with_delimiter(count || 0) + ' ' + ((count.to_i == 1) ? singular : (plural || singular.pluralize))
+    number_with_delimiter(count || 0) + ' ' + (count.to_i == 1 ? singular : (plural || singular.pluralize))
   end
 
   def generate_page_name
@@ -82,6 +89,7 @@ module ApplicationHelper
   def project_icon(project, size = :small, opts = {})
     opts = opts_with_lang_colors(project, opts)
     return project_text_icon(project, size, opts) if project.logo.nil?
+
     styles = "#{icon_dimensions(size, opts)} border:0 none;"
     concat image_tag(project.logo.attachment.url(size), style: styles, itemprop: 'image', alt: project.name)
   end
@@ -102,6 +110,7 @@ module ApplicationHelper
 
   def xml_date_to_time(date)
     return '' if date.nil?
+
     Time.gm(date.year, date.month, date.day).xmlschema
   end
 
@@ -109,18 +118,15 @@ module ApplicationHelper
     parts = number.to_s.split('.')
     parts[0].gsub!(/(\d)(?=(\d\d\d)+(?!\d))/, "\\1#{delimiter}")
     parts.join separator
-  rescue
+  rescue StandardError
     number
   end
 
   def highlight(actual_time, base_time = nil)
     return if actual_time.blank?
+
     base_time ||= @highlight_from || Time.current
     return 'highlight' if actual_time >= base_time
-  end
-
-  def strip_tags_and_escaped_html(string)
-    ActionView::Base.full_sanitizer.sanitize(string)
   end
 
   def needs_login
@@ -134,18 +140,19 @@ module ApplicationHelper
 
   private
 
-  def render_expander(text, l)
+  def render_expander(text, limit)
     <<-EXPANDER
-    #{text[0..l]}
+    #{text[0..limit]}
     <span class="expander">
     <span x-wrapper>... #{link_to t('expander.more'), 'javascript:void(0);', class: 'ctrl'}</span>
-    <span x-wrapper style="display:none">#{text[l + 1..-1]} #{link_to t('expander.less'), 'javascript:void(0);', class: 'ctrl'}</span>
+    <span x-wrapper style="display:none">#{text[limit + 1..-1]} #{link_to t('expander.less'), 'javascript:void(0);', class: 'ctrl'}</span>
     </span>
     EXPANDER
   end
 
   def opts_with_lang_colors(project, options)
     return options if !project.is_a?(Project) || project.best_analysis.main_language.nil?
+
     lang_name = project.best_analysis.main_language
     options.merge(color: language_text_color(lang_name), bg: language_color(lang_name))
   end
@@ -154,6 +161,8 @@ module ApplicationHelper
     return default_class if logged_in? && current_user_is_verified?
     return :needs_login unless logged_in?
     return :needs_email_verification unless current_user.access.email_verified?
+
     :needs_verification
   end
 end
+# rubocop: enable Metrics/ModuleLength

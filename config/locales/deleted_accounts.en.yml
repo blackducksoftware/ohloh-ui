@@ -4,7 +4,7 @@ en:
       expired: 'Sorry, Page expired.'
       invalid_request: 'Sorry, Invalid request!'
       sad: 'We are sorry to see you go...'
-      info: "Your account has been deleted. Any contributions you had claimed under your account have been placed back in the pool of unclaimed contributions on Open Hub. They\'re still visible, just not associated with you through an account."
+      info: "Your account has been deleted. Any contributions you had claimed under your account have been placed back in the pool of unclaimed contributions on Open Hub. They're still visible, just not associated with you through an account."
       rejoin: "You can rejoin Open Hub any time you like - just click the 'Join' button in the upper right on any Open Hub page and set up a new account. We hope you'll consider returning in the future!"
       feedback: "Please take a moment to let us know why you're deleting your account. We're constantly striving to make Open Hub better, and your feedback is important to us!"
     update:

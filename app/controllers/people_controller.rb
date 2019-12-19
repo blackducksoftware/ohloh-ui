@@ -1,9 +1,13 @@
+# frozen_string_literal: true
+
 class PeopleController < UnclaimedController
   helper KudosHelper
 
   before_action :find_index_people, unless: :query_or_cache_exist, only: [:index]
   before_action :preload_data, unless: :query_or_cache_exist, only: [:index]
   before_action :find_rankings_people, only: [:rankings]
+
+  def rankings; end
 
   private
 

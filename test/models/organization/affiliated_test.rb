@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class Organization::AffiliatedTest < ActiveSupport::TestCase
@@ -7,11 +9,11 @@ class Organization::AffiliatedTest < ActiveSupport::TestCase
     account1 = create(:account, organization_id: proj1.organization_id)
     account2 = create(:account, organization_id: proj1.organization_id)
     po1 = create_position(account: account1, project: proj1, organization: proj1.organization)
-    NameFact.where(analysis_id: proj1.best_analysis_id, name_id: po1.name_id).first.update_attributes(commits: 2)
+    NameFact.where(analysis_id: proj1.best_analysis_id, name_id: po1.name_id).first.update(commits: 2)
     po2 = create_position(account: account2, project: proj1, organization: proj1.organization)
-    NameFact.where(analysis_id: proj1.best_analysis_id, name_id: po2.name_id).first.update_attributes(commits: 1)
+    NameFact.where(analysis_id: proj1.best_analysis_id, name_id: po2.name_id).first.update(commits: 1)
     po3 = create_position(account: account1, project: proj2, organization: proj2.organization)
-    NameFact.where(analysis_id: proj2.best_analysis_id, name_id: po3.name_id).first.update_attributes(commits: 2)
+    NameFact.where(analysis_id: proj2.best_analysis_id, name_id: po3.name_id).first.update(commits: 2)
 
     acs = proj1.organization.affiliated_committers_stats
     acs['affl_committers'].must_equal '2'
@@ -25,7 +27,7 @@ class Organization::AffiliatedTest < ActiveSupport::TestCase
   it '#committers' do
     proj = create(:project)
     account1 = create(:account, organization_id: proj.organization_id)
-    account1.person.update_attributes(kudo_position: 100)
+    account1.person.update(kudo_position: 100)
     account2 = create(:account, organization_id: proj.organization_id)
     create_position(account: account1, project: proj, organization: proj.organization)
     create_position(account: account2, project: proj, organization: proj.organization)

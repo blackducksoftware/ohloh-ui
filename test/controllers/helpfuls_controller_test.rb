@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 describe 'HelpfulsControllerTest' do
@@ -63,7 +65,9 @@ describe 'HelpfulsControllerTest' do
 
   def create_helpful(helpful, xhr_request: true)
     account = @controller.send(:current_user).id
+    return unless xhr_request
+
     xhr :post, :create, helpful: { account_id: account, review_id: linux_review }, review_id: linux_review.id,
-                        yes: helpful if xhr_request
+                        yes: helpful
   end
 end

@@ -1,18 +1,20 @@
+# frozen_string_literal: true
+
 class Logo < Attachment
-  FILE_SIZE_LIMIT = 1..500.kilobytes
+  FILE_SIZE_LIMIT = (1..500.kilobytes).freeze
 
   DEFAULT_LOGOS = {
     15_216 => '.Net Library',
-    1231   => 'C Library',
-    1228   => 'C++ Library',
+    1231 => 'C Library',
+    1228 => 'C++ Library',
     15_212 => 'CakePHP Plugin',
-    1189   => 'Console App',
-    6221   => 'Drupal Module',
-    1183   => 'Java Library',
-    1534   => 'Javascript Library',
-    6236   => 'Perl Module',
-    1174   => 'Python Library',
-    1180   => 'Ruby Library'
+    1189 => 'Console App',
+    6221 => 'Drupal Module',
+    1183 => 'Java Library',
+    1534 => 'Javascript Library',
+    6236 => 'Perl Module',
+    1174 => 'Python Library',
+    1180 => 'Ruby Library'
   }.freeze
 
   attr_reader :url
@@ -34,8 +36,8 @@ class Logo < Attachment
   validate { errors.add(:url, I18n.t('logos.invalid_url')) if @invalid_url }
 
   def url=(uri)
-    self.attachment = uri unless uri.blank?
-  rescue
+    self.attachment = uri if uri.present?
+  rescue StandardError
     @invalid_url = true
   end
 

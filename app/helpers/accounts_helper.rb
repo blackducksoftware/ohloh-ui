@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module AccountsHelper
   def notification_type_text(notification_type)
     case notification_type
@@ -8,7 +10,8 @@ module AccountsHelper
   end
 
   def privacy_policy_link
-    link_to(t('accounts.unsubscribe_emails.privacy_policy'), 'http://blog.openhub.net/privacy', target: '_blank')
+    link_to(t('accounts.unsubscribe_emails.privacy_policy'),
+            'http://blog.openhub.net/privacy', target: '_blank', rel: 'noopener')
   end
 
   def privacy_settings_text(account = nil)

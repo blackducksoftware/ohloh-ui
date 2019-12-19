@@ -1,6 +1,9 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 require 'test_helpers/image_helper'
 
+# rubocop: disable Lint/UnneededSplatExpansion
 describe 'WidgetBadge::Partner' do
   describe '#create' do
     it 'must create the badge successfully' do
@@ -11,7 +14,7 @@ describe 'WidgetBadge::Partner' do
         { text: '$1.2M Cost', align: :center },
         { text: '21 Developers', align: :center }
       ]
-      expected_image_path = Rails.root.join('test/data/widget_badge/partner/badge.gif')
+      expected_image_path = Rails.root.join('test', 'data', 'widget_badge', 'partner', 'badge.gif')
 
       result_blob = WidgetBadge::Partner.create(strings)
       result_image = write_to_file(result_blob)
@@ -26,7 +29,7 @@ describe 'WidgetBadge::Partner' do
       options = { opacity: 70 }
 
       result_image = WidgetBadge::Partner.send :add_text, *[text, options]
-      expected_image_path = Rails.root.join('test/data/widget_badge/partner/add_text.png')
+      expected_image_path = Rails.root.join('test', 'data', 'widget_badge', 'partner', 'add_text.png')
 
       compare_images(result_image.path, expected_image_path, 0.1)
     end
@@ -36,7 +39,7 @@ describe 'WidgetBadge::Partner' do
       options = { opacity: 70 }
 
       result_image = WidgetBadge::Partner.send :add_text, *[text, options]
-      expected_image_path = Rails.root.join('test/data/widget_badge/partner/text_without_name.png')
+      expected_image_path = Rails.root.join('test', 'data', 'widget_badge', 'partner', 'text_without_name.png')
 
       compare_images(result_image.path, expected_image_path, 0.1)
     end
@@ -47,9 +50,10 @@ describe 'WidgetBadge::Partner' do
       options = WidgetBadge::Partner::DEFAULT_FONT_OPTIONS
 
       result_image = WidgetBadge::Partner.send :new_text_image, *['Some Text', options]
-      expected_image_path = Rails.root.join('test/data/widget_badge/partner/new_text_image.png')
+      expected_image_path = Rails.root.join('test', 'data', 'widget_badge', 'partner', 'new_text_image.png')
 
       compare_images(result_image.path, expected_image_path, 0.1)
     end
   end
 end
+# rubocop: enable Lint/UnneededSplatExpansion

@@ -1,15 +1,17 @@
+# frozen_string_literal: true
+
 ENV['RAILS_ENV'] ||= 'test'
 require 'simplecov'
 require 'simplecov-rcov'
 
-SimpleCov.formatter = SimpleCov::Formatter::RcovFormatter
+SimpleCov.formatter = SimpleCov::Formatter::HTMLFormatter
 SimpleCov.start 'rails'
-SimpleCov.minimum_coverage 99.58
+SimpleCov.minimum_coverage 99.57
 
-require File.expand_path('../../config/environment', __FILE__)
+require File.expand_path('../config/environment', __dir__)
 require 'rails/test_help'
 require 'minitest/rails'
-require 'mocha/mini_test'
+require 'mocha/minitest'
 require 'dotenv'
 require 'test_helpers/setup_hamster_account'
 require 'test_helpers/create_forges'
@@ -61,7 +63,7 @@ class ActiveSupport::TestCase
     create(:name_with_fact)
     name_fact = NameFact.last
     Person.rebuild_by_project_id(name_fact.analysis.project_id)
-    Contribution.find_by_name_fact_id(name_fact.id)
+    Contribution.find_by(name_fact_id: name_fact.id)
   end
 
   private
@@ -131,7 +133,7 @@ class ActiveSupport::TestCase
   def stub_code_location_subscription_api_call(code_location_id, project_id, method = 'create')
     VCR.use_cassette("#{method}_code_location_subscription",
                      erb: { code_location_id: code_location_id, client_relation_id: project_id },
-                     match_requests_on: [:host, :path, :method]) do
+                     match_requests_on: %i[host path method]) do
       yield
     end
   end
@@ -154,12 +156,12 @@ class ActiveSupport::TestCase
   end
 
   def stub_github_user_repositories_call
-    # rubocop:disable NestedMethodDefinition
     class << Open3
       def popen3_with_change(_command, github_url)
         return if github_url =~ /page=2/
-        file_path = File.expand_path('../data/github_user_repos.json', __FILE__)
-        [nil, File.read(file_path)]
+
+        file_path = File.expand_path('data/github_user_repos.json', __dir__)
+        [nil, File.new(file_path)]
       end
 
       alias_method :popen3_without_change, :popen3
@@ -169,8 +171,9 @@ class ActiveSupport::TestCase
     yield
 
     class << Open3
+      # rubocop:disable Lint/DuplicateMethods
       alias_method :popen3, :popen3_without_change
+      # rubocop:enable Lint/DuplicateMethods
     end
-    # rubocop:enable NestedMethodDefinition
   end
 end

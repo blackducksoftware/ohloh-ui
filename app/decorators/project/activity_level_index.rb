@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Project::ActivityLevelIndex
   INACTIVE_INDEX = 20
   ACTIVITY_LEVEL_INDEX = { 10 => :new, 20 => :inactive, 30 => :very_low, 40 => :low,
@@ -30,7 +32,7 @@ class Project::ActivityLevelIndex
   end
 
   def percentage
-    ((@count.to_f / @total_count.to_f) * 100).round(1)
+    (@count.fdiv(@total_count) * 100).round(1)
   end
 
   def sliced
@@ -38,6 +40,6 @@ class Project::ActivityLevelIndex
   end
 
   def selected
-    name == ACTIVITY_LEVEL_INDEX[INACTIVE_INDEX] ? true : false
+    name == ACTIVITY_LEVEL_INDEX[INACTIVE_INDEX]
   end
 end

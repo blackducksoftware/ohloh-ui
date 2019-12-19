@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class LicenseTest < ActiveSupport::TestCase
@@ -37,20 +39,16 @@ class LicenseTest < ActiveSupport::TestCase
     license.allow_edit?.must_equal true
   end
 
-  it '#short_name returns abbreviation if present' do
-    create(:license, name: 'Foobar', abbreviation: 'Foo').short_name.must_equal 'Foo'
-  end
-
-  it '#short_name returns name if no abbreviation is available' do
-    create(:license, name: 'Foobar', abbreviation: nil).short_name.must_equal 'Foobar'
+  it '#short_name returns vanity_url if present' do
+    create(:license, name: 'Foobar', vanity_url: 'Foo').short_name.must_equal 'Foo'
   end
 
   describe 'autocomplete' do
     it 'must return correct licenses' do
-      license_1 = create(:license, name: 'AutocompleteMIT')
+      license1 = create(:license, name: 'AutocompleteMIT')
       create(:license, name: 'AutocompleteBSD')
-      license_3 = create(:license, name: 'AutocompleteMit v2')
-      License.autocomplete('autocompletemit').map(&:id).sort.must_equal [license_1.id, license_3.id].sort
+      license3 = create(:license, name: 'AutocompleteMit v2')
+      License.autocomplete('autocompletemit').map(&:id).sort.must_equal [license1.id, license3.id].sort
     end
 
     it 'must avoid deleted licenses' do
@@ -69,11 +67,11 @@ class LicenseTest < ActiveSupport::TestCase
 
   describe 'vanity_url' do
     it 'should validate uniqueness' do
-      license_1 = create(:license)
-      license_2 = build(:license, vanity_url: license_1.vanity_url)
-      license_2.valid?.must_equal false
-      license_2.errors.count.must_equal 2
-      license_2.errors[:vanity_url].must_equal ['has already been taken']
+      license1 = create(:license)
+      license2 = build(:license, vanity_url: license1.vanity_url)
+      license2.valid?.must_equal false
+      license2.errors.count.must_equal 2
+      license2.errors[:vanity_url].must_equal ['has already been taken']
     end
 
     it 'should validate length' do
@@ -84,7 +82,7 @@ class LicenseTest < ActiveSupport::TestCase
     end
 
     it 'must allow valid characters' do
-      valid_vanity_urls = %w(license-name license_name licenseé license_)
+      valid_vanity_urls = %w[license-name license_name licenseé license_]
 
       valid_vanity_urls.each do |vanity_url|
         license = build(:license, vanity_url: vanity_url)
@@ -93,7 +91,7 @@ class LicenseTest < ActiveSupport::TestCase
     end
 
     it 'wont allow invalid characters' do
-      invalid_vanity_urls = %w(license.name .license -license _license)
+      invalid_vanity_urls = %w[license.name .license -license _license]
 
       invalid_vanity_urls.each do |vanity_url|
         license = build(:license, vanity_url: vanity_url)
@@ -104,8 +102,8 @@ class LicenseTest < ActiveSupport::TestCase
 
   describe 'name' do
     it 'should validate uniqueness' do
-      license_1 = create(:license)
-      license = build(:license, name: license_1.name)
+      license1 = create(:license)
+      license = build(:license, name: license1.name)
       license.valid?.must_equal false
       license.errors.count.must_equal 2
       license.errors[:name].must_equal ['has already been taken']
@@ -116,20 +114,6 @@ class LicenseTest < ActiveSupport::TestCase
       license.valid?.must_equal false
       license.errors.count.must_equal 2
       license.errors[:name].must_equal ['is too short (minimum is 1 character)']
-    end
-  end
-
-  describe 'abbreviation' do
-    it 'should validate length' do
-      license = build(:license, abbreviation: Faker::Lorem.characters(102))
-      license.valid?.must_equal false
-      license.errors.count.must_equal 2
-      license.errors[:abbreviation].must_equal ['is too long (maximum is 100 characters)']
-    end
-
-    it 'should allow nil' do
-      license = build(:license, abbreviation: nil, editor_account: create(:account))
-      license.valid?.must_equal true
     end
   end
 
@@ -173,31 +157,36 @@ class LicenseTest < ActiveSupport::TestCase
   end
 
   describe 'license permissions' do
-    it 'can have a set of license permission' do
+    it 'can have a set of license permissions' do
       create(:license).must_respond_to(:license_permissions)
     end
 
     it 'can have required license_permissions' do
-      lp = create(:license_permission)
-      l = create(:license)
-      l.license_permissions << lp
-      l.license_permissions.count.must_equal 1
-      l.license_permissions.first.must_equal lp
+      license = create(:license)
+      permission = create(:license_permission)
+      create(:license_license_permission,  license_permission_id: permission.id,
+                                           license_id: license.id)
+
+      license.license_permissions.count.must_equal 1
+      license.license_permissions.first.must_equal permission
     end
 
     it 'will get the correct license_permissions' do
+      permitted_permission = create(:license_permission, license_right: create(:license_right, name: 'Permitted'))
+      forbidden_permission = create(:license_permission, status: LicensePermission.statuses['Forbidden'],
+                                                         license_right: create(:license_right, name: 'Forbidden'))
+      required_permission = create(:license_permission, status: LicensePermission.statuses['Required'],
+                                                        license_right: create(:license_right, name: 'Required'))
+
       create(:license) do |l|
         # Add a Permitted permission
-        lp = create(:license_permission, name: 'Permitted')
-        l.license_permission_roles.create(license_permission: lp, status: 'permitted')
+        l.license_license_permissions.create(license_permission_id: permitted_permission.id)
 
         # Add a Forbidden permission
-        lp = create(:license_permission, name: 'Forbidden')
-        l.license_permission_roles.create(license_permission: lp, status: 'forbidden')
+        l.license_license_permissions.create(license_permission_id: forbidden_permission.id)
 
         # Add a Required permission
-        lp = create(:license_permission, name: 'Required')
-        l.license_permission_roles.create(license_permission: lp, status: 'required')
+        l.license_license_permissions.create(license_permission_id: required_permission.id)
 
         l.license_permissions.count.must_equal 3
         l.permitted_license_permissions.count.must_equal 1

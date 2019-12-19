@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :vita do
     association :account
@@ -7,7 +9,7 @@ FactoryBot.define do
     association :vita_fact
 
     after(:create) do |vita|
-      vita.account.update_attributes(best_vita_id: vita.id)
+      vita.account.update(best_vita_id: vita.id)
     end
   end
 end

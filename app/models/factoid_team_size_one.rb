@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class FactoidTeamSizeOne < FactoidTeamSize
   def to_s
     I18n.t('factoids.team_size_one')

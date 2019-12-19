@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 describe 'ProjectTagsController' do
@@ -75,7 +77,7 @@ describe 'ProjectTagsController' do
       login_as create(:account)
       post :create, project_id: project.to_param, tag_name: 'zesty'
       assert_response 422
-      @response.body.must_match edit_project_url(project)
+      @response.body.must_match 'too long'
     end
   end
 

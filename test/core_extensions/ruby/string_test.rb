@@ -1,4 +1,5 @@
-# encoding: utf-8
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class StringTest < ActiveSupport::TestCase
@@ -45,7 +46,7 @@ class StringTest < ActiveSupport::TestCase
   it 'clean up weirdly encoded strings' do
     before = "* oprava chyby 33731\n* \xFAprava  podle Revize B anglick\xE9ho dokumentu\n"
     after = ['* oprava chyby 33731', '* �prava  podle Revize B anglick�ho dokumentu']
-    before.fix_encoding_if_invalid!.split("\n").must_equal after
+    before.fix_encoding_if_invalid.split("\n").must_equal after
   end
 
   it 'should not force_encode to utf-8 when string has valid encoding' do
@@ -60,13 +61,13 @@ class StringTest < ActiveSupport::TestCase
   end
 
   it 'should not mangle good unicode strings' do
-    'Stefan Küng'.fix_encoding_if_invalid!.must_equal 'Stefan Küng'
+    'Stefan Küng'.fix_encoding_if_invalid.must_equal 'Stefan Küng'
   end
 
   it 'should replace garbage encoded characters with unknowns' do
     bad_str = "\xE2??"
     bad_str.valid_encoding?.must_equal false
-    bad_str.fix_encoding_if_invalid!
+    bad_str = bad_str.fix_encoding_if_invalid
     bad_str.present?.must_equal true
     bad_str.valid_encoding?.must_equal true
     bad_str.must_equal '�??'
@@ -131,31 +132,6 @@ class StringTest < ActiveSupport::TestCase
       'n'.to_bool.must_equal false
       'no'.to_bool.must_equal false
       '0'.to_bool.must_equal false
-    end
-  end
-
-  describe '#escape_unclosed_tags' do
-    it 'should escape any unclosed tags' do
-      'welcome to <open hub'.escape_unclosed_tags.must_equal 'welcome to &lt;open hub'
-      '<h1 great day'.escape_unclosed_tags.must_equal '&lt;h1 great day'
-    end
-  end
-
-  describe '#escape_invalid_tags' do
-    it 'should escape invalid html tags' do
-      'welcome to <blackduck org>'.escape_invalid_tags.must_equal 'welcome to &lt;blackduck org&gt;'
-      'welcome to <a href=/>blackduck</a>'.escape_invalid_tags.must_equal 'welcome to <a href=/>blackduck</a>'
-      '<openhub>Org</openhub>'.escape_invalid_tags.must_equal '&lt;openhub&gt;Org&lt;/openhub&gt;'
-    end
-
-    it 'should escape internal javascript to prevent from XSS attack' do
-      '<script>alert("hello");</script>'.escape_invalid_tags.must_equal '&lt;script&gt;alert("hello");&lt;/script&gt;'
-    end
-  end
-
-  describe '#escape' do
-    it 'should escape unclosed and invalid html tags' do
-      'welcome <to <a href=/><hub></a>'.escape_invalid_tags.wont_equal 'welcome &lt;to <a href=/>&lt;hub&gt;</a>'
     end
   end
 end

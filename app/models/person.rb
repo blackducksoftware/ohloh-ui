@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Person < ActiveRecord::Base
   self.primary_key = :id
   self.per_page = 10
@@ -9,7 +11,7 @@ class Person < ActiveRecord::Base
   belongs_to :project
   belongs_to :name_fact
   belongs_to :contributor_fact, foreign_key: :name_fact_id
-  belongs_to :contributor_fact_on_name_id, primary_key: :name_id, foreign_key: :name_id, class_name: :ContributorFact
+  belongs_to :contributor_fact_on_name_id, primary_key: :name_id, foreign_key: :name_id, class_name: 'ContributorFact'
   has_many :contributions
 
   scope :sort_by_kudo_position, -> { order('kudo_position nulls last') }
@@ -27,6 +29,7 @@ class Person < ActiveRecord::Base
 
   def searchable_factor
     return 0.0 if kudo_position.nil? || Person.count == 1
+
     num = (Person.count - kudo_position).to_f
     denum = (Person.count - 1).to_f
 
@@ -56,6 +59,7 @@ class Person < ActiveRecord::Base
 
     def rebuild_by_project_id(project_id)
       return if project_id.blank?
+
       Person.delete_all(project_id: project_id)
       connection.execute("insert into people (select * from people_view where project_id = #{sanitize_sql project_id})")
     end
@@ -71,23 +75,23 @@ class Person < ActiveRecord::Base
       if opts[:q].present?
         query_with_email_or_name(sub_query, opts)
       else
-        sub_query.group([:name_id, :effective_name])
+        sub_query.group(%i[name_id effective_name])
                  .reorder('MIN(COALESCE(kudo_position,999999999)), lower(effective_name)')
                  .select(:name_id)
       end
     end
 
     def find_by_name_or_email(opts)
-      return where("name_facts.email_address_ids && (#{EmailAddress.search_sql(opts[:q])})")
-             .joins(:contributor_fact) if opts[:find_by].eql?('email')
+      return tsearch(opts[:q]) unless opts[:find_by].eql?('email')
 
-      tsearch(opts[:q])
+      where("name_facts.email_address_ids && (#{EmailAddress.search_sql(opts[:q])})")
+        .joins(:contributor_fact)
     end
 
     private
 
     def query_with_email_or_name(sub_query, opts)
-      sub_query.find_by_name_or_email(opts).group([:name_id, :effective_name])
+      sub_query.find_by_name_or_email(opts).group(%i[name_id effective_name])
                .reorder('MIN(COALESCE(kudo_position,999999999)), lower(effective_name)')
                .select(:name_id)
     end

@@ -1,10 +1,20 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class ContributorFactTest < ActiveSupport::TestCase
-  let(:analysis) { create(:analysis) }
-  let(:name_object) { create(:name) }
-  let(:contributor_fact) { create(:contributor_fact, analysis_id: analysis.id, name_id: name_object.id) }
+  let(:commit)  { create(:commit) }
   let(:project) { create(:project) }
+  let(:analysis) { project.best_analysis }
+  let(:name_object) { create(:name) }
+  let(:sloc_set) { create(:sloc_set, code_set_id: commit.code_set_id) }
+  let(:analysis_sloc_set) { create(:analysis_sloc_set, sloc_set_id: sloc_set.id, analysis_id: analysis.id, as_of: 2) }
+  let(:analysis_alias) do
+    create(:analysis_alias, commit_name: commit.name, analysis_id: analysis.id, preferred_name_id: name_object.id)
+  end
+  let(:contributor_fact) do
+    create(:contributor_fact, analysis_id: analysis_sloc_set.analysis_id, name_id: analysis_alias.preferred_name_id)
+  end
 
   describe '#unclaimed_for_project' do
     it 'must return contributor_facts which have no matching position' do
@@ -51,7 +61,7 @@ class ContributorFactTest < ActiveSupport::TestCase
   end
 
   describe 'monthly_commits' do
-    let(:other_contributor_fact) { create(:contributor_fact, analysis_id: create(:analysis)) }
+    let(:other_contributor_fact) { create(:contributor_fact, analysis: create(:analysis)) }
 
     before { create(:commit, name_id: contributor_fact.name_id) }
 

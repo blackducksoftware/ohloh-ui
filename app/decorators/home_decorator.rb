@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class HomeDecorator
   def most_popular_projects
     Project.active.by_popularity.includes(:logo, best_analysis: [:main_language]).limit(10)
@@ -5,14 +7,14 @@ class HomeDecorator
 
   def most_active_projects
     ids = Rails.cache.fetch('HomeDecorator-most_active_projects-cache', expires_in: 1.day) do
-      Project.most_active.includes(:logo, best_analysis: [:main_language, :thirty_day_summary]).map(&:id)
+      Project.most_active.includes(:logo, best_analysis: %i[main_language thirty_day_summary]).map(&:id)
     end
-    includes = [:logo, best_analysis: [:main_language, :thirty_day_summary]]
+    includes = [:logo, best_analysis: %i[main_language thirty_day_summary]]
     Project.includes(includes).find(ids).index_by(&:id).slice(*ids).values
   end
 
   def most_active_contributors
-    Account.recently_active.includes(best_vita: [:name_fact])
+    Rails.cache.fetch('HomeDecorator-recently_active_accounts-cache') || []
   end
 
   def commit_count
@@ -24,10 +26,7 @@ class HomeDecorator
   end
 
   def vita_count
-    contributors = most_active_contributors
-    contributors.map do |contributor|
-      contributor.best_vita.name_fact.thirty_day_commits if contributor.best_vita
-    end
+    Rails.cache.fetch('HomeDecorator-vita_count-cache') || []
   end
 
   def lines_count

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Position::Hooks
   delegate :project_id, :project_id_was, :project_id_changed?,
            :name_id, :name_id_was, :name_id_changed?, :account, :account_id, to: :@position

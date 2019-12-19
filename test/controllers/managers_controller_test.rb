@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class ManagersControllerTest < ActionController::TestCase
@@ -154,7 +156,7 @@ class ManagersControllerTest < ActionController::TestCase
   it 'test accept should fail for rejected manager' do
     login_as joe_account
     set_manager(joe_account, @proj)
-    @proj.manages.each { |pa| pa.update_attributes!(deleted_by: admin.id, deleted_at: Time.current) }
+    @proj.manages.each { |pa| pa.update!(deleted_by: admin.id, deleted_at: Time.current) }
     set_manager(admin, @proj) # auto-approved
     manager_apply(account, @proj)
     assert_no_difference 'Manage.where.not(approved_by: nil).where(deleted_at: nil).count' do
@@ -249,13 +251,13 @@ class ManagersControllerTest < ActionController::TestCase
 
   def set_manager(account, project)
     manage = project.manages.create!(account: account, message: 'let me in!')
-    manage.update_attributes(approved_by: admin.id)
+    manage.update(approved_by: admin.id)
     manage
   end
 
   def manager_apply(account, project)
     manage = project.manages.create!(account: account, message: 'let me in!')
-    manage.update_attributes!(approver: nil)
+    manage.update!(approver: nil)
     manage
   end
 

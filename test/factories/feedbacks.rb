@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :feedback do
     association :project
-    more_info 1
-    rating 5
+    more_info { 1 }
+    rating { 5 }
   end
 end

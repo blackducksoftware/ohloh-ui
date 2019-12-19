@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ReverificationTracker < ActiveRecord::Base
   MAX_ATTEMPTS = 3
   NOTIFICATION1_DUE_DAYS = 21
@@ -5,8 +7,8 @@ class ReverificationTracker < ActiveRecord::Base
   NOTIFICATION3_DUE_DAYS = 28
   NOTIFICATION4_DUE_DAYS = 14
   belongs_to :account
-  enum status: [:pending, :delivered, :soft_bounced, :complained]
-  enum phase: [:initial, :marked_for_disable, :disabled, :final_warning]
+  enum status: %i[pending delivered soft_bounced complained]
+  enum phase: %i[initial marked_for_disable disabled final_warning]
 
   scope :soft_bounced_until_yesterday, lambda {
     soft_bounced.includes(:account).where('DATE(sent_at) < DATE(NOW())')
@@ -54,8 +56,9 @@ class ReverificationTracker < ActiveRecord::Base
     end
 
     def destroy_account(email_address)
-      account = Account.find_by_email(email_address)
+      account = Account.find_by(email: email_address)
       return unless account
+
       account.destroy
     end
 
@@ -79,14 +82,15 @@ class ReverificationTracker < ActiveRecord::Base
 
     def disable_accounts
       ReverificationTracker.disabled.find_each do |rev_tracker|
-        rev_tracker.account.update_attributes!(level: -10) unless rev_tracker.account.access.disabled?
+        rev_tracker.account.update!(level: -10) unless rev_tracker.account.access.disabled?
       end
     end
 
     def remove_reverification_trackers_for_verified_accounts
       includes(:account).find_each do |rev_tracker|
         next unless rev_tracker.account
-        rev_tracker.account.update_attributes!(level: 0) if rev_tracker.account.level == -10
+
+        rev_tracker.account.update!(level: 0) if rev_tracker.account.level == -10
         rev_tracker.destroy if rev_tracker.account.access.mobile_or_oauth_verified?
       end
     end

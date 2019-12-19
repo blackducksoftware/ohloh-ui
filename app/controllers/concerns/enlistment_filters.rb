@@ -1,14 +1,16 @@
+# frozen_string_literal: true
+
 module EnlistmentFilters
   extend ActiveSupport::Concern
 
   included do
-    before_action :session_required, :redirect_unverified_account, only: [:create, :new, :destroy, :edit, :update]
+    before_action :session_required, :redirect_unverified_account, only: %i[create new destroy edit update]
     before_action :set_project_or_fail
     before_action :set_project_editor_account_to_current_user
-    before_action :check_project_authorization, except: [:index, :show]
-    before_action :find_enlistment, only: [:show, :edit, :update, :destroy]
-    before_action :project_context, only: [:index, :new, :edit, :create, :update]
-    before_action :validate_project, only: [:edit, :update, :destroy]
+    before_action :check_project_authorization, except: %i[index show]
+    before_action :find_enlistment, only: %i[show edit update destroy]
+    before_action :project_context, only: %i[index new edit create update]
+    before_action :validate_project, only: %i[edit update destroy]
     before_action :sidekiq_job_exists, only: :create
     before_action :handle_github_user_flow, only: :create
     before_action :build_code_location, only: :create
@@ -28,22 +30,25 @@ module EnlistmentFilters
   def find_enlistment
     @enlistment = Enlistment.find_by(id: params[:id])
     raise ParamRecordNotFound unless @enlistment
+
     @enlistment.editor_account = current_user
   end
 
   def sidekiq_job_exists
     key = Setting.get_project_enlistment_key(@project.id)
     job = Setting.get_value(key)
-    if job.present? && job.key?(code_location_params[:url])
-      redirect_to project_enlistments_path(@project), flash: { error: t('.job_exists') }
-    end
+    return unless job.present? && job.key?(code_location_params[:url])
+
+    redirect_to project_enlistments_path(@project), flash: { error: t('.job_exists') }
   end
 
   def handle_github_user_flow
     return unless code_location_params[:scm_type] == 'GithubUser'
+
     github_user = GithubUser.new(url: code_location_params[:url])
     @code_location = CodeLocation.new(url: code_location_params[:url])
     return create_worker if github_user.valid?
+
     @code_location.errors = github_user.errors
     render :new, status: :unprocessable_entity
   end
@@ -56,11 +61,11 @@ module EnlistmentFilters
   end
 
   def validate_project
-    unless @project.valid?
-      error_msg = @project.errors.include?(:description) ? add_custom_error_msg : @project.errors.full_messages
-      flash[:error] = error_msg.join(', ')
-      redirect_to project_enlistments_path
-    end
+    return if @project.valid?
+
+    error_msg = @project.errors.include?(:description) ? add_custom_error_msg : @project.errors.full_messages
+    flash[:error] = error_msg.join(', ')
+    redirect_to project_enlistments_path
   end
 
   def add_custom_error_msg

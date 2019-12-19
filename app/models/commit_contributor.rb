@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CommitContributor < FisBase
   belongs_to :person
   belongs_to :name

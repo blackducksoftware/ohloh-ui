@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'api_access'
 
 class FisbotApi
@@ -12,19 +14,21 @@ class FisbotApi
   def save
     uri = api_access.resource_uri
     response = Net::HTTP.post_form(uri, attributes)
-    hsh = JSON.parse(response.body)
-
-    set_attributes_or_errors(response, hsh)
+    self.class.handle_errors(response) do
+      hsh = JSON.parse(response.body)
+      set_attributes_or_errors(response, hsh)
+    end
   rescue JSON::ParserError
     response.body
   end
 
   def update(data)
     uri = api_access.resource_uri(@id)
-    http = Net::HTTP.new(uri.host, uri.port)
-    response = http.send_request('PATCH', uri, data.to_query)
-    hsh = JSON.parse(response.body)
-    set_attributes_or_errors(response, hsh)
+    response = http_object(uri).send_request('PATCH', uri, data.to_query)
+    self.class.handle_errors(response) do
+      hsh = JSON.parse(response.body)
+      set_attributes_or_errors(response, hsh)
+    end
   end
 
   def valid?
@@ -35,13 +39,15 @@ class FisbotApi
 
   def fetch
     uri = api_access.resource_uri(nil, attributes)
-    Net::HTTP.get_response(uri).body
+    response = Net::HTTP.get_response(uri)
+    self.class.handle_errors(response) { response.body }
   end
 
   def delete
     uri = api_access.resource_uri(attributes.values.join('/'))
     request = Net::HTTP::Delete.new(uri)
-    Net::HTTP.new(uri.host, uri.port).request(request)
+    response = http_object(uri).request(request)
+    self.class.handle_errors(response) { response }
   end
 
   def set_attributes(hsh)
@@ -76,10 +82,10 @@ class FisbotApi
 
     def handle_errors(response)
       case response
-      when Net::HTTPSuccess
-        yield
       when Net::HTTPServerError
-        raise StandardError, "#{I18n.t('api_exception')} : #{response.message}"
+        raise FisbotApiError, "#{response.message} => #{response.body}"
+      else
+        yield
       end
     end
 
@@ -89,6 +95,7 @@ class FisbotApi
 
     def build_objects(response)
       return [] if response.is_a?(Net::HTTPNoContent)
+
       JSON.parse(response.body).map { |hsh| new(hsh) }
     end
   end
@@ -105,14 +112,14 @@ class FisbotApi
   end
 
   def set_attributes_or_errors(response, hsh)
-    if save_success?(response)
-      set_attributes(hsh)
-    else
-      set_errors(hsh)
-    end
+    save_success?(response) ? set_attributes(hsh) : set_errors(hsh)
   end
 
   def api_access
     self.class.api_access
+  end
+
+  def http_object(uri)
+    Net::HTTP.new(uri.host, uri.port).tap { |http| http.use_ssl = (uri.scheme == 'https') }
   end
 end

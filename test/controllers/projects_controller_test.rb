@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 describe 'ProjectsController' do
@@ -283,6 +285,14 @@ describe 'ProjectsController' do
       must_respond_with :ok
     end
 
+    it 'must strip tags from description' do
+      project.update! description: "foo \n <link>"
+
+      get :show, id: project.vanity_url
+
+      must_select('p')[2].text.must_equal "foo \n "
+    end
+
     it 'show accepts being called via api' do
       api_key = create(:api_key, account: create(:account))
       get :show, id: create(:project), format: :xml, api_key: api_key.oauth_application.uid
@@ -292,23 +302,36 @@ describe 'ProjectsController' do
     it 'should render for projects with all time summaries with name_ids' do
       all_time_summary_summary_with_name_ids = create(:all_time_summary_summary_with_name_ids)
       project = all_time_summary_summary_with_name_ids.analysis.project
-      project.update_attributes(best_analysis: all_time_summary_summary_with_name_ids.analysis)
+      project.update(best_analysis: all_time_summary_summary_with_name_ids.analysis)
+      get :show, id: project.to_param
+      must_respond_with :ok
+    end
+
+    it 'should show license information on project show' do
+      project = create(:project)
+      license = create(:license)
+      create(:license_license_permission,
+             license: license,
+             license_permission: create(:license_permission,
+                                        license_right: create(:license_right, name: 'permitted')))
+
+      create(:project_license, project: project, license: license)
       get :show, id: project.to_param
       must_respond_with :ok
     end
 
     it 'show should render for projects that have been analyzed' do
       project = create(:project)
-      af_1 = create(:activity_fact, analysis: project.best_analysis, code_added: 8_000, comments_added: 8_000)
-      create(:factoid, analysis: project.best_analysis, language: af_1.language)
-      af_2 = create(:activity_fact, analysis: project.best_analysis)
-      create(:factoid, analysis: project.best_analysis, language: af_2.language)
-      af_3 = create(:activity_fact, analysis: project.best_analysis)
-      create(:factoid, analysis: project.best_analysis, language: af_3.language)
-      af_4 = create(:activity_fact, analysis: project.best_analysis)
-      create(:factoid, analysis: project.best_analysis, language: af_4.language)
+      af1 = create(:activity_fact, analysis: project.best_analysis, code_added: 8_000, comments_added: 8_000)
+      create(:factoid, analysis: project.best_analysis, language: af1.language)
+      af2 = create(:activity_fact, analysis: project.best_analysis)
+      create(:factoid, analysis: project.best_analysis, language: af2.language)
+      af3 = create(:activity_fact, analysis: project.best_analysis)
+      create(:factoid, analysis: project.best_analysis, language: af3.language)
+      af4 = create(:activity_fact, analysis: project.best_analysis)
+      create(:factoid, analysis: project.best_analysis, language: af4.language)
       ats = project.best_analysis.all_time_summary
-      ats.update_attributes(recent_contributors: [create(:person).id, create(:person).id])
+      ats.update(recent_contributors: [create(:person).id, create(:person).id])
       cf = create(:commit_flag)
       create(:analysis_sloc_set, analysis: project.best_analysis, sloc_set: cf.sloc_set)
       login_as create(:admin)
@@ -318,20 +341,20 @@ describe 'ProjectsController' do
 
     it 'should show render for projects that have been analyzed' do
       project = create(:project)
-      af_1 = create(:activity_fact, analysis: project.best_analysis, code_added: 8_000, comments_added: 8_000)
-      create(:factoid, analysis: project.best_analysis, language: af_1.language)
-      af_2 = create(:activity_fact, analysis: project.best_analysis)
-      create(:factoid, analysis: project.best_analysis, language: af_2.language)
-      af_3 = create(:activity_fact, analysis: project.best_analysis)
-      create(:factoid, analysis: project.best_analysis, language: af_3.language)
-      af_4 = create(:activity_fact, analysis: project.best_analysis)
-      create(:factoid, analysis: project.best_analysis, language: af_4.language)
+      af1 = create(:activity_fact, analysis: project.best_analysis, code_added: 8_000, comments_added: 8_000)
+      create(:factoid, analysis: project.best_analysis, language: af1.language)
+      af2 = create(:activity_fact, analysis: project.best_analysis)
+      create(:factoid, analysis: project.best_analysis, language: af2.language)
+      af3 = create(:activity_fact, analysis: project.best_analysis)
+      create(:factoid, analysis: project.best_analysis, language: af3.language)
+      af4 = create(:activity_fact, analysis: project.best_analysis)
+      create(:factoid, analysis: project.best_analysis, language: af4.language)
       ats = project.best_analysis.all_time_summary
       cf = create(:commit_flag)
       create(:analysis_sloc_set, analysis: project.best_analysis, sloc_set: cf.sloc_set)
       login_as create(:admin)
       get :show, id: project.to_param
-      ats.update_attributes(recent_contributors: ['name_ids'])
+      ats.update(recent_contributors: ['name_ids'])
       must_respond_with :ok
     end
 
@@ -593,6 +616,37 @@ describe 'ProjectsController' do
     code_location.branch.must_equal 'master'
   end
 
+  it 'should use the project builder' do
+    CodeLocation.any_instance.stubs(:valid?).returns(true)
+    account = create(:account)
+    license1 = create(:license)
+    license2 = create(:license)
+    login_as account
+    webmock_create_code_location_and_subscription do
+      post :create, project: { 'name' => 'nnode-uuid',
+                               'description' => 'Rigorous implementation of RFC4122 (v1 and v4) UUIDs.',
+                               'vanity_url' => 'nnode-uuid',
+                               'url' => 'https://github.com/kelektiv/nnode-uuid', 'download_url' => 'https://github.com/kelektiv/nnode-uuid',
+                               'managed_by_creator' => '1',
+                               'project_licenses_attributes' => [{ 'license_id' => license1.id.to_s },
+                                                                 { 'license_id' => license2.id.to_s }],
+                               'enlistments_attributes' => { '0' =>
+                                            { 'code_location_attributes' => { 'scm_type' => 'git',
+                                                                              'url' => 'https://github.com/kelektiv/nnode-uuid',
+                                                                              'branch' => 'master' } } } }
+    end
+    project = Project.where(vanity_url: 'nnode-uuid').last
+    project.url.must_equal 'https://github.com/kelektiv/nnode-uuid'
+    project.download_url.must_equal 'https://github.com/kelektiv/nnode-uuid'
+    project.active_managers.must_equal [account]
+    project.licenses.map(&:id).sort.must_equal [license1.id, license2.id].sort
+    project.enlistments.where('code_location_id is not null').must_be :exists?
+    WebMocker.get_project_code_locations
+    project.code_locations.length.must_equal 1
+    code_location = project.code_locations[0]
+    code_location.scm_type.must_equal 'git'
+  end
+
   it 'create should allow no download_url' do
     CodeLocation.any_instance.stubs(:valid?).returns(true)
     account = create(:account)
@@ -761,7 +815,7 @@ describe 'ProjectsController' do
 
   it 'estimated_cost should display for unanalyzed projects' do
     project = create(:project)
-    project.update_attributes(best_analysis_id: nil)
+    project.update(best_analysis_id: nil)
     login_as nil
     get :estimated_cost, id: project.id
     must_respond_with :success
@@ -859,6 +913,11 @@ describe 'ProjectsController' do
   # similar_by_tags
   it 'similar_by_tags should reject requests if not ajax' do
     get :similar_by_tags, id: create(:project).to_param
+    must_respond_with :missing
+  end
+
+  it 'similar_by_tags should reject requests if format is js and not ajax' do
+    get :similar_by_tags, id: create(:project).to_param, format: :js
     must_respond_with :missing
   end
 

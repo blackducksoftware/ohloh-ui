@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Vita < ActiveRecord::Base
   self.table_name = 'vitae'
   belongs_to :account

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class ApiKeyTest < ActiveSupport::TestCase
@@ -90,12 +92,12 @@ class ApiKeyTest < ActiveSupport::TestCase
     api_key.oauth_application.name.must_equal application_name
   end
 
-  describe '#find_by_oauth_application_uid' do
+  describe '#find_for_oauth_application_uid' do
     it 'must return the correct oauth_application' do
       api_key = create(:api_key)
       oauth_application_uid = Doorkeeper::Application.last.uid
 
-      ApiKey.find_by_oauth_application_uid(oauth_application_uid).must_equal api_key
+      ApiKey.find_for_oauth_application_uid(oauth_application_uid).must_equal api_key
     end
   end
 end

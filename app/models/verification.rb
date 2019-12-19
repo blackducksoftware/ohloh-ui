@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Verification < ActiveRecord::Base
   belongs_to :account
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 describe 'LinksControllerTest' do
@@ -51,6 +53,17 @@ describe 'LinksControllerTest' do
     assert_select '.alert', text: "×\n\nYou can view, but not change this data. Only managers may change this data."
   end
 
+  it 'index must display sanitized links' do
+    link = create(:link, project_id: project.id, link_category_id: Link::CATEGORIES[:Homepage])
+    link.update_attribute :url, "https://bar<script>alert('hack')</script>.com"
+    create(:link, project_id: project.id, url: 'https://foobar.com', link_category_id: Link::CATEGORIES[:Forums])
+
+    get :index, project_id: project.vanity_url
+
+    must_select('a').count { |node| node.attr('href') =~ %r{https://baralert.+} }.must_equal 1
+    must_select('a').count { |node| node.attr('href') == 'https://foobar.com' }.must_equal 1
+  end
+
   it 'must redirect to login page on new action for non manager' do
     restrict_edits_to_managers project
 
@@ -81,7 +94,7 @@ describe 'LinksControllerTest' do
   describe 'single category links' do
     let(:link) do
       as(admin) do
-        project.links.find_by_link_category_id(Link::CATEGORIES[:Homepage])
+        project.links.find_by(link_category_id: Link::CATEGORIES[:Homepage])
       end
     end
 
@@ -303,7 +316,7 @@ describe 'LinksControllerTest' do
 
     create(:link, title: 'Title', project: project, link_category_id: category_id)
 
-    link = Link.find_by_link_category_id(Link::CATEGORIES[:Forums])
+    link = Link.find_by(link_category_id: Link::CATEGORIES[:Forums])
     login_as(admin)
 
     get :edit, project_id: project.vanity_url, id: link.id

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class PositionFactoriesController < ApplicationController
   before_action :session_required, :redirect_unverified_account
   before_action :set_account
@@ -30,16 +32,18 @@ class PositionFactoriesController < ApplicationController
 
   def check_for_project_existence
     return if @project
+
     flash[:error] = t('.project_not_found', name: CGI.escapeHTML(params[:project_name].to_s))
     redirect_to projects_path
   end
 
   def load_name_by_committer_name
-    @name = Name.find_by_name(params[:committer_name])
+    @name = Name.find_by(name: params[:committer_name])
   end
 
   def check_for_committer_existence
     return if @name
+
     flash[:error] = t('.contributor_not_found', name: CGI.escapeHTML(params[:committer_name].to_s))
     redirect_to project_contributors_path(@project)
   end
@@ -49,9 +53,11 @@ class PositionFactoriesController < ApplicationController
     result = @account.position_core.ensure_position_or_alias!(@project, @name)
     return unless result
 
-    flash[:success] = t('.rename_commit_author',
-                        name: CGI.escapeHTML(@name.name),
-                        preferred_name: CGI.escapeHTML(result.preferred_name.name)) if result.is_a?(Alias)
+    if result.is_a?(Alias)
+      flash[:success] = t('.rename_commit_author',
+                          name: CGI.escapeHTML(@name.name),
+                          preferred_name: CGI.escapeHTML(result.preferred_name.name))
+    end
     flash[:success] = t('contribution_claimed', name: CGI.escapeHTML(@name.name)) if result.is_a?(Position)
 
     redirect_to account_positions_path(@account)

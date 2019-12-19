@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Forum < ActiveRecord::Base
   validates :name, presence: true
   validates :position, numericality: { only_integer: true }, allow_blank: true

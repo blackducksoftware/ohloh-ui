@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 describe 'StackEntriesController' do
@@ -96,7 +98,7 @@ describe 'StackEntriesController' do
   end
 
   it 'update should gracefully handle update failures' do
-    StackEntry.any_instance.stubs(:update_attributes).returns false
+    StackEntry.any_instance.stubs(:update).returns false
     stack_entry = create(:stack_entry)
     login_as stack_entry.stack.account
     put :update, id: stack_entry, stack_id: stack_entry.stack, stack_entry: { note: 'Changed!' }
@@ -156,6 +158,16 @@ describe 'StackEntriesController' do
       xhr :get, :new, project_id: project.id
 
       must_render_template 'new'
+    end
+
+    it 'should not support html format' do
+      stack = create(:stack)
+      project = create(:project)
+      login_as stack.account
+      get :new, project_id: project.id
+      must_respond_with :not_acceptable
+      xhr :get, :new, project_id: project.id
+      must_respond_with :ok
     end
   end
 end

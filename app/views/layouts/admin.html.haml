@@ -5,12 +5,13 @@
     %meta{ charset: 'utf-8' }
     %title OpenHub Admin
     %meta{ content: 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no', name: 'viewport' }
-    = stylesheet_link_tag 'admin', media: 'all'
+    = stylesheet_link_tag 'admin/admin', media: 'all'
+    = javascript_include_tag 'application'
     %link{ href: '//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic' }
   %body.hold-transition.skin-blue.sidebar-mini
     .wrapper
       %header.main-header
-        %a.logo
+        %a.logo{ href: "#{oh_admin_root_path}" }
           %span.logo-lg
             %b OpenHub Admin
         %nav.navbar.navbar-static-top
@@ -37,6 +38,17 @@
               %a{ href: '#' }
                 %i.fa.fa-book
                 %span Project Jobs
+            %li
+              %a{ href: "#{oh_admin_broken_links_path}" }
+                %i.fa.fa-book
+                %span Broken Links
+            %li
+              %a{ href: "#{oh_admin_license_permissions_path}" }
+                %i.fa.fa-book
+                %span License Permissions
       .content-wrapper
+        - if flash[:success]
+          %p.alert.alert-success= flash[:success]
+
         %section.content-header
           = yield

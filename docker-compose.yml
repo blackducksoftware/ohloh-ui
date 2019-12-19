@@ -1,0 +1,13 @@
+version: '3.3'
+services:
+  web:
+    image: sigsynopsys/openhub:latest
+    container_name: "${DOCKER_HOST_NAME}"
+    command: '/start.sh'
+    hostname: "${DOCKER_HOST_NAME}"
+    ports:
+      - "443:443"
+    volumes:
+      - "/docker_data/gems/:/home/serv-deployer/.rbenv/versions/2.5.3/lib/ruby/gems/2.5.0/"
+      - "/docker_data/logs/${DOCKER_HOST_NAME}/:/var/local/openhub/log/"
+      - "/docker_data/assets/assets/:/var/local/openhub/public/assets/"

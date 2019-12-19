@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 describe 'FactoidsControllerTest' do
   before do
     @factoid = create(:factoid)
-    @factoid.analysis.project.update_attributes(best_analysis: @factoid.analysis)
-    @factoid.analysis.update_attributes(headcount: 0)
+    @factoid.analysis.project.update(best_analysis: @factoid.analysis)
+    @factoid.analysis.update(headcount: 0)
   end
 
   describe 'index' do

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module WidgetBadge
   module Account
     module_function
@@ -6,7 +8,7 @@ module WidgetBadge
 
     DEFAULT_FONT_OPTIONS = { opacity: 80, font_size: 12, stroke: :none, weight: 800,
                              align: :left, y_offset: 5 }.freeze
-    IMAGE_ICONS_DIR = Rails.root.join('app/assets/images/icons')
+    IMAGE_ICONS_DIR = Rails.root.join('app', 'assets', 'images', 'icons')
     TEXT_OFFSET = { left: 82 }.freeze
     KUDO_OFFSET = { left: 200 }.freeze
 
@@ -21,10 +23,10 @@ module WidgetBadge
       modified_image = add_name(image, options[:name])
 
       commits_count = options[:commits].to_i
-      commits = "#{commits_count} commit".pluralize(commits_count) if commits_count > 0
+      commits = "#{commits_count} commit".pluralize(commits_count) if commits_count.positive?
 
       kudos_count = options[:kudos].to_i
-      kudos = "#{kudos_count} kudo".pluralize(kudos_count) if kudos_count > 0
+      kudos = "#{kudos_count} kudo".pluralize(kudos_count) if kudos_count.positive?
 
       add_commits_and_kudos(modified_image, commits, kudos)
     end

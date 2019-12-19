@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 describe 'PositionsController' do
@@ -91,7 +93,7 @@ describe 'PositionsController' do
                                     } }
         end
 
-        Position.last.project_experiences.map(&:project).map(&:name).sort.must_equal %w(draper squeel)
+        Position.last.project_experiences.map(&:project).map(&:name).sort.must_equal %w[draper squeel]
       end
 
       it 'must gracefully handle garbage language_exp values' do

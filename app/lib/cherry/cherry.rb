@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'lib/decorator'
 require_relative 'lib/decoratable'
 

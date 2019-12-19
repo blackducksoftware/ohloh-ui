@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class AliasTest < ActiveSupport::TestCase
@@ -142,14 +144,14 @@ class AliasTest < ActiveSupport::TestCase
                                                     commits: 8)
     end
     it 'should increment count only if preferred_name_id is changed ' do
-      @alias.update_attributes(deleted: false)
+      @alias.update(deleted: false)
       @contributor_fact.reload.commits.must_equal 8
     end
 
     it 'should increment count only if preferred_name_id is changed-positive' do
       contributor_fact1 = create(:contributor_fact, name_id: @person1.name_id, analysis_id: @project.best_analysis_id,
                                                     commits: 8)
-      @alias.update_attributes(preferred_name_id: contributor_fact1.name_id)
+      @alias.update(preferred_name_id: contributor_fact1.name_id)
       contributor_fact1.reload.commits.must_equal 10
     end
   end

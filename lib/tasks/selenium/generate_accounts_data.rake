@@ -1,11 +1,13 @@
+# frozen_string_literal: true
+
 # Usage:
 # rake selenium:prepare_accounts_data ACCOUNT_NAME=stefan
 
-include ActionView::Helpers::DateHelper
-
-OUTPUT_FILE = 'tmp/accounts_data.yml'.freeze
+OUTPUT_FILE = 'tmp/accounts_data.yml'
 
 namespace :selenium do
+  include ActionView::Helpers::DateHelper
+
   file :generate_data do
     File.open(OUTPUT_FILE, 'w+') do |file|
       file.write(@accounts_data.to_yaml)
@@ -13,7 +15,7 @@ namespace :selenium do
   end
 
   desc 'Prepare Accounts data for selenium'
-  task prepare_accounts_data: [:set_account, :account_summary, :generate_data]
+  task prepare_accounts_data: %i[set_account account_summary generate_data]
 
   task set_account: :environment do
     @account = Account.from_param(ENV['ACCOUNT_NAME']).take

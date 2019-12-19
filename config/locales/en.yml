@@ -76,7 +76,7 @@ en:
   no_data: No Data
   sign_in_github: Sign in with Github
   github_sign_in_failed: Github sign in failed
-  api_exception: Fisbot API had an exception
+  api_exception: We apologize but we encountered an internal error. Please try again later or contact info@openhub.net if the problem persists.
 
   layouts:
     application:
@@ -247,7 +247,7 @@ en:
   permissions:
     permissions: 'Permissions'
     not_manager: "You can view, but not change this data. Only managers may change this data."
-    must_log_in: "You must be logged in to change this data. If you don't have an account, Please join."
+    must_log_in: "You must be logged in to change this data. If you don't have an account, please join."
     show:
       page_title: "%{name} : Permissions - Open Hub"
       about_permissions_1: "About"
@@ -413,6 +413,7 @@ en:
       error: There seems to be an issue with the mobile verification. Please try again later.
     github_callback:
       invalid_github_account: This github account is insufficient for signing up at the Open Hub.
+      email_mismatch: You have successfully logged in, however your Open Hub email address and GitHub email address do not match. You can update your Open Hub email address in your <a href=%{settings_account_link}>Settings page</a>
   copyright:
     start_year : Copyright 2014 -
     description: Open Hub and the Open Hub logo are trademarks of Black Duck Software, Inc. in the United States and/or other jurisdictions. All other trademarks are the property of their respective holders.
@@ -420,3 +421,4 @@ en:
     company_name: 'Black Duck Software, Inc.'
     rights_text: All Rights Reserved.
     careers: Careers at Black Duck
+    source_code: Open Hub UI Source Code

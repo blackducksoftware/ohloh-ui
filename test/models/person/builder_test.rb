@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class Person::BuilderTest < ActiveSupport::TestCase
@@ -27,11 +29,11 @@ class Person::BuilderTest < ActiveSupport::TestCase
       it 'must delete people with unrelated names' do
         unrelateable_name = create(:name_with_fact)
         unrelateable_person = Person.create!(name: unrelateable_name, project: project,
-                                             name_fact: NameFact.find_by_name_id(unrelateable_name.id))
+                                             name_fact: NameFact.find_by(name_id: unrelateable_name.id))
 
         Person::Builder.rebuild_for_analysis_matching_names(project)
 
-        Person.find_by_id(unrelateable_person).must_be_nil
+        Person.find_by(id: unrelateable_person).must_be_nil
       end
     end
 

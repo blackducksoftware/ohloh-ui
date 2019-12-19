@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 require 'test_helpers/xml_parsing_helpers'
 
@@ -76,6 +78,14 @@ describe 'OrganizationsController' do
     assert_select 'div#org_infographic'
   end
 
+  it 'show must strip tags from description' do
+    @organization.update! description: "foo \n <link>"
+
+    get :show, id: @organization.vanity_url
+
+    must_select('p')[2].text.must_equal "foo \n "
+  end
+
   it 'should support show page via xml api' do
     key = create(:api_key, account_id: create(:account).id)
     get :show, id: @organization, format: :xml, api_key: key.oauth_application.uid
@@ -85,16 +95,16 @@ describe 'OrganizationsController' do
   it 'show should render for organizations that contain projects that have been analyzed' do
     organization = create(:organization)
     project = create(:project, organization: organization)
-    af_1 = create(:activity_fact, analysis: project.best_analysis, code_added: 8_000, comments_added: 8_000)
-    create(:factoid, analysis: project.best_analysis, language: af_1.language)
-    af_2 = create(:activity_fact, analysis: project.best_analysis)
-    create(:factoid, analysis: project.best_analysis, language: af_2.language)
-    af_3 = create(:activity_fact, analysis: project.best_analysis)
-    create(:factoid, analysis: project.best_analysis, language: af_3.language)
-    af_4 = create(:activity_fact, analysis: project.best_analysis)
-    create(:factoid, analysis: project.best_analysis, language: af_4.language)
+    af1 = create(:activity_fact, analysis: project.best_analysis, code_added: 8_000, comments_added: 8_000)
+    create(:factoid, analysis: project.best_analysis, language: af1.language)
+    af2 = create(:activity_fact, analysis: project.best_analysis)
+    create(:factoid, analysis: project.best_analysis, language: af2.language)
+    af3 = create(:activity_fact, analysis: project.best_analysis)
+    create(:factoid, analysis: project.best_analysis, language: af3.language)
+    af4 = create(:activity_fact, analysis: project.best_analysis)
+    create(:factoid, analysis: project.best_analysis, language: af4.language)
     ats = project.best_analysis.all_time_summary
-    ats.update_attributes(recent_contributors: [create(:person).id, create(:person).id])
+    ats.update(recent_contributors: [create(:person).id, create(:person).id])
     cf = create(:commit_flag)
     create(:analysis_sloc_set, analysis: project.best_analysis, sloc_set: cf.sloc_set)
     key = create(:api_key, account_id: create(:account).id)
@@ -179,20 +189,20 @@ describe 'OrganizationsController' do
     end
 
     it 'should return organizations when search term is present' do
-      org_1 = create(:organization, name: 'test name1', projects_count: 2)
-      org_2 = create(:organization, name: 'test name2', projects_count: 3)
-      org_3 = create(:organization, name: 'test name3', projects_count: 4)
+      org1 = create(:organization, name: 'test name1', projects_count: 2)
+      org2 = create(:organization, name: 'test name2', projects_count: 3)
+      org3 = create(:organization, name: 'test name3', projects_count: 4)
 
       get :index, query: 'test'
 
       must_respond_with :ok
-      assigns(:organizations).must_equal [org_3, org_2, org_1]
+      assigns(:organizations).must_equal [org3, org2, org1]
     end
 
     it 'should return organizations via xml' do
       create(:organization, name: 'test name1', projects_count: 2)
       create(:organization, name: 'test name2', projects_count: 3)
-      org_3 = create(:organization, name: 'test name3', projects_count: 4, description: 'test description')
+      org3 = create(:organization, name: 'test name3', projects_count: 4, description: 'test description')
 
       api_key = create(:api_key, account_id: account.id)
       client_id = api_key.oauth_application.uid
@@ -209,12 +219,12 @@ describe 'OrganizationsController' do
       org = xml['result']['org'].first
       xml['result']['org'].length.must_equal 3
       org['name'].must_equal 'test name3'
-      org['url'].must_equal "http://test.host/orgs/#{org_3.vanity_url}.xml"
-      org['html_url'].must_equal "http://test.host/orgs/#{org_3.vanity_url}"
+      org['url'].must_equal "http://test.host/orgs/#{org3.vanity_url}.xml"
+      org['html_url'].must_equal "http://test.host/orgs/#{org3.vanity_url}"
       org['description'].must_equal 'test description'
-      org['vanity_url'].must_equal org_3.vanity_url
+      org['vanity_url'].must_equal org3.vanity_url
       org['type'].must_equal 'Commercial'
-      org['projects_count'].must_equal org_3.projects_count.to_s
+      org['projects_count'].must_equal org3.projects_count.to_s
       org['affiliated_committers'].must_equal '0'
     end
 
@@ -247,56 +257,56 @@ describe 'OrganizationsController' do
 
     it 'should return projects with search term' do
       login_as account
-      pro_1 = create(:project, name: 'test name1', organization_id: nil)
-      pro_2 = create(:project, name: 'test name2', organization_id: nil)
-      pro_3 = create(:project, name: 'test name3', organization_id: nil)
+      pro1 = create(:project, name: 'test name1', organization_id: nil)
+      pro2 = create(:project, name: 'test name2', organization_id: nil)
+      pro3 = create(:project, name: 'test name3', organization_id: nil)
 
       get :claim_projects_list, id: organization.to_param, query: 'test'
 
       must_respond_with :ok
 
-      assigns(:projects).pluck(:id).sort.must_equal [pro_1.id, pro_2.id, pro_3.id].sort
+      assigns(:projects).pluck(:id).sort.must_equal [pro1.id, pro2.id, pro3.id].sort
       assigns(:organization).must_equal organization
     end
 
     it 'should return projects with search term with sorting' do
-      pro_1 = create(:project, name: 'test name1')
-      pro_2 = create(:project, name: 'test name2')
-      pro_3 = create(:project, name: 'test name3')
+      pro1 = create(:project, name: 'test name1')
+      pro2 = create(:project, name: 'test name2')
+      pro3 = create(:project, name: 'test name3')
 
       get :claim_projects_list, id: organization.to_param, query: 'test', sort: 'new'
 
       must_respond_with :ok
 
-      assigns(:projects).must_equal [pro_3, pro_2, pro_1]
+      assigns(:projects).must_equal [pro3, pro2, pro1]
       assigns(:organization).must_equal organization
     end
   end
 
   describe 'manage_projects' do
     it 'should return org managed projects' do
-      pro_1 = create(:project, name: 'test name1', organization_id: organization.id)
-      pro_2 = create(:project, name: 'test name2', organization_id: organization.id)
-      pro_3 = create(:project, name: 'test name3', organization_id: organization.id)
+      pro1 = create(:project, name: 'test name1', organization_id: organization.id)
+      pro2 = create(:project, name: 'test name2', organization_id: organization.id)
+      pro3 = create(:project, name: 'test name3', organization_id: organization.id)
 
       get :manage_projects, id: organization.to_param, query: 'test'
 
       must_respond_with :ok
 
-      assigns(:projects).must_equal [pro_3, pro_2, pro_1]
+      assigns(:projects).must_equal [pro3, pro2, pro1]
       assigns(:organization).must_equal organization
     end
 
     it 'should return org managed projects with sorting' do
-      pro_1 = create(:project, name: 'test name1', organization_id: organization.id)
-      pro_2 = create(:project, name: 'test name2', organization_id: organization.id)
-      pro_3 = create(:project, name: 'test name3', organization_id: organization.id)
+      pro1 = create(:project, name: 'test name1', organization_id: organization.id)
+      pro2 = create(:project, name: 'test name2', organization_id: organization.id)
+      pro3 = create(:project, name: 'test name3', organization_id: organization.id)
 
       get :manage_projects, id: organization.to_param, query: 'test', sort: 'project_name'
 
       must_respond_with :ok
 
-      assigns(:projects).must_equal [pro_1, pro_2, pro_3]
+      assigns(:projects).must_equal [pro1, pro2, pro3]
       assigns(:organization).must_equal organization
     end
   end
@@ -304,8 +314,8 @@ describe 'OrganizationsController' do
   describe 'claim_project' do
     it 'should claim a project for the given org' do
       login_as account
-      pro_1 = create(:project, name: 'test name1')
-      xhr :get, :claim_project, id: organization.to_param, project_id: pro_1.id
+      pro1 = create(:project, name: 'test name1')
+      xhr :get, :claim_project, id: organization.to_param, project_id: pro1.id
 
       must_respond_with :ok
       assigns(:project).organization_id.must_equal organization.id
@@ -315,24 +325,24 @@ describe 'OrganizationsController' do
   describe 'remove_project' do
     it 'should remove project from org' do
       login_as account
-      pro_1 = create(:project, name: 'test name1', organization_id: organization.id)
+      pro1 = create(:project, name: 'test name1', organization_id: organization.id)
 
-      get :remove_project, id: organization.to_param, project_id: pro_1.id, source: 'manage_projects'
+      get :remove_project, id: organization.to_param, project_id: pro1.id, source: 'manage_projects'
 
       must_redirect_to manage_projects_organization_path(organization)
-      flash[:success].must_equal I18n.t('organizations.remove_project.success', name: pro_1.name)
-      assert_nil pro_1.reload.organization_id
+      flash[:success].must_equal I18n.t('organizations.remove_project.success', name: pro1.name)
+      assert_nil pro1.reload.organization_id
     end
 
     it 'should remove project from org and redirect to claim_projects_list' do
       login_as account
-      pro_1 = create(:project, name: 'test name1', organization_id: organization.id)
+      pro1 = create(:project, name: 'test name1', organization_id: organization.id)
 
-      get :remove_project, id: organization.to_param, project_id: pro_1.id, source: 'claim_projects_list'
+      get :remove_project, id: organization.to_param, project_id: pro1.id, source: 'claim_projects_list'
 
       must_redirect_to claim_projects_list_organization_path(organization)
-      flash[:success].must_equal I18n.t('organizations.remove_project.success', name: pro_1.name)
-      assert_nil pro_1.reload.organization_id
+      flash[:success].must_equal I18n.t('organizations.remove_project.success', name: pro1.name)
+      assert_nil pro1.reload.organization_id
     end
   end
 

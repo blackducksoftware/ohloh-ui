@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class PropertyEdit < Edit
   scope :for_property, ->(property) { where(key: property) }
 
@@ -29,22 +31,25 @@ class PropertyEdit < Edit
 
   def update_target(undo)
     target.inside_undo_or_redo = true
-    target.update_attributes(key => undo ? previous_value : value)
+    target.update(key => undo ? previous_value : value)
     target.inside_undo_or_redo = false
   end
 
   def fail_unless_authorized!(verb)
     return if !target.respond_to?(:edit_authorized?) || target.edit_authorized?
+
     raise ActsAsEditable::UndoError, I18n.t('edits.you_dont_have_permission', verb: verb)
   end
 
   def fail_unless_action_allowed!(undo, verb)
     return if (undo && allow_undo?) || (!undo && allow_redo?)
+
     raise ActsAsEditable::UndoError, I18n.t('edits.generic_cant', verb: verb)
   end
 
   def fail_unless_action_succeeded!(verb)
     return if target.errors.empty?
+
     raise ActsAsEditable::UndoError, I18n.t('edits.causes_errors', verb: verb)
   end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :topic do
     association :forum
@@ -11,10 +13,10 @@ FactoryBot.define do
       Time.current + n
     end
 
-    trait(:closed) { closed true }
+    trait(:closed) { closed { true } }
     trait :with_posts do
       transient do
-        posts_count 3
+        posts_count { 3 }
       end
 
       after(:create) do |topic, evaluator|

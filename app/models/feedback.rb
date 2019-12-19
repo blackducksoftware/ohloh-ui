@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Feedback < ActiveRecord::Base
   belongs_to :project
   before_create :set_project_id
@@ -26,6 +28,7 @@ class Feedback < ActiveRecord::Base
 
   def set_project_id
     return true if project_id.present?
+
     self.project_id = Project.find_by(name: project_name).try(:id)
   end
 end

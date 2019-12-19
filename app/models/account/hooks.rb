@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # rubocop:disable Metrics/ClassLength
 
 class Account::Hooks
@@ -26,6 +28,7 @@ class Account::Hooks
   def after_update(account)
     destroy_spammer_dependencies(account) if account.access.spam?
     return unless account.organization_id_changed?
+
     schedule_organization_analysis(account.organization_id_was)
     schedule_organization_analysis(account.organization_id)
   end
@@ -67,6 +70,7 @@ class Account::Hooks
 
   def schedule_organization_analysis(organization_id)
     return unless organization_id
+
     Organization.find_by(id: organization_id).schedule_analysis
   end
 
@@ -78,7 +82,7 @@ class Account::Hooks
     account.topics.where(posts_count: 0).destroy_all
     account.person.try(:destroy)
     dependent_destroy(account)
-  rescue
+  rescue StandardError
     raise ActiveRecord::Rollback
   end
   # rubocop:enable Metrics/AbcSize
@@ -86,12 +90,12 @@ class Account::Hooks
   # All edits cannot be undone due to the edits order and validations
   def safe_undo(edit)
     Edit.transaction(requires_new: true) { edit.undo!(Account.hamster) if edit.allow_undo? }
-  rescue
+  rescue StandardError
     Rails.logger.info "Spam undo failed: #{$ERROR_INFO.inspect}\n#{edit.inspect}"
   end
 
   def dependent_destroy(account)
-    %w(positions sent_kudos stacks ratings reviews api_keys).each do |association|
+    %w[positions sent_kudos stacks ratings reviews api_keys].each do |association|
       account.send(association).destroy_all
     end
   end
@@ -135,3 +139,4 @@ class Account::Hooks
     Edit.where(undone_by: account_id).update_all(undone_by: @anonymous_account)
   end
 end
+# rubocop:enable Metrics/ClassLength

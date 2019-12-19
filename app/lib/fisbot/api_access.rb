@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ApiAccess
   URL = ENV['FISBOT_API_URL']
   KEY = ENV['FISBOT_CLIENT_REGISTRATION_ID']

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 time = Time.current.strftime('%Y-%m-%d')
 
 xml.instruct!

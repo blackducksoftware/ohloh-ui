@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 class StackIgnore < ActiveRecord::Base
   belongs_to :stack
   belongs_to :project
 
-  scope :for_project, -> (project) { where(project_id: project.id) }
+  scope :for_project, ->(project) { where(project_id: project.id) }
 
   validates :stack, presence: true
   validates :project, presence: true

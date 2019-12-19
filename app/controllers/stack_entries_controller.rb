@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class StackEntriesController < ApplicationController
   helper RatingsHelper
   helper StacksHelper
@@ -5,8 +7,12 @@ class StackEntriesController < ApplicationController
   before_action :session_required, :redirect_unverified_account
   before_action :find_stack, except: :new
   before_action :find_project, only: [:create]
-  before_action :find_stack_entry, except: [:create, :new]
+  before_action :find_stack_entry, except: %i[create new]
   before_action :set_project_or_fail, only: :new
+
+  def new
+    render nothing: true, status: :not_acceptable unless request.xhr?
+  end
 
   def create
     existing_entry = StackEntry.where(stack_id: @stack.id, project_id: @project.id, deleted_at: nil).first
@@ -14,12 +20,12 @@ class StackEntriesController < ApplicationController
     render json: { stack_entry_id: entry.id, stack_entry: stack_entry_html(entry),
                    result: 'okay', updated_count: @stack.projects.count,
                    newly_added: existing_entry.nil? }, status: :ok
-  rescue
+  rescue StandardError
     render json: { result: 'error' }, status: :unprocessable_entity
   end
 
   def update
-    if params[:stack_entry] && @stack_entry.update_attributes(note: params[:stack_entry][:note])
+    if params[:stack_entry] && @stack_entry.update(note: params[:stack_entry][:note])
       render json: { result: 'okay' }, status: :ok
     else
       render json: { result: 'error' }, status: :unprocessable_entity
@@ -33,7 +39,7 @@ class StackEntriesController < ApplicationController
   private
 
   def find_stack
-    @stack = Stack.find_by_id(params[:stack_id])
+    @stack = Stack.find_by(id: params[:stack_id])
     raise ParamRecordNotFound if @stack.nil? || ((@stack.account_id != current_user.id) && (params[:action] != 'show'))
   end
 
@@ -44,15 +50,15 @@ class StackEntriesController < ApplicationController
   end
 
   def find_project_by_vanity_url(vanity_url)
-    Project.find_by_vanity_url(vanity_url) if vanity_url
+    Project.find_by(vanity_url: vanity_url) if vanity_url
   end
 
   def find_project_by_name(name)
-    Project.find_by_name(name) if name
+    Project.find_by(name: name) if name
   end
 
   def find_stack_entry
-    @stack_entry = StackEntry.find_by_id(params[:id])
+    @stack_entry = StackEntry.find_by(id: params[:id])
     raise ParamRecordNotFound if @stack_entry.nil?
   end
 

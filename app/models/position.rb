@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Position < ActiveRecord::Base
   include AffiliationValidation
   include Position::Validations
@@ -31,22 +33,25 @@ class Position < ActiveRecord::Base
 
   def contribution_id
     return nil unless name_id
+
     Contribution.generate_id_from_project_id_and_name_id(project_id, name_id)
   end
 
   def name_fact
     return nil unless project.best_analysis_id && name_id
+
     @name_fact ||= NameFact.find_by('analysis_id = ? AND name_id = ?', project.best_analysis_id, name_id)
   end
 
   def committer_name
-    @committer_name || (name && name.name)
+    @committer_name || (name&.name)
   end
 
   def committer_name=(name)
     @committer_name = name.presence
 
     return unless committer_name_and_project?
+
     name_fact = find_name_fact_from_project_and_comitter_name
     self.name_id = name_fact.try(:name_id)
   end
@@ -58,6 +63,7 @@ class Position < ActiveRecord::Base
 
   def one_monther?
     return false if ongoing?
+
     start = effective_start_date
     stop = effective_stop_date
     start.month == stop.month && start.year == stop.year

@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 module SetupHamsterAccount
   def create_hamster_account
     account = Account.where(login: 'ohloh_slave').first
     account ||= create_new_account
-    account.update_attribute(:level, 10) if account
+    account&.update_attribute(:level, 10)
   end
 
   private

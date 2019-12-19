@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class OhAdmin::JobsController < ApplicationController
   before_action :admin_session_required
   before_action :find_project
@@ -11,7 +13,7 @@ class OhAdmin::JobsController < ApplicationController
   private
 
   def find_project
-    @project = Project.find_by_vanity_url(params[:project_id])
+    @project = Project.find_by(vanity_url: params[:project_id])
     raise ParamRecordNotFound if @project.nil?
   end
 end

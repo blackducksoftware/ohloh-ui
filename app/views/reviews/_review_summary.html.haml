@@ -17,7 +17,7 @@
       .col-md
         %abbr.soft.small{ title: review_summary.created_at }
           = t('reviews.written_ago', time: time_ago_in_words(review_summary.created_at))
-      %p= simple_format(review_summary.comment.fix_encoding_if_invalid!)
+      %p= simple_format(review_summary.comment.fix_encoding_if_invalid)
       %p= render partial: 'helpful_count_status', locals: { review: review_summary }
       %p= render partial: 'helpful_yes_or_no_links', locals: { review: review_summary }
       = render partial: 'buttons', locals: { review: review_summary }

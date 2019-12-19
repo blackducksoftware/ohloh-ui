@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 describe 'EnlistmentsControllerTest' do
@@ -120,6 +122,16 @@ describe 'EnlistmentsControllerTest' do
       @enlistment.reload.deleted.must_equal true
     end
 
+    it 'wont delete enlistment when there is an error in fisbot api' do
+      login_as @account
+      Enlistment.any_instance.stubs(:ensure_forge_and_job)
+      error_response = Net::HTTPServerError.new('1.1', '503', 'error')
+      error_response.stubs(:body).returns('Api error')
+      Net::HTTP.any_instance.stubs(:request).returns(error_response)
+      -> { delete :destroy, id: @enlistment.id, project_id: @project_id }.must_raise(StandardError)
+      @enlistment.reload.deleted.must_equal false
+    end
+
     it 'should redirect to index page if the project is invalid' do
       login_as @account
       @enlistment.project.update_attribute(:description, Faker::Lorem.characters(820))
@@ -155,6 +167,21 @@ describe 'EnlistmentsControllerTest' do
         must_redirect_to action: :index
         EnlistmentWorker.jobs.size.must_equal 1
       end
+    end
+
+    it 'wont create enlistment if subscription creation fails' do
+      CodeLocationSubscription.stubs(:code_location_exists?)
+      Project.any_instance.stubs(:ensure_job)
+      url = 'https://github.com/rails/rails'
+      error_response = Net::HTTPServerError.new('1.1', '503', 'error')
+      error_response.stubs(:body).returns('Api error')
+      Net::HTTP.any_instance.stubs(:request).returns(error_response)
+      lambda do
+        assert_no_difference 'Enlistment.count' do
+          post :create, project_id: project.to_param,
+                        code_location: { branch: 'master', url: url, scm_type: 'git' }
+        end
+      end.must_raise(StandardError)
     end
 
     it 'must prevent non-managers from creating enlistments' do

@@ -1,11 +1,13 @@
+# frozen_string_literal: true
+
 class TopicsController < ApplicationController
   helper MarkdownHelper
-  before_action :session_required, :redirect_unverified_account, only: [:new, :create, :close, :reopen]
-  before_action :admin_session_required, only: [:edit, :update, :close]
+  before_action :session_required, :redirect_unverified_account, only: %i[new create close reopen]
+  before_action :admin_session_required, only: %i[edit update close]
   before_action :set_account, :must_own_account, only: :create
-  before_action :find_forum_record, only: [:new, :create]
-  before_action :find_forum_and_topic_records, except: [:index, :new, :create]
-  before_action :must_be_admin_or_topic_creator, only: [:destroy, :reopen]
+  before_action :find_forum_record, only: %i[new create]
+  before_action :find_forum_and_topic_records, except: %i[index new create]
+  before_action :must_be_admin_or_topic_creator, only: %i[destroy reopen]
   after_action :track_views, only: [:show]
 
   def index
@@ -63,11 +65,14 @@ class TopicsController < ApplicationController
     redirect_to topic_path(@topic)
   end
 
+  def edit; end
+
   private
 
   def track_views
     topic = Topic.where(id: params[:id]).take
     raise ParamRecordNotFound unless topic
+
     topic.increment!(:hits) unless logged_in? && (@topic.account == current_user)
   end
 
@@ -79,12 +84,13 @@ class TopicsController < ApplicationController
   def find_forum_and_topic_records
     @topic = Topic.where(id: params[:id]).take
     raise ParamRecordNotFound unless @topic
+
     @forum = @topic.forum
   end
 
   def topic_params
     params.require(:topic).permit(:forum_id, :account_id, :title, :sticky,
-                                  :hits, :closed, posts_attributes: [:body, :account_id])
+                                  :hits, :closed, posts_attributes: %i[body account_id])
   end
 
   def must_be_admin_or_topic_creator
@@ -93,6 +99,7 @@ class TopicsController < ApplicationController
 
   def verify_captcha_for_non_admin
     return true if current_user_is_admin?
+
     verify_recaptcha(model: @topic)
   end
 

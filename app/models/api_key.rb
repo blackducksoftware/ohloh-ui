@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ApiKey < ActiveRecord::Base
   DEFAULT_DAILY_LIMIT = 1000
   STATUS_OK = 0
@@ -42,7 +44,7 @@ class ApiKey < ActiveRecord::Base
       ApiKey.where(status: STATUS_LIMIT_EXCEEDED).update_all(status: STATUS_OK)
     end
 
-    def find_by_oauth_application_uid(client_id)
+    def find_for_oauth_application_uid(client_id)
       joins(:oauth_application).find_by('oauth_applications.uid' => client_id)
     end
   end
@@ -51,9 +53,10 @@ class ApiKey < ActiveRecord::Base
 
   def daily_reset!
     return unless day_began_at && day_began_at < (Time.current - 1.day)
+
     assign_attributes(day_began_at: Time.current,
                       daily_count: 0,
-                      status: (status == STATUS_LIMIT_EXCEEDED) ? STATUS_OK : status)
+                      status: status == STATUS_LIMIT_EXCEEDED ? STATUS_OK : status)
   end
 
   def exceeded_daily_allotment?
@@ -61,15 +64,15 @@ class ApiKey < ActiveRecord::Base
   end
 
   def set_status_to_limit_exceeded!
-    update_attributes!(day_began_at: day_began_at || Time.current,
-                       status: (status == STATUS_OK) ? STATUS_LIMIT_EXCEEDED : status)
+    update!(day_began_at: day_began_at || Time.current,
+            status: status == STATUS_OK ? STATUS_LIMIT_EXCEEDED : status)
   end
 
   def update_api_counters!
-    update_attributes!(last_access_at: Time.current,
-                       day_began_at: day_began_at || Time.current,
-                       daily_count: daily_count + 1,
-                       total_count: total_count + 1,
-                       status: status)
+    update!(last_access_at: Time.current,
+            day_began_at: day_began_at || Time.current,
+            daily_count: daily_count + 1,
+            total_count: total_count + 1,
+            status: status)
   end
 end

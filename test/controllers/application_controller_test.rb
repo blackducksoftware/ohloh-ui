@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 describe 'ApplicationController' do
@@ -101,6 +103,14 @@ describe 'ApplicationController' do
       @controller.expects(:notify_airbrake).once
       get :throws_standard_error
       must_respond_with :not_found
+      Rails.application.config.unstub(:consider_all_requests_local)
+    end
+
+    it 'reports to newrelic on FisbotApiError' do
+      Rails.application.config.stubs(:consider_all_requests_local)
+      NewRelic::Agent.expects(:notice_error).once
+      get :throws_fisbot_api_error
+      must_redirect_to session[:return_to]
       Rails.application.config.unstub(:consider_all_requests_local)
     end
 
@@ -278,6 +288,10 @@ class TestController < ApplicationController
   def throws_standard_error
     raise StandardError
   end
+
+  def throws_fisbot_api_error
+    raise FisbotApiError
+  end
 end
 
 test_routes = proc do
@@ -288,5 +302,6 @@ test_routes = proc do
   get 'test/throws_param_record_not_found' => 'test#throws_param_record_not_found'
   get 'test/throws_routing_error' => 'test#throws_routing_error'
   get 'test/throws_standard_error' => 'test#throws_standard_error'
+  get 'test/throws_fisbot_api_error' => 'test#throws_fisbot_api_error'
 end
 Rails.application.routes.send(:eval_block, test_routes)

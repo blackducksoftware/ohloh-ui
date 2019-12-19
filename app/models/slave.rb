@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'open3'
 require 'socket'
 
@@ -13,6 +15,7 @@ class Slave < FisBase
 
   def path_from_code_set_id(code_set_id)
     return unless code_set_id
+
     j = code_set_id.to_s.rjust(12, '0')
     "#{clump_dir}/#{j[0..2]}/#{j[3..5]}/#{j[6..8]}/#{j[9..-1]}"
   end
@@ -30,6 +33,7 @@ class Slave < FisBase
   def run(cmd)
     _stdin, stdout, stderr = Open3.popen3('bash', '-c', cmd)
     raise "#{cmd} failed: #{stderr.read}" if stderr.any?
+
     stdout.read
   end
 

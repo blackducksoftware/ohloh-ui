@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # rubocop: disable Metrics/AbcSize
 
 class AddCodeLocationTable < ActiveRecord::Migration
@@ -20,10 +22,10 @@ class AddCodeLocationTable < ActiveRecord::Migration
     change_column_null :code_sets, :repository_id, true
 
     add_index :enlistments, :code_location_id
-    add_index :enlistments, [:project_id, :code_location_id], unique: true
+    add_index :enlistments, %i[project_id code_location_id], unique: true
     add_index :jobs, :code_location_id
     add_index :code_sets, :code_location_id
-    add_index :code_locations, [:repository_id, :module_branch_name], unique: true
+    add_index :code_locations, %i[repository_id module_branch_name], unique: true
 
     execute <<-SQL
       ALTER TABLE enlistments DROP CONSTRAINT unique_project_id_repository_id;
@@ -45,3 +47,4 @@ class AddCodeLocationTable < ActiveRecord::Migration
     drop_table :code_locations
   end
 end
+# rubocop: enable Metrics/AbcSize

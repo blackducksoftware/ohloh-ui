@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 require 'test_helpers/create_contributions_data'
 
@@ -14,16 +16,16 @@ class ProjectTest < ActiveSupport::TestCase
 
     describe 'vanity_url' do
       it 'must allow valid characters' do
-        valid_vanity_urls = %w(proj-name proj_name projéct proj_)
+        valid_vanity_urls = %w[proj-name proj_name projéct proj_]
 
         valid_vanity_urls.each do |name|
           project = build(:project, vanity_url: name)
-          project.wont_be :valid?
+          project.must_be :valid?
         end
       end
 
       it 'wont allow invalid characters' do
-        invalid_vanity_urls = %w(proj.name .proj -proj _proj)
+        invalid_vanity_urls = %w[proj.name .proj -proj _proj]
 
         invalid_vanity_urls.each do |name|
           project = build(:project, vanity_url: name)
@@ -37,21 +39,21 @@ class ProjectTest < ActiveSupport::TestCase
     it 'should return hot projects' do
       proj = create(:project, deleted: false)
       analysis = create(:analysis, project_id: proj.id, hotness_score: 999_999)
-      proj.update_attributes(best_analysis_id: analysis.id)
+      proj.update(best_analysis_id: analysis.id)
       Project.hot.to_a.map(&:id).include?(proj.id).must_equal true
     end
 
     it 'should return hot projects with matching languages' do
       proj = create(:project, deleted: false)
       analysis = create(:analysis, project_id: proj.id, hotness_score: 999_999, main_language_id: language.id)
-      proj.update_attributes(best_analysis_id: analysis.id)
+      proj.update(best_analysis_id: analysis.id)
       Project.hot(language.id).to_a.map(&:id).include?(proj.id).must_equal true
     end
 
     it 'should not return hot projects without matching languages' do
       proj = create(:project, deleted: false)
       analysis = create(:analysis, project_id: proj.id, hotness_score: 999_999, main_language_id: language.id)
-      proj.update_attributes(best_analysis_id: analysis.id)
+      proj.update(best_analysis_id: analysis.id)
       Project.hot(language.id - 1).to_a.map(&:id).include?(proj.id).must_equal false
     end
 
@@ -156,25 +158,25 @@ class ProjectTest < ActiveSupport::TestCase
   describe 'url and download_url' do
     it 'should clean up url value' do
       proj = create(:project)
-      proj.update_attributes(url: 'openhub.net/url_cleanup')
+      proj.update(url: 'openhub.net/url_cleanup')
       proj.reload.url.must_equal 'http://openhub.net/url_cleanup'
     end
 
     it 'should clean up url value' do
       proj = create(:project)
-      proj.update_attributes(download_url: 'openhub.net/download_url_cleanup')
+      proj.update(download_url: 'openhub.net/download_url_cleanup')
       proj.reload.download_url.must_equal 'http://openhub.net/download_url_cleanup'
     end
 
     it 'should require url value is a valid url if present' do
       proj = create(:project)
-      proj.update_attributes(url: 'I am a banana!')
+      proj.update(url: 'I am a banana!')
       proj.errors.messages[:url].must_equal [I18n.t(:not_a_valid_url)]
     end
 
     it 'should require url value is a valid url if present' do
       proj = create(:project)
-      proj.update_attributes(download_url: 'I am a banana!')
+      proj.update(download_url: 'I am a banana!')
       proj.errors.messages[:download_url].must_equal [I18n.t(:not_a_valid_url)]
     end
 
@@ -195,7 +197,7 @@ class ProjectTest < ActiveSupport::TestCase
 
     it 'should support undo of setting url value' do
       proj = create(:project)
-      proj.update_attributes(url: 'http://openhub.net/url')
+      proj.update(url: 'http://openhub.net/url')
       proj = Project.find(proj.id)
       prop_edits = PropertyEdit.for_target(proj).where(key: :url).to_a
       prop_edits.length.must_equal 1
@@ -207,7 +209,7 @@ class ProjectTest < ActiveSupport::TestCase
 
     it 'should support undo of setting download_url value' do
       proj = create(:project)
-      proj.update_attributes(download_url: 'http://openhub.net/download_url')
+      proj.update(download_url: 'http://openhub.net/download_url')
       proj = Project.find(proj.id)
       prop_edits = PropertyEdit.for_target(proj).where(key: :download_url).to_a
       prop_edits.length.must_equal 1
@@ -242,11 +244,11 @@ class ProjectTest < ActiveSupport::TestCase
     it 'should record property_edits to the database' do
       project = create(:project)
       PropertyEdit.where(key: 'tag_list', target: project).count.must_equal 0
-      project.update_attributes(tag_list: 'aquatic beavers cavort down east')
+      project.update(tag_list: 'aquatic beavers cavort down east')
       project.reload.tags.length.must_equal 5
       PropertyEdit.where(key: 'tag_list', target: project).count.must_equal 1
       project.editor_account = create(:account)
-      project.update_attributes(tag_list: 'zany')
+      project.update(tag_list: 'zany')
       project.reload.tags.length.must_equal 1
       PropertyEdit.where(key: 'tag_list', target: project).count.must_equal 2
     end
@@ -291,11 +293,11 @@ class ProjectTest < ActiveSupport::TestCase
 
   describe 'search_and_sort' do
     it 'should return sorted search results' do
-      pro_1 = create(:project, name: 'test na1', user_count: 5)
-      pro_2 = create(:project, name: 'test na2', user_count: 10)
-      pro_3 = create(:project, name: 'test na3', user_count: 9)
+      pro1 = create(:project, name: 'test na1', user_count: 5)
+      pro2 = create(:project, name: 'test na2', user_count: 10)
+      pro3 = create(:project, name: 'test na3', user_count: 9)
 
-      Project.search_and_sort('test', 'new', nil).must_equal [pro_3, pro_2, pro_1]
+      Project.search_and_sort('test', 'new', nil).must_equal [pro3, pro2, pro1]
     end
   end
 
@@ -358,7 +360,7 @@ class ProjectTest < ActiveSupport::TestCase
     it 'should not create a new job if project already has a job' do
       project = create(:project)
       project.stubs(:code_locations).returns([code_location_stub])
-      AnalyzeJob.create(project: project, wait_until: Time.current + 5.hours)
+      ProjectAnalysisJob.create(project: project, wait_until: Time.current + 5.hours)
 
       project.ensure_job
       project.jobs.count.must_equal 1
@@ -421,7 +423,7 @@ class ProjectTest < ActiveSupport::TestCase
     it 'should update existing job if present' do
       project = create(:project)
       project.stubs(:code_locations).returns([code_location_stub])
-      AnalyzeJob.create(project: project, wait_until: Time.current + 5.hours)
+      ProjectAnalysisJob.create(project: project, wait_until: Time.current + 5.hours)
 
       project.jobs.count.must_equal 1
       project.schedule_delayed_analysis(2.hours)

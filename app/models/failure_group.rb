@@ -1,6 +1,7 @@
+# frozen_string_literal: true
+
 class FailureGroup < ActiveRecord::Base
   has_many :jobs, -> { where(status: Job::STATUS_FAILED).with_exception }
-
   def decategorize
     jobs.update_all(failure_group_id: nil)
   end

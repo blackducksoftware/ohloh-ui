@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class Widget
-  KEYS_TO_BE_REMOVED = [:controller, :format, :action].freeze
+  KEYS_TO_BE_REMOVED = %i[controller format action].freeze
 
   attr_reader :vars
 
@@ -41,6 +43,11 @@ class Widget
 
   def method_missing(method)
     return @vars[method] if @vars.include?(method)
+
     super
+  end
+
+  def respond_to_missing?(method_name)
+    @vars.include?(method_name)
   end
 end

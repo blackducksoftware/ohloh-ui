@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 class LicensesController < ApplicationController
-  before_action :session_required, :redirect_unverified_account, only: [:create, :new, :edit, :update]
+  before_action :session_required, :redirect_unverified_account, only: %i[create new edit update]
   before_action :set_project
-  before_action :set_license, only: [:show, :edit, :update]
+  before_action :set_license, only: %i[show edit update]
 
   def index
     @licenses = License.active.filter_by(params[:query]).by_vanity_url.paginate(page: page_param, per_page: 30)
@@ -24,7 +26,7 @@ class LicensesController < ApplicationController
   end
 
   def update
-    if @license.update_attributes(license_params)
+    if @license.update(license_params)
       redirect_to @license, notice: t('.notice')
     else
       flash.now[:error] = t('.error')
@@ -32,15 +34,20 @@ class LicensesController < ApplicationController
     end
   end
 
+  def edit; end
+
+  def show; end
+
   private
 
   def license_params
-    params.require(:license).permit(:name, :vanity_url, :abbreviation, :url, :description, :locked)
+    params.require(:license).permit(:name, :vanity_url, :url, :description, :locked)
   end
 
   def set_license
     @license = License.active.from_param(params[:id]).take
     raise ParamRecordNotFound unless @license
+
     @license.editor_account = current_user
   end
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Badge
   attr_reader :account, :vars
 
@@ -34,8 +36,8 @@ class Badge
   def description(and_name = true)
     desc = levels? ? "Level #{level} " : ''
     if and_name
-      desc << name
-      desc << ": #{short_desc}" unless short_desc.empty?
+      desc += name
+      desc += ": #{short_desc}" unless short_desc.empty?
     end
     desc.strip
   end
@@ -58,6 +60,7 @@ class Badge
 
   def level
     return 0 unless levels?
+
     count = eligibility_count
     lvl = -1
     level_limits.each do |limit|

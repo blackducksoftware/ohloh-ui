@@ -1,13 +1,15 @@
+# frozen_string_literal: true
+
 module PositionFilters
   extend ActiveSupport::Concern
 
   included do
     before_action :session_required, :redirect_unverified_account,
-                  only: [:edit, :new, :create, :delete, :one_click_create]
+                  only: %i[edit new create delete one_click_create]
     before_action :set_account
-    before_action :must_own_account, only: [:edit, :update, :new, :create, :one_click_create]
+    before_action :must_own_account, only: %i[edit update new create one_click_create]
     before_action :redirect_to_languages, only: :show, if: :params_id_is_total?
-    before_action :set_position, only: [:show, :edit, :update, :destroy, :commits_compound_spark]
+    before_action :set_position, only: %i[show edit update destroy commits_compound_spark]
     before_action :redirect_to_contribution_if_found, only: :show, unless: :params_id_is_total?
     before_action :account_context
     before_action :set_project_and_name, only: :one_click_create
@@ -42,6 +44,7 @@ module PositionFilters
   def redirect_to_contribution_if_found
     project = @position.project
     return unless project && !project.deleted && @position.contribution
+
     redirect_to project_contributor_path(project, @position.contribution)
   end
 

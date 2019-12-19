@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Analysis::LanguageHistoryChart < Analysis::Chart
   include ColorsHelper
 

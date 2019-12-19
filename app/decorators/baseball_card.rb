@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 class BaseballCard < Cherry::Decorator
   include ActionView::Helpers::DateHelper
   include ActionView::Helpers::TextHelper
   include ActionView::Helpers::UrlHelper
 
-  ROW_NAMES = [:first_checkin, :last_checkin, :commits, :joined_at, :contributions, :orgs,
-               :affiliations].freeze
+  ROW_NAMES = %i[first_checkin last_checkin commits joined_at contributions orgs
+                 affiliations].freeze
 
   delegate :best_vita, :created_at, :positions, to: :account
 
@@ -24,18 +26,21 @@ class BaseballCard < Cherry::Decorator
 
   def first_checkin
     return unless vita_fact.first_checkin
+
     { label: i18n('first_checkin'),
       value: i18n('duration', date: distance_of_time_in_words_to_now(vita_fact.first_checkin)) }
   end
 
   def last_checkin
     return unless vita_fact.last_checkin
+
     { label: i18n('last_checkin'),
       value: i18n('duration', date: distance_of_time_in_words_to_now(vita_fact.last_checkin)) }
   end
 
   def commits
     return if best_vita.nil?
+
     { label: i18n('commits.label'),
       value: i18n('commits.value', count: vita_fact.commits) }
   end
@@ -47,6 +52,7 @@ class BaseballCard < Cherry::Decorator
 
   def contributions
     return if positions.active.empty?
+
     link = link_to pluralize(positions.active.size, 'project'), h.account_positions_path(account)
     { label: i18n('contribution'),
       value: link }
@@ -55,6 +61,7 @@ class BaseballCard < Cherry::Decorator
   def orgs
     orgs_for_positions = organization_core.orgs_for_my_positions
     return if orgs_for_positions.empty?
+
     { css: { style: 'min-height:38px;' },
       label: i18n('contributed_to'),
       partial: 'accounts/show/orgs',
@@ -64,6 +71,7 @@ class BaseballCard < Cherry::Decorator
   def affiliations
     affiliated_orgs = organization_core.affiliations_for_my_positions
     return if affiliated_orgs.empty?
+
     { css: { style: 'min-height:38px;' },
       label: i18n('contributed_for'),
       partial: 'accounts/show/orgs',

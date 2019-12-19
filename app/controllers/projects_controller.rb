@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 class ProjectsController < ApplicationController
   [AnalysesHelper, FactoidsHelper, MapHelper, RatingsHelper,
    ScmHelper, TagsHelper].each { |help| helper help }
 
-  layout 'responsive_project_layout', only: [:show, :badges]
+  layout 'responsive_project_layout', only: %i[show badges]
 
   include ProjectFilters
 
@@ -21,7 +23,8 @@ class ProjectsController < ApplicationController
 
   def update
     return render_unauthorized unless @project.edit_authorized?
-    if @project.update_attributes(project_params)
+
+    if @project.update(project_params)
       redirect_to project_path(@project), notice: t('.success')
     else
       render :edit, status: :unprocessable_entity
@@ -44,12 +47,14 @@ class ProjectsController < ApplicationController
     if @projects.blank? || params[:bypass]
       populate_project_from_forge
     else
-      flash.now[:notice] = (@projects.length == 1) ? t('.code_location_single') : t('.code_location_multiple')
+      flash.now[:notice] = @projects.length == 1 ? t('.code_location_single') : t('.code_location_multiple')
       render template: 'projects/check_forge_duplicate'
     end
   end
 
   def similar_by_tags
+    return render_404 unless request.xhr?
+
     respond_to do |format|
       format.js
     end
@@ -66,14 +71,12 @@ class ProjectsController < ApplicationController
     params.require(:project).permit(
       :name, :description, :vanity_url, :url, :download_url, :managed_by_creator,
       project_licenses_attributes: [:license_id],
-      enlistments_attributes: [code_location_attributes: [:branch, :url, :scm_type]]
+      enlistments_attributes: [code_location_attributes: %i[branch url scm_type]]
     )
   end
 
   def create_project_from_params
-    @project = Project.new({ editor_account: current_user }.merge(project_params))
-    @project.assign_editor_account_to_associations
-    @project.manages.new(account: current_user) if project_params[:managed_by_creator].to_bool
+    @project = ProjectBuilder.new(current_user, project_params).create
   end
 
   def populate_project_from_forge

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ProjectBadge < ActiveRecord::Base
   belongs_to :enlistment
   delegate :project, :code_location, to: :enlistment
@@ -6,7 +8,7 @@ class ProjectBadge < ActiveRecord::Base
   validates :enlistment_id, presence: true,
                             uniqueness: { scope: [:type],
                                           message: I18n.t('.project_badges.repo_validation') }
-  enum status: [:inactive, :active]
+  enum status: %i[inactive active]
 
   SUMMARY_LIMIT = 2
 

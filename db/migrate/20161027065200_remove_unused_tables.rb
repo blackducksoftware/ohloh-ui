@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class RemoveUnusedTables < ActiveRecord::Migration
   def up
     remove_foreign_key :old_edits, :project
@@ -72,4 +74,5 @@ class RemoveUnusedTables < ActiveRecord::Migration
       JOIN gestalts g ON g.id = pg.gestalt_id;
     SQL
   end
+  # rubocop:enable Metrics/AbcSize
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 slave.running_jobs
      .each_with_index do |job, i|
   status = case job.status
@@ -12,7 +14,7 @@ slave.running_jobs
            when Job::STATUS_FAILED then 'failed'
            end
 
-  a href: admin_job_path(job), style:"text-decoration:none;" do
+  a href: admin_job_path(job), style: 'text-decoration:none;' do
     status_tag("#{job.class.to_s.first} #{job.id}", class: status, title: JobDecorator.new(job).tool_tip)
   end
   br if i.odd?

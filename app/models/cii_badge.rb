@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CiiBadge < ProjectBadge
   validates :identifier, numericality: { only_integer: true }
 

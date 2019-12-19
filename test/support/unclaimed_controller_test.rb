@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module UnclaimedControllerTest
   def limit_by_memory_cap(instance, with_query = true)
     original_object_memory_cap = OBJECT_MEMORY_CAP
@@ -17,5 +19,7 @@ module UnclaimedControllerTest
     Object.const_set('OBJECT_MEMORY_CAP', original_object_memory_cap)
   end
 
+  # rubocop:disable Style/AccessModifierDeclarations
   module_function :limit_by_memory_cap
+  # rubocop:enable Style/AccessModifierDeclarations
 end

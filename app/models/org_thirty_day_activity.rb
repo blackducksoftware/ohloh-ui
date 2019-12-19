@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 class OrgThirtyDayActivity < ActiveRecord::Base
-  SORT_TYPES = [['All Organizations', 'all_orgs'], %w(Commercial commercial), %w(Education educational),
-                %w(Government government), %w(Non-Profit non_profit), %w(Large large),
-                %w(Medium medium), %w(Small small)].freeze
+  SORT_TYPES = [['All Organizations', 'all_orgs'], %w[Commercial commercial], %w[Education educational],
+                %w[Government government], %w[Non-Profit non_profit], %w[Large large],
+                %w[Medium medium], %w[Small small]].freeze
 
   FILTER_TYPES = { all_orgs: :filter_all_orgs, small: :filter_small_orgs, medium: :filter_medium_orgs,
                    large: :filter_large_orgs, commercial: :filter_commercial_orgs,
@@ -33,7 +35,7 @@ class OrgThirtyDayActivity < ActiveRecord::Base
 
     def filter(filter_type)
       filter_type = filter_type.to_s.to_sym
-      filter_type = :all_orgs unless FILTER_TYPES.keys.include?(filter_type)
+      filter_type = :all_orgs unless FILTER_TYPES.key?(filter_type)
       send(FILTER_TYPES[filter_type])
     end
 

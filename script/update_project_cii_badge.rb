@@ -1,4 +1,5 @@
 #! /usr/bin/env ruby
+# frozen_string_literal: true
 
 require_relative '../config/environment'
 
@@ -19,14 +20,15 @@ class UpdateProjectCiiBadge
 
   def create_cii_projects(cii_projects)
     cii_projects.each do |project|
-      next if CiiBadge.find_by_identifier(project['id'])
+      next if CiiBadge.find_by(identifier: project['id'])
+
       find_repo_enlistment_ids_and_create_badges(project)
       create_project(project['repo_url'], project['id'])
     end
   end
 
   def create_project(url, identifier)
-    return if CiiBadge.find_by_identifier(project['id'])
+    return if CiiBadge.find_by(identifier: project['id'])
 
     match = Forge::Match.first(url)
     return if match.blank?
@@ -36,7 +38,7 @@ class UpdateProjectCiiBadge
 
     enlistment_ids = project.enlistments.ids
     create_cii_badge_from_enlistments(enlistment_ids, identifier)
-  rescue
+  rescue StandardError
     nil
   end
 

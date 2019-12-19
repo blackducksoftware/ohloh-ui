@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # rubocop: disable Metrics/ModuleLength
 module KudosHelper
   def kudos_laurel_link_for(person)
@@ -8,21 +10,23 @@ module KudosHelper
   def kudo_position_for_person(person_id, kudo_position = 0)
     if person_id && kudo_position
       link = link_to(kudo_position, rankings_people_path(show: person_id))
-      I18n.t('kudos.position_for_person', link: link, total: Person.count.to_i)
+      I18n.t('kudos.position_for_person', link: link, total: Person::Count.total)
     else
       I18n.t('kudos.not_yet_ranked')
     end
   end
 
   def kudo_button(target)
-    target = target.account ? target.account : target.contributions.first if target.is_a?(Person)
+    target = target.account || target.contributions.first if target.is_a?(Person)
     return nil if !logged_in? || current_user == kudo_button_target_account(target)
-    kudo = Kudo.find_by_sender_and_target(current_user, target)
+
+    kudo = Kudo.find_for_sender_and_target(current_user, target)
     kudo ? remove_kudos_button(kudo) : give_kudos_button(target)
   end
 
   def kudo_is_new?(account_id, created_at)
     return (session[:last_active] && (created_at > session[:last_active])) if account_id == current_user.id
+
     created_at > Time.current - 24.hours
   end
 
@@ -38,6 +42,7 @@ module KudosHelper
   def kudo_delete_link(kudo)
     confirm = kudo_delete_link_confirm(kudo)
     return nil unless confirm
+
     haml_tag :a, href: kudo_path(kudo), class: 'command btn btn-minier btn-primary',
                  data: { method: :delete, confirm: confirm } do
       haml_tag :i, '', class: 'icon-undo rescind-kudos'
@@ -54,7 +59,7 @@ module KudosHelper
   end
 
   def kudos_aka_name(kudo)
-    pos = Position.find_by_project_id_and_name_id(kudo.project_id, kudo.name_id)
+    pos = Position.find_by(project_id: kudo.project_id, name_id: kudo.name_id)
     contribution_id = pos && Contribution.generate_id_from_project_id_and_account_id(kudo.project_id, pos.account_id)
     if pos && contribution_id
       path = project_contributor_path(kudo.project, contribution_id)
@@ -69,7 +74,7 @@ module KudosHelper
       kudo.account.kudo_rank
     else
       contributor_fact = ContributorFact.first_for_name_id_and_project_id(kudo.name_id, kudo.project_id)
-      contributor_fact && contributor_fact.kudo_rank
+      contributor_fact&.kudo_rank
     end
   end
 
@@ -123,3 +128,4 @@ module KudosHelper
     link_to("#{kudo.name.name} (#{kudo.project.name})", path, id: "kudo_given_link_#{kudo.sender.login}")
   end
 end
+# rubocop: enable Metrics/ModuleLength

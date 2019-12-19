@@ -1,7 +1,7 @@
 #! /usr/bin/env ruby
+# frozen_string_literal: true
 
 raise 'RAILS_ENV is undefined' unless ENV['RAILS_ENV']
 
 require_relative '../config/environment'
-
 puts PropertyEdit.where(target_type: 'Organization').for_property('url_name').update_all(key: 'vanity_url')

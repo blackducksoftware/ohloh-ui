@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class PermissionsController < ApplicationController
   helper ProjectsHelper
   include ProjectOrOrganizationSetter
@@ -6,8 +8,8 @@ class PermissionsController < ApplicationController
   before_action :find_model
   before_action :require_manage_authorization, only: :update
   before_action :show_permissions_alert, only: :show
-  before_action :project_context, only: [:show, :update], if: :projects_route?
-  before_action :organization_context, only: [:show, :update], if: :organizations_route?
+  before_action :project_context, only: %i[show update], if: :projects_route?
+  before_action :organization_context, only: %i[show update], if: :organizations_route?
 
   def update
     if find_model.update(model_params)
@@ -18,6 +20,8 @@ class PermissionsController < ApplicationController
       render :show, status: :unprocessable_entity
     end
   end
+
+  def show; end
 
   private
 
@@ -32,6 +36,7 @@ class PermissionsController < ApplicationController
 
   def require_manage_authorization
     return if current_user_can_manage?
+
     flash.now[:error] = t(:not_authorized)
     render :show, status: :unauthorized
   end

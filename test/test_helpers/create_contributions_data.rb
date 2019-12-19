@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 def create_contributions(project)
   Analysis.any_instance.stubs(:oldest_code_set_time).returns(Date.current)
   contributions = []

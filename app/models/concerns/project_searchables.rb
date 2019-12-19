@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ProjectSearchables
   extend ActiveSupport::Concern
 
@@ -14,6 +16,7 @@ module ProjectSearchables
     def searchable_factor
       max_user_count = Project.not_deleted.maximum(:user_count)
       return 0.0 if user_count.zero? || max_user_count.to_i.zero?
+
       Math.log10(user_count * 2) / Math.log10(max_user_count * 2)
     end
 

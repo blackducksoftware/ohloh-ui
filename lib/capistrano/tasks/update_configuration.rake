@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :deploy do
   desc 'Sync openhub-config data in shared/openhub-config'
   task :update_configuration do

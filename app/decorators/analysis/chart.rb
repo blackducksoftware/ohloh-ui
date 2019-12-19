@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Analysis::Chart
   include ChartHelper
   include ActionView::Helpers::AssetUrlHelper

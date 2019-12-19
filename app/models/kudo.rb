@@ -1,11 +1,13 @@
+# frozen_string_literal: true
+
 class Kudo < ActiveRecord::Base
-  belongs_to :sender, foreign_key: :sender_id, class_name: :Account
+  belongs_to :sender, foreign_key: :sender_id, class_name: 'Account'
   belongs_to :account
   belongs_to :project
   belongs_to :name
   has_one :name_fact, foreign_key: :name_id, primary_key: :name_id
 
-  scope :recent, -> (limit = 3) { limit(limit) }
+  scope :recent, ->(limit = 3) { limit(limit) }
 
   before_validation :assign_account_from_position
   validates :message, length: 0..80, allow_nil: true
@@ -14,11 +16,11 @@ class Kudo < ActiveRecord::Base
   after_save :notify_recipient
 
   def person
-    (account_id && Person.find_by_account_id(account_id)) || Person.find_by_name_id_and_project_id(name_id, project_id)
+    (account_id && Person.find_by(account_id: account_id)) || Person.find_by(name_id: name_id, project_id: project_id)
   end
 
   def person_name
-    (name && name.name) || account.name
+    (name&.name) || account.name
   end
 
   class << self
@@ -29,13 +31,13 @@ class Kudo < ActiveRecord::Base
         .readonly
     end
 
-    def find_by_sender_and_target(sender, target)
+    def find_for_sender_and_target(sender, target)
       case target
       when Account
-        Kudo.find_by_sender_id_and_account_id(sender.id, target.id)
+        Kudo.find_by(sender_id: sender.id, account_id: target.id)
       when Contribution, Person
-        target = target.account ? target.account : target.contributions.first if target.is_a?(Person)
-        Kudo.find_by_sender_id_and_project_id_and_name_id(sender.id, target.project_id, target.name_fact.name_id)
+        target = target.account || target.contributions.first if target.is_a?(Person)
+        Kudo.find_by(sender_id: sender.id, project_id: target.project_id, name_id: target.name_fact.name_id)
       else
         raise 'Uknown Target Type'
       end
@@ -61,17 +63,20 @@ class Kudo < ActiveRecord::Base
 
   def assign_account_from_position
     return unless project_id && name_id
-    position = Position.find_by_project_id_and_name_id(project_id, name_id)
+
+    position = Position.find_by(project_id: project_id, name_id: name_id)
     self.account_id = (position && position.account_id)
   end
 
   def cant_kudo_self
     return unless sender_id == account_id
+
     errors.add :base, I18n.t('kudos.cant_kudo_self')
   end
 
   def notify_recipient
     return unless errors.empty? && account && account.email_kudos?
+
     AccountMailer.kudo_recipient(self).deliver_now
   end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class AnalysisTest < ActiveSupport::TestCase
@@ -17,38 +19,38 @@ class AnalysisTest < ActiveSupport::TestCase
     end
 
     it 'returns new for brand new new projects' do
-      analysis.update_attributes(updated_on: Time.current - 5.minutes, first_commit_time: Time.current - 10.minutes,
-                                 last_commit_time: Time.current - 10.minutes, min_month: Time.current - 10.minutes)
+      analysis.update(updated_on: Time.current - 5.minutes, first_commit_time: Time.current - 10.minutes,
+                      last_commit_time: Time.current - 10.minutes, min_month: Time.current - 10.minutes)
       analysis.activity_level.must_equal :new
     end
 
     it 'returns inactive for abandonned projects' do
-      analysis.update_attributes(updated_on: Time.current - 5.minutes)
+      analysis.update(updated_on: Time.current - 5.minutes)
       analysis.activity_level.must_equal :inactive
     end
 
     it 'returns very low for projects with almost no committers' do
-      analysis.update_attributes(updated_on: Time.current - 5.minutes,
-                                 last_commit_time: Time.current - 10.minutes, headcount: 1)
+      analysis.update(updated_on: Time.current - 5.minutes,
+                      last_commit_time: Time.current - 10.minutes, headcount: 1)
       analysis.activity_level.must_equal :very_low
     end
 
     it 'returns correct values for various activity scores' do
-      analysis.update_attributes(updated_on: Time.current - 5.minutes,
-                                 last_commit_time: Time.current - 10.minutes,
-                                 activity_score: 1)
+      analysis.update(updated_on: Time.current - 5.minutes,
+                      last_commit_time: Time.current - 10.minutes,
+                      activity_score: 1)
       analysis.activity_level.must_equal :very_low
 
-      analysis.update_attributes(activity_score: 500_000)
+      analysis.update(activity_score: 500_000)
       analysis.activity_level.must_equal :low
 
-      analysis.update_attributes(activity_score: 2_000_000)
+      analysis.update(activity_score: 2_000_000)
       analysis.activity_level.must_equal :moderate
 
-      analysis.update_attributes(activity_score: 5_000_000)
+      analysis.update(activity_score: 5_000_000)
       analysis.activity_level.must_equal :high
 
-      analysis.update_attributes(activity_score: 50_000_000)
+      analysis.update(activity_score: 50_000_000)
       analysis.activity_level.must_equal :very_high
     end
   end
@@ -85,9 +87,9 @@ class AnalysisTest < ActiveSupport::TestCase
 
   describe 'fresh_and_hot' do
     it 'should return recent analysis' do
-      analysis.update_attributes(updated_on: Time.current - 5.minutes,
-                                 last_commit_time: Time.current - 10.minutes,
-                                 hotness_score: 100)
+      analysis.update(updated_on: Time.current - 5.minutes,
+                      last_commit_time: Time.current - 10.minutes,
+                      hotness_score: 100)
       Analysis.fresh_and_hot(analysis.main_language_id).must_equal [analysis]
     end
   end

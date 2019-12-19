@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 describe 'CommitsController' do
@@ -59,7 +61,7 @@ describe 'CommitsController' do
     it 'should return commits if valid project' do
       time_now = Time.zone.now
       thirty_days_ago = time_now - 30.days
-      @project.best_analysis.update_attributes(oldest_code_set_time: time_now)
+      @project.best_analysis.update(oldest_code_set_time: time_now)
       get :index, project_id: @project.id, time_span: '30 days'
       assigns(:commits).count.must_equal 2
       assigns(:commits).first.must_equal @commit1
@@ -67,7 +69,7 @@ describe 'CommitsController' do
     end
 
     it 'should gracefully handle garbage time spans' do
-      @project.best_analysis.update_attributes(oldest_code_set_time: Time.zone.now)
+      @project.best_analysis.update(oldest_code_set_time: Time.zone.now)
       get :index, project_id: @project.id, time_span: 'I am a banana'
       must_respond_with :ok
     end
@@ -116,6 +118,17 @@ describe 'CommitsController' do
       assigns(:commits).ids.must_include commit_ids[1]
       assigns(:commits).ids.must_include commit_ids[2]
     end
+
+    it 'should show add code_location message when enlistment(s) is empty' do
+      Project.any_instance.stubs(:best_analysis).returns(NilAnalysis.new)
+      get :index, project_id: @project.id
+      must_respond_with :ok
+      response.body.must_match I18n.t('projects.show.no_analysis_summary.message_2')
+
+      response.body.wont_match I18n.t('commits.summary.commits_per_month')
+      response.body.wont_match I18n.t('commits.summary.most_recent_commits')
+      response.body.wont_match I18n.t('commits.summary.see_all_commits')
+    end
   end
 
   describe 'show' do
@@ -142,6 +155,17 @@ describe 'CommitsController' do
       get :summary, project_id: @project.id
       assigns(:commits).count.must_equal 2
       assigns(:commits).first.must_equal @commit1
+    end
+
+    it 'should show no code_location when enlistment is empty' do
+      Project.any_instance.stubs(:best_analysis).returns(NilAnalysis.new)
+      get :summary, project_id: @project.id
+      must_respond_with :ok
+      response.body.must_match I18n.t('projects.show.no_analysis_summary.message_2')
+
+      response.body.wont_match I18n.t('commits.summary.commits_per_month')
+      response.body.wont_match I18n.t('commits.summary.most_recent_commits')
+      response.body.wont_match I18n.t('commits.summary.see_all_commits')
     end
   end
 

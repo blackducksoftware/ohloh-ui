@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Language < ActiveRecord::Base
   serialize :active_contributors, Array
   serialize :experienced_contributors, Array
@@ -14,7 +16,7 @@ class Language < ActiveRecord::Base
 
   filterable_by ['languages.nice_name']
   ALL_LANGUAGES = ['All Languages', ''].freeze
-  DEFAULT_LANGUAGES = %w(c html java php).freeze
+  DEFAULT_LANGUAGES = %w[c html java php].freeze
 
   class << self
     def new_languages_for_project(project, days)

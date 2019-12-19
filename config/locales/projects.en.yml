@@ -352,6 +352,7 @@ en:
       licence: 'License:'
       unknown: 'Unknown'
     vulnerabilities:
+      unknown_severity: 'Unknown Severity' 
       severity:
         low: 'Low Severity'
         medium: 'Medium Severity'

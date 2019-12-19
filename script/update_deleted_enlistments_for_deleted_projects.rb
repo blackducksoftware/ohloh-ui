@@ -1,4 +1,5 @@
 #! /usr/bin/env ruby
+# frozen_string_literal: true
 
 raise 'RAILS_ENV is undefined' unless ENV['RAILS_ENV']
 
@@ -8,7 +9,7 @@ require 'logger'
 class UpdateEnlistmentsForDeletedProjects
   def initialize
     @log = Logger.new('update_deleted_enlistments_log_file.log')
-    @editor = Account.find_by_login('ohloh_slave')
+    @editor = Account.find_by(login: 'ohloh_slave')
   end
 
   def execute
@@ -28,7 +29,7 @@ class UpdateEnlistmentsForDeletedProjects
       project.enlistments.each do |enlistment|
         enlistment.create_edit.undo!(@editor) if enlistment.create_edit.allow_undo?
       end
-    rescue => e
+    rescue StandardError => e
       @log.error "error: #{project.id} - #{e.inspect}"
     end
   end

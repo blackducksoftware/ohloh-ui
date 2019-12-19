@@ -1,12 +1,14 @@
+# frozen_string_literal: true
+
 class ReviewsController < ApplicationController
   helper RatingsHelper
   helper ProjectsHelper
 
-  before_action :session_required, :redirect_unverified_account, except: [:index, :summary]
+  before_action :session_required, :redirect_unverified_account, except: %i[index summary]
   before_action :set_project_or_fail, except: :destroy, if: -> { params[:project_id] }
   before_action :set_account, except: :destroy, if: -> { params[:account_id] }
-  before_action :find_review, only: [:edit, :update, :destroy]
-  before_action :own_object?, only: [:edit, :update, :destroy]
+  before_action :find_review, only: %i[edit update destroy]
+  before_action :own_object?, only: %i[edit update destroy]
   before_action :review_context
 
   def index
@@ -76,12 +78,13 @@ class ReviewsController < ApplicationController
   end
 
   def find_review
-    @review = Review.find_by_id(params[:id])
+    @review = Review.find_by(id: params[:id])
     raise ParamRecordNotFound if @review.nil?
   end
 
   def own_object?
     return true if current_user_is_admin? || @review.account_id == current_user.id
+
     redirect_to summary_project_reviews_path(@project), flash: { error: t(:not_authorized) }
   end
 end

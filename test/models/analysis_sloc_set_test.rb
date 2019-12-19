@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class AnalysisSlocSetTest < ActiveSupport::TestCase
@@ -20,25 +22,25 @@ class AnalysisSlocSetTest < ActiveSupport::TestCase
     it 'should return parsed file names' do
       create_analysis_sloc_set('Disallow: foo.txt')
       code_set = " and fyles.code_set_id = #{@analysis_sloc_set.sloc_set.code_set_id}"
-      @analysis_sloc_set.ignore_tuples.must_equal "fyles.name like 'foo.txt%'".concat(code_set)
+      @analysis_sloc_set.ignore_tuples.must_equal "fyles.name like 'foo.txt%'#{code_set}"
     end
 
     it 'should remove prepend slash for directory' do
       create_analysis_sloc_set('Disallow: /foo')
       code_set = " and fyles.code_set_id = #{@analysis_sloc_set.sloc_set.code_set_id}"
-      @analysis_sloc_set.ignore_tuples.must_equal "fyles.name like 'foo%'".concat(code_set)
+      @analysis_sloc_set.ignore_tuples.must_equal "fyles.name like 'foo%'#{code_set}"
     end
 
     it 'should leave prepend slash for SvnSyncRepository' do
       create_analysis_sloc_set('Disallow: /foo', svn_sync: true)
       code_set = " and fyles.code_set_id = #{@analysis_sloc_set.sloc_set.code_set_id}"
-      @analysis_sloc_set.ignore_tuples.must_equal "fyles.name like '/foo%'".concat(code_set)
+      @analysis_sloc_set.ignore_tuples.must_equal "fyles.name like '/foo%'#{code_set}"
     end
 
     it 'should prepend with slash for SvnSyncRepository' do
       create_analysis_sloc_set('Disallow: foo', svn_sync: true)
       code_set = " and fyles.code_set_id = #{@analysis_sloc_set.sloc_set.code_set_id}"
-      @analysis_sloc_set.ignore_tuples.must_equal "fyles.name like '/foo%'".concat(code_set)
+      @analysis_sloc_set.ignore_tuples.must_equal "fyles.name like '/foo%'#{code_set}"
     end
   end
 
@@ -50,7 +52,7 @@ class AnalysisSlocSetTest < ActiveSupport::TestCase
     Enlistment.connection.execute("insert into code_locations (best_code_set_id)
                                    values (#{sloc_set.code_set_id})")
     code_location_id = Enlistment.connection.execute('select max(id) from code_locations').values[0][0]
-    sloc_set.code_set.update_attributes(code_location_id: code_location_id)
+    sloc_set.code_set.update(code_location_id: code_location_id)
     scm_type = svn_sync ? :svn_sync : :git
     sloc_set.code_set.stubs(:code_location).returns(code_location_stub(scm_type: scm_type))
     @analysis_sloc_set = create(:analysis_sloc_set, sloc_set: sloc_set, ignore: ignore)

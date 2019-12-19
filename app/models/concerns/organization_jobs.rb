@@ -1,9 +1,12 @@
+# frozen_string_literal: true
+
 module OrganizationJobs
   extend ActiveSupport::Concern
 
   def ensure_job(priority = 0)
     Job.transaction do
       return if jobs.incomplete.any?
+
       OrganizationJob.create(organization: self, priority: priority, wait_until: Time.current.utc + 1.day)
     end
   end

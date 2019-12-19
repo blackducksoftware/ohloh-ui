@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CommitFlag::BackToLife < CommitFlag
   def time_elapsed
     data[:time_elapsed] if data

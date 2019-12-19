@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ActsAsEditable
   extend ActiveSupport::Concern
 
@@ -26,6 +28,7 @@ module ActsAsEditable
   module InstanceMethods
     def destroy
       raise ActsAsEditable::NoEditorAccountError unless editor_account
+
       CreateEdit.where(target_type: self.class.to_s, target_id: id).first.undo!(editor_account)
     end
 
@@ -42,11 +45,13 @@ module ActsAsEditable
 
     def create_edit_history!
       raise ActsAsEditable::NoEditorAccountError unless editor_account
+
       CreateEdit.create!(target: self, account_id: editor_account.id, ip: editor_account.last_seen_ip)
     end
 
     def update_edit_history!
       raise ActsAsEditable::NoEditorAccountError unless editor_account
+
       record_property_edits! unless inside_undo_or_redo
     end
 
@@ -77,8 +82,7 @@ module ActsAsEditable
       editable_attributes.select { |attribute| attribute_changed?(attribute) }.compact
     end
 
-    def after_undo(current_user)
-    end
+    def after_undo(current_user); end
   end
 end
 

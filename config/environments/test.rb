@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Rails.application.configure do
   # Settings specified here will take precedence over those in
   # config/application.rb.
@@ -45,4 +47,6 @@ Rails.application.configure do
   config.middleware.use Clearance::BackDoor do |login|
     Clearance.configuration.user_model.find_by(login: login)
   end
+
+  config.paperclip_defaults = { storage: :filesystem }
 end

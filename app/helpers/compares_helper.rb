@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ComparesHelper
   def compare_section(label, opts = {})
     render partial: 'compares/project_section', locals: { label: label, opts: opts }

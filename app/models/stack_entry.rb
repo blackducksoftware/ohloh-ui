@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class StackEntry < ActiveRecord::Base
   MAX_NOTE_LENGTH = 255
 
@@ -5,12 +7,12 @@ class StackEntry < ActiveRecord::Base
   belongs_to :project
 
   scope :active, -> { where(deleted_at: nil) }
-  scope :for_project_id, -> (project_id) { for_project_id_arel(project_id) }
-  scope :similar_stack_entries, -> (entries1, entries2) { similar_stack_entries_arel(entries1, entries2) }
+  scope :for_project_id, ->(project_id) { for_project_id_arel(project_id) }
+  scope :similar_stack_entries, ->(entries1, entries2) { similar_stack_entries_arel(entries1, entries2) }
 
   validates :stack, presence: true
   validates :project, presence: true,
-                      uniqueness: { scope: [:stack_id, :deleted_at] }
+                      uniqueness: { scope: %i[stack_id deleted_at] }
 
   validates :note, length: { within: 0..MAX_NOTE_LENGTH }, allow_nil: true
 
@@ -26,13 +28,13 @@ class StackEntry < ActiveRecord::Base
   end
 
   def destroy
-    update_attributes(deleted_at: Time.current)
+    update(deleted_at: Time.current)
     update_counters
   end
 
   def update_counters
-    stack.update_column(:project_count, stack.stack_entries.count) if stack
-    project.update_column(:user_count, project.stacks_count) if project
+    stack&.update_column(:project_count, stack.stack_entries.count)
+    project&.update_column(:user_count, project.stacks_count)
   end
 
   class << self

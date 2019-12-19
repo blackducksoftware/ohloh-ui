@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :rating do
     association :account
     association :project
-    score 3
+    score { 3 }
   end
 end

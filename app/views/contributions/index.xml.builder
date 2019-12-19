@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 xml.response do
   xml.status('success')
   xml.items_returned @contributions.length
@@ -12,11 +14,11 @@ xml.response do
           xml.account_id contribution.person.account_id
           xml.account_name contribution.person.account.name
         end
-        if (contributor_fact)
+        if contributor_fact
           xml.analysis_id contributor_fact.analysis_id
           xml.contributor_name obfuscate_email(contributor_fact.name.name)
           xml.primary_language_id contributor_fact.primary_language_id
-          xml.primary_language_nice_name contributor_fact.primary_language_id ? contributor_fact.primary_language.nice_name : ''
+          xml.primary_language_nice_name contributor_fact.primary_language.try(:nice_name).to_s
           xml.comment_ratio contributor_fact.comment_ratio
           xml.first_commit_time xml_date_to_time(contributor_fact.first_checkin)
           xml.last_commit_time xml_date_to_time(contributor_fact.last_checkin)
@@ -27,5 +29,3 @@ xml.response do
     end
   end
 end
-
-

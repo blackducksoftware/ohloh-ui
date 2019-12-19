@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class RssArticlesController < ApplicationController
   helper :projects
   before_action :set_project_or_fail, :set_project_editor_account_to_current_user

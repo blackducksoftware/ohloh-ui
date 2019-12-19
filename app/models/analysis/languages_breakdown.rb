@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Analysis::LanguagesBreakdown < Analysis::QueryBase
   LANAGUAGE_SELECT_COLUMNS = { id: 'language_id', nice_name: 'language_nice_name', name: 'language_name',
                                category: 'category' }.freeze
@@ -5,7 +7,7 @@ class Analysis::LanguagesBreakdown < Analysis::QueryBase
   arel_tables :activity_fact, :language
 
   def collection
-    execute.select { |fact| fact.code_total.to_i > 0 || fact.comments_total.to_i > 0 }
+    execute.select { |fact| fact.code_total.to_i.positive? || fact.comments_total.to_i.positive? }
   end
 
   def map

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class NilPosition < NullObject
   attr_reader :title
 

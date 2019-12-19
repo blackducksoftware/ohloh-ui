@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module LinkAccessors
   extend ActiveSupport::Concern
 
@@ -21,6 +23,7 @@ module LinkAccessors
         define_method accessor do
           cached_uri = send cache_method
           return cached_uri if cached_uri
+
           link = links.of_category(Link::CATEGORIES[link_category]).first
           link ? link.url : nil
         end
@@ -31,6 +34,7 @@ module LinkAccessors
           cleaned_uri = String.clean_url(uri)
           cached_uri = send cache_method
           return if !cached_uri.nil? && cleaned_uri == cached_uri
+
           update_link_uri(accessor, obtain_link(link_category), cleaned_uri, link_category.to_s)
         end
       end

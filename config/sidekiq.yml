@@ -1,4 +1,4 @@
-:pidfile: /tmp/pids/sidekiq.pid
+:pidfile: tmp/pids/sidekiq.pid
 :queues:
     - default
 development:

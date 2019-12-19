@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   sequence :account_login do |n|
     "login-#{n}"
@@ -11,21 +13,21 @@ FactoryBot.define do
     login { generate(:account_login) }
     password { Faker::Internet.password }
     current_password { |account| account.send(:password) }
-    twitter_account 'openhub'
+    twitter_account { 'openhub' }
     name { Faker::Name.name + rand(999_999).to_s }
     about_raw { Faker::Lorem.characters(10) }
     activated_at { Time.current }
-    activation_code nil
-    country_code 'us'
-    email_master true
-    email_kudos true
-    email_posts true
+    activation_code { nil }
+    country_code { 'us' }
+    email_master { true }
+    email_kudos { true }
+    email_posts { true }
 
     association :github_verification
 
     trait :with_stacks do
       transient do
-        number_of_stacks 2
+        number_of_stacks { 2 }
       end
 
       after(:create) do |account, evaluator|
@@ -35,20 +37,20 @@ FactoryBot.define do
   end
 
   factory :unactivated, parent: :account do
-    activated_at nil
-    activation_code '123456'
+    activated_at { nil }
+    activation_code { '123456' }
   end
 
   factory :admin, parent: :account do
-    level Account::Access::ADMIN
+    level { Account::Access::ADMIN }
   end
 
   factory :disabled_account, parent: :account do
-    level Account::Access::DISABLED
+    level { Account::Access::DISABLED }
   end
 
   factory :spammer, parent: :account do
-    level Account::Access::SPAM
+    level { Account::Access::SPAM }
   end
 
   factory :account_with_markup, parent: :account do
@@ -62,17 +64,17 @@ FactoryBot.define do
   end
 
   trait :admin do
-    level Account::Access::ADMIN
+    level { Account::Access::ADMIN }
     association :github_verification, strategy: :null
   end
 
   trait :disabled_account do
-    level Account::Access::DISABLED
+    level { Account::Access::DISABLED }
     association :github_verification, strategy: :null
   end
 
   trait :spammer do
-    level Account::Access::SPAM
+    level { Account::Access::SPAM }
     association :github_verification, strategy: :null
   end
 
@@ -81,27 +83,27 @@ FactoryBot.define do
   end
 
   trait :invalid_spammer do
-    level Account::Access::SPAM
+    level { Account::Access::SPAM }
     association :github_verification
   end
 
   trait :success do
-    email 'success@simulator.amazonses.com'
+    email { 'success@simulator.amazonses.com' }
   end
 
   trait :hard_bounce do
-    email 'bounce@simulator.amazonses.com'
+    email { 'bounce@simulator.amazonses.com' }
   end
 
   trait :soft_bounce do
-    email 'ooto@simulator.amazonses.com'
+    email { 'ooto@simulator.amazonses.com' }
   end
 
   trait :bounce_undetermined do
-    email 'someone@gmail.com'
+    email { 'someone@gmail.com' }
   end
 
   trait :complaint do
-    email 'complaint@simulator.amazonses.com'
+    email { 'complaint@simulator.amazonses.com' }
   end
 end

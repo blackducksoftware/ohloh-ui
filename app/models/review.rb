@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Review < ActiveRecord::Base
   belongs_to :account
   belongs_to :project
@@ -19,25 +21,28 @@ class Review < ActiveRecord::Base
   scope :top, ->(limit = 2) { three_quarters_helpful_arel.order_by_helpfulness_arel.limit(limit) }
   scope :sort_by, lambda { |key = :helpful|
     {
-      'helpful'         => order_by_helpfulness_arel,
-      'highest_rated'   => order(ratings_sql('DESC')).order(created_at: :desc),
-      'lowest_rated'    => order(ratings_sql).order(:created_at),
-      'project'         => includes(:project).order('projects.name'),
-      'recently_added'  => order(created_at: :desc),
-      'author'          => joins(:account).order('accounts.login').order(created_at: :desc)
+      'helpful' => order_by_helpfulness_arel,
+      'highest_rated' => order(ratings_sql('DESC')).order(created_at: :desc),
+      'lowest_rated' => order(ratings_sql).order(:created_at),
+      'project' => includes(:project).order('projects.name'),
+      'recently_added' => order(created_at: :desc),
+      'author' => joins(:account).order('accounts.login').order(created_at: :desc)
     }.fetch(key, order_by_helpfulness_arel)
   }
 
   filterable_by ['comment', 'title', 'accounts.login']
 
+  # rubocop:disable Style/MultilineIfModifier
   scope :find_by_comment_or_title_or_accounts_login, lambda { |query|
     includes(:account)
       .references(:all)
       .filter_by(query) if query
   }
+  # rubocop:enable Style/MultilineIfModifier
 
   def score
     return 0 unless project_id && account_id
+
     Rating.find_by(project_id: project_id, account_id: account_id).try(:score).to_i
   end
 

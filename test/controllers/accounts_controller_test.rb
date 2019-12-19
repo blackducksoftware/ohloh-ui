@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 require 'test_helpers/commits_by_project_data'
 require 'test_helpers/commits_by_language_data'
@@ -7,7 +9,7 @@ describe 'AccountsController' do
   let(:admin) { create(:admin) }
   let(:account_attributes) do
     FactoryBot.attributes_for(:account).select do |k, _v|
-      %w(login email password).include?(k.to_s)
+      %w[login email password].include?(k.to_s)
     end
   end
 

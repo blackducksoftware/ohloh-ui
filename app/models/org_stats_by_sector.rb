@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class OrgStatsBySector < ActiveRecord::Base
   class << self
     def recent

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class SitemapController < ApplicationController
   skip_before_action :verify_api_access_for_xml_request
 

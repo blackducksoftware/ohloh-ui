@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 describe 'TagsController' do
@@ -29,7 +31,7 @@ describe 'TagsController' do
       create(:tagging, tag: tag2, taggable: project1)
       create(:tagging, tag: tag2, taggable: project2)
       create(:tagging, tag: tag2, taggable: project3)
-      get :index, names: %w(color word)
+      get :index, names: %w[color word]
       assert_response :success
       assert_select "#project_#{project1.id}", 1
       assert_select "#project_#{project2.id}", 0

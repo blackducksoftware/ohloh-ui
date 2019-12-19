@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ProjectWidget::PartnerBadge < ProjectWidget
   def short_nice_name
     I18n.t('project_widgets.partner_badge.short_nice_name')

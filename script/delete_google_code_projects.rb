@@ -1,4 +1,5 @@
 #! /usr/bin/env ruby
+# frozen_string_literal: true
 
 raise 'RAILS_ENV is undefined' unless ENV['RAILS_ENV']
 
@@ -8,7 +9,7 @@ require 'logger'
 class DeleteGoogleCodeProjects
   def initialize
     @log = Logger.new('log/deleted_googlecode_log_file.log')
-    @editor = Account.find_by_login('ohloh_slave')
+    @editor = Account.find_by(login: 'ohloh_slave')
   end
 
   def execute
@@ -42,8 +43,7 @@ class DeleteGoogleCodeProjects
     begin
       project.tags.delete_all
       project.create_edit.undo!(@editor) if project.create_edit.allow_undo?
-
-    rescue => e
+    rescue StandardError => e
       @log.error "error: #{project.id} - #{e.inspect}"
     end
   end

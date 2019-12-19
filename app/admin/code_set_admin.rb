@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ActiveAdmin.register CodeSet do
   menu false
 
@@ -23,23 +25,13 @@ ActiveAdmin.register CodeSet do
   end
 
   index do
-    %w(id as_of updated_on clump_count best_sloc_set).each { |attr| column(attr) }
+    %w[id as_of updated_on clump_count best_sloc_set].each { |attr| column(attr) }
     column(:sloc_set_count) { |code_set| code_set.sloc_sets.count }
     actions do |code_set|
       a link_to 'Fetch', fetch_admin_code_set_path(code_set), class: 'member_link'
       if code_set.clumps.exists?
         a link_to 'Re-Import', reimport_admin_code_set_path(code_set), class: 'member_link'
         a link_to 'Re-Sloc', resloc_admin_code_set_path(code_set), class: 'member_link'
-      end
-    end
-  end
-
-  controller do
-    def scoped_collection
-      if params[:code_location_id]
-        CodeLocation.find(params[:code_location_id]).code_sets
-      else
-        super
       end
     end
   end

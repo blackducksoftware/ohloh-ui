@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class OrgThirtyDayActivityDecorator < Cherry::Decorator
   delegate :project_count, to: :@object
 

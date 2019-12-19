@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class FirebaseVerification < Verification
   attr_accessor :credentials
 

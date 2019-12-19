@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 # Since we customize the doorkeeper view, we need tests to ensure that it renders correctly.

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Teaspoon.configure do |config|
   config.mount_at = '/teaspoon'
   config.root = nil
@@ -14,7 +16,7 @@ Teaspoon.configure do |config|
   end
 
   config.coverage do |coverage|
-    coverage.reports = %w(html)
+    coverage.reports = %w[html]
     coverage.functions = 22
   end
 end

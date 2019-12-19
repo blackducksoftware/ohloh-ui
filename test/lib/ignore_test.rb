@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class IgnoreTest < ActiveSupport::TestCase
@@ -57,17 +59,17 @@ class IgnoreTest < ActiveSupport::TestCase
 
   describe 'match?' do
     it 'should return true if matched' do
-      assert !Ignore.match?([], nil)
-      assert !Ignore.match?([], 'foo')
-      assert !Ignore.match?(['bar'], 'foo')
+      assert_not Ignore.match?([], nil)
+      assert_not Ignore.match?([], 'foo')
+      assert_not Ignore.match?(['bar'], 'foo')
       assert Ignore.match?(['foo'], 'foo')
       assert Ignore.match?(['foo'], 'foobar')
-      assert !Ignore.match?(['foobar'], 'foo')
-      assert Ignore.match?(%w(bar foo), 'foo')
+      assert_not Ignore.match?(['foobar'], 'foo')
+      assert Ignore.match?(%w[bar foo], 'foo')
     end
 
     it 'should gracefully handle backslashes in the prefixes' do
-      assert !Ignore.match?(['\\c\\autoexec\\'], 'foo')
+      assert_not Ignore.match?(['\\c\\autoexec\\'], 'foo')
     end
   end
 end

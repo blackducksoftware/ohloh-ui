@@ -1,12 +1,14 @@
+# frozen_string_literal: true
+
 # Usage:
 # rake selenium:prepare_projects_data[firefox]
 
 require 'action_view'
 
-include ActionView::Helpers::NumberHelper
-include ActionView::Helpers::DateHelper
-
 namespace :selenium do
+  include ActionView::Helpers::NumberHelper
+  include ActionView::Helpers::DateHelper
+
   desc 'Prepare Projects data for selenium'
   task :prepare_projects_data, [:project_name] => :environment do |_t, args|
     include AnalysesHelper
@@ -48,16 +50,18 @@ namespace :selenium do
         'permission' => project.permission.try(:remainder) ? 'Mangers Only' : 'Everyone'
       )
 
-      project_data.merge!(
-        'main_language' => analysis.main_language.nice_name,
-        'activity' => {
-          '30_day_summary' => thirty_day_summary(analysis),
-          '12_month_summary' => twelve_month_summary(analysis)
-        },
-        'recent_contributors' => analysis.all_time_summary.recent_contribution_persons.map(&:effective_name),
-        'commits' => get_commits_stats(analysis).merge!('list' => get_commits(project)),
-        'total_lines_of_code' => number_with_delimiter(analysis.logic_total)
-      ) if analysis.present?
+      if analysis.present?
+        project_data.merge!(
+          'main_language' => analysis.main_language.nice_name,
+          'activity' => {
+            '30_day_summary' => thirty_day_summary(analysis),
+            '12_month_summary' => twelve_month_summary(analysis)
+          },
+          'recent_contributors' => analysis.all_time_summary.recent_contribution_persons.map(&:effective_name),
+          'commits' => get_commits_stats(analysis).merge!('list' => get_commits(project)),
+          'total_lines_of_code' => number_with_delimiter(analysis.logic_total)
+        )
+      end
 
       if pvr.present?
         project_data['pss'] = pss_content(pvr)
@@ -70,18 +74,20 @@ namespace :selenium do
         'similar_projects_by_stack' => collect_license_and_languages(project.related_by_stacks(10))
       )
 
-      project_data['languages'] = {
-        'summary' => languages_percentage.collect { |v| [v.second, v.third[:percent]] },
-        'total_lines' => number_with_delimiter(total_lines),
-        'code_lines' => number_with_delimiter(code_lines),
-        'percentage_lines' => analysis_total_percent_detail(code_lines, total_lines),
-        'total_languages' => languages_breakdown.size,
-        'total_comments' => number_with_delimiter(comment_lines),
-        'percentage_comments' => analysis_total_percent_detail(comment_lines, total_lines),
-        'total_blanks' => number_with_delimiter(blank_lines),
-        'percentage_blanks' => analysis_total_percent_detail(blank_lines, total_lines),
-        'list' => get_language_stats(languages_breakdown)
-      } if analysis.present?
+      if analysis.present?
+        project_data['languages'] = {
+          'summary' => languages_percentage.collect { |v| [v.second, v.third[:percent]] },
+          'total_lines' => number_with_delimiter(total_lines),
+          'code_lines' => number_with_delimiter(code_lines),
+          'percentage_lines' => analysis_total_percent_detail(code_lines, total_lines),
+          'total_languages' => languages_breakdown.size,
+          'total_comments' => number_with_delimiter(comment_lines),
+          'percentage_comments' => analysis_total_percent_detail(comment_lines, total_lines),
+          'total_blanks' => number_with_delimiter(blank_lines),
+          'percentage_blanks' => analysis_total_percent_detail(blank_lines, total_lines),
+          'list' => get_language_stats(languages_breakdown)
+        }
+      end
 
       project_data['contributors'] = {
         'newest_contributions' => newest_contributions(project),
@@ -175,13 +181,13 @@ namespace :selenium do
 
     commits_diff = summary.send(diff)
     commits_count = summary.send(count)
-    str = (commits_diff > 0 ? 'Up + ' : 'Down ') + commits_diff.to_s
+    str = (commits_diff.positive? ? 'Up + ' : 'Down ') + commits_diff.to_s
     str += calc_percentage(commits_diff, commits_count).to_s
     str.concat(' from previous 12 months')
   end
 
   def calc_percentage(commits_diff, commits_count)
-    " (#{(commits_diff.abs.to_f / commits_count.abs.to_f * 100).floor}%)" if commits_count > 0
+    " (#{(commits_diff.abs.fdiv(commits_count.abs) * 100).floor}%)" if commits_count.positive?
   end
 
   def get_commits_stats(analysis)
@@ -190,7 +196,7 @@ namespace :selenium do
     thirty_day_summary = analysis.thirty_day_summary || NilAnalysisSummaryWithNa.new
 
     commits_summary = [all_time_summary, twelve_month_summary, thirty_day_summary]
-    %w(commits_count committer_count files_modified lines_added lines_removed).each_with_object({}) do |key, hsh|
+    %w[commits_count committer_count files_modified lines_added lines_removed].each_with_object({}) do |key, hsh|
       hsh[key] = commits_summary.map(&key.to_sym)
     end
   end
@@ -221,13 +227,13 @@ namespace :selenium do
   end
 
   def get_reviews(project)
-    %w(helpful recently_added highest_rated lowest_rated).each_with_object({}) do |sort_by, hsh|
+    %w[helpful recently_added highest_rated lowest_rated].each_with_object({}) do |sort_by, hsh|
       hsh[sort_by] = project.reviews.sort_by(sort_by).map(&:title).first(20)
     end.merge!('most_helpful' => project.reviews.top.map(&:title).first(20))
   end
 
   def get_enlistments(project)
-    %w(by_url by_project by_type).each_with_object({}) do |sort_by, hsh|
+    %w[by_url by_project by_type].each_with_object({}) do |sort_by, hsh|
       hsh[sort_by] = project.enlistments.includes(:project, :repository).send(sort_by).first(20).collect do |e|
         [e.code_location.nice_url, e.repository.name_in_english, CodeLocationJobProgress.new(e).message]
       end
@@ -237,6 +243,7 @@ namespace :selenium do
   def get_new_alias(project)
     committer_name = Alias.committer_names(project).take
     return if committer_name.nil?
+
     [committer_name.name, Alias.preferred_names(project, committer_name).take.name]
   end
 
@@ -252,7 +259,7 @@ namespace :selenium do
     project_activity_index = Project.group(:activity_level_index).with_pai_available
     total_count = project_activity_index.values.sum
     project_activity_index.each_with_object({}) do |data, hsh|
-      hsh[Project::ACTIVITY_LEVEL.invert[data.first]] = "#{((data.second.to_f / total_count.to_f) * 100).round(1)} %"
+      hsh[Project::ACTIVITY_LEVEL.invert[data.first]] = "#{(data.second.fdiv(total_count) * 100).round(1)} %"
     end
   end
 

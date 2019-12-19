@@ -1,16 +1,18 @@
+# frozen_string_literal: true
+
 class DuplicatesController < ApplicationController
   helper ProjectsHelper
   helper RatingsHelper
   helper TagsHelper
 
   before_action :session_required, :redirect_unverified_account
-  before_action :admin_session_required, only: [:index, :show, :resolve]
-  before_action :set_project_or_fail, except: [:index, :show, :resolve]
-  before_action :find_duplicate, only: [:edit, :update, :destroy]
-  before_action :find_good_project, only: [:create, :update]
-  before_action :project_context, except: [:index, :show, :resolve]
-  before_action :must_own_duplicate, only: [:edit, :update, :destroy]
-  before_action :find_duplicate_without_project_id, only: [:resolve, :show]
+  before_action :admin_session_required, only: %i[index show resolve]
+  before_action :set_project_or_fail, except: %i[index show resolve]
+  before_action :find_duplicate, only: %i[edit update destroy]
+  before_action :find_good_project, only: %i[create update]
+  before_action :project_context, except: %i[index show resolve]
+  before_action :must_own_duplicate, only: %i[edit update destroy]
+  before_action :find_duplicate_without_project_id, only: %i[resolve show]
 
   def index
     @resolved_duplicates = Duplicate.where(resolved: true).order(id: :desc).paginate(per_page: 10, page: page_param)
@@ -39,7 +41,7 @@ class DuplicatesController < ApplicationController
   end
 
   def update
-    if @duplicate.update_attributes(good_project: @good_project, comment: duplicate_params[:comment])
+    if @duplicate.update(good_project: @good_project, comment: duplicate_params[:comment])
       flash[:success] = t('.success')
       redirect_to project_path(@duplicate.bad_project)
     else
@@ -58,12 +60,16 @@ class DuplicatesController < ApplicationController
 
   def resolve
     if params[:keep_id].to_i == @duplicate.bad_project_id
-      @duplicate.update_attributes(bad_project: @duplicate.good_project, good_project: @duplicate.bad_project)
+      @duplicate.update(bad_project: @duplicate.good_project, good_project: @duplicate.bad_project)
     end
 
     @duplicate.resolve!(current_user)
     redirect_to admin_duplicates_path, flash: { success: t('.success') }
   end
+
+  def show; end
+
+  def edit; end
 
   private
 
@@ -82,11 +88,12 @@ class DuplicatesController < ApplicationController
   end
 
   def duplicate_params
-    params.require(:duplicate).permit([:good_project_id, :bad_project_id, :comment])
+    params.require(:duplicate).permit(%i[good_project_id bad_project_id comment])
   end
 
   def must_own_duplicate
     return if (@duplicate.account == current_user) || current_user_is_admin?
+
     flash[:error] = t('duplicates.edit.must_own_duplicate')
     redirect_to project_path(@duplicate.bad_project)
   end

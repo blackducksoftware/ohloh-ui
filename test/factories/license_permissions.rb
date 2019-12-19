@@ -1,7 +1,10 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
-  factory :license_permission do
-    name 'MyString'
-    description 'MyString'
-    icon 'MyString'
+  factory :license_permission do |f|
+    f.association :license_right
+    license_right_id { 0 }
+    description { 'MyString' }
+    status { LicensePermission.statuses['Permitted'] }
   end
 end

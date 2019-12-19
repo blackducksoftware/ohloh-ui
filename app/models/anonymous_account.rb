@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 module AnonymousAccount
-  LOGIN = 'anonymous_coward'.freeze
+  LOGIN = 'anonymous_coward'
 
   class << self
     def create!

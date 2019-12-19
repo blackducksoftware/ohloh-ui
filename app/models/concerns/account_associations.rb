@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module AccountAssociations
   extend ActiveSupport::Concern
 
@@ -9,7 +11,7 @@ module AccountAssociations
     has_many :api_keys
     has_many :actions
     has_many :kudos
-    has_many :sent_kudos, class_name: :Kudo, foreign_key: :sender_id
+    has_many :sent_kudos, class_name: 'Kudo', foreign_key: :sender_id
     has_many :topics
     has_many :ratings
     has_many :reviews
@@ -17,7 +19,7 @@ module AccountAssociations
     has_many :invites, class_name: 'Invite', foreign_key: 'invitor_id'
     has_many :vitas
     has_many :manages, -> { where.not(approved_by: nil).where(deleted_by: nil, deleted_at: nil) }
-    has_many :all_manages, -> { where(deleted_by: nil, deleted_at: nil) }, class_name: :Manage
+    has_many :all_manages, -> { where(deleted_by: nil, deleted_at: nil) }, class_name: 'Manage'
     has_many :edits
     has_many :verifications
     has_many :vita_jobs

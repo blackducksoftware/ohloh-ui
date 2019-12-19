@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class Organization::OutsideTest < ActiveSupport::TestCase
@@ -7,11 +9,11 @@ class Organization::OutsideTest < ActiveSupport::TestCase
     account1 = create(:account, organization_id: proj2.organization_id)
     account2 = create(:account, organization_id: proj1.organization_id)
     po1 = create_position(account: account1, project: proj1, organization: proj1.organization)
-    NameFact.where(analysis_id: proj1.best_analysis_id, name_id: po1.name_id).first.update_attributes(commits: 2)
+    NameFact.where(analysis_id: proj1.best_analysis_id, name_id: po1.name_id).first.update(commits: 2)
     po2 = create_position(account: account2, project: proj1, organization: proj1.organization)
-    NameFact.where(analysis_id: proj1.best_analysis_id, name_id: po2.name_id).first.update_attributes(commits: 1)
+    NameFact.where(analysis_id: proj1.best_analysis_id, name_id: po2.name_id).first.update(commits: 1)
     po3 = create_position(account: account1, project: proj2, organization: proj2.organization)
-    NameFact.where(analysis_id: proj2.best_analysis_id, name_id: po3.name_id).first.update_attributes(commits: 2)
+    NameFact.where(analysis_id: proj2.best_analysis_id, name_id: po3.name_id).first.update(commits: 2)
 
     stats = proj1.organization.outside_committers_stats
     stats['out_committers'].must_equal '1'
@@ -25,7 +27,7 @@ class Organization::OutsideTest < ActiveSupport::TestCase
     account2 = create(:account)
     pos = create_position(account: account1, project: proj)
     nf = NameFact.where(analysis_id: proj.best_analysis_id, name_id: pos.name_id).first
-    nf.update_attributes(twelve_month_commits: 2)
+    nf.update(twelve_month_commits: 2)
     create_position(account: account2, project: proj)
 
     accounts = proj.organization.outside_committers(1, 1)

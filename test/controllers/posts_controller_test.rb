@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 describe PostsController do
@@ -421,7 +423,7 @@ describe PostsController do
       PostsController.any_instance.stubs(:verify_recaptcha)
       post :create, topic_id: topic.id, post: { body: nil }, page: current_page_number
 
-      response.body.must_match(/<input.+id="page".+value="#{ current_page_number }"/)
+      response.body.must_match(/<input.+id="page".+value="#{current_page_number}"/)
     end
 
     it 'must allow admin to create post without captcha' do

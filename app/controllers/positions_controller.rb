@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'will_paginate/array'
 class PositionsController < ApplicationController
   helper ProjectsHelper
@@ -14,7 +16,7 @@ class PositionsController < ApplicationController
       @position.update!(position_params)
     end
     redirect_to account_positions_path(@account)
-  rescue => e
+  rescue StandardError => e
     flash.now[:error] = e.message unless e.is_a?(ActiveRecord::RecordInvalid)
     render :edit
   end
@@ -29,8 +31,7 @@ class PositionsController < ApplicationController
     end
   end
 
-  def show
-  end
+  def show; end
 
   def destroy
     if @position.destroy
@@ -86,6 +87,6 @@ class PositionsController < ApplicationController
     params.require(:position)
           .permit(:project_oss, :committer_name, :title, :organization_id, :organization_name,
                   :affiliation_type, :description, :start_date, :stop_date, :ongoing, :invite,
-                  language_exp: [], project_experiences_attributes: [:project_name, :_destroy, :id])
+                  language_exp: [], project_experiences_attributes: %i[project_name _destroy id])
   end
 end

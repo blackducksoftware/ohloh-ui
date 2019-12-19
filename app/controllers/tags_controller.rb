@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class TagsController < ApplicationController
   helper ProjectsHelper
   helper RatingsHelper
@@ -6,6 +8,7 @@ class TagsController < ApplicationController
   before_action :find_tag_names, only: :index
   before_action :find_models, only: [:index]
   before_action :show_permissions_alert, only: :select
+  def index; end
 
   private
 
@@ -14,7 +17,7 @@ class TagsController < ApplicationController
   end
 
   def get_tag_names
-    params[:name].split('/') if params[:name]
+    params[:name]&.split('/')
   end
 
   def find_models

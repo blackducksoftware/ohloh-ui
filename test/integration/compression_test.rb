@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class CompressionTest < ActionDispatch::IntegrationTest
@@ -5,7 +7,7 @@ class CompressionTest < ActionDispatch::IntegrationTest
     it 'responds with a deflate/gzip content-encoding' do
       ['deflate', 'gzip', 'deflate,gzip', 'gzip,deflate'].each do |compression_method|
         get root_path, {}, 'HTTP_ACCEPT_ENCODING' => compression_method
-        assert_includes %w(deflate gzip), response.headers['Content-Encoding']
+        assert_includes %w[deflate gzip], response.headers['Content-Encoding']
       end
     end
   end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class BadgeDecorator < Cherry::Decorator
   delegate :to_underscore, :level, :level_bits, :levels?, :description, to: :object
 
@@ -8,6 +10,7 @@ class BadgeDecorator < Cherry::Decorator
 
   def pips_url(request)
     return nil unless (1..15).cover?(level)
+
     file = BADGE_IMAGE_ROOT + format('pips_%02i.png', level)
     base_url(request) + file
   end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class FactoidCommentsLow < FactoidComments
   def to_s
     I18n.t('factoids.comments_low')

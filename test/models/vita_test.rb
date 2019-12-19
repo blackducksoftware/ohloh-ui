@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class VitaTest < ActiveSupport::TestCase
@@ -12,7 +14,7 @@ class VitaTest < ActiveSupport::TestCase
     end
 
     it 'should return vita_fact when there is vita_fact' do
-      vita_with_fact.vita_fact.class.must_equal VitaFact
+      vita_with_fact.vita_fact.class.must_equal AccountAnalysisFact
     end
   end
 

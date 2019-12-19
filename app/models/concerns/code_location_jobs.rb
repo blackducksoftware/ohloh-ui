@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module CodeLocationJobs
   extend ActiveSupport::Concern
 
@@ -7,6 +9,7 @@ module CodeLocationJobs
       Job.transaction do
         job = jobs.incomplete.first
         return job if job
+
         # NOTE: PDP 2018-02-01 This method doesn't schedule a Fetch or Complete if the CL
         # hasn't been updated recently.  It should create a CompleteJob if there isn't one scheduled
         # However, it creates a FetchJob only if there is no best_code_set. How does this ensure a CL is updated?
@@ -18,6 +21,7 @@ module CodeLocationJobs
 
     def schedule_fetch
       return ensure_job unless best_code_set
+
       create_complete_job
     end
 
@@ -34,6 +38,7 @@ module CodeLocationJobs
 
     def create_complete_job
       return if any_incomplete_or_recent?
+
       create_job(CompleteJob, code_location_id: @id, code_set_id: best_code_set_id)
     end
 

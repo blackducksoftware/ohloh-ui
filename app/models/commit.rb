@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Commit < FisBase
   belongs_to :code_set
   belongs_to :name
@@ -23,7 +25,8 @@ class Commit < FisBase
   scope :last_30_days, ->(logged_at) { where('commits.time > ?', logged_at - 30.days) }
   scope :last_year, ->(logged_at) { where('commits.time > ?', logged_at - 12.months) }
   scope :within_timespan, lambda { |time_span, logged_at|
-    return unless logged_at && TIME_SPANS.keys.include?(time_span)
+    return unless logged_at && TIME_SPANS.key?(time_span)
+
     send(TIME_SPANS[time_span], logged_at)
   }
 

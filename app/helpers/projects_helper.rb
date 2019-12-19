@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ProjectsHelper
   include ProjectVulnerabilityReportsHelper
   include SiteFeaturesHelper
@@ -33,7 +35,8 @@ module ProjectsHelper
   end
 
   def project_twitter_description(project, analysis)
-    return project_twitter_description_analysis(project, analysis) unless analysis.blank?
+    return project_twitter_description_analysis(project, analysis) if analysis.present?
+
     project.description.to_s.empty? ? '' : project.description
   end
 
@@ -80,6 +83,7 @@ module ProjectsHelper
 
   def more_badges_link
     return if @project.project_badges.active.count <= ProjectBadge::SUMMARY_LIMIT
+
     content_tag :div, class: 'more_badges clearfix' do
       content_tag :p, link_to('more', project_project_badges_path(@project))
     end

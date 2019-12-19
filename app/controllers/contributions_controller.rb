@@ -1,25 +1,29 @@
+# frozen_string_literal: true
+
 class ContributionsController < ApplicationController
-  COMMITS_SPARK_IMAGE = 'app/assets/images/bot_stuff/contribution_commits_spark.png'.freeze
-  COMMITS_COMPOUND_SPARK_IMAGE = 'app/assets/images/bot_stuff/position_commits_compound_spark.png'.freeze
+  COMMITS_SPARK_IMAGE = 'app/assets/images/bot_stuff/contribution_commits_spark.png'
+  COMMITS_COMPOUND_SPARK_IMAGE = 'app/assets/images/bot_stuff/position_commits_compound_spark.png'
 
   helper :kudos, :projects
   helper MapHelper
 
   before_action :set_project_or_fail, if: -> { params[:project_id] }
-  before_action :set_contribution, except: [:commits_spark, :commits_compound_spark, :index, :summary, :near]
-  before_action :set_contributor, only: [:commits_spark, :commits_compound_spark]
-  before_action :send_sample_image_if_bot, if: :bot?, only: [:commits_spark, :commits_compound_spark]
-  before_action :project_context, only: [:index, :show, :summary]
-  skip_before_action :store_location, only: [:commits_spark, :commits_compound_spark]
+  before_action :set_contribution, except: %i[commits_spark commits_compound_spark index summary near]
+  before_action :set_contributor, only: %i[commits_spark commits_compound_spark]
+  before_action :send_sample_image_if_bot, if: :bot?, only: %i[commits_spark commits_compound_spark]
+  before_action :project_context, only: %i[index show summary]
+  skip_before_action :store_location, only: %i[commits_spark commits_compound_spark]
 
   def index
     raise ParamRecordNotFound unless @project
+
     @contributions = @project.contributions_within_timespan(params).paginate(per_page: 20, page: page_param)
   end
 
   def show
     raise ParamRecordNotFound unless @project
     return redirect_to project_contributor_path(@project, @contribution) if @contribution.id != params[:id].to_i
+
     @recent_kudos = @contribution.kudoable.recent_kudos || []
   end
 
@@ -58,12 +62,13 @@ class ContributionsController < ApplicationController
   end
 
   def send_sample_image_if_bot
-    image_path = "#{Rails.root}/#{self.class.const_get(action_name.upcase + '_IMAGE')}"
+    image_path = Rails.root.join(self.class.const_get(action_name.upcase + '_IMAGE'))
     send_file image_path, filename: 'commits.png', type: 'image/png', disposition: 'inline'
   end
 
   def set_contribution
     raise ParamRecordNotFound unless @project
+
     @contribution = @project.contributions.find_by(id: params[:id].to_i)
     # It's possible that the contributor we are looking for has been aliased to a new name.
     # Redirect to the new name if we can find it.

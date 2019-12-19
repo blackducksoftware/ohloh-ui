@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class Analysis::CodeHistoryChartTest < ActiveSupport::TestCase
@@ -27,7 +29,7 @@ class Analysis::CodeHistoryChartTest < ActiveSupport::TestCase
 
       series.first['id'].must_equal 'code'
       series.map { |d| d['data'].last }.must_equal [[@time_integer, 5], [@time_integer, 10], [@time_integer, 3]]
-      series.map { |d| d['name'] }.must_equal %w(Code Comments Blanks)
+      series.map { |d| d['name'] }.must_equal %w[Code Comments Blanks]
       assert_nil chart.data['scrollbar']
     end
   end
@@ -38,7 +40,7 @@ class Analysis::CodeHistoryChartTest < ActiveSupport::TestCase
       series = chart.data_for_lines_of_code['series']
 
       series.first['id'].must_equal 'code'
-      series.map { |d| d['name'] }.must_equal %w(Code Comments Blanks)
+      series.map { |d| d['name'] }.must_equal %w[Code Comments Blanks]
       series.map { |d| d['data'].last }.must_equal [[@time_integer, 5], [@time_integer, 10], [@time_integer, 3]]
       data['scrollbar']['enabled'].must_equal false
     end

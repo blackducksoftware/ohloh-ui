@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ScmHelper
   def scm_options_for_select(scm_type)
     options_hash = { CVS: 'cvs', Subversion: 'svn_sync', Git: 'git',

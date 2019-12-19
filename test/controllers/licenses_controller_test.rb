@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 describe 'LicensesControllerTest' do
@@ -43,6 +45,14 @@ describe 'LicensesControllerTest' do
       get :show, id: @license.vanity_url
 
       must_respond_with :not_found
+    end
+
+    it 'must escape html and format newlines in description' do
+      @license.update! description: "foo \n <link>"
+
+      get :show, id: @license.vanity_url
+
+      must_select('p')[2].text.must_equal "foo \n <link>"
     end
   end
 
@@ -103,7 +113,7 @@ describe 'LicensesControllerTest' do
 
     it 'should render edit if update fails' do
       login_as create(:account)
-      License.any_instance.stubs(:update_attributes).returns(false)
+      License.any_instance.stubs(:update).returns(false)
       put :update, id: @license.vanity_url, license: build(:license).attributes
       must_respond_with :ok
       must_render_template :edit

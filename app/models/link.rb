@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Link < ActiveRecord::Base
   # Maintain this order for the index page.
   CATEGORIES = HashWithIndifferentAccess.new(
@@ -12,7 +14,7 @@ class Link < ActiveRecord::Base
   ).freeze
 
   belongs_to :project
-  acts_as_editable editable_attributes: [:title, :url, :link_category_id],
+  acts_as_editable editable_attributes: %i[title url link_category_id],
                    merge_within: 30.minutes
   acts_as_protected parent: :project
   has_many :accounts, through: :edits
@@ -24,7 +26,7 @@ class Link < ActiveRecord::Base
   validates :title, presence: true
   validates :url, presence: true
   validates :url, allow_blank: true,
-                  uniqueness: { scope: [:project_id, :link_category_id] },
+                  uniqueness: { scope: %i[project_id link_category_id] },
                   url_format: { message: :invalid_url }
   validates :link_category_id, presence: true
 
@@ -35,7 +37,7 @@ class Link < ActiveRecord::Base
 
     CreateEdit.find_by(target: deleted_link).redo!(editor_account)
     deleted_link.editor_account = editor_account
-    deleted_link.update_attributes(title: title, link_category_id: link_category_id)
+    deleted_link.update(title: title, link_category_id: link_category_id)
   end
 
   def category
@@ -43,15 +45,7 @@ class Link < ActiveRecord::Base
   end
 
   def allow_undo_to_nil?(key)
-    ![:title, :url, :link_category_id].include?(key)
-  end
-
-  def url_escaped
-    URI.escape(url)
-  end
-
-  def url_host
-    URI.parse(url_escaped).host
+    !%i[title url link_category_id].include?(key)
   end
 
   class << self

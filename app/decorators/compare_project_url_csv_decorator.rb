@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CompareProjectUrlCsvDecorator
   include ActionView::Helpers::UrlHelper
 
@@ -16,8 +18,10 @@ class CompareProjectUrlCsvDecorator
   def comments_url
     require_best_analysis do |a|
       return t('compares.project_cells.comments.no_comments_found') unless a.relative_comments
+
       f = a.factoids.find { |factoid| factoid.is_a?(FactoidComments) }
       return h.project_factoids_url(@project, host: @host, anchor: f.class.name) if f
+
       t('compares.project_cells.comments.no_comments_found')
     end
   end
@@ -68,7 +72,7 @@ class CompareProjectUrlCsvDecorator
     if !@project.best_analysis.nil? && @project.best_analysis.last_commit_time
       yield @project.best_analysis
     else
-      (@project.enlistments.count > 0) ? t('compares.pending') : t('compares.no_data')
+      @project.enlistments.count.positive? ? t('compares.pending') : t('compares.no_data')
     end
   end
 

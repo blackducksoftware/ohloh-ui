@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AccountMailer < ActionMailer::Base
   default from: 'mailer@openhub.net'
 
@@ -24,5 +26,10 @@ class AccountMailer < ActionMailer::Base
     )
 
     mail to: @kudo.account.email, subject: t('.subject', from: @kudo.sender.name)
+  end
+
+  def notify_disabled_account_for_login_failure(account)
+    @account = account
+    mail to: account.email, subject: t('.subject')
   end
 end

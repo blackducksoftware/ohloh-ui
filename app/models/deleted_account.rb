@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class DeletedAccount < ActiveRecord::Base
   validates :login, :email, presence: true
   after_create :notify_admin

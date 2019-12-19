@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Organization < ActiveRecord::Base
   include OrganizationSearchables
   include OrganizationJobs
@@ -5,7 +7,7 @@ class Organization < ActiveRecord::Base
   include Tsearch
 
   ORG_TYPES = { 'Commercial' => 1, 'Education' => 2, 'Government' => 3, 'Non-Profit' => 4 }.freeze
-  ALLOWED_SORT_OPTIONS = %w(newest recent name projects).freeze
+  ALLOWED_SORT_OPTIONS = %w[newest recent name projects].freeze
 
   belongs_to :logo
   has_one :permission, as: :target
@@ -26,7 +28,7 @@ class Organization < ActiveRecord::Base
 
   before_validation :clean_strings_and_urls
 
-  acts_as_editable editable_attributes: [:name, :vanity_url, :org_type, :description, :homepage_url],
+  acts_as_editable editable_attributes: %i[name vanity_url org_type description homepage_url],
                    merge_within: 30.minutes
   acts_as_protected
 
@@ -35,7 +37,7 @@ class Organization < ActiveRecord::Base
   after_update :schedule_analysis, if: :org_type_changed?
 
   def to_param
-    vanity_url.blank? ? id.to_s : vanity_url
+    vanity_url.presence || id.to_s
   end
 
   def active_managers
@@ -43,7 +45,7 @@ class Organization < ActiveRecord::Base
   end
 
   def allow_undo_to_nil?(key)
-    ![:name, :org_type, :vanity_url].include?(key)
+    !%i[name org_type vanity_url].include?(key)
   end
 
   def org_type_label
@@ -79,7 +81,8 @@ class Organization < ActiveRecord::Base
   end
 
   def affiliators_count
-    @affiliators_count ||= accounts.joins(:person, :positions)
+    @affiliators_count ||= accounts.joins(:person, positions: :project)
+                                   .where(projects: { deleted: false })
                                    .where(NameFact.with_positions)
                                    .count('DISTINCT(accounts.id)')
   end
@@ -113,6 +116,7 @@ class Organization < ActiveRecord::Base
 
   def check_change_in_delete
     return false unless changed.include?('deleted')
+
     project_claim_edits(!deleted?).each { |edit| edit.send(deleted? ? :undo! : :redo!, editor_account) }
     schedule_analysis
   end

@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 class Analysis::TopCommitVolumeChart
   include ChartHelper
   include ActionView::Helpers::AssetUrlHelper
 
-  OTHER = 'Other'.freeze
+  OTHER = 'Other'
   NAME_COUNT = 5
   INTERVALS = ['50 years', '12 months', '1 month'].freeze
 
@@ -12,7 +14,7 @@ class Analysis::TopCommitVolumeChart
   end
 
   def data
-    TOP_COMMIT_VOLUME_CHART_DEFAULTS.merge(data_options).deep_merge(chart_watermark(x: '90%', y: '14%'))
+    TOP_COMMIT_VOLUME_CHART_DEFAULTS.merge(data_options).deep_merge(chart_watermark(x_axis: '90%', y_axis: '14%'))
   end
 
   private
@@ -62,9 +64,9 @@ class Analysis::TopCommitVolumeChart
     [names, total_count]
   end
 
-  def warning_message(s)
-    half = s.map { |_name, count| count }.sum / 2
-    s.each do |name, count|
+  def warning_message(msg)
+    half = msg.map { |_name, count| count }.sum / 2
+    msg.each do |name, count|
       return I18n.t('top_commit_volume_chart.message', name: name) if count > half && name != OTHER
     end
     nil

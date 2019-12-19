@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Post < ActiveRecord::Base
   include Tsearch
   belongs_to :forum, counter_cache: true
@@ -23,9 +25,9 @@ class Post < ActiveRecord::Base
   after_destroy :update_topic
 
   def update_topic_with_post_data
-    topic.update_attributes(replied_at: updated_at,
-                            replied_by: account_id,
-                            last_post_id: id)
+    topic.update(replied_at: updated_at,
+                 replied_by: account_id,
+                 last_post_id: id)
   end
 
   def update_topic
@@ -33,14 +35,14 @@ class Post < ActiveRecord::Base
       topic.destroy
     else
       last_post = topic.posts.last
-      topic.update_attributes(replied_at: last_post.created_at,
-                              replied_by: last_post.account_id,
-                              last_post_id: last_post.id)
+      topic.update(replied_at: last_post.created_at,
+                   replied_by: last_post.account_id,
+                   last_post_id: last_post.id)
     end
   end
 
   def body=(value)
-    super(value ? value.fix_encoding_if_invalid!.strip_tags.strip : nil)
+    super(value ? value.fix_encoding_if_invalid.strip_tags.strip : nil)
   end
 
   def searchable_factor
@@ -57,6 +59,7 @@ class Post < ActiveRecord::Base
   def destroy_with_empty_topic
     destroy
     return if topic.forum_id.nil? || topic.posts.exists?
+
     topic.destroy
   end
 end

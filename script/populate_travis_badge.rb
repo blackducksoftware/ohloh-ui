@@ -1,4 +1,5 @@
 #! /usr/bin/env ruby
+# frozen_string_literal: true
 
 require_relative '../config/environment'
 require 'open-uri'
@@ -22,8 +23,10 @@ class PopulateTravis
       repository = fyle.code_set.code_location.repository
       formatted_repo_url = ensure_proper_url_format(fyle.code_set.code_location)
       next unless formatted_repo_url
+
       travis_badge = extract_badge_image(formatted_repo_url)
       next unless travis_badge
+
       @repo_with_travis_badge += 1
       create_travis_badge(repository, travis_badge)
     end
@@ -40,13 +43,14 @@ class PopulateTravis
   end
 
   def extract_badge_image(repo_url)
-    repo_page = Nokogiri::HTML(open(handle_url_redirect(repo_url)))
+    repo_page = Nokogiri::HTML(URI.parse(handle_url_redirect(repo_url)).open)
     return unless repo_page
+
     badge_url = repo_page.xpath('//img').collect { |a| a['data-canonical-src'] }
                          .uniq.compact
                          .select { |b| b.match('travis') }
     badge_url.first
-  rescue
+  rescue StandardError
     nil
   end
 
@@ -58,8 +62,9 @@ class PopulateTravis
   def create_travis_badge(repo, badge_url)
     manipulated_url = manipulate_badge_url(badge_url)
     repo.enlistments.each do |enlistment|
-      next if enlistment.travis_badges.count > 0
+      next if enlistment.travis_badges.count.positive?
       next unless enlistment.travis_badges.create(identifier: manipulated_url)
+
       puts "Succefully created badge: #{@total_badges_created += 1}"
     end
   end

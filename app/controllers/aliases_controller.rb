@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 class AliasesController < SettingsController
   helper ProjectsHelper
   before_action :session_required, :redirect_unverified_account, except: :index
-  before_action :set_project_or_fail, :set_project_editor_account_to_current_user, except: [:undo, :redo]
+  before_action :set_project_or_fail, :set_project_editor_account_to_current_user, except: %i[undo redo]
   before_action :redirect_to_message_if_oversized_project, only: :new
-  before_action :project_context, only: [:index, :new, :create]
+  before_action :project_context, only: %i[index new create]
 
   def index
     @best_analysis_aliases = Alias.best_analysis_aliases(@project)
@@ -13,19 +15,19 @@ class AliasesController < SettingsController
   def create
     @alias = Alias.create_for_project(current_user, @project, params[:commit_name_id], params[:preferred_name_id])
     redirect_to action: :index
-  rescue
+  rescue StandardError
     render :new, status: :unprocessable_entity
   end
 
   def undo
     alias_record = Alias.find_by(id: params[:id], deleted: false)
-    alias_record.create_edit.undo!(current_user) if alias_record
+    alias_record&.create_edit&.undo!(current_user)
     redirect_to action: :index
   end
 
   def redo
     alias_record = Alias.find_by(id: params[:id], deleted: true)
-    alias_record.create_edit.redo!(current_user) if alias_record
+    alias_record&.create_edit&.redo!(current_user)
     redirect_to action: :index
   end
 
@@ -33,6 +35,8 @@ class AliasesController < SettingsController
     @preferred_names = Alias.preferred_names(@project, params[:commit_name_id])
     render partial: 'aliases/preferred_names'
   end
+
+  def new; end
 
   private
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Tag < ActiveRecord::Base
   MAX_ALLOWED_PER_PROJECT = 20
 
@@ -28,7 +30,7 @@ class Tag < ActiveRecord::Base
 
   def recalc_weight!
     recalc_taggings_count
-    update_attribute :weight, (taggings_count == 0 && 1.0) || (1.0 / (1.0 + Math.log10(taggings_count)))
+    update_attribute :weight, (taggings_count.zero? && 1.0) || (1.0 / (1.0 + Math.log10(taggings_count)))
   end
 
   def recalc_taggings_count

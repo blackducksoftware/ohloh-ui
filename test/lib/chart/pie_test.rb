@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 require 'test_helpers/image_helper'
 
@@ -9,7 +11,7 @@ describe 'Chart::Pie' do
 
   describe '#render' do
     it 'should render chart' do
-      expected_image_path = Rails.root.join('test/data/chart/pie.png')
+      expected_image_path = Rails.root.join('test', 'data', 'chart', 'pie.png')
       result_file = Chart::Pie.new(data, nil, nil).render
 
       compare_images(result_file.path, expected_image_path, 0.1)

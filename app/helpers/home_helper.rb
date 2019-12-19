@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module HomeHelper
   def width(project, required, max)
     count = project_count(project, required)
@@ -8,11 +10,11 @@ module HomeHelper
   def project_count(item, required)
     case required
     when 'most_popular_projects'
-      return item.user_count
+      item.user_count
     when 'most_active_projects'
-      return item.best_analysis.thirty_day_summary.commits_count unless item.best_analysis.blank?
+      item.best_analysis.thirty_day_summary.commits_count if item.best_analysis.present?
     when 'most_active_contributors'
-      item.best_vita.vita_fact.thirty_day_commits unless item.best_vita.vita_fact.blank?
+      item.best_vita.vita_fact.thirty_day_commits if item.best_vita.vita_fact.present?
     end
   end
 

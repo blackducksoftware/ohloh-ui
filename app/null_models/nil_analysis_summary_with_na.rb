@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class NilAnalysisSummaryWithNa < NullObject
   def commits_count
     'N/A'

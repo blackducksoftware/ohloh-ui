@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Account::CommitCore
   def initialize(account_ids)
     @account_ids = account_ids
@@ -8,6 +10,7 @@ class Account::CommitCore
 
   def most_and_recent_data
     return {} if @account_ids.blank?
+
     stats = Account.select(select_clause)
                    .with_facts
                    .where(@accounts_id.in(@account_ids))

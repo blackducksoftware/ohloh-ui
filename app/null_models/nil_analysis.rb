@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class NilAnalysis < NullObject
   attr_reader :main_language, :oldest_code_set_time
 
@@ -19,7 +21,7 @@ class NilAnalysis < NullObject
     :na
   end
 
-  def man_years_from_loc(_)
+  def man_years_from_loc(_loc)
     0
   end
 

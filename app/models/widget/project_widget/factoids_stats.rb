@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ProjectWidget::FactoidsStats < ProjectWidget
   def height
     220

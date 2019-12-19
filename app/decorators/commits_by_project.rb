@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CommitsByProject < Cherry::Decorator
   LIMIT = 6
 
@@ -32,12 +34,14 @@ class CommitsByProject < Cherry::Decorator
 
   def start_date
     return @start_date if @start_date
+
     given_start_date = @context[:start_date] || (Time.current - 7.years)
     @start_date = given_start_date.strftime('%Y-%m-01').to_date
   end
 
   def end_date
     return @end_date if @end_date
+
     given_end_date = @context[:end_date] || Time.current
     @end_date = given_end_date.strftime('%Y-%m-01').to_date
   end
@@ -82,6 +86,7 @@ class CommitsByProject < Cherry::Decorator
 
   def start_time_of_plot(first_date)
     return Date.current.beginning_of_month - 5.years if older_than?(first_date, 5)
+
     first_date.to_s.to_date
   end
 
@@ -97,6 +102,7 @@ class CommitsByProject < Cherry::Decorator
 
   def reduce_to_limit(facts)
     return facts if facts.length < LIMIT
+
     reduced_facts = facts.take(LIMIT)
     other_projs = facts.drop(LIMIT).map(&:last)
     other_facts = other_projs.flatten.group_by { |af| af[:month] }.map do |month, afs|
@@ -115,7 +121,7 @@ class CommitsByProject < Cherry::Decorator
   end
 
   def months_without_commits
-    @months_with_nil_commits ||=
+    @months_without_commits ||=
       TimeParser.months_in_range(start_date, end_date)
                 .each_with_object([]) { |date, array| array << { month: date.to_date, commits: nil } }
   end

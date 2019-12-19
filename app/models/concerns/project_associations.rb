@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ProjectAssociations
   extend ActiveSupport::Concern
 
@@ -11,8 +13,8 @@ module ProjectAssociations
     has_many :project_badges, through: :enlistments
     has_many :travis_badges, through: :enlistments
     has_many :cii_badges, through: :enlistments
-    belongs_to :best_analysis, foreign_key: :best_analysis_id, class_name: :Analysis
-    belongs_to :best_project_security_set, foreign_key: :best_project_security_set_id, class_name: :ProjectSecuritySet
+    belongs_to :best_analysis, foreign_key: :best_analysis_id, class_name: 'Analysis'
+    belongs_to :best_project_security_set, foreign_key: :best_project_security_set_id, class_name: 'ProjectSecuritySet'
     has_many :aliases, -> { where(deleted: false).where.not(preferred_name_id: nil) }
     has_many :contributions
     has_many :positions
@@ -78,7 +80,7 @@ module ProjectAssociations
 
     class << self
       def collection_arel(ids = nil, sort = nil, query = nil)
-        if !ids.blank?
+        if ids.present?
           where(id: ids.split(',')).order(:id)
         else
           tsearch(query, respond_to?("by_#{sort}") ? "by_#{sort}" : nil)

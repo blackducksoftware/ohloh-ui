@@ -62,6 +62,7 @@ class SetupProjectAndLanguagesSections
       $('#additional-fields').removeClass('hidden')
       $(this).addClass('hidden')
       $('a.expanded').removeClass('hidden')
+      $('#project-experience-form').find('input').autocomplete({ source: '/autocompletes/project' })
     $('a.expanded').click ->
       $('#additional-fields').addClass('hidden')
       $(this).addClass('hidden')

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class String
   def strip_tags
     gsub(/<.*?>/, '')
@@ -34,36 +36,26 @@ class String
     false
   end
 
-  def fix_encoding_if_invalid!
-    force_encoding('utf-8').scrub!
+  def fix_encoding_if_invalid
+    dup.force_encoding('utf-8').scrub!
   end
 
   def to_bool
-    (self =~ /^(true|t|yes|y|1)$/i) ? true : false
-  end
-
-  def escape
-    ActionController::Base.helpers.escape self
-  end
-
-  def escape_unclosed_tags
-    ActionController::Base.helpers.escape_unclosed_tags self
-  end
-
-  def escape_invalid_tags
-    ActionController::Base.helpers.escape_invalid_tags self
+    self =~ /^(true|t|yes|y|1)$/i ? true : false
   end
 
   class << self
     def clean_string(str)
       return str if str.blank?
+
       str.to_s.strip.strip_tags
     end
 
     def clean_url(url)
       return url if url.blank?
-      url.strip!
-      (url =~ %r{^(http:/)|(https:/)|(ftp:/)}) ? url : "http://#{url}"
+
+      url = url.dup.strip
+      url =~ %r{^(http:/)|(https:/)|(ftp:/)} ? url : "http://#{url}"
     end
   end
 end

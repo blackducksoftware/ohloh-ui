@@ -1,15 +1,18 @@
-lock '3.10.1'
+# frozen_string_literal: true
+
+lock '3.11.0'
 
 set :whoami, `whoami`.strip
-set :default_env, 'PATH' => '/home/deployer/.rbenv/shims:$PATH', 'BASH_ENV' => '/home/deployer/.production_vars'
+set :default_env, 'PATH' => '/home/serv-deployer/.rbenv/shims:$PATH',
+                  'BASH_ENV' => '/home/serv-deployer/.production_vars'
 
 set :application, ENV['APP'] || 'openhub'
 set :repo_url, 'git@github.com:blackducksoftware/ohloh-ui.git'
-set :user, 'deployer'
+set :user, 'serv-deployer'
 set :use_sudo, false
 set :passenger_restart_with_sudo, false
 set :branch, ENV['branch'] || :master
-role :reverification_server, ['deployer@prd-oh-web02.dc2.lan']
+# role :reverification_server, ['deployer@prd-oh-web02.dc2.lan']
 
 set :deploy_to, "/var/local/#{fetch(:application)}"
 
@@ -26,5 +29,4 @@ set :sidekiq_log, File.join(shared_path, 'log', 'sidekiq.log')
 set :sidekiq_config, nil
 set :sidekiq_default_hooks, true
 
-before 'deploy:check:linked_files', 'deploy:update_configuration'
-after 'deploy:updated', 'newrelic:notice_deployment'
+set :whenever_roles, :sidekiq

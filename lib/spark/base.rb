@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 class Spark::Base
   include MiniMagickHelper
 
-  IMAGE_DIR = Rails.root.join('app/assets/images/')
+  IMAGE_DIR = Rails.root.join('app', 'assets', 'images', '')
 
   def initialize(data, options = {})
     @data = data

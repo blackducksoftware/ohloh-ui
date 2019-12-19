@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class ActsAsTaggable::ActsAsTaggableTest < ActiveSupport::TestCase
@@ -5,14 +7,14 @@ class ActsAsTaggable::ActsAsTaggableTest < ActiveSupport::TestCase
     project = create(:project)
     project.tag_list = "   foo\t bar \r\n"
     project.tags.count.must_equal 2
-    project.tags.pluck(:name).sort.must_equal %w(bar foo)
+    project.tags.pluck(:name).sort.must_equal %w[bar foo]
   end
 
   it 'tag_list= properly strips out double quotes' do
     project = create(:project)
     project.tag_list = '"real" beef'
     project.tags.count.must_equal 2
-    project.tags.pluck(:name).sort.must_equal %w(beef real)
+    project.tags.pluck(:name).sort.must_equal %w[beef real]
   end
 
   it 'tag_list= leaves punctuation alone' do

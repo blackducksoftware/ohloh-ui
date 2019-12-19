@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class CodeLocationJobProgressTest < ActiveSupport::TestCase
@@ -58,6 +60,11 @@ class CodeLocationJobProgressTest < ActiveSupport::TestCase
       @job.update_columns(status: 5)
       repo_progress.stubs(:sloc_set_code_set_time).returns(Time.current - 2.days)
       repo_progress.message.must_equal 'Open Hub update completed 2 days ago.'
+    end
+
+    it 'should return waiting message when job is restarted' do
+      @job.update_columns(status: 4)
+      repo_progress.message.must_equal 'Step 1 of 3: Downloading source code history (Waiting in queue)'
     end
   end
 end

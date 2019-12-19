@@ -1,7 +1,6 @@
 :ruby
   url = widget_url_without_format(@widget, 'organization')
   style = widget_iframe_style(@widget)
-  iframe = "<iframe src='#{url}', scrolling='no', marginHeight='0', marginWidth='0', style='#{style}'></iframe>"
 
 :plain
-  document.write("#{iframe}");
+  document.write("<iframe src='#{url}' scrolling='no' marginHeight='0' marginWidth='0' style='#{style}'></iframe>");

@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 module AccountValidations
   extend ActiveSupport::Concern
 
   included do
-    validates :email, presence: :true, length: { in: 3..100 }, uniqueness: { case_sensitive: false },
+    validates :email, presence: true, length: { in: 3..100 }, uniqueness: { case_sensitive: false },
                       email_format: true, allow_blank: false
 
     validates :password, length: { in: 5..40 }, unless: :skip_password_validation?
@@ -21,6 +23,7 @@ module AccountValidations
 
   def valid_current_password?
     return if current_password_matches_existing? && access.active_and_not_disabled?
+
     errors.add(:current_password)
   end
 

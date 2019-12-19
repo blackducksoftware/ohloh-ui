@@ -1,11 +1,13 @@
 #! /usr/bin/env ruby
+# frozen_string_literal: true
+
 # Usage: ruby script/populate_repository_directories [options]
 # Options:
 # +up+: This is default. Runs the migration to create repository_directories.
 # +down+: Reverses the migration to remove all existing repository_directories.
 
 direction = ARGV[0] || 'up'
-allowed_args = %w(up down)
+allowed_args = %w[up down]
 abort "Please provide a valid argument(#{allowed_args.join('/')})." unless allowed_args.include?(direction)
 
 require_relative '../config/environment'

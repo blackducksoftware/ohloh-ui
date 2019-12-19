@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# rubocop:disable Metrics/BlockLength
 Rails.application.routes.draw do
   mount JasmineRails::Engine => '/specs' if defined?(JasmineRails)
 
@@ -22,20 +25,23 @@ Rails.application.routes.draw do
     get :age_spark, on: :collection
   end
 
-  resources :sessions, controller: 'clearance/sessions', only: [:new, :create] do
+  resources :sessions, controller: 'clearance/sessions', only: %i[new] do
     collection do
       delete :destroy
     end
   end
 
+  post 'sessions' => 'sessions#create', as: :oh_sessions
+  get 'health' => 'sessions#health'
+
   resources :stack_entries, only: :new
 
-  resources :activation_resends, only: [:new, :create]
+  resources :activation_resends, only: %i[new create]
 
   resources :reviews, only: :destroy do
     resources :helpfuls, only: :create
   end
-  resources :kudos, only: [:new, :create, :destroy]
+  resources :kudos, only: %i[new create destroy]
 
   resources :people, only: [:index] do
     collection { get :rankings }
@@ -43,16 +49,16 @@ Rails.application.routes.draw do
   resources :edits, only: [:update]
 
   resources :licenses do
-    resources :edits, only: [:index, :show]
+    resources :edits, only: %i[index show]
   end
 
   # support old syntax URLs like tags/php/ruby or tags/ruby
   get 'tags/*name', to: 'tags#index', via: :get
-  resources :tags, only: [:index, :show]
+  resources :tags, only: %i[index show]
 
-  resources :passwords, controller: 'password_resets', only: %w(new create)
+  resources :passwords, controller: 'password_resets', only: %i[new create]
   resources :user, only: [] do
-    resource :password, controller: 'password_resets', only: %w(edit update)
+    resource :password, controller: 'password_resets', only: %i[edit update]
   end
 
   resources :accounts do
@@ -77,14 +83,14 @@ Rails.application.routes.draw do
         get :account_rank, action: :rank, as: :rank
       end
     end
-    resources :kudos, only: [:index, :show] do
+    resources :kudos, only: %i[index show] do
       collection do
         get :sent
       end
     end
-    resources :edits, only: [:index, :show]
-    resources :posts, only: [:index]
-    resources :reviews, only: [:index]
+    resources :edits, only: %i[index show]
+    resources :posts, only: :index
+    resources :reviews, only: :index
     resources :positions
     resources :position_factories, only: :create
 
@@ -132,7 +138,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :deleted_accounts, only: [:edit, :update]
+  resources :deleted_accounts, only: %i[edit update]
 
   resources :check_availabilities, only: [] do
     collection do
@@ -165,7 +171,7 @@ Rails.application.routes.draw do
     resources :topics, only: [:show]
   end
 
-  resources :topics, except: [:new, :create] do
+  resources :topics, except: %i[new create] do
     get :close, on: :member
     get :reopen, on: :member
     resources :posts, except: [:new]
@@ -187,7 +193,7 @@ Rails.application.routes.draw do
   get 'p/:project_id/badge_js', to: 'project_widgets#thin_badge', defaults: { format: 'js' }
   get 'p/:project_id/badge.:format', to: 'project_widgets#thin_badge'
 
-  resources :duplicates, only: [:index, :show] do
+  resources :duplicates, only: %i[index show] do
     member do
       post 'resolve/:keep_id', to: 'duplicates#resolve'
     end
@@ -213,7 +219,7 @@ Rails.application.routes.draw do
       post :check_forge
     end
     resources :project_badges
-    resources :contributions, path: :contributors, as: :contributors, only: [:index, :show] do
+    resources :contributions, path: :contributors, as: :contributors, only: %i[index show] do
       resources :commits
       collection do
         get :near
@@ -225,24 +231,24 @@ Rails.application.routes.draw do
       end
     end
     resources :rss_subscriptions
-    resources :licenses, controller: :project_licenses, only: [:index, :new, :create, :destroy]
-    resources :tags, controller: :project_tags, only: [:index, :create, :destroy] do
+    resources :licenses, controller: :project_licenses, only: %i[index new create destroy]
+    resources :tags, controller: :project_tags, only: %i[index create destroy] do
       collection do
         get :related
         get :status
       end
     end
-    resources :duplicates, except: [:show, :index]
-    resource :logos, only: [:new, :create, :destroy]
+    resources :duplicates, except: %i[show index]
+    resource :logos, only: %i[new create destroy]
     resources :links, except: :show
-    resources :managers, only: [:index, :new, :create, :edit, :update] do
+    resources :managers, only: %i[index new create edit update] do
       member do
         post :approve
         post :reject
       end
     end
     resources :manages, only: [:new]
-    resources :edits, only: [:index, :show]
+    resources :edits, only: %i[index show]
     get 'edits/refresh/:id', to: 'edits#refresh'
     resources :enlistments
     resources :factoids, only: [:index]
@@ -267,7 +273,7 @@ Rails.application.routes.draw do
       collection { get :summary }
       resources :helpfuls, only: :create
     end
-    resources :analyses, only: [:index, :show] do
+    resources :analyses, only: %i[index show] do
       member do
         get :languages_summary
         get :languages
@@ -285,7 +291,7 @@ Rails.application.routes.draw do
       resources :activity_facts, only: :index, defaults: { format: 'xml' }
       resources :size_facts, only: :index
     end
-    resources :commits, only: [:index, :show] do
+    resources :commits, only: %i[index show] do
       collection { get :summary }
       member do
         get :statistics
@@ -302,7 +308,7 @@ Rails.application.routes.draw do
     resources :stacks, only: [] do
       collection { get :near }
     end
-    resources :aliases, only: [:index, :new, :create] do
+    resources :aliases, only: %i[index new create] do
       collection { get :preferred_names }
       member do
         post :undo
@@ -323,7 +329,7 @@ Rails.application.routes.draw do
       get :claim_projects_list
       get :claim_project
       put :remove_project
-      match :new_manager, via: [:get, :post]
+      match :new_manager, via: %i[get post]
       get :manage_projects
       get 'permissions'  => 'permissions#show',   as: :permissions
       put 'permissions'  => 'permissions#update', as: :update_permissions
@@ -333,9 +339,9 @@ Rails.application.routes.draw do
       get :resolve_vanity_url
     end
 
-    resources :edits, only: [:index, :show]
-    resource :logos, only: [:new, :create, :destroy]
-    resources :managers, only: [:index, :new, :create, :edit, :update] do
+    resources :edits, only: %i[index show]
+    resource :logos, only: %i[new create destroy]
+    resources :managers, only: %i[index new create edit update] do
       member do
         post :approve
         post :reject
@@ -350,14 +356,14 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :stacks, only: [:show, :create, :update, :destroy] do
+  resources :stacks, only: %i[show create update destroy] do
     member do
       get :similar
       get :similar_stacks
       get :builder
       get :reset
     end
-    resources :stack_entries, only: [:show, :create, :update, :destroy]
+    resources :stack_entries, only: %i[show create update destroy]
     resources :stack_ignores, only: [:create] do
       collection do
         delete :delete_all
@@ -370,7 +376,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :languages, only: [:show, :index] do
+  resources :languages, only: %i[show index] do
     collection do
       get :compare
       get :chart
@@ -378,7 +384,7 @@ Rails.application.routes.draw do
   end
 
   resources :contributors, controller: 'contributions' do
-    resources :invites, only: [:new, :create]
+    resources :invites, only: %i[new create]
   end
 
   resources :explores, only: :index, path: :explore, controller: :explore do
@@ -397,14 +403,14 @@ Rails.application.routes.draw do
 
   get 'server_info' => 'home#server_info'
 
-  resources :committers, only: [:index, :show] do
+  resources :committers, only: %i[index show] do
     member do
       post :claim
       post :save_claim
     end
   end
 
-  resources :session_projects, only: [:index, :create, :destroy]
+  resources :session_projects, only: %i[index create destroy]
 
   ActiveAdmin.routes(self)
   namespace :admin do
@@ -426,9 +432,9 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :sloc_jobs, only: [:index, :show, :destroy]
-    resources :complete_jobs, only: [:index, :show, :destroy]
-    resources :fetch_jobs, only: [:index, :show, :destroy]
+    resources :sloc_jobs, only: %i[index show destroy]
+    resources :complete_jobs, only: %i[index show destroy]
+    resources :fetch_jobs, only: %i[index show destroy]
 
     resources :projects do
       resources :jobs do
@@ -455,10 +461,17 @@ Rails.application.routes.draw do
 
   namespace :oh_admin do
     root to: 'dashboard#index'
+    resources :accounts do
+      collection do
+        get :charts
+      end
+    end
     resources :projects do
       resources :jobs do
       end
     end
+    resources :broken_links, only: %i[index destroy]
+    resources :license_permissions
   end
 
   get 'sitemap_index.xml', controller: 'sitemap', action: 'index', format: 'xml'
@@ -467,3 +480,4 @@ Rails.application.routes.draw do
   # the unmatched_route must be last as it matches everything
   match '*unmatched_route', to: 'application#raise_not_found!', via: :all
 end
+# rubocop:enable Metrics/BlockLength

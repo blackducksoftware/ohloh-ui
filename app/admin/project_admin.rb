@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 ActiveAdmin.register Project do
   menu false
   actions :index, :show, :edit, :update
 
-  editable_params = [:uuid, :best_analysis_id]
+  editable_params = %i[uuid best_analysis_id]
   permit_params editable_params
 
   filter :name
@@ -38,6 +40,17 @@ ActiveAdmin.register Project do
       link_to project.best_project_security_set_id, admin_project_security_sets_path(project.best_project_security_set)
     end
     actions
+  end
+
+  member_action :create_analyze_job do
+    project = Project.from_param(params[:id]).first
+    job = ProjectAnalysisJob.incomplete.find_by(project_id: project.id)
+    job&.update!(status: 3, notes: 'Rescheduling Job')
+
+    ProjectAnalysisJob.create!(project_id: project.id)
+
+    redirect_to oh_admin_project_jobs_path(project),
+                flash: { success: 'ProjectAnalysisJob scheduled successfully' }
   end
 
   form do |f|

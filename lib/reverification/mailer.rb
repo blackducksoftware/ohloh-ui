@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 module Reverification
   class Mailer
     extend Amazon
-    FROM = 'info@openhub.net'.freeze
+    FROM = 'info@openhub.net'
 
     class << self
       def first_notice_template(account)
@@ -56,7 +58,7 @@ module Reverification
         check_statistics_and_wait_to_avoid_exceeding_throttle_limit
         begin
           resp = ses.send_email(template)
-        rescue AWS::SimpleEmailService::Errors::InvalidParameterValue
+        rescue Aws::SES::Errors::InvalidParameterValue
           bad_email_queue.send_message("Account id: #{account.id} with email: #{account.email}")
         else
           create_or_update_reverification_tracker(account, phase, resp)
@@ -100,6 +102,7 @@ module Reverification
         if account.reverification_tracker
           return ReverificationTracker.update_tracker(account.reverification_tracker, phase, resp)
         end
+
         account.create_reverification_tracker(message_id: resp[:message_id], sent_at: Time.now.utc)
       end
     end

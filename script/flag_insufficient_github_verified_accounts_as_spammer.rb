@@ -1,11 +1,12 @@
 #! /usr/bin/env ruby
+# frozen_string_literal: true
 
 require_relative '../config/environment'
 require 'logger'
 
 class FlagInsufficientGithubVerifiedAccounts
-  GITHUB_USER_URL = 'https://api.github.com/users/'.freeze
-  GITHUB_CURRENT_USER_URL = 'https://api.github.com/user'.freeze
+  GITHUB_USER_URL = 'https://api.github.com/users/'
+  GITHUB_CURRENT_USER_URL = 'https://api.github.com/user'
 
   def initialize
     @log = Logger.new('log/github_verified_spammer.log')

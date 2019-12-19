@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class LinkTest < ActiveSupport::TestCase
@@ -19,9 +21,9 @@ class LinkTest < ActiveSupport::TestCase
   end
 
   it 'must prevent duplicate url' do
-    link = create(:link, project: project)
+    link = create(:link, project: project, link_category_id: Link::CATEGORIES[:Forums])
     link.errors.must_be :empty?
-    link = build(:link, project: project, url: link.url)
+    link = build(:link, project: project, url: link.url, link_category_id: Link::CATEGORIES[:Forums])
     link.save
     link.errors.must_include(:url)
   end

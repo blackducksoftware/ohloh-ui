@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'feedjira'
 
 class RssFeed < ActiveRecord::Base
@@ -34,7 +36,7 @@ class RssFeed < ActiveRecord::Base
     self.error = nil
   rescue Timeout::Error
     self.error = I18n.t('rss_feeds.index.timeout_error', url: url)
-  rescue
+  rescue StandardError
     self.error = I18n.t('rss_feeds.index.error', url: url, message: $ERROR_INFO.message, trace: $ERROR_INFO.backtrace)
   end
 

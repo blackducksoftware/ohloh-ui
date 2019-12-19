@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Account::ClaimCore < OhDelegator::Base
   def email_ids
     NameFact.from("(#{email_ids_from_position.to_sql} union #{email_ids_from_aliases.to_sql}) name_facts")
@@ -6,11 +8,13 @@ class Account::ClaimCore < OhDelegator::Base
 
   def emails
     return [] if email_ids.empty?
+
     EmailAddress.where(id: email_ids).map(&:address)
   end
 
   def unclaimed_persons_count
     return 0 if emails.empty?
+
     Person::Count.unclaimed_by(emails.join(' '), 'email')
   end
 

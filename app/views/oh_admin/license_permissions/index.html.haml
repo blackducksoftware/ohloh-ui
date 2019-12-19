@@ -1,0 +1,51 @@
+%h1
+  License Permissions
+
+%section.content
+  = render partial: 'layouts/partials/alert'
+
+  - if @license_permissions.present?
+    .col-xs-7.col-sm-6.col-lg-10
+      .box
+        .box-body.table-responsive.no-padding
+          %table.table.table-striped.table-hover
+            %tr
+              %th Id
+              %th License
+              %th License Right
+              %th Status
+              %th Last Updated
+              %th.text-center Actions
+            - @license_permissions.each do |license_permission|
+              - license = license_permission.license
+              %tr
+                %td= license_permission.id
+                %td= license.name
+                %td= license_permission.name
+                %td= license_permission.status
+                %td= license_permission.updated_at.strftime('%b %d, %Y')
+      = will_paginate @license_permissions
+    .sidebar.col-xs-5.col-sm-6.col-lg-2
+      .well
+        .panel.panel-default
+          .panel-heading.strong Filter
+        = form_tag(oh_admin_license_permissions_path, method: 'get') do
+          .row
+            = label_tag 'License', nil
+          .row
+            = select_tag 'license_id', options_for_select(@licenses, :selected => params[:license_id]), prompt: "Any"
+          .row
+            = label_tag 'License Right', nil, style: 'text-transform: capitalize;'
+          .row
+            = select_tag 'license_right_id', options_for_select(@license_rights, :selected => params[:license_right_id]), prompt: "Any"
+          .row
+            = label_tag 'Status', nil
+          .row
+            = select_tag 'status' , options_for_select(LicensePermission.statuses, :selected => params[:status]), prompt: "Any"
+          .buttons
+            = submit_tag "Filter", name: nil
+            = submit_tag "Clear Filter", id: "clear_filter"
+      = button_to('Add/Edit Permissions', new_oh_admin_license_permission_path, |
+          :class => "btn btn-outline-secondary float-right", :method => :get, :style => "margin-left: 20px;")
+  - else
+    %h2= 'No License Permissions Found'

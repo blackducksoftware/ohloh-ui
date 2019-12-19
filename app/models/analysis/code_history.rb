@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Analysis::CodeHistory < Analysis::QueryBase
   arel_tables :activity_fact, :all_month
 

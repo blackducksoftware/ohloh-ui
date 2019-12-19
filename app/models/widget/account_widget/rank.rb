@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AccountWidget::Rank < AccountWidget
   def width
     32

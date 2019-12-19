@@ -1,17 +1,26 @@
 AllCops:
-  TargetRubyVersion: 2.2
+  TargetRubyVersion: 2.5
   Exclude:
     - vagrant/**/*
     - script/*_temp.rb
 
-Rails:
-  Enabled: true
-
-HasAndBelongsToMany:
-  Enabled: false
-
 Metrics/LineLength:
   Max: 120
+
+Metrics/BlockLength:
+  Exclude:
+    - lib/tasks/*
+    - lib/tasks/*/*
+    - app/*/concerns/*.rb
+    - app/views/*/*.xml.builder
+    - app/views/*/*.json.jbuilder
+    - app/views/*/*/*.xml.builder
+    - app/admin/*
+    - app/views/admin/*/*.html.arb
+
+Lint/ScriptPermission:
+  Exclude:
+    - script/*
 
 Documentation:
   Enabled: false
@@ -19,7 +28,7 @@ Documentation:
 Style/ClassAndModuleChildren:
   Enabled: false
 
-Style/AccessorMethodName:
+Naming/AccessorMethodName:
   Enabled: false
 
 Style/PerlBackrefs:

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class ChartDecoratorTest < ActiveSupport::TestCase
@@ -29,7 +31,7 @@ class ChartDecoratorTest < ActiveSupport::TestCase
       CommitsByProject.any_instance.stubs(:chart_data).returns(x_axis: ['Jan-2012'], y_axis: 0, max_commits: 5)
 
       json_data = ChartDecorator.new.project_commit_history(account, project.id)
-      data = JSON.load(json_data)
+      data = JSON.parse(json_data)
 
       data['yAxis']['max'].must_equal 5
       data['xAxis']['categories'].must_equal [{ 'commit_month' => 'Jan-2012', 'stringify' => '2012' }]

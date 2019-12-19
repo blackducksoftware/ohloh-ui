@@ -1,16 +1,18 @@
+# frozen_string_literal: true
+
 class AccountsController < ApplicationController
   include RedirectIfDisabled
 
   helper MapHelper
 
-  skip_before_action :store_location, only: [:new, :create]
-  before_action :session_required, only: [:edit, :destroy, :confirm_delete, :me]
-  before_action :set_account, only: [:destroy, :show, :update, :edit, :confirm_delete, :disabled, :settings]
-  before_action :redirect_if_disabled, only: [:show, :update, :edit]
-  before_action :redirect_unverified_account, only: [:edit, :destroy, :confirm_delete, :me]
-  before_action :disabled_during_read_only_mode, only: [:edit, :update]
-  before_action :account_context, only: [:edit, :update, :confirm_delete]
-  before_action :must_own_account, only: [:edit, :update, :confirm_delete]
+  skip_before_action :store_location, only: %i[new create]
+  before_action :session_required, only: %i[edit destroy confirm_delete me]
+  before_action :set_account, only: %i[destroy show update edit confirm_delete disabled settings]
+  before_action :redirect_if_disabled, only: %i[show update edit]
+  before_action :redirect_unverified_account, only: %i[edit destroy confirm_delete me]
+  before_action :disabled_during_read_only_mode, only: %i[edit update]
+  before_action :account_context, only: %i[edit update confirm_delete]
+  before_action :must_own_account, only: %i[edit update confirm_delete]
   before_action :find_claimed_people, only: :index
   before_action :redirect_if_logged_in, only: :new
 
@@ -72,6 +74,14 @@ class AccountsController < ApplicationController
     Account::Subscription.new(@account).unsubscribe(@notification_type) if @status
   end
 
+  def confirm_delete; end
+
+  def edit; end
+
+  def disabled; end
+
+  def settings; end
+
   private
 
   def find_claimed_people
@@ -84,6 +94,7 @@ class AccountsController < ApplicationController
     set_account_by_email_md5
     @account ||= if params[:id] == 'me'
                    return redirect_to new_session_path if current_user.nil?
+
                    current_user
                  else
                    AccountFind.by_id_or_login(params[:id])
@@ -92,7 +103,7 @@ class AccountsController < ApplicationController
   end
 
   def set_account_by_email_md5
-    @account = Account.find_by_email_md5(params[:id]) if request_format == 'xml'
+    @account = Account.find_by(email_md5: params[:id]) if request_format == 'xml'
   end
 
   def create_action_record

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Account::ProjectCore < OhDelegator::Base
   parent_scope do
     has_many :projects, -> { where(deleted: false) }, through: :manages, source: :target, source_type: 'Project'
@@ -19,7 +21,7 @@ class Account::ProjectCore < OhDelegator::Base
   end
 
   def stacked_count
-    @stacked_projects_count ||=
+    @stacked_count ||=
       Project.active.joins(:stacks).where(stacks_account_id).distinct.count
   end
 

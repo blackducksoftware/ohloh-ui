@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ProjectExperience < ActiveRecord::Base
   belongs_to :position
   belongs_to :project
@@ -19,6 +21,7 @@ class ProjectExperience < ActiveRecord::Base
 
   def project_existence
     return unless project_id.nil? && @project_name.present?
+
     errors.add(:project, I18n.t('project_experiences.no_matching_project'))
   end
 end

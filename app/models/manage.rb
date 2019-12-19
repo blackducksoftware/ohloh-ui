@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Manage < ActiveRecord::Base
   MAX_PROJECTS = 200
 
@@ -7,7 +9,7 @@ class Manage < ActiveRecord::Base
   belongs_to :destroyer, class_name: 'Account', foreign_key: :deleted_by
 
   validates :target_type, presence: true,
-                          uniqueness: { scope: [:target_id, :account_id, :deleted_at],
+                          uniqueness: { scope: %i[target_id account_id deleted_at],
                                         message: I18n.t('manage.already_manager') }
   validates :account, presence: true
   validates :message, length: 0..200, allow_nil: true
@@ -26,11 +28,12 @@ class Manage < ActiveRecord::Base
 
   def enforce_maximum_management
     return unless over_management_limit?
+
     errors.add :maximum, I18n.t('manage.maximum_exceeded', max_projects: MAX_PROJECTS)
   end
 
   def approve!(account)
-    update_attributes!(approver: account)
+    update!(approver: account)
   end
 
   def pending?
@@ -39,11 +42,12 @@ class Manage < ActiveRecord::Base
 
   def destroy_by!(destroyer)
     raise I18n.t(:not_authorized) unless can_destroy?(destroyer)
-    update_attributes!(deleted_by: destroyer.id, deleted_at: Time.current)
+
+    update!(deleted_by: destroyer.id, deleted_at: Time.current)
   end
 
   def destroy
-    update_attributes(deleted_by: Account.hamster.id, deleted_at: Time.current)
+    update(deleted_by: Account.hamster.id, deleted_at: Time.current)
   end
 
   private

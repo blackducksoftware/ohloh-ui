@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module StacksHelper
   def stack_edit_in_place
     haml_tag :a, class: 'rest_in_place_helper' do
@@ -13,6 +15,7 @@ module StacksHelper
 
   def stack_country_flag(code)
     return '' unless code && code.size == 2
+
     haml_tag 'img', src: "/assets/flags/#{code.downcase}.gif"
   end
 end

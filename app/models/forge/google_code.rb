@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Forge::GoogleCode < Forge
   require 'open-uri'
   require 'nokogiri'
@@ -37,7 +39,7 @@ class Forge::GoogleCode < Forge
   end
 
   def get_homepage_html(match)
-    open(homepage_html_url(match)).read
+    URI.parse(homepage_html_url(match)).open.read
   end
 
   def source_html_url(match)
@@ -45,22 +47,22 @@ class Forge::GoogleCode < Forge
   end
 
   def get_source_html(match)
-    open(source_html_url(match)).read
+    URI.parse(source_html_url(match)).open.read
   end
 
   def project_name(doc)
     e = doc.css('#pname span[itemprop="name"]').first
-    e && e.inner_html
+    e&.inner_html
   end
 
   def project_description(doc)
     e = doc.css('#psum span[itemprop="description"]').first
-    e && e.inner_html
+    e&.inner_html
   end
 
   def repository_type_and_url(doc)
     e = doc.css('#checkoutcmd').first
-    case e && e.inner_html
+    case e&.inner_html
     when /svn checkout .+http.+(:\S+) .+/
       # HTML fragment contains <strong> and <em>, which must be stripped away
       [:svn_sync, "http#{$1}"]

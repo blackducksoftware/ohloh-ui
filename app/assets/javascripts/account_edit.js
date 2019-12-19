@@ -17,7 +17,7 @@ var EditMap = {
   },
 
   jumpMeTo: function(lat, lng) {
-    var marker = Map.jumpTo(lat, lng);
+    var marker = OH_Map.jumpTo(lat, lng);
     google.maps.event.addListener(marker, "dragend", function() {
         $('#account_latitude')[0].value = marker.getPosition().lat();
         $('#account_longitude')[0].value = marker.getPosition().lng();
@@ -79,7 +79,7 @@ var EditMap = {
     var l = $.trim($('#location_scratch').val());
     if(l.length > 0) {
       $('#spinner').show();
-      Map.geocoder.geocode({address: l}, EditMap.addAddressToMap);
+      OH_Map.geocoder.geocode({address: l}, EditMap.addAddressToMap);
     }
   },
 
@@ -95,8 +95,8 @@ var EditMap = {
     $('#account_location_mirror').html('');
     $('#account_latitude').val("");
     $('#account_longitude').val("");
-    Map.setCenterZoom(0, 10, 0);
-    Map.clearMarkers();
+    OH_Map.setCenterZoom(0, 10, 0);
+    OH_Map.clearMarkers();
     $('#spinner').hide();
     $('#not_found').hide();
   }

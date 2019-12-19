@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Rails.application.configure do
   # Settings specified here will take precedence over those in
   # config/application.rb.
@@ -64,7 +66,7 @@ Rails.application.configure do
   # Set this to true and configure the email server for immediate delivery to
   # raise delivery errors.
   # config.action_mailer.raise_delivery_errors = false
-  config.action_mailer.smtp_settings = { address: 'mailrelay.blackducksoftware.com',
+  config.action_mailer.smtp_settings = { address: 'prd-ops-mail-test01.dc2.lan',
                                          openssl_verify_mode: OpenSSL::SSL::VERIFY_NONE }
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
@@ -82,17 +84,4 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
-
-  # paperclip amazon s3 configurations
-  config.paperclip_defaults = {
-    storage: :s3,
-    s3_credentials: {
-      bucket: ENV['OHLOH_S3_BUCKET_NAME'],
-      access_key_id: ENV['OHLOH_S3_ACCESS_KEY'],
-      secret_access_key: ENV['OHLOH_S3_SECRET_ACCESS_KEY']
-    },
-    s3_protocol: :https
-  }
-  Paperclip::Attachment.default_options[:path] = '/attachments/:id/:basename:style.:extension'
-  Paperclip::Attachment.default_options[:use_timestamp] = false
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class AccountTest < ActiveSupport::TestCase
@@ -181,9 +183,9 @@ class AccountTest < ActiveSupport::TestCase
 
   it 'should return recently active accounts' do
     best_vita = create(:best_vita)
-    best_vita.account.update_attributes(best_vita_id: best_vita.id, created_at: Time.current - 4.days)
+    best_vita.account.update(best_vita_id: best_vita.id, created_at: Time.current - 4.days)
     vita_fact = best_vita.vita_fact
-    vita_fact.update_attributes(last_checkin: Time.current)
+    vita_fact.update(last_checkin: Time.current)
 
     recently_active = Account.recently_active
     recently_active.wont_be_nil
@@ -199,9 +201,9 @@ class AccountTest < ActiveSupport::TestCase
   it 'should not include BOT accounts in active accounts' do
     best_vita = create(:best_vita)
     level = Account::Access::BOT
-    best_vita.account.update_attributes(best_vita_id: best_vita.id, created_at: Time.current - 4.days, level: level)
+    best_vita.account.update(best_vita_id: best_vita.id, created_at: Time.current - 4.days, level: level)
     vita_fact = best_vita.vita_fact
-    vita_fact.update_attributes(last_checkin: Time.current)
+    vita_fact.update(last_checkin: Time.current)
     Account.recently_active.count.must_equal 0
   end
 
@@ -217,7 +219,7 @@ class AccountTest < ActiveSupport::TestCase
     project = create(:project)
     name = create(:name)
     name_fact = create(:name_fact, analysis: project.best_analysis, name: name, vita_id: create(:vita).id)
-    name_fact.vita.account.update_attributes(best_vita_id: name_fact.vita_id, latitude: 30.26, longitude: -97.74)
+    name_fact.vita.account.update(best_vita_id: name_fact.vita_id, latitude: 30.26, longitude: -97.74)
     create(:position, project: project, name: name, account: name_fact.vita.account)
 
     accounts_with_facts = Account.with_facts
@@ -278,7 +280,7 @@ class AccountTest < ActiveSupport::TestCase
 
     it 'test valid logins' do
       account = build(:account)
-      logins = %w(rockola ROCKOLA Rockola Rock_Ola F323 Géré-my)
+      logins = %w[rockola ROCKOLA Rockola Rock_Ola F323 Géré-my]
 
       logins.each do |login|
         account.login = login
@@ -324,24 +326,24 @@ class AccountTest < ActiveSupport::TestCase
   describe 'most_experienced_language' do
     it 'must return the language having a vita_language_fact' do
       create(:language, category: 0)
-      lang_2 = create(:language, category: 2)
+      lang2 = create(:language, category: 2)
       vita = create(:vita)
       vita.account.update!(best_vita_id: vita.id)
-      create(:vita_language_fact, language: lang_2, vita: vita)
+      create(:vita_language_fact, language: lang2, vita: vita)
 
-      lang_2.nice_name.must_equal vita.account.most_experienced_language.nice_name
+      lang2.nice_name.must_equal vita.account.most_experienced_language.nice_name
     end
 
     it 'must return the language with lowest category' do
-      lang_1 = create(:language, category: 0)
-      lang_2 = create(:language, category: 2)
+      lang1 = create(:language, category: 0)
+      lang2 = create(:language, category: 2)
       vita = create(:vita)
       vita.account.update!(best_vita_id: vita.id)
-      create(:vita_language_fact, language: lang_1, total_commits: 0, vita: vita)
-      create(:vita_language_fact, language: lang_2, total_commits: 300, vita: vita,
+      create(:vita_language_fact, language: lang1, total_commits: 0, vita: vita)
+      create(:vita_language_fact, language: lang2, total_commits: 300, vita: vita,
                                   total_activity_lines: 200, total_months: 30)
 
-      lang_1.nice_name.must_equal vita.account.most_experienced_language.nice_name
+      lang1.nice_name.must_equal vita.account.most_experienced_language.nice_name
     end
   end
 
@@ -408,7 +410,7 @@ class AccountTest < ActiveSupport::TestCase
 
   it 'badges list' do
     account = create(:account)
-    badges = %w(badge1 badge2)
+    badges = %w[badge1 badge2]
     Badge.expects(:all_eligible).with(account).returns(badges)
     account.badges.must_equal badges
   end
@@ -737,7 +739,7 @@ class AccountTest < ActiveSupport::TestCase
     it 'should not include an unverified account with edits' do
       account = create(:account, :no_verification)
       account.edits << create(:create_edit)
-      account.edits[0].update_attributes!(account_id: account.id)
+      account.edits[0].update!(account_id: account.id)
       unverified_account = create(:unverified_account)
       SuccessfulAccounts.create(account_id: unverified_account.id)
       assert_equal Account.reverification_not_initiated(5).count, 1
@@ -748,7 +750,7 @@ class AccountTest < ActiveSupport::TestCase
     it 'should not include an unverified account with posts' do
       account = create(:account, :no_verification)
       account.posts << create(:post)
-      account.posts[0].update_attributes!(account_id: account.id)
+      account.posts[0].update!(account_id: account.id)
       unverified_account = create(:unverified_account)
       SuccessfulAccounts.create(account_id: unverified_account.id)
       assert_equal Account.reverification_not_initiated(5).count, 1
@@ -773,7 +775,7 @@ class AccountTest < ActiveSupport::TestCase
     it 'should not include an unverified account with reviews' do
       account = create(:account, :no_verification)
       account.reviews << create(:review)
-      account.reviews[0].update_attributes!(account_id: account.id)
+      account.reviews[0].update!(account_id: account.id)
       unverified_account = create(:unverified_account)
       SuccessfulAccounts.create(account_id: unverified_account.id)
       assert_equal Account.reverification_not_initiated(5).count, 1
@@ -784,7 +786,7 @@ class AccountTest < ActiveSupport::TestCase
     it 'should not include an unverified account with positions' do
       account = create(:account, :no_verification)
       account.positions << create(:position)
-      account.positions[0].update_attributes!(account_id: account.id)
+      account.positions[0].update!(account_id: account.id)
       unverified_account = create(:unverified_account)
       SuccessfulAccounts.create(account_id: unverified_account.id)
       assert_equal Account.reverification_not_initiated(5).count, 1
@@ -795,7 +797,7 @@ class AccountTest < ActiveSupport::TestCase
     it 'should not include an unverified account with stacks' do
       account = create(:account, :no_verification)
       account.stacks << create(:stack)
-      account.stacks[0].update_attributes!(account_id: account.id)
+      account.stacks[0].update!(account_id: account.id)
       unverified_account = create(:unverified_account)
       SuccessfulAccounts.create(account_id: unverified_account.id)
       assert_equal Account.reverification_not_initiated(5).count, 1

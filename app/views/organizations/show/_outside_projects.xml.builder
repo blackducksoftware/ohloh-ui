@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 xml = xml_instance
 
 xml.outside_projects do
@@ -7,7 +9,7 @@ xml.outside_projects do
       xml.activity project_activity_text(pro, false)
       xml.claimed_by pro.organization ? pro.organization.name : ''
       xml.i_use_this pro.user_count
-      xml.community_rating "#{pro.rating_average.to_f.round(1)}"
+      xml.community_rating pro.rating_average.to_f.round(1).to_s
       xml.affiliates_contributing pro.contribs_count
       xml.commits_by_current_affiliates pro.commits
     end

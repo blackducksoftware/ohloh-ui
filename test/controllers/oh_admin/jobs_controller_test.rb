@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 describe 'OhAdmin::JobsController' do
@@ -22,5 +24,16 @@ describe 'OhAdmin::JobsController' do
     login_as admin
     get :index, project_id: 'invalid_project', page: 1
     must_respond_with :not_found
+  end
+
+  it 'should render queued project jobs in jobs index page' do
+    login_as admin
+    create(:slave, id: 1)
+
+    VCR.use_cassette('project_jobs', match_requests_on: [:path]) do
+      get :index, project_id: project.vanity_url
+    end
+
+    assigns(:response)['entries'].collect { |j| j.values[0]['status'] }.uniq.must_include Job::STATUS_QUEUED
   end
 end

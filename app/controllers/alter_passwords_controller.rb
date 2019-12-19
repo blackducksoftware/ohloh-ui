@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AlterPasswordsController < ApplicationController
   before_action :session_required, :redirect_unverified_account
   before_action :set_account
@@ -5,7 +7,7 @@ class AlterPasswordsController < ApplicationController
 
   def update
     @account.validate_current_password = true
-    if @account.update_attributes(account_params)
+    if @account.update(account_params)
       redirect_to account_path, flash: { success: t('.password_changed') }
     else
       render :edit, status: :unprocessable_entity
@@ -18,6 +20,7 @@ class AlterPasswordsController < ApplicationController
   def set_account
     @account = if params[:id] == 'me'
                  return redirect_to new_session_path if current_user.nil?
+
                  current_user
                else
                  AccountFind.by_id_or_login(params[:id])

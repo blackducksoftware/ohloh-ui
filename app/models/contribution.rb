@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 class Contribution < ActiveRecord::Base
-  SORT_OPTIONS = [:name, :kudo_position, :commits, :twelve_month_commits,
-                  :language, :latest_commit, :newest, :oldest].freeze
+  SORT_OPTIONS = %i[name kudo_position commits twelve_month_commits
+                    language latest_commit newest oldest].freeze
   self.primary_key = :id
 
   belongs_to :position
@@ -23,7 +25,8 @@ class Contribution < ActiveRecord::Base
   scope :last_30_days, ->(logged_at) { where('name_facts.last_checkin > ?', logged_at - 30.days) }
   scope :last_year, ->(logged_at) { where('name_facts.last_checkin > ?', logged_at - 12.months) }
   scope :within_timespan, lambda { |time_span, logged_at|
-    return unless logged_at && TIME_SPANS.keys.include?(time_span)
+    return unless logged_at && TIME_SPANS.key?(time_span)
+
     send(TIME_SPANS[time_span], logged_at)
   }
 
@@ -38,7 +41,7 @@ class Contribution < ActiveRecord::Base
   end
 
   def kudoable
-    (person && person.account) || self
+    (person&.account) || self
   end
 
   def recent_kudos(limit = 3)
@@ -78,6 +81,7 @@ class Contribution < ActiveRecord::Base
     def find_indirectly(contribution_id:, project:)
       aka = find_alias_from_name_id(contribution_id, project)
       return unless aka
+
       find_from_generated_id(project, aka) || find_from_positions(project, aka)
     end
 
@@ -96,6 +100,7 @@ class Contribution < ActiveRecord::Base
     def find_from_positions(project, aka)
       position = project.positions.find_by(name_id: aka.preferred_name_id)
       return unless position
+
       contribution_id = generate_id_from_project_id_and_account_id(project.id, position.account_id)
       project.contributions.find_by(id: contribution_id)
     end

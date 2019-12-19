@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class StackWidget < Widget
   MIN_INITIAL_ICONS_PER_ROW = 3
   MAX_INITIAL_ICONS_PER_ROW = 12
@@ -10,6 +12,7 @@ class StackWidget < Widget
     p[:projects_shown] = [MAX_ICONS_SHOWN, p[:projects_shown].to_i].min
 
     raise ArgumentError, I18n.t('stack_widgets.missing') unless vars[:stack_id]
+
     super(p)
   end
 

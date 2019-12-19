@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Enlistment < ActiveRecord::Base
   has_one :create_edit, as: :target
   has_many :project_badges
@@ -46,6 +48,7 @@ class Enlistment < ActiveRecord::Base
 
   def analysis_sloc_set
     return if project.best_analysis.nil?
+
     AnalysisSlocSet.for_code_location(code_location_id).find_by(analysis_id: project.best_analysis_id)
   end
 
@@ -77,6 +80,7 @@ class Enlistment < ActiveRecord::Base
   def update_subscription
     params = { code_location_id: code_location_id, client_relation_id: project_id }
     return CodeLocationSubscription.new(params).delete if deleted
+
     CodeLocationSubscription.create(params)
   end
 end

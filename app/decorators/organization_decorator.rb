@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class OrganizationDecorator < Cherry::Decorator
   # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
   def sidebar
@@ -25,4 +27,5 @@ class OrganizationDecorator < Cherry::Decorator
       options.push(['Other', ''])
     end
   end
+  # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
 end

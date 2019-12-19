@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Job < ActiveRecord::Base
   belongs_to :project
   belongs_to :slave
@@ -9,6 +11,7 @@ class Job < ActiveRecord::Base
   STATUS_RUNNING   = 1
   STATUS_QUEUED    = 2
   STATUS_FAILED    = 3
+  STATUS_RESTART   = 4
   STATUS_COMPLETED = 5
 
   def initialize(attributes = {})
@@ -17,13 +20,17 @@ class Job < ActiveRecord::Base
     self.code_location_id ||= code_set.code_location_id if code_set_id
   end
 
+  scope :incomplete_fis_jobs, lambda {
+                                where.not(type: %w[TarballJob VulnerabilityJob TagJob RepostEventJob],
+                                          status: STATUS_COMPLETED)
+                              }
   scope :incomplete, -> { where.not(status: STATUS_COMPLETED) }
   scope :failed, -> { where(status: STATUS_FAILED) }
   scope :scheduled, -> { where(status: STATUS_SCHEDULED) }
   scope :complete, -> { where(status: STATUS_COMPLETED) }
   scope :running, -> { where(status: STATUS_RUNNING) }
 
-  scope :slave_recent_jobs, lambda {|count = 20|
+  scope :slave_recent_jobs, lambda { |count = 20|
     rankings = 'select id, RANK() OVER (PARTITION BY slave_id, status ORDER BY id ASC) rank FROM jobs'
     joins("INNER JOIN (#{rankings}) rankings ON rankings.id = jobs.id")
       .where('rankings.rank < :count', count: count.next)

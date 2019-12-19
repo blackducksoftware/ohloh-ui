@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 module EnlistmentsHelper
   def options_for_select_type(scm_type)
-    options_hash = { 'Subversion'       => 'svn_sync',
-                     'CVS'              => 'cvs',
-                     'Git'              => 'git',
-                     'Mercurial'        => 'hg',
-                     'Bazaar'           => 'bzr',
+    options_hash = { 'Subversion' => 'svn_sync',
+                     'CVS' => 'cvs',
+                     'Git' => 'git',
+                     'Mercurial' => 'hg',
+                     'Bazaar' => 'bzr',
                      'Github Repositories' => 'GithubUser' }
     current_selection = scm_type || 'svn_sync'
     options_for_select(options_hash, current_selection)
@@ -19,5 +21,9 @@ module EnlistmentsHelper
   def sidekiq_work_in_progress?
     key = Setting.get_project_enlistment_key(@project.id)
     Setting.get_value(key).try(:present?)
+  end
+
+  def code_location_admin_url(id)
+    "#{ApiAccess::URL}/admin/code_locations/#{id}/jobs"
   end
 end

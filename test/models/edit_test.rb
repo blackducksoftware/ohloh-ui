@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class EditTest < ActiveSupport::TestCase
@@ -69,7 +71,7 @@ class EditTest < ActiveSupport::TestCase
   it 'test_that_project_and_organization_get_filled_in_automatically_when_associating_project_to_an_org' do
     p = create(:project, organization: nil)
     org = create(:organization)
-    p.update_attributes(organization_id: org.id)
+    p.update(organization_id: org.id)
     edit = PropertyEdit.where(target: p, key: 'organization_id').first
     edit.project_id.must_equal p.id
     edit.value.must_equal org.id.to_s

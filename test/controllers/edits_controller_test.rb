@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 describe EditsController do
@@ -10,7 +12,7 @@ describe EditsController do
       create(:link, project: @project)
       create(:permission, target: @project, remainder: false)
       create(:project_license, project: @project)
-      create(:rss_subscription, project: @project).update_attributes(deleted: true)
+      create(:rss_subscription, project: @project).update(deleted: true)
       create(:alias, project: @project)
     end
 
@@ -24,9 +26,9 @@ describe EditsController do
     it 'index should support query param' do
       login_as nil
       @project.editor_account = create(:admin)
-      @project.update_attributes(description: 'Blah!')
+      @project.update(description: 'Blah!')
       @project.editor_account = create(:admin)
-      @project.update_attributes(description: 'Wat?')
+      @project.update(description: 'Wat?')
       get :index, project_id: @project.to_param, query: 'blah'
       must_respond_with :ok
       must_select "#edit_#{PropertyEdit.where(target: @project, value: 'Blah!').first.id}", true
@@ -121,9 +123,9 @@ describe EditsController do
     it 'index should support query param' do
       login_as nil
       @organization.editor_account = create(:account)
-      @organization.update_attributes(description: 'Blah!')
+      @organization.update(description: 'Blah!')
       @organization.editor_account = create(:account)
-      @organization.update_attributes(description: 'Wat?')
+      @organization.update(description: 'Wat?')
       get :index, organization_id: @organization.to_param, query: 'blah'
       must_respond_with :ok
       must_select "#edit_#{PropertyEdit.where(target: @organization, value: 'Blah!').first.id}", true
@@ -147,8 +149,8 @@ describe EditsController do
     it 'index should support query param' do
       login_as nil
       @project.editor_account = @account
-      @project.update_attributes(description: 'Blah!')
-      @project.update_attributes(name: 'Wat?')
+      @project.update(description: 'Blah!')
+      @project.update(name: 'Wat?')
       get :index, account_id: @account.to_param, query: 'blah'
       must_respond_with :ok
       must_select "#edit_#{PropertyEdit.where(target: @project, value: 'Blah!').first.id}", true
@@ -178,9 +180,9 @@ describe EditsController do
     it 'index should support query param' do
       login_as nil
       @license.editor_account = create(:account)
-      @license.update_attributes(name: 'Blah!')
+      @license.update(name: 'Blah!')
       @license.editor_account = create(:account)
-      @license.update_attributes(name: 'Wat?')
+      @license.update(name: 'Wat?')
       get :index, license_id: @license.to_param, query: 'blah'
       must_respond_with :ok
       must_select "#edit_#{PropertyEdit.where(target: @license, value: 'Blah!').first.id}", true

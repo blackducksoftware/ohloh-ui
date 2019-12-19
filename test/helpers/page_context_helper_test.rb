@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class PageContextHelperTest < ActionView::TestCase
@@ -69,7 +71,7 @@ class PageContextHelperTest < ActionView::TestCase
   end
 
   it 'should return forum page context' do
-    Object.any_instance.stubs(:current_user_is_admin?).returns(:true)
+    Object.any_instance.stubs(:current_user_is_admin?).returns(true)
     @forum = rails
     forum_context
     page_context.delete(:footer_menu_list)

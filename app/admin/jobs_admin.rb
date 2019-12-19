@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ActiveAdmin.register Job do
   config.sort_order = 'current_step_at_desc'
 
@@ -21,8 +23,9 @@ ActiveAdmin.register Job do
   actions :all, except: :new
 
   action_item :decategorize do
-    link_to 'Decategorize',
-            decategorize_admin_failure_group_path(params[:failure_group_id]) if params[:failure_group_id]
+    if params[:failure_group_id]
+      link_to 'Decategorize', decategorize_admin_failure_group_path(params[:failure_group_id])
+    end
   end
 
   show do
@@ -35,7 +38,7 @@ ActiveAdmin.register Job do
       flash[:warning] = 'Cannot schedule a running job.'
     else
       SlaveLog.create!(job: job, message: "Job rescheduled by #{current_user.name}.", level: SlaveLog::INFO)
-      job.update_attributes!(status: Job::STATUS_SCHEDULED, slave: nil, exception: nil, backtrace: nil)
+      job.update!(status: Job::STATUS_SCHEDULED, slave: nil, exception: nil, backtrace: nil)
       flash[:success] = 'Job has been rescheduled.'
     end
     redirect_to :back
@@ -51,7 +54,7 @@ ActiveAdmin.register Job do
     job = Job.find(params[:id])
     SlaveLog.create(job: job, message: "Job manually failed by #{current_user.login}.",
                     level: SlaveLog::WARNING)
-    job.update_attributes(status: Job::STATUS_FAILED)
+    job.update(status: Job::STATUS_FAILED)
     job.categorize_failure
     flash[:notice] = "Job #{job.id} marked as failed."
     redirect_to :back
@@ -59,7 +62,7 @@ ActiveAdmin.register Job do
 
   member_action :recount do
     job = Job.find(params[:id])
-    job.update_attributes!(retry_count: 0, wait_until: nil)
+    job.update!(retry_count: 0, wait_until: nil)
     flash[:notice] = "Job #{job.id} retry attempts counter has been reset to 0."
     redirect_to admin_job_path(job)
   end
@@ -78,7 +81,7 @@ ActiveAdmin.register Job do
     end
 
     def update
-      Job.find(params['id']).update_attributes(permitted_params['job'])
+      Job.find(params['id']).update(permitted_params['job'])
       flash[:success] = 'Priority has been updated'
       redirect_to admin_job_path(params['id'])
     end

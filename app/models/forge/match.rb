@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Forge::Match
   require 'open-uri'
   require 'json'
@@ -15,13 +17,16 @@ class Forge::Match
   end
 
   def forge_id
-    forge && forge.id
+    forge&.id
   end
 
   def get_json_api
     json_api_url = forge.json_api_url(self)
     return {} unless json_api_url
-    @json ||= JSON.parse(open(json_api_url, 'User-Agent' => 'Ohloh.net client').read)
+
+    # rubocop:disable Naming/MemoizedInstanceVariableName
+    @json ||= JSON.parse(URI.parse(json_api_url).open('User-Agent' => 'Ohloh.net client').read)
+    # rubocop:enable Naming/MemoizedInstanceVariableName
   end
 
   def project
@@ -31,6 +36,7 @@ class Forge::Match
   def code_locations
     forge.get_code_location_attributes(self).map do |hsh|
       next unless hsh[:scm_type]
+
       CodeLocation.new(hsh)
     end.uniq
   end

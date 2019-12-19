@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 class RssSubscriptionsController < ApplicationController
   helper :projects
   before_action :session_required, :redirect_unverified_account, except: [:index]
   before_action :set_project_or_fail, :set_project_editor_account_to_current_user
   before_action :project_context, except: :destroy
-  before_action :project_edit_authorized, only: [:create, :destroy]
+  before_action :project_edit_authorized, only: %i[create destroy]
 
   def index
     @rss_subscriptions = @project.rss_subscriptions
@@ -36,7 +38,7 @@ class RssSubscriptionsController < ApplicationController
 
   def handle_subscription
     @rss_subscription = RssSubscription.where(project_id: @project.id, rss_feed_id: @rss_feed.id).first
-    if @rss_subscription && @rss_subscription.deleted
+    if @rss_subscription&.deleted
       @rss_subscription.editor_account = current_user
       @rss_subscription.create_edit.redo!(current_user)
     else
@@ -52,6 +54,7 @@ class RssSubscriptionsController < ApplicationController
 
   def project_edit_authorized
     return if @project.edit_authorized?
+
     flash.now[:notice] = t(:not_authorized)
     redirect_to project_path(@project)
   end

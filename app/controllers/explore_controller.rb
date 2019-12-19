@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 class ExploreController < ApplicationController
   helper :Projects
 
-  before_action :set_language, only: [:index, :projects]
-  before_action :projects_details, unless: :language_or_cache_exist, only: [:index, :projects]
+  before_action :set_language, only: %i[index projects]
+  before_action :projects_details, unless: :language_or_cache_exist, only: %i[index projects]
   skip_before_action :verify_authenticity_token, only: [:orgs_by_thirty_day_commit_volume]
 
   def index
@@ -23,6 +25,8 @@ class ExploreController < ApplicationController
   def orgs_by_thirty_day_commit_volume
     @org_by_30_day_commits = OrgThirtyDayActivity.filter(params[:filter])
   end
+
+  def projects; end
 
   private
 

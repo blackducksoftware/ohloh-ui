@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'thor/group'
 require File.expand_path('config/environment.rb')
 
@@ -5,8 +7,8 @@ module ReverificationTask
   class Reverify < Thor
     desc 'execute [BOUNCE_THRESHOLD] [NUM_EMAIL]', 'Executes the entire reverification process
           specifying when to check statistics through the amount of emails and for what acceptable bounce percentage'
-    option :bounce_threshold, :aliases => '-bt', :desc => 'Sets bounce rate', :required => true, :type => :numeric
-    option :num_email, :aliases => '-e', :desc => 'Sets the amount of email', :required => true, :type => :numeric
+    option :bounce_threshold, aliases: '-bt', desc: 'Sets bounce rate', required: true, type: :numeric
+    option :num_email, aliases: '-e', desc: 'Sets the amount of email', required: true, type: :numeric
     def execute
       Reverification::Mailer.set_amazon_stat_settings(options[:bounce_threshold], options[:num_email])
       ReverificationTracker.cleanup
@@ -46,8 +48,8 @@ module ReverificationTask
   end
 
   class Notifications < Thor
-    option :bounce_threshold, :aliases => '-bt', :desc => 'Sets bounce rate', :required => true, :type => :numeric
-    option :num_email, :aliases => '-e', :desc => 'Sets the amount of email', :required => true, :type => :numeric
+    option :bounce_threshold, aliases: '-bt', desc: 'Sets bounce rate', required: true, type: :numeric
+    option :num_email, aliases: '-e', desc: 'Sets the amount of email', required: true, type: :numeric
     desc 'resend_to_soft_bounced_emails [BOUNCE_THRESHOLD] [NUM_EMAIL]', 'Resends to all accounts that soft bounced
           specifying when to check statistics through the amount of emails and for what acceptable bounce percentage'
 
@@ -56,11 +58,11 @@ module ReverificationTask
       Reverification::Mailer.resend_soft_bounced_notifications
     end
 
-    option :bounce_threshold, :aliases => '-bt', :desc => 'Sets bounce rate', :required => true, :type => :numeric
-    option :num_email, :aliases => '-e', :desc => 'Sets the amount of email', :required => true, :type => :numeric
+    option :bounce_threshold, aliases: '-bt', desc: 'Sets bounce rate', required: true, type: :numeric
+    option :num_email, aliases: '-e', desc: 'Sets the amount of email', required: true, type: :numeric
     desc 'send_emails [BOUNCE_THRESHOLD] [NUM_EMAIL]', 'sends to accounts specifying when to check statistics
           through the amount of emails and for what acceptable bounce percentage'
-          
+
     def send_emails
       Reverification::Mailer.set_amazon_stat_settings(options[:bounce_threshold], options[:num_email])
       Reverification::Mailer.send_notifications

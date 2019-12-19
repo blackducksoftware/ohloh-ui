@@ -1,40 +1,45 @@
-panel 'Job Overview' do
+# frozen_string_literal: true
 
+panel 'Job Overview' do
   columns do
     column do
       panel "Show Results For: #{human_window}" do
-        windows = [:ten_minutes, :one_hour, :two_hours, :eight_hours, :one_day, :two_days, :one_week, :one_month, :all]
+        windows = %i[ten_minutes one_hour two_hours eight_hours one_day two_days one_week one_month all]
         windows.each do |w|
-          a w.to_s.humanize.titleize, :href => admin_root_path(window: w)
+          a w.to_s.humanize.titleize, href: admin_root_path(window: w)
         end
       end
-    end #column
+    end
 
     column do
       panel 'Key' do
-        status_tag "Scheduled", class: 'scheduled'
-        status_tag "Running < 5 minutes", class: 'under-five-minute'
-        status_tag "Running < 1 hour", class: 'under-one-hour'
-        status_tag "Running > 1 hour", class: 'more-than-one-hour'
-        status_tag "Failed", class: 'failed'
+        status_tag 'Scheduled', class: 'scheduled'
+        status_tag 'Running < 5 minutes', class: 'under-five-minute'
+        status_tag 'Running < 1 hour', class: 'under-one-hour'
+        status_tag 'Running > 1 hour', class: 'more-than-one-hour'
+        status_tag 'Failed', class: 'failed'
       end
     end
   end
 
-  table_for Slave.includes(:running_jobs, :failed_jobs).order(:id), row_class: -> elem { 'deny' if elem.deny? } do
+  table_for Slave.includes(:running_jobs, :failed_jobs).order(:id), row_class: ->(elem) { 'deny' if elem.deny? } do
     # Seriously.  ActiveAdmin thinks the singular of "slave" is "slafe"  wft?
-    column (:hostname) { |slave| link_to slave.hostname, admin_slafe_path(slave)}
+    column :hostname do |slave|
+      link_to slave.hostname, admin_slafe_path(slave)
+    end
     column :allow_deny do |allow_deny|
       status_tag('Allow', :ok) if allow_deny.allow?
       status_tag('Deny', :error) if allow_deny.deny?
     end
     column :load_average
-    column (:jobs) do |slave|
-      render :partial => 'slave', :locals => {:slave => slave}
+    column :jobs do |slave|
+      render partial: 'slave', locals: { slave: slave }
     end
-    column (:failed) do |slave|
-      render :partial => 'failed', :locals => {:slave => slave}
+    column :failed do |slave|
+      render partial: 'failed', locals: { slave: slave }
     end
-    column (:completed) { |slave| slave.jobs.complete.since(get_window).count }
+    column :completed do |slave|
+      slave.jobs.complete.since(get_window).count
+    end
   end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AccountDecorator < Cherry::Decorator
   include ActionView::Helpers::TextHelper
 
@@ -69,9 +71,7 @@ class AccountDecorator < Cherry::Decorator
       append_setting_menu(menus) if current_or_admin?(current_user)
       # TODO: account reports
       # append_report_menu(menus) if account == current_user && account.reports.exists?
-      if !current_user.nil? && (account.id == current_user.id)
-        append_unclaimed_contribution_menu(menus, current_user)
-      end
+      append_unclaimed_contribution_menu(menus, current_user) if !current_user.nil? && (account.id == current_user.id)
     end
   end
   # rubocop:enable Metrics/AbcSize, Metrics/MethodLength

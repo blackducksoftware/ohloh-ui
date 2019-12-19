@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 describe TopicsController do
@@ -378,7 +380,7 @@ describe TopicsController do
 
       get :show, id: topic
 
-      %w(spam close delete).each do |name|
+      %w[spam close delete].each do |name|
         text = I18n.t("topics.action_group.#{name}")
         response.body.must_match(">#{text}</a>")
       end
@@ -400,7 +402,7 @@ describe TopicsController do
 
       get :show, id: topic
 
-      %w(spam close).each do |name|
+      %w[spam close].each do |name|
         text = I18n.t("topics.action_group.#{name}")
         response.body.wont_match(">#{text}</a>")
       end

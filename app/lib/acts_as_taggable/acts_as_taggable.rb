@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ActsAsTaggable
   extend ActiveSupport::Concern
 
@@ -15,6 +17,7 @@ module ActsAsTaggable
   module InstanceMethods
     def tag_list=(list)
       return if tag_list == list
+
       self.tag_list_is_dirty = true
       self.tags = parse_tag_list(list).map { |tag| Tag.where(name: tag).first_or_create }
     end
@@ -27,6 +30,7 @@ module ActsAsTaggable
 
     def parse_tag_list(list)
       return [] if list.blank?
+
       list.delete('"').split(/\s/).reject(&:blank?)
     end
   end

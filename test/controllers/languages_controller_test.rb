@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 describe 'LanguagesController' do
@@ -139,7 +141,7 @@ describe 'LanguagesController' do
       must_respond_with :ok
       must_render_template :compare
       assigns(:language_names).count.must_equal 3
-      assigns(:language_names).must_equal %w(html java php)
+      assigns(:language_names).must_equal %w[html java php]
     end
   end
 end

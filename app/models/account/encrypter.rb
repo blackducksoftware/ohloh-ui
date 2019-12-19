@@ -1,6 +1,9 @@
+# frozen_string_literal: true
+
 class Account::Encrypter
   def before_validation(account)
     return if account.id? || account.activated_at?
+
     assign_activation_code_to_random_hash(account)
   end
 

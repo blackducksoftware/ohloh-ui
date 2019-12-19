@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class OrganizationTest < ActiveSupport::TestCase
@@ -6,8 +8,8 @@ class OrganizationTest < ActiveSupport::TestCase
   it 'unclaims projects when destroyed and reclaims them when undestroyed' do
     proj1 = create(:project)
     proj2 = create(:project)
-    proj1.update_attributes(organization_id: org.id)
-    proj2.update_attributes(organization_id: org.id)
+    proj1.update(organization_id: org.id)
+    proj2.update(organization_id: org.id)
     pe1 = PropertyEdit.where(target: proj1, key: 'organization_id', value: org.id.to_s).first
     pe2 = PropertyEdit.where(target: proj2, key: 'organization_id', value: org.id.to_s).first
     pe1.undone.must_equal false
@@ -64,47 +66,47 @@ class OrganizationTest < ActiveSupport::TestCase
 
   describe 'sort_by_newest' do
     it 'org' do
-      org_1 = create(:organization, name: 'test1')
-      org_2 = create(:organization, name: 'test2')
+      org1 = create(:organization, name: 'test1')
+      org2 = create(:organization, name: 'test2')
 
-      Organization.sort_by_newest.must_equal [org_2, org_1]
+      Organization.sort_by_newest.must_equal [org2, org1]
     end
   end
 
   describe 'sort_by_recent' do
     it 'org' do
-      org_1 = create(:organization, name: 'test1', updated_at: Time.current + 5.days)
-      org_2 = create(:organization, name: 'test2')
+      org1 = create(:organization, name: 'test1', updated_at: Time.current + 5.days)
+      org2 = create(:organization, name: 'test2')
 
-      Organization.sort_by_recent.must_equal [org_1, org_2]
+      Organization.sort_by_recent.must_equal [org1, org2]
     end
   end
 
   describe 'sort_by_name' do
     it 'org' do
-      org_1 = create(:organization, name: 'test1')
-      org_2 = create(:organization, name: 'test2')
+      org1 = create(:organization, name: 'test1')
+      org2 = create(:organization, name: 'test2')
 
-      Organization.sort_by_name.must_equal [org_1, org_2]
+      Organization.sort_by_name.must_equal [org1, org2]
     end
   end
 
   describe 'sort_by_projects' do
     it 'org' do
-      org_1 = create(:organization, name: 'test1', projects_count: 5)
-      org_2 = create(:organization, name: 'test2', projects_count: 10)
+      org1 = create(:organization, name: 'test1', projects_count: 5)
+      org2 = create(:organization, name: 'test2', projects_count: 10)
 
-      Organization.sort_by_projects.must_equal [org_2, org_1]
+      Organization.sort_by_projects.must_equal [org2, org1]
     end
   end
 
   describe 'search_and_sort' do
     it 'should return sorted search results' do
-      org_1 = create(:organization, name: 'test na1', projects_count: 5)
-      org_2 = create(:organization, name: 'test na2', projects_count: 10)
-      org_3 = create(:organization, name: 'test na3', projects_count: 9)
+      org1 = create(:organization, name: 'test na1', projects_count: 5)
+      org2 = create(:organization, name: 'test na2', projects_count: 10)
+      org3 = create(:organization, name: 'test na3', projects_count: 9)
 
-      Organization.search_and_sort('test', 'projects', nil).must_equal [org_2, org_3, org_1]
+      Organization.search_and_sort('test', 'projects', nil).must_equal [org2, org3, org1]
     end
   end
 
@@ -178,7 +180,7 @@ class OrganizationTest < ActiveSupport::TestCase
   describe 'validations' do
     describe 'vanity_url' do
       it 'must allow valid characters' do
-        valid_vanity_urls = %w(org-name org_name orgé org_)
+        valid_vanity_urls = %w[org-name org_name orgé org_]
 
         valid_vanity_urls.each do |name|
           organization = build(:organization, vanity_url: name)
@@ -187,7 +189,7 @@ class OrganizationTest < ActiveSupport::TestCase
       end
 
       it 'wont allow invalid characters' do
-        invalid_vanity_urls = %w(org.name .org -org _org)
+        invalid_vanity_urls = %w[org.name .org -org _org]
 
         invalid_vanity_urls.each do |name|
           organization = build(:organization, vanity_url: name)

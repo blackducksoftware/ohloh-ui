@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ManageMailer < ActionMailer::Base
   default to: proc { (@manager || @manage.account).email },
           from: 'mailer@openhub.net'
@@ -50,7 +52,8 @@ class ManageMailer < ActionMailer::Base
   class << self
     def deliver_emails(manage)
       return if manage.changed.blank?
-      [:check_automatic_approval, :check_removed, :check_approved, :check_applied].each do |message|
+
+      %i[check_automatic_approval check_removed check_approved check_applied].each do |message|
         break if send(message, manage)
       end
       send(:check_rejection, manage)
@@ -74,19 +77,21 @@ class ManageMailer < ActionMailer::Base
   class << self
     def check_automatic_approval(manage)
       return false unless manage.approved_by == Account.hamster.id && !manage.deleted_by
+
       automatic_approval(manage).deliver_now
       true
     end
 
     def check_removed(manage)
       return false unless manage.changed.include?('deleted_by')
+
       manage.target.active_managers.each { |manager| deliver_deletion(manager, manage) }
       true
     end
 
     def deliver_deletion(manager, manage)
       if manage.approver.nil?
-        method = (manage.destroyer == manage.account) ? :withdrawn : :denied
+        method = manage.destroyer == manage.account ? :withdrawn : :denied
         send(method, manager, manage).deliver_now
       else
         removed(manager, manage).deliver_now
@@ -95,6 +100,7 @@ class ManageMailer < ActionMailer::Base
 
     def check_approved(manage)
       return false unless manage.changed.include?('approved_by') && manage.approver
+
       manage.target.active_managers.each do |manager|
         approved(manager, manage).deliver_now
       end
@@ -103,6 +109,7 @@ class ManageMailer < ActionMailer::Base
 
     def check_applied(manage)
       return false unless manage.changed.include?('account_id') && manage.account
+
       manage.target.active_managers.each do |manager|
         applied(manager, manage).deliver_now
       end
@@ -112,6 +119,7 @@ class ManageMailer < ActionMailer::Base
     def check_rejection(manage)
       return false if !manage.changed.include?('deleted_by') || manage.deleted_by.blank?
       return false if manage.destroyer == manage.account
+
       manage.approver ? removal(manage).deliver_now : rejection(manage).deliver_now
     end
   end

@@ -1,15 +1,19 @@
+# frozen_string_literal: true
+
 class CommitsController < SettingsController
   helper ProjectsHelper
 
   before_action :set_project_or_fail
   before_action :find_commit, only: :show
-  before_action :find_contributor_fact, only: [:events, :event_details]
+  before_action :find_contributor_fact, only: %i[events event_details]
   before_action :redirect_to_message_if_oversized_project, except: :statistics
   before_action :set_sort_and_highlight, only: :index
-  before_action :project_context, except: [:statistics, :events, :event_details]
+  before_action :project_context, except: %i[statistics events event_details]
   skip_before_action :show_permissions_alert
 
   def index
+    return if @project.best_analysis.blank?
+
     params[:contributor_id].present? ? individual_named_commits : named_commits
   end
 
@@ -21,7 +25,8 @@ class CommitsController < SettingsController
 
   def summary
     @analysis = @project.best_analysis
-    return unless @project.best_analysis
+    return if @project.best_analysis.blank?
+
     get_project_commits
     get_commit_contributors
   end

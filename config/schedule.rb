@@ -1,8 +1,20 @@
-set :output, error: 'reverification_cron_error.log', standard: 'reverification_cron.log'
+# frozen_string_literal: true
 
-job_type :thor_command, %{export PATH=$HOME/.rbenv/shims:$HOME/bin:/usr/bin:$PATH; eval "$(rbenv init -)"; \
-                          cd /var/local/openhub/current && RAILS_ENV=production bundle exec thor :task }
+env :PATH, ENV['PATH']
+set :environment, 'production'
+set :output, error: 'cron_error.log', standard: 'cron.log'
+every 2.weeks, at: '11.00 am', roles: [:sidekiq] do
+  rake 'check_broken_links'
+end
 
-every 1.day, at: '9:00 am' do
-  thor_command 'reverification_task:reverify:execute --bounce_threshold 30 --num_email 2000'
+every 1.day, at: '04.00 am', roles: [:sidekiq] do
+  rake 'home_page_stats'
+end
+
+every 1.day, at: '4:30 am', roles: [:sidekiq] do
+  rake 'rss:feeds:sync'
+end
+
+every 1.day, at: '12:00 am', roles: [:sidekiq] do
+  rake 'cleanup_vulnerabilities'
 end

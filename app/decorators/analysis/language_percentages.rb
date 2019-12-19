@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Analysis::LanguagePercentages
   TOTAL_PERCENTAGE = 100
 
@@ -35,6 +37,6 @@ class Analysis::LanguagePercentages
   end
 
   def remaining_percentage(index)
-    @left_over_percentage ||= TOTAL_PERCENTAGE - @languages[0...index].sum(&:percentage)
+    @remaining_percentage ||= TOTAL_PERCENTAGE - @languages[0...index].sum(&:percentage)
   end
 end

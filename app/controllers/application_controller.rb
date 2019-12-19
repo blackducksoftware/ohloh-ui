@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 # rubocop:disable Metrics/ClassLength
 class ApplicationController < ActionController::Base
   include ClearanceSetup
-  BOT_REGEX = /\b(Baiduspider|Googlebot|libwww-perl|msnbot|SiteUptime|Slurp)\b/i
-  FORMATS_THAT_WE_RENDER_ERRORS_FOR = %w(html xml json).freeze
+  BOT_REGEX = /\b(Baiduspider|Googlebot|libwww-perl|msnbot|SiteUptime|Slurp)\b/i.freeze
+  FORMATS_THAT_WE_RENDER_ERRORS_FOR = %w[html xml json].freeze
 
   include PageContextHelper
 
@@ -19,13 +21,12 @@ class ApplicationController < ActionController::Base
 
   attr_reader :page_context
   helper_method :page_context
-
   before_action :validate_request_format
   before_action :store_location
   before_action :handle_me_account_paths
   before_action :strip_query_param
   before_action :clear_reminder
-  before_action :verify_api_access_for_xml_request, only: [:show, :index]
+  before_action :verify_api_access_for_xml_request, only: %i[show index]
   before_action :update_last_seen_at_and_ip
 
   alias session_required require_login
@@ -40,10 +41,19 @@ class ApplicationController < ActionController::Base
   end
 
   rescue_from ::Exception do |exception|
+    StatsD.increment('Openhub.Request.exception')
     raise exception if Rails.application.config.consider_all_requests_local
+
     request.env[:user_agent] = request.user_agent
-    notify_airbrake(exception) unless blank_user_agent?
-    render_404
+    case exception
+    when SocketError, Errno::ECONNREFUSED, FisbotApiError
+      NewRelic::Agent.notice_error(exception)
+      flash[:notice] = t(:api_exception)
+      redirect_back
+    else
+      notify_airbrake(exception) unless blank_user_agent?
+      render_404
+    end
   end
 
   rescue_from ParamRecordNotFound, ActionController::UnknownFormat, ActionController::RoutingError do
@@ -69,6 +79,7 @@ class ApplicationController < ActionController::Base
 
   def handle_me_account_paths
     return unless params[:account_id] == 'me'
+
     if current_user.nil?
       redirect_to new_session_path
     else
@@ -96,6 +107,7 @@ class ApplicationController < ActionController::Base
 
   def current_user_can_manage?
     return true if current_user_is_admin?
+
     logged_in? && current_project_or_org && current_project_or_org.active_managers.include?(current_user)
   end
   helper_method :current_user_can_manage?
@@ -149,14 +161,18 @@ class ApplicationController < ActionController::Base
   end
 
   def render_missing_api_key
+    StatsD.increment('Openhub.Api.missing_api_key')
     error(message: t(:missing_api_key), status: :bad_request)
   end
 
   def render_invalid_api_key
+    StatsD.increment('Openhub.Api.invalid_api_key')
     error(message: t(:invalid_api_key), status: :bad_request)
   end
 
   def render_limit_exceeded_api_key(limit)
+    StatsD.increment('Openhub.Api.limit_exceeded')
+    StatsD.set('Openhub.Api.Key.limit_exceeded', params[:api_key])
     error(message: t(:overlimit_api_key, limit: limit), status: :unauthorized)
   end
 
@@ -166,12 +182,14 @@ class ApplicationController < ActionController::Base
 
   def clear_reminder
     return unless params[:clear_action_reminder]
+
     action = current_user.actions.where(id: params[:clear_action_reminder]).first
-    action.update_attributes(status: Action::STATUSES[:completed]) if action
+    action&.update(status: Action::STATUSES[:completed])
   end
 
   def store_location
     return if request.xhr? || request.post? || request_format != 'html'
+
     session[:return_to] = request.fullpath
   end
 
@@ -203,6 +221,7 @@ class ApplicationController < ActionController::Base
   def show_permissions_alert
     return if current_user_can_manage?
     return if logged_in? && !current_project_or_org.protection_enabled?
+
     flash.now[:notice] = logged_in? ? t('permissions.not_manager') : t('permissions.must_log_in')
   end
 
@@ -211,22 +230,29 @@ class ApplicationController < ActionController::Base
   def verify_api_access_for_xml_request
     return unless request_format == 'xml'
     return render_missing_api_key if params[:api_key].blank?
+
     verify_api_key_standing
   end
 
   def verify_api_key_standing
-    api_key = ApiKey.in_good_standing.find_by_oauth_application_uid(api_client_id)
-    if api_key && api_key.may_i_have_another?
+    api_key = ApiKey.in_good_standing.find_for_oauth_application_uid(api_client_id)
+    if api_key&.may_i_have_another?
+      log_valid_api_request
       doorkeeper_authorize! if doorkeeper_token
-    elsif api_key && api_key.send(:exceeded_daily_allotment?)
+    elsif api_key&.send(:exceeded_daily_allotment?)
       render_limit_exceeded_api_key(api_key.daily_limit)
     else
       render_invalid_api_key
     end
   end
 
+  def log_valid_api_request
+    StatsD.increment('Openhub.Api.success')
+    StatsD.set('Openhub.Api.valid_api', params[:api_key])
+  end
+
   def api_client_id
-    params[:api_key] || (doorkeeper_token && doorkeeper_token.application && doorkeeper_token.application.uid)
+    params[:api_key] || (doorkeeper_token&.application && doorkeeper_token.application.uid)
   end
 
   def strip_query_param
@@ -258,11 +284,12 @@ class ApplicationController < ActionController::Base
 
   def redirect_for_spammer_verification
     return if current_user && !current_user.access.disabled? && current_user.access.mobile_or_oauth_verified?
+
     redirect_to new_authentication_path
   end
 
   def current_user_is_verified?
-    current_user && current_user.access.verified?
+    current_user&.access&.verified?
   end
   helper_method :current_user_is_verified?
 
@@ -271,6 +298,7 @@ class ApplicationController < ActionController::Base
     @project = Project.by_vanity_url_or_id(project_id).take
 
     raise ParamRecordNotFound unless @project
+
     project_context
     render 'projects/deleted' if @project.deleted?
   end
@@ -285,6 +313,7 @@ class ApplicationController < ActionController::Base
 
   def update_last_seen_at_and_ip
     return unless logged_in?
+
     current_user.update_columns(last_seen_at: Time.current, last_seen_ip: request.remote_ip)
   end
 end

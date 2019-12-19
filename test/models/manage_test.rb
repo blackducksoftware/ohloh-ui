@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class ManageTest < ActiveSupport::TestCase
@@ -24,7 +26,7 @@ class ManageTest < ActiveSupport::TestCase
 
   it 'test create should work' do
     manage = Manage.create(target: @proj1, account: @admin)
-    manage.update_attributes!(approver: @user1)
+    manage.update!(approver: @user1)
     manage.errors.empty?.must_equal true
     @proj1.managers.must_include(@admin)
     @admin.projects.must_include(@proj1)
@@ -46,7 +48,7 @@ class ManageTest < ActiveSupport::TestCase
     Manage.create!(account: @user2, target: @proj1)
     manage = Manage.create!(account: @admin, target: @proj1)
     manage.approver.must_be_nil
-    manage.update_attributes!(approver: @user1)
+    manage.update!(approver: @user1)
     manage.reload
     manage.approver.must_equal @user1
   end
@@ -54,13 +56,13 @@ class ManageTest < ActiveSupport::TestCase
   it 'test active manager succeeds' do
     @proj1.manages.destroy_all
     manage = Manage.create!(account: @admin, target: @proj1)
-    manage.update_attributes!(approver: @user1)
+    manage.update!(approver: @user1)
     @proj1.reload.active_managers.must_include(@admin)
   end
 
   it 'test active manager fails if deleted' do
     manage = Manage.create!(account: @admin, target: @proj1, deleted_at: Time.current)
-    manage.update_attributes!(approver: @user1)
+    manage.update!(approver: @user1)
     @proj1.reload.active_managers.wont_include(@admin)
   end
 
@@ -73,7 +75,7 @@ class ManageTest < ActiveSupport::TestCase
   it 'test destroy_by! succeeds' do
     # make user an admin
     manage = Manage.create!(account: @user1, target: @proj1)
-    manage.update_attributes!(approver: @admin)
+    manage.update!(approver: @admin)
     @proj1.reload.active_managers.must_include(@user1)
 
     # create a manage entry for admin
@@ -90,7 +92,7 @@ class ManageTest < ActiveSupport::TestCase
   it 'test destroy_by! fails if destroyer isnt admin' do
     # create a manage entry for admin
     manage = Manage.create!(account: @admin, target: @proj1)
-    manage.update_attributes!(approver: @user1)
+    manage.update!(approver: @user1)
     assert_nil manage.destroyer
 
     # user destroys it
@@ -113,7 +115,7 @@ class ManageTest < ActiveSupport::TestCase
   it 'test destroy_by! fails if destroyer deleted' do
     # make user an admin
     manage1 = Manage.create!(account: @user1, target: @proj1, deleted_at: Time.current)
-    manage1.update_attributes!(approver: @user1)
+    manage1.update!(approver: @user1)
 
     # create a manage entry for admin
     manage2 = Manage.create!(account: @admin, target: @proj1)
@@ -132,7 +134,7 @@ class ManageTest < ActiveSupport::TestCase
 
   it 'test pending fails if approved' do
     manage = Manage.create!(account: @user1, target: @proj1)
-    manage.update_attributes!(approver: @user1)
+    manage.update!(approver: @user1)
     manage.pending?.must_equal false
   end
 
@@ -143,7 +145,7 @@ class ManageTest < ActiveSupport::TestCase
 
   it 'test pending fails if destroyed and approved' do
     manage = Manage.create!(account: @user1, target: @proj1, destroyer: @user1)
-    manage.update_attributes!(approver: @user1)
+    manage.update!(approver: @user1)
     manage.pending?.must_equal false
   end
 
@@ -161,7 +163,7 @@ class ManageTest < ActiveSupport::TestCase
     manage = Manage.create!(account: @admin, target: @org)
     Manage.create!(account: @user1, target: @proj1, approver: @admin)
     Manage.create!(account: @user2, target: @proj2, approver: @admin)
-    manage.update_attributes!(approver: @user1)
+    manage.update!(approver: @user1)
     @org.must_equal @admin.reload.manages.organizations.first.target
     Manage.count.must_equal 3
     Manage.organizations.count.must_equal 1
@@ -173,7 +175,7 @@ class ManageTest < ActiveSupport::TestCase
 
     # sends one mail to admins (admin) and a different one to applicant (user)
     assert_emails 2 do
-      application.update_attributes!(destroyer: @admin)
+      application.update!(destroyer: @admin)
     end
   end
 
@@ -183,7 +185,7 @@ class ManageTest < ActiveSupport::TestCase
 
     # sends one mail to admins (admin) and a different one to applicant (user)
     assert_emails 1 do
-      application.update_attributes!(approver: @admin)
+      application.update!(approver: @admin)
     end
   end
 
@@ -202,7 +204,7 @@ class ManageTest < ActiveSupport::TestCase
 
     # sends one mail to admin
     assert_emails 1 do
-      application.update_attributes!(destroyer: @user1)
+      application.update!(destroyer: @user1)
     end
   end
 
@@ -213,7 +215,7 @@ class ManageTest < ActiveSupport::TestCase
 
     # sends one mail to admins (admin) and a different one to applicant (user)
     assert_emails 2 do
-      application.update_attributes!(destroyer: @user1)
+      application.update!(destroyer: @user1)
     end
   end
 end

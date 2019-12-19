@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class VitaLanguageFact < NameLanguageFact
   belongs_to :vita
   belongs_to :language
@@ -10,7 +12,7 @@ class VitaLanguageFact < NameLanguageFact
   }
 
   scope :with_language_and_projects, lambda {
-    includes([:language, :most_commits_project, :recent_commit_project])
+    includes(%i[language most_commits_project recent_commit_project])
       .order('most_commits DESC')
   }
 end

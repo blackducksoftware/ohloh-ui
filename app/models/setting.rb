@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Setting < ActiveRecord::Base
   serialize :value
   class << self
@@ -21,6 +23,7 @@ class Setting < ActiveRecord::Base
       key = get_project_enlistment_key(project_id)
       object = find_by(key: key)
       return if object.nil?
+
       object.value.delete(url)
       object.save
       object.destroy if object.value.empty?

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class Account::HooksTest < ActiveSupport::TestCase
@@ -50,7 +52,7 @@ class Account::HooksTest < ActiveSupport::TestCase
       # Create all types of edits to assert that every edit can be undone.
       Project.last.update!(description: Faker::Lorem.sentence, editor_account: account)
       ProjectLicense.create!(project: Project.last, license: create(:license), editor_account: account)
-      account.edits.not_undone.map(&:type).sort.must_equal %w(CreateEdit PropertyEdit)
+      account.edits.not_undone.map(&:type).sort.must_equal %w[CreateEdit PropertyEdit]
 
       account.verifications.count.must_equal 1
       account.topics.count.must_equal 3
@@ -171,7 +173,7 @@ class Account::HooksTest < ActiveSupport::TestCase
     it 'must update persons effective_name after save' do
       account = create(:account, name: 'test name')
       account.person.effective_name.must_equal 'test name'
-      account.update_attributes! name: 'test new name'
+      account.update! name: 'test new name'
       account.person.effective_name.must_equal 'test new name'
     end
   end

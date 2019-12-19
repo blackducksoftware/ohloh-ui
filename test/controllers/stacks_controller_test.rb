@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 describe 'StacksControllerTest' do
@@ -230,7 +232,7 @@ describe 'StacksControllerTest' do
   it 'update should gracefully handle errors' do
     stack = create(:stack, description: 'original')
     login_as stack.account
-    Stack.any_instance.expects(:update_attributes).returns false
+    Stack.any_instance.expects(:update).returns false
     put :update, id: stack, stack: { description: 'changed' }
     must_respond_with :unprocessable_entity
   end

@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 class FOSSerBadge < Badge
   def eligibility_count
-    @count ||= vars[:positions_count]
-    @count ||= Position.where(account_id: account.id).count
+    @eligibility_count ||= vars[:positions_count]
+    @eligibility_count ||= Position.where(account_id: account.id).count
   end
 
   def name

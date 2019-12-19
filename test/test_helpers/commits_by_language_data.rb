@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CommitsByLanguageData
   DEFAULT_COMMITS_DATA = {
     '3' => { 'name' => 'xml', 'category' => '1', 'nice_name' => 'XML',

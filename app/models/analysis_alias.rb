@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AnalysisAlias < FisBase
   belongs_to :analysis
   belongs_to :commit_name, class_name: 'Name', foreign_key: :commit_name_id

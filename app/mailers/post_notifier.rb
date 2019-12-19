@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class PostNotifier < ActionMailer::Base
   default from: 'mailer@blackducksoftware.com'
 

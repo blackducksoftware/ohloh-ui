@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Spinach::Features::PasswordReset < Spinach::FeatureSteps
   step 'I am on the sign in page' do
     visit new_session_path

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :language do
-    category 0
+    category { 0 }
     name { Faker::Lorem.characters(10) }
     nice_name { Faker::Lorem.characters(10) }
     sequence :code do |n|

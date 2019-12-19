@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 class ProjectManagerBadge < Badge
   def eligibility_count
-    @count ||= vars[:manages_project_count]
-    @count ||= Project.managed_by(account).count
+    @eligibility_count ||= vars[:manages_project_count]
+    @eligibility_count ||= Project.managed_by(account).count
   end
 
   def name
