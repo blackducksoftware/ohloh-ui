@@ -40,4 +40,7 @@ Disallow: /
 User-agent: MJ12bot
 Disallow: /
 
+User-agent: AhrefsBot
+Crawl-Delay: 10 # No faster than ever 10 seconds
+
 Sitemap: http://www.openhub.net/sitemap_index.xml
