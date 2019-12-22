@@ -463,7 +463,7 @@ GEM
     ruby_dep (1.5.0)
     ruby_parser (3.13.1)
       sexp_processor (~> 4.9)
-    rubyzip (1.2.2)
+    rubyzip (1.3.0)
     safe_yaml (1.0.5)
     sass (3.7.3)
       sass-listen (~> 4.0.0)
