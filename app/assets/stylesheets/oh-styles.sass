@@ -157,6 +157,27 @@
 
 ////////////////////////////////////////////////////////////////////
 //
+// Explore/* mixins
+
+@mixin explore-sidebar-icon-search-color
+  color: color-gradient($SECONDARY_MARINE_BLUE, 120)
+
+@mixin explore-sidebar-search-text-color
+  color: color-gradient($LIGHT_GRAY, 120)
+
+@mixin explore-people-signature-text-color
+  color: #e86d1f  // NOTE: non-OTWO color, needs to be udpated
+
+@mixin explore-people-tick-selected-colors
+  color: #2BB72B  // NOTE: non-OTWO color, needs to be udpated
+  background-color: #fff
+
+@mixin explore-people-tick-unselected-colors
+  color: #898989  // NOTE: non-OTWO color, needs to be udpated
+  background-color: #fff
+
+////////////////////////////////////////////////////////////////////
+//
 // Button mixins
 
 @mixin follow-button-colors
@@ -320,3 +341,86 @@
 
 @mixin vulnerabilities-disabled-text-color
   color: color-gradient($LIGHT_GRAY, 100)
+
+////////////////////////////////////////////////////////////////////
+//
+// Highcharts mixins
+
+@mixin vulnerabilities-high-severity-fill
+  fill: color-gradient($SECONDARY_MARINE_BLUE, 120)
+
+@mixin vulnerabilities-high-severity-stroke
+  stroke: color-gradient($SECONDARY_MARINE_BLUE, 120)
+
+@mixin vulnerabilities-medium-severity-fill
+  fill: color-gradient($SECONDARY_MARINE_BLUE, 80)
+
+@mixin vulnerabilities-medium-severity-stroke
+  stroke: color-gradient($SECONDARY_MARINE_BLUE, 80)
+
+@mixin vulnerabilities-low-severity-fill
+  fill: color-gradient($SECONDARY_MARINE_BLUE, 40)
+
+@mixin vulnerabilities-low-severity-stroke
+  stroke: color-gradient($SECONDARY_MARINE_BLUE, 40)
+
+@mixin vulnerabilities-unknown-severity-fill
+  fill: color-gradient($SECONDARY_SLATE_BLUE, 20)
+
+@mixin vulnerabilities-unknown-severity-stroke
+  stroke: color-gradient($SECONDARY_SLATE_BLUE, 20)
+
+@mixin vulnerabilities-high-severity-hover
+  fill: color-gradient($SECONDARY_MARINE_BLUE, 80)
+
+@mixin vulnerabilities-medium-severity-hover
+  fill: color-gradient($SECONDARY_MARINE_BLUE, 60)
+
+@mixin vulnerabilities-low-severity-hover
+  fill: color-gradient($SECONDARY_MARINE_BLUE, 20)
+
+@mixin vulnerabilities-unknown-severity-hover
+  fill: color-gradient($SECONDARY_SKY_BLUE, 20)
+
+@mixin projects-demographics-inactive-fill
+  fill: color-gradient($PRIMARY_DARK_GRAY, 60)
+
+@mixin projects-demographics-inactive-stroke
+  stroke: color-gradient($PRIMARY_DARK_GRAY, 60)
+
+@mixin projects-demographics-very-low-fill
+  fill: color-gradient($BLACK_DUCK_BLUE, 40)
+
+@mixin projects-demographics-very-low-stroke
+  stroke: color-gradient($BLACK_DUCK_BLUE, 40)
+
+@mixin projects-demographics-low-fill
+  fill: color-gradient($BLACK_DUCK_BLUE, 80)
+
+@mixin projects-demographics-low-stroke
+  stroke: color-gradient($BLACK_DUCK_BLUE, 80)
+
+@mixin projects-demographics-moderate-fill
+  fill: color-gradient($BLACK_DUCK_BLUE, 120)
+
+@mixin projects-demographics-moderate-stroke
+  stroke: color-gradient($BLACK_DUCK_BLUE, 120)
+
+@mixin projects-demographics-high-fill
+  fill: color-gradient($PRIMARY_PURPLE, 80)
+
+@mixin projects-demographics-high-stroke
+  stroke: color-gradient($PRIMARY_PURPLE, 80)
+
+@mixin projects-demographics-very-high-fill
+  fill: color-gradient($PRIMARY_PURPLE, 120)
+
+@mixin projects-demographics-very-high-stroke
+  stroke: color-gradient($PRIMARY_PURPLE, 120)
+
+@mixin projects-demographics-new-fill
+  fill: color-gradient($SECONDARY_ORANGE, 100)
+
+@mixin projects-demographics-new-stroke
+  stroke: color-gradient($SECONDARY_ORANGE, 100)
+

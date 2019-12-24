@@ -1,14 +1,5 @@
 @import 'https://code.highcharts.com/css/highcharts.css'
 
-$color0: color-gradient($PRIMARY_DARK_GRAY, 60)
-$color1: color-gradient($BLACK_DUCK_BLUE, 40)
-$color2: color-gradient($BLACK_DUCK_BLUE, 80)
-$color3: color-gradient($BLACK_DUCK_BLUE, 120)
-$color4: color-gradient($PRIMARY_PURPLE, 80)
-$color5: color-gradient($PRIMARY_PURPLE, 120)
-$color6: color-gradient($SECONDARY_ORANGE, 100)
-$colors: $color0 $color1 $color2 $color3 $color4 $color5 $color6 !default
-
 .watermark340 .highcharts-container
   background: asset-url("charts/watermark_340.png") no-repeat center
   background-size: contain
@@ -33,73 +24,127 @@ $colors: $color0 $color1 $color2 $color3 $color4 $color5 $color6 !default
   background: asset-url("charts/watermark_914.png") no-repeat center
   background-size: contain
 
-.highcharts-graph
-  stroke-width: 0px
+#vulnerabilities_index_page,
+#vulnerability_version_chart
+  .highcharts-series-inactive
+    opacity: 1.0
 
-.highcharts-point.highcharts-color-0,
-.highcharts-legend-item.highcharts-color-0 .highcharts-point,
-.highcharts-tooltip .highcharts-color-0
-.highcharts-color-0, .highcharts-pointhighcharts-color-0
-  fill: color-gradient($PRIMARY_DARK_GRAY, 60)
+  .highcharts-point.highcharts-color-0,
+  .highcharts-legend-item.highcharts-color-0 .highcharts-point,
+  .highcharts-tooltip .highcharts-color-0
+  .highcharts-color-0, .highcharts-pointhighcharts-color-0
+    @include vulnerabilities-high-severity-fill
 
-.highcharts-tooltip.highcharts-color-0,
-.highcharts-data-label-connector.highcharts-color-0
-  stroke: color-gradient($PRIMARY_DARK_GRAY, 60)
+  .highcharts-tooltip.highcharts-color-0,
+  .highcharts-data-label-connector.highcharts-color-0
+    @include vulnerabilities-high-severity-stroke
 
-.highcharts-point.highcharts-color-1,
-.highcharts-legend-item.highcharts-color-1 .highcharts-point,
-.highcharts-tooltip .highcharts-color-1
-  fill: color-gradient($BLACK_DUCK_BLUE, 40)
+  .highcharts-point.highcharts-color-1,
+  .highcharts-legend-item.highcharts-color-1 .highcharts-point,
+  .highcharts-tooltip .highcharts-color-1
+    @include vulnerabilities-medium-severity-fill
 
-.highcharts-tooltip.highcharts-color-1,
-.highcharts-data-label-connector.highcharts-color-1
-  stroke: color-gradient($BLACK_DUCK_BLUE, 40)
+  .highcharts-tooltip.highcharts-color-1,
+  .highcharts-data-label-connector.highcharts-color-1
+    @include vulnerabilities-medium-severity-stroke
 
-.highcharts-point.highcharts-color-2,
-.highcharts-legend-item.highcharts-color-2 .highcharts-point,
-.highcharts-tooltip .highcharts-color-2
-  fill: color-gradient($BLACK_DUCK_BLUE, 80)
+  .highcharts-point.highcharts-color-2,
+  .highcharts-legend-item.highcharts-color-2 .highcharts-point,
+  .highcharts-tooltip .highcharts-color-2
+    @include vulnerabilities-low-severity-fill
 
-.highcharts-tooltip.highcharts-color-2,
-.highcharts-data-label-connector.highcharts-color-2
-  stroke: color-gradient($BLACK_DUCK_BLUE, 80)
+  .highcharts-tooltip.highcharts-color-2,
+  .highcharts-data-label-connector.highcharts-color-2
+    @include vulnerabilities-low-severity-stroke
 
-.highcharts-point.highcharts-color-3,
-.highcharts-legend-item.highcharts-color-3 .highcharts-point,
-.highcharts-tooltip .highcharts-color-3
-  fill: color-gradient($BLACK_DUCK_BLUE, 120)
+  .highcharts-point.highcharts-color-3,
+  .highcharts-legend-item.highcharts-color-3 .highcharts-point,
+  .highcharts-tooltip .highcharts-color-3
+    @include vulnerabilities-unknown-severity-fill
 
-.highcharts-tooltip.highcharts-color-3,
-.highcharts-data-label-connector.highcharts-color-3
-  stroke: color-gradient($BLACK_DUCK_BLUE, 120)
+  .highcharts-tooltip.highcharts-color-3,
+  .highcharts-data-label-connector.highcharts-color-3
+    @include vulnerabilities-unknown-severity-stroke
 
-.highcharts-point.highcharts-color-4,
-.highcharts-legend-item.highcharts-color-4 .highcharts-point,
-.highcharts-tooltip .highcharts-color-4
-  fill: color-gradient($PRIMARY_PURPLE, 80)
+  .highcharts-column-series .highcharts-point-hover.highcharts-color-0,
+    @include vulnerabilities-high-severity-hover
 
-.highcharts-tooltip.highcharts-color-4,
-.highcharts-data-label-connector.highcharts-color-4
-  stroke: color-gradient($PRIMARY_PURPLE, 80)
+  .highcharts-column-series .highcharts-point-hover.highcharts-color-1,
+    @include vulnerabilities-medium-severity-hover
 
-.highcharts-point.highcharts-color-5,
-.highcharts-legend-item.highcharts-color-5 .highcharts-point,
-.highcharts-tooltip .highcharts-color-5
-  fill: color-gradient($PRIMARY_PURPLE, 120)
+  .highcharts-column-series .highcharts-point-hover.highcharts-color-2,
+    @include vulnerabilities-low-severity-hover
 
-.highcharts-tooltip.highcharts-color-5,
-.highcharts-data-label-connector.highcharts-color-5
-  stroke: color-gradient($PRIMARY_PURPLE, 120)
+  .highcharts-column-series .highcharts-point-hover.highcharts-color-3,
+    @include vulnerabilities-unknown-severity-hover
 
-.highcharts-point.highcharts-color-6,
-.highcharts-legend-item.highcharts-color-6 .highcharts-point,
-.highcharts-tooltip .highcharts-color-6
-  fill: color-gradient($SECONDARY_ORANGE, 100)
+#demographics_chart
+  .highcharts-graph
+    stroke-width: 0px
 
-.highcharts-tooltip.highcharts-color-6,
-.highcharts-data-label-connector.highcharts-color-6
-  stroke: color-gradient($SECONDARY_ORANGE, 100)
+  .highcharts-point-inactive
+    opacity: 1.0
 
-.highcharts-point-inactive
-  opacity: 1.0
+  .highcharts-point.highcharts-color-0,
+  .highcharts-legend-item.highcharts-color-0 .highcharts-point,
+  .highcharts-tooltip .highcharts-color-0
+  .highcharts-color-0, .highcharts-pointhighcharts-color-0
+    @include projects-demographics-inactive-fill
 
+  .highcharts-tooltip.highcharts-color-0,
+  .highcharts-data-label-connector.highcharts-color-0
+    @include projects-demographics-inactive-stroke
+
+  .highcharts-point.highcharts-color-1,
+  .highcharts-legend-item.highcharts-color-1 .highcharts-point,
+  .highcharts-tooltip .highcharts-color-1
+    @include projects-demographics-very-low-fill
+
+  .highcharts-tooltip.highcharts-color-1,
+  .highcharts-data-label-connector.highcharts-color-1
+    @include projects-demographics-very-low-stroke
+
+  .highcharts-point.highcharts-color-2,
+  .highcharts-legend-item.highcharts-color-2 .highcharts-point,
+  .highcharts-tooltip .highcharts-color-2
+    @include projects-demographics-low-fill
+
+  .highcharts-tooltip.highcharts-color-2,
+  .highcharts-data-label-connector.highcharts-color-2
+    @include projects-demographics-low-stroke
+
+  .highcharts-point.highcharts-color-3,
+  .highcharts-legend-item.highcharts-color-3 .highcharts-point,
+  .highcharts-tooltip .highcharts-color-3
+    @include projects-demographics-moderate-fill
+
+  .highcharts-tooltip.highcharts-color-3,
+  .highcharts-data-label-connector.highcharts-color-3
+    @include projects-demographics-moderate-stroke
+
+  .highcharts-point.highcharts-color-4,
+  .highcharts-legend-item.highcharts-color-4 .highcharts-point,
+  .highcharts-tooltip .highcharts-color-4
+    @include projects-demographics-high-fill
+
+  .highcharts-tooltip.highcharts-color-4,
+  .highcharts-data-label-connector.highcharts-color-4
+    @include projects-demographics-high-stroke
+
+  .highcharts-point.highcharts-color-5,
+  .highcharts-legend-item.highcharts-color-5 .highcharts-point,
+  .highcharts-tooltip .highcharts-color-5
+    @include projects-demographics-very-high-fill
+
+  .highcharts-tooltip.highcharts-color-5,
+  .highcharts-data-label-connector.highcharts-color-5
+    @include projects-demographics-very-high-stroke
+
+  .highcharts-point.highcharts-color-6,
+  .highcharts-legend-item.highcharts-color-6 .highcharts-point,
+  .highcharts-tooltip .highcharts-color-6
+    @include projects-demographics-new-fill
+
+  .highcharts-tooltip.highcharts-color-6,
+  .highcharts-data-label-connector.highcharts-color-6
+    @include projects-demographics-new-stroke

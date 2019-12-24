@@ -18,7 +18,7 @@ $pai_levels: (('very_high',0), ('high', 1), ('moderate', 2), ('low', 3), ('very_
     .#{$activity_level}_#{$postfix}
       @extend #{$activity_level}
       background-image: asset_url("projects/pai/pai-#{$dimension}px.png")
-      background-position: -#{$multiplier * $dimension}px 0
+      background-position: -#{($multiplier * $dimension)+($multiplier*2)}px 0
       background-repeat: no-repeat
       position: absolute
       top: 1rem

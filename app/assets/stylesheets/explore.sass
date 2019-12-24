@@ -10,20 +10,21 @@
         line-height: 17px
     .icon-search
       &.search
+        @include explore-sidebar-icon-search-color
         cursor: pointer
         font-size: 18px
         position: relative
         top: 3px
     input
-      color: #202020
+      @include explore-sidebar-search-text-color
       &:-moz-placeholder
-        color: #202020
+        color: color-gradient($LIGHT_GRAY, 120)
         font-style: italic
       &:-ms-input-placeholder
-        color: #202020
+        color: color-gradient($LIGHT_GRAY, 120)
         font-style: italic
       &::-webkit-input-placeholder
-        color: #202020
+        color: color-gradient($LIGHT_GRAY, 120)
         font-style: italic
   .explore_search
     width: 173px
