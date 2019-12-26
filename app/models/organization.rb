@@ -5,9 +5,11 @@ class Organization < ActiveRecord::Base
   include OrganizationJobs
   include OrganizationScopes
   include Tsearch
+  include KnowledgeBaseCallbacks
 
   ORG_TYPES = { 'Commercial' => 1, 'Education' => 2, 'Government' => 3, 'Non-Profit' => 4 }.freeze
   ALLOWED_SORT_OPTIONS = %w[newest recent name projects].freeze
+  KB_SYNC_ATTRS = %w[id name org_type deleted].freeze
 
   belongs_to :logo
   has_one :permission, as: :target

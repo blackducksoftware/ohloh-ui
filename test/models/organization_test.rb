@@ -181,7 +181,6 @@ class OrganizationTest < ActiveSupport::TestCase
     describe 'vanity_url' do
       it 'must allow valid characters' do
         valid_vanity_urls = %w[org-name org_name orgé org_]
-
         valid_vanity_urls.each do |name|
           organization = build(:organization, vanity_url: name)
           organization.wont_be :valid?
@@ -197,5 +196,12 @@ class OrganizationTest < ActiveSupport::TestCase
         end
       end
     end
+  end
+
+  it 'must flag organization project for sync with KB' do
+    project = create(:project, organization: org)
+
+    org.update_attributes(name: Faker::Lorem.word + rand(999).to_s)
+    KnowledgeBaseStatus.find_by(project_id: project.id).in_sync.must_equal false
   end
 end

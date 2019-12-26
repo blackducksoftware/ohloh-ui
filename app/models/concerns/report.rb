@@ -36,4 +36,16 @@ module Report
     INLINE_SQL
     self.class.connection.select_all(sql)
   end
+
+  # Retrieves the list of latest breakdown of source code by language
+  def language_breakdown
+    sql = <<-INLINE_SQL
+    SELECT SUM(AF.code_added - AF.code_removed) AS code, SUM(AF.comments_added - AF.comments_removed) AS comments,
+    SUM(AF.blanks_added - AF.blanks_removed) AS blanks, L.id AS language_id, L.nice_name AS language, L.name AS language_name,
+    L.category FROM activity_facts AF INNER JOIN languages L ON AF.language_id = L.id WHERE AF.analysis_id = #{id} AND
+    AF.on_trunk GROUP BY L.id, L.nice_name, L.name, L.category ORDER BY SUM(AF.code_added - AF.code_removed) DESC, L.nice_name, L.name, L.category
+    INLINE_SQL
+    self.class.connection.select_all(sql)
+        .select { |lb| lb['code'].to_i.positive? || lb['comments'].to_i.positive? }
+  end
 end

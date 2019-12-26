@@ -501,4 +501,11 @@ class ProjectTest < ActiveSupport::TestCase
       result.must_equal []
     end
   end
+
+  it 'must flag project for sync with KB' do
+    assert_difference('KnowledgeBaseStatus.count', 1) do
+      project.update_attributes(name: Faker::Lorem.word + rand(999).to_s)
+    end
+    KnowledgeBaseStatus.find_by(project_id: project.id).in_sync.must_equal false
+  end
 end

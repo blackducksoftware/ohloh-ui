@@ -18,3 +18,7 @@ end
 every 1.day, at: '12:00 am', roles: [:sidekiq] do
   rake 'cleanup_vulnerabilities'
 end
+
+every 30.minutes, roles: [:sidekiq] do
+  rake 'kb_updater:send_updates', output: { error: '/tmp/kb_updater.err', standard: '/tmp/kb_updater.out' }
+end
