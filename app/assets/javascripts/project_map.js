@@ -1,5 +1,12 @@
 var ProjectMap = {
-  init: function(project_param, totalUsers, totalContributors) {
+  init: function() {
+    if ($('#projects_map_page').length == 0) return;
+    project = $('#project').val();
+    total_users = $('#total_users').val();
+    total_contributors = $('#total_contributors').val();
+    ProjectMap.load(project, total_users, total_users);
+  },
+  load: function(project_param, totalUsers, totalContributors) {
     document.mapParams = { project_param: project_param, totalUsers: totalUsers, totalContributors: totalContributors };
     ProjectMap.getContributors();
   },
