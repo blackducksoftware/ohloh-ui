@@ -4,9 +4,9 @@
   content_for(:html_title) { t('.page_title', name: @project.name) }
   page_context[:select_footer_nav] = :map
 
-- content_for :javascript do
-  - args = "'#{@project.to_param}', #{total_users}, #{total_contributors}"
-  = javascript_tag "$(document).on('page:change', function(){ ProjectMap.init(#{args}); });"
+%input{type: 'hidden', id: 'project', value: @project.to_param}
+%input{type: 'hidden', id: 'total_users', value: total_users }
+%input{type: 'hidden', id: 'total_contributors', value: total_contributors }
 
 .margin_top_10#map_container{ 'data-icon-image' => image_path('map/map_yellow.png') }
   %p
