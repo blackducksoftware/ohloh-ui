@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class ProjectLicense < ActiveRecord::Base
+  include KnowledgeBaseCallbacks
+
   belongs_to :project
   belongs_to :license
 

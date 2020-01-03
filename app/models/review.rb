@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Review < ActiveRecord::Base
+  include KnowledgeBaseCallbacks
+
   belongs_to :account
   belongs_to :project
   has_many :helpfuls, dependent: :destroy

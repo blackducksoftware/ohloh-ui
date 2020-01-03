@@ -43,4 +43,11 @@ class TagTest < ActiveSupport::TestCase
       assert_equal 0, tag2.reload.taggings_count
     end
   end
+
+  it 'must flag project for sync with KB when a tag is added' do
+    assert_difference('KnowledgeBaseStatus.count', 1) do
+      project1.tags = [tag1]
+    end
+    KnowledgeBaseStatus.find_by(project_id: project1.id).in_sync.must_equal false
+  end
 end

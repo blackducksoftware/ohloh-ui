@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Link < ActiveRecord::Base
+  include KnowledgeBaseCallbacks
+
   # Maintain this order for the index page.
   CATEGORIES = HashWithIndifferentAccess.new(
     Homepage: 9,
