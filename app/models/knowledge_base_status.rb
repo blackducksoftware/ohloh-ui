@@ -104,7 +104,7 @@ class KnowledgeBaseStatus < ActiveRecord::Base
   def enlistment_hash(enlistment)
     el_hash = { enlistment_id: enlistment.id, repository_id: get_repository_id(enlistment.code_location_id),
                 code_location_id: enlistment.code_location_id,
-                type: enlistment.code_location.scm_type.titleize + 'Repository', url: enlistment.code_location.url,
+                type: enlistment.code_location.scm_type.to_s.titleize + 'Repository', url: enlistment.code_location.url,
                 module_branch_name: enlistment.code_location.branch,
                 user_name: enlistment.code_location.username, password: enlistment.code_location.password }
     forge_match = Forge::Match.first(enlistment.code_location.url)
@@ -150,6 +150,8 @@ class KnowledgeBaseStatus < ActiveRecord::Base
   end
 
   def get_repository_id(code_location_id)
+    return unless code_location_id
+
     SecondBase::Base.connection
                     .execute("select repository_id from code_locations where id= #{code_location_id}")
                     .values[0].try(:first).to_i
