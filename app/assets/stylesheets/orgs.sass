@@ -35,7 +35,7 @@
       margin-left: 5px
     .col-md-9 a
       font-weight: bold
-      color: #369
+      color: color-gradient($SECONDARY_SLATE_BLUE, 120)
       font-size: 15px
 
   #orgs_by_30_days_volume
@@ -57,7 +57,7 @@
         margin: 5px 0px 0px 0px
       .col-md-9 a
         font-weight: bold
-        color: #369
+        color: color-gradient($SECONDARY_SLATE_BLUE, 120)
         font-size: 15px
     .row#active-org-timestamp
       font-size: 9px
@@ -69,6 +69,9 @@
       width: 220px
       height: 80px
       margin: 0 auto
+      .highcharts-color-0
+        fill: color-gradient($SECONDARY_SLATE_BLUE, 120)
+        stroke: color-gradient($SECONDARY_SLATE_BLUE, 120)
 
   #org_filter_no_result
     width: 620px
@@ -86,6 +89,6 @@
     border-radius: 0
 
     #progress-bar
-      background-color: #428bca
+      background-color: color-gradient($SECONDARY_SLATE_BLUE, 120)
       color: white
       padding: 0 0 0 3px
