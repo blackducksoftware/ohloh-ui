@@ -2,7 +2,7 @@
 
 require 'test_helper'
 
-describe 'Admin::VitaJobsController' do
+describe 'Admin::AccountAnalysisJobsController' do
   let(:admin) { create(:admin) }
   let(:account) { create(:account) }
   before { login_as admin }
@@ -16,20 +16,20 @@ describe 'Admin::VitaJobsController' do
 
     it 'should have action items' do
       get :index, account_id: account.login
-      must_select "a[href='/admin/accounts/#{account.login}/vita_jobs/manually_schedule']", true
+      must_select "a[href='/admin/accounts/#{account.login}/account_analysis_jobs/manually_schedule']", true
     end
   end
 
   describe '#manually_schedule' do
-    it 'should create a vita job for the account' do
-      assert_difference 'VitaJob.count' do
+    it 'should create a account_analysis job for the account' do
+      assert_difference 'AccountAnalysisJob.count' do
         get :manually_schedule, account_id: account.login
       end
     end
 
     it 'should redirect to index' do
       get :manually_schedule, account_id: account.login
-      must_redirect_to admin_account_vita_jobs_path(account)
+      must_redirect_to admin_account_account_analysis_jobs_path(account)
     end
   end
 end

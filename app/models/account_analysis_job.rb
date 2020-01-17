@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class VitaJob < Job
+class AccountAnalysisJob < Job
   scope :schedule_account_analysis, lambda { |account, delay = 0|
     delayed_time = Time.current + delay
     job = where(account_id: account.id).where.not(status: Job::STATUS_COMPLETED).take
@@ -16,6 +16,6 @@ class VitaJob < Job
   }
 
   def progress_message
-    I18n.t 'jobs.vita_job.progress_message', name: account.name
+    I18n.t 'jobs.account_analysis_job.progress_message', name: account.name
   end
 end

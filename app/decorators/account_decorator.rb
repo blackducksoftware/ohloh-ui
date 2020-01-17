@@ -3,14 +3,14 @@
 class AccountDecorator < Cherry::Decorator
   include ActionView::Helpers::TextHelper
 
-  delegate :best_vita, :positions, :claimed_positions, :projects, to: :account
+  delegate :best_account_analysis, :positions, :claimed_positions, :projects, to: :account
 
   def symbolized_commits_by_project
-    NameFact.where(vita_id: best_vita.id).map(&:commits_by_project).flatten.compact.map(&:symbolize_keys)
+    NameFact.where(vita_id: best_account_analysis.id).map(&:commits_by_project).flatten.compact.map(&:symbolize_keys)
   end
 
   def symbolized_commits_by_language
-    NameFact.where(vita_id: best_vita.id).map(&:commits_by_language).flatten.compact.map(&:symbolize_keys)
+    NameFact.where(vita_id: best_account_analysis.id).map(&:commits_by_language).flatten.compact.map(&:symbolize_keys)
   end
 
   def sorted_commits_by_project
@@ -33,8 +33,8 @@ class AccountDecorator < Cherry::Decorator
     sorted_cbl.sort_by { |_k, v| v[:commits] }.reverse
   end
 
-  def vita_status_message
-    if claimed_positions.any? && best_vita.nil?
+  def account_analysis_status_message
+    if claimed_positions.any? && best_account_analysis.nil?
       I18n.t('accounts.show.analysis_scheduled')
     elsif positions.empty?
       I18n.t('accounts.show.no_contributions')

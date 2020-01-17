@@ -10,4 +10,4 @@
 .col-md-4.top_ten.last
   %h3.most_active_contributors.common= t('.active_contributors')
   = render partial: 'content', locals: { popular_items: @home.most_active_contributors,
-    commit: 'commit', colors: 'contributor', required: 'most_active_contributors', max: @home.vita_count.max }
+    commit: 'commit', colors: 'contributor', required: 'most_active_contributors', max: @home.account_analysis_count.max }

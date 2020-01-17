@@ -169,7 +169,7 @@ en:
         contributed_for: 'Contributed on behalf of'
       orgs:
         including: 'including:'
-      vita_timestamp:
+      account_analysis_timestamp:
         analyzed: 'Analyzed'
         duration: '%{date}'
         ago: 'ago'

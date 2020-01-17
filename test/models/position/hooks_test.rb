@@ -111,7 +111,7 @@ class Position::HooksTest < ActiveSupport::TestCase
     end
 
     it 'must invoke account analysis job on create and dstroy' do
-      VitaJob.expects(:schedule_account_analysis).twice
+      AccountAnalysisJob.expects(:schedule_account_analysis).twice
       position = create_position
       position.destroy
     end
@@ -240,7 +240,7 @@ class Position::HooksTest < ActiveSupport::TestCase
   describe 'after_save' do
     it 'must call account.update_akas' do
       Account.any_instance.expects(:update_akas).once
-      VitaJob.expects(:schedule_account_analysis)
+      AccountAnalysisJob.expects(:schedule_account_analysis)
       create_position
     end
 

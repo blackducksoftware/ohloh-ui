@@ -1,8 +1,8 @@
 :ruby
   account = claimed_person.account
-  vf = account.best_vita.vita_fact
+  vf = account.best_account_analysis.account_analysis_fact
   pos_ids, more_pos_count = @cbp_map[claimed_person.account_id]
-  cbl = account.best_vita.vita_fact.commits_by_language
+  cbl = account.best_account_analysis.account_analysis_fact.commits_by_language
   cbl = (cbl || []).map(&:symbolize_keys).each_with_object({}) do |hsh, res|
     lang = hsh[:l_name]
     res[lang] ||= { nice_name: hsh[:l_nice_name], commits: 0 }

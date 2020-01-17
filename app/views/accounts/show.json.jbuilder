@@ -31,9 +31,9 @@ json.account do
   end
 
   if show_positions
-    vita_fact = @account.best_vita.try(:vita_fact)
-    if vita_fact&.name_language_facts&.any?
-      json.languages vita_fact.name_language_facts do |nlf|
+    account_analysis_fact = @account.best_account_analysis.try(:account_analysis_fact)
+    if account_analysis_fact&.name_language_facts&.any?
+      json.languages account_analysis_fact.name_language_facts do |nlf|
         json.name nlf.language.name
         json.experience_months nlf.total_months
         json.total_commits number_with_delimiter(nlf.total_commits)

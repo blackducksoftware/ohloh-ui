@@ -37,8 +37,8 @@ class Account < ActiveRecord::Base
     edits.where(undone: false).count
   end
 
-  def best_vita
-    Vita.find_by(id: best_vita_id, account_id: id) || NilVita.new
+  def best_account_analysis
+    AccountAnalysis.find_by(id: best_vita_id, account_id: id) || NilAccountAnalysis.new
   end
 
   def email_topics?
@@ -71,7 +71,7 @@ class Account < ActiveRecord::Base
   end
 
   def most_experienced_language
-    language_facts = best_vita.vita_language_facts.ordered
+    language_facts = best_account_analysis.account_analysis_language_facts.ordered
     return if language_facts.empty?
 
     language_facts.first.language
@@ -83,7 +83,7 @@ class Account < ActiveRecord::Base
   end
 
   def first_commit_date
-    first_checkin = best_vita.vita_fact.first_checkin
+    first_checkin = best_account_analysis.account_analysis_fact.first_checkin
     return if first_checkin.blank?
 
     first_checkin.to_date.beginning_of_month

@@ -450,7 +450,7 @@ Rails.application.routes.draw do
     end
 
     resources :accounts do
-      resources :vita_jobs do
+      resources :account_analysis_jobs do
         collection do
           post :manually_schedule
         end

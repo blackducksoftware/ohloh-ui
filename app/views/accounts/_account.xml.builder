@@ -30,10 +30,10 @@ xml.account do
     end
   end
   if show_positions
-    vita_fact = account.best_vita.try(:vita_fact)
-    if vita_fact&.name_language_facts&.any?
+    account_analysis_fact = account.best_account_analysis.try(:account_analysis_fact)
+    if account_analysis_fact&.name_language_facts&.any?
       xml.languages do
-        vita_fact.name_language_facts.each do |nlf|
+        account_analysis_fact.name_language_facts.each do |nlf|
           color = language_color(nlf.language.name)
           xml.language color: color do
             xml.name nlf.language.name
