@@ -1,5 +1,3 @@
-@import 'https://code.highcharts.com/css/highcharts.css'
-
 .watermark340 .highcharts-container
   background: asset-url("charts/watermark_340.png") no-repeat center
   background-size: contain
@@ -26,8 +24,104 @@
 
 #vulnerabilities_index_page,
 #vulnerability_version_chart
+  .highcharts-background
+    fill: #ffffff
+    opacity: 0.2
+
+  .highcharts-plot-border, .highcharts-plot-background
+    fill: none
+
+  .highcharts-label-box
+    fill: none
+
+  .highcharts-button-box
+    fill: inherit
+
+  .highcharts-legend-box
+    fill: none
+    stroke-width: 0
+
+  .highcharts-axis-line
+    fill: none
+    stroke: #ccd6eb
+
+  .highcharts-yaxis .highcharts-axis-line
+    stroke-width: 0
+
+  .highcharts-axis-title
+    fill: #666666
+
+  .highcharts-axis-labels
+    fill: #666666
+    cursor: default
+    font-size: 0.9em
+
+  .highcharts-grid-line
+    fill: none
+    stroke: #e6e6e6
+
+  .highcharts-xaxis-grid .highcharts-grid-line
+    stroke-width: 0px
+
+  .highcharts-tick
+    stroke: #ccd6eb
+
+  .highcharts-yaxis .highcharts-tick
+    stroke-width: 0
+
+  .highcharts-minor-grid-line
+    stroke: #f2f2f2
+
+  .highcharts-grid-axis .highcharts-tick
+    stroke-width: 1px
+
+  .highcharts-grid-axis .highcharts-axis-line
+    stroke-width: 1px
+
+  /* Tooltip */
+  .highcharts-tooltip
+    cursor: default
+    pointer-events: none
+    white-space: nowrap
+    transition: stroke 150ms
+    /* background: rgba(255,255,255,0.85)
+    /* border: 1px solid #000
+    /* border-radius: 3px
+    /* box-shadow: 1px 1px 2px #888
+    /* padding: 8px
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0)
+    font-family: "Lucida Grande", "Lucida Sans Unicode", Arial, Helvetica, sans-serif
+    font-size: 12px
+    tspan
+      stroke: #000000
+      stroke-width: 0px
+      opacity: 1.0
+      z-index: 3
+
+  .highcharts-tooltip text
+    fill: #000000
+
+  .highcharts-tooltip .highcharts-header
+    font-size: 0.85em
+
+  .highcharts-tooltip-box
+    stroke-width: 1px
+    fill: #f7f7f7
+    fill-opacity: 0.85
+
+  .highcharts-tooltip-box .highcharts-label-box
+    fill: #f7f7f7
+    fill-opacity: 0.85
+
+  div.highcharts-tooltip
+    filter: none
+
   .highcharts-series-inactive
     opacity: 1.0
+
+  .highcharts-legend-item
+    &:hover
+      cursor: pointer
 
   .highcharts-point.highcharts-color-0,
   .highcharts-legend-item.highcharts-color-0 .highcharts-point,
@@ -79,8 +173,66 @@
     @include vulnerabilities-unknown-severity-hover
 
 #demographics_chart
+  .highcharts-background
+    fill: #ffffff
+    opacity: 0.2
+
+  .highcharts-plot-border, .highcharts-plot-background
+    fill: none
+
+  .highcharts-label-box
+    fill: none
+
+  .highcharts-button-box
+    fill: inherit
+
+  .highcharts-legend-box
+    fill: none
+    stroke-width: 0
+
   .highcharts-graph
     stroke-width: 0px
+
+  .highcharts-data-label-connector
+    fill: none
+    stroke-width: 2px
+
+  /* Tooltip */
+  .highcharts-tooltip
+    cursor: default
+    pointer-events: none
+    white-space: nowrap
+    transition: stroke 150ms
+    /* font-size: 11pt
+    /* font-weight: normal
+    background: rgba(255,255,255,0.85)
+    border: 1px solid #000
+    border-radius: 3px
+    box-shadow: 1px 1px 2px #888
+    padding: 8px
+    tspan
+      stroke: black
+      stroke-width: 0px
+      opacity: 1.0
+      z-index: 3
+
+  .highcharts-tooltip text
+    fill: #333333
+
+  .highcharts-tooltip .highcharts-header
+    font-size: 0.85em
+
+  .highcharts-tooltip-box
+    stroke-width: 1px
+    fill: #f7f7f7
+    fill-opacity: 0.85
+
+  .highcharts-tooltip-box .highcharts-label-box
+    fill: #f7f7f7
+    fill-opacity: 0.85
+
+  div.highcharts-tooltip
+    filter: none
 
   .highcharts-point-inactive
     opacity: 1.0
@@ -100,6 +252,10 @@
   .highcharts-tooltip .highcharts-color-1
     @include projects-demographics-very-low-fill
 
+  .highcharts-halo.highcharts-color-1
+    @include projects-demographics-very-low-fill 
+    opacity: 0.3
+
   .highcharts-tooltip.highcharts-color-1,
   .highcharts-data-label-connector.highcharts-color-1
     @include projects-demographics-very-low-stroke
@@ -108,6 +264,10 @@
   .highcharts-legend-item.highcharts-color-2 .highcharts-point,
   .highcharts-tooltip .highcharts-color-2
     @include projects-demographics-low-fill
+
+  .highcharts-halo.highcharts-color-2
+    @include projects-demographics-low-fill 
+    opacity: 0.3
 
   .highcharts-tooltip.highcharts-color-2,
   .highcharts-data-label-connector.highcharts-color-2
@@ -118,6 +278,10 @@
   .highcharts-tooltip .highcharts-color-3
     @include projects-demographics-moderate-fill
 
+  .highcharts-halo.highcharts-color-3
+    @include projects-demographics-moderate-fill 
+    opacity: 0.3
+
   .highcharts-tooltip.highcharts-color-3,
   .highcharts-data-label-connector.highcharts-color-3
     @include projects-demographics-moderate-stroke
@@ -126,6 +290,10 @@
   .highcharts-legend-item.highcharts-color-4 .highcharts-point,
   .highcharts-tooltip .highcharts-color-4
     @include projects-demographics-high-fill
+
+  .highcharts-halo.highcharts-color-4
+    @include projects-demographics-high-fill 
+    opacity: 0.3
 
   .highcharts-tooltip.highcharts-color-4,
   .highcharts-data-label-connector.highcharts-color-4
@@ -136,6 +304,10 @@
   .highcharts-tooltip .highcharts-color-5
     @include projects-demographics-very-high-fill
 
+  .highcharts-halo.highcharts-color-5
+    @include projects-demographics-very-high-fill 
+    opacity: 0.3
+
   .highcharts-tooltip.highcharts-color-5,
   .highcharts-data-label-connector.highcharts-color-5
     @include projects-demographics-very-high-stroke
@@ -145,6 +317,33 @@
   .highcharts-tooltip .highcharts-color-6
     @include projects-demographics-new-fill
 
+  .highcharts-halo.highcharts-color-6
+    @include projects-demographics-new-fill 
+    opacity: 0.3
+
   .highcharts-tooltip.highcharts-color-6,
   .highcharts-data-label-connector.highcharts-color-6
     @include projects-demographics-new-stroke
+
+#vulnerability_all_version_chart
+  overflow: visible !important
+
+#loc_chart
+  .highcharts-point-inactive
+    opacity: 1.0
+
+  .highcharts-legend-series-inactive
+    opacity: 1.0
+
+  g.highcharts-series,
+  .highcharts-point,
+  .highcharts-markers,
+  .highcharts-data-labels
+    transition: opacity 1ms
+
+  .highcharts-legend-series-active g.highcharts-series:not(.highcharts-series-hover),
+  .highcharts-legend-point-active .highcharts-point:not(.highcharts-point-hover),
+  .highcharts-legend-series-active .highcharts-markers:not(.highcharts-series-hover),
+  .highcharts-legend-series-active .highcharts-data-labels:not(.highcharts-series-hover)
+    opacity: 1.0
+
