@@ -182,10 +182,11 @@ class AccountTest < ActiveSupport::TestCase
   end
 
   it 'should return recently active accounts' do
-    best_vita = create(:best_vita)
-    best_vita.account.update(best_vita_id: best_vita.id, created_at: Time.current - 4.days)
-    vita_fact = best_vita.vita_fact
-    vita_fact.update(last_checkin: Time.current)
+    best_account_analysis = create(:best_account_analysis)
+    best_account_analysis.account
+                         .update(best_vita_id: best_account_analysis.id, created_at: Time.current - 4.days)
+    account_analysis_fact = best_account_analysis.account_analysis_fact
+    account_analysis_fact.update(last_checkin: Time.current)
 
     recently_active = Account.recently_active
     recently_active.wont_be_nil
@@ -199,11 +200,12 @@ class AccountTest < ActiveSupport::TestCase
   end
 
   it 'should not include BOT accounts in active accounts' do
-    best_vita = create(:best_vita)
+    best_account_analysis = create(:best_account_analysis)
     level = Account::Access::BOT
-    best_vita.account.update(best_vita_id: best_vita.id, created_at: Time.current - 4.days, level: level)
-    vita_fact = best_vita.vita_fact
-    vita_fact.update(last_checkin: Time.current)
+    best_account_analysis.account.update(best_vita_id: best_account_analysis.id,
+                                         created_at: Time.current - 4.days, level: level)
+    account_analysis_fact = best_account_analysis.account_analysis_fact
+    account_analysis_fact.update(last_checkin: Time.current)
     Account.recently_active.count.must_equal 0
   end
 
@@ -218,13 +220,13 @@ class AccountTest < ActiveSupport::TestCase
   it 'facts_joins should accounts with positions projects and name_facts' do
     project = create(:project)
     name = create(:name)
-    name_fact = create(:name_fact, analysis: project.best_analysis, name: name, vita_id: create(:vita).id)
-    name_fact.vita.account.update(best_vita_id: name_fact.vita_id, latitude: 30.26, longitude: -97.74)
-    create(:position, project: project, name: name, account: name_fact.vita.account)
+    name_fact = create(:name_fact, analysis: project.best_analysis, name: name, vita_id: create(:account_analysis).id)
+    name_fact.account_analysis.account.update(best_vita_id: name_fact.vita_id, latitude: 30.26, longitude: -97.74)
+    create(:position, project: project, name: name, account: name_fact.account_analysis.account)
 
     accounts_with_facts = Account.with_facts
     accounts_with_facts.size.must_equal 1
-    accounts_with_facts.first.must_equal name_fact.vita.account
+    accounts_with_facts.first.must_equal name_fact.account_analysis.account
   end
 
   it 'should validate current password error message' do
@@ -259,12 +261,13 @@ class AccountTest < ActiveSupport::TestCase
 
   describe 'first commit date' do
     it 'it should get the first checkin for a account position' do
-      vita = create(:best_vita, account_id: account.id)
-      account.update_column(:best_vita_id, vita.id)
-      account.first_commit_date.must_equal vita.vita_fact.first_checkin.to_date.beginning_of_month
+      account_analysis = create(:best_account_analysis, account_id: account.id)
+      account.update_column(:best_vita_id, account_analysis.id)
+      account.first_commit_date.must_equal account_analysis.account_analysis_fact
+                                                           .first_checkin.to_date.beginning_of_month
     end
 
-    it 'it should return nil when account has no best_vita' do
+    it 'it should return nil when account has no best_account_analysis' do
       admin.first_commit_date.must_be_nil
     end
   end
@@ -324,26 +327,26 @@ class AccountTest < ActiveSupport::TestCase
   end
 
   describe 'most_experienced_language' do
-    it 'must return the language having a vita_language_fact' do
+    it 'must return the language having a account_analysis_language_fact' do
       create(:language, category: 0)
       lang2 = create(:language, category: 2)
-      vita = create(:vita)
-      vita.account.update!(best_vita_id: vita.id)
-      create(:vita_language_fact, language: lang2, vita: vita)
+      account_analysis = create(:account_analysis)
+      account_analysis.account.update!(best_vita_id: account_analysis.id)
+      create(:account_analysis_language_fact, language: lang2, account_analysis: account_analysis)
 
-      lang2.nice_name.must_equal vita.account.most_experienced_language.nice_name
+      lang2.nice_name.must_equal account_analysis.account.most_experienced_language.nice_name
     end
 
     it 'must return the language with lowest category' do
       lang1 = create(:language, category: 0)
       lang2 = create(:language, category: 2)
-      vita = create(:vita)
-      vita.account.update!(best_vita_id: vita.id)
-      create(:vita_language_fact, language: lang1, total_commits: 0, vita: vita)
-      create(:vita_language_fact, language: lang2, total_commits: 300, vita: vita,
-                                  total_activity_lines: 200, total_months: 30)
+      account_analysis = create(:account_analysis)
+      account_analysis.account.update!(best_vita_id: account_analysis.id)
+      create(:account_analysis_language_fact, language: lang1, total_commits: 0, account_analysis: account_analysis)
+      create(:account_analysis_language_fact, language: lang2, total_commits: 300, account_analysis: account_analysis,
+                                              total_activity_lines: 200, total_months: 30)
 
-      lang1.nice_name.must_equal vita.account.most_experienced_language.nice_name
+      lang1.nice_name.must_equal account_analysis.account.most_experienced_language.nice_name
     end
   end
 
@@ -517,27 +520,27 @@ class AccountTest < ActiveSupport::TestCase
     end
   end
 
-  describe 'best_vita' do
-    it 'should return nil_vita when best_vita is absent' do
-      admin.best_vita.class.must_equal NilVita
+  describe 'best_account_analysis' do
+    it 'should return nil_account_analysis when best_account_analysis is absent' do
+      admin.best_account_analysis.class.must_equal NilAccountAnalysis
     end
 
-    it 'should return best_vita when available' do
-      vita = create(:best_vita, account_id: account.id)
-      account.update_column(:best_vita_id, vita.id)
-      account.best_vita.class.must_equal Vita
+    it 'should return best_account_analysis when available' do
+      account_analysis = create(:best_account_analysis, account_id: account.id)
+      account.update_column(:best_vita_id, account_analysis.id)
+      account.best_account_analysis.class.must_equal AccountAnalysis
     end
   end
 
   describe 'most_experienced_language' do
-    it 'should return nil when vita_language_facts is empty' do
+    it 'should return nil when account_analysis_language_facts is empty' do
       assert_nil admin.most_experienced_language
     end
 
-    it 'should return language name when vita_language_facts is present' do
-      vita = create(:best_vita, account_id: account.id)
-      account.update_column(:best_vita_id, vita.id)
-      language_fact = create(:vita_language_fact, vita_id: vita.id)
+    it 'should return language name when account_analysis_language_facts is present' do
+      account_analysis = create(:best_account_analysis, account_id: account.id)
+      account.update_column(:best_vita_id, account_analysis.id)
+      language_fact = create(:account_analysis_language_fact, vita_id: account_analysis.id)
 
       account.most_experienced_language.nice_name.must_equal language_fact.language.nice_name
     end

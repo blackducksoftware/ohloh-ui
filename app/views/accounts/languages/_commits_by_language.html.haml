@@ -3,7 +3,7 @@
 .margin_top_10
   %h2.nomargin.col-md-2= t('.title')
   .pull-right
-    = render partial: 'accounts/show/vita_timestamp', locals: { best_vita: @account.best_vita }
+    = render partial: 'accounts/show/account_analysis_timestamp', locals: { best_account_analysis: @account.best_account_analysis }
   .clearfix
   .pull-right.chosen.languages#sort_by
     %select.chzn-select.language_category#streamgraph_category

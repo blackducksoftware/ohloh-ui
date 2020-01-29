@@ -5,10 +5,10 @@ require 'test_helper'
 describe 'HomeController' do
   it 'index should load' do
     Rails.cache.clear
-    best_vita = create(:best_vita)
-    best_vita.account.update(best_vita_id: best_vita.id, created_at: Time.current - 4.days)
-    vita_fact = best_vita.vita_fact
-    vita_fact.update(last_checkin: Time.current)
+    best_account_analysis = create(:best_account_analysis)
+    best_account_analysis.account.update(best_vita_id: best_account_analysis.id, created_at: Time.current - 4.days)
+    account_analysis_fact = best_account_analysis.account_analysis_fact
+    account_analysis_fact.update(last_checkin: Time.current)
     Rails.cache.stubs(:fetch).returns(Account.recently_active)
 
     get :index

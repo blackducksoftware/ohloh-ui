@@ -8,23 +8,23 @@ class BaseballCardTest < ActiveSupport::TestCase
   describe 'rows' do
     it 'should return all rows with their values' do
       org = create(:organization)
-      best_vita = create(:best_vita)
-      best_vita.account.update(best_vita_id: best_vita.id, created_at: Time.current - 4.days)
-      create(:position, account: best_vita.account)
+      best_account_analysis = create(:best_account_analysis)
+      best_account_analysis.account.update(best_vita_id: best_account_analysis.id, created_at: Time.current - 4.days)
+      create(:position, account: best_account_analysis.account)
       Account::OrganizationCore.any_instance.stubs(:positions).returns([create_position])
       Account::OrganizationCore.any_instance.stubs(:orgs_for_my_positions).returns([org])
       Account::OrganizationCore.any_instance.stubs(:affiliations_for_my_positions).returns([org])
-      vita_fact = best_vita.vita_fact
-      account = best_vita.account
+      account_analysis_fact = best_account_analysis.account_analysis_fact
+      account = best_account_analysis.account
 
       first_commit_day = I18n.t('accounts.show.baseball_card.duration',
-                                date: distance_of_time_in_words_to_now(vita_fact.first_checkin))
+                                date: distance_of_time_in_words_to_now(account_analysis_fact.first_checkin))
       last_commit_day = I18n.t('accounts.show.baseball_card.duration',
-                               date: distance_of_time_in_words_to_now(vita_fact.last_checkin))
+                               date: distance_of_time_in_words_to_now(account_analysis_fact.last_checkin))
       joined_day = I18n.t('accounts.show.baseball_card.duration',
                           date: distance_of_time_in_words_to_now(account.created_at))
 
-      commits = I18n.t('accounts.show.baseball_card.commits.value', count: vita_fact.commits)
+      commits = I18n.t('accounts.show.baseball_card.commits.value', count: account_analysis_fact.commits)
 
       result = [{ css: {}, label: 'First commit', value: first_commit_day },
                 { css: {}, label: 'Most recent commit', value: last_commit_day },
@@ -44,7 +44,7 @@ class BaseballCardTest < ActiveSupport::TestCase
                   partial: 'accounts/show/orgs',
                   locals: { orgs: [org] }
                 }]
-      BaseballCard.new(best_vita.account).rows.must_equal result
+      BaseballCard.new(best_account_analysis.account).rows.must_equal result
     end
   end
 end

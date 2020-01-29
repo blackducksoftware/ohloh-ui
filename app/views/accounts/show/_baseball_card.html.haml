@@ -3,7 +3,7 @@
   bg_color = language_color(lang.try(:name))
   text_color = language_text_color(lang.try(:name))
 
-- if !@account.best_vita.nil? && lang
+- if !@account.best_account_analysis.nil? && lang
   .col-md-7.statistic
     .inner
       .col-md-3.pull-left.name= t('.lang_title')

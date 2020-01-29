@@ -8,7 +8,7 @@ class NameFact < ActiveRecord::Base
   belongs_to :name
   belongs_to :analysis
   belongs_to :primary_language, class_name: 'Language', foreign_key: :primary_language_id
-  belongs_to :vita
+  belongs_to :account_analysis, foreign_key: :vita_id, class_name: 'AccountAnalysis'
   has_one :project, -> { where("projects.deleted != 't'") }, foreign_key: :best_analysis_id, primary_key: :analysis_id
 
   scope :for_project, ->(project) { where(analysis_id: project.best_analysis_id) }

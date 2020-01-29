@@ -134,10 +134,10 @@ describe 'AccountsController' do
       must_respond_with :ok
     end
 
-    it 'should support accounts with vitas' do
-      best_vita = create(:best_vita)
+    it 'should support accounts with account_analyses' do
+      best_account_analysis = create(:best_account_analysis)
       key = create(:api_key, account_id: create(:account).id)
-      get :show, id: best_vita.account.to_param, format: :xml, api_key: key.oauth_application.uid
+      get :show, id: best_account_analysis.account.to_param, format: :xml, api_key: key.oauth_application.uid
       must_respond_with :ok
     end
 
@@ -151,14 +151,14 @@ describe 'AccountsController' do
     it 'should have view jobs link if current user is admin' do
       login_as admin
       get :show, id: admin.login
-      must_select "a[href='/admin/accounts/#{admin.login}/vita_jobs']", true
+      must_select "a[href='/admin/accounts/#{admin.login}/account_analysis_jobs']", true
     end
 
     it 'should have no view jobs link if current user is not admin' do
       account = create(:account)
       login_as account
       get :show, id: account.login
-      must_select "a[href='/admin/accounts/#{account.login}/vita_jobs']", false
+      must_select "a[href='/admin/accounts/#{account.login}/account_analysis_jobs']", false
     end
   end
 

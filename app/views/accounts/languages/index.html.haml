@@ -3,7 +3,7 @@
   page_context[:select_top_menu_nav] = 'select_people'
   page_context[:select_footer_nav] = :languages
 
-- if @account.decorate.vita_status_message.blank?
+- if @account.decorate.account_analysis_status_message.blank?
   .col-md-12
     = render partial: 'accounts/languages/commits_by_language'
   - if @vlfs.present?
@@ -14,4 +14,4 @@
 - else
   %h2= t('accounts.languages.index.title')
   .col-md-12
-    %p= @account.decorate.vita_status_message
+    %p= @account.decorate.account_analysis_status_message

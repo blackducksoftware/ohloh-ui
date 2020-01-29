@@ -23,8 +23,8 @@ FactoryBot.define do
     type { 'OrganizationJob' }
   end
 
-  factory :vita_job, parent: :job, class: :VitaJob do
-    type { 'VitaJob' }
+  factory :account_analysis_job, parent: :job, class: :AccountAnalysisJob do
+    type { 'AccountAnalysisJob' }
   end
 
   factory :failed_job, parent: :job do

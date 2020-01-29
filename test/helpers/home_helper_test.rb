@@ -38,8 +38,8 @@ class HomeHelperTest < ActionView::TestCase
     end
 
     it 'must return thirty_day_commits when most_active_contributors ' do
-      best_vita = create(:best_vita)
-      assert_nil project_count(best_vita.account, 'most_active_contributors')
+      best_account_analysis = create(:best_account_analysis)
+      assert_nil project_count(best_account_analysis.account, 'most_active_contributors')
     end
   end
 
