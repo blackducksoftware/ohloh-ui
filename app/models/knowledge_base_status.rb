@@ -57,7 +57,7 @@ class KnowledgeBaseStatus < ActiveRecord::Base
     logger.info("Converting #{project.name} - getting tags")
     return [] if project.tag_list.empty?
 
-    project.tag_list.split
+    project.tag_list.fix_encoding_if_invalid.split
   end
 
   def get_logo
