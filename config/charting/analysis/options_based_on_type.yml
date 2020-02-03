@@ -43,6 +43,8 @@ code_history:
       id: 'code'
     - name: 'Comments'
     - name: 'Blanks'
+  tooltip:
+    shared: true
 
 committer_history:
   title: 'Contributors'
@@ -73,5 +75,7 @@ lines_of_code:
     y: 0
     floating: false
     backgroundColor: '#ffffff'
-
+    symbolRadius: 0
+  tooltip:
+    split: false
 
