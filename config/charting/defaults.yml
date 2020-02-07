@@ -2,13 +2,6 @@ highchart: true
 chart:
   borderRadius: 5
   type: 'column'
-colors:
-  - '#49baf2'
-  - '#527acc'
-  - '#5353a6'
-  - '#5e4d80'
-  - '#503d59'
-  - '#332933'
 title:
   text: ''
 plotOptions:
