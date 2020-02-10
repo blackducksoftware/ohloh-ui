@@ -8,7 +8,7 @@ module EnlistmentsHelper
                      'Mercurial' => 'hg',
                      'Bazaar' => 'bzr',
                      'Github Repositories' => 'GithubUser' }
-    current_selection = scm_type || 'svn_sync'
+    current_selection = scm_type || 'git'
     options_for_select(options_hash, current_selection)
   end
 
