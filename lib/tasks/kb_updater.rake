@@ -17,6 +17,7 @@ namespace :kb_updater do
   rescue StandardError => e
     puts e.message
     Rails.logger.info(e.message)
+    Airbrake.notify(e)
   end
 
   def kb_rmq_connection
