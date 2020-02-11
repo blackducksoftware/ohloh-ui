@@ -23,7 +23,7 @@ class CodeLocation < FisbotApi
   end
 
   def failed?
-    jobs.order(:current_step_at).reverse.first.try(:failed?)
+    jobs.order(current_step_at: :desc).select(:status).take.try(:failed?)
   end
 
   def create_enlistment_for_project(editor_account, project, ignore = nil)

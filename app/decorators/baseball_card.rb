@@ -8,7 +8,7 @@ class BaseballCard < Cherry::Decorator
   ROW_NAMES = %i[first_checkin last_checkin commits joined_at contributions orgs
                  affiliations].freeze
 
-  delegate :best_vita, :created_at, :positions, to: :account
+  delegate :best_account_analysis, :created_at, :positions, to: :account
 
   def rows
     ROW_NAMES.map { |row| send(row) }.compact.map { |row| row.reverse_merge(css: {}) }
@@ -20,29 +20,29 @@ class BaseballCard < Cherry::Decorator
     Account::OrganizationCore.new(account.id)
   end
 
-  def vita_fact
-    account.best_vita.vita_fact
+  def account_analysis_fact
+    account.best_account_analysis.account_analysis_fact
   end
 
   def first_checkin
-    return unless vita_fact.first_checkin
+    return unless account_analysis_fact.first_checkin
 
     { label: i18n('first_checkin'),
-      value: i18n('duration', date: distance_of_time_in_words_to_now(vita_fact.first_checkin)) }
+      value: i18n('duration', date: distance_of_time_in_words_to_now(account_analysis_fact.first_checkin)) }
   end
 
   def last_checkin
-    return unless vita_fact.last_checkin
+    return unless account_analysis_fact.last_checkin
 
     { label: i18n('last_checkin'),
-      value: i18n('duration', date: distance_of_time_in_words_to_now(vita_fact.last_checkin)) }
+      value: i18n('duration', date: distance_of_time_in_words_to_now(account_analysis_fact.last_checkin)) }
   end
 
   def commits
-    return if best_vita.nil?
+    return if best_account_analysis.nil?
 
     { label: i18n('commits.label'),
-      value: i18n('commits.value', count: vita_fact.commits) }
+      value: i18n('commits.value', count: account_analysis_fact.commits) }
   end
 
   def joined_at

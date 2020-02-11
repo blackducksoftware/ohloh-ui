@@ -10,5 +10,5 @@ en:
       progress_message: 'Step 3 of 3: Counting lines of source code'
     organization_job:
       progress_message: 'Analyzing organization %{name}'
-    vita_job:
-      progress_message: 'Creating vita for %{name}'
+    account_analysis_job:
+      progress_message: 'Creating account analysis for %{name}'

@@ -3,12 +3,13 @@
 class TwitterDetail < Cherry::Decorator
   include ActionView::Helpers::TextHelper
 
-  delegate :best_vita, :positions, :markup, :twitter_account, :most_experienced_language, :badges, to: :account
+  delegate :best_account_analysis, :positions, :markup, :twitter_account,
+           :most_experienced_language, :badges, to: :account
 
   def description
     return '' unless markup
 
-    name_fact = best_vita.vita_fact
+    name_fact = best_account_analysis.account_analysis_fact
     content = markup.first_line.to_s
     return content if name_fact.nil?
 

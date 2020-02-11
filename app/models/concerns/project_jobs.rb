@@ -22,7 +22,7 @@ module ProjectJobs
         return if deleted? || code_locations.empty? || incomplete_job
         return if code_locations.any?(&:ensure_job)
 
-        create_new_job? ? AnalyzeJob.create(project: self, priority: priority) : update_logged_at
+        create_new_job? ? ProjectAnalysisJob.create(project: self, priority: priority) : update_logged_at
       end
     end
 
@@ -50,8 +50,8 @@ module ProjectJobs
   def create_or_update_analyze_jobs(delay)
     job = incomplete_job || incomplete_code_location_job
     if job.nil?
-      job = AnalyzeJob.create(project: self, wait_until: Time.current + delay)
-    elsif job.is_a? AnalyzeJob
+      job = ProjectAnalysisJob.create(project: self, wait_until: Time.current + delay)
+    elsif job.is_a? ProjectAnalysisJob
       job.update_attribute(:wait_until, Time.current + delay)
     end
     job

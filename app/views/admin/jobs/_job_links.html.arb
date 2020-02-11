@@ -12,7 +12,7 @@ end
 if job.account_id
   account = Account.find(job.account_id)
   span "Account: #{account.login}"
-  span link_to '(Jobs)', admin_account_vita_jobs_path(account)
+  span link_to '(Jobs)', admin_account_account_analysis_jobs_path(account)
 end
 
 span "CodeLocation: #{job.code_location.nice_url}" if job.code_location_id

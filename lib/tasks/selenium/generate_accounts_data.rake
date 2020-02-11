@@ -26,9 +26,10 @@ namespace :selenium do
   end
 
   task account_summary: :environment do
+    best_analysis = @account.best_account_analysis
     account_summary = {
       'last_analysed' =>
-        @account.best_vita.nil? ? nil : "Analyzed #{time_ago_in_words(@account.best_vita.try(:created_at))} ago",
+        @account.best_account_analysis.nil? ? nil : "Analyzed #{time_ago_in_words(best_analysis.try(:created_at))} ago",
       'description' => @account.markup.try(:formatted),
       'projects_used' => Project.active.joins(:stacks).where(stacks: { account_id: @account.id })
                                 .order(:user_count, :name).limit(15).distinct.map(&:to_param),

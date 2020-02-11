@@ -1,6 +1,6 @@
 #accounts_show
   %h2.pull-left= t('.title')
-  = render partial: 'accounts/show/vita_timestamp', locals: { best_vita: @account.best_vita }
+  = render partial: 'accounts/show/account_analysis_timestamp', locals: { best_account_analysis: @account.best_account_analysis }
   .clearfix
   .col-md-5
     .margin_bottom_10px{ itemprop: 'description' }

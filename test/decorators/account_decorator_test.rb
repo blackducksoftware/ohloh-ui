@@ -7,8 +7,8 @@ require 'test_helpers/commits_by_language_data'
 class AccountDecoratorTest < ActiveSupport::TestCase
   let(:admin) { create(:admin) }
   let(:account) { create_account_with_commits_by_project }
-  let(:symbolized_cbp) { account.best_vita.vita_fact.commits_by_project.map(&:symbolize_keys) }
-  let(:symbolized_cbl) { account.best_vita.vita_fact.commits_by_language.map(&:symbolize_keys) }
+  let(:symbolized_cbp) { account.best_account_analysis.account_analysis_fact.commits_by_project.map(&:symbolize_keys) }
+  let(:symbolized_cbl) { account.best_account_analysis.account_analysis_fact.commits_by_language.map(&:symbolize_keys) }
   let(:sorted_cbl) { CommitsByLanguageData.sorted }
 
   let(:sidebars) do
@@ -37,7 +37,7 @@ class AccountDecoratorTest < ActiveSupport::TestCase
   end
 
   describe 'symbolized_commits_by_project' do
-    it 'must be empty when account has no best_vita' do
+    it 'must be empty when account has no best_account_analysis' do
       admin.decorate.symbolized_commits_by_project.must_be_empty
     end
 
@@ -47,7 +47,7 @@ class AccountDecoratorTest < ActiveSupport::TestCase
   end
 
   describe 'sorted_commits_by_project' do
-    it 'should return [] when account has no best_vita' do
+    it 'should return [] when account has no best_account_analysis' do
       admin.decorate.sorted_commits_by_project.must_be_empty
     end
 
@@ -58,7 +58,7 @@ class AccountDecoratorTest < ActiveSupport::TestCase
   end
 
   describe 'symbolized_commits_by_language' do
-    it 'should return [] when account has no best_vita' do
+    it 'should return [] when account has no best_account_analysis' do
       admin.decorate.symbolized_commits_by_language.must_be_empty
     end
 
@@ -68,7 +68,7 @@ class AccountDecoratorTest < ActiveSupport::TestCase
   end
 
   describe 'sorted_commits_by_language' do
-    it 'should return [] when account has no best_vita' do
+    it 'should return [] when account has no best_account_analysis' do
       admin.decorate.sorted_commits_by_language.must_be_empty
     end
 
@@ -105,20 +105,20 @@ class AccountDecoratorTest < ActiveSupport::TestCase
     end
   end
 
-  describe 'vita_status_message' do
+  describe 'account_analysis_status_message' do
     it 'should return ananlyses_scheduled message' do
       create_position(account: admin, name: create(:name))
-      admin.decorate.vita_status_message.must_equal I18n.t('accounts.show.analysis_scheduled')
+      admin.decorate.account_analysis_status_message.must_equal I18n.t('accounts.show.analysis_scheduled')
     end
 
     it 'should return no contributions message' do
-      create(:account).decorate.vita_status_message.must_equal I18n.t('accounts.show.no_contributions')
+      create(:account).decorate.account_analysis_status_message.must_equal I18n.t('accounts.show.no_contributions')
     end
 
     it 'should return no commits message' do
       position = create_position(account: admin)
       position.update_column(:name_id, nil)
-      admin.decorate.vita_status_message.must_equal I18n.t('accounts.show.no_commits')
+      admin.decorate.account_analysis_status_message.must_equal I18n.t('accounts.show.no_commits')
     end
   end
 end

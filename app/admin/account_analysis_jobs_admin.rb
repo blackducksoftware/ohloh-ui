@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-ActiveAdmin.register VitaJob do
+ActiveAdmin.register AccountAnalysisJob do
   menu false
   config.sort_order = 'current_step_at_desc'
 
@@ -16,7 +16,8 @@ ActiveAdmin.register VitaJob do
 
   action_item :manually_schedule, only: :index do
     if params[:account_id]
-      link_to 'Manually Create Vita Job', manually_schedule_admin_account_vita_jobs_path(account), method: :post
+      link_to 'Manually Create Account Analysis Job',
+              manually_schedule_admin_account_account_analysis_jobs_path(account), method: :post
     end
   end
 
@@ -41,8 +42,9 @@ ActiveAdmin.register VitaJob do
   controller do
     def manually_schedule
       account = Account.find_by(login: params[:account_id])
-      VitaJob.create(account: account, priority: 0)
-      redirect_to admin_account_vita_jobs_path(account), flash: { success: 'Vita Job has been created manually.' }
+      AccountAnalysisJob.create(account: account, priority: 0)
+      redirect_to admin_account_account_analysis_jobs_path(account),
+                  flash: { success: 'Account Analysis Job has been created manually.' }
     end
   end
 end

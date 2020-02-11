@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Enlistment < ActiveRecord::Base
+  include KnowledgeBaseCallbacks
+
   has_one :create_edit, as: :target
   has_many :project_badges
   has_many :travis_badges

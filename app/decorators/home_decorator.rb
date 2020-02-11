@@ -25,7 +25,7 @@ class HomeDecorator
     map.compact
   end
 
-  def vita_count
+  def account_analysis_count
     Rails.cache.fetch('HomeDecorator-vita_count-cache') || []
   end
 

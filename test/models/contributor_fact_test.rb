@@ -40,7 +40,7 @@ class ContributorFactTest < ActiveSupport::TestCase
   describe '#name_language_facts' do
     it 'must return langauge facts' do
       lang = create(:language)
-      fact = create(:vita_language_fact, language: lang, analysis_id: analysis.id, name_id: name_object.id)
+      fact = create(:account_analysis_language_fact, language: lang, analysis_id: analysis.id, name_id: name_object.id)
 
       contributor_fact.name_language_facts.must_equal [fact]
     end

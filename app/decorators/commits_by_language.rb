@@ -27,7 +27,7 @@ class CommitsByLanguage < Cherry::Decorator
   end
 
   def in_date_range
-    @in_date_range ||= account.best_vita.vita_fact.commits_by_language.to_a.select do |elem|
+    @in_date_range ||= account.best_account_analysis.account_analysis_fact.commits_by_language.to_a.select do |elem|
       (start_date..end_date).member? Date.parse(elem['month'])
     end
     @in_date_range.group_by { |fact| fact['l_id'] }

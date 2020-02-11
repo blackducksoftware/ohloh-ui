@@ -24,17 +24,17 @@ class TwitterDetailTest < ActiveSupport::TestCase
       admin_twitter_detail.description.must_equal ''
     end
 
-    it 'should return markup if vita_fact is absent' do
+    it 'should return markup if account_analysis_fact is absent' do
       user_twitter_detail.description.must_equal 'It was'
     end
 
-    it 'should return full description if markup and vita_fact is present' do
+    it 'should return full description if markup and account_analysis_fact is present' do
       language = create(:language)
       Account.any_instance.stubs(:most_experienced_language).returns(language)
 
-      vita = create(:vita, account_id: user.id)
-      user.update(best_vita: vita)
-      create(:vita_fact, vita_id: vita.id)
+      account_analysis = create(:account_analysis, account_id: user.id)
+      user.update(best_account_analysis: account_analysis)
+      create(:account_analysis_fact, vita_id: account_analysis.id)
 
       description = "It was, 0 total commits to 0 projects, most experienced in #{language.nice_name}, earned Kudo Rank"
       user_twitter_detail.description.must_equal description

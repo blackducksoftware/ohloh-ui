@@ -145,6 +145,8 @@ module VulnerabilitiesHelper
   end
 
   def get_token_array(token)
+    return [] if token.nil?
+
     if token.include?('-')
       token1, token2 = token.split('-')
       [token1.to_i, get_token_array(token2)].flatten
@@ -167,7 +169,7 @@ module VulnerabilitiesHelper
         case char
         when '0'..'9'
           char.to_s.to_i
-        when 'A'..'Z', 'a'..'z', '-', '+', '_'
+        else
           char.bytes.first.to_i * -1
         end
       end

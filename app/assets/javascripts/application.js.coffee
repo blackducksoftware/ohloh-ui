@@ -40,6 +40,7 @@ $(document).on 'page:change', ->
   new App.ProjectForm()
   new App.CheckAvailiability($('input.check-availability'))
   App.TagCloud.init()
+  ProjectMap.init()
 
 # Remove the following trigger when TurboLinks are re-enabled
 $(document).ready ->

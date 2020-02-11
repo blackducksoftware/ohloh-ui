@@ -8,7 +8,7 @@ FactoryBot.define do
     type { 'ContributorFact' }
   end
 
-  factory :vita_fact do
+  factory :account_analysis_fact do
     association :analysis
     association :name
     association :primary_language, factory: :language
