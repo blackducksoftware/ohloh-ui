@@ -85,7 +85,7 @@ class Position::Hooks
   end
 
   def update_account_info
-    VitaJob.schedule_account_analysis(account, 10.minutes)
+    AccountAnalysisJob.schedule_account_analysis(account, 10.minutes)
     account.update_akas
   end
 

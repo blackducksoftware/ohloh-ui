@@ -9,14 +9,14 @@ describe 'PeopleControllerTest' do
     Account.destroy_all
     Person.destroy_all
     account = create(:account, name: 'Bubba Hotep')
-    best_vita = create(:best_vita, account: account)
-    account.update(best_vita_id: best_vita.id)
+    best_account_analysis = create(:best_account_analysis, account: account)
+    account.update(best_vita_id: best_account_analysis.id)
     @claimed = create(:person, kudo_score: 12, kudo_rank: 3)
     @claimed.update(id: account.id, account_id: account.id)
     @unclaimed = create(:person, kudo_score: 12, kudo_rank: 3, effective_name: 'Bubba Amon')
     @project1 = create(:project)
     @project2 = create(:project)
-    best_vita.vita_fact.update_column(:commits_by_language, CommitsByLanguageData.construct)
+    best_account_analysis.account_analysis_fact.update_column(:commits_by_language, CommitsByLanguageData.construct)
     create(:name_fact, analysis_id: @project1.best_analysis_id, name_id: @unclaimed.name.id)
     create(:name_fact, analysis_id: @project2.best_analysis_id, name_id: @unclaimed.name.id)
     @unclaimed.name.update(name: 'Bubba Amon')

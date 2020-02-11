@@ -13,6 +13,7 @@ class Project < ActiveRecord::Base
   include ProjectSearchables
   include ProjectScopes
   include ProjectJobs
+  include KnowledgeBaseCallbacks
 
   acts_as_protected
   acts_as_taggable

@@ -16,14 +16,15 @@
       = t('.commit_id')
       = @commit.nice_id
     %table.commit_info
-      %tr
-        %td.text-top{ width: '13%', rowspan: '4' }
-          = avatar_for(commit_contributor.person, size: 64)
-        %td.text-right{ width: '15%' }= t('.contributor')
-        %td.info{ width: '40%' }
-          = render 'committer_name', commit_contributor: commit_contributor
-        %td.text-right{ width: '20%' }= t('.files_modified')
-        %td.info{ width: '20%' }= @commit.diffs.count
+      - if commit_contributor
+        %tr
+          %td.text-top{ width: '13%', rowspan: '4' }
+            = avatar_for(commit_contributor.person, size: 64)
+          %td.text-right{ width: '15%' }= t('.contributor')
+          %td.info{ width: '40%' }
+            = render 'committer_name', commit_contributor: commit_contributor
+          %td.text-right{ width: '20%' }= t('.files_modified')
+          %td.info{ width: '20%' }= @commit.diffs.count
       %tr
         %td.text-right= t('.date')
         %td.info= @commit.time.strftime('%d-%B-%Y at %H:%M')
@@ -32,8 +33,8 @@
       %tr
         %td.text-right= t('.repository')
         %td.info
-          = link_to commit_contributor.code_set.code_location.url, commit_contributor.code_set.code_location.url
-          = commit_contributor.code_set.code_location.branch
+          = link_to @commit.code_set.code_location.url, @commit.code_set.code_location.url
+          = @commit.code_set.code_location.branch
         %td.text-right= t('.lines_removed')
         %td.info= lines_removed
       %tr
@@ -86,27 +87,28 @@
           - klass = cycle('even', 'odd', named: 'rows')
           %tr{ class: "#{klass} nohover" }
             %td.strong
-              - if commit_contributor.code_set.code_location.scm_type == 'cvs'
-                #{commit_contributor.code_set.code_location.branch}/#{diff.fyle.name}
+              - if @commit.code_set.code_location.scm_type == 'cvs'
+                #{@commit.code_set.code_location.branch}/#{diff.fyle.name}
               - else
                 = truncate(diff.try(:fyle).try(:name), length: 43)
             - if Ignore.match?(@ignore_prefixes, diff.fyle.name)
               %td &nbsp;
               %td.ignored{ colspan: 7 }= t('.ignored_by_req')
             - else
-              - diff_summaries = SlocMetric.diff_summaries(diff, commit_contributor.analysis_id)
-              - if diff_summaries.blank?
-                %td &nbsp;
-                %td.ignored{ colspan: 7 }
-                  = t('.no_source_code_detected')
-              - diff_summaries.each_with_index do |summary, i|
-                - if i >= 1
-                  %tr{ class: "#{klass} nohover" }
-                    %td.no_border &nbsp;
-                    = render 'commits/code_added_removed',
-                      summary: summary, klass: 'no_border'
-                - else
-                  = render 'commits/code_added_removed', summary: summary, klass: ''
+              - if commit_contributor
+                - diff_summaries = SlocMetric.diff_summaries(diff, commit_contributor.analysis_id)
+                - if diff_summaries.blank?
+                  %td &nbsp;
+                  %td.ignored{ colspan: 7 }
+                    = t('.no_source_code_detected')
+                - diff_summaries.each_with_index do |summary, i|
+                  - if i >= 1
+                    %tr{ class: "#{klass} nohover" }
+                      %td.no_border &nbsp;
+                      = render 'commits/code_added_removed',
+                        summary: summary, klass: 'no_border'
+                  - else
+                    = render 'commits/code_added_removed', summary: summary, klass: ''
 
 = will_paginate @diffs
 

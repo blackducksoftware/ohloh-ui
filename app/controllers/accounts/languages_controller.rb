@@ -8,9 +8,9 @@ class Accounts::LanguagesController < ApplicationController
 
   def index
     @contributions = @account.positions.includes(:contribution).map(&:contribution).group_by(&:project_id)
-    return if @account.best_vita.nil?
+    return if @account.best_account_analysis.nil?
 
-    @vlfs = @account.best_vita.vita_language_facts.with_language_and_projects
-    @logos_map = @account.best_vita.language_logos.index_by(&:id)
+    @vlfs = @account.best_account_analysis.account_analysis_language_facts.with_language_and_projects
+    @logos_map = @account.best_account_analysis.language_logos.index_by(&:id)
   end
 end

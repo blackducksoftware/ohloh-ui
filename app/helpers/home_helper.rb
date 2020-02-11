@@ -14,7 +14,9 @@ module HomeHelper
     when 'most_active_projects'
       item.best_analysis.thirty_day_summary.commits_count if item.best_analysis.present?
     when 'most_active_contributors'
-      item.best_vita.vita_fact.thirty_day_commits if item.best_vita.vita_fact.present?
+      if item.best_account_analysis.account_analysis_fact.present?
+        item.best_account_analysis.account_analysis_fact.thirty_day_commits
+      end
     end
   end
 

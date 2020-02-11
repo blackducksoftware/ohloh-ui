@@ -17,8 +17,8 @@
 .mezzo.padding_one_top
   %h3= t('.dev_history')
   .col-md-12
-    - if @account.decorate.vita_status_message
-      %p= @account.decorate.vita_status_message
+    - if @account.decorate.account_analysis_status_message
+      %p= @account.decorate.account_analysis_status_message
     - else
       = render partial: 'accounts/show/commits_by_projects'
       = render partial: 'accounts/show/commits_by_language'

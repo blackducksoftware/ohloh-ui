@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class NilVitaFact < NullObject
+class NilAccountAnalysisFact < NullObject
   attr_reader :first_checkin, :last_checkin
   nought_methods :commits
 

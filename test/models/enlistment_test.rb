@@ -82,6 +82,13 @@ class EnlistmentTest < ActiveSupport::TestCase
       project.jobs.count.must_equal 1
     end
   end
+
+  it 'must flag project for sync with KB when a enlistment is added' do
+    assert_difference('KnowledgeBaseStatus.count', 1) do
+      enlistment
+    end
+    KnowledgeBaseStatus.find_by(project_id: enlistment.project_id).in_sync.must_equal false
+  end
 end
 
 # TODO: Replace this once we remove code_locations table dependency from enlistments_controller.

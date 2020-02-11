@@ -11,7 +11,7 @@ class AccountWidget::Detailed < AccountWidget
 
   def image
     name = account.name || I18n.t('account_widgets.account_detailed.image_name')
-    commits = account.best_vita.vita_fact.commits
+    commits = account.best_account_analysis.account_analysis_fact.commits
     WidgetBadge::Account.create(kudo_rank: rank, name: name, kudos: kudos, commits: commits)
   end
 

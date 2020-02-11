@@ -21,7 +21,7 @@
           != link_to bootstrap_icon('icon-cogs', t('.account.settings')), settings_account_path(@account)
         - if current_user_is_admin?
           |
-          = link_to bootstrap_icon('icon-legal', t('.view_job')), admin_account_vita_jobs_path(@account)
+          = link_to bootstrap_icon('icon-legal', t('.view_job')), admin_account_account_analysis_jobs_path(@account)
       - if @account.url.present?
         .info
           = link_to @account.url, target: '_blank', title: @account.url, itemprop: 'url', rel: 'nofollow' do

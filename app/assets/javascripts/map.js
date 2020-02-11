@@ -102,7 +102,7 @@ var OH_Map = {
 
   getMarkers: function() {
     if (OH_Map.url){
-      $.getJSON(Map.url, {lat: OH_Map.map.getCenter().lat(), lng: OH_Map.map.getCenter().lng(), zoom: OH_Map.map.getZoom()},
+      $.getJSON(OH_Map.url, {lat: OH_Map.map.getCenter().lat(), lng: OH_Map.map.getCenter().lng(), zoom: OH_Map.map.getZoom()},
         function(data, responseCode){
           var jsonData = OH_Map.parseAccountJson(data);
           if (OH_Map.onComplete){ OH_Map.onComplete(jsonData); }

@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Link < ActiveRecord::Base
+  include KnowledgeBaseCallbacks
+
   # Maintain this order for the index page.
   CATEGORIES = HashWithIndifferentAccess.new(
     Homepage: 9,
@@ -46,14 +48,6 @@ class Link < ActiveRecord::Base
 
   def allow_undo_to_nil?(key)
     !%i[title url link_category_id].include?(key)
-  end
-
-  def url_escaped
-    CGI.escape(url)
-  end
-
-  def url_host
-    URI.parse(url_escaped).host
   end
 
   class << self
