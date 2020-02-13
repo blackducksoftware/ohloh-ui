@@ -1,8 +1,10 @@
+@import oh-styles
+
 #value_select
   .chzn-container .chzn-drop, .chzn-container-single .chzn-single
-    border: 1px solid color-gradient($SECONDARY_LIGHT_PURPLE, 120)
+    @include chzn-container-override-border
   .chzn-container-active.chzn-with-drop .chzn-single
-    border: 1px solid color-gradient($SECONDARY_LIGHT_PURPLE, 120)
+    @include chzn-container-override-border
     box-shadow: none
   .chzn-container-single .chzn-single
     background-color: white
@@ -12,27 +14,27 @@
     border: 1px solid color-gradient($PRIMARY_DARK_GRAY, 120)
     height: 30px
   .chzn-container-active > .chzn-single
-    border: 1px solid color-gradient($SECONDARY_LIGHT_PURPLE, 120)
+    @include chzn-container-override-border
   .chzn-container
     .chzn-drop
       border-top: none
-      border-left: 1px solid color-gradient($SECONDARY_LIGHT_PURPLE, 120)
-      border-bottom: 1px solid color-gradient($SECONDARY_LIGHT_PURPLE, 120)
-      border-right: 1px solid color-gradient($SECONDARY_LIGHT_PURPLE, 120)
+      border-left: 1px solid color-gradient($SECONDARY_LIGHT_PURPLE, 100)
+      border-bottom: 1px solid color-gradient($SECONDARY_LIGHT_PURPLE, 100)
+      border-right: 1px solid color-gradient($SECONDARY_LIGHT_PURPLE, 100)
     .chzn-results .highlighted
-      background: color-gradient($SECONDARY_LIGHT_PURPLE, 120)
+      background: color-gradient($SECONDARY_LIGHT_PURPLE, 100)
       color: white
   .chzn-container-single .chzn-single
     border-radius: 0px
 
 .chzn-search
-  background-color: color-gradient($SECONDARY_LIGHT_PURPLE, 120)
+  background-color: color-gradient($SECONDARY_LIGHT_PURPLE, 100)
 
 /* Some IE 7-9 fun with this next one - filter likes to override background
 
 #sort_by, #add_new_badge_form
   .chzn-container-single .chzn-search:after
-    color: color-gradient($SECONDARY_LIGHT_PURPLE, 120)
+    color: color-gradient($SECONDARY_LIGHT_PURPLE, 100)
   .chzn-container .chzn-results li
     color: white
 
@@ -43,14 +45,14 @@ div.chosen label
 
 #sort_by, #add_new_badge_form
   .chzn-container .chzn-drop, .chzn-container-single .chzn-single
+    @include chzn-container-override-border
     background-color: color-gradient($PRIMARY_DARK_GRAY, 120)
     background-image: none
-    border: 1px solid color-gradient($SECONDARY_LIGHT_PURPLE, 120)
     color: white
     box-shadow: none !important
     border-radius: 0px
   .chzn-container-active.chzn-with-drop .chzn-single
-    border: 1px solid color-gradient($SECONDARY_LIGHT_PURPLE, 120)
+    @include chzn-container-override-border
     box-shadow: none
   .chzn-container-single .chzn-single div
     background-color: color-gradient($PRIMARY_DARK_GRAY, 120)
@@ -67,17 +69,17 @@ div.chosen label
     border: 1px solid color-gradient($PRIMARY_DARK_GRAY, 120)
     height: 30px
   .chzn-container-active > .chzn-single
-    border: 1px solid color-gradient($SECONDARY_LIGHT_PURPLE, 120)
+    @include chzn-container-override-border
   .chzn-container .chzn-drop
     border-top: none
-    border-left: 1px solid color-gradient($SECONDARY_LIGHT_PURPLE, 120)
-    border-bottom: 1px solid color-gradient($SECONDARY_LIGHT_PURPLE, 120)
-    border-right: 1px solid color-gradient($SECONDARY_LIGHT_PURPLE, 120)
+    border-left: 1px solid color-gradient($SECONDARY_LIGHT_PURPLE, 100)
+    border-bottom: 1px solid color-gradient($SECONDARY_LIGHT_PURPLE, 100)
+    border-right: 1px solid color-gradient($SECONDARY_LIGHT_PURPLE, 100)
   .chzn-container-active .chzn-single-with-drop
     box-shadow: none
   .chzn-container .chzn-results
     .highlighted
-      background: color-gradient($SECONDARY_LIGHT_PURPLE, 120)
+      background: color-gradient($SECONDARY_LIGHT_PURPLE, 100)
       color: white
     .no-results
       background: color-gradient($PRIMARY_DARK_GRAY, 120)
@@ -86,7 +88,7 @@ div.chosen label
   .chzn-container-multi .chzn-choices
     background: color-gradient($PRIMARY_DARK_GRAY, 120)
   .chzn-container-active .chzn-choices
-    border: 1px solid color-gradient($SECONDARY_LIGHT_PURPLE, 120)
+    @include chzn-container-override-border
 
 /* Some IE 7-9 fun with this next one - filter likes to override background
 
@@ -101,7 +103,7 @@ div.chosen label
   box-shadow: none !important
 
 .chzn-container-active .chzn-choices
-  border: 1px solid color-gradient($SECONDARY_LIGHT_PURPLE, 120)
+  border: 1px solid color-gradient($SECONDARY_LIGHT_PURPLE, 100)
 
 /* OTWO-3025 Fix for IE9 -- Chosen jQuery Dropdown to have the orange color as background
 
