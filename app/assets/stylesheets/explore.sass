@@ -18,13 +18,13 @@
     input
       @include explore-sidebar-search-text-color
       &:-moz-placeholder
-        color: color-gradient($LIGHT_GRAY, 120)
+        @include explore-sidebar-placeholder-color
         font-style: italic
       &:-ms-input-placeholder
-        color: color-gradient($LIGHT_GRAY, 120)
+        @include explore-sidebar-placeholder-color
         font-style: italic
       &::-webkit-input-placeholder
-        color: color-gradient($LIGHT_GRAY, 120)
+        @include explore-sidebar-placeholder-color
         font-style: italic
   .explore_search
     width: 173px

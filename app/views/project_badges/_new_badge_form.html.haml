@@ -24,4 +24,4 @@
     = image_tag @project_badge.try(:badge_url) if @project_badge.identifier
   %td.col-xs-2
     %btn.icon-edit.btn.btn-mini.btn-primary.col-xs-12#save_badge= t('project_badges.save_badge')
-    %btn.icon-edit.btn.btn-mini.btn-default.col-xs-12#cancel_badge= t('project_badges.cancel')
+    %btn.icon-edit.btn.btn-mini.btn-refresh.col-xs-12#cancel_badge= t('project_badges.cancel')

@@ -57,9 +57,9 @@
         %input.btn.btn-sm.btn-primary{ type: 'submit', value: t('.button.save') }
         - if @parent.logo
           - path = @parent.is_a?(Project) ? project_logos_path(@parent) : organization_logos_path(@parent)
-          = link_to t('.link.blank'), path, method: :delete, class: 'btn btn-sm'
+          = link_to t('.link.blank'), path, method: :delete, class: 'btn btn-sm btn-refresh'
         - else
-          = disabled_button t('.link.blank'), class: 'btn-sm'
+          = disabled_button t('.link.blank'), class: 'btn-sm btn-refresh'
       - else
         = disabled_button t('.button.save'), class: 'btn-sm btn-primary'
-        = disabled_button t('.link.blank'), class: 'btn-sm btn-primary'
+        = disabled_button t('.link.blank'), class: 'btn-sm btn-refresh'

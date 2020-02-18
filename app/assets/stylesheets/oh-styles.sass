@@ -168,6 +168,25 @@
 @mixin most-active-contributors-background-color
   background-color: color-gradient($SECONDARY_TEAL, 120) !important
 
+@mixin dingus-row-background-color
+  background-color: color-gradient($LIGHT_GRAY, 20)
+
+////////////////////////////////////////////////////////////////////
+//
+// Account/* mixins
+
+@mixin commits-summary-background-color
+  background-color: color-gradient($LIGHT_GRAY, 40)
+
+@mixin forum-topics-mark-specifications-background-color
+  background-color: color-gradient($SECONDARY_YELLOW, 20)
+
+@mixin infographic-box-header-background-color
+  background-color: color-gradient($SECONDARY_SLATE_BLUE, 120) !important
+
+@mixin projects-summary-projects-name-background-color
+  background-color: color-gradient($SECONDARY_ORANGE, 100)
+
 ////////////////////////////////////////////////////////////////////
 //
 // Explore/* mixins
@@ -176,6 +195,9 @@
   color: color-gradient($SECONDARY_MARINE_BLUE, 120)
 
 @mixin explore-sidebar-search-text-color
+  color: color-gradient($LIGHT_GRAY, 120)
+
+@mixin explore-sidebar-placeholder-color
   color: color-gradient($LIGHT_GRAY, 120)
 
 @mixin explore-people-signature-text-color
@@ -300,6 +322,18 @@
 
 @mixin static-forms-text-color
   color: color-gradient($PRIMARY_DARK_GRAY, 100)
+
+@mixin static-forms-border-color
+  border-color: color-gradient($SECONDARY_SLATE_BLUE, 120)
+
+@mixin chzn-container-background-color
+  background: color-gradient($SECONDARY_SLATE_BLUE, 120)
+
+@mixin chzn-container-border-color
+  border-color: color-gradient($SECONDARY_SLATE_BLUE, 120)
+
+@mixin chzn-container-override-border
+  border: 1px solid color-gradient($SECONDARY_LIGHT_PURPLE, 100)
 
 ////////////////////////////////////////////////////////////////////
 //

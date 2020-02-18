@@ -19,7 +19,7 @@ describe 'WidgetBadge::Partner' do
       result_blob = WidgetBadge::Partner.create(strings)
       result_image = write_to_file(result_blob)
 
-      compare_images(result_image.path, expected_image_path, 0.1)
+      compare_images(result_image.path, expected_image_path, 0.29)
     end
   end
 
@@ -31,7 +31,7 @@ describe 'WidgetBadge::Partner' do
       result_image = WidgetBadge::Partner.send :add_text, *[text, options]
       expected_image_path = Rails.root.join('test', 'data', 'widget_badge', 'partner', 'add_text.png')
 
-      compare_images(result_image.path, expected_image_path, 0.1)
+      compare_images(result_image.path, expected_image_path, 0.29)
     end
 
     it 'must produce an image without name when it is absent' do
@@ -41,7 +41,7 @@ describe 'WidgetBadge::Partner' do
       result_image = WidgetBadge::Partner.send :add_text, *[text, options]
       expected_image_path = Rails.root.join('test', 'data', 'widget_badge', 'partner', 'text_without_name.png')
 
-      compare_images(result_image.path, expected_image_path, 0.1)
+      compare_images(result_image.path, expected_image_path, 0.29)
     end
   end
 

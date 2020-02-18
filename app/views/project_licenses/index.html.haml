@@ -26,11 +26,11 @@
               %td.col-md-4.padding_one_top.last
                 .pull-right
                   - if @project.edit_authorized?
-                    %a.btn.btn-mini.btn-danger{ href: project_license_path(@project, project_license),
+                    %a.btn.btn-small.btn-danger{ href: project_license_path(@project, project_license),
                                                 data: { method: :delete, confirm: t('.remove_confirm') } }
                       %i.icon-trash= t '.remove'
                   - else
-                    = disabled_button bootstrap_icon('icon-trash', t('.remove')), class: 'btn-mini btn-danger'
+                    = disabled_button bootstrap_icon('icon-trash', t('.remove')), class: 'btn-small btn-danger'
           %tr
             %td.padding_one_top{ colspan: '2' }= show_license_button(@project)
     .clear

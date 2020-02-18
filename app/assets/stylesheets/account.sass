@@ -5,7 +5,7 @@
     position: relative
     height: 128px
   .commits_summary
-    background-color: color-gradient($SECTION_BACKGROUND, 0)
+    @include commits-summary-background-color
     width: 455px
     margin: 5px 0px
     height: 118px
@@ -18,7 +18,7 @@
       div
         height: 23px
       .project_name
-        background-color: color-gradient($SECONDARY_ORANGE, 100)
+        @include projects-summary-projects-name-background-color
         color: white
         border: 1px dashed white
         font-size: 18px
@@ -49,7 +49,7 @@
       line-height: 10px
       margin-bottom: 0
       a
-        color: inherit
+        @include site-link-color
     .more_commits_padding
       padding-left: 10px
   .no_commits
