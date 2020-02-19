@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop:disable Metrics/LineLength:
 class Icon < Cherry::Decorator
   include ActionView::Helpers::AssetTagHelper
   include ActionView::Helpers::TagHelper
@@ -13,7 +12,8 @@ class Icon < Cherry::Decorator
   def image(with_dimensions: true)
     if logo
       width_and_height = with_dimensions ? dimensions : ''
-      image_tag(logo.attachment.url(size), style: "#{width_and_height} border:0 none;", itemprop: 'image', alt: 'img avatar')
+      css_style = width_and_height + ' border:0 none;'
+      image_tag(logo.attachment.url(size), style: css_style, itemprop: 'image', alt: 'img avatar')
     else
       content_tag :p, name.first.capitalize, style: default_style
     end
@@ -47,4 +47,3 @@ class Icon < Cherry::Decorator
     "text-align:center; float:left; margin-bottom:0; margin-top:3px; margin-right:#{margin_right}px"
   end
 end
-# rubocop:enable Metrics/LineLength:

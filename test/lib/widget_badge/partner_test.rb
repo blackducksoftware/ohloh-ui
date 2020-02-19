@@ -31,7 +31,7 @@ describe 'WidgetBadge::Partner' do
       result_image = WidgetBadge::Partner.send :add_text, *[text, options]
       expected_image_path = Rails.root.join('test', 'data', 'widget_badge', 'partner', 'add_text.png')
 
-      compare_images(result_image.path, expected_image_path, 0.29)
+      compare_images(result_image.path, expected_image_path, 0.38)
     end
 
     it 'must produce an image without name when it is absent' do
