@@ -28,7 +28,7 @@ describe 'WidgetBadge::Thin' do
       result_image = WidgetBadge::Thin.send :add_text, *[text, options]
       expected_image_path = Rails.root.join('test', 'data', 'widget_badge', 'thin', 'openhub_and_text.png')
 
-      compare_images(result_image.path, expected_image_path, 0.29)
+      compare_images(result_image.path, expected_image_path, 0.75)
     end
   end
 
