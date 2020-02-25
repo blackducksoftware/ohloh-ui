@@ -16,12 +16,17 @@
 =link_blue
   @include site-link-color
 
+// font awesome custom styles
+#commits_index_page,
+#commits_summary_page
+  [class^="icon-"], [class*=" icon-"]
+    font-family: Roboto !important
+
 body
   text-rendering: optimizeLegibility
   a
     @include site-link-color
   
-
 .hidden
   display: none
 
@@ -95,7 +100,7 @@ h1, h2, h3, h4, h5, h6, p, li, dd, dt,span,a,abbr,td,th
   &.soft
     @include soft-font-color
   &.date
-    color: #777
+    @include site-link-color
 
 .col
   h5, h6, p, dl, ul, ol, code
