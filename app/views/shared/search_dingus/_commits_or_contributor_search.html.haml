@@ -17,7 +17,7 @@
         %label #{t('shared.search_dingus.search_bar.search_text')} &nbsp;
         = text_field_tag :query, params[:query]
         = hidden_field_tag :time_span, params[:time_span]
-        %button.btn{ type: 'Submit' }
+        %button.btn.btn-refresh{ type: 'Submit' }
           %i.icon-refresh
       - if type == :contributions
         = render 'shared/search_dingus/sort', sort_context: :contributions, filter_type: nil
