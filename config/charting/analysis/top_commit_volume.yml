@@ -41,6 +41,9 @@ legend:
     fontSize: '0.9em'
 plotOptions:
   series:
+    states:
+      inactive:
+        opacity: 1
     stacking: 'percent'
     dataLabels:
       enabled: false
