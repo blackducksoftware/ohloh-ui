@@ -40,7 +40,7 @@ var GaugeProgress = {
       yAxis: {
         min: 0,
         max: $('[data-gauge-max]').first().data()['gaugeMax'],
-        stops: [[0.1, '#2ecc71'], [0.5, '#f1c40f'], [0.9, '#e74c3c']],
+        stops: [[0.1, '#2ecc71'], [0.5, '#7b559b'], [0.9, '#482268']],
         minorTickInterval: null,
         tickPixelInterval: 400,
         tickWidth: 0,

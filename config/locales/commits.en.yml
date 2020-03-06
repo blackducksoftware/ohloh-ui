@@ -62,5 +62,5 @@ en:
       lines_added: 'Lines Added:'
       lines_removed: 'Lines Removed'
       commits_per_month: 'Commits per Month'
-      most_recent_commits: 'Month Recent Commits'
+      most_recent_commits: 'Most Recent Commits'
       see_all_commits: 'See All Commits'
