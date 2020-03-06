@@ -17,7 +17,8 @@
         %tr{ style: 'background-color: #fff' }
           %td.strong= Organization::ORG_TYPES.invert[orgs.org_type]
           %td
-            #commit-gauge{ 'data-gauge' => orgs.average_commits.to_s, 'data-gauge-max' => gauge_scale.to_s }
+            #commit-gauge{ 'data-gauge' => orgs.average_commits.to_s, 'data-gauge-max' => gauge_scale.to_s, class: "gauge-#{orgs.org_type}" }
+
           %td
             .progress#progress-container
               #progress-bar{ role: 'progressbar', 'aria-valuemax' => scale.to_s,

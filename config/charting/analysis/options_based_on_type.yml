@@ -40,9 +40,12 @@ code_history:
       stacking: 'normal'
   series:
     - name: 'Code'
+      color: '#482268'
       id: 'code'
     - name: 'Comments'
+      color: '#008893'
     - name: 'Blanks'
+      color: '#99dde3'
   tooltip:
     shared: true
 
