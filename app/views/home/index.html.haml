@@ -10,8 +10,8 @@
         %form.search#search_form{ action: projects_path }
           %input{ type: :hidden, name: 'ref', value: 'homepage' }
           %input.for_search_all_code{ type: :text, name: 'query', placeholder: t('.search_projects'), id: 'text' }
-            %span.image_icon= image_tag(asset_url('search_icon2.png'), id: 'icon_text')
-          %p.icon_search
+            %i#icon_text.fa.fa-search
+
     .row
       .col-md-12
         .global_stats
