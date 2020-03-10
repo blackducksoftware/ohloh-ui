@@ -1,39 +1,33 @@
-@import oh-colors
-
-@font-face
-  font-family: 'Open Sans'
-  font-style: normal
-  font-weight: 300
-  src: font-url('OpenSans-Light.woff') format('woff')
-
-@font-face
-  font-family: 'Open Sans'
-  font-style: normal
-  font-weight: 400
-  src: font-url('OpenSans-Regular.woff') format('woff')
+@import oh-styles
 
 // base mixins
 =sans_font
-  :font-family Open Sans
+  font-family: 'Roboto'
 =serif_font
-  :font-family Open Sans
+  font-family: 'Roboto'
 =arial_font
-  :font-family Open Sans
+  font-family: 'Roboto'
 =lucida_font
-  :font-family Open Sans
+  font-family: 'Roboto'
 =small_font
-  :font-size .91667em
+  font-size: .91667em
 =tiny_font
-  :font-size .8333em
+  font-size: .8333em
 =link_blue
-  :color $primary-blue-darker
+  @include site-link-color
+
+// font awesome custom styles
+#commits_index_page,
+#commits_summary_page,
+#mini_account_row
+  [class^="icon-"], [class*=" icon-"]
+    font-family: Roboto !important
 
 body
   text-rendering: optimizeLegibility
   a
-    color: $primary-blue-darker
+    @include site-link-color
   
-
 .hidden
   display: none
 
@@ -68,7 +62,6 @@ h2
 h3
   margin-bottom: .5em
   font-size: 1.5em
-  font-weight: bold
   line-height: 1
   &.popover-title
     margin-bottom: 0px
@@ -79,7 +72,7 @@ h4
   line-height: 1.2
   margin-bottom: 1.2em
   a:link, a:hover, a:visited
-    color: $secondary-blue-80
+    @include site-link-color
   &.section_header
     border-bottom: 2px solid #ccc
     padding: 0 5px
@@ -99,16 +92,16 @@ h6
 
 h1, h2, h3, h4, h5, h6
   a:link, a:visited
+    @include site-link-color
     border:  0
-    color: $primary-blue-darker
   &.section
     border-botton: 1px solid #aaa
 
 h1, h2, h3, h4, h5, h6, p, li, dd, dt,span,a,abbr,td,th
   &.soft
-    color: $primary-gray-80
+    @include soft-font-color
   &.date
-    color: #777
+    @include site-link-color
 
 .col
   h5, h6, p, dl, ul, ol, code
@@ -128,7 +121,7 @@ h1, h2, h3, h4, h5, h6, p, li, dd, dt,span,a,abbr,td,th
       font-style: normal
 
 .soft
-  color: $primary-gray-80
+  @include soft-font-color
 
 code
   color: $secondary-blue-80
@@ -139,8 +132,8 @@ code
 
 .required
   &:after
+    @include soft-font-color
     content: ' (required)'
-    color: $primary-gray-80
 
 .control-label, b
   font-size: 14px
@@ -177,3 +170,6 @@ ul.unstyled, ol.unstyled
 .piano
   margin-top: 6px
   border-top: 1px dotted #aaaaaa
+
+.pagination
+  @include site-pagination-colors

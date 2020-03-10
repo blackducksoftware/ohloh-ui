@@ -34,8 +34,8 @@
     p
       margin-left: 5px
     .col-md-9 a
+      @include site-link-color
       font-weight: bold
-      color: #369
       font-size: 15px
 
   #orgs_by_30_days_volume
@@ -56,8 +56,8 @@
       .col-md-3 a
         margin: 5px 0px 0px 0px
       .col-md-9 a
+        @include site-link-color
         font-weight: bold
-        color: #369
         font-size: 15px
     .row#active-org-timestamp
       font-size: 9px
@@ -65,6 +65,23 @@
       margin-bottom: 0px
 
   #stats-by-sector
+    .gauge-1 //commercial
+      .highcharts-color-0
+        fill: #7b559b
+        stroke: #7b559b
+    .gauge-2 //education
+      .highcharts-color-0
+        fill: #9c7fb4
+        stroke: #9c7fb4
+    .gauge-3 //Government
+      .highcharts-color-0
+        fill: #9c7fb4
+        stroke: #9c7fb4
+    .gauge-4 //Non Profit
+      .highcharts-color-0
+        fill: #482268
+        stroke: #482268
+
     #commit-gauge
       width: 220px
       height: 80px
@@ -86,6 +103,6 @@
     border-radius: 0
 
     #progress-bar
-      background-color: #428bca
+      background-color: color-gradient($SECONDARY_SLATE_BLUE, 120)
       color: white
       padding: 0 0 0 3px

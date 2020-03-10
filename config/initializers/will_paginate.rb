@@ -15,7 +15,7 @@ module BootstrapPagination
   class Rails < WillPaginate::ActionView::LinkRenderer
     def to_html
       ul_element = super
-      tag(:div, ul_element, class: 'oh_pagination text-center')
+      tag(:div, ul_element, class: 'text-center')
     end
   end
 end

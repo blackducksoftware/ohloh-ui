@@ -1,5 +1,5 @@
 [class^="icon-"], [class*=" icon-"]
-  font-family: FontAwesome
+  font-family: FontAwesome !important
   font-weight: normal
   font-style: normal
   text-decoration: inherit
@@ -12,6 +12,13 @@
   display: inline-block
   speak: none
   padding-right: 2px
+
+.fa-rotate-45
+  -webkit-transform: rotate(45deg)
+  -moz-transform: rotate(45deg)
+  -ms-transform: rotate(45deg)
+  -o-transform: rotate(45deg)
+  transform: rotate(45deg)
 
 .icon-large:before
   vertical-align: -10%
@@ -44,6 +51,9 @@ a
 
 [class^="icon-"].hide, [class*=" icon-"].hide
   display: none
+
+.icon-refresh
+  @include secondary-button-colors
 
 .icon-muted
   color: #eeeeee

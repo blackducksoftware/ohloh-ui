@@ -23,7 +23,7 @@ describe 'WidgetBadge::Account' do
       result_blob = WidgetBadge::Account.create(options)
       result_file = write_to_file(result_blob)
 
-      compare_images(result_file.path, expected_image_path, 0.11)
+      compare_images(result_file.path, expected_image_path, 0.7)
     end
   end
 
@@ -36,7 +36,7 @@ describe 'WidgetBadge::Account' do
       result_image = WidgetBadge::Account.send :add_text, *[base_image, options]
       expected_image_path = Rails.root.join('test', 'data', 'widget_badge', 'account', 'text_without_name.png')
 
-      compare_images(result_image.path, expected_image_path, 0.1)
+      compare_images(result_image.path, expected_image_path, 0.8)
     end
 
     it 'must produce an image without commits and kudos when not present' do

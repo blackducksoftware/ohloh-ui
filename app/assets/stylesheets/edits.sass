@@ -1,45 +1,54 @@
 .edit
   h6.undone
-    :text-decoration line-through
+    text-decoration: line-through
   .edit_actions
-    :display table
-    :height 50px
-    :float right
+    display: table
+    height: 50px
+    float: right
   .undo_block
-    :display table-cell
-    :vertical-align middle
-    :text-align right
+    display: table-cell
+    text-align: right
+    vertical-align: middle
     .info
-      :color #777
-      :line-height 18px
+      color: #777
+      line-height: 18px
   .in_avatar
-    :float left
-    :width 42px
+    float: left
+    width: 42px
     p
-      :text-align center
+      text-align: center
+    p.twitter-text
+      @include twitter-background-color
+      border: 5px solid white
+      color: white
+      width: 32px
+      height: 32px
+      display: inline-block
+      vertical-align: middle
+      padding-top: 3px
   .inside
-    :margin-left 50px
+    margin-left: 50px
 .edit_enlist_branch_name, .edit_enlist_module_name, .edit_enlist_module_branch_name
-  :background #7BB432
-  :color #fff
-  :padding 2px 5px
+  background: #7BB432
+  color: #fff
+  padding: 2px 5px
 .edit_enlist_module_name
-  :background #547C21
+  background: #547C21
 #edit-details
   .modal-header
-    :padding 8px
-    :background #0082C6
-    :color #FFF
+    padding: 8px
+    background: #0082C6
+    color: #FFF
   button.close
-    :padding 1px
-    :opacity 0.4
-    :border 1px solid #FFF
-    :border-radius 5px
+    padding: 1px
+    opacity: 0.4
+    border: 1px solid #FFF
+    border-radius: 5px
     &:hover
-      :opacity 0.5
+      opacity: 0.5
   .modal-body
     .row
-      :padding-bottom 5px
+      padding-bottom: 5px
 
 .edit_spinner
   position: absolute

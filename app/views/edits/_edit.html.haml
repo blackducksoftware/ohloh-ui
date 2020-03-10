@@ -8,7 +8,11 @@
       .edit_actions
         .undo_block= render partial: 'undo_block', locals: { edit: edit }
       .in_avatar.clear
-        = avatar_for(edit.account)
+        - if edit.account.name == 'The Ohloh Hamster'
+          %p.twitter-text
+            &nbsp;OH&nbsp;
+        - else
+          = avatar_for(edit.account)
       .inside
         %p.strong.nomargin{ class: edit_title_class(edit) }
           = link_to edit.id, show_edit_path(edit), class: 'show_edit_btn', remote: true,

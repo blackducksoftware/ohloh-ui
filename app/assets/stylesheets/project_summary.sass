@@ -1,4 +1,3 @@
-@import global_vars
 .summary
   :word-break break-word
   :width 100%
@@ -20,7 +19,7 @@
 
 // in a nutshell section
 ul#factoids
-  :padding-left 30px
+  :width 100%
 
 .recent_committers
   :font-size 11px
@@ -50,7 +49,7 @@ ul#factoids
         :line-height 13px
 
 .analysis_in_progress
-  :color $soft_gray
+  @include projects-summary-analysis-in-progress-color
 
 #similar_projects
   table

@@ -290,7 +290,7 @@ describe 'ProjectsController' do
 
       get :show, id: project.vanity_url
 
-      must_select('p')[2].text.must_equal "foo \n "
+      must_select('p')[3].text.must_equal "foo \n "
     end
 
     it 'show accepts being called via api' do

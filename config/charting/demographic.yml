@@ -1,9 +1,8 @@
 chart:
   type: 'pie'
-  plotBackgroundColor:
-  plotBorderWidth:
   renderTo: 'demographics_chart'
   plotShadow: false
+  styledMode: true
 title:
   text:
   align: 'right'

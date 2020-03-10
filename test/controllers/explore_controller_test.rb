@@ -134,7 +134,6 @@ describe 'ExploreController' do
         must_respond_with :ok
         result['chart']['type'].must_equal 'pie'
         data['name'].must_equal 'Inactive'
-        data['color'].must_equal '#2369C8'
         data['y'].must_equal 50.0
         data['sliced'].must_equal true
         data['selected'].must_equal true

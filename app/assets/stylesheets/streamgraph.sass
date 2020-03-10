@@ -22,10 +22,10 @@
     height: 300px !important
 
 .streamgraph_IE_not_supported
+  @include ie-not-supported-text-color
   width: 900px !important
   background: asset_url('sample_streamgraph.png') no-repeat !important
   font-weight: bold
-  color: red
 
 #streamgraph_legend
   width: 150px
@@ -37,10 +37,13 @@
   padding-top: 5px
 
 #streamgraph_legend
+  div
+    dislplay: inline-block
   p
+    @include site-link-color
     padding-left: 10px
     margin: 0 0 -2px 0
-    color: #3e576f
+    dislplay: inline
 
 .streamgraph_legend_color
   width: 16px
@@ -49,6 +52,7 @@
   float: left
   margin: 4px 4px 0 4px
   border-radius: 3px
+  clear: left
 
 .full
   .background-watermark

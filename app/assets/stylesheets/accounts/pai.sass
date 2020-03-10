@@ -1,83 +1,54 @@
-/////////////////////////  PROJECT ACTIVITY INDICATORS ///////////////////
-// Each size element has the icon family string, the icon dimension in pixels and the left margin
-$sizes: (('fifteen', 15, 1), ('twenty', 20, 0), ('twentyfive', 25, 19), ('thirtyfive', 35, 23))
-$pai_levels: (('vh',0), ('h', 1), ('m', 2), ('l', 3), ('vl', 4), ('i', 5), ('na', 6), ('new', 7))
-
-@each $size in $sizes
-  // Build the base string from the 1st value in the element
-  $icon_family: nth($size, 1)
-  $dimension:   nth($size, 2)
-  $left_margin: nth($size, 3)
-  $activity_level: #{$icon_family}_project_activity_level
-
-  #{$activity_level}
-    :width  #{$dimension}px
-    :height #{$dimension}px
-    :margin-left #{$left_margin}px
-
-  @each $level in $pai_levels
-    $postfix:    nth($level, 1)
-    $multiplier: nth($level, 2)
-    .#{$activity_level}_#{$postfix}
-      @extend #{$activity_level}
-      :background-image asset_url("project_activity/pai-#{$dimension}px.png")
-      :background-position -#{$multiplier * $dimension}px 0
-      :background-repeat no-repeat
-      :position absolute
-
-.project_activity_margin_top
-  :margin-top -8px
+@import oh-styles
 
 #project_header_activity_indicator
-  :width 88px
-  :margin-top 1.4rem
-  :margin-left 2rem
+  width: 88px
+  margin-top: 1.4rem
+  margin-left: 2rem
 
 .thirtyfive_project_activity_text
-  :font-size 11px
-  :text-align center
-  :width 82px
-  :margin-top 36px
-  :line-height 14px
+  font-size: 11px
+  text-align: center
+  width: 82px
+  margin-top: 60% //36px
+  line-height: 14px
 
 .twentyfive_project_activity_text
-  :font-size 12px
-  :text-align left
-  :width 70px
+  font-size: 12px
+  text-align: left
+  width: 70px
 
 .twenty_project_activity_text
-  :font_size 11px
-  :width 80px
-  :margin-top 2px
-  :margin-left 24px
-  :position absolute
+  font_size: 11px
+  width: 80px
+  margin-top: 2px
+  margin-left: 24px
+  position: absolute
 
 .fifteen_project_activity_text
-  :font-size 10px
-  :text-align left
-  :margin-left 19px
+  font-size: 10px
+  text-align: left
+  margin-left: 19px
 
 #i_use_this_container
-  :margin-bottom 0.8rem
+  margin-bottom: 0.8rem
   .btn.iusethis
-    :font-size 13px
-    :height 30px
-    :margin-right 10px
+    font-size: 13px
+    height: 30px
+    margin-right: 10px
 
   .use_count
-    :padding 0 10px
-    :font-size 24px
-    :height 32px
-    :line-height 36px
-    :display block
-    :text-align center
-    :margin-top 2px
+    padding: 0 10px
+    font-size: 24px
+    height: 32px
+    line-height: 36px
+    display: block
+    text-align: center
+    margin-top: 2px
     a
-      :color #E86D1F
+      @include site-link-color
+
 #project_container
   #i_use_this_container
-    :padding 0
+    padding: 0
     .btn.iusethis
-      :font-size 2rem
-  .i_use_this_btn
-    width: 100%
+      font-size: 2rem

@@ -1,8 +1,8 @@
 @import "base"
 
 body
-  background-color: #555
-  font-family: Open Sans
+  background-color: #005272
+  font-family: Roboto
   font-size: 1.3rem
   margin: 0
   color: #000
@@ -14,43 +14,50 @@ body
   padding: 10px 10px 0 10px
 
 header
-  background-color: #242021
+  background-color: white
   margin: -10px -10px 0px -10px
 
 #nav-top-bar
-  margin: 11px 0 0 13px
+  margin: 11px 11px 0 11px
   .new_main_menu
     list-style: none
     margin: 0
     padding: 0
     li
       display: inline-block
-      margin-right: 16px
+      margin-right: 32px
       a
-        color: #ddd
-        font-size: 13pt
+        @include top-navbar-menu-colors
+        font-size: 11pt
         text-decoration: none
-        &:hover
-          padding-bottom: 0px
-          border-bottom: 0.4rem white solid
-          color: white
+
 #navbar-inner
-  height: 28px
+  @include top-navbar-colors
+  padding-top: 1px
+  margin-left: 4px
+  margin-right: 5px
+  height: 42px
+
+#page_contents
+  .separator-div
+    @include site-separator-color
 
 #project_container
   background-color: white
+  margin: 0 auto
+  padding: 10px 10px 0 10px
   #page-contents
     width: auto
     #project_masthead
       .no_padding
-        margin-left: 1rem
+        //margin-left: 1rem
       #project_header_activity_indicator.no_padding
         margin-left: 2rem
     #project_header
       padding-left: 0
       margin-left: -1rem
   .thirtyfive_project_activity_text
-    margin-top: 3.5rem
+    margin-top: 5.5rem
     line-height: 1.3rem
   .thirtyfive_project_activity_level_na
     top: 1rem
@@ -58,29 +65,68 @@ header
     padding-left: 2rem
 .navbar
   border-width: 0
-  margin: 0
-  padding: 0
-  min-height: 33px
-  .logo_link
+  margin-top: 15px
+  margin-right: 15px
+  margin-bottom: 5px
+  margin-left: 15px
+  padding: 0 0 5px 0
+  min-height: 30px
+  .logo-div
+    height: 100%
+    width: 125px
     float: left
-    margin-top: 3px
+    .logo_link
+      text-decoration: none
+      margin-top: 3px
+    .logo_img
+      width: 100%
+      height: 100%
+  .company-div
+    @include top-navigation-colors
+    float: left
+    padding-right: 10px !important
+    padding-bottom: 5px !important
+    .navbar_small_text
+      font-size: 10px !important
+    .navbar_large_text
+      font-size: 24px !important
+    a
+      @include top-navigation-colors
+      text-decoration: none
+  .spacing-div
+    float: left
+    width: 2px
+    height: 30px
+    background-color: white
+    margin: 0 auto
+  .separator-div
+    @include site-separator-color
+    @include site-separator-background-color
+    float: left
+    width: 1px
+    height: 30px
+    margin: 0 2px 0 2px
+  .actions-div
+    float: right
+  .twitter-text
+    @include twitter-background-color
+    color: white
+    font-weight: bold
+    font-size: 0.80em
   .btn
     border: 0
     display: inline-block
-    font-size: 13px
-    line-height: 22px
+    font-size: 15px
+    line-height: 25px
     margin: 0
     padding: 1px 6px 0 7px
   .follow_btn
-    background-color: #DDD !important
+    @include follow-button-colors
     display: inline-block
     padding: 0 0 0 4px
-    &:hover
-      background-color: #BBB !important
-      text-decoration: none
     height: 24px
     i, p, img
-      color: #888
+      color: white
       display: inline-block
       vertical-align: top
     i
@@ -101,16 +147,13 @@ header
     li
       float: left
       padding: 0 0 0 8px
-      a
-        text-transform: uppercase
 
 #top_nav_actions
   float: right
   margin-right: 5px
-  margin-top: .6rem
 #logged_user_menu
   a
-    color: #e6e6e6
+    color: black !important
     text-transform: none
     text-decoration: none
     margin: 8px 0px 15px
@@ -138,8 +181,8 @@ header
   border-radius: 0
 
 #page-contents
-  margin-left: 10px
-  margin-right: 10px
+  margin-left: 5px
+  margin-right: 5px
   width: 940px
 
 .no_padding
@@ -155,14 +198,14 @@ header
   margin-top: 0px
 
 .signature_color
-  color: #e86d1f
+  @include explore-people-signature-text-color
 
 .mezzo
   margin-top: -1px
   border-top: 1px solid #aaa
 
 .c3_light
-  :background-color $c3_light
+  background-color: $c3_light
 
 .error
   color: red !important
@@ -184,7 +227,7 @@ header
   @extend .no_padding
 
 .busy, a.busy
-  :background transparent asset_url('ui/spinner.gif') no-repeat center
+  background: transparent asset_url('ui/spinner.gif') no-repeat center
 
 .center
   text-align: center
@@ -203,10 +246,10 @@ header
 
 table
   td,th
-    :vertical-align middle !important
+    vertical-align: middle !important
 
 .valign_centre
-  :vertical-align middle !important
+  vertical-align: middle !important
 
 .btn-group
   a
@@ -219,6 +262,7 @@ table
     font-size: 16px
 
 .well
+  @include site-well-color
   border: medium none
   box-shadow: none
   border-radius: 0px
@@ -267,17 +311,14 @@ fieldset
     padding-top: 0
 
 .container-fluid#project_container
+  a
+    @include site-link-color
   padding-left: 10px
   padding-right: 10px
   .row.mezzo
     margin: 0 -10px
   .page-contents
     margin: 0
-  .navbar
-    margin-bottom: 1.5rem
-    #top_nav_actions
-      margin-top: 1.6rem
-
   .no_padding_right
     padding-right: 0
   .no_padding_left
@@ -319,11 +360,12 @@ fieldset
       margin-bottom: 3rem
       word-wrap: break-word
       .well
+        @include site-well-color
         height: 100%
         margin-bottom: 0
       .no_analysis_message .alert
-        background-color: $primary-black-20
-        border-color: $primary-black-20
+        background-color: black
+        border-color: black
         .title h3
           margin-top: 0
     .vertical_scroll_bar
@@ -369,9 +411,8 @@ fieldset
   @media screen and (min-width: 1366px) and (max-width:1919px)
     #project_masthead
       .project_title
-        margin-left: -2rem
+        margin-left: 0
     .project_row
-      padding: 0 5rem 0rem 5rem
       .community_well, .activity_well
         margin-bottom: 0
       .language_pie_image

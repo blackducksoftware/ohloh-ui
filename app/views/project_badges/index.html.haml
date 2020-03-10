@@ -1,7 +1,9 @@
 :ruby
   content_for(:html_title) { t('.page_title', name: @project.name) }
 #project_badges_page
-  %h1.title= t('.title')
+  %h2.pull-left.title
+    = link_to t(:settings), settings_project_path(@project)
+    \: #{t('.title')}
   - if logged_in? && @project.edit_authorized?
     .badge_table_container
       = render 'editable_badges_table'

@@ -52,7 +52,7 @@ describe 'LicensesControllerTest' do
 
       get :show, id: @license.vanity_url
 
-      must_select('p')[2].text.must_equal "foo \n <link>"
+      must_select('p')[3].text.must_equal "foo \n <link>"
     end
   end
 

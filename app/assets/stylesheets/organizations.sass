@@ -1,7 +1,5 @@
-@import oh-colors
-
 .project_activity_margin_top
-  :margin-top -8px
+  margin-top: -8px
 
 tbody.portfolio-projects-table
   td
@@ -9,26 +7,26 @@ tbody.portfolio-projects-table
       width: auto !important
   tr:nth-child(odd), tr:nth-child(even)
     td
-      :background-color white
+      background-color: white
   tr:nth-child(3n+1)
     td
-      :border-top solid 1px $primary-black-40 !important
-      :border-bottom solid 1px $primary_black-40 !important
+      border-top: solid 1px #ddd !important
+      border-bottom: solid 1px #ddd !important
   tr:nth-child(6n+1), tr:nth-child(6n+2), tr:nth-child(6n+3)
     td
-      :background-color #f9f9f9 !important
+      background-color: #f9f9f9 !important
 
 .org_project_rating
   margin-left: 18px
   display: block
 
 #dingus-row td
-  :background-color $primary-gray-20
-  :padding 0px
-  :min-height 5px
-  :border-top 0px none
-  :border-top-right-radius 8px
-  :border-top-left-radius 8px
+  @include dingus-row-background-color
+  padding: 0px
+  min-height: 5px
+  border-top: 0px none
+  border-top-right-radius: 8px
+  border-top-left-radius: 8px
 
 .language_name
   line-height: 28px
@@ -48,6 +46,9 @@ tbody.portfolio-projects-table
 #org_infographic
   position: relative
   height: 290px
+  .about
+    font-size: 12px
+    color: #80539C
   .pictogram_link_active
     color: #000 !important
     pointer-events: none
@@ -59,7 +60,7 @@ tbody.portfolio-projects-table
     color: #2a2a2c !important
     background-color: transparent !important
   .inactive
-    color: #6c6d70 !important
+    color: #646E81 !important
   .icon-group
     font-size: 45px
     color: #595A5D
@@ -118,7 +119,7 @@ tbody.portfolio-projects-table
     font-style: normal !important
     font-size: 11px
   .header
-    background-color: $secondary_blue !important
+    @include infographic-box-header-background-color
     -webkit-print-color-adjust: exact
     height: 33px
     color: white !important
@@ -129,7 +130,7 @@ tbody.portfolio-projects-table
     font-size: 18px
     width: inherit
   .content
-    background-color: $primary-blue-20 !important
+    background-color: #d2dae6 !important
     -webkit-print-color-adjust: exact
     height: 185px
     padding: 15px 50px
@@ -151,18 +152,18 @@ tbody.portfolio-projects-table
         display: inline-block
         margin-top: 17px
     .count
+      @include site-link-color
       font-size: 22px
-      color: $secondary-blue-darker
       text-align: center
       a
-        color: $secondary-blue_darker
+        @include site-link-color
     .portfolio_label
+      @include site-link-color
       font-size: 12px
-      color: $secondary-blue-darker
       white-space: nowrap
       margin-top: -5px
   .footer_line
-    background-color: $secondary-blue-darker
+    @include site-link-color
     font-size: 1px
     height: 7px !important
   .bottom_links
@@ -190,11 +191,11 @@ form#new_logo
   input
     size: 12px
     &:-moz-placeholder
-      color: $primary-black-60
+      color: black
     &:-ms-input-placeholder
-      color: $primary-black-60
+      color: black
     &::-webkit-input-placeholder
-      color: $primary-black-60
+      color: black
 
 #organizations_create_page, #organizations_new_page
   h1

@@ -21,6 +21,8 @@ xAxis:
 tooltip:
   xDateFormat: '%B %Y'
   headerFormat: '{point.key}<br/>'
+  shared: true
+  split: false
   style:
     padding: '12px'
 navigator:

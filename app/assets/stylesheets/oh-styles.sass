@@ -1,0 +1,515 @@
+@import oh-colors
+
+////////////////////////////////////////////////////////////////////
+//
+// Bootstrap mixins
+
+@mixin bootstrap-default-alert-colors
+  color: color-gradient($SECONDARY_ORANGE, 120)
+  background-color: color-gradient($SECONDARY_ORANGE, 20)
+  border: 1px solid color-gradient($SECONDARY_ORANGE, 60)
+
+@mixin bootstrap-success-alert-colors
+  color: color-gradient($SECONDARY_FOREST_GREEN, 120)
+  background-color: color-gradient($SECONDARY_FOREST_GREEN, 40)
+  border-color: color-gradient($SECONDARY_FOREST_GREEN, 80)
+
+@mixin bootstrap-error-alert-colors
+  color: color-gradient($WEB_RED, 120)
+  background-color: color-gradient($WEB_RED, 40)
+  border-color: color-gradient($WEB_RED, 80)
+
+@mixin bootstrap-info-alert-colors
+  color: color-gradient($SECONDARY_SLATE_BLUE, 100)
+  background-color: color-gradient($SECONDARY_SKY_BLUE, 40)
+  border-color: color-gradient($SECONDARY_SLATE_BLUE, 60)
+
+////////////////////////////////////////////////////////////////////
+//
+// Global/site-wide mixins
+
+@mixin site-well-color
+  background-color: color-gradient($SECTION_BACKGROUND, 0) !important
+
+@mixin site-link-color
+  color: color-gradient($SECONDARY_SLATE_BLUE, 120)
+
+@mixin site-placeholder-color
+  color: color-gradient($PRIMARY_DARK_GRAY, 120)
+
+@mixin site-separator-color
+  color: color-gradient($PRIMARY_DARK_GRAY, 60)
+
+@mixin site-separator-background-color
+  background-color: color-gradient($PRIMARY_DARK_GRAY, 60)
+
+@mixin ie-not-supported-text-color
+  color: color-gradient($WEB_RED, 100)
+
+////////////////////////////////////////////////////////////////////
+//
+// Header/menu-bar mixins
+
+@mixin top-navigation-colors
+  color: color-gradient($PRIMARY_PURPLE, 100) !important
+
+@mixin top-navbar-colors
+  color: white
+  background-color: color-gradient($PRIMARY_PURPLE, 100) !important
+
+@mixin top-navbar-menu-colors
+  color: white
+  &:hover
+    padding-bottom: 0px
+    color: color-gradient($SECONDARY_YELLOW, 60)
+
+@mixin twitter-background-color
+  background-color: color-gradient($PRIMARY_PURPLE, 100)
+
+@mixin menu_links
+  &:hover
+    padding-bottom: 0px
+    color: color-gradient($SECONDARY_YELLOW, 60)
+  margin-bottom: 0px
+  padding-bottom: 0px
+  color: color-gradient($SECONDARY_YELLOW, 100)  !important
+
+@mixin global-top-search-colors
+  border-color: color-gradient($LIGHT_GRAY, 120) !important
+  color: color-gradient($LIGHT_GRAY, 120) !important
+  &:-moz-placeholder
+    color:    color-gradient($LIGHT_GRAY, 120)
+    font-style: italic
+    opacity:  1
+  &:-ms-input-placeholder
+    color:    color-gradient($LIGHT_GRAY, 120)
+    font-style: italic
+  &::-webkit-input-placeholder
+    color:    color-gradient($LIGHT_GRAY, 120)
+    font-style: italic
+
+@mixin global-top-search-hover-background-color
+  background-color: color-gradient($SECONDARY_MARINE_BLUE, 60) !important
+
+@mixin global-top-search-hover-border-color
+  border-color: color-gradient($SECONDARY_MARINE_BLUE, 60) !important
+
+@mixin global-top-search-icon-color
+  color: white !important
+
+@mixin search-dropdown-link-color
+  color: color-gradient($SECONDARY_SLATE_BLUE, 120)
+
+@mixin search-dropdown-link-hover-colors
+  background-color: color-gradient($SECONDARY_MARINE_BLUE, 100)
+  color: white
+
+////////////////////////////////////////////////////////////////////
+//
+// Footer/bottom-nav mixins
+
+@mixin bottom-nav-active-colors
+  color: color-gradient($SECONDARY_MARINE_BLUE, 100)
+  background-color: color-gradient($SECONDARY_MARINE_BLUE, 20)
+  border-left: 3px solid color-gradient($SECONDARY_MARINE_BLUE, 100)
+
+@mixin bottom-nav-hover-colors
+  color: color-gradient($SECONDARY_MARINE_BLUE, 100)
+  background-color: color-gradient($LIGHT_GRAY, 20)
+  border-left: 3px solid color-gradient($PRIMARY_DARK_GRAY, 100)
+
+@mixin footer-colors
+  color: color-gradient($PRIMARY_PURPLE, 120) !important
+  background-color: color-gradient($FOOTER_BACKGROUND, 0) !important
+  a
+    &:hover
+      color: color-gradient($FOOTER_BACKGROUND, 0)
+      border-radius: 0
+
+@mixin footer-copyright-colors
+  color: color-gradient($LIGHT_GRAY, 100) !important
+
+////////////////////////////////////////////////////////////////////
+//
+// Home page mixins
+
+@mixin billboard-background-color
+  background: none repeat scroll 0 0 color-gradient($SECONDARY_SKY_BLUE, 120)
+
+@mixin join-now-header-colors
+  color: color-gradient($SECONDARY_FOREST_GREEN, 100) !important
+  border-bottom: 3px solid color-gradient($SECONDARY_FOREST_GREEN, 100)
+
+@mixin join-now-section-colors
+  color: color-gradient($SECONDARY_FOREST_GREEN, 100) !important
+
+@mixin whats-new-header-colors
+  color: color-gradient($SECONDARY_ORANGE, 120) !important
+  border-bottom: 3px solid color-gradient($SECONDARY_ORANGE, 120)
+
+@mixin most-popular-projects-colors
+  color: color-gradient($SECONDARY_ORANGE, 120)
+  border-bottom: 2px solid color-gradient($SECONDARY_ORANGE, 120)
+
+@mixin most-popular-projects-background-color
+  background-color: color-gradient($SECONDARY_ORANGE, 120) !important
+
+@mixin most-active-projects-colors
+  color: color-gradient($SECONDARY_MARINE_BLUE, 120)
+  border-bottom: 2px solid color-gradient($SECONDARY_MARINE_BLUE, 120)
+
+@mixin most-active-projects-background-color
+  background-color: color-gradient($SECONDARY_MARINE_BLUE, 120) !important
+
+@mixin most-active-contributors-colors
+  color: color-gradient($SECONDARY_TEAL, 120)
+  border-bottom: 2px solid color-gradient($SECONDARY_TEAL, 120)
+
+@mixin most-active-contributors-background-color
+  background-color: color-gradient($SECONDARY_TEAL, 120) !important
+
+@mixin dingus-row-background-color
+  background-color: color-gradient($LIGHT_GRAY, 20)
+
+////////////////////////////////////////////////////////////////////
+//
+// Account/* mixins
+
+@mixin commits-summary-background-color
+  background-color: color-gradient($LIGHT_GRAY, 40)
+
+@mixin forum-topics-mark-specifications-background-color
+  background-color: color-gradient($SECONDARY_YELLOW, 20)
+
+@mixin infographic-box-header-background-color
+  background-color: #80539C !important
+
+@mixin projects-summary-analysis-in-progress-color
+  color: color-gradient($LIGHT_GRAY, 120)
+
+@mixin projects-summary-projects-name-background-color
+  background-color: color-gradient($SECONDARY_ORANGE, 100)
+
+////////////////////////////////////////////////////////////////////
+//
+// Explore/* mixins
+
+@mixin explore-sidebar-icon-search-color
+  color: color-gradient($SECONDARY_MARINE_BLUE, 120)
+
+@mixin explore-sidebar-search-text-color
+  color: color-gradient($LIGHT_GRAY, 120)
+
+@mixin explore-sidebar-placeholder-color
+  color: color-gradient($LIGHT_GRAY, 120)
+
+@mixin explore-people-signature-text-color
+  color: #e86d1f  // NOTE: non-OTWO color, needs to be udpated
+
+@mixin explore-people-tick-selected-colors
+  color: #237b46
+  background-color: #fff
+
+@mixin explore-people-tick-unselected-colors
+  color: #898989  // NOTE: non-OTWO color, needs to be udpated
+  background-color: #fff
+
+////////////////////////////////////////////////////////////////////
+//
+// Button mixins
+
+@mixin follow-button-colors
+  background-color: color-gradient($LIGHT_GRAY, 120) !important
+  &:hover
+    background-color: color-gradient($LIGHT_GRAY, 100) !important
+    text-decoration: none
+
+@mixin default-button-colors
+  color: white
+  background-color: color-gradient($SECONDARY_MARINE_BLUE, 100) !important
+  border-color: color-gradient($SECONDARY_MARINE_BLUE, 100)
+  &:hover
+    background-color: color-gradient($SECONDARY_MARINE_BLUE, 60) !important
+    border-color: color-gradient($SECONDARY_MARINE_BLUE, 60) !important
+  &.no-border:hover
+    border-color: color-gradient($SECONDARY_MARINE_BLUE, 60) !important
+
+@mixin primary-button-colors
+  color: white
+  background-color: color-gradient($SECONDARY_MARINE_BLUE, 120) !important
+  border-color: color-gradient($SECONDARY_MARINE_BLUE, 120)
+  &:hover
+    background-color: color-gradient($SECONDARY_MARINE_BLUE, 80) !important
+    border-color: color-gradient($SECONDARY_MARINE_BLUE, 80) !important
+  &.no-border:hover
+    border-color: color-gradient($SECONDARY_MARINE_BLUE, 80) !important
+  &.disabled, &[disabled]
+    background-color: color-gradient($SECONDARY_MARINE_BLUE, 40) !important
+    border-color: color-gradient($SECONDARY_MARINE_BLUE, 40) !important
+
+@mixin secondary-button-colors
+  color: white
+  background-color: color-gradient($LIGHT_GRAY, 120) !important
+  border-color: color-gradient($LIGHT_GRAY, 120) !important
+  &:hover
+    background-color: color-gradient($LIGHT_GRAY, 80) !important
+    border-color: color-gradient($LIGHT_GRAY, 80) !important
+  &.no-border:hover
+    border-color: color-gradient($LIGHT_GRAY, 80) !important
+
+@mixin join-now-button-colors
+  color: white
+  background-color: color-gradient($SECONDARY_FOREST_GREEN, 100) !important
+  border-color: color-gradient($SECONDARY_FOREST_GREEN, 100)
+  &:hover
+    background-color: color-gradient($SECONDARY_FOREST_GREEN, 80)  !important
+    border-color: color-gradient($SECONDARY_FOREST_GREEN, 80)  !important
+  &.no-border:hover
+    border-color: color-gradient($SECONDARY_FOREST_GREEN, 80)  !important
+
+@mixin danger-button-colors
+  color: white
+  background-color: color-gradient($WEB_RED, 120) !important
+  border-color: color-gradient($WEB_RED, 120) !important
+  &:hover
+    background-color: color-gradient($WEB_RED, 80) !important
+    border-color: color-gradient($WEB_RED, 80) !important
+  &.no-border:hover
+    border-color: color-gradient($WEB_RED, 80) !important
+
+@mixin warning-button-colors
+  color: white
+  background-color: color-gradient($SECONDARY_ORANGE, 100) !important
+  border-color: color-gradient($SECONDARY_ORANGE, 100)
+  &:hover
+    background-color: color-gradient($SECONDARY_ORANGE, 60) !important
+    border-color: color-gradient($SECONDARY_ORANGE, 60) !important
+  &.no-border:hover
+    border-color: color-gradient($SECONDARY_ORANGE, 60) !important
+  &.disabled, &[disabled]
+    background-color: color-gradient($SECONDARY_ORANGE, 40) !important
+    border-color: color-gradient($SECONDARY_ORANGE, 40) !important
+
+@mixin info-button-colors
+  color: white
+  background-color: color-gradient($SECONDARY_MARINE_BLUE, 120) !important
+  border-color: color-gradient($SECONDARY_MARINE_BLUE, 120)
+  &:hover
+    background-color: color-gradient($SECONDARY_MARINE_BLUE, 80) !important
+    border-color: color-gradient($SECONDARY_MARINE_BLUE, 80) !important
+  &.no-border:hover
+    border-color: color-gradient($SECONDARY_MARINE_BLUE, 80) !important
+  &.disabled, &[disabled]
+    background-color: color-gradient($SECONDARY_MARINE_BLUE, 40) !important
+    border-color: color-gradient($SECONDARY_MARINE_BLUE, 40) !important
+
+@mixin search-button-hover-colors
+  background-color: color-gradient($SECONDARY_SLATE_BLUE, 120) !important
+  border-color: color-gradient($SECONDARY_SLATE_BLUE, 120) !important
+
+////////////////////////////////////////////////////////////////////
+//
+// Form mixins
+
+@mixin static-forms-add-on-background-color
+  background-color: color-gradient($PRIMARY_DARK_GRAY, 40)
+
+@mixin static-forms-background-color
+  background-color: white
+
+@mixin static-forms-border-color
+  border: 1px solid color-gradient($LIGHT_GRAY, 80)
+
+@mixin static-forms-default-text-color
+  color: color-gradient($LIGHT_GRAY, 120)
+
+@mixin static-forms-text-color
+  color: color-gradient($PRIMARY_DARK_GRAY, 100)
+
+@mixin chzn-container-background-color
+  background: color-gradient($SECONDARY_SLATE_BLUE, 120)
+
+@mixin chzn-container-border-color
+  border-color: color-gradient($SECONDARY_SLATE_BLUE, 120)
+
+@mixin chzn-container-override-border
+  border: 1px solid color-gradient($SECONDARY_LIGHT_PURPLE, 100)
+
+////////////////////////////////////////////////////////////////////
+//
+// Pagination mixins
+
+@mixin site-pagination-colors
+  border-color: color-gradient($LIGHT_GRAY, 100) !important
+  li
+    a
+      @include site-link-color
+  .disabled
+    span
+      color: color-gradient($LIGHT_GRAY, 100) !important
+  .active
+    span
+      color: white
+      background-color: color-gradient($SECONDARY_SLATE_BLUE, 120) !important
+
+////////////////////////////////////////////////////////////////////
+//
+// Project mixins
+
+@mixin default-tag-colors
+  color: color-gradient($SECONDARY_SLATE_BLUE, 100) !important
+  background-color: color-gradient($SECONDARY_MARINE_BLUE, 20)
+  border: 1px solid color-gradient($SECONDARY_MARINE_BLUE, 40)
+
+@mixin soft-font-color
+  color: color-gradient($PRIMARY_DARK_GRAY, 100)
+
+@mixin add-this-link-colors
+  color: white
+  background-color: color-gradient($LIGHT_GRAY, 100) !important
+
+@mixin analysis-timestamp-color
+  color: color-gradient($LIGHT_GRAY, 120)
+
+@mixin licenses-permitted-color
+  color: color-gradient($SECONDARY_FOREST_GREEN, 120)
+
+@mixin licenses-forbidden-color
+  color: color-gradient($WEB_RED, 120)
+
+@mixin licenses-required-color
+  color: color-gradient($SECONDARY_MARINE_BLUE, 120)
+
+@mixin project-icon-colors
+  color: color-gradient($SECONDARY_SLATE_BLUE, 120) !important
+  background-color: white
+
+@mixin vulnerabilities-release-timespan-colors
+  color: color-gradient($SECONDARY_SLATE_BLUE, 120) !important
+  background-color: color-gradient($SECONDARY_SLATE_BLUE, 40) !important
+  &:hover
+    color: white !important
+    background-color: color-gradient($SECONDARY_SLATE_BLUE, 80) !important
+  &.selected
+    color: white !important
+    background-color: color-gradient($SECONDARY_SLATE_BLUE, 120) !important
+    font-weight: bold !important
+
+@mixin vulnerabilities-disabled-text-color
+  color: color-gradient($LIGHT_GRAY, 100)
+
+////////////////////////////////////////////////////////////////////
+//
+// Highcharts mixins
+
+@mixin vulnerabilities-high-severity-fill
+  fill: color-gradient($SECONDARY_MARINE_BLUE, 120)
+
+@mixin vulnerabilities-high-severity-stroke
+  stroke: color-gradient($SECONDARY_MARINE_BLUE, 120)
+
+@mixin vulnerabilities-medium-severity-fill
+  fill: color-gradient($SECONDARY_MARINE_BLUE, 80)
+
+@mixin vulnerabilities-medium-severity-stroke
+  stroke: color-gradient($SECONDARY_MARINE_BLUE, 80)
+
+@mixin vulnerabilities-low-severity-fill
+  fill: color-gradient($SECONDARY_MARINE_BLUE, 40)
+
+@mixin vulnerabilities-low-severity-stroke
+  stroke: color-gradient($SECONDARY_MARINE_BLUE, 40)
+
+@mixin vulnerabilities-unknown-severity-fill
+  fill: color-gradient($SECONDARY_SLATE_BLUE, 20)
+
+@mixin vulnerabilities-unknown-severity-stroke
+  stroke: color-gradient($SECONDARY_SLATE_BLUE, 20)
+
+@mixin vulnerabilities-high-severity-hover
+  fill: color-gradient($SECONDARY_MARINE_BLUE, 80)
+
+@mixin vulnerabilities-medium-severity-hover
+  fill: color-gradient($SECONDARY_MARINE_BLUE, 60)
+
+@mixin vulnerabilities-low-severity-hover
+  fill: color-gradient($SECONDARY_MARINE_BLUE, 20)
+
+@mixin vulnerabilities-unknown-severity-hover
+  fill: color-gradient($SECONDARY_SKY_BLUE, 20)
+
+@mixin projects-demographics-inactive-fill
+  fill: color-gradient($PRIMARY_DARK_GRAY, 60)
+
+@mixin projects-demographics-inactive-stroke
+  stroke: color-gradient($PRIMARY_DARK_GRAY, 60)
+
+@mixin projects-demographics-very-low-fill
+  fill: color-gradient($BLACK_DUCK_BLUE, 40)
+
+@mixin projects-demographics-very-low-stroke
+  stroke: color-gradient($BLACK_DUCK_BLUE, 40)
+
+@mixin projects-demographics-low-fill
+  fill: color-gradient($BLACK_DUCK_BLUE, 80)
+
+@mixin projects-demographics-low-stroke
+  stroke: color-gradient($BLACK_DUCK_BLUE, 80)
+
+@mixin projects-demographics-moderate-fill
+  fill: color-gradient($BLACK_DUCK_BLUE, 120)
+
+@mixin projects-demographics-moderate-stroke
+  stroke: color-gradient($BLACK_DUCK_BLUE, 120)
+
+@mixin projects-demographics-high-fill
+  fill: color-gradient($PRIMARY_PURPLE, 80)
+
+@mixin projects-demographics-high-stroke
+  stroke: color-gradient($PRIMARY_PURPLE, 80)
+
+@mixin projects-demographics-very-high-fill
+  fill: color-gradient($PRIMARY_PURPLE, 120)
+
+@mixin projects-demographics-very-high-stroke
+  stroke: color-gradient($PRIMARY_PURPLE, 120)
+
+@mixin projects-demographics-new-fill
+  fill: color-gradient($SECONDARY_ORANGE, 100)
+
+@mixin projects-demographics-new-stroke
+  stroke: color-gradient($SECONDARY_ORANGE, 100)
+
+@mixin project-contributions-color-0-fill
+  fill: color-gradient($SECONDARY_SKY_BLUE, 20)
+
+@mixin project-contributions-color-1-fill
+  fill: color-gradient($SECONDARY_SKY_BLUE, 40)
+
+@mixin project-contributions-color-2-fill
+  fill: color-gradient($SECONDARY_SKY_BLUE, 60)
+
+@mixin project-contributions-color-3-fill
+  fill: color-gradient($SECONDARY_SKY_BLUE, 80)
+
+@mixin project-contributions-color-4-fill
+  fill: color-gradient($SECONDARY_SKY_BLUE, 100)
+
+@mixin project-contributions-color-5-fill
+  fill: color-gradient($SECONDARY_SKY_BLUE, 120)
+
+@mixin project-contributions-color-6-fill
+  fill: color-gradient($SECONDARY_SKY_BLUE, 20)
+
+@mixin project-contributions-color-7-fill
+  fill: color-gradient($SECONDARY_SKY_BLUE, 40)
+
+@mixin project-contributions-color-8-fill
+  fill: color-gradient($SECONDARY_SKY_BLUE, 60)
+
+@mixin project-contributions-color-9-fill
+  fill: color-gradient($SECONDARY_SKY_BLUE, 80)
+
+@mixin code-analysis-chart-color-0-stroke
+  stroke: color-gradient($SECONDARY_SLATE_BLUE, 120)
+

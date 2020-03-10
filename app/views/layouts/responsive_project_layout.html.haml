@@ -7,6 +7,9 @@
     %meta{ name: 'description', content: page_context[:description] }
     %meta{ name: 'keywords', content: page_context[:keywords] }
     %meta{ name: 'google-site-verification', content: 'jKkWeVQ0tB1bffJYg7xXAtcIM-nrjjVxhP3ohb8UH2A' }
+
+    = render partial: 'layouts/partials/otwo_head_info'
+
     = yield :custom_head
     = stylesheet_link_tag 'application', media: 'all'
     = csrf_meta_tags

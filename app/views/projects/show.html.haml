@@ -12,7 +12,7 @@
     %meta{ content: @project.logo.attachment.url(:med), name: 'twitter:image' }
   %meta{ content: 'https://www.openhub.net', name: 'twitter:domain' }
 
-%div
+%div.separator-div
   = project_analysis_timestamp(@project)
 
 .clear
@@ -58,10 +58,14 @@
   .col-md-4.quick_reference_container
     .well
       = render partial: 'projects/show/quick_reference'
+
+.row.mezzo
 = render partial: 'projects/show/licenses'
+
 .row.mezzo
 .project_security
   = render partial: 'projects/show/security'
+
 .row.mezzo
 - if @analysis.blank?
   .analysis_blank_container

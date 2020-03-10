@@ -8,23 +8,33 @@ $pai_levels: (('very_high',0), ('high', 1), ('moderate', 2), ('low', 3), ('very_
   $activity_level: #{$icon_family}_project_activity_level
 
   #{$activity_level}
-    :width  #{$dimension}px
-    :height #{$dimension}px
-    :margin-left #{$left_margin}px
+    width:  #{$dimension}px
+    height: #{$dimension}px
+    margin-left: #{$left_margin}px
 
   @each $level in $pai_levels
     $postfix:    nth($level, 1)
     $multiplier: nth($level, 2)
     .#{$activity_level}_#{$postfix}
       @extend #{$activity_level}
-      :background-image asset_url("projects/pai/pai-#{$dimension}px.png")
-      :background-position -#{$multiplier * $dimension}px 0
-      :background-repeat no-repeat
-      :position absolute
-      :top 1rem
+      background-image: asset_url("projects/pai/pai-#{$dimension}px.png")
+      @if $dimension == 35
+        background-position: -#{($multiplier * $dimension)+($multiplier*2)}px 0
+      @else if $dimension == 25
+        background-position: -#{($multiplier * $dimension)+($multiplier*1.3)}px 0
+      @else if $dimension == 20
+        background-position: -#{($multiplier * $dimension)+($multiplier*1)}px 0
+      @else
+        background-position: -#{($multiplier * $dimension)+($multiplier*0.8)}px 0
+      background-repeat: no-repeat
+      position: absolute
+      top: 1rem
 
 .margin_top_two
   margin-top: 2rem
+
+.thirtyfive_project_activity_text
+  width: 200px
 
 .row-eq-height
   display: -webkit-box
@@ -33,83 +43,83 @@ $pai_levels: (('very_high',0), ('high', 1), ('moderate', 2), ('low', 3), ('very_
   display:         flex
 
 #projects_index_list, #managed_projects_list
-  :margin 20px 0 0 0
+  margin: 20px 0 0 0
   .well
-    :padding 15px
+    padding: 15px
     h2
-      :line-height inherit
+      line-height: inherit
   .compare
-    :margin -15px -15px 0 0
+    margin: -15px -15px 0 0
   .sp_form.styled
-    :background-color #DBE4EE
-    :padding 6px 4px 6px 10px
-    :margin 0
-    :border-radius 0 4px 0 0
-    :-webkit-border-radius 0 4px 0 0
+    background-color: #DBE4EE
+    padding: 6px 4px 6px 10px
+    margin: 0
+    border-radius: 0 4px 0 0
+    -webkit-border-radius: 0 4px 0 0
     &.selected
-      :background-color #0088cc
-      :color #fff
+      background-color: #0088cc
+      color: #fff
   .logo
-    :margin 25px 20px 25px 0
+    margin: 25px 20px 25px 0
   .info
-    :width 490px
+    width: 490px
     i
-      :float right
+      float: right
   .claimed-by-org
-    :margin 0 15px 0 10px
+    margin: 0 15px 0 10px
   .desc
-    :margin-bottom 10px
+    margin-bottom: 10px
     &.last
-      :display none
-      :margin-bottom 20px
+      display: none
+      margin-bottom: 20px
   .stats
-    :margin 0 15px 0 0
+    margin: 0 15px 0 0
     span
-      :margin-left 10px
+      margin-left: 10px
     a
-      :width 80px
-      :text-align right
-      :display inline-block
-      :font-weight bold
-      :font-size 1.2em
+      width: 80px
+      text-align: right
+      display: inline-block
+      font-weight: bold
+      font-size: 1.2em
       span
-        :margin-left 0
-        :font-size 12px
+        margin-left: 0
+        font-size: 12px
   .reviews-and-pai
-    :position relative
+    position: relative
     @each $level in $pai_levels
       .twentyfive_project_activity_level_#{nth($level, 1)}
-        :margin-left 0
+        margin-left: 0
         top: 0
     .twentyfive_project_activity_text
-      :margin -5px 0 0 25px
-      :text-align center
-      :width 65px
-      :min-height 35px
+      margin: -5px 0 0 25px
+      text-align: center
+      width: 65px
+      min-height: 35px
     .stars
-      :margin 10px 0 5px 4px
+      margin: 10px 0 5px 4px
     .reviews
-      :clear left
-      :width 85px
-      :text-align center
+      clear: left
+      width: 85px
+      text-align: center
   .add-info
-    :clear left
-    :width 574px
+    clear: left
+    width: 574px
     .main_language
-      :margin-left 85px
+      margin-left: 85px
     a
-      :text-decoration underline
+      text-decoration: underline
   .tags
-    :clear left
-    :margin-top 10px
+    clear: left
+    margin-top: 10px
 
 .cocomo-form
-  :border 2px solid #E0E4E8
+  border: 2px solid #E0E4E8
   .control-label
-    :margin-bottom 2px
+    margin-bottom: 2px
   .caption
-    :background-color #E0E4E8
-    :padding 0.5em
+    background-color: #E0E4E8
+    padding: 0.5em
 
 #cocomo_page
   li
@@ -121,8 +131,7 @@ $pai_levels: (('very_high',0), ('high', 1), ('moderate', 2), ('low', 3), ('very_
       overflow: auto
 
 #project_masthead
-  :margin-top 1rem
-  :height 85px
+  height: 85px
 
   #project_icon
     margin-top: 8px
@@ -133,93 +142,98 @@ $pai_levels: (('very_high',0), ('high', 1), ('moderate', 2), ('low', 3), ('very_
   #project_header
     padding-right: 0px
     .project_title
-      :margin 0px 0px 0px 0px
+      margin: 0px 0px 0px 0px
       h1
-        :margin 15px 0px 6px 0px
+        margin: 15px 0px 6px 0px
+      i
+        @include project-icon-colors
 
   .about
     margin-top: 10px
     li
       margin: 15px 0 15px 30px
 #add_this
+  margin-left: 5.3rem
   margin-top: 5.3rem
+  a
+    @include add-this-link-colors
 
 #project_container
   #project_masthead
     #widgets
-      width: 31rem
+      width: 30rem
 // settings page styles
 .settings_module
   :cursor pointer
   &:hover
     h4
-      :text-decoration underline
+      text-decoration: underline
     .module_icon
       &.basics
-        :background-position 0 -40px
+        background-position: 0 -40px
       &.code_locations
-        :background-position -40px -40px
+        background-position: -40px -40px
       &.aliases
-        :background-position -80px -40px
+        background-position: -80px -40px
       &.logo
-        :background-position -120px -40px
+        background-position: -120px -40px
       &.links
-        :background-position -160px -40px
+        background-position: -160px -40px
       &.orgs_manage_projects
-        :background-position -599px -40px
+        background-position: -599px -40px
       &.permissions
-        :background-position -200px -40px
+        background-position: -200px -40px
       &.licenses
-        :background-position -240px -40px
+        background-position: -240px -40px
       &.tags
-        :background-position -280px -40px
+        background-position: -280px -40px
       &.history
-        :background-position -320px -40px
+        background-position: -320px -40px
       &.managers
-        :background-position -360px -40px
+        background-position: -360px -40px
       &.news
-        :background-position -400px -40px
+        background-position: -400px -40px
       &.badges
-        :background-position -891px -40px
+        background-position: -891px -40px
   .settings_description
-    :width 240px
-    :padding-left 10px
+    width: 240px
+    padding-left: 10px
   // module icon sprites
   .module_icon
-    :background-image asset_url('icons/ohloh-icon-sprite.png')
-    :background-repeat no-repeat
-    :height 40px
-    :width 40px
-    :display block
+    background-image: asset_url('icons/ohloh-icon-sprite.png')
+    background-repeat: no-repeat
+    height: 40px
+    width: 40px
+    display: block
     &.basics
-      :background-position 0 0
+      background-position: 0 0
     &.code_locations
-      :background-position -40px 0px
+      background-position: -40px 0px
     &.aliases
-      :background-position -80px 0px
+      background-position: -80px 0px
     &.logo
-      :background-position -120px 0px
+      background-position: -120px 0px
     &.links
-      :background-position -160px 0px
+      background-position: -160px 0px
     &.orgs_manage_projects
-      :background-position -599px 0px
+      background-position: -599px 0px
     &.permissions
-      :background-position -200px 0px
+      background-position: -200px 0px
     &.licenses
-      :background-position -240px 0px
+      background-position: -240px 0px
     &.tags
-      :background-position -280px 0px
-      :height 36px
-      :width 31px
+      background-position: -280px 0px
+      height: 36px
+      width: 31px
     &.history
-      :background-position -320px 0px
+      background-position: -320px 0px
     &.managers
-      :background-position -360px 0px
-      :width 36px
+      background-position: -360px 0px
+      width: 36px
     &.news
-      :background-position -400px 0px
+      background-position: -400px 0px
     &.badges
-      :background-position -890px 0px
+      background-position: -890px 0px
 
 #projects_similar_page
   .project_content_title
@@ -304,16 +318,20 @@ $pai_levels: (('very_high',0), ('high', 1), ('moderate', 2), ('low', 3), ('very_
   height: 250px
 
 #vulnerability_per_version
+  padding: 19px 
   .well
-    background: white
-    padding: 19px 0 0 0
+    background: white !important
 
   .title span
     font-size: 12px
     font-style: italic
 
 .project_licenses
+  margin-bottom: 1em
+  .all-license-div
+    margin-top: 18em
   .license_title_container
+    margin-top: 1em
     padding-left: 1em
     h4
       margin-bottom: 0
@@ -336,33 +354,40 @@ $pai_levels: (('very_high',0), ('high', 1), ('moderate', 2), ('low', 3), ('very_
     border-bottom: medium none
     cursor: pointer
   #permitted
-    color: $secondary-green-2-darker
+    @include licenses-permitted-color
     margin-top: -20px
     .well
       padding-bottom: 0
       padding-top: 0
       height: 78%
+      p
+        margin-left: 2em
   #forbidden
-    color: $secondary-red-darker
+    @include licenses-forbidden-color
     margin-top: -20px
     padding-left: 0
     .well
       padding-bottom: 0
       padding-top: 0
       height: 78%
+      p
+        margin-left: 2em
   #required
-    color: $secondary-blue
+    @include licenses-required-color
     margin-top: -20px
     padding-left: 0
     .well
       padding-bottom: 0
       padding-top: 0
       height: 78%
+      p
+        margin-left: 2em
     h5
       margin-top: 1em
 .project_security
   .security-panel-title
     padding-left: 1em
+    margin-top: 30px !important
 
 .versions_affected
   height: 70px !important
@@ -379,15 +404,13 @@ $pai_levels: (('very_high',0), ('high', 1), ('moderate', 2), ('low', 3), ('very_
     padding-right: 30px
     text-align: justify
   .release_timespan
+    @include vulnerabilities-release-timespan-colors
     width: 40px
     height: 26px
     padding: 0
     text-align: center
-    line-height: 23px
+    line-height: 25px
     border: 0
-    &.selected
-      background-color: #0082C6 !important
-      font-weight: bold !important
     &.disabled
       background-color: #9A9A9A !important
     &:hover
@@ -425,12 +448,15 @@ $pai_levels: (('very_high',0), ('high', 1), ('moderate', 2), ('low', 3), ('very_
   padding: 40px 4rem 20px 4rem !important
 
 .vulnerabilities-datatable
+  tbody tr
+    &:nth-child(odd)
+      @include site-well-color
   position: relative
   btn i
+    @mixin site-link-color
     display: inline
-    color: #0082C6
     &.disable
-      color: #ccc
+      @include vulnerabilities-disabled-text-color
     &:hover
       cursor: pointer
     &.fa.fa-sort-amount-desc, &.fa.fa-sort-amount-asc
@@ -487,6 +513,7 @@ $pai_levels: (('very_high',0), ('high', 1), ('moderate', 2), ('low', 3), ('very_
 
 #project_tags, #project_badges
   .title
+    @include site-link-color
     margin-bottom: 0.3em
 
 #project_badges
