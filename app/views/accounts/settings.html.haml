@@ -10,23 +10,23 @@
   .account_settings_options
     .account_setting_row
       .pull-left.span5.settings_specifications
-        %h4= link_to t('.account_basics'), edit_account_path(@account), class: 'strong'
+        %h4= link_to t('.account_basics'), edit_account_path(@account)
         %span.pull-left
           %a.account_settings_icon.settings_account_basics{ href: edit_account_path(@account) }
         %span= t('.account_basics_settings')
       .pull-right.span5.settings_specifications
-        %h4= link_to t('.password'), alter_password_edit_account_path(@account), class: 'strong'
+        %h4= link_to t('.password'), alter_password_edit_account_path(@account)
         %span.pull-left
           %a.account_settings_icon.settings_account_password{ href: alter_password_edit_account_path(@account) }
         %span= t('.change_passwords')
     .account_setting_row
       .pull-left.span5.settings_specifications
-        %h4= link_to t('.api_keys'), account_api_keys_path(@account), class: 'strong'
+        %h4= link_to t('.api_keys'), account_api_keys_path(@account)
         %span.pull-left
           %a.account_settings_icon.settings_api_keys{ href: account_api_keys_path(@account) }
         %span= t('.api_key_settings')
       .pull-right.span5.settings_specifications
-        %h4= link_to t('.privacy'), edit_account_privacy_account_path, class: 'strong'
+        %h4= link_to t('.privacy'), edit_account_privacy_account_path
         %span.pull-left
           %a.account_settings_icon.settings_privacy{ href: edit_account_privacy_account_path }
         %span= t('.email_settings')

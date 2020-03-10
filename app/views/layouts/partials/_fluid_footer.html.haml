@@ -1,39 +1,40 @@
-.col-md-12
-  .footer-left
-    %a.logo_link{ href: root_path }
-      %img.logo_img{ itemprop: 'image', src: image_path('logo/synopsys_logo.png'), alt: 'Open Hub' }
+.col-md-12.text-center
+  .footer_content{style: 'margin-left: 27%'}
+    .footer-left
+      %a.logo_link{ href: root_path }
+        %img.logo_img{ itemprop: 'image', src: image_path('logo/synopsys_logo.png'), alt: 'Open Hub' }
 
-  .footer-mid
-    = "ABOUT SYNOPSYS"
-    %p
-    %p
-      %a{ href: 'https://www.synopsys.com/software-integrity/security-testing.html' }= 'Application Security Testing'
-    %p
-      %a{ href: 'https://www.synopsys.com/software-integrity/software-security-services.html' }= 'Software Security Services'
-    %p
-      %a{ href: 'https://www.synopsys.com/software-integrity/software-security-strategy.html' }= 'Program Development'
-    %p
-      %a{ href: 'https://github.com/blackducksoftware/ohloh-ui', target: '_blank' }= 'Training'
+    .footer-mid
+      = "ABOUT SYNOPSYS"
+      %p
+      %p
+        %a{ href: 'https://www.synopsys.com/software-integrity/security-testing.html' }= 'Application Security Testing'
+      %p
+        %a{ href: 'https://www.synopsys.com/software-integrity/software-security-services.html' }= 'Software Security Services'
+      %p
+        %a{ href: 'https://www.synopsys.com/software-integrity/software-security-strategy.html' }= 'Program Development'
+      %p
+        %a{ href: 'https://github.com/blackducksoftware/ohloh-ui', target: '_blank' }= 'Training'
 
-  .footer-right
-    = "ABOUT OPEN HUB"
-    %p
-    %p
-      %a{ href: forums_path }= t :forum
-    %p
-      %a{ href: 'http://blog.openhub.net/terms' }= t :terms
-    %p
-      %a{ href: 'http://blog.openhub.net/privacy' }= t :privacy_blog
-    %p
-      %a{ href: 'https://github.com/blackducksoftware/ohloh-ui', target: '_blank' }= t('copyright.source_code')
+    .footer-right
+      = "ABOUT OPEN HUB"
+      %p
+      %p
+        %a{ href: forums_path }= t :forum
+      %p
+        %a{ href: 'http://blog.openhub.net/terms' }= t :terms
+      %p
+        %a{ href: 'http://blog.openhub.net/privacy' }= t :privacy_blog
+      %p
+        %a{ href: 'https://github.com/blackducksoftware/ohloh-ui', target: '_blank' }= t('copyright.source_code')
 
-  .footer-bottom
-    %sup &copy;
-    = Time.current.year
-    %span{ itemscope: '', itemtype: 'http://schema.org/CreativeWork' }
-      %span{ itemprop: 'publisher' }
-        %a{ href: 'http://www.synopsys.com', target: '_blank' }= "Synopsys, Inc."
-        = t('copyright.rights_text')
+    .footer-bottom
+      %sup &copy;
+      = Time.current.year
+      %span{ itemscope: '', itemtype: 'http://schema.org/CreativeWork' }
+        %span{ itemprop: 'publisher' }
+          %a{ href: 'http://www.synopsys.com', target: '_blank' }= "Synopsys, Inc."
+          = t('copyright.rights_text')
 
 - if Rails.env.production?
   = render partial: 'layouts/tracking_scripts/google_analytics'
