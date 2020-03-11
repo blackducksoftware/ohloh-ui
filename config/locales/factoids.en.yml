@@ -38,9 +38,9 @@ en:
     staff_stable_inline: "stable Y-O-Y committers"
     team_size_average_inline: "a average size development team"
     team_size_large_inline: "a large development team"
-    team_size_one_inline: "by one developer"
+    team_size_one_inline: "one developer"
     team_size_small_inline: "a small development team"
-    team_size_unknown_inline: "by an unknown number of developers"
+    team_size_unknown_inline: "an unknown number of developers"
     team_size_very_large_inline: "a very large development team"
     team_size_zero_inline: "nobody"
     index:
