@@ -63,7 +63,7 @@ class Analysis::QueryBase
   end
 
   def on_clause
-    activity_facts[:month].lteq(month).and(with_analysis)
+    activity_facts[:month].eq(month).and(with_analysis)
   end
 
   def select_columns

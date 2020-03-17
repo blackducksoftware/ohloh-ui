@@ -5,16 +5,16 @@ require 'test_helpers/xml_parsing_helpers'
 
 describe 'SizeFactsControllerTest' do
   let(:account) { create(:account) }
-  let(:analysis) { create(:analysis, min_month: Date.current - 5.months) }
+  let(:analysis) { create(:analysis) }
   let(:project) { create(:project) }
   let(:api_key) { create(:api_key, account_id: account.id, daily_limit: 100) }
   let(:client_id) { api_key.oauth_application.uid }
 
   before do
     AllMonth.delete_all
-    (1..5).to_a.each do |value|
-      create(:all_month, month: Date.current.at_beginning_of_month - value.months + 5.days)
-      create(:activity_fact, month: Date.current.at_beginning_of_month - value.months + 5.days,
+    (1..4).to_a.each do |value|
+      create(:all_month, month: Date.current.at_beginning_of_month - value.months)
+      create(:activity_fact, month: Date.current.at_beginning_of_month - value.months,
                              analysis_id: analysis.id, code_added: 10, code_removed: 7, comments_added: 10,
                              comments_removed: 7)
     end
@@ -33,18 +33,13 @@ describe 'SizeFactsControllerTest' do
       xml['response']['items_available'].must_equal '4'
       xml['response']['first_item_position'].must_equal '0'
       xml['response']['result']['size_fact'].size.must_equal 4
-      xml['response']['result']['size_fact'].reverse.each_with_index do |fact, index|
-        code_value = ((4 - index) * 3).to_s
-        commits_value = ((400 - (index * 100))).to_s
-        month_value = (4 - index).to_s
-
-        fact['code'].must_equal code_value
-        fact['comments'].must_equal code_value
+      xml['response']['result']['size_fact'].reverse.each do |fact|
+        fact['code'].must_equal '3'
+        fact['comments'].must_equal '3'
         fact['blanks'].must_equal '0'
         fact['comment_ratio'].must_equal '0.5'
-        fact['commits'].must_equal commits_value
-        fact['man_months'].must_equal month_value
-        fact['month'].must_equal xml_time Date.current.at_beginning_of_month - (index + 2).months + 5.days
+        fact['commits'].must_equal '100'
+        fact['man_months'].must_equal '1'
       end
     end
 
@@ -58,18 +53,13 @@ describe 'SizeFactsControllerTest' do
       xml['response']['items_available'].must_equal '4'
       xml['response']['first_item_position'].must_equal '0'
       xml['response']['result']['size_fact'].size.must_equal 4
-      xml['response']['result']['size_fact'].reverse.each_with_index do |fact, index|
-        code_value = ((4 - index) * 3).to_s
-        commits_value = ((400 - (index * 100))).to_s
-        month_value = (4 - index).to_s
-
-        fact['code'].must_equal code_value
-        fact['comments'].must_equal code_value
+      xml['response']['result']['size_fact'].reverse.each do |fact|
+        fact['code'].must_equal '3'
+        fact['comments'].must_equal '3'
         fact['blanks'].must_equal '0'
         fact['comment_ratio'].must_equal '0.5'
-        fact['commits'].must_equal commits_value
-        fact['man_months'].must_equal month_value
-        fact['month'].must_equal xml_time Date.current.at_beginning_of_month - (index + 2).months + 5.days
+        fact['commits'].must_equal '100'
+        fact['man_months'].must_equal '1'
       end
     end
 
