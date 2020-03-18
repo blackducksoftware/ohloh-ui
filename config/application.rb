@@ -44,6 +44,10 @@ module OhlohUi
 
     config.action_dispatch.default_headers = { 'X-Content-Type-Options' => 'nosniff' }
 
+    # This functionality will be included in Rails 5,
+    # but gem 'activerecord-postgres-dump-schemas' backports this feature to Rails 3 and Rails 4
+    config.active_record.dump_schemas = :all
+
     Kaminari.configure do |config|
       config.page_method_name = :per_page_kaminari
     end
