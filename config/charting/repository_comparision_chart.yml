@@ -4,6 +4,13 @@ credits:
   enabled: false
 plotOptions:
   pie:
+    colors: [
+      '#99dde3',
+      '#a2a8b3',
+      '#7b559b',
+      '#33bbc6',
+      '#008893'
+    ]
     allowPointSelect: true
     cursor: pointer
     dataLabels:
