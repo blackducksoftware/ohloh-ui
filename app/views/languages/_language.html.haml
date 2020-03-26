@@ -34,18 +34,18 @@
 
         %td
           %strong= t('.projects')
-          %span.badge.badge-success.link-disabled= number_with_delimiter(language.projects)
+          %span.badge.badge-success.link-disabled.projects= number_with_delimiter(language.projects)
           .margin_top_15
             = render 'mini_chart', language: language, measure: 'projects'
 
         %td
           %strong= t('.contributors')
-          %span.badge.badge-info.link-disabled= number_with_delimiter(language.contributors)
+          %span.badge.badge-info.link-disabled.contributors= number_with_delimiter(language.contributors)
           .margin_top_15
             = render 'mini_chart', language: language, measure: 'contributors'
 
         %td
           %strong= t('.commits')
-          %span.badge.badge-inf.link-disabled= number_with_delimiter(language.commits)
+          %span.badge.badge-inf.link-disabled.commits= number_with_delimiter(language.commits)
           .margin_top_15
             = render 'mini_chart', language: language, measure: 'commits'
