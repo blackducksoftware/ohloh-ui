@@ -5,7 +5,7 @@ require 'test_helper'
 class Analysis::CodeHistoryChartTest < ActiveSupport::TestCase
   let(:activity_fact) do
     fact_values = { code_added: 10, code_removed: 5, comments_added: 20, comments_removed: 10,
-                    blanks_added: 10, blanks_removed: 7, month: 2.months.ago.beginning_of_month.advance(days: 5) }
+                    blanks_added: 10, blanks_removed: 7, month: 2.months.ago.beginning_of_month }
     create(:activity_fact, fact_values)
   end
 
@@ -14,12 +14,9 @@ class Analysis::CodeHistoryChartTest < ActiveSupport::TestCase
 
   before do
     AllMonth.delete_all
-    date_range = [3.months.ago, 2.months.ago, 1.month.ago, Date.current].map(&:beginning_of_month)
-    date_range.each do |date|
-      create(:all_month, month: date)
-    end
+    create(:all_month, month: 2.months.ago.beginning_of_month)
+    analysis.update(min_month: 3.months.ago.beginning_of_month)
 
-    create(:activity_fact, analysis: activity_fact.analysis)
     @time_integer = AllMonth.all.to_a.last.month.utc.to_i * 1000
   end
 

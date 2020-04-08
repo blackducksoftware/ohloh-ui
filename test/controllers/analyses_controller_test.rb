@@ -186,9 +186,10 @@ describe 'AnalysesController' do
   describe 'language_history' do
     it 'should return chart data' do
       fact_values = { code_added: 10, code_removed: 5, comments_added: 20, comments_removed: 10, on_trunk: true,
-                      blanks_added: 10, blanks_removed: 7, month: 2.months.ago.beginning_of_month.advance(days: 5) }
+                      blanks_added: 10, blanks_removed: 7, month: 2.months.ago.beginning_of_month }
       activity_fact.update(fact_values)
-      create_all_months
+      create(:all_month, month: 2.months.ago.beginning_of_month)
+      activity_fact.analysis.update(min_month: 3.months.ago.beginning_of_month)
 
       get :language_history, project_id: project.to_param, id: analysis.id
 
@@ -207,10 +208,10 @@ describe 'AnalysesController' do
   describe 'code_history' do
     it 'should return chart data' do
       options = { code_added: 10, code_removed: 5, comments_added: 20, comments_removed: 10,
-                  blanks_added: 10, blanks_removed: 7, month: 2.months.ago.beginning_of_month.advance(days: 5) }
+                  blanks_added: 10, blanks_removed: 7, month: 1.month.ago.beginning_of_month }
       activity_fact.update(options)
-      activity_fact_2
-      create_all_months
+      create(:all_month, month: 1.month.ago.beginning_of_month)
+      analysis.update(min_month: 2.months.ago.beginning_of_month, max_month: beginning_of_month)
 
       get :code_history, project_id: project.to_param, id: analysis.id
 
@@ -232,10 +233,10 @@ describe 'AnalysesController' do
   describe 'lines_of_code' do
     it 'should return chart data' do
       options = { code_added: 10, code_removed: 5, comments_added: 20, comments_removed: 10,
-                  blanks_added: 10, blanks_removed: 7, month: 2.months.ago.beginning_of_month.advance(days: 5) }
+                  blanks_added: 10, blanks_removed: 7, month: 2.months.ago.beginning_of_month }
       activity_fact.update(options)
-      activity_fact_2
-      create_all_months
+      create(:all_month, month: 2.months.ago.beginning_of_month)
+      activity_fact.analysis.update(min_month: 3.months.ago.beginning_of_month)
 
       get :lines_of_code, project_id: project.to_param, id: analysis.id
 

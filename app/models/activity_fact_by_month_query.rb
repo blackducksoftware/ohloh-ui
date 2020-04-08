@@ -48,7 +48,7 @@ class ActivityFactByMonthQuery
   end
 
   def on_clause
-    activities[:month].eq(months[:month])
+    activities[:month].eq(months[:month]).and(activities[:on_trunk].eq(true))
   end
 
   def conditions
