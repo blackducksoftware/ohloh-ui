@@ -341,7 +341,7 @@ GEM
       net-ssh (>= 2.6.5, < 6.0.0)
     net-ssh (5.2.0)
     newrelic_rpm (6.2.0.354)
-    nokogiri (1.10.7)
+    nokogiri (1.10.8)
       mini_portile2 (~> 2.4.0)
     notiffany (0.1.1)
       nenv (~> 0.1)
@@ -619,7 +619,7 @@ DEPENDENCIES
   minitest-rails
   mocha
   newrelic_rpm
-  nokogiri (~> 1.10.5)
+  nokogiri (~> 1.10.8)
   oh_delegator
   ohloh_scm (= 2.4.0)
   open4
