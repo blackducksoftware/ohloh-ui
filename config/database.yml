@@ -8,7 +8,14 @@ default: &default
   username: <%= ENV["DB_USERNAME"] %>
   password: <%= ENV["DB_PASSWORD"] %>
   database: <%= ENV["DB_NAME"] %>
-  schema_search_path: <%= ENV["DB_SEARCH_PATH"] %>
+
+foreign_db_default: &foreign_db_default
+  <<: *default
+  host: <%= ENV["FOREIGN_DB_HOST"] %>
+  port: <%= ENV["FOREIGN_DB_PORT"] %>
+  username: <%= ENV["FOREIGN_DB_USERNAME"] %>
+  password: <%= ENV["FOREIGN_DB_PASSWORD"] %>
+  database: <%= ENV["FOREIGN_DB_NAME"] %>
 
 development:
   <<: *default
@@ -27,3 +34,23 @@ test:
 
 production:
   <<: *default
+
+secondbase:
+  development:
+    <<: *foreign_db_default
+    template: template0
+
+  staging:
+    <<: *foreign_db_default
+
+  test:
+    <<: *foreign_db_default
+    host: <%= ENV["FOREIGN_TEST_DB_HOST"] %>
+    username: <%= ENV["FOREIGN_TEST_DB_USERNAME"] %>
+    password: <%= ENV["FOREIGN_TEST_DB_PASSWORD"] %>
+    database: <%= ENV["FOREIGN_TEST_DB_NAME"] %>
+    port : <%= ENV["FOREIGN_TEST_DB_PORT"] %>
+    template: template0
+
+  production:
+    <<: *foreign_db_default

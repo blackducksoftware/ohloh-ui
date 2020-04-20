@@ -27,6 +27,11 @@ DB_HOST = localhost
 DB_NAME =
 DB_USERNAME =
 DB_PASSWORD =
+
+FOREIGN_DB_HOST = localhost
+FOREIGN_DB_NAME =
+FOREIGN_DB_USERNAME =
+FOREIGN_DB_PASSWORD =
 ```
 
 The default DB encoding was set to SQL_ASCII to support data encoded by older ruby. For new data, the UTF-8 encoding should work fine. The *_USERNAME and *_PASSWORD entries need to reflect the user created in postgresql. The *DB_NAME entries should be new database names. These will be created during our setup.
@@ -61,6 +66,11 @@ TEST_DB_HOST = localhost
 TEST_DB_NAME =
 TEST_DB_USERNAME =
 TEST_DB_PASSWORD =
+
+FOREIGN_TEST_DB_HOST = localhost
+FOREIGN_TEST_DB_NAME =
+FOREIGN_TEST_DB_USERNAME =
+FOREIGN_TEST_DB_PASSWORD =
 ```
 
 Then run the following:
