@@ -60,7 +60,7 @@ module OrgFilters
 
     @graphics ||= OrgInfoGraphics.new(@organization)
     subview_html = render_to_string(partial: "organizations/show/#{@view}")
-    pictogram_html = render_to_string(partial: 'organizations/show/pictogram')
+    pictogram_html = render_to_string(partial: 'organizations/show/pictogram', locals: { print_icon: true })
     render json: { subview_html: subview_html, pictogram_html: pictogram_html }
   end
 

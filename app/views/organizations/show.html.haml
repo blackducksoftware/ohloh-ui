@@ -15,7 +15,7 @@
 
 .col-md-12
   .mezzo.padding_one_top
-  = render partial: '/organizations/show/pictogram'
+    = render partial: '/organizations/show/pictogram', locals: { print_icon: true }
   .mezzo.padding_one_top
     .org-data-table.margin_left_10.margin_right_10
       - case @view

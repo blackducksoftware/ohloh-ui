@@ -28,9 +28,10 @@
       .col3.pull-right
         .pull-right.about Black Duck | OpenHub
         %br
-        %a.pull-right.small.margin_top_5.print_infographic{ href: '#', url: print_path }
-          %i.icon-print
-          = t('organizations.show.print_graphic')
+        - if print_icon
+          %a.pull-right.small.margin_top_5.print_infographic{ href: '#', url: print_path }
+            %i.icon-print
+            = t('organizations.show.print_graphic')
   #section2
     .col1.pull-left{ @graphics.other_attributes('affl_commits_out', true) }
       .svg-arrow.margin_bottom_10{ @graphics.arrow_attributes('affl_commits_out', 'right', 140) }

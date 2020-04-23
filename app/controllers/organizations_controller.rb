@@ -102,6 +102,7 @@ class OrganizationsController < ApplicationController
   end
 
   def print_infographic
+    @graphics = OrgInfoGraphics.new(@organization, context: { view: @view })
     render layout: false
   end
 

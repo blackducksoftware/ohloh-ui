@@ -1,6 +1,5 @@
 OrganizationPictogram = {
   init: function() {
-    if ($('#organizations_show_page').length == 0) return;
     SVGArrow.generate();
     OrganizationPictogram.block_ui();
     OrganizationPictogram.select_subview();
@@ -26,6 +25,12 @@ OrganizationPictogram = {
   },
   print_infographic: function(){
     $(".print_infographic").click(function(){
+    if (!!window.chrome) {
+      var print_window = window.open($(this).attr('url'), "print_win", '');
+      print_window.focus();
+      print_window.print();
+
+    } else {
       var output = $("#org_infographic").clone().find("a.print_infographic").remove().end();
       output.find('a').removeAttr('href').addClass('infographic_links_in_print');
       var print_window = window.open($(this).attr('url'), "print_win", '');
@@ -34,6 +39,7 @@ OrganizationPictogram = {
         print_window.focus();
         print_window.print();
       });
+    }
     });
   },
   /* Block the Page While loading the Data Tables */
