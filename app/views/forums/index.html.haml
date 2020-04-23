@@ -2,6 +2,8 @@
   = t('.openhub_forums')
 
 %h1= t('.forums')
+= render partial: '/forums/notice'
+
 %h2.soft.margin_top_20= t('.active_topics')
 = render partial: '/topics/current_discussions', object: @recent_topics
 
@@ -31,4 +33,4 @@
         %td.center= forum.posts_count
 
 - if current_user_is_admin?
-  = link_to t('.new_forum'), new_forum_path, class: 'btn btn-primary btn-small'
+  = link_to t('.new_forum'), new_forum_path, class: 'btn btn-primary btn-small disabled'

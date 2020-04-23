@@ -8,6 +8,7 @@
   - if @account.posts.count == 0
     #no-posts= t('.no_posts')
   - else
+    = render partial: '/forums/notice'
     = render partial: 'shared/search_dingus', locals: { collection: @posts, sort_context: :posts }
     = render partial: 'posts/posts', collection: @posts
     = will_paginate @posts
@@ -16,6 +17,7 @@
     = link_to t('.forums'), forums_path
     \:
     = t('.posts')
+  = render partial: '/forums/notice'
   = render partial: 'shared/search_dingus', locals: { collection: @posts, sort_context: :posts }
   = render partial: 'posts/posts', collection: @posts
   = will_paginate @posts

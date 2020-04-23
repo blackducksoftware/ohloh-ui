@@ -416,16 +416,6 @@ describe PostsController do
       must_render_template 'topics/show'
     end
 
-    it 'must retain post pagination values on failure' do
-      login_as user
-      current_page_number = 3
-
-      PostsController.any_instance.stubs(:verify_recaptcha)
-      post :create, topic_id: topic.id, post: { body: nil }, page: current_page_number
-
-      response.body.must_match(/<input.+id="page".+value="#{current_page_number}"/)
-    end
-
     it 'must allow admin to create post without captcha' do
       login_as(admin)
       topic = create(:topic)

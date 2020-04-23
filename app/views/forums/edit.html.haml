@@ -10,13 +10,4 @@
 
 .clear
 
-.row
-  .col-md-8.margin_top_20.float_left
-    %h2= t('.edit_forum')
-
-.well.col-md-11.margin_left_20
-  .col-md-7
-    = form_for @forum do |f|
-      = render partial: 'form', locals: { f: f }
-      = f.submit t('.save_forum'), class: 'btn btn-small btn-primary', style: 'height: 33px;'
-      = link_to t('.cancel'), forum_path(@forum), class: 'btn btn-small'
+= render partial: '/forums/notice'
