@@ -2,34 +2,34 @@
 
 module BlogLinkHelper
   BLOG_LINKS = {
-    terms: 'terms',
-    additional_terms: 'terms-2',
-    contact_form: 'support-2',
-    api_getting_started: 'getting_started',
+    terms: 'Black-Duck-Software-Open-Hub-Terms-of-Use',
+    additional_terms: 'Black-Duck-Open-Hub-API-Use-Agreement',
+    contact_form: 'Black-Duck-Open-Hub-Support',
     api_oauth: 'oauth',
     project_languages: 'project_languages',
     project_licenses: 'project_licenses',
-    managing_projects: 'managingprojects',
-    all_factoids: 'factoid-list',
+    managing_projects: 'Black-Duck-Open-Hub-Managing-Projects-FAQ',
+    all_factoids: 'Black-Duck-Open-Hub-Factoid-List',
     no_available_repository: 'no_available_repository',
     repository_not_supported: 'repository_not_supported',
     project_codebase_cost: 'project_codebase_cost',
     mostly_written: 'mostly_written',
     project_codebase_history: 'project_codebase_history',
-    stack_faq: 'stack_faq',
+    stack_faq: '#',
     examples: 'examples',
     stack_update_post: '2008/05/stack_update',
-    badges: 'about-badges',
-    pai_about: 'about-project-activity-icons',
-    hotness_score: '2014/01/about-the-ohloh-hotness-score'
+    badges: 'Black-Duck-Open-Hub-About-Badges',
+    pai_about: 'Black-Duck-Open-Hub-About-Project-Activity-Icons',
+    hotness_score: 'Black-Duck-Open-Hub-About-the-Ohloh-Hotness-Score'
   }.freeze
 
   def blog_link_to(link:, link_text:)
-    "<a class='meta' href='http://blog.openhub.net/#{BLOG_LINKS[link]}' target='_blank'>#{link_text}</a>".html_safe
+    url = "https://community.synopsys.com/s/article/#{BLOG_LINKS[link]}"
+    "<a class='meta' href='#{url}' target='_blank'>#{link_text}</a>".html_safe
   end
 
   def blog_url_for(article_name)
     path = BLOG_LINKS[article_name] || article_name.to_s
-    "http://blog.openhub.net/#{path}"
+    "https://community.synopsys.com/s/article/#{path}"
   end
 end

@@ -277,22 +277,23 @@ describe 'PositionsController' do
       desc = 'Level 3 Describer: edits project descriptions'
       badges = [OpenStruct.new(level: 3, description: desc, levels?: true, level_bits: '0011')]
       Account.any_instance.expects(:badges).returns(badges)
-
+      badge_url = 'https://community.synopsys.com/s/article/Black-Duck-Open-Hub-About-Badges'
       get :index, account_id: account.to_param
       must_select 'div.mini-badges-section a.account-badge div.pips.pip-0011'
       must_select 'div.mini-badges-section a.account-badge[title=?]', desc
-      must_select 'div.mini-badges-section a.account-badge[href=?]', 'http://blog.openhub.net/about-badges'
+      must_select 'div.mini-badges-section a.account-badge[href=?]', badge_url
     end
 
     it 'must not display the pips' do
       desc = 'Level 3 Describer: edits project descriptions'
       badges = [OpenStruct.new(level: 3, description: desc, levels?: false, level_bits: '0011')]
+      badge_url = 'https://community.synopsys.com/s/article/Black-Duck-Open-Hub-About-Badges'
       Account.any_instance.expects(:badges).returns(badges)
 
       get :index, account_id: account.to_param
       must_select 'div.mini-badges-section a.account-badge div.pips.pip-0011', false
       must_select 'div.mini-badges-section a.account-badge[title=?]', desc
-      must_select 'div.mini-badges-section a.account-badge[href=?]', 'http://blog.openhub.net/about-badges'
+      must_select 'div.mini-badges-section a.account-badge[href=?]', badge_url
     end
 
     it 'must use CommitsByProject to render page successfully' do
