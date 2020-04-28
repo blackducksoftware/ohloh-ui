@@ -21,8 +21,8 @@ xml.org do
   end
 
   if detailed_info
-    render partial: '/organizations/show/pictogram', locals: { org: organization, xml_instance: xml }
-    render partial: "/organizations/show/#{@view}", locals: { org: organization, xml_instance: xml  }
+    render partial: '/organizations/show/pictogram', locals: { org: organization, xml_instance: xml, print_icon: true }
+    render partial: "/organizations/show/#{@view}", locals: { org: organization, xml_instance: xml }
   else
     xml.projects_count organization.projects_count
     xml.affiliated_committers organization.affiliators_count
