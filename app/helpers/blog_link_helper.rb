@@ -2,7 +2,7 @@
 
 module BlogLinkHelper
   BLOG_LINKS = {
-    terms: 'Black-Duck-Software-Open-Hub-Terms-of-Use',
+    terms: 'Black-Duck-Open-Hub-Terms-of-Use',
     additional_terms: 'Black-Duck-Open-Hub-API-Use-Agreement',
     contact_form: 'Black-Duck-Open-Hub-Support',
     api_oauth: 'oauth',

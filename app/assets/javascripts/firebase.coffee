@@ -13,7 +13,7 @@ uiConfig = ->
     provider: firebase.auth.PhoneAuthProvider.PROVIDER_ID
     recaptchaParameters: size: 'invisible'
   } ]
-  'tosUrl': 'https://community.synopsys.com/s/article/Synopsys-Open-Hub-Terms-of-Use'
+  'tosUrl': 'https://community.synopsys.com/s/article/Black-Duck-Open-Hub-Terms-of-Use'
   'privacyPolicyUrl': ->
      window.location.assign 'https://community.synopsys.com/s/article/Black-Duck-Open-Hub-Open-Hub-Privacy-Policy'
 
