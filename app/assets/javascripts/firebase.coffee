@@ -13,9 +13,9 @@ uiConfig = ->
     provider: firebase.auth.PhoneAuthProvider.PROVIDER_ID
     recaptchaParameters: size: 'invisible'
   } ]
-  'tosUrl': 'https://blog.openhub.net/terms/'
+  'tosUrl': 'https://community.synopsys.com/s/article/Black-Duck-Open-Hub-Terms-of-Use'
   'privacyPolicyUrl': ->
-     window.location.assign 'https://blog.openhub.net/privacy/'
+     window.location.assign 'https://community.synopsys.com/s/article/Black-Duck-Open-Hub-Open-Hub-Privacy-Policy'
 
 initializeFirebase = ->
   firebase.initializeApp(

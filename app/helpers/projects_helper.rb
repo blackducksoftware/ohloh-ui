@@ -5,7 +5,8 @@ module ProjectsHelper
   include SiteFeaturesHelper
 
   def project_activity_level_class(project, image_size)
-    haml_tag :a, href: 'http://blog.openhub.net/about-project-activity-icons/', target: '_blank',
+    url = 'https://community.synopsys.com/s/article/Black-Duck-Open-Hub-About-Project-Activity-Icons'
+    haml_tag :a, href: url, target: '_blank',
                  class: project_activity_css_class(project, image_size),
                  title: project_activity_text(project, true)
   end

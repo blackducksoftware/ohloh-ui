@@ -9,10 +9,6 @@
           = truncate(h(post.account.name), length: 18)
         %small.date.avatar_name
           = t('.replied_ago', date: time_ago_in_words(post.updated_at))
-    - if (current_user.id == post.account_id) || current_user_is_admin?
-      .btn.btn-info.btn-mini#post_edit
-        .icon-pencil= link_to t('.edit_post'), edit_topic_post_path(post.topic, post),
-        id: 'post_edit_specifications'
     .clear
 .row
   &nbsp;

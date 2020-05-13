@@ -21,7 +21,8 @@
   %ul.padding_left_30
     - terms_link = blog_link_to(link: :terms, link_text: t('api_keys.terms_link'))
     - terms_2_link = blog_link_to(link: :additional_terms, link_text: t('api_keys.terms_2_link'))
-    - getting_started_link = blog_link_to(link: :api_getting_started, link_text: t('api_keys.getting_started_link'))
+    - url = 'https://github.com/blackducksoftware/ohloh_api#ohloh-api-documentation'
+    - getting_started_link = link_to(t('api_keys.getting_started_link'), url, target:'_blank')
     %li!= t('api_keys.help_1', terms_link: terms_link, terms_2_link: terms_2_link)
     %li!= t('api_keys.help_2')
     %li!= t('api_keys.help_3', getting_started_link: getting_started_link)
