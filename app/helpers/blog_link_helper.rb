@@ -1,8 +1,10 @@
 # frozen_string_literal: true
 
 module BlogLinkHelper
+  BASE_URL = 'https://community.synopsys.com/s/article/'
+
   BLOG_LINKS = {
-    terms: 'terms',
+    terms: 'Synopsys-Open-Hub-Terms-of-Use',
     additional_terms: 'terms-2',
     contact_form: 'support-2',
     api_getting_started: 'getting_started',
@@ -25,11 +27,11 @@ module BlogLinkHelper
   }.freeze
 
   def blog_link_to(link:, link_text:)
-    "<a class='meta' href='http://blog.openhub.net/#{BLOG_LINKS[link]}' target='_blank'>#{link_text}</a>".html_safe
+    "<a class='meta' href=#{BASE_URL}#{BLOG_LINKS[link]}' target='_blank'>#{link_text}</a>".html_safe
   end
 
   def blog_url_for(article_name)
     path = BLOG_LINKS[article_name] || article_name.to_s
-    "http://blog.openhub.net/#{path}"
+    "#{BASE_URL}#{path}"
   end
 end
