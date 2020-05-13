@@ -1,8 +1,6 @@
 .btn-group.pull-right.margin_top_10
   - if current_user_is_admin?
-    = link_to t('edit'), edit_topic_path(@topic), class: 'btn btn-info btn-mini' unless @topic.closed?
-
-    = render 'topics/move_modal'
+    = link_to t('edit'), edit_topic_path(@topic), class: 'btn btn-primary btn-mini disabled' unless @topic.closed?
 
     = link_to t('.spam'), make_spammer_account_accesses_path(@topic.account), method: :post,
       data: { confirm: t('.spam_confirmation', user: @topic.posts.first.account.name) },

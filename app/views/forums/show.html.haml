@@ -6,6 +6,8 @@
   \:
   = @forum.name
 
+= render partial: '/forums/notice'
+
 %table.table.table-striped
   %thead
     %tr
@@ -23,6 +25,6 @@
 .col-md-12{ style: 'margin-left: -15px' }
   .col-md-1
     = link_to t('.add_new_topic'), new_forum_topic_path(@forum),
-      class: 'btn btn-primary btn-mini'
+      class: 'btn btn-primary btn-mini disabled'
   .col-md-11{ style: 'margin-top: -20px' }
     = will_paginate @topics

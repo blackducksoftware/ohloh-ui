@@ -19,8 +19,6 @@
       - else
         %p= t('.closed_topic_message_2')
         %p= t('.closed_topic_message_3')
-    - else
-      = render partial: 'posts/reply'
 
   - collection_of_all_topics = @topic.forum.topics
   %ul.pager
