@@ -86,4 +86,7 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
+
+  SqlTracker::Config.enabled = true
+  SqlTracker::Config.tracked_sql_command = %w[diffs]
 end
