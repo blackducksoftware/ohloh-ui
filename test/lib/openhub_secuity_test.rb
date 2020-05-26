@@ -6,7 +6,7 @@ class OpenhubSecurityTest < ActiveSupport::TestCase
   it 'should get the UUID for a given project' do
     VCR.use_cassette('kb') do
       uuid = OpenhubSecurity.get_uuid('rails')
-      uuid.must_equal 'e45bf7f2-72ed-4a93-8958-931047ebde3b'
+      uuid.must_equal '7102004a-cf57-42d5-91c6-fcf9d4c4c576'
     end
   end
 end
