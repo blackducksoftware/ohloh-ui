@@ -87,5 +87,5 @@ Rails.application.configure do
 
   SqlTracker::Config.enabled = true
   SqlTracker::Config.tracked_sql_command = %w[diffs]
-  SqlTracker::Config.output_path = File.join(ENV['SQL_TRACER_TEMP_PATH'], 'sql_tracker')
+  SqlTracker::Config.output_path = File.join(ENV['SQL_TRACER_TEMP_PATH'] || '/tmp', 'sql_tracker')
 end

@@ -8,14 +8,4 @@
   %span= link_to t('.forums'), forums_url
 .clear
 
-.row
-  .col-md-8.float_left
-    %h2.margin_top_20= t('.new_forum')
-
-.well.col-md-11.margin_left_20
-  .col-md-7
-    = form_for @forum do |f|
-      = render partial: 'form', locals: { f: f }
-      .actions
-        = f.submit t('.create'), class: 'btn btn-primary btn-small', style: 'margin-top: 20px;'
-  .clear
+= render partial: '/forums/notice'

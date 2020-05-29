@@ -4,15 +4,4 @@
   \:
   = link_to @forum.name, forum_path(@forum)
 
-%h2.margin_top_20= header
-
-.well.col-md-12
-  .col-md-10
-    = form_for form_object, html: { class: 'topic_form' } do |f|
-      = render partial: 'form', locals: { f: f }
-      .actions
-      = f.submit submit_text, class: 'btn btn-primary btn-small', style: 'margin-top: 15px;'
-  .col-md-2.no_margin_left{ style: 'margin-top: -10px' }
-
-  - if @topic.new_record?
-    = render 'shared/markdown_help', style: 'margin-left: 90px;'
+= render partial: '/forums/notice'
