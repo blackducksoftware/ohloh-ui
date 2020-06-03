@@ -42,7 +42,4 @@
         - lamp_link = link_to('LAMP', 'http://wikipedia.org/wiki/LAMP_(software_bundle)')
         %p!= t('.stack_explanation', link: lamp_link)
         %p= t('.max_stacks_desc')
-        %p
-          = t('.more_questions')
-          = blog_link_to(link: :stack_faq, link_text: t('.stack_faq'))
 = will_paginate @stacks

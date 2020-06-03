@@ -72,9 +72,6 @@
             = t('.stack_explanation_empty')
           - else
             = t('.stack_explanation_with_projects')
-        %p
-          = t('.more_questions')
-          = blog_link_to(link: :stack_faq, link_text: t('.stack_faq'))
 
       = render 'similar_stacks', stack: @stack
 
