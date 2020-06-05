@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# rubocop:disable Metrics/ClassLength
 class CompareProjectAnalysisCsvDecorator
   include ActionView::Helpers::DateHelper
   include ActionView::Helpers::NumberHelper
@@ -118,14 +119,19 @@ class CompareProjectAnalysisCsvDecorator
   def require_twelve_month
     require_best_analysis do
       tms = @project.best_analysis.twelve_month_summary
-      (tms&.committer_count).positive? ? yield(tms) : t('compares.no_activity')
+      return t('compares.no_data') if tms.nil?
+
+      tms.committer_count.positive? ? yield(tms) : t('compares.no_activity')
     end
   end
 
   def require_thirty_day
     require_best_analysis do
       tds = @project.best_analysis.thirty_day_summary
-      (tds&.committer_count).positive? ? yield(tds) : t('compares.no_activity')
+      return t('compares.no_data') if tds.nil?
+
+      tds.committer_count.positive? ? yield(tds) : t('compares.no_activity')
     end
   end
 end
+# rubocop:enable Metrics/ClassLength
