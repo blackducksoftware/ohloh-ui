@@ -131,4 +131,22 @@ class ComparesControllerTest < ActionController::TestCase
     response.body.must_match 'Jerry'
     response.body.must_match 'Bob'
   end
+
+  test 'ThirtyDaySummary commits count when nil, negative and positive values' do
+    project1 = create(:project, name: 'Phil')
+    project2 = create(:project, name: 'Jerry')
+    project3 = create(:project, name: 'Bob')
+    commiters_count = 40
+    project1.best_analysis.thirty_day_summary.destroy # would return nil
+    project2.best_analysis.thirty_day_summary.update(outside_committers_count: -20)
+    project3.best_analysis.thirty_day_summary.update(outside_committers_count: commiters_count)
+    project1.reload
+
+    tds1 = CompareProjectCsvDecorator.new(project1, request.host).contributors_last_thirty_days
+    tds1.must_match I18n.t('compares.no_data')
+    tds2 = CompareProjectCsvDecorator.new(project2, request.host).contributors_last_thirty_days
+    tds2.must_match I18n.t('compares.no_activity')
+    tds3 = CompareProjectCsvDecorator.new(project3, request.host).contributors_last_thirty_days
+    tds3.must_match "#{commiters_count} developers"
+  end
 end
