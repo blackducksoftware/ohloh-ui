@@ -47,7 +47,7 @@ class Position::Hooks
                             OR undone_by = :account_id', account_id: account_id)
                    .uniq
 
-    aliases.each { |alias_object| alias_object.find_create_edit.undo!(account) }
+    aliases.each { |alias_object| alias_object.find_create_edit.undo!(manage_editor_account) }
   end
   # rubocop:enable Metrics/AbcSize
 
@@ -57,6 +57,11 @@ class Position::Hooks
 
     transfer_kudos_to_account_person(unclaimed_person) if account.person && unclaimed_person.kudo_score
     unclaimed_person.destroy
+  end
+
+  def manage_editor_account
+    access_verified = !account.access.disabled? && account.access.verified?
+    access_verified ? account : Account.hamster
   end
 
   # rubocop:disable Metrics/AbcSize
