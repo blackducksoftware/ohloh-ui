@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 9.6.16
--- Dumped by pg_dump version 9.6.16
+-- Dumped from database version 11.7 (Ubuntu 11.7-2.pgdg18.04+1)
+-- Dumped by pg_dump version 11.2 (Ubuntu 11.2-1.pgdg18.04+1)
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -12,7 +12,6 @@ SET client_encoding = 'SQL_ASCII';
 SET standard_conforming_strings = on;
 SELECT pg_catalog.set_config('search_path', '', false);
 SET check_function_bodies = false;
-SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
 
@@ -31,6 +30,13 @@ CREATE SCHEMA fis;
 
 
 --
+-- Name: SCHEMA fis; Type: COMMENT; Schema: -; Owner: -
+--
+
+COMMENT ON SCHEMA fis IS 'standard public schema';
+
+
+--
 -- Name: oh; Type: SCHEMA; Schema: -; Owner: -
 --
 
@@ -38,24 +44,17 @@ CREATE SCHEMA oh;
 
 
 --
--- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: -
+-- Name: SCHEMA oh; Type: COMMENT; Schema: -; Owner: -
 --
 
-CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
-
-
---
--- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: -
---
-
-COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+COMMENT ON SCHEMA oh IS 'standard public schema';
 
 
 --
 -- Name: pg_stat_statements; Type: EXTENSION; Schema: -; Owner: -
 --
 
-CREATE EXTENSION IF NOT EXISTS pg_stat_statements WITH SCHEMA public;
+CREATE EXTENSION IF NOT EXISTS pg_stat_statements WITH SCHEMA fis;
 
 
 --
@@ -63,20 +62,6 @@ CREATE EXTENSION IF NOT EXISTS pg_stat_statements WITH SCHEMA public;
 --
 
 COMMENT ON EXTENSION pg_stat_statements IS 'track execution statistics of all SQL statements executed';
-
-
---
--- Name: postgres_fdw; Type: EXTENSION; Schema: -; Owner: -
---
-
-CREATE EXTENSION IF NOT EXISTS postgres_fdw WITH SCHEMA public;
-
-
---
--- Name: EXTENSION postgres_fdw; Type: COMMENT; Schema: -; Owner: -
---
-
-COMMENT ON EXTENSION postgres_fdw IS 'foreign-data wrapper for remote PostgreSQL servers';
 
 
 --
@@ -91,6 +76,52 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp" WITH SCHEMA fis;
 --
 
 COMMENT ON EXTENSION "uuid-ossp" IS 'generate universally unique identifiers (UUIDs)';
+
+
+--
+-- Name: statinfo; Type: TYPE; Schema: fis; Owner: -
+--
+
+CREATE TYPE fis.statinfo AS (
+	word text,
+	ndoc integer,
+	nentry integer
+);
+
+
+--
+-- Name: tokenout; Type: TYPE; Schema: fis; Owner: -
+--
+
+CREATE TYPE fis.tokenout AS (
+	tokid integer,
+	token text
+);
+
+
+--
+-- Name: tokentype; Type: TYPE; Schema: fis; Owner: -
+--
+
+CREATE TYPE fis.tokentype AS (
+	tokid integer,
+	alias text,
+	descr text
+);
+
+
+--
+-- Name: tsdebug; Type: TYPE; Schema: fis; Owner: -
+--
+
+CREATE TYPE fis.tsdebug AS (
+	ts_name text,
+	tok_type text,
+	description text,
+	token text,
+	dict_name text[],
+	tsvector tsvector
+);
 
 
 --
@@ -140,56 +171,10 @@ CREATE TYPE oh.tsdebug AS (
 
 
 --
--- Name: statinfo; Type: TYPE; Schema: public; Owner: -
---
-
-CREATE TYPE public.statinfo AS (
-	word text,
-	ndoc integer,
-	nentry integer
-);
-
-
---
--- Name: tokenout; Type: TYPE; Schema: public; Owner: -
---
-
-CREATE TYPE public.tokenout AS (
-	tokid integer,
-	token text
-);
-
-
---
--- Name: tokentype; Type: TYPE; Schema: public; Owner: -
---
-
-CREATE TYPE public.tokentype AS (
-	tokid integer,
-	alias text,
-	descr text
-);
-
-
---
--- Name: tsdebug; Type: TYPE; Schema: public; Owner: -
---
-
-CREATE TYPE public.tsdebug AS (
-	ts_name text,
-	tok_type text,
-	description text,
-	token text,
-	dict_name text[],
-	tsvector tsvector
-);
-
-
---
 -- Name: pg_stat_statements(); Type: FUNCTION; Schema: bluemedora; Owner: -
 --
 
-CREATE FUNCTION bluemedora.pg_stat_statements() RETURNS SETOF public.pg_stat_statements
+CREATE FUNCTION bluemedora.pg_stat_statements() RETURNS SETOF fis.pg_stat_statements
     LANGUAGE sql SECURITY DEFINER
     AS $$
 SELECT * FROM public.pg_stat_statements;
@@ -956,12 +941,57 @@ CREATE FUNCTION fis.admin_select_kb_cl_visited_stats(interval_span character var
 
 
 --
+-- Name: analysis_aliases_id_seq_view(); Type: FUNCTION; Schema: fis; Owner: -
+--
+
+CREATE FUNCTION fis.analysis_aliases_id_seq_view() RETURNS integer
+    LANGUAGE sql
+    AS $$select id from analysis_aliases_id_seq_view$$;
+
+
+--
+-- Name: analysis_sloc_sets_id_seq_view(); Type: FUNCTION; Schema: fis; Owner: -
+--
+
+CREATE FUNCTION fis.analysis_sloc_sets_id_seq_view() RETURNS integer
+    LANGUAGE sql
+    AS $$select id from analysis_sloc_sets_id_seq_view$$;
+
+
+--
 -- Name: check_jobs(integer); Type: FUNCTION; Schema: fis; Owner: -
 --
 
 CREATE FUNCTION fis.check_jobs(integer) RETURNS integer
     LANGUAGE sql
     AS $_$select repository_id as RESULT from jobs where status != 5 AND  repository_id= $1;$_$;
+
+
+--
+-- Name: code_location_tarballs_id_seq_view(); Type: FUNCTION; Schema: fis; Owner: -
+--
+
+CREATE FUNCTION fis.code_location_tarballs_id_seq_view() RETURNS integer
+    LANGUAGE sql
+    AS $$select id from code_location_tarballs_id_seq_view$$;
+
+
+--
+-- Name: code_sets_id_seq_view(); Type: FUNCTION; Schema: fis; Owner: -
+--
+
+CREATE FUNCTION fis.code_sets_id_seq_view() RETURNS integer
+    LANGUAGE sql
+    AS $$select id from code_sets_id_seq_view$$;
+
+
+--
+-- Name: commit_flags_id_seq_view(); Type: FUNCTION; Schema: fis; Owner: -
+--
+
+CREATE FUNCTION fis.commit_flags_id_seq_view() RETURNS integer
+    LANGUAGE sql
+    AS $$select id from commit_flags_id_seq_view$$;
 
 
 --
@@ -981,11 +1011,7 @@ CREATE FUNCTION fis.delete_old_code_sets(smallint, boolean) RETURNS jsonb
          num_limit integer ;
        BEGIN
        num_limit = $1 ;
-         IF num_limit < 1 OR num_limit > 1000 THEN
-         num_limit = 1000 ;
-         END IF ;
-
-         rollback = $2 ;
+       rollback = $2 ;
 
          RAISE NOTICE 'Limit set to % and rollback set to %', num_limit, rollback::text ;
 
@@ -1009,19 +1035,23 @@ CREATE FUNCTION fis.delete_old_code_sets(smallint, boolean) RETURNS jsonb
            INNER JOIN code_sets cs_best ON cl.best_code_set_id = cs_best.id
            WHERE code_sets.id <> cl.best_code_set_id
              AND COALESCE(code_sets.logged_at, code_sets.updated_on)
-                 < COALESCE(cs_best.logged_at, cs_best.updated_on) Limit num_limit ;
+                 < COALESCE(cs_best.logged_at, cs_best.updated_on)
+			 AND code_sets.id NOT IN 
+			 	(SELECT distinct j.code_set_id FROM jobs j
+				 WHERE j.status <> 5 AND j.code_set_id IS NOT NULL)
+		   Limit num_limit ;
 
          GET DIAGNOSTICS num_selected = row_count;
          RAISE NOTICE 'Selected %s code_sets', num_selected ;
          INSERT INTO temp_messages VALUES
            (FORMAT('Selected %s code_sets', num_selected))  ;
 
-         DELETE FROM temp_code_sets
-         WHERE id IN
-           (SELECT tcs.id
-              FROM temp_code_sets tcs
-              INNER JOIN jobs j ON tcs.id = j.code_set_id
-             WHERE j.status <> 5) ;
+         --DELETE FROM temp_code_sets
+         --WHERE id IN
+         --  (SELECT tcs.id
+         --     FROM temp_code_sets tcs
+         --     INNER JOIN jobs j ON tcs.id = j.code_set_id
+         --    WHERE j.status <> 5) ;
 
           GET DIAGNOSTICS num_selected = row_count;
           RAISE NOTICE 'Deleted %s incomplete jobs', num_selected ;
@@ -1162,7 +1192,16 @@ CREATE FUNCTION fis.delete_old_code_sets(smallint, boolean) RETURNS jsonb
       RETURN result ;
      END;
 
-    $_$;
+$_$;
+
+
+--
+-- Name: email_addresses_id_seq_view(); Type: FUNCTION; Schema: fis; Owner: -
+--
+
+CREATE FUNCTION fis.email_addresses_id_seq_view() RETURNS integer
+    LANGUAGE sql
+    AS $$select id from email_addresses_id_seq_view$$;
 
 
 --
@@ -1179,10 +1218,73 @@ $$;
 
 
 --
+-- Name: failure_groups_id_seq_view(); Type: FUNCTION; Schema: fis; Owner: -
+--
+
+CREATE FUNCTION fis.failure_groups_id_seq_view() RETURNS integer
+    LANGUAGE sql
+    AS $$select id from failure_groups_id_seq_view$$;
+
+
+--
+-- Name: fisbot_events_id_seq_view(); Type: FUNCTION; Schema: fis; Owner: -
+--
+
+CREATE FUNCTION fis.fisbot_events_id_seq_view() RETURNS integer
+    LANGUAGE sql
+    AS $$select id from fisbot_events_id_seq_view$$;
+
+
+--
+-- Name: jobs_id_seq_view(); Type: FUNCTION; Schema: fis; Owner: -
+--
+
+CREATE FUNCTION fis.jobs_id_seq_view() RETURNS integer
+    LANGUAGE sql
+    AS $$select id from jobs_id_seq_view$$;
+
+
+--
+-- Name: load_averages_id_seq_view(); Type: FUNCTION; Schema: fis; Owner: -
+--
+
+CREATE FUNCTION fis.load_averages_id_seq_view() RETURNS integer
+    LANGUAGE sql
+    AS $$select id from load_averages_id_seq_view$$;
+
+
+--
+-- Name: slave_logs_id_seq_view(); Type: FUNCTION; Schema: fis; Owner: -
+--
+
+CREATE FUNCTION fis.slave_logs_id_seq_view() RETURNS integer
+    LANGUAGE sql
+    AS $$select id from slave_logs_id_seq_view$$;
+
+
+--
+-- Name: slave_permissions_id_seq_view(); Type: FUNCTION; Schema: fis; Owner: -
+--
+
+CREATE FUNCTION fis.slave_permissions_id_seq_view() RETURNS integer
+    LANGUAGE sql
+    AS $$select id from slave_permissions_id_seq_view$$;
+
+
+--
+-- Name: sloc_sets_id_seq_view(); Type: FUNCTION; Schema: fis; Owner: -
+--
+
+CREATE FUNCTION fis.sloc_sets_id_seq_view() RETURNS integer
+    LANGUAGE sql
+    AS $$select id from sloc_sets_id_seq_view$$;
+
+
+--
 -- Name: ts_debug(text); Type: FUNCTION; Schema: fis; Owner: -
 --
 
-CREATE FUNCTION fis.ts_debug(text) RETURNS SETOF public.tsdebug
+CREATE FUNCTION fis.ts_debug(text) RETURNS SETOF fis.tsdebug
     LANGUAGE sql STRICT
     AS $_$
 select 
@@ -1215,174 +1317,12 @@ CREATE FUNCTION oh._get_parser_from_curcfg() RETURNS text
 
 
 --
--- Name: analysis_aliases_id_seq_view(); Type: FUNCTION; Schema: oh; Owner: -
---
-
-CREATE FUNCTION oh.analysis_aliases_id_seq_view() RETURNS bigint
-    LANGUAGE sql
-    AS $$select id from analysis_aliases_id_seq_view$$;
-
-
---
--- Name: analysis_sloc_sets_id_seq_view(); Type: FUNCTION; Schema: oh; Owner: -
---
-
-CREATE FUNCTION oh.analysis_sloc_sets_id_seq_view() RETURNS integer
-    LANGUAGE sql
-    AS $$select id from analysis_sloc_sets_id_seq_view$$;
-
-
---
 -- Name: check_jobs(integer); Type: FUNCTION; Schema: oh; Owner: -
 --
 
 CREATE FUNCTION oh.check_jobs(integer) RETURNS integer
     LANGUAGE sql
     AS $_$select repository_id as RESULT from jobs where status != 5 AND  repository_id= $1;$_$;
-
-
---
--- Name: code_location_tarballs_id_seq_view(); Type: FUNCTION; Schema: oh; Owner: -
---
-
-CREATE FUNCTION oh.code_location_tarballs_id_seq_view() RETURNS integer
-    LANGUAGE sql
-    AS $$select id from code_location_tarballs_id_seq_view$$;
-
-
---
--- Name: code_locations_id_seq_view(); Type: FUNCTION; Schema: oh; Owner: -
---
-
-CREATE FUNCTION oh.code_locations_id_seq_view() RETURNS integer
-    LANGUAGE sql
-    AS $$select id from code_locations_id_seq_view$$;
-
-
---
--- Name: code_sets_id_seq_view(); Type: FUNCTION; Schema: oh; Owner: -
---
-
-CREATE FUNCTION oh.code_sets_id_seq_view() RETURNS integer
-    LANGUAGE sql
-    AS $$select id from code_sets_id_seq_view$$;
-
-
---
--- Name: commit_flags_id_seq_view(); Type: FUNCTION; Schema: oh; Owner: -
---
-
-CREATE FUNCTION oh.commit_flags_id_seq_view() RETURNS integer
-    LANGUAGE sql
-    AS $$select id from commit_flags_id_seq_view$$;
-
-
---
--- Name: email_addresses_id_seq_view(); Type: FUNCTION; Schema: oh; Owner: -
---
-
-CREATE FUNCTION oh.email_addresses_id_seq_view() RETURNS integer
-    LANGUAGE sql
-    AS $$select id from email_addresses_id_seq_view$$;
-
-
---
--- Name: failure_groups_id_seq_view(); Type: FUNCTION; Schema: oh; Owner: -
---
-
-CREATE FUNCTION oh.failure_groups_id_seq_view() RETURNS integer
-    LANGUAGE sql
-    AS $$select id from failure_groups_id_seq_view$$;
-
-
---
--- Name: fisbot_events_id_seq_view(); Type: FUNCTION; Schema: oh; Owner: -
---
-
-CREATE FUNCTION oh.fisbot_events_id_seq_view() RETURNS integer
-    LANGUAGE sql
-    AS $$select id from fisbot_events_id_seq_view$$;
-
-
---
--- Name: forges_id_seq_view(); Type: FUNCTION; Schema: oh; Owner: -
---
-
-CREATE FUNCTION oh.forges_id_seq_view() RETURNS integer
-    LANGUAGE sql
-    AS $$select id from forges_id_seq_view$$;
-
-
---
--- Name: jobs_id_seq_view(); Type: FUNCTION; Schema: oh; Owner: -
---
-
-CREATE FUNCTION oh.jobs_id_seq_view() RETURNS bigint
-    LANGUAGE sql
-    AS $$select id from jobs_id_seq_view$$;
-
-
---
--- Name: load_averages_id_seq_view(); Type: FUNCTION; Schema: oh; Owner: -
---
-
-CREATE FUNCTION oh.load_averages_id_seq_view() RETURNS integer
-    LANGUAGE sql
-    AS $$select id from load_averages_id_seq_view$$;
-
-
---
--- Name: repositories_id_seq_view(); Type: FUNCTION; Schema: oh; Owner: -
---
-
-CREATE FUNCTION oh.repositories_id_seq_view() RETURNS integer
-    LANGUAGE sql
-    AS $$select id from repositories_id_seq_view$$;
-
-
---
--- Name: repository_directories_id_seq_view(); Type: FUNCTION; Schema: oh; Owner: -
---
-
-CREATE FUNCTION oh.repository_directories_id_seq_view() RETURNS integer
-    LANGUAGE sql
-    AS $$select id from repository_directories_id_seq_view$$;
-
-
---
--- Name: repository_tags_id_seq_view(); Type: FUNCTION; Schema: oh; Owner: -
---
-
-CREATE FUNCTION oh.repository_tags_id_seq_view() RETURNS integer
-    LANGUAGE sql
-    AS $$select id from repository_tags_id_seq_view$$;
-
-
---
--- Name: slave_logs_id_seq_view(); Type: FUNCTION; Schema: oh; Owner: -
---
-
-CREATE FUNCTION oh.slave_logs_id_seq_view() RETURNS bigint
-    LANGUAGE sql
-    AS $$select id from slave_logs_id_seq_view$$;
-
-
---
--- Name: slave_permissions_id_seq_view(); Type: FUNCTION; Schema: oh; Owner: -
---
-
-CREATE FUNCTION oh.slave_permissions_id_seq_view() RETURNS integer
-    LANGUAGE sql
-    AS $$select id from slave_permissions_id_seq_view$$;
-
-
---
--- Name: sloc_sets_id_seq_view(); Type: FUNCTION; Schema: oh; Owner: -
---
-
-CREATE FUNCTION oh.sloc_sets_id_seq_view() RETURNS integer
-    LANGUAGE sql
-    AS $$select id from sloc_sets_id_seq_view$$;
 
 
 --
@@ -1410,6 +1350,97 @@ where
         m.ts_name=c.ts_name and 
         c.oid=show_curcfg() 
 $_$;
+
+
+--
+-- Name: <; Type: OPERATOR; Schema: fis; Owner: -
+--
+
+CREATE OPERATOR fis.< (
+    PROCEDURE = tsvector_lt,
+    LEFTARG = tsvector,
+    RIGHTARG = tsvector,
+    COMMUTATOR = OPERATOR(pg_catalog.>),
+    NEGATOR = OPERATOR(pg_catalog.>=),
+    RESTRICT = contsel,
+    JOIN = contjoinsel
+);
+
+
+--
+-- Name: <=; Type: OPERATOR; Schema: fis; Owner: -
+--
+
+CREATE OPERATOR fis.<= (
+    PROCEDURE = tsvector_le,
+    LEFTARG = tsvector,
+    RIGHTARG = tsvector,
+    COMMUTATOR = OPERATOR(pg_catalog.>=),
+    NEGATOR = OPERATOR(pg_catalog.>),
+    RESTRICT = contsel,
+    JOIN = contjoinsel
+);
+
+
+--
+-- Name: <>; Type: OPERATOR; Schema: fis; Owner: -
+--
+
+CREATE OPERATOR fis.<> (
+    PROCEDURE = tsvector_ne,
+    LEFTARG = tsvector,
+    RIGHTARG = tsvector,
+    COMMUTATOR = OPERATOR(pg_catalog.<>),
+    NEGATOR = OPERATOR(pg_catalog.=),
+    RESTRICT = neqsel,
+    JOIN = neqjoinsel
+);
+
+
+--
+-- Name: =; Type: OPERATOR; Schema: fis; Owner: -
+--
+
+CREATE OPERATOR fis.= (
+    PROCEDURE = tsvector_eq,
+    LEFTARG = tsvector,
+    RIGHTARG = tsvector,
+    COMMUTATOR = OPERATOR(pg_catalog.=),
+    NEGATOR = OPERATOR(fis.<>),
+    MERGES,
+    RESTRICT = eqsel,
+    JOIN = eqjoinsel
+);
+
+
+--
+-- Name: >; Type: OPERATOR; Schema: fis; Owner: -
+--
+
+CREATE OPERATOR fis.> (
+    PROCEDURE = tsvector_gt,
+    LEFTARG = tsvector,
+    RIGHTARG = tsvector,
+    COMMUTATOR = OPERATOR(fis.<),
+    NEGATOR = OPERATOR(fis.<=),
+    RESTRICT = contsel,
+    JOIN = contjoinsel
+);
+
+
+--
+-- Name: >=; Type: OPERATOR; Schema: fis; Owner: -
+--
+
+CREATE OPERATOR fis.>= (
+    PROCEDURE = tsvector_ge,
+    LEFTARG = tsvector,
+    RIGHTARG = tsvector,
+    COMMUTATOR = OPERATOR(fis.<=),
+    NEGATOR = OPERATOR(fis.<),
+    RESTRICT = contsel,
+    JOIN = contjoinsel
+);
 
 
 --
@@ -1504,94 +1535,133 @@ CREATE OPERATOR oh.>= (
 
 
 --
--- Name: <; Type: OPERATOR; Schema: public; Owner: -
+-- Name: default; Type: TEXT SEARCH CONFIGURATION; Schema: fis; Owner: -
 --
 
-CREATE OPERATOR public.< (
-    PROCEDURE = tsvector_lt,
-    LEFTARG = tsvector,
-    RIGHTARG = tsvector,
-    COMMUTATOR = OPERATOR(pg_catalog.>),
-    NEGATOR = OPERATOR(pg_catalog.>=),
-    RESTRICT = contsel,
-    JOIN = contjoinsel
-);
+CREATE TEXT SEARCH CONFIGURATION fis."default" (
+    PARSER = pg_catalog."default" );
 
+ALTER TEXT SEARCH CONFIGURATION fis."default"
+    ADD MAPPING FOR asciiword WITH english_stem;
 
---
--- Name: <=; Type: OPERATOR; Schema: public; Owner: -
---
+ALTER TEXT SEARCH CONFIGURATION fis."default"
+    ADD MAPPING FOR word WITH english_stem;
 
-CREATE OPERATOR public.<= (
-    PROCEDURE = tsvector_le,
-    LEFTARG = tsvector,
-    RIGHTARG = tsvector,
-    COMMUTATOR = OPERATOR(pg_catalog.>=),
-    NEGATOR = OPERATOR(pg_catalog.>),
-    RESTRICT = contsel,
-    JOIN = contjoinsel
-);
+ALTER TEXT SEARCH CONFIGURATION fis."default"
+    ADD MAPPING FOR numword WITH simple;
 
+ALTER TEXT SEARCH CONFIGURATION fis."default"
+    ADD MAPPING FOR email WITH simple;
 
---
--- Name: <>; Type: OPERATOR; Schema: public; Owner: -
---
+ALTER TEXT SEARCH CONFIGURATION fis."default"
+    ADD MAPPING FOR url WITH simple;
 
-CREATE OPERATOR public.<> (
-    PROCEDURE = tsvector_ne,
-    LEFTARG = tsvector,
-    RIGHTARG = tsvector,
-    COMMUTATOR = OPERATOR(pg_catalog.<>),
-    NEGATOR = OPERATOR(pg_catalog.=),
-    RESTRICT = neqsel,
-    JOIN = neqjoinsel
-);
+ALTER TEXT SEARCH CONFIGURATION fis."default"
+    ADD MAPPING FOR host WITH simple;
 
+ALTER TEXT SEARCH CONFIGURATION fis."default"
+    ADD MAPPING FOR sfloat WITH simple;
 
---
--- Name: =; Type: OPERATOR; Schema: public; Owner: -
---
+ALTER TEXT SEARCH CONFIGURATION fis."default"
+    ADD MAPPING FOR version WITH simple;
 
-CREATE OPERATOR public.= (
-    PROCEDURE = tsvector_eq,
-    LEFTARG = tsvector,
-    RIGHTARG = tsvector,
-    COMMUTATOR = OPERATOR(pg_catalog.=),
-    NEGATOR = OPERATOR(public.<>),
-    MERGES,
-    RESTRICT = eqsel,
-    JOIN = eqjoinsel
-);
+ALTER TEXT SEARCH CONFIGURATION fis."default"
+    ADD MAPPING FOR hword_numpart WITH simple;
 
+ALTER TEXT SEARCH CONFIGURATION fis."default"
+    ADD MAPPING FOR hword_part WITH english_stem;
 
---
--- Name: >; Type: OPERATOR; Schema: public; Owner: -
---
+ALTER TEXT SEARCH CONFIGURATION fis."default"
+    ADD MAPPING FOR hword_asciipart WITH english_stem;
 
-CREATE OPERATOR public.> (
-    PROCEDURE = tsvector_gt,
-    LEFTARG = tsvector,
-    RIGHTARG = tsvector,
-    COMMUTATOR = OPERATOR(public.<),
-    NEGATOR = OPERATOR(public.<=),
-    RESTRICT = contsel,
-    JOIN = contjoinsel
-);
+ALTER TEXT SEARCH CONFIGURATION fis."default"
+    ADD MAPPING FOR numhword WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION fis."default"
+    ADD MAPPING FOR asciihword WITH english_stem;
+
+ALTER TEXT SEARCH CONFIGURATION fis."default"
+    ADD MAPPING FOR hword WITH english_stem;
+
+ALTER TEXT SEARCH CONFIGURATION fis."default"
+    ADD MAPPING FOR url_path WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION fis."default"
+    ADD MAPPING FOR file WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION fis."default"
+    ADD MAPPING FOR "float" WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION fis."default"
+    ADD MAPPING FOR "int" WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION fis."default"
+    ADD MAPPING FOR uint WITH simple;
 
 
 --
--- Name: >=; Type: OPERATOR; Schema: public; Owner: -
+-- Name: pg; Type: TEXT SEARCH CONFIGURATION; Schema: fis; Owner: -
 --
 
-CREATE OPERATOR public.>= (
-    PROCEDURE = tsvector_ge,
-    LEFTARG = tsvector,
-    RIGHTARG = tsvector,
-    COMMUTATOR = OPERATOR(public.<=),
-    NEGATOR = OPERATOR(public.<),
-    RESTRICT = contsel,
-    JOIN = contjoinsel
-);
+CREATE TEXT SEARCH CONFIGURATION fis.pg (
+    PARSER = pg_catalog."default" );
+
+ALTER TEXT SEARCH CONFIGURATION fis.pg
+    ADD MAPPING FOR asciiword WITH english_stem;
+
+ALTER TEXT SEARCH CONFIGURATION fis.pg
+    ADD MAPPING FOR word WITH english_stem;
+
+ALTER TEXT SEARCH CONFIGURATION fis.pg
+    ADD MAPPING FOR numword WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION fis.pg
+    ADD MAPPING FOR email WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION fis.pg
+    ADD MAPPING FOR url WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION fis.pg
+    ADD MAPPING FOR host WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION fis.pg
+    ADD MAPPING FOR sfloat WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION fis.pg
+    ADD MAPPING FOR version WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION fis.pg
+    ADD MAPPING FOR hword_numpart WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION fis.pg
+    ADD MAPPING FOR hword_part WITH english_stem;
+
+ALTER TEXT SEARCH CONFIGURATION fis.pg
+    ADD MAPPING FOR hword_asciipart WITH english_stem;
+
+ALTER TEXT SEARCH CONFIGURATION fis.pg
+    ADD MAPPING FOR numhword WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION fis.pg
+    ADD MAPPING FOR asciihword WITH english_stem;
+
+ALTER TEXT SEARCH CONFIGURATION fis.pg
+    ADD MAPPING FOR hword WITH english_stem;
+
+ALTER TEXT SEARCH CONFIGURATION fis.pg
+    ADD MAPPING FOR url_path WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION fis.pg
+    ADD MAPPING FOR file WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION fis.pg
+    ADD MAPPING FOR "float" WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION fis.pg
+    ADD MAPPING FOR "int" WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION fis.pg
+    ADD MAPPING FOR uint WITH simple;
 
 
 --
@@ -1724,136 +1794,6 @@ ALTER TEXT SEARCH CONFIGURATION oh.pg
     ADD MAPPING FOR uint WITH simple;
 
 
---
--- Name: default; Type: TEXT SEARCH CONFIGURATION; Schema: public; Owner: -
---
-
-CREATE TEXT SEARCH CONFIGURATION public."default" (
-    PARSER = pg_catalog."default" );
-
-ALTER TEXT SEARCH CONFIGURATION public."default"
-    ADD MAPPING FOR asciiword WITH english_stem;
-
-ALTER TEXT SEARCH CONFIGURATION public."default"
-    ADD MAPPING FOR word WITH english_stem;
-
-ALTER TEXT SEARCH CONFIGURATION public."default"
-    ADD MAPPING FOR numword WITH simple;
-
-ALTER TEXT SEARCH CONFIGURATION public."default"
-    ADD MAPPING FOR email WITH simple;
-
-ALTER TEXT SEARCH CONFIGURATION public."default"
-    ADD MAPPING FOR url WITH simple;
-
-ALTER TEXT SEARCH CONFIGURATION public."default"
-    ADD MAPPING FOR host WITH simple;
-
-ALTER TEXT SEARCH CONFIGURATION public."default"
-    ADD MAPPING FOR sfloat WITH simple;
-
-ALTER TEXT SEARCH CONFIGURATION public."default"
-    ADD MAPPING FOR version WITH simple;
-
-ALTER TEXT SEARCH CONFIGURATION public."default"
-    ADD MAPPING FOR hword_numpart WITH simple;
-
-ALTER TEXT SEARCH CONFIGURATION public."default"
-    ADD MAPPING FOR hword_part WITH english_stem;
-
-ALTER TEXT SEARCH CONFIGURATION public."default"
-    ADD MAPPING FOR hword_asciipart WITH english_stem;
-
-ALTER TEXT SEARCH CONFIGURATION public."default"
-    ADD MAPPING FOR numhword WITH simple;
-
-ALTER TEXT SEARCH CONFIGURATION public."default"
-    ADD MAPPING FOR asciihword WITH english_stem;
-
-ALTER TEXT SEARCH CONFIGURATION public."default"
-    ADD MAPPING FOR hword WITH english_stem;
-
-ALTER TEXT SEARCH CONFIGURATION public."default"
-    ADD MAPPING FOR url_path WITH simple;
-
-ALTER TEXT SEARCH CONFIGURATION public."default"
-    ADD MAPPING FOR file WITH simple;
-
-ALTER TEXT SEARCH CONFIGURATION public."default"
-    ADD MAPPING FOR "float" WITH simple;
-
-ALTER TEXT SEARCH CONFIGURATION public."default"
-    ADD MAPPING FOR "int" WITH simple;
-
-ALTER TEXT SEARCH CONFIGURATION public."default"
-    ADD MAPPING FOR uint WITH simple;
-
-
---
--- Name: pg; Type: TEXT SEARCH CONFIGURATION; Schema: public; Owner: -
---
-
-CREATE TEXT SEARCH CONFIGURATION public.pg (
-    PARSER = pg_catalog."default" );
-
-ALTER TEXT SEARCH CONFIGURATION public.pg
-    ADD MAPPING FOR asciiword WITH english_stem;
-
-ALTER TEXT SEARCH CONFIGURATION public.pg
-    ADD MAPPING FOR word WITH english_stem;
-
-ALTER TEXT SEARCH CONFIGURATION public.pg
-    ADD MAPPING FOR numword WITH simple;
-
-ALTER TEXT SEARCH CONFIGURATION public.pg
-    ADD MAPPING FOR email WITH simple;
-
-ALTER TEXT SEARCH CONFIGURATION public.pg
-    ADD MAPPING FOR url WITH simple;
-
-ALTER TEXT SEARCH CONFIGURATION public.pg
-    ADD MAPPING FOR host WITH simple;
-
-ALTER TEXT SEARCH CONFIGURATION public.pg
-    ADD MAPPING FOR sfloat WITH simple;
-
-ALTER TEXT SEARCH CONFIGURATION public.pg
-    ADD MAPPING FOR version WITH simple;
-
-ALTER TEXT SEARCH CONFIGURATION public.pg
-    ADD MAPPING FOR hword_numpart WITH simple;
-
-ALTER TEXT SEARCH CONFIGURATION public.pg
-    ADD MAPPING FOR hword_part WITH english_stem;
-
-ALTER TEXT SEARCH CONFIGURATION public.pg
-    ADD MAPPING FOR hword_asciipart WITH english_stem;
-
-ALTER TEXT SEARCH CONFIGURATION public.pg
-    ADD MAPPING FOR numhword WITH simple;
-
-ALTER TEXT SEARCH CONFIGURATION public.pg
-    ADD MAPPING FOR asciihword WITH english_stem;
-
-ALTER TEXT SEARCH CONFIGURATION public.pg
-    ADD MAPPING FOR hword WITH english_stem;
-
-ALTER TEXT SEARCH CONFIGURATION public.pg
-    ADD MAPPING FOR url_path WITH simple;
-
-ALTER TEXT SEARCH CONFIGURATION public.pg
-    ADD MAPPING FOR file WITH simple;
-
-ALTER TEXT SEARCH CONFIGURATION public.pg
-    ADD MAPPING FOR "float" WITH simple;
-
-ALTER TEXT SEARCH CONFIGURATION public.pg
-    ADD MAPPING FOR "int" WITH simple;
-
-ALTER TEXT SEARCH CONFIGURATION public.pg
-    ADD MAPPING FOR uint WITH simple;
-
-
 SET default_tablespace = '';
 
 SET default_with_oids = false;
@@ -1922,10 +1862,10 @@ ALTER SEQUENCE fis.analysis_aliases_id_seq OWNED BY fis.analysis_aliases.id;
 
 
 --
--- Name: analysis_sloc_sets_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: analysis_sloc_sets_id_seq; Type: SEQUENCE; Schema: fis; Owner: -
 --
 
-CREATE SEQUENCE public.analysis_sloc_sets_id_seq
+CREATE SEQUENCE fis.analysis_sloc_sets_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -1938,7 +1878,7 @@ CREATE SEQUENCE public.analysis_sloc_sets_id_seq
 --
 
 CREATE TABLE fis.analysis_sloc_sets (
-    id integer DEFAULT nextval('public.analysis_sloc_sets_id_seq'::regclass) NOT NULL,
+    id integer DEFAULT nextval('fis.analysis_sloc_sets_id_seq'::regclass) NOT NULL,
     analysis_id integer NOT NULL,
     sloc_set_id integer NOT NULL,
     as_of integer,
@@ -2088,10 +2028,10 @@ ALTER SEQUENCE fis.code_locations_id_seq OWNED BY fis.code_locations.id;
 
 
 --
--- Name: code_sets_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: code_sets_id_seq; Type: SEQUENCE; Schema: fis; Owner: -
 --
 
-CREATE SEQUENCE public.code_sets_id_seq
+CREATE SEQUENCE fis.code_sets_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -2104,7 +2044,7 @@ CREATE SEQUENCE public.code_sets_id_seq
 --
 
 CREATE TABLE fis.code_sets (
-    id integer DEFAULT nextval('public.code_sets_id_seq'::regclass) NOT NULL,
+    id integer DEFAULT nextval('fis.code_sets_id_seq'::regclass) NOT NULL,
     updated_on timestamp without time zone,
     best_sloc_set_id integer,
     as_of integer,
@@ -2116,10 +2056,10 @@ CREATE TABLE fis.code_sets (
 
 
 --
--- Name: sloc_sets_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: sloc_sets_id_seq; Type: SEQUENCE; Schema: fis; Owner: -
 --
 
-CREATE SEQUENCE public.sloc_sets_id_seq
+CREATE SEQUENCE fis.sloc_sets_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -2132,7 +2072,7 @@ CREATE SEQUENCE public.sloc_sets_id_seq
 --
 
 CREATE TABLE fis.sloc_sets (
-    id integer DEFAULT nextval('public.sloc_sets_id_seq'::regclass) NOT NULL,
+    id integer DEFAULT nextval('fis.sloc_sets_id_seq'::regclass) NOT NULL,
     code_set_id integer NOT NULL,
     updated_on timestamp without time zone,
     as_of integer,
@@ -2222,11 +2162,11 @@ CREATE VIEW fis.commit_contributors AS
     positions.id AS position_id,
     positions.account_id,
         CASE
-            WHEN (positions.account_id IS NULL) THEN ((((projects.id)::bigint << 32) + (analysis_aliases.preferred_name_id)::bigint) + (B'10000000000000000000000000000000'::"bit")::bigint)
+            WHEN (positions.account_id IS NULL) THEN ((((projects.id)::bigint << 32) + (analysis_aliases.preferred_name_id)::bigint) + ('10000000000000000000000000000000'::"bit")::bigint)
             ELSE (((projects.id)::bigint << 32) + (positions.account_id)::bigint)
         END AS contribution_id,
         CASE
-            WHEN (positions.account_id IS NULL) THEN ((((projects.id)::bigint << 32) + (analysis_aliases.preferred_name_id)::bigint) + (B'10000000000000000000000000000000'::"bit")::bigint)
+            WHEN (positions.account_id IS NULL) THEN ((((projects.id)::bigint << 32) + (analysis_aliases.preferred_name_id)::bigint) + ('10000000000000000000000000000000'::"bit")::bigint)
             ELSE (positions.account_id)::bigint
         END AS person_id
    FROM ((((fis.analysis_sloc_sets
@@ -2270,10 +2210,10 @@ ALTER SEQUENCE fis.commit_flags_id_seq OWNED BY fis.commit_flags.id;
 
 
 --
--- Name: commits_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: commits_id_seq; Type: SEQUENCE; Schema: fis; Owner: -
 --
 
-CREATE SEQUENCE public.commits_id_seq
+CREATE SEQUENCE fis.commits_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -2286,7 +2226,7 @@ CREATE SEQUENCE public.commits_id_seq
 --
 
 CREATE TABLE fis.commits (
-    id bigint DEFAULT nextval('public.commits_id_seq'::regclass) NOT NULL,
+    id bigint DEFAULT nextval('fis.commits_id_seq'::regclass) NOT NULL,
     sha1 text,
     "time" timestamp without time zone NOT NULL,
     comment text,
@@ -2295,7 +2235,8 @@ CREATE TABLE fis.commits (
     "position" integer,
     on_trunk boolean DEFAULT true,
     email_address_id integer
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.001', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -2308,10 +2249,10 @@ CREATE TABLE fis.deleted_subscriptions_code_locations (
 
 
 --
--- Name: diffs_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: diffs_id_seq; Type: SEQUENCE; Schema: fis; Owner: -
 --
 
-CREATE SEQUENCE public.diffs_id_seq
+CREATE SEQUENCE fis.diffs_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -2324,15 +2265,16 @@ CREATE SEQUENCE public.diffs_id_seq
 --
 
 CREATE TABLE fis.diffs (
-    id bigint DEFAULT nextval('public.diffs_id_seq'::regclass) NOT NULL,
+    id bigint DEFAULT nextval('fis.diffs_id_seq'::regclass) NOT NULL,
     sha1 text,
     parent_sha1 text,
-    commit_id integer,
-    fyle_id integer,
+    commit_id bigint,
+    fyle_id bigint,
     name text,
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -2452,10 +2394,10 @@ ALTER SEQUENCE fis.fisbot_events_id_seq OWNED BY fis.fisbot_events.id;
 
 
 --
--- Name: forges_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: forges_id_seq; Type: SEQUENCE; Schema: fis; Owner: -
 --
 
-CREATE SEQUENCE public.forges_id_seq
+CREATE SEQUENCE fis.forges_id_seq
     START WITH 8
     INCREMENT BY 1
     NO MINVALUE
@@ -2468,7 +2410,7 @@ CREATE SEQUENCE public.forges_id_seq
 --
 
 CREATE TABLE fis.forges (
-    id integer DEFAULT nextval('public.forges_id_seq'::regclass) NOT NULL,
+    id integer DEFAULT nextval('fis.forges_id_seq'::regclass) NOT NULL,
     name text NOT NULL,
     url text NOT NULL,
     type text
@@ -2476,10 +2418,10 @@ CREATE TABLE fis.forges (
 
 
 --
--- Name: fyles_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: fyles_id_seq; Type: SEQUENCE; Schema: fis; Owner: -
 --
 
-CREATE SEQUENCE public.fyles_id_seq
+CREATE SEQUENCE fis.fyles_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -2492,17 +2434,18 @@ CREATE SEQUENCE public.fyles_id_seq
 --
 
 CREATE TABLE fis.fyles (
-    id bigint DEFAULT nextval('public.fyles_id_seq'::regclass) NOT NULL,
+    id bigint DEFAULT nextval('fis.fyles_id_seq'::regclass) NOT NULL,
     name text NOT NULL,
     code_set_id integer NOT NULL
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.001', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
--- Name: jobs_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: jobs_id_seq; Type: SEQUENCE; Schema: fis; Owner: -
 --
 
-CREATE SEQUENCE public.jobs_id_seq
+CREATE SEQUENCE fis.jobs_id_seq
     START WITH 390996709
     INCREMENT BY 1
     NO MINVALUE
@@ -2515,7 +2458,7 @@ CREATE SEQUENCE public.jobs_id_seq
 --
 
 CREATE TABLE fis.jobs (
-    id bigint DEFAULT nextval('public.jobs_id_seq'::regclass) NOT NULL,
+    id bigint DEFAULT nextval('fis.jobs_id_seq'::regclass) NOT NULL,
     project_id integer,
     status integer DEFAULT 0 NOT NULL,
     type text NOT NULL,
@@ -2540,7 +2483,8 @@ CREATE TABLE fis.jobs (
     code_location_id integer,
     code_location_tarball_id integer,
     is_expensive boolean DEFAULT false
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0005', autovacuum_vacuum_scale_factor='0.001');
 
 
 --
@@ -2658,10 +2602,10 @@ CREATE TABLE fis.registration_keys (
 
 
 --
--- Name: repositories_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: repositories_id_seq; Type: SEQUENCE; Schema: fis; Owner: -
 --
 
-CREATE SEQUENCE public.repositories_id_seq
+CREATE SEQUENCE fis.repositories_id_seq
     START WITH 821423
     INCREMENT BY 1
     NO MINVALUE
@@ -2674,7 +2618,7 @@ CREATE SEQUENCE public.repositories_id_seq
 --
 
 CREATE TABLE fis.repositories (
-    id integer DEFAULT nextval('public.repositories_id_seq'::regclass) NOT NULL,
+    id integer DEFAULT nextval('fis.repositories_id_seq'::regclass) NOT NULL,
     url text,
     forge_id integer,
     username text,
@@ -2763,10 +2707,10 @@ CREATE TABLE fis.schema_migrations (
 
 
 --
--- Name: slave_logs_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: slave_logs_id_seq; Type: SEQUENCE; Schema: fis; Owner: -
 --
 
-CREATE SEQUENCE public.slave_logs_id_seq
+CREATE SEQUENCE fis.slave_logs_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -2779,7 +2723,7 @@ CREATE SEQUENCE public.slave_logs_id_seq
 --
 
 CREATE TABLE fis.slave_logs (
-    id bigint DEFAULT nextval('public.slave_logs_id_seq'::regclass) NOT NULL,
+    id bigint DEFAULT nextval('fis.slave_logs_id_seq'::regclass) NOT NULL,
     message text,
     created_on timestamp without time zone,
     slave_id integer,
@@ -2790,10 +2734,25 @@ CREATE TABLE fis.slave_logs (
 
 
 --
--- Name: slave_permissions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: slave_logs_old; Type: TABLE; Schema: fis; Owner: -
 --
 
-CREATE SEQUENCE public.slave_permissions_id_seq
+CREATE TABLE fis.slave_logs_old (
+    id integer,
+    message text,
+    created_on timestamp without time zone,
+    slave_id integer,
+    job_id integer,
+    code_set_id integer,
+    level integer
+);
+
+
+--
+-- Name: slave_permissions_id_seq; Type: SEQUENCE; Schema: fis; Owner: -
+--
+
+CREATE SEQUENCE fis.slave_permissions_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -2806,7 +2765,7 @@ CREATE SEQUENCE public.slave_permissions_id_seq
 --
 
 CREATE TABLE fis.slaves (
-    id integer DEFAULT nextval('public.slave_permissions_id_seq'::regclass) NOT NULL,
+    id integer DEFAULT nextval('fis.slave_permissions_id_seq'::regclass) NOT NULL,
     allow_deny text,
     hostname text NOT NULL,
     available_blocks integer,
@@ -2824,10 +2783,10 @@ CREATE TABLE fis.slaves (
 
 
 --
--- Name: sloc_metrics_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: sloc_metrics_id_seq; Type: SEQUENCE; Schema: fis; Owner: -
 --
 
-CREATE SEQUENCE public.sloc_metrics_id_seq
+CREATE SEQUENCE fis.sloc_metrics_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -2840,7 +2799,7 @@ CREATE SEQUENCE public.sloc_metrics_id_seq
 --
 
 CREATE TABLE fis.sloc_metrics (
-    id bigint DEFAULT nextval('public.sloc_metrics_id_seq'::regclass) NOT NULL,
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
     diff_id bigint,
     language_id integer,
     code_added integer DEFAULT 0 NOT NULL,
@@ -2850,7 +2809,8 @@ CREATE TABLE fis.sloc_metrics (
     blanks_added integer DEFAULT 0 NOT NULL,
     blanks_removed integer DEFAULT 0 NOT NULL,
     sloc_set_id integer NOT NULL
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0005', autovacuum_vacuum_scale_factor='0.001');
 
 
 --
@@ -3207,30 +3167,6 @@ CREATE TABLE oh.analyses (
 
 
 --
--- Name: analysis_aliases_id_seq; Type: SEQUENCE; Schema: oh; Owner: -
---
-
-CREATE SEQUENCE oh.analysis_aliases_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: analysis_sloc_sets_id_seq; Type: SEQUENCE; Schema: oh; Owner: -
---
-
-CREATE SEQUENCE oh.analysis_sloc_sets_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
 -- Name: analysis_summaries; Type: TABLE; Schema: oh; Owner: -
 --
 
@@ -3477,42 +3413,6 @@ ALTER SEQUENCE oh.clumps_id_seq OWNED BY oh.clumps.id;
 
 
 --
--- Name: code_location_tarballs_id_seq; Type: SEQUENCE; Schema: oh; Owner: -
---
-
-CREATE SEQUENCE oh.code_location_tarballs_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: code_sets_id_seq; Type: SEQUENCE; Schema: oh; Owner: -
---
-
-CREATE SEQUENCE oh.code_sets_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: commit_flags_id_seq; Type: SEQUENCE; Schema: oh; Owner: -
---
-
-CREATE SEQUENCE oh.commit_flags_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
 -- Name: name_facts_id_seq; Type: SEQUENCE; Schema: oh; Owner: -
 --
 
@@ -3602,7 +3502,7 @@ UNION
 CREATE VIEW oh.contributions2 AS
  SELECT
         CASE
-            WHEN (pos.id IS NULL) THEN ((((per.project_id)::bigint << 32) + (per.name_id)::bigint) + (B'10000000000000000000000000000000'::"bit")::bigint)
+            WHEN (pos.id IS NULL) THEN ((((per.project_id)::bigint << 32) + (per.name_id)::bigint) + ('10000000000000000000000000000000'::"bit")::bigint)
             ELSE (((pos.project_id)::bigint << 32) + (pos.account_id)::bigint)
         END AS id,
         CASE
@@ -3757,18 +3657,6 @@ CREATE TABLE oh.edits_bad_link (
     id integer,
     value text
 );
-
-
---
--- Name: email_addresses_id_seq; Type: SEQUENCE; Schema: oh; Owner: -
---
-
-CREATE SEQUENCE oh.email_addresses_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
 
 
 --
@@ -3934,18 +3822,6 @@ ALTER SEQUENCE oh.feedbacks_id_seq OWNED BY oh.feedbacks.id;
 
 
 --
--- Name: fisbot_events_id_seq; Type: SEQUENCE; Schema: oh; Owner: -
---
-
-CREATE SEQUENCE oh.fisbot_events_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
 -- Name: follows; Type: TABLE; Schema: oh; Owner: -
 --
 
@@ -4051,18 +3927,6 @@ CREATE SEQUENCE oh.follows_id_seq
 --
 
 ALTER SEQUENCE oh.follows_id_seq OWNED BY oh.follows.id;
-
-
---
--- Name: forges_id_seq; Type: SEQUENCE; Schema: oh; Owner: -
---
-
-CREATE SEQUENCE oh.forges_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
 
 
 --
@@ -4231,18 +4095,6 @@ CREATE TABLE oh.job_statuses (
     id integer NOT NULL,
     name text NOT NULL
 );
-
-
---
--- Name: jobs_id_seq; Type: SEQUENCE; Schema: oh; Owner: -
---
-
-CREATE SEQUENCE oh.jobs_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
 
 
 --
@@ -4749,18 +4601,6 @@ CREATE TABLE oh.links_truncated (
     id integer,
     url text
 );
-
-
---
--- Name: load_averages_id_seq; Type: SEQUENCE; Schema: oh; Owner: -
---
-
-CREATE SEQUENCE oh.load_averages_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
 
 
 --
@@ -5332,7 +5172,7 @@ CREATE VIEW oh.people_view AS
      LEFT JOIN oh.kudo_scores ks ON ((ks.account_id = a.id)))
   WHERE (a.level <> '-20'::integer)
 UNION
- SELECT ((((p.id)::bigint << 32) + (nf.name_id)::bigint) + (B'10000000000000000000000000000000'::"bit")::bigint) AS id,
+ SELECT ((((p.id)::bigint << 32) + (nf.name_id)::bigint) + ('10000000000000000000000000000000'::"bit")::bigint) AS id,
     n.name AS effective_name,
     NULL::integer AS account_id,
     p.id AS project_id,
@@ -5950,18 +5790,6 @@ ALTER SEQUENCE oh.reports_id_seq OWNED BY oh.reports.id;
 
 
 --
--- Name: repositories_id_seq; Type: SEQUENCE; Schema: oh; Owner: -
---
-
-CREATE SEQUENCE oh.repositories_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
 -- Name: reverification_trackers; Type: TABLE; Schema: oh; Owner: -
 --
 
@@ -6033,7 +5861,7 @@ CREATE TABLE oh.reviews (
 CREATE VIEW oh.robins_contributions_test AS
  SELECT
         CASE
-            WHEN (pos.id IS NULL) THEN ((((per.project_id)::bigint << 32) + (per.name_id)::bigint) + (B'10000000000000000000000000000000'::"bit")::bigint)
+            WHEN (pos.id IS NULL) THEN ((((per.project_id)::bigint << 32) + (per.name_id)::bigint) + ('10000000000000000000000000000000'::"bit")::bigint)
             ELSE (((pos.project_id)::bigint << 32) + (pos.account_id)::bigint)
         END AS id,
     per.id AS person_id,
@@ -6220,42 +6048,6 @@ CREATE TABLE oh.sfprojects (
 --
 
 CREATE SEQUENCE oh.size_facts_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: slave_logs_id_seq; Type: SEQUENCE; Schema: oh; Owner: -
---
-
-CREATE SEQUENCE oh.slave_logs_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: slave_permissions_id_seq; Type: SEQUENCE; Schema: oh; Owner: -
---
-
-CREATE SEQUENCE oh.slave_permissions_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: sloc_sets_id_seq; Type: SEQUENCE; Schema: oh; Owner: -
---
-
-CREATE SEQUENCE oh.sloc_sets_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -8664,7 +8456,7 @@ CREATE INDEX index_jobs_on_sloc_set_id ON fis.jobs USING btree (sloc_set_id);
 -- Name: index_jobs_on_status_type_wait_until; Type: INDEX; Schema: fis; Owner: -
 --
 
-CREATE INDEX index_jobs_on_status_type_wait_until ON fis.jobs USING btree (status, type, (COALESCE(wait_until, '1980-01-01 00:00:00'::timestamp without time zone)));
+CREATE INDEX index_jobs_on_status_type_wait_until ON fis.jobs USING btree (status, type, COALESCE(wait_until, '1980-01-01 00:00:00'::timestamp without time zone));
 
 
 --
@@ -10634,6 +10426,104 @@ ALTER TABLE ONLY oh.vitae
 
 SET search_path TO oh, fis, public;
 
+INSERT INTO fis.schema_migrations (version) VALUES ('20170112183242');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20170615183328');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20170622141518');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20170905123152');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20170911100003');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20170913160134');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20170925190632');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20170925192153');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20170925192352');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20170925192829');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20170925193357');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20170925195815');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20171020021211');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20171025191016');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20171030153430');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20171030154453');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20171127181222');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20171128174144');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20171204165745');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20171206203036');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20171207154419');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20171209110545');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20171212162720');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20180104114359');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20180116211819');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20180211230753');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20180212162025');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20180212210716');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20180213152903');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20180213161347');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20180213163053');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20180907134326');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20180927143345');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20181009171118');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20181010181449');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20181108152834');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20181220010101');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20190107183802');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20190212105155');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20190214122613');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20190320154004');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20190320154440');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20190321201057');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20190508051951');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20190508052835');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20190813133442');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20190823151155');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20191010121016');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20200327135712');
+
 INSERT INTO oh.schema_migrations (version) VALUES ('1');
 
 INSERT INTO oh.schema_migrations (version) VALUES ('10');
@@ -11069,100 +10959,4 @@ INSERT INTO oh.schema_migrations (version) VALUES ('97');
 INSERT INTO oh.schema_migrations (version) VALUES ('98');
 
 INSERT INTO oh.schema_migrations (version) VALUES ('99');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20170112183242');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20170615183328');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20170622141518');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20170905123152');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20170911100003');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20170913160134');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20170925190632');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20170925192153');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20170925192352');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20170925192829');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20170925193357');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20170925195815');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20171020021211');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20171025191016');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20171030153430');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20171030154453');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20171127181222');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20171128174144');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20171204165745');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20171206203036');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20171207154419');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20171209110545');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20171212162720');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20180104114359');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20180116211819');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20180211230753');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20180212162025');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20180212210716');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20180213152903');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20180213161347');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20180213163053');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20180907134326');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20180927143345');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20181009171118');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20181010181449');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20181108152834');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20181220010101');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20190107183802');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20190212105155');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20190214122613');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20190320154004');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20190320154440');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20190321201057');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20190508051951');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20190508052835');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20190813133442');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20190823151155');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20191010121016');
 
