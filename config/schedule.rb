@@ -2,7 +2,7 @@
 
 env :PATH, ENV['PATH']
 set :environment, 'production'
-set :output, error: 'cron_error.log', standard: 'cron.log'
+set :output, error: 'log/cron_error.log', standard: 'log/cron.log'
 every 2.weeks, at: '11.00 am', roles: [:sidekiq] do
   rake 'check_broken_links'
 end
