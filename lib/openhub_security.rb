@@ -19,6 +19,7 @@ module OpenhubSecurity
     # "JSON.parse(http.request(request).read_body)", but this is easer to debug
     request = Net::HTTP::Get.new(parsed_url.request_uri)
     request['X-BDS-AuthToken'] = ENV['KB_AUTH_KEY']
+    request['User-Agent'] = "ohloh-ui/#{ENV['COMMIT_SHA']}"
     response = http.request(request)
     JSON.parse(response.read_body)
   end
