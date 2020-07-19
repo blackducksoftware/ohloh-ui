@@ -5753,7 +5753,7 @@ ALTER SEQUENCE oh.releases_id_seq OWNED BY oh.releases.id;
 --
 
 CREATE TABLE oh.releases_vulnerabilities (
-    release_id integer NOT NULL,
+    release_id bigint NOT NULL,
     vulnerability_id integer NOT NULL
 );
 
@@ -10787,6 +10787,8 @@ INSERT INTO oh.schema_migrations (version) VALUES ('20190130190953');
 INSERT INTO oh.schema_migrations (version) VALUES ('20190221123532');
 
 INSERT INTO oh.schema_migrations (version) VALUES ('20190312150645');
+
+INSERT INTO oh.schema_migrations (version) VALUES ('20200719174850');
 
 INSERT INTO oh.schema_migrations (version) VALUES ('21');
 
