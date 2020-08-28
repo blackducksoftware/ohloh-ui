@@ -60,9 +60,12 @@
       = render partial: 'projects/show/quick_reference'
 
 .row.mezzo
-= render partial: 'projects/show/licenses'
+= render partial: 'projects/show/coverity'
 
 .row.mezzo
+= render partial: 'projects/show/licenses'
+
+.row.mezzo.project_row
 .project_security
   = render partial: 'projects/show/security'
 
