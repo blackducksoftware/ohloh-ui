@@ -59,8 +59,9 @@
     .well
       = render partial: 'projects/show/quick_reference'
 
-.row.mezzo
-= render partial: 'projects/show/coverity'
+- if @render_coverity
+  .row.mezzo
+  = render partial: 'projects/show/coverity'
 
 .row.mezzo
 = render partial: 'projects/show/licenses'

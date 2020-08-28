@@ -49,7 +49,9 @@ gem 'therubyracer'
 gem 'thor'
 gem 'twitter-bootstrap-rails'
 gem 'uglifier', '>= 2.7.2'
+gem 'webdrivers', '~> 4.0'
 gem 'whenever', require: false
+gem 'watir'
 gem 'will_paginate'
 gem 'will_paginate-bootstrap'
 

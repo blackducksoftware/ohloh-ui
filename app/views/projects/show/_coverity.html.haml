@@ -1,18 +1,22 @@
+- get_coverity_data
 .project_licenses
   .row.project_row
     .col-md-12.license_title_container
       %h4.license_panel_title
-        = link_to "cURL on Coverity Scan", "https://scan.coverity.com/projects/curl", target: "_blank"
+        = link_to @section_title, @section_link, target: "_blank"
     .clearfix
     .col-md-6
       .well
-        %p This is the Analysis Metrics per Component
+        = @analysis_metrics_title.html_safe
+        = @analysis_metrics.html_safe
     .col-md-6
       .well
-        %p This is CWE Top 25 defects
+        = @cwe_top_25_title.html_safe
+        = @cwe_top_25.html_safe
+  .row.project_row
     .col-md-6
       .well
-        = render partial: 'projects/show/cov_outstanding_defects_component'
+        = @outstanding_defects.html_safe
     .col-md-6
       .well
-        %p This is Outstanding vrs Fixed Defects over Time
+        = @outstanding_versus_fixed.html_safe

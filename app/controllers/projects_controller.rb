@@ -2,7 +2,7 @@
 
 class ProjectsController < ApplicationController
   [AnalysesHelper, FactoidsHelper, MapHelper, RatingsHelper,
-   ScmHelper, TagsHelper].each { |help| helper help }
+   ScmHelper, TagsHelper, CoverityHelper].each { |help| helper help }
 
   layout 'responsive_project_layout', only: %i[show badges]
 
@@ -13,6 +13,8 @@ class ProjectsController < ApplicationController
   end
 
   def show
+    @render_coverity = %w(curl python mono ruby).include?(@project.vanity_url)
+
     render 'projects/no_analysis' if request.format.xml? && @analysis.blank?
   end
 
