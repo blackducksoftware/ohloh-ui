@@ -13,7 +13,7 @@ class ProjectsController < ApplicationController
   end
 
   def show
-    @render_coverity = %w(curl python mono ruby).include?(@project.vanity_url)
+    @render_coverity = %w(curl python mono ruby php).include?(@project.vanity_url)
 
     render 'projects/no_analysis' if request.format.xml? && @analysis.blank?
   end
