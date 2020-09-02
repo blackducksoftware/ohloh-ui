@@ -2,7 +2,7 @@
 %html
   %head
     - page_title = content_for?(:html_title) ? yield(:html_title).to_s : t('layouts.application.openhub')
-    %title= page_title
+    %title= sanitize(page_title)
     %meta{ name: 'viewport', content: 'width=device-width, initial-scale=1.0' }
     %meta{ name: 'description', content: page_context[:description] }
     %meta{ name: 'keywords', content: page_context[:keywords] }
