@@ -1,3 +1,5 @@
+- raw_email = raw('&#105;&#110;&#102;&#111;&#064;&#111;&#112;&#101;&#110;&#104;&#117;&#098;&#046;&#110;&#101;&#116;')
+
 .footer-left
   %a.logo_link{ href: 'https://www.synopsys.com' }
     %img.logo_img{ itemprop: 'image', src: image_path('logo/synopsys_logo.png'), alt: 'Open Hub' }
@@ -25,6 +27,9 @@
     %a{ href: 'https://community.synopsys.com/s/article/Black-Duck-Open-Hub-Open-Hub-Privacy-Policy' }= t :privacy_blog
   %p
     %a{ href: 'https://github.com/blackducksoftware/ohloh-ui', target: '_blank' }= t('copyright.source_code')
+  %p
+    %a{ href: "mailto:#{raw_email}".html_safe }= t :contact_us
+
 
 .footer-bottom
   %sup &copy;
