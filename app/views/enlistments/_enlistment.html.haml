@@ -1,6 +1,8 @@
 %tr.enlistment
   %td.col-md-4
     = enlistment.code_location.nice_url
+    - if enlistment.code_location.do_not_fetch
+      %span.glyphicon.glyphicon-exclamation-sign{ style: 'color:red', title: t('.dnf').html_safe }
     - if current_user_is_admin?
       = link_to code_location_admin_url(enlistment.code_location_id), target: '_blank' do
         %span.glyphicon.glyphicon-link
