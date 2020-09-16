@@ -9,7 +9,7 @@
     .controls
       .default-url-tags
         %label.control-label.required= t('.enter_url')
-        = f.text_field :url, class: 'col-md-7'
+        = f.text_field :url, class: 'col-md-7', value: params.dig(:code_location, :url)
         - error_tag @code_location, :url
 
       .github.scm_info{ style: 'display: none;' }
@@ -78,14 +78,12 @@
 
   .git.scm_info{ style: 'display: none;' }
     .control-group
-      %label.control-label= t('.enter_git')
+      %label.control-label.required= t('.enter_git')
       .controls
-        = f.text_field :branch
-        - error_tag @code_location, :branch
+        = f.text_field :branch, value: params.dig(:code_location, :branch)
+        - error_tag @code_location, :branch_name
         %p.help-block
           = t('.enter_git_name')
-          %br
-          %strong= t('.if_not_sure')
 
   .github.scm_info{ style: 'display: none;' }
     %p.help-block
