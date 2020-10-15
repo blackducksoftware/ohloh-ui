@@ -23,7 +23,7 @@ module ActsAsTaggable
     end
 
     def tag_list
-      tags.pluck('DISTINCT name').compact.join(' ')
+      tags.pluck('DISTINCT name').compact.join(' ').fix_encoding_if_invalid
     end
 
     private
