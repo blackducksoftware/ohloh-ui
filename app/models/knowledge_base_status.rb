@@ -152,9 +152,9 @@ class KnowledgeBaseStatus < ActiveRecord::Base
   def get_repository_id(code_location_id)
     return unless code_location_id
 
-    SecondBase::Base.connection
-                    .execute("select repository_id from code_locations where id= #{code_location_id}")
-                    .values[0].try(:first).to_i
+    ActiveRecord::Base.connection
+                      .execute("select repository_id from code_locations where id= #{code_location_id}")
+                      .values[0].try(:first).to_i
   end
 
   def get_forge_match(forge_match)
