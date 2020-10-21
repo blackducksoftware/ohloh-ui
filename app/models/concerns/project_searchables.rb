@@ -9,7 +9,7 @@ module ProjectSearchables
         a: split_name_if_camecase_present,
         b: tag_list,
         c: collect_tags_licenses_and_language,
-        d: description
+        d: description&.fix_encoding_if_invalid
       }
     end
 

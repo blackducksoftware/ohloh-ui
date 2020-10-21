@@ -101,7 +101,7 @@ module EnlistmentFilters
 
   def get_code_location_id
     response = CodeLocationApi.new(url: @code_location.url, branch: @code_location.branch).fetch
-    JSON.parse(response).first['id'] unless response.nil?
+    JSON.parse(response)['id'] unless response.nil?
   end
 
   def get_enlistment

@@ -508,4 +508,13 @@ class ProjectTest < ActiveSupport::TestCase
     end
     KnowledgeBaseStatus.find_by(project_id: project.id).in_sync.must_equal false
   end
+
+  describe '.searchable_vector' do
+    it 'should return the searchables of the project' do
+      project = create(:project, name: "\xC3\x9Cbersicht",
+                                 description: "It translates the \xC4\x86 programming language to C.")
+      project.searchable_vector[:a].must_equal "#{project.name} #{project.vanity_url}"
+      project.searchable_vector[:d].must_equal project.description
+    end
+  end
 end

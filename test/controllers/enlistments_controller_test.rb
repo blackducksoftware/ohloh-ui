@@ -240,7 +240,7 @@ describe 'EnlistmentsControllerTest' do
       enlistment.create_edit.update_column('undone', true)
 
       CodeLocationSubscription.stubs(:code_location_exists?).returns(true)
-      CodeLocationApi.any_instance.stubs(:fetch).returns("[{\"id\":#{enlistment.code_location_id}}]")
+      CodeLocationApi.any_instance.stubs(:fetch).returns("{\"id\":#{enlistment.code_location_id}}")
       VCR.use_cassette('create_code_location_subscription') do
         post :create, project_id: project.to_param, code_location: { branch: branch_name, url: url, scm_type: 'git' }
       end
