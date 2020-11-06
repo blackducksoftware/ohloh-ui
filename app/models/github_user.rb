@@ -23,12 +23,8 @@ class GithubUser
     project = Project.find(project)
     editor_account = Account.find(editor_account)
     @code_locations.each do |code_location|
-      code_location.create_enlistment_for_project(editor_account, project, ignore)
+      code_location.create_enlistment_for_project(editor_account, project, ignore) if code_location.errors.empty?
     end
-  end
-
-  def branch_name
-    'master'
   end
 
   private
@@ -36,7 +32,7 @@ class GithubUser
   def create_code_locations
     # rubocop:disable Naming/MemoizedInstanceVariableName
     @code_locations ||= begin
-      fetch_repository_urls.map do |url|
+      fetch_repository_urls.map do |url, branch_name|
         CodeLocation.create(url: url, branch: branch_name)
       end
     end
@@ -53,7 +49,7 @@ class GithubUser
       repository_data = JSON.parse(json_repository_data.read) if json_repository_data
       break if repository_data.blank?
 
-      repository_urls.concat(repository_data.map { |data| data['html_url'] })
+      repository_urls.concat(repository_data.map { |data| [data['html_url'], data['default_branch']] })
     end
 
     repository_urls

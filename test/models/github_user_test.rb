@@ -37,7 +37,7 @@ class GithubUserTest < ActiveSupport::TestCase
     it 'must create code_locations from given username' do
       stub_github_user_repositories_call do
         @github_user = GithubUser.new(url: 'stan')
-        CodeLocation.expects(:create).times(4)
+        CodeLocation.expects(:create).times(5)
         @github_user.save!
       end
     end

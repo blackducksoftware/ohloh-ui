@@ -12,7 +12,7 @@ class EnlistmentWorkerTest < ActiveSupport::TestCase
       stub_github_user_repositories_call do
         EnlistmentWorker.new.perform('stan', account.id, project.id)
       end
-      project.enlistments.where('code_location_id is not null').count.must_equal 4
+      project.enlistments.where('code_location_id is not null').count.must_equal 5
     end
   end
 end
