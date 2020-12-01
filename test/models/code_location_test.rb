@@ -121,6 +121,6 @@ class CodeLocationTest < ActiveSupport::TestCase
   private
 
   def clear_jobs
-    Job.destroy_all
+    FisJob.destroy_all
   end
 end

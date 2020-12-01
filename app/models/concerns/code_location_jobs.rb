@@ -31,7 +31,7 @@ module CodeLocationJobs
     end
 
     def jobs
-      Job.where(code_location_id: @id)
+      FisJob.where(code_location_id: @id)
     end
 
     private
