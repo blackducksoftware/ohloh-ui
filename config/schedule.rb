@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
-require 'dotenv/load'
+require 'dotenv'
+Dotenv.load('.env.production', '.env')
 
 env :PATH, ENV['PATH']
 set :environment, 'production'
