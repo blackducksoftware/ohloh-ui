@@ -8,7 +8,7 @@ en:
       progress_message: 'Step 2 of 3: Importing source code into database'
     sloc_job:
       progress_message: 'Step 3 of 3: Counting lines of source code'
-    organization_job:
+    organization_analysis_job:
       progress_message: 'Analyzing organization %{name}'
     account_analysis_job:
       progress_message: 'Creating account analysis for %{name}'
