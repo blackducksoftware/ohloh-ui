@@ -10,7 +10,7 @@ ActiveAdmin.register Job do
 
   permit_params :status, :priority, :wait_until, :current_step_at, :notes, :do_not_retry, :retry_count
 
-  filter :slave, collection: proc { Slave.pluck(:hostname).sort }
+  filter :worker, collection: proc { Worker.pluck(:hostname).sort }
   filter :type, as: :select
   filter :job_status
   filter :project_vanity_url, as: :string, label: 'PROJECT URL NAME'
@@ -37,8 +37,8 @@ ActiveAdmin.register Job do
     if job.running?
       flash[:warning] = 'Cannot schedule a running job.'
     else
-      SlaveLog.create!(job: job, message: "Job rescheduled by #{current_user.name}.", level: SlaveLog::INFO)
-      job.update!(status: Job::STATUS_SCHEDULED, slave: nil, exception: nil, backtrace: nil)
+      WorkerLog.create!(job: job, message: "Job rescheduled by #{current_user.name}.", level: WorkerLog::INFO)
+      job.update!(status: Job::STATUS_SCHEDULED, worker: nil, exception: nil, backtrace: nil)
       flash[:success] = 'Job has been rescheduled.'
     end
     redirect_to :back
@@ -52,8 +52,8 @@ ActiveAdmin.register Job do
 
   member_action :mark_as_failed, method: :get do
     job = Job.find(params[:id])
-    SlaveLog.create(job: job, message: "Job manually failed by #{current_user.login}.",
-                    level: SlaveLog::WARNING)
+    WorkerLog.create(job: job, message: "Job manually failed by #{current_user.login}.",
+                     level: WorkerLog::WARNING)
     job.update(status: Job::STATUS_FAILED)
     job.categorize_failure
     flash[:notice] = "Job #{job.id} marked as failed."
@@ -70,7 +70,7 @@ ActiveAdmin.register Job do
   controller do
     def scoped_collection
       if params['code_location_id']
-        Job.where(code_location_id: params['code_location_id'])
+        FisJob.where(code_location_id: params['code_location_id'])
       else
         super
       end

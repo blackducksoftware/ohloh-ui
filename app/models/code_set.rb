@@ -6,7 +6,7 @@ class CodeSet < FisBase
   has_many :fyles, dependent: :delete_all
   has_many :sloc_sets, dependent: :destroy
   has_many :clumps
-  has_many :jobs
+  has_many :jobs, class_name: 'FisJob'
 
   attr_writer :code_location
 

@@ -18,16 +18,6 @@ br
 span "Status: #{job.job_status.try(:name)} "
 br
 br
-span 'Enlisted Projects: '
-projects = Project.joins(:enlistments).where('enlistments.code_location_id': job.code_location_id)
-if job.code_location_id
-  projects.each do |project|
-    a link_to project.name, project_path(project)
-    a link_to '[Jobs]', admin_project_jobs_path(project)
-    br
-  end
-end
-br
 span 'Failure Group: '
 if job.failure_group
   a link_to (job.failure_group.name || job.failure_group.id), admin_failure_group_jobs_path(job.failure_group)

@@ -2,20 +2,25 @@
 
 FactoryBot.define do
   factory :job do
+    association :worker
+    status { Job::STATUS_SCHEDULED }
+  end
+
+  factory :fis_job, class: :FisJob do
     association :slave
     status { Job::STATUS_SCHEDULED }
     code_location_id { Faker::Number.number(4) }
   end
 
-  factory :fetch_job, parent: :job, class: :FetchJob do
+  factory :fetch_job, parent: :fis_job, class: :FetchJob do
     type { 'FetchJob' }
   end
 
-  factory :sloc_job, parent: :job, class: :SlocJob do
+  factory :sloc_job, parent: :fis_job, class: :SlocJob do
     type { 'SlocJob' }
   end
 
-  factory :complete_job, parent: :job, class: :CompleteJob do
+  factory :complete_job, parent: :fis_job, class: :CompleteJob do
     type { 'CompleteJob' }
   end
 
@@ -27,13 +32,22 @@ FactoryBot.define do
     type { 'AccountAnalysisJob' }
   end
 
-  factory :failed_job, parent: :job do
+  factory :failed_job, parent: :fis_job, class: :CompleteJob do
     type { 'CompleteJob' }
     status { Job::STATUS_FAILED }
   end
 
-  factory :failed_tarball_job, parent: :job do
+  factory :failed_tarball_job, parent: :fis_job, class: :TarballJob do
     type { 'TarballJob' }
     status { Job::STATUS_FAILED }
+  end
+
+  factory :failed_project_analysis_job, parent: :job, class: :ProjectAnalysisJob do
+    type { 'ProjectAnalysisJob' }
+    status { Job::STATUS_FAILED }
+  end
+
+  factory :project_analysis_job, parent: :job, class: :ProjectAnalysisJob do
+    type { 'ProjectAnalysisJob' }
   end
 end

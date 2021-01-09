@@ -7,7 +7,8 @@ class OhAdmin::JobsController < ApplicationController
   helper JobApiHelper
 
   def index
-    @response = JSON.parse(JobApi.new(id: @project.id, page: params[:page] || 1).fetch)
+    path = 'api/v1/jobs/project_jobs'
+    @response = OhlohAnalyticsApi.get_response(path, id: @project.id, page: params[:page] || 1)
   end
 
   private

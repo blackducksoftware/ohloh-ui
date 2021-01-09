@@ -15,14 +15,9 @@ if job.account_id
   span link_to '(Jobs)', admin_account_account_analysis_jobs_path(account)
 end
 
-span "CodeLocation: #{job.code_location.nice_url}" if job.code_location_id
-
 if job.organization_id
   span "Organization: #{job.organization.vanity_url}"
   span link_to '(Jobs)', admin_organization_jobs_path(organization_id: job.organization.vanity_url)
 end
 
 para ''
-
-a link_to "CodeSet #{job.code_set_id}", admin_code_set_path(job.code_set_id) if job.code_set_id
-a link_to "SlocSet #{job.sloc_set_id}", admin_sloc_set_path(job.sloc_set_id) if job.sloc_set_id

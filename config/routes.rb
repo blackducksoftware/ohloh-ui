@@ -432,10 +432,6 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :sloc_jobs, only: %i[index show destroy]
-    resources :complete_jobs, only: %i[index show destroy]
-    resources :fetch_jobs, only: %i[index show destroy]
-
     resources :projects do
       resources :jobs do
         collection do
@@ -443,7 +439,6 @@ Rails.application.routes.draw do
           post :analyze
         end
       end
-      resources :complete_jobs
     end
     resources :organizations do
       resources :jobs, as: :job
