@@ -31,7 +31,7 @@ class Enlistment < ActiveRecord::Base
       .order('code_sets.updated_on DESC')
   }
   scope :by_update_status, lambda {
-    joins('left join jobs on jobs.code_location_id = enlistments.code_location_id')
+    joins('left join fis.jobs on jobs.code_location_id = enlistments.code_location_id')
       .group('enlistments.id').order('min(jobs.status), max(jobs.current_step_at) DESC')
   }
 

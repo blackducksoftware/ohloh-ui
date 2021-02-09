@@ -1,4 +1,4 @@
 # frozen_string_literal: true
 
-class RepostEventJob < Job
+class RepostEventJob < FisJob
 end

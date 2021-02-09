@@ -2,7 +2,7 @@
 
 class Job < ActiveRecord::Base
   belongs_to :project
-  belongs_to :slave
+  belongs_to :worker
   belongs_to :job_status, foreign_key: 'status'
   belongs_to :failure_group
   has_many :slave_logs
@@ -16,8 +16,8 @@ class Job < ActiveRecord::Base
 
   def initialize(attributes = {})
     super(attributes)
-    self.code_set_id ||= sloc_set.code_set_id if sloc_set
-    self.code_location_id ||= code_set.code_location_id if code_set_id
+    self.code_set_id ||= sloc_set.code_set_id if respond_to?(:sloc_set) && sloc_set
+    self.code_location_id ||= code_set.code_location_id if respond_to?(:code_set_id) && code_set_id
   end
 
   scope :incomplete_fis_jobs, lambda {
@@ -30,8 +30,8 @@ class Job < ActiveRecord::Base
   scope :complete, -> { where(status: STATUS_COMPLETED) }
   scope :running, -> { where(status: STATUS_RUNNING) }
 
-  scope :slave_recent_jobs, lambda { |count = 20|
-    rankings = 'select id, RANK() OVER (PARTITION BY slave_id, status ORDER BY id ASC) rank FROM jobs'
+  scope :worker_recent_jobs, lambda { |count = 20|
+    rankings = 'select id, RANK() OVER (PARTITION BY worker_id, status ORDER BY id ASC) rank FROM jobs'
     joins("INNER JOIN (#{rankings}) rankings ON rankings.id = jobs.id")
       .where('rankings.rank < :count', count: count.next)
       .order(id: :asc)

@@ -81,7 +81,7 @@ module ProjectJobs
   end
 
   def incomplete_code_location_job
-    Job.incomplete.find_by(code_location_id: code_locations.map(&:id))
+    FisJob.incomplete.find_by(code_location_id: code_locations.map(&:id))
   end
 
   def sloc_sets_out_of_date?

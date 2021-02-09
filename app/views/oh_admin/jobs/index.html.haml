@@ -23,7 +23,6 @@
             %th.text-center Status
             %th Exception
             %th Owner
-            %th Slave Log
           - @response['entries'].each do |entry|
             - job = entry.values.first
             - status = status_tag(job['status'])
@@ -38,12 +37,10 @@
               %td.text-center= last_updated(job['current_step_at'])
               %td.text-center
                 %span.label{ class: status[1] }= status[0]
-                %span= slave_host(job['slave_id'])
+                %span= worker_host(job['worker_id'])
               %td= job['exception'].to_s.truncate(250)
               %td
                 = link_to "Project #{project_name}", project_url(@project)
-              %td
-                = link_to 'Slave Log', admin_job_slave_logs_path(job_id: job['id'])
 
     = api_pagination(@response)
   - else

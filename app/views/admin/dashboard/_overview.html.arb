@@ -7,7 +7,7 @@ columns do
         tbody do
           tr do
             td 'Scheduled Jobs:'
-            td Job.where(status: Job::STATUS_SCHEDULED, slave_id: nil).count
+            td Job.where(status: Job::STATUS_SCHEDULED, worker_id: nil).count
           end
           tr do
             td 'Database Load Average:'
