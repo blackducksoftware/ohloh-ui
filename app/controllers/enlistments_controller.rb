@@ -12,6 +12,7 @@ class EnlistmentsController < SettingsController
                            .joins('join code_locations on code_location_id = code_locations.id
                                    join repositories on code_locations.repository_id = repositories.id')
                            .filter_by(params[:query]).send(parse_sort_term)
+                           .by_dnf(params[:dnf])
                            .paginate(page: page_param, per_page: 10)
     @failed_jobs = FisJob.incomplete_fis_jobs.where(code_location_id: @enlistments.pluck(:code_location_id)).exists?
   end

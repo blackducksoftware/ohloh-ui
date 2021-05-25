@@ -33,8 +33,34 @@
     %thead
       %tr{ id: 'dingus-row' }
         %td{ colspan: '7' }
-          = render partial: 'shared/search_dingus', locals: { collection: @enlistments,
-            sort_context: 'enlistments', no_match_found_type: :flash }
+          -#= render partial: 'shared/search_dingus', locals: { collection: @enlistments,
+            -#sort_context: 'enlistments', no_match_found_type: :flash, extra_filter: true }
+          .margin_top_10.margin_bottom_10
+            %form.form-inline
+              .form-group.margin_right_10.padding_left_10
+                - if @enlistments.respond_to?(:current_page) && !@enlistments.length.zero?
+                  %label.paginate= "Showing page #{number_with_delimiter(@enlistments.current_page)} of #{number_with_delimiter(@enlistments.total_pages)}"
+                - elsif @enlistments.size.zero?
+                  %label.paginate= t('.count_status', current_count: @enlistments.length,
+                    total_count: number_with_delimiter(0))
+              .form-group.margin_right_10
+                %label Search &nbsp;
+                = text_field_tag :query, params[:query]
+
+                %button.btn.btn-refresh{ type: 'Submit', style: 'height: 34px; border-top: 10px' }
+                  %i.icon-refresh
+              .form-group.margin_right_10
+                %label
+                  = check_box_tag(:dnf, '1', (params[:dnf] == '1' ? true : false), style: 'margin-top: 1px', onChange: 'submit()')
+                  = label_tag(:dnf, 'Show unprocessable sources')
+
+              .form-group.pull-right.padding_right_10
+                #sort_by
+                  %label= 'Sort by'
+                  = select_tag :sort, options_for_select(SORT_OPTIONS['enlistments'][:options],
+                    params[:sort] || SORT_OPTIONS['enlistments'][:default]),
+                    class: 'chzn-select', onchange: 'this.form.submit()', style: 'width: 150px;'
+
       %tr
         %th= t('.repository_url')
         %th= t('.scm_type')
