@@ -6,13 +6,10 @@ class EnlistmentsController < SettingsController
 
   include EnlistmentFilters
 
+  before_action :set_enlistments, only: :index
+
   # TODO: Remove dependence on code_locations table here.
   def index
-    @enlistments = @project.enlistments.joins(:project)
-                           .joins('join code_locations on code_location_id = code_locations.id
-                                   join repositories on code_locations.repository_id = repositories.id')
-                           .filter_by(params[:query]).send(parse_sort_term)
-                           .paginate(page: page_param, per_page: 10)
     @failed_jobs = FisJob.incomplete_fis_jobs.where(code_location_id: @enlistments.pluck(:code_location_id)).exists?
   end
 
@@ -54,6 +51,15 @@ class EnlistmentsController < SettingsController
   end
 
   private
+
+  def set_enlistments
+    @enlistments = @project.enlistments.joins(:project)
+                           .joins('join code_locations on code_location_id = code_locations.id
+                                   join repositories on code_locations.repository_id = repositories.id')
+                           .filter_by(params[:query]).send(parse_sort_term)
+                           .by_dnf(params[:dnf])
+                           .paginate(page: page_param, per_page: 10)
+  end
 
   def create_enlistment
     @code_location.create_enlistment_for_project(current_user, @project)
