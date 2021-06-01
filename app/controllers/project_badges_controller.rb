@@ -66,7 +66,9 @@ class ProjectBadgesController < ApplicationController
   end
 
   def avoid_duplicate_creation
-    return unless @active_badges.where(badge_params).first
+    return unless @active_badges.where(enlistment_id: badge_params[:enlistment_id],
+                                       type: badge_params[:type],
+                                       identifier: badge_params[:identifier]).first
 
     redirect_to project_project_badges_path, flash: { error: I18n.t('project_badges.already_exist') }
   end
