@@ -11,6 +11,11 @@ en:
       alert_warn_description2: 'If the problem persists, please alert us for special handling in our'
       help_forum: 'help forum'
       alert_warn_description3_html: 'Please <strong>do not</strong> simply delete and re-add the enlistment. In most cases this does not have any effect (our system will recognize the URL and simply re-add the existing broken download), and it will complicate our debugging efforts.'
+      failure:
+        heading: 'Analysis is stalled for the following reasons:'
+        dnf_present: 'Sources marked with a red exclamation are disabled for multiple failures. Please reach out to us for further assistance.'
+        connection_reset_by_peer: 'Few sources are failing due to intermittent packet drops from the given server. Our automated process will keep retrying these.'
+        investigate: 'Few sources are failing due to an internal application issue. We are working on a resolution.'
       repository_url: 'Repository URL'
       scm_type: 'SCM Type'
       update_status: 'Update Status'

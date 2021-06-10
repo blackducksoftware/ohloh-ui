@@ -33,14 +33,16 @@ describe 'EnlistmentsControllerTest' do
       assigns(:enlistments).count.must_equal 0
     end
 
-    it 'should return failed_jobs as true when there failed jobs for the project' do
+    it 'should return a failed job report when there are failed jobs' do
       mock_and_get :index, project_id: @enlistment.project.id do
+        CodeLocation.any_instance.stubs(:do_not_fetch).returns(true)
         FetchJob.create(code_location_id: @enlistment.code_location_id, status: 3)
       end
 
       must_respond_with :ok
       must_render_template :index
-      assigns(:failed_jobs).must_equal true
+      assigns(:stale_jobs_report).wont_be :empty?
+      response.body.must_match I18n.t('enlistments.index.failure.dnf_present')
     end
 
     it 'must render projects/deleted when project is deleted' do
