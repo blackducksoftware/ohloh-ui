@@ -34,8 +34,7 @@ describe 'EnlistmentsControllerTest' do
     end
 
     it 'should return a failed job report when there are failed jobs' do
-      mock_and_get :index, project_id: @enlistment.project.id do
-        CodeLocation.any_instance.stubs(:do_not_fetch).returns(true)
+      mock_and_get(:index, true, project_id: @enlistment.project.id) do
         FetchJob.create(code_location_id: @enlistment.code_location_id, status: 3)
       end
 
@@ -335,11 +334,13 @@ describe 'EnlistmentsControllerTest' do
   end
 end
 
-def mock_and_get(action, params)
+# rubocop:disable Style/OptionalArguments
+def mock_and_get(action, dnf = false, params)
   if action == :index
     Enlistment.connection.execute("insert into repositories (type, url) values ('GitRepository', 'url')")
     repository_id = Enlistment.connection.execute('select max(id) from repositories').values[0][0]
-    Enlistment.connection.execute("insert into code_locations (repository_id) values (#{repository_id})")
+    Enlistment.connection.execute("insert into code_locations (repository_id,
+                                  do_not_fetch) values (#{repository_id}, #{dnf})")
     code_location_id = Enlistment.connection.execute('select max(id) from code_locations').values[0][0]
     @enlistment.update!(code_location_id: code_location_id)
     Project.any_instance.stubs(:code_locations).returns([])
@@ -349,3 +350,4 @@ def mock_and_get(action, params)
   WebMocker.get_code_location(@enlistment.code_location_id)
   get action, params
 end
+# rubocop:enable Style/OptionalArguments
