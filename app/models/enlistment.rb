@@ -35,6 +35,8 @@ class Enlistment < ActiveRecord::Base
       .group('enlistments.id').order('min(jobs.status), max(jobs.current_step_at) DESC')
   }
 
+  scope :by_dnf, ->(dnf) { where(code_locations: { do_not_fetch: true }) if dnf.eql?('1') }
+
   filterable_by ['projects.name', 'repositories.url', 'code_locations.module_branch_name', 'repositories.type']
 
   attr_writer :code_location

@@ -6,15 +6,6 @@ AllCops:
     - vagrant/**/*
     - script/*_temp.rb
 
-Lint/RedundantCopDisableDirective:
-  Enabled: false
-
-Lint/RedundantSplatExpansion:
-  Enabled: false
-
-Lint/SendWithMixinArgument:
-  Enabled: false
-
 Rails:
   Enabled: true
 
