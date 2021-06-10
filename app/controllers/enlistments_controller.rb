@@ -10,7 +10,8 @@ class EnlistmentsController < SettingsController
 
   # TODO: Remove dependence on code_locations table here.
   def index
-    @failed_jobs = FisJob.incomplete_fis_jobs.where(code_location_id: @enlistments.pluck(:code_location_id)).exists?
+    @stale_jobs_report = FisJob.stale_jobs_report(@project.enlistments
+      .joins('join code_locations on code_location_id = code_locations.id'))
   end
 
   def show

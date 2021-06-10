@@ -18,7 +18,7 @@
     %h4.alert-heading.nomargin= t('.alert_info_heading', name: @project.name)
     %p= t('.alert_info_description')
 
-- if @failed_jobs
+- if @stale_jobs_report.any?
   .alert.alert-warning.alert-block
     %h4.alert-heading.nomargin= t('.alert_warn_heading')
     %p= t('.alert_warn_description1')
@@ -27,6 +27,14 @@
     \.
     %p
     = t('.alert_warn_description3_html')
+
+  - if (@stale_jobs_report.keys.map(&:to_s) & FailureGroup::REPORTABLE).any?
+    .alert.alert-info.alert-block
+      %h5.alert-heading.nomargin= t('.failure.heading')
+      %ul.padding_left_10
+        - @stale_jobs_report.keys.each do |failure_group_name|
+          - key = "enlistments.index.failure.#{failure_group_name}"
+          %li.font-1em= t(key) if I18n.exists?(key)
 
 - if @project.enlistments.any?
   %table.table.table-striped
