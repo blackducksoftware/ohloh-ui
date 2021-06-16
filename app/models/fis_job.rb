@@ -11,8 +11,8 @@ class FisJob < Job
     def stale_jobs_report(enlistments)
       report = dnf_source?(enlistments) ? { dnf_present: 1 } : {}
 
-      incomplete_jobs = incomplete_fis_jobs.where(code_location_id: enlistments.pluck(:code_location_id))
-      incomplete_jobs.pluck(:failure_group_id).each do |failure_group_id|
+      incomplete_fis_jobs.where(code_location_id: enlistments.select(:code_location_id))
+                         .pluck(:failure_group_id).each do |failure_group_id|
         failure_group_name = failure_group_patterns[failure_group_id]
         next unless failure_group_name
 
@@ -25,7 +25,7 @@ class FisJob < Job
     private
 
     def dnf_source?(enlistments)
-      enlistments.any? { |en| en.code_location.do_not_fetch }
+      enlistments.exists?(['code_locations.do_not_fetch is true'])
     end
 
     def failure_group_patterns

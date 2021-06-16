@@ -28,11 +28,12 @@
     %p
     = t('.alert_warn_description3_html')
 
-  - if (@stale_jobs_report.keys.map(&:to_s) & FailureGroup::REPORTABLE).any?
+  - reportable_group_names = @stale_jobs_report.keys.map(&:to_s) & FailureGroup::REPORTABLE
+  - if reportable_group_names.any?
     .alert.alert-info.alert-block
       %h5.alert-heading.nomargin= t('.failure.heading')
       %ul.padding_left_10
-        - @stale_jobs_report.keys.each do |failure_group_name|
+        - reportable_group_names.each do |failure_group_name|
           - key = "enlistments.index.failure.#{failure_group_name}"
           %li.font-1em= t(key) if I18n.exists?(key)
 
