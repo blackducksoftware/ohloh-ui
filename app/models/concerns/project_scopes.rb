@@ -33,10 +33,9 @@ module ProjectScopes
     scope :most_active, lambda {
       joins(best_analysis: :analysis_summaries)
         .where(analysis_summaries: { type: 'ThirtyDaySummary' })
-        .active
-        .order(' COALESCE(analysis_summaries.affiliated_commits_count, 0) +
-                 COALESCE(analysis_summaries.outside_commits_count, 0) DESC ')
-        .limit(10)
+        .order('(analysis_summaries.affiliated_commits_count +
+                analysis_summaries.outside_commits_count) DESC ')
+        .limit(20).select{|o| !o.deleted?}.first(10)
     }
     scope :with_pai_available, -> { active.where(arel_table[:activity_level_index].gt(0)).size }
     scope :tagged_with, lambda { |tags|
