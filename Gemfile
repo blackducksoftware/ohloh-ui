@@ -106,7 +106,8 @@ group :development, :test do
   gem 'teaspoon-jasmine'
 end
 
-group :production do
+group :production, :staging do
+  gem 'activerecord-nulldb-adapter', require: false
 end
 
 group :development, :staging do
