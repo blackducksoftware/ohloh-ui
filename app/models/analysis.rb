@@ -75,6 +75,12 @@ class Analysis < ActiveRecord::Base
     end.compact.join(' AND ')
   end
 
+  def allowed_tuples
+    [].tap do |tuples|
+      analysis_sloc_sets.each { |analysis_sloc_set| tuples << analysis_sloc_set.allowed_tuples }
+    end.compact.join(' AND ')
+  end
+
   def angle
     (Math.atan(hotness_score) * 180 / Math::PI).round(3)
   end

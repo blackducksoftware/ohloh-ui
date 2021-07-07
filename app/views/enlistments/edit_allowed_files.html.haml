@@ -1,0 +1,42 @@
+- content_for(:html_title) { t('.html_title', name: @project.name) }
+- page_context[:select_footer_nav] = nil
+
+%h2.pull-left
+  = link_to t('settings'), settings_project_path(@project)
+  &nbsp;:&nbsp;
+  = link_to t('.code_locations'), project_enlistments_path(@project)
+  = t('.allow_files')
+= project_analysis_timestamp(@project)
+.clearfix
+
+.col-md-offset-1.col-md-11.padding_right_50
+  .well
+    = form_for [@project, @enlistment], html: { method: :put } do |f|
+      %fieldset
+        .control-group
+          %label.control-label
+            = t('.allowed_files_for')
+            %strong= @enlistment.code_location.nice_url
+          .controls
+            = find_and_preserve(f.text_area(:allowed_fyles, rows: 20, cols: 40,
+              style: 'width: 730px; font-family: monospace;'))
+            - error_tag @enlistment, :allowed_fyles
+            %p.help-block
+              = t('.description1')
+        .actions
+          %input.btn.btn-primary{ type: 'submit', value: t('.save_allowed_files') }
+
+.clearfix
+
+%h4.nomargin
+  %span.soft= t('.about')
+  = t('.code_locations_allowed')
+.col-md-5
+  %p= t('.example')
+  - other_examples = ''
+  - if @examples.present?
+    - other_examples << t('.some_random_files')
+    - @examples.each do |enlistment|
+      - other_examples << t('.allow_html', enlistment: enlistment)
+  %pre
+    = t('.included_directory_html', other_examples: other_examples)

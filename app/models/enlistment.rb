@@ -17,6 +17,7 @@ class Enlistment < ActiveRecord::Base
   acts_as_protected parent: :project
 
   validates :ignore, length: { maximum: 1000 }, allow_nil: true
+  validates :allowed_fyles, length: { maximum: 1000 }, allow_nil: true
   validate :validate_code_location, if: -> { @nested_code_location }
 
   scope :not_deleted, -> { where(deleted: false) }

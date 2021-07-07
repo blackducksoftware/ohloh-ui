@@ -91,7 +91,7 @@
                 #{@commit.code_set.code_location.branch}/#{diff.fyle.name}
               - else
                 = truncate(diff.try(:fyle).try(:name), length: 43)
-            - if Ignore.match?(@ignore_prefixes, diff.fyle.name)
+            - if Ignore.match?(@ignore_prefixes, diff.fyle.name) || (@allow_prefixes.present? && !Allowed.match?(@allow_prefixes, diff.fyle.name))
               %td &nbsp;
               %td.ignored{ colspan: 7 }= t('.ignored_by_req')
             - else
