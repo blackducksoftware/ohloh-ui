@@ -21,7 +21,7 @@ module AccountAssociations
     has_many :all_manages, -> { where(deleted_by: nil, deleted_at: nil) }, class_name: 'Manage'
     has_many :edits
     has_many :verifications
-    has_many :account_analysis_jobs
+    has_many :account_analysis_jobs, dependent: :destroy
     has_one :manual_verification
     has_one :github_verification
     has_one :firebase_verification
