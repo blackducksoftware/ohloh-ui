@@ -407,6 +407,15 @@ describe 'AccountsController' do
 
       project.reload.manages.must_be :empty?
     end
+
+    it 'must delete an account analysis job when account is deleted' do
+      account = create(:account)
+      create(:account_analysis_job, account: account)
+      login_as account
+      assert_difference 'AccountAnalysisJob.count', -1 do
+        post :destroy, id: account.to_param
+      end
+    end
   end
 
   describe 'settings' do
