@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
+# rubocop:disable Metrics/ClassLength
 class AuthenticationsController < ApplicationController
   helper StatsdHelper
-  
+
   skip_before_action :store_location
   before_action :session_required, only: %i[new firebase_callback]
   before_action :redirect_invalid_github_account, only: :github_callback, unless: :github_api_account_is_verified?
@@ -129,3 +130,4 @@ class AuthenticationsController < ApplicationController
     github_api_account&.github_verification
   end
 end
+# rubocop:enable Metrics/ClassLength

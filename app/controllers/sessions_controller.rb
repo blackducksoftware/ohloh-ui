@@ -2,7 +2,7 @@
 
 class SessionsController < Clearance::SessionsController
   helper StatsdHelper
-  
+
   before_action :account_must_exist, only: :create
   before_action :captcha_verify, only: :create, if: :failed_login_thrice?
   before_action :reset_auth_fail_count, only: :create, if: :auth_failure_timeout?
