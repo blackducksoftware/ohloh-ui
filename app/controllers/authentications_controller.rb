@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class AuthenticationsController < ApplicationController
+  helper StatsdHelper
+  
   skip_before_action :store_location
   before_action :session_required, only: %i[new firebase_callback]
   before_action :redirect_invalid_github_account, only: :github_callback, unless: :github_api_account_is_verified?
@@ -14,12 +16,12 @@ class AuthenticationsController < ApplicationController
   end
 
   def github_callback
-    StatsD.increment('Openhub.Account.Signup.github')
+    statsd_increment('Openhub.Account.Signup.github')
     create(github_verification_params)
   end
 
   def firebase_callback
-    StatsD.increment('Openhub.Account.Signup.firebase')
+    statsd_increment('Openhub.Account.Signup.firebase')
     create(firebase_verification_params)
   end
 
@@ -33,10 +35,10 @@ class AuthenticationsController < ApplicationController
     account = current_user
     if account.update(auth_params)
       flash[:notice] = t('verification_completed')
-      StatsD.increment('Openhub.Account.Signup.success')
+      statsd_increment('Openhub.Account.Signup.success')
       redirect_back(account)
     else
-      StatsD.increment('Openhub.Account.Signup.failure')
+      statsd_increment('Openhub.Account.Signup.failure')
       redirect_to new_authentication_path, notice: account.errors.messages.values.last.last
     end
   end
@@ -45,11 +47,11 @@ class AuthenticationsController < ApplicationController
     account = Account.new(github_account_params.merge(auth_params))
 
     if account.save
-      StatsD.increment('Openhub.Account.Signup.success')
+      statsd_increment('Openhub.Account.Signup.success')
       clearance_session.sign_in account
       redirect_back(account)
     else
-      StatsD.increment('Openhub.Account.Signup.failure')
+      statsd_increment('Openhub.Account.Signup.failure')
       redirect_to new_account_path, notice: account.errors.full_messages.join(', ')
     end
   end
