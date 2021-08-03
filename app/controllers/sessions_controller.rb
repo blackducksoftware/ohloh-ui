@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class SessionsController < Clearance::SessionsController
+  helper StatsdHelper
+
   before_action :account_must_exist, only: :create
   before_action :captcha_verify, only: :create, if: :failed_login_thrice?
   before_action :reset_auth_fail_count, only: :create, if: :auth_failure_timeout?
@@ -37,14 +39,14 @@ class SessionsController < Clearance::SessionsController
   def captcha_verify
     return if verify_recaptcha
 
-    StatsD.increment('Openhub.Session.fail')
+    statsd_increment('Openhub.Session.fail')
     @ask_for_recaptcha = true
     flash.now[:error] = t('.recaptcha_failure')
     render 'sessions/new', status: :unauthorized
   end
 
   def sign_in_failure(failure_message)
-    StatsD.increment('Openhub.Session.fail')
+    statsd_increment('Openhub.Session.fail')
     flash.now[:error] = failure_message
     @ask_for_recaptcha = true if failed_login_thrice?
     disable_account_for_retries
@@ -79,7 +81,7 @@ class SessionsController < Clearance::SessionsController
   end
 
   def reset_auth_fail_count
-    StatsD.increment('Openhub.Session.success')
+    statsd_increment('Openhub.Session.success')
     account.update!(auth_fail_count: 0)
   end
 

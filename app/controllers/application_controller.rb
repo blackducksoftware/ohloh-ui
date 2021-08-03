@@ -7,6 +7,7 @@ class ApplicationController < ActionController::Base
   FORMATS_THAT_WE_RENDER_ERRORS_FOR = %w[html xml json].freeze
 
   include PageContextHelper
+  include StatsdHelper
 
   helper FooterHelper
 
@@ -41,7 +42,7 @@ class ApplicationController < ActionController::Base
   end
 
   rescue_from ::Exception do |exception|
-    StatsD.increment('Openhub.Request.exception')
+    statsd_increment('Openhub.Request.exception')
     raise exception if Rails.application.config.consider_all_requests_local
 
     request.env[:user_agent] = request.user_agent
@@ -161,18 +162,18 @@ class ApplicationController < ActionController::Base
   end
 
   def render_missing_api_key
-    StatsD.increment('Openhub.Api.missing_api_key')
+    statsd_increment('Openhub.Api.missing_api_key')
     error(message: t(:missing_api_key), status: :bad_request)
   end
 
   def render_invalid_api_key
-    StatsD.increment('Openhub.Api.invalid_api_key')
+    statsd_increment('Openhub.Api.invalid_api_key')
     error(message: t(:invalid_api_key), status: :bad_request)
   end
 
   def render_limit_exceeded_api_key(limit)
-    StatsD.increment('Openhub.Api.limit_exceeded')
-    StatsD.set('Openhub.Api.Key.limit_exceeded', params[:api_key])
+    statsd_increment('Openhub.Api.limit_exceeded')
+    statsd_set('Openhub.Api.Key.limit_exceeded', params[:api_key])
     error(message: t(:overlimit_api_key, limit: limit), status: :unauthorized)
   end
 
@@ -247,8 +248,8 @@ class ApplicationController < ActionController::Base
   end
 
   def log_valid_api_request
-    StatsD.increment('Openhub.Api.success')
-    StatsD.set('Openhub.Api.valid_api', params[:api_key])
+    statsd_increment('Openhub.Api.success')
+    statsd_set('Openhub.Api.valid_api', params[:api_key])
   end
 
   def api_client_id
