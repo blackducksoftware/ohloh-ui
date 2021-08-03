@@ -173,7 +173,7 @@ class ApplicationController < ActionController::Base
 
   def render_limit_exceeded_api_key(limit)
     statsd_increment('Openhub.Api.limit_exceeded')
-    statsd_set.set('Openhub.Api.Key.limit_exceeded', params[:api_key])
+    statsd_set('Openhub.Api.Key.limit_exceeded', params[:api_key])
     error(message: t(:overlimit_api_key, limit: limit), status: :unauthorized)
   end
 
@@ -249,7 +249,7 @@ class ApplicationController < ActionController::Base
 
   def log_valid_api_request
     statsd_increment('Openhub.Api.success')
-    statsd_set.set('Openhub.Api.valid_api', params[:api_key])
+    statsd_set('Openhub.Api.valid_api', params[:api_key])
   end
 
   def api_client_id

@@ -6,6 +6,6 @@ module StatsdHelper
   end
 
   def statsd_set(msg, params)
-    StatsD.set(msg, params[:api_key]) unless ENV['KUBERNETES_PORT']
+    StatsD.set(msg, params) unless ENV['KUBERNETES_PORT']
   end
 end
