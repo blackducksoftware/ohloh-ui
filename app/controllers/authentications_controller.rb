@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop:disable Metrics/ClassLength
 class AuthenticationsController < ApplicationController
   skip_before_action :store_location
   before_action :session_required, only: %i[new firebase_callback]
