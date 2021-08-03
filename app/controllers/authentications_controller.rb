@@ -128,4 +128,3 @@ class AuthenticationsController < ApplicationController
     github_api_account&.github_verification
   end
 end
-# rubocop:enable Metrics/ClassLength
