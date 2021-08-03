@@ -7,6 +7,7 @@ class ApplicationController < ActionController::Base
   FORMATS_THAT_WE_RENDER_ERRORS_FOR = %w[html xml json].freeze
 
   include PageContextHelper
+  include StatsdHelper
 
   helper FooterHelper
 
@@ -16,7 +17,6 @@ class ApplicationController < ActionController::Base
   helper BlogLinkHelper
   helper ColorsHelper
   helper GithubHelper
-  helper StatsdHelper
 
   protect_from_forgery with: :exception
 
