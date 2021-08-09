@@ -39,8 +39,9 @@ module OhlohUi
     matches = /([0-9\.]+)/.match(`passenger -v 2>&1`)
     config.passenger_version = matches ? matches[0] : '???'
 
-    config.cache_store = :redis_store, { host: ENV['REDIS_HOST'], port: ENV['REDIS_PORT'],
-                                         namespace: ENV['REDIS_NAMESPACE'], password: ENV['REDIS_PASSWORD'] }
+    redis_config = { host: ENV['REDIS_HOST'], port: ENV['REDIS_PORT'], namespace: ENV['REDIS_NAMESPACE'] }
+    redis_config[:password] = ENV['REDIS_PASSWORD'] unless ENV['KUBERNETES_PORT']
+    config.cache_store = :redis_store, redis_config
 
     config.action_dispatch.default_headers = { 'X-Content-Type-Options' => 'nosniff' }
 
