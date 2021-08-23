@@ -4,7 +4,7 @@ module OpenhubSecurity
   def self.get_uuid(project_name)
     url = ENV['KB_PROJECT_SEARCH_URL'] + "&q=#{CGI.escape(project_name)}"
     json = get_response(url)
-    return json['response']['docs'][0]['uuid'] if json['response']['numFound'].to_i.positive?
+    return json['response']['docs'][0]['uuid'] if json&.dig('response', 'numFound') && json['response']['numFound'].to_i.positive?
   end
 
   def self.get_response(url)
@@ -20,7 +20,12 @@ module OpenhubSecurity
     request = Net::HTTP::Get.new(parsed_url.request_uri)
     request['X-BDS-AuthToken'] = ENV['KB_AUTH_KEY']
     request['User-Agent'] = "ohloh-ui/#{ENV['COMMIT_SHA']}"
-    response = http.request(request)
-    JSON.parse(response.read_body)
+    begin
+      response = http.request(request)
+      JSON.parse(response.read_body)
+    rescue SocketError => e
+      Rails.logger.error("SocketError Exception: #{parsed_url}")
+      return nil
+    end
   end
 end
