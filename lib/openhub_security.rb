@@ -40,7 +40,7 @@ module OpenhubSecurity
       response = http.request(request)
       response = JSON.parse(response.read_body)
     rescue SocketError => e
-      Rails.logger.error("SocketError Exception: #{parsed_url} #{e.message}")
+      Rails.logger.error("OpenhubSecurity SocketError Exception:  #{e.message}")
     end
     response
   end

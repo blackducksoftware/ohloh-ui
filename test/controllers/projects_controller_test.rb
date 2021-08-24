@@ -464,6 +464,14 @@ describe 'ProjectsController' do
       must_respond_with :ok
     end
 
+    it 'should throw SocketError when getting UUID from BlackDuck KB and proceed to show page' do
+      Net::HTTP.any_instance.expects(:request).raises(SocketError)
+      project = create(:project, uuid: '', name: 'rails')
+      get :show, id: project.to_param
+      _(project.reload.uuid).must_be_empty
+      must_respond_with :ok
+    end
+
     describe 'Project summary section' do
       let(:project) { create(:project, name: 'Rails') }
       let(:enl1) { create_enlistment_with_code_location(project) }
