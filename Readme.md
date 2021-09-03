@@ -2,7 +2,7 @@ OhlohUI
 =======
 
 Dependencies:
-----------------
+---------------- 
 
 * OhlohUI uses the ruby version 2.5.3. Please install ruby '> 2.5'.
 * OhlohUI uses the postgresql database. Please install postgresql and create a new user on it.
@@ -16,7 +16,7 @@ $ cd ohloh-ui
 $ gem install bundler
 $ bundle install
 ```
-
+ 
 The OhlohUI data is split between two databases in production. The development setup needs to reflect the same.
 The database names are configured in a file specific to each environment. For development, create a file **env.development**, with the following contents.
 
@@ -45,7 +45,7 @@ Setup a default admin user. The arguments are optional. By default a user with t
 $ ruby script/setup_default_admin.rb <login> <passsword> <email>
 ```
 
-```
+``` 
 $ rails s
 ```
 
