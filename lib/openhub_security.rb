@@ -32,7 +32,6 @@ module OpenhubSecurity
   end
 
   def self.get_response(url)
-    response = {}
     http = get_http(url)
 
     request = get_http_request(url)
@@ -42,6 +41,6 @@ module OpenhubSecurity
     rescue SocketError => e
       Rails.logger.error("OpenhubSecurity SocketError Exception:  #{e.message}")
     end
-    response
+    response || {}
   end
 end
