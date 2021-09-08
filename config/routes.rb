@@ -469,6 +469,13 @@ Rails.application.routes.draw do
     resources :license_permissions
   end
 
+  namespace 'api', defaults: { format: :json } do
+    namespace 'v1' do
+      post 'unsubscribe'
+      post 'jwt'
+    end
+  end
+
   get 'sitemap_index.xml', controller: 'sitemap', action: 'index', format: 'xml'
   get 'sitemaps/:ctrl/:page.xml', controller: 'sitemap', action: 'show', format: 'xml'
 
