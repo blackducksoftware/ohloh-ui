@@ -471,8 +471,11 @@ Rails.application.routes.draw do
 
   namespace 'api', defaults: { format: :json } do
     namespace 'v1' do
-      post 'unsubscribe'
-      post 'jwt'
+      resource :enlistment do
+        post 'unsubscribe'
+      end
+      resources :jwt, only: [:create] do
+      end
     end
   end
 
