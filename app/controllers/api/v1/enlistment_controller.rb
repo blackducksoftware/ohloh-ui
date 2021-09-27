@@ -7,13 +7,17 @@ class Api::V1::EnlistmentsController < ApplicationController
 
   def unsubscribe
     enlistments = get_enlistments(params[:url], params[:branch])
+    enlistments.each do |en|
+      en.create_edit.undo!(current_user)
+    #   delete_subscription(en.project_id, en.code_location_id)
+    end
     render json: enlistments, status: :ok
   end
 
   def get_enlistments(url, branch)
     join_string = 'join code_locations on code_location_id = code_locations.id'\
-                  ' join repositories on code_locations.repository_id = repositories.id'
+                  ' join repositories on code_locations.repository_id = repositories.id '
     filter_string = url + ' ' + branch
-    Enlistment.joins(:project).joins(join_string).filter_by(filter_string)
+    Enlistment.joins(:project).joins(join_string).filter_by(filter_string) 
   end
 end
