@@ -15,12 +15,11 @@ describe 'Api::V1::EnlistmentsControllerTest' do
 
   describe 'unsubscribe' do
     it 'should remove the enlistment' do
-      byebug
       @enlistment.deleted.must_equal false
-      #@code_location = @enlistment.code_location
+      # @code_location = @enlistment.code_location
 
-      #CodeLocationSubscription.code_location_exists?(@project_id, @code_location.url,
-      #  @code_location.branch, 'git').must_equal true
+      # CodeLocationSubscription.code_location_exists?(@project_id, @code_location.url,
+      # @code_location.branch, 'git').must_equal true
 
       post(
         :unsubscribe,
@@ -30,9 +29,8 @@ describe 'Api::V1::EnlistmentsControllerTest' do
         format: :json
       )
       response.must_be :success?
-      #CodeLocationSubscription.code_location_exists?(@project_id, @code_location.url,
+      # CodeLocationSubscription.code_location_exists?(@project_id, @code_location.url,
       #  @code_location.branch, 'git').must_equal false
-      byebug
       @enlistment.reload.deleted.must_equal true
     end
   end

@@ -1,10 +1,10 @@
 # frozen_string_literal: true
+
 module JWTHelper
   def build_jwt(user, valid_for_hours = 48)
     exp = Time.now.to_i + (valid_for_hours * 60 * 60)
     payload = { 'expiration': exp,
                 'user': user }
-    
     JWT.encode(payload, ENV['JWT_SECRET'], 'HS256')
   end
 
