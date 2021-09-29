@@ -7,7 +7,8 @@ describe 'Api::V1::EnlistmentsControllerTest' do
 
   before do
     WebMocker.get_code_location
-    @enlistment = create_enlistment_with_code_location
+    @url = Faker::Internet.url
+    @enlistment = create_random_enlistment(@url)
     @project_id = @enlistment.project_id
     @account = create(:account)
     @jwt = build_jwt('notalex', 24)
@@ -24,8 +25,8 @@ describe 'Api::V1::EnlistmentsControllerTest' do
       post(
         :unsubscribe,
         JWT: @jwt,
-        url: @enlistment.code_location.url,
-        branch: @enlistment.code_location.branch,
+        url: @url,
+        branch: 'master',
         format: :json
       )
       response.must_be :success?

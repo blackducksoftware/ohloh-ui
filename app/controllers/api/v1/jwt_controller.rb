@@ -18,8 +18,12 @@ class Api::V1::JwtController < ApplicationController
   end
 
   def get_params
-    params.require(:username)
-    params.require(:password)
+    begin
+      params.require(:username)
+      params.require(:password)
+    rescue ActionController::ParameterMissing
+      render json: 'Bad Request', status: :bad_request
+    end
     params[:login] = { 'login' => params[:username], 'password' => params[:password], 'remember_me' => '0' }
   end
 end

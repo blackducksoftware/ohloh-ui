@@ -44,7 +44,7 @@ describe 'Api::V1::JwtControllerTest' do
         :create,
         password: @account.password
       )
-      assert_response 401
+      assert_response 400
     end
 
     it 'should return errors if not given a password' do
@@ -52,7 +52,7 @@ describe 'Api::V1::JwtControllerTest' do
         :create,
         username: @account.login
       )
-      assert_response 401
+      assert_response 400
     end
   end
 end
