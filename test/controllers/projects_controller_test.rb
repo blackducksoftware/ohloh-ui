@@ -578,6 +578,19 @@ describe 'ProjectsController' do
     must_select('input#url', false)
   end
 
+  # FISbot dependency
+  it 'check_forge should raise an exception without FIS APIs' do
+    VCR.turn_off!
+    WebMock.disable!
+    login_as create(:account)
+    lambda {
+      post :check_forge, codelocation: 'foo_url'
+    }.must_raise SocketError
+    must_respond_with :ok
+    VCR.turn_on!
+    WebMock.enable!
+  end
+
   # create
   it 'create should require a current user' do
     login_as nil

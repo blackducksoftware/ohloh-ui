@@ -9,6 +9,61 @@ describe 'EnlistmentsControllerTest' do
     @account = create(:account)
   end
 
+  describe 'fisbot dependency' do
+    it 'should try to connect FIS API when listing' do
+      VCR.turn_off!
+      Enlistment.connection.execute("insert into repositories (type, url) values ('GitRepository', 'url')")
+      repository_id = Enlistment.connection.execute('select max(id) from repositories').values[0][0]
+      Enlistment.connection.execute("insert into code_locations (repository_id,
+                                  do_not_fetch) values (#{repository_id}, false)")
+      code_location_id = Enlistment.connection.execute('select max(id) from code_locations').values[0][0]
+      @enlistment.update!(code_location_id: code_location_id)
+      lambda {
+        get :index, project_id: @project_id
+      }.must_raise WebMock::NetConnectNotAllowedError
+      must_respond_with :ok
+      VCR.turn_on!
+    end
+
+    it 'should graacefull handle when unable to connect FIS api' do
+      VCR.turn_off!
+      WebMock.disable!
+      Enlistment.connection.execute("insert into repositories (type, url) values ('GitRepository', 'url')")
+      repository_id = Enlistment.connection.execute('select max(id) from repositories').values[0][0]
+      Enlistment.connection.execute("insert into code_locations (repository_id,
+                                  do_not_fetch) values (#{repository_id}, false)")
+      code_location_id = Enlistment.connection.execute('select max(id) from code_locations').values[0][0]
+      @enlistment.update!(code_location_id: code_location_id)
+      get :index, project_id: @project_id
+      must_respond_with :ok
+      assigns(:enlistments).count.must_equal 1
+      VCR.turn_on!
+      WebMock.enable!
+    end
+
+    it 'should raise an exception when creating' do
+      VCR.turn_off!
+      login_as @account
+
+      url = 'https://github.com/rails/rails'
+      lambda {
+        post :create, project_id: create(:project).to_param,
+                      code_location: { branch: 'master', url: url, scm_type: 'git' }
+      }.must_raise WebMock::NetConnectNotAllowedError
+      must_respond_with :ok
+      VCR.turn_on!
+    end
+
+    it 'should raise an exception when deleting' do
+      VCR.turn_off!
+      login_as @account
+      lambda {
+        delete :destroy, id: @enlistment.id, project_id: @project_id
+      }.must_raise WebMock::NetConnectNotAllowedError
+      VCR.turn_on!
+    end
+  end
+
   describe 'index' do
     it 'should return enlistment record' do
       mock_and_get :index, project_id: @project_id
