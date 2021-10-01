@@ -7,10 +7,11 @@ class Api::V1::EnlistmentsController < ApplicationController
 
   def unsubscribe
     enlistments = get_enlistments(params[:url], params[:branch])
+    render json: 'No Code Locations', status: :success and return if enlistments.length.zero?
     enlistments.each do |en|
       # en.create_edit.undo!(current_user)
       # delete_subscription(en.project_id, en.code_location_id)
-      # ActiveRecord::Base.connection.execute("delete from fis.subscriptions where code_location_id IN (#{c_ids.join(',')});"
+      # Enlistment.connection.execute("delete from fis.subscriptions where code_location_id =en.code_location_id  });"
     end
     render json: enlistments, status: :ok
   end

@@ -36,17 +36,25 @@ describe 'Api::V1::EnlistmentsControllerTest' do
     end
   end
 
-  #
-  #    it 'must return errors when code location is not valid' do
-  #      post :unsubscribe, JWT: JWT, url: @enlistment.url, branch: '', format: :json
-  #      response.wont_be :success?
-  #      assert true
-  #    end
+  it 'must return errors when code location is not valid' do
+    post(
+      :unsubscribe,
+      JWT: @jwt,
+      url: 'https://notacodelocation.biz',
+      branch: 'master',
+      format: :json
+    )
+    response.wont_be :success?
+  end
 
-  #    it 'must return errors when the enlistment doesnt exist for the code_location' do
-  #      post :unsubscribe, JWT: JWT, url: @enlistment.url, branch: '', format: :json
-
-  #      response.wont_be :success?
-  #      assert true
-  #    end
+  it 'must return an error when given a bad JWT' do
+    post(
+      :unsubscribe,
+      JWT: 'eyJhbGciOiJIUzI1.eyJleHBpcmF0aW9uIjoxNjMzMDI1NTcyLCJYWxleCJ9.whiDvp2KfeblCcMRnyskt7nehEcYKP5kEejkugIa0ko',
+      url: @url,
+      branch: 'master',
+      format: :json
+    )
+    response.wont_be :success?
+  end
 end
