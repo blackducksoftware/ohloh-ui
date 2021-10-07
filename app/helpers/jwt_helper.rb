@@ -22,7 +22,10 @@ module JWTHelper
 
   def authenticate_jwt
     account = decode_jwt(params[:JWT])
-    render json: 'Bad Request', status: :bad_request and return if account == 'JWT::DecodeError'
+    if account == 'JWT::DecodeError'
+      render json: 'Bad Request', status: :bad_request
+      return
+    end
 
     clearance_session.sign_in(account)
     return unless account.present? && current_user_is_admin?
