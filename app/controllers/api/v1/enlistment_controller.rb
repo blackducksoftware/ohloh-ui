@@ -9,6 +9,7 @@ class Api::V1::EnlistmentsController < ApplicationController
   def unsubscribe
     @enlistments.each do |en|
       en.create_edit.undo!(current_user)
+      delete_all_subscriptions(en.code_location_id)
     end
     render json: 'No Code Locations', status: :success if @enlistments.length.zero?
     render json: @enlistments, status: :ok unless @enlistments.length.zero?
@@ -23,5 +24,9 @@ class Api::V1::EnlistmentsController < ApplicationController
                   ' on code_locations.repository_id = repositories.id'
     filter_sring = 'code_locations.module_branch_name= ? AND repositories.url=?'
     @enlistments = Enlistment.joins(:project).joins(join_string).where(filter_sring, branch, url)
+  end
+
+  def delete_all_subscriptions(code_location_id)
+    Enlistment.connection.execute("DELETE FROM fis.subscriptions WHERE code_location_id =#{code_location_id};")
   end
 end
