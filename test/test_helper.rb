@@ -156,26 +156,4 @@ class ActiveSupport::TestCase
                    nil]
     decoded_val
   end
-
-  def stub_github_user_repositories_call
-    class << Open3
-      def popen3_with_change(_command, github_url)
-        return if github_url =~ /page=2/
-
-        file_path = File.expand_path('data/github_user_repos.json', __dir__)
-        [nil, File.new(file_path)]
-      end
-
-      alias_method :popen3_without_change, :popen3
-      alias_method :popen3, :popen3_with_change
-    end
-
-    yield
-
-    class << Open3
-      # rubocop:disable Lint/DuplicateMethods
-      alias_method :popen3, :popen3_without_change
-      # rubocop:enable Lint/DuplicateMethods
-    end
-  end
 end
