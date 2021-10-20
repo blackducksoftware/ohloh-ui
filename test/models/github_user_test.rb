@@ -35,9 +35,9 @@ class GithubUserTest < ActiveSupport::TestCase
 
   describe 'save!' do
     it 'must create code_locations from given username' do
-      stub_github_user_repositories_call do
-        @github_user = GithubUser.new(url: 'stan')
-        CodeLocation.expects(:create).times(5)
+      VCR.use_cassette('github_repositories') do
+        @github_user = GithubUser.new(url: 'renamed')
+        CodeLocation.expects(:create).times(9)
         @github_user.save!
       end
     end

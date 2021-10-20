@@ -9,9 +9,7 @@ class EnlistmentWorkerTest < ActiveSupport::TestCase
       project = create(:project)
       project.enlistments.count.must_equal 0
       account = create(:account)
-      stub_github_user_repositories_call do
-        EnlistmentWorker.new.perform('stan', account.id, project.id)
-      end
+      EnlistmentWorker.new.perform('stan', account.id, project.id)
       project.enlistments.where('code_location_id is not null').count.must_equal 5
     end
   end

@@ -45,8 +45,7 @@ class GithubUser
 
     loop do
       page += 1
-      _stdin, json_repository_data = Open3.popen3('curl', github_url(page))
-      repository_data = JSON.parse(json_repository_data.read) if json_repository_data
+      repository_data = get_github_response(URI(github_url(page)))
       break if repository_data.blank?
 
       repository_urls.concat(repository_data.map { |data| [data['html_url'], data['default_branch']] })
@@ -55,8 +54,15 @@ class GithubUser
     repository_urls
   end
 
+  def get_github_response(uri)
+    http = Net::HTTP.new(uri.host, uri.port)
+    http.use_ssl = true
+    response = http.get(uri.request_uri, authorization: "token #{get_api_key}")
+    JSON.parse(response.body)
+  end
+
   def github_url(page)
-    GITHUB_API_URL + username + "/repos?access_token=#{get_api_key}&page=#{page}&per_page=100"
+    GITHUB_API_URL + username + "/repos?page=#{page}&per_page=100"
   end
 
   def github_username_url

@@ -151,23 +151,19 @@ describe 'EnlistmentsControllerTest' do
     let(:project) { create(:project) }
 
     it 'must notify errors in github username' do
-      stub_github_user_repositories_call do
-        username = 'github.com/stan'
-        post :create, project_id: project.id, code_location: { scm_type: :GithubUser, url: username }
-        assigns(:code_location).errors.messages[:url].first.must_equal I18n.t('invalid_github_username')
-        must_render_template :new
-      end
+      username = 'github.com/stan'
+      post :create, project_id: project.id, code_location: { scm_type: :GithubUser, url: username }
+      assigns(:code_location).errors.messages[:url].first.must_equal I18n.t('invalid_github_username')
+      must_render_template :new
     end
 
     it 'must create enlistments jobs using github username' do
-      stub_github_user_repositories_call do
-        EnlistmentWorker.jobs.size.must_equal 0
-        username = 'stan'
-        post :create, project_id: project.to_param, code_location: { scm_type: :GithubUser, url: username }
-        must_respond_with :redirect
-        must_redirect_to action: :index
-        EnlistmentWorker.jobs.size.must_equal 1
-      end
+      EnlistmentWorker.jobs.size.must_equal 0
+      username = 'stan'
+      post :create, project_id: project.to_param, code_location: { scm_type: :GithubUser, url: username }
+      must_respond_with :redirect
+      must_redirect_to action: :index
+      EnlistmentWorker.jobs.size.must_equal 1
     end
 
     it 'wont create enlistment if subscription creation fails' do
