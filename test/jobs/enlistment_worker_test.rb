@@ -10,7 +10,8 @@ class EnlistmentWorkerTest < ActiveSupport::TestCase
       project.enlistments.count.must_equal 0
       account = create(:account)
       EnlistmentWorker.new.perform('stan', account.id, project.id)
-      project.enlistments.where('code_location_id is not null').count.must_equal 5
+      # 3 out of 5 repos in the captured response have `"fork": true`.
+      project.enlistments.where('code_location_id is not null').count.must_equal 2
     end
   end
 end

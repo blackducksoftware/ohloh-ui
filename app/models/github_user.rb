@@ -48,7 +48,8 @@ class GithubUser
       repository_data = get_github_response(URI(github_url(page)))
       break if repository_data.blank?
 
-      repository_urls.concat(repository_data.map { |data| [data['html_url'], data['default_branch']] })
+      unforked_repo_data = repository_data.reject { |data| data['fork'] }
+      repository_urls.concat(unforked_repo_data.map { |data| [data['html_url'], data['default_branch']] })
     end
 
     repository_urls

@@ -37,7 +37,8 @@ class GithubUserTest < ActiveSupport::TestCase
     it 'must create code_locations from given username' do
       VCR.use_cassette('github_repositories') do
         @github_user = GithubUser.new(url: 'renamed')
-        CodeLocation.expects(:create).times(9)
+        # 4 out of 9 repos in the recorded response have `"fork": true`.
+        CodeLocation.expects(:create).times(5)
         @github_user.save!
       end
     end

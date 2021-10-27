@@ -49,7 +49,7 @@ en:
       enter_git: 'Enter the Git branch name'
       enter_git_name: 'Enter the name of a single Git branch.'
       enter_github_username: Enter the GitHub username
-      github_username_info: "This format takes a Github username and adds all of its public repositories to this project. Don't worry about duplicates: we won't add the same repository to the project twice!"
+      github_username_info: "This format takes a Github username and adds all of its non-forked public repositories to this project. Don't worry about duplicates: we won't add the same repository to the project twice!"
       bypass_url_validation: 'DEBUG ONLY: Do not validate this repository'
       check_server_connection: 'Checking server connection...'
       choice: 'DEBUG ONLY: Do not validate this repository'
