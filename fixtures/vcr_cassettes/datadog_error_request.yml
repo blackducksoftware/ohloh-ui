@@ -1,0 +1,50 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://api.datadoghq.com/api/v1/events
+    body:
+      encoding: UTF-8
+      string: '{"alert_type":"error","date_happened":1635602844,"text":"This is an
+        error sample","title":"OpenHub test Error"}'
+    headers:
+      User-Agent:
+      - datadog-api-client-ruby/1.4.0 (ruby 2.5.3; os linux-gnu; arch x86_64)
+      Content-Type:
+      - application/json
+      Accept-Encoding:
+      - gzip
+      Accept:
+      - application/json
+      Dd-Api-Key:
+      - fcgk-hidden
+      Expect:
+      - ''
+  response:
+    status:
+      code: 202
+      message: Accepted
+    headers:
+      Date:
+      - Sat, 30 Oct 2021 14:07:26 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '305'
+      Connection:
+      - keep-alive
+      X-Content-Type-Options:
+      - nosniff
+      Strict-Transport-Security:
+      - max-age=15724800;
+      Content-Security-Policy:
+      - frame-ancestors 'self'; report-uri https://api.datadoghq.com/csp-report
+      X-Frame-Options:
+      - SAMEORIGIN
+    body:
+      encoding: UTF-8
+      string: '{"status":"ok","event":{"id":6230051054753498324,"id_str":"6230051054753498324","title":"OpenHub
+        test Error","text":"This is an error sample","date_happened":1635602844,"handle":null,"priority":null,"related_event_id":null,"tags":null,"url":"https://app.datadoghq.com/event/event?id=6230051054753498324"}}'
+    http_version:
+  recorded_at: Sat, 30 Oct 2021 14:07:26 GMT
+recorded_with: VCR 4.0.0

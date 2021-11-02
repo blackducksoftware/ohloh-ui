@@ -76,7 +76,7 @@ describe 'SessionsController' do
         auth_fail_count = max_login_retries - 1
         account.update!(auth_fail_count: auth_fail_count)
 
-        NewRelic::Agent.expects(:notice_error)
+        DataDogReport.expects(:error)
         AccountMailer.expects(:notify_disabled_account_for_login_failure).returns(stub(:deliver_now))
         @controller.expects(:verify_recaptcha).returns(true)
 
