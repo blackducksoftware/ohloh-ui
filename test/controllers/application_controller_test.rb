@@ -106,9 +106,9 @@ describe 'ApplicationController' do
       Rails.application.config.unstub(:consider_all_requests_local)
     end
 
-    it 'reports to newrelic on FisbotApiError' do
+    it 'reports to Datadog on FisbotApiError' do
       Rails.application.config.stubs(:consider_all_requests_local)
-      NewRelic::Agent.expects(:notice_error).once
+      DataDogReport.expects(:error).once
       get :throws_fisbot_api_error
       must_redirect_to session[:return_to]
       Rails.application.config.unstub(:consider_all_requests_local)

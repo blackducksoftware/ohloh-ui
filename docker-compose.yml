@@ -7,6 +7,7 @@ services:
     hostname: "${DOCKER_HOST_NAME}"
     ports:
       - "443:443"
+      - "8126:8126"
     volumes:
       - "/docker_data/gems/:/home/serv-deployer/.rbenv/versions/2.5.3/lib/ruby/gems/2.5.0/"
       - "/docker_data/logs/${DOCKER_HOST_NAME}/:/var/local/openhub/log/"

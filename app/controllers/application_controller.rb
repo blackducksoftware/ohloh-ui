@@ -48,7 +48,7 @@ class ApplicationController < ActionController::Base
     request.env[:user_agent] = request.user_agent
     case exception
     when SocketError, Errno::ECONNREFUSED, FisbotApiError
-      NewRelic::Agent.notice_error(exception)
+      DataDogReport.error(exception.backtrace.to_s)
       flash[:notice] = t(:api_exception)
       redirect_back
     else
