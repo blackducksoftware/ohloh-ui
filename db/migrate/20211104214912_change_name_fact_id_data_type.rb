@@ -17,7 +17,7 @@ class ChangeNameFactIdDataType < ActiveRecord::Migration
 
     execute <<-SQL
     alter table name_facts drop constraint name_facts_pkey;
-    alter table name_facts alter new_id set default nextval('name_facts_id_seq'::regclass)
+    alter table name_facts alter new_id set default nextval('name_facts_id_seq'::regclass);
     update name_facts set new_id = id where new_id is null;
     alter table name_facts add constraint name_facts_pkey primary key using index my_table_pk_idx;
     alter table name_facts drop column id;
