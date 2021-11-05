@@ -338,7 +338,7 @@ GEM
       rake
     mini_magick (4.9.5)
     mini_mime (1.0.1)
-    mini_portile2 (2.5.1)
+    mini_portile2 (2.6.1)
     minitest (5.14.4)
     minitest-rails (2.2.1)
       minitest (~> 5.7)
@@ -352,8 +352,8 @@ GEM
     net-scp (2.0.0)
       net-ssh (>= 2.6.5, < 6.0.0)
     net-ssh (5.2.0)
-    nokogiri (1.11.4)
-      mini_portile2 (~> 2.5.0)
+    nokogiri (1.12.5)
+      mini_portile2 (~> 2.6.1)
       racc (~> 1.4)
     notiffany (0.1.1)
       nenv (~> 0.1)
@@ -391,7 +391,7 @@ GEM
     public_suffix (4.0.6)
     quiet_assets (1.1.0)
       railties (>= 3.1, < 5.0)
-    racc (1.5.2)
+    racc (1.6.0)
     rack (1.6.12)
     rack-contrib (1.8.0)
       rack (~> 1.4)
@@ -637,7 +637,7 @@ DEPENDENCIES
   mini_magick (~> 4.9.4)
   minitest-rails
   mocha
-  nokogiri (~> 1.11.4)
+  nokogiri (~> 1.12.5)
   oh_delegator
   ohloh_scm (= 2.4.0)
   open4
