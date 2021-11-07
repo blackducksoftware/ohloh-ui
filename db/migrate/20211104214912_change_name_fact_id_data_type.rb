@@ -18,10 +18,15 @@ class ChangeNameFactIdDataType < ActiveRecord::Migration
     execute 'update name_facts set new_id = id where new_id is null'
     execute 'alter table name_facts add primary key (new_id)'
 
-    # We will do the following steps manually in production after verifying the results.
-    # Comment out the next 3 lines in production.
-    execute 'alter table name_facts drop column id'
+    execute 'alter table name_facts rename column id id_old'
     execute 'alter table name_facts rename column new_id to id'
     execute 'alter table only oh.people add constraint people_name_fact_id_fkey foreign key (name_fact_id) references oh.name_facts(id) on delete cascade'
+
+    # Need to make a change to the following four views before deleting the old_id field
+    # view oh.contributions
+    # drop cascades to view oh.contributions2
+    # drop cascades to view oh.people_view
+    # drop cascades to view oh.robins_contributions_test
+    # execute 'alter table name_facts drop column id_old cascade'
   end
 end
