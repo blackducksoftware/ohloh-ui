@@ -13,7 +13,6 @@ class AllowedTest < ActiveSupport::TestCase
     it 'should parse line Allow' do
       Allowed.parse('foo').must_equal ['foo']
       Allowed.parse("foo\n").must_equal ['foo']
-      Allowed.parse(" foo /bar /baz\n").must_equal ['foo']
       Allowed.parse("foo    \n").must_equal ['foo']
       Allowed.parse("testfile.txt\n lib/").must_equal ['testfile.txt', 'lib/']
     end
