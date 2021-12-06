@@ -818,8 +818,10 @@ class AccountTest < ActiveSupport::TestCase
       assert_equal Account.reverification_not_initiated(5)[0].id, unverified_account.id
       Account.reverification_not_initiated(5).wont_include manage
     end
+  end
 
-    it 'account must be deletd for a un-verified account when Alias exists' do
+  describe 'destroy' do
+    it 'must delete an Alias for an unverified account on account.destroy' do
       unverified_account = create(:position_with_unverified_account).account
       Alias.any_instance.stubs(:schedule_project_analysis)
       position = unverified_account.positions.first
@@ -832,6 +834,25 @@ class AccountTest < ActiveSupport::TestCase
       alias1.reload.deleted.must_equal false
 
       unverified_account.destroy
+      alias1.reload.deleted.must_equal true
+    end
+
+    it 'must delete a protected Alias for a non manager account on account.destroy' do
+      account = create(:position).account
+      Alias.any_instance.stubs(:schedule_project_analysis)
+      position = account.positions.first
+      project = position.project
+      commit_id = create(:name).id
+
+      alias1 = create(:alias, project_id: project.id, commit_name_id: commit_id, preferred_name_id: position.name_id)
+      alias1.create_edit.account = account
+      alias1.create_edit.save
+      alias1.reload.deleted.must_equal false
+
+      # Enable acts_as_protected.
+      create(:permission, target: project, remainder: true)
+
+      account.destroy
       alias1.reload.deleted.must_equal true
     end
   end

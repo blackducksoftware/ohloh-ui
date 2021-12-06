@@ -35,7 +35,6 @@ class Position::Hooks
 
   private
 
-  # rubocop:disable Metrics/AbcSize
   def cleanup_aliases
     aliases = Alias.joins(:edits)
                    .not_deleted
@@ -47,9 +46,15 @@ class Position::Hooks
                             OR undone_by = :account_id', account_id: account_id)
                    .uniq
 
-    aliases.each { |alias_object| alias_object.find_create_edit.undo!(manage_editor_account) }
+    soft_delete_aliases(aliases)
   end
-  # rubocop:enable Metrics/AbcSize
+
+  def soft_delete_aliases(aliases)
+    aliases.each do |alias_object|
+      account = verified_manager_or_admin(alias_object)
+      alias_object.find_create_edit.undo!(account)
+    end
+  end
 
   def transfer_kudos_and_destroy_previous_unclaimed_person
     unclaimed_person = Person.find_by(project_id: project_id, name_id: name_id)
@@ -59,9 +64,9 @@ class Position::Hooks
     unclaimed_person.destroy
   end
 
-  def manage_editor_account
+  def verified_manager_or_admin(alias_object)
     access_verified = !account.access.disabled? && account.access.verified?
-    access_verified ? account : Account.hamster
+    access_verified && alias_object.project.managers.include?(account) ? account : Account.hamster
   end
 
   # rubocop:disable Metrics/AbcSize
