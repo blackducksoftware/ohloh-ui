@@ -250,7 +250,13 @@ Rails.application.routes.draw do
     resources :manages, only: [:new]
     resources :edits, only: %i[index show]
     get 'edits/refresh/:id', to: 'edits#refresh'
-    resources :enlistments
+
+    resources :enlistments do
+      member do
+        get :edit_allowed_files
+      end
+    end
+
     resources :factoids, only: [:index]
     resources :rss_articles, only: :index
     resources :project_badges

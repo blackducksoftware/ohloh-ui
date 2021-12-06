@@ -32,21 +32,29 @@ class AnalysisSlocSetTest < ActiveSupport::TestCase
     end
 
     it 'should leave prepend slash for SvnSyncRepository' do
-      create_analysis_sloc_set('Disallow: /foo', svn_sync: true)
+      create_analysis_sloc_set('Disallow: /foo', nil, svn_sync: true)
       code_set = " and fyles.code_set_id = #{@analysis_sloc_set.sloc_set.code_set_id}"
       @analysis_sloc_set.ignore_tuples.must_equal "fyles.name like '/foo%'#{code_set}"
     end
 
     it 'should prepend with slash for SvnSyncRepository' do
-      create_analysis_sloc_set('Disallow: foo', svn_sync: true)
+      create_analysis_sloc_set('Disallow: foo', nil, svn_sync: true)
       code_set = " and fyles.code_set_id = #{@analysis_sloc_set.sloc_set.code_set_id}"
       @analysis_sloc_set.ignore_tuples.must_equal "fyles.name like '/foo%'#{code_set}"
     end
   end
 
+  describe 'allowed_tuples' do
+    it 'should return parsed file names' do
+      create_analysis_sloc_set(nil, 'debian/')
+      code_set = " and fyles.code_set_id = #{@analysis_sloc_set.sloc_set.code_set_id}"
+      @analysis_sloc_set.allowed_tuples.must_equal "fyles.name like 'debian/%'#{code_set}"
+    end
+  end
+
   private
 
-  def create_analysis_sloc_set(ignore = '', svn_sync: false)
+  def create_analysis_sloc_set(ignore = '', allowed_fyles = '', svn_sync: false)
     sloc_set = create(:sloc_set)
     # TODO: Replace this once we remove code_locations table dependency from AnalysisSlocSet.
     Enlistment.connection.execute("insert into code_locations (best_code_set_id)
@@ -55,6 +63,6 @@ class AnalysisSlocSetTest < ActiveSupport::TestCase
     sloc_set.code_set.update(code_location_id: code_location_id)
     scm_type = svn_sync ? :svn_sync : :git
     sloc_set.code_set.stubs(:code_location).returns(code_location_stub(scm_type: scm_type))
-    @analysis_sloc_set = create(:analysis_sloc_set, sloc_set: sloc_set, ignore: ignore)
+    @analysis_sloc_set = create(:analysis_sloc_set, sloc_set: sloc_set, ignore: ignore, allowed_fyles: allowed_fyles)
   end
 end

@@ -40,6 +40,10 @@ class EnlistmentsController < SettingsController
     @examples = @enlistment.ignore_examples
   end
 
+  def edit_allowed_files
+    @examples = @enlistment.ignore_examples
+  end
+
   def update
     @enlistment.update(enlistment_params)
     @enlistment.project.schedule_delayed_analysis(3.minutes)

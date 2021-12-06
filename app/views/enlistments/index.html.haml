@@ -73,6 +73,7 @@
         %th= t('.scm_type')
         %th= t('.update_status')
         %th= t('.ignored_files')
+        %th= t('.allowed_files')
         %th= t('.actions')
     %tbody
       = render partial: 'enlistment', collection: @enlistments, locals: { has_permission: has_permission }

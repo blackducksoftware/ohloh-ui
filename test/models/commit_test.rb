@@ -44,6 +44,18 @@ class CommitTest < ActiveSupport::TestCase
       summary.second.must_equal sloc_metric.code_removed + sloc_metric.blanks_removed + sloc_metric.comments_removed
     end
 
+    it 'should return data for allowed fyle' do
+      enlistment = create_enlistment_with_code_location
+      commit.code_set.update!(code_location_id: enlistment.code_location_id)
+      CodeSet.any_instance.stubs(:code_location).returns(CodeLocation.new(id: enlistment.code_location_id))
+
+      commit, analysis_id = create_commit(ignore_files: false, allowed_files: true)
+      summary = commit.lines_added_and_removed(analysis_id)
+      summary.count.must_equal 2
+      summary.first.wont_equal 0
+      summary.second.wont_equal 0
+    end
+
     it 'should return nil if fyle is ignored' do
       enlistment = create_enlistment_with_code_location
       commit.code_set.update!(code_location_id: enlistment.code_location_id)
@@ -91,14 +103,24 @@ class CommitTest < ActiveSupport::TestCase
 
   private
 
-  def create_commit(ignore_files: false)
+  def create_commit(ignore_files: false, allowed_files: false)
     sloc_set = create(:sloc_set)
     commit = create(:commit, code_set: sloc_set.code_set)
     fyle = create(:fyle, code_set: sloc_set.code_set)
     diff = create(:diff, commit: commit, fyle: fyle)
     sloc_metric = create(:sloc_metric, sloc_set: sloc_set, diff: diff)
     ignore_tuples = "Disallow: #{fyle.name}" if ignore_files
-    analysis_sloc_set = create(:analysis_sloc_set, sloc_set: sloc_set, ignore: ignore_tuples)
+
+    if allowed_files
+      fyle1 = create(:fyle, code_set: sloc_set.code_set)
+      diff1 = create(:diff, commit: commit, fyle: fyle1)
+      create(:sloc_metric, sloc_set: sloc_set, diff: diff1)
+    end
+
+    allowed_tuples = fyle1.name.to_s if allowed_files
+
+    analysis_sloc_set = create(:analysis_sloc_set, sloc_set: sloc_set,
+                                                   ignore: ignore_tuples, allowed_fyles: allowed_tuples)
     [commit, analysis_sloc_set.analysis_id, sloc_metric]
   end
 end

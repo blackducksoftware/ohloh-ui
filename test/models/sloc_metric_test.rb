@@ -25,6 +25,13 @@ class SlocMetricTest < ActiveSupport::TestCase
       summary = SlocMetric.commit_summaries(@diff.commit, @analysis_sloc_set.analysis_id)
       summary.length.must_equal 0
     end
+
+    it 'should return data for allowed files' do
+      CodeSet.any_instance.stubs(:code_location).returns(code_location_stub)
+      @analysis_sloc_set.update(allowed_fyles: @diff.fyle.name.to_s)
+      summary = SlocMetric.commit_summaries(@diff.commit, @analysis_sloc_set.analysis_id)
+      summary.length.must_equal 1
+    end
   end
 
   describe 'diff_summaries' do
