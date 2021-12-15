@@ -473,6 +473,7 @@ Rails.application.routes.draw do
     namespace 'v1' do
       resource :enlistment do
         post 'unsubscribe'
+        post 'enlist'
       end
       resources :jwt, only: [:create] do
       end
