@@ -10,6 +10,7 @@ class Api::V1::EnlistmentsController < ApplicationController
   before_action :authenticate_jwt
   before_action :get_enlistments, only: [:unsubscribe]
   before_action :build_code_location, only: [:enlist]
+  before_action :find_project, only: [:enlist]
 
   def unsubscribe
     @enlistments.each do |en|
@@ -20,13 +21,6 @@ class Api::V1::EnlistmentsController < ApplicationController
   end
 
   def enlist
-    begin
-      @project = Project.find params[:project]
-    rescue ActiveRecord::RecordNotFound
-      render json: 'Project not Found', status: :bad_request
-    end
-
-    render json: 'Unable to create code Location', status: :bad_request unless @code_location.save
     @code_location.create_enlistment_for_project(current_user, @project)
     render json: @code_location
   end
@@ -44,9 +38,20 @@ class Api::V1::EnlistmentsController < ApplicationController
 
   def build_code_location
     @code_location = CodeLocation.new(code_location_params.merge(client_relation_id: params[:project]))
+    render json: 'Unable to create code Location', status: :bad_request unless @code_location.save
   end
 
   def code_location_params
     params[:code_location] = { 'scm_type' => params[:scm_type], 'url' => params[:url], 'branch' => params[:branch] }
+  end
+
+  def find_project
+    begin
+      @project = Project.find params[:project]
+    rescue ActiveRecord::RecordNotFound
+      render json: 'Project Not Found', status: :bad_request 
+      return false
+    end
+
   end
 end
