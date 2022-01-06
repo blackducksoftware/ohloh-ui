@@ -46,11 +46,10 @@ class Api::V1::EnlistmentsController < ApplicationController
   end
 
   def find_project
-      @project = Project.find params[:project]
-    rescue ActiveRecord::RecordNotFound
-      render json: 'Project Not Found', status: :bad_request
-      return false
-    end
+    @project = Project.find params[:project]
+  rescue ActiveRecord::RecordNotFound
+    render json: 'Project Not Found', status: :bad_request
+    false
   end
 
   def delete_all_subscriptions(code_location_id)
