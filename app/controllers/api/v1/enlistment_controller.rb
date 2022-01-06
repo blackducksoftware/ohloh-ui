@@ -52,7 +52,6 @@ class Api::V1::EnlistmentsController < ApplicationController
       render json: 'Project Not Found', status: :bad_request 
       return false
     end
-
   end
 
   def delete_all_subscriptions(code_location_id)
