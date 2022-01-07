@@ -20,6 +20,7 @@ en:
       scm_type: 'SCM Type'
       update_status: 'Update Status'
       ignored_files: 'Ignored Files'
+      allowed_files: 'Allowed Files'
       actions: 'Actions'
       new_code_location: 'New Code Location'
       currently_importing: 'We are currently working on importing your GitHub Repositories. This might take some time. Please refresh the page or check back momentarily.'
@@ -49,7 +50,7 @@ en:
       enter_git: 'Enter the Git branch name'
       enter_git_name: 'Enter the name of a single Git branch.'
       enter_github_username: Enter the GitHub username
-      github_username_info: "This format takes a Github username and adds all of its public repositories to this project. Don't worry about duplicates: we won't add the same repository to the project twice!"
+      github_username_info: "This format takes a Github username and adds all of its non-forked public repositories to this project. Don't worry about duplicates: we won't add the same repository to the project twice!"
       bypass_url_validation: 'DEBUG ONLY: Do not validate this repository'
       check_server_connection: 'Checking server connection...'
       choice: 'DEBUG ONLY: Do not validate this repository'
@@ -71,7 +72,9 @@ en:
       description1: 'Open Hub ignored'
       description2: 'during processing.'
       description3: 'All files included.'
+      description4: 'Open Hub allowed'
       edit_ignored: 'Edit ignored files'
+      edit_allowed: 'Edit allowed files'
       remove: 'Remove'
       confirm: 'Are you sure you want to delete this code location?'
       dnf: "This Code Location is flagged as \"Do Not Fetch\". Please contact &#105;&#110;&#102;&#111;&#064;&#111;&#112;&#101;&#110;&#104;&#117;&#098;&#046;&#110;&#101;&#116; for assistance"
@@ -141,3 +144,14 @@ en:
       some_random_files: '# Some random files from this repository'
       disallow_html: "\rDisallow: %{enlistment}"
       excluded_directory_html: "# Some commonly excluded directories\rDisallow: lib/\rDisallow: tools/\r%{other_examples}"
+    edit_allowed_files:
+      html_title: 'The %{name} Open Source Project on Open Hub : Allow Files'
+      code_locations: 'Code Locations'
+      save_allowed_files: 'Save Allowed Files'
+      description1: 'If you just want Open Hub to include everything from this repository, leave this box blank.'
+      allow_files: ' : Allow Files'
+      allowed_files_for: 'Allowed Files for'
+      code_locations_allowed: 'Code Locations : Allowed Files'
+      allow_html: "\r%{enlistment}"
+      included_directory_html:  "# Some commonly included directories\rdebian/\r%{other_examples}"
+      some_random_files: '# Some random files from this repository'

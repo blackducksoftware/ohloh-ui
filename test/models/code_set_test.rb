@@ -26,4 +26,12 @@ describe CodeSet do
       code_set.ignore_prefixes(enlistment.project).must_be_empty
     end
   end
+
+  describe 'allow_prefixes' do
+    it 'should ignore file names' do
+      enlistment = create(:enlistment, allowed_fyles: nil)
+      code_set = create(:code_set, code_location_id: enlistment.code_location_id)
+      code_set.allow_prefixes(enlistment.project).must_be_empty
+    end
+  end
 end

@@ -1,22 +1,13 @@
-FROM phusion/passenger-ruby22:0.9.15
-MAINTAINER OpenHub <info@ohloh.net>
+FROM sigost/openhub:base
 
-RUN rm /etc/nginx/sites-enabled/default
-ADD config/nginx.conf /etc/nginx/sites-enabled/webapp.conf
-RUN rm -f /etc/service/nginx/down
+COPY --chown=serv-deployer:serv-deployer . $APP_HOME
+RUN chown -R serv-deployer:serv-deployer $APP_HOME
 
-RUN mkdir /home/app/webapp
-WORKDIR /home/app/webapp
+USER serv-deployer
+RUN cd $APP_HOME \
+  && gem install bundler:1.17.3 \
+  && gem install rails -v 4.2.11.1 \
+  && bundle install \
+  && RAILS_ENV=production DATABASE_URL=nulldb://user:pass@127.0.0.1/dbname bundle exec rake assets:precompile
 
-ADD Gemfile /home/app/webapp/Gemfile
-ADD Gemfile.lock /home/app/webapp/Gemfile.lock
-RUN bundle install --deployment
-
-ADD . /home/app/webapp
-
-RUN rake assets:precompile RAILS_ENV=production
-
-CMD ["/sbin/my_init"]
-EXPOSE 80
-
-RUN apt-get -y clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+WORKDIR $APP_HOME

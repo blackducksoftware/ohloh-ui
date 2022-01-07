@@ -22,6 +22,14 @@ class CodeSet < FisBase
     analysis_sloc_set.nil? ? CodeSet.none : analysis_sloc_set.ignore_prefixes
   end
 
+  def allow_prefixes(project)
+    enlistment = project.enlistments.find_by(code_location_id: code_location_id)
+    return CodeSet.none if enlistment.nil?
+
+    analysis_sloc_set = enlistment.analysis_sloc_set
+    analysis_sloc_set.nil? ? CodeSet.none : analysis_sloc_set.allow_prefixes
+  end
+
   # Implementation that should be used when clumps are removed
   # def reimport
   #   ImportJob.create!(code_set: CodeSet.create!(repository_id: repository_id))

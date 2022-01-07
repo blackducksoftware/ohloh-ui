@@ -21,6 +21,7 @@ class CommitsController < SettingsController
     @diffs = @commit.diffs.includes(:fyle).filter_by(params[:query])
                     .order('fyles.name').page(page_param).per_page(10)
     @ignore_prefixes = @commit.code_set.ignore_prefixes(@project)
+    @allow_prefixes = @commit.code_set.allow_prefixes(@project)
   end
 
   def summary

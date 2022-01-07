@@ -16,6 +16,7 @@ class SlocMetric < FisBase
               .where('diffs.fyle_id = fyles.id')
               .where(sloc_set_id: AnalysisSlocSet.for_analysis(analysis_id).select(:sloc_set_id))
               .ignored_files(analysis_id)
+              .allowed_files(analysis_id)
               .group([:language_id, 'languages.nice_name', 'languages.name'])
   }
 
@@ -31,6 +32,11 @@ class SlocMetric < FisBase
     def ignored_files(analysis_id)
       tuples = Analysis.find(analysis_id).ignore_tuples
       tuples.blank? ? where(nil) : where.not(tuples)
+    end
+
+    def allowed_files(analysis_id)
+      tuples = Analysis.find(analysis_id).allowed_tuples
+      tuples.blank? ? where(nil) : where(tuples)
     end
 
     def select_summary_attributes

@@ -19,6 +19,17 @@ class AnalysisSlocSet < FisBase
     Ignore.parse(ignore).map { |prefix| adjust_leading_slash(prefix) }
   end
 
+  def allowed_tuples
+    conditions = allow_prefixes.collect do |prefix|
+      AnalysisSlocSet.sanitize_sql_condition(prefix)
+    end.join(' OR ')
+    conditions.concat(" and fyles.code_set_id = #{sloc_set.code_set_id}") if conditions.present?
+  end
+
+  def allow_prefixes
+    Allowed.parse(allowed_fyles).map { |prefix| adjust_leading_slash(prefix) }
+  end
+
   class << self
     def sanitize_sql_condition(file_name)
       sanitize_sql_for_conditions(["fyles.name like '%s%%'", sanitize_sql_like(file_name)])

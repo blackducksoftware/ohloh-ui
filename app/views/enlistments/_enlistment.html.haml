@@ -19,10 +19,22 @@
         = t('.description1')
         = pluralize(ass.ignored_fyle_count, t('.file'))
         = t('.description2')
+  %td.col-md-2.status
+    - ass = enlistment.analysis_sloc_set
+    - if ass
+      - if ass.allowed_fyle_count.to_i.zero?
+        = t('.description3')
+      - else
+        = t('.description4')
+        = pluralize(ass.allowed_fyle_count, t('.file'))
+        = t('.description2')
   %td.col-md-2.last
     - if has_permission
       = icon_button(edit_project_enlistment_path(@project, enlistment), icon: 'pencil',
         text: t('.edit_ignored'), size: 'mini', type: 'primary')
+      - if current_user_is_admin?
+        = icon_button(edit_allowed_files_project_enlistment_path(@project, enlistment), icon: 'pencil',
+          text: t('.edit_allowed'), size: 'mini', type: 'primary')
       = icon_button(project_enlistment_path(@project, enlistment), icon: 'trash',
         text: t('.remove'), size: 'mini', type: 'danger', method: :delete, data: { confirm: t('.confirm') })
     - else

@@ -1885,7 +1885,9 @@ CREATE TABLE fis.analysis_sloc_sets (
     as_of integer,
     code_set_time timestamp without time zone,
     ignore text,
-    ignored_fyle_count integer
+    ignored_fyle_count integer,
+    allowed_fyles text,
+    allowed_fyle_count integer
 );
 
 
@@ -5161,7 +5163,7 @@ CREATE TABLE oh.analyses (
     commit_count integer,
     build_total integer,
     created_at timestamp without time zone,
-    activity_score integer,
+    activity_score bigint,
     hotness_score double precision
 );
 
@@ -5684,6 +5686,7 @@ CREATE TABLE oh.enlistments (
     updated_at timestamp without time zone DEFAULT timezone('UTC'::text, now()) NOT NULL,
     ignore text,
     code_location_id integer,
+    allowed_fyles text,
     CONSTRAINT project_id_not_null_constraint CHECK ((project_id IS NOT NULL))
 );
 
@@ -18503,6 +18506,10 @@ INSERT INTO oh.schema_migrations (version) VALUES ('20190221123532');
 INSERT INTO oh.schema_migrations (version) VALUES ('20190312150645');
 
 INSERT INTO oh.schema_migrations (version) VALUES ('20200719174850');
+
+INSERT INTO oh.schema_migrations (version) VALUES ('20201130144849');
+
+INSERT INTO oh.schema_migrations (version) VALUES ('20210621143713');
 
 INSERT INTO oh.schema_migrations (version) VALUES ('21');
 

@@ -8,7 +8,7 @@ module EnlistmentFilters
     before_action :set_project_or_fail
     before_action :set_project_editor_account_to_current_user
     before_action :check_project_authorization, except: %i[index show]
-    before_action :find_enlistment, only: %i[show edit update destroy]
+    before_action :find_enlistment, only: %i[show edit update destroy edit_allowed_files]
     before_action :project_context, only: %i[index new edit create update]
     before_action :validate_project, only: %i[edit update destroy]
     before_action :sidekiq_job_exists, only: :create
@@ -20,7 +20,7 @@ module EnlistmentFilters
   private
 
   def enlistment_params
-    params.require(:enlistment).permit(:ignore)
+    params.require(:enlistment).permit(:ignore, :allowed_fyles)
   end
 
   def parse_sort_term

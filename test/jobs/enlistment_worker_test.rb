@@ -9,10 +9,9 @@ class EnlistmentWorkerTest < ActiveSupport::TestCase
       project = create(:project)
       project.enlistments.count.must_equal 0
       account = create(:account)
-      stub_github_user_repositories_call do
-        EnlistmentWorker.new.perform('stan', account.id, project.id)
-      end
-      project.enlistments.where('code_location_id is not null').count.must_equal 5
+      EnlistmentWorker.new.perform('stan', account.id, project.id)
+      # 3 out of 5 repos in the captured response have `"fork": true`.
+      project.enlistments.where('code_location_id is not null').count.must_equal 2
     end
   end
 end
