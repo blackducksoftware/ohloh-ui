@@ -44,7 +44,7 @@ http_interactions:
       - Keep-Alive
     body:
       encoding: UTF-8
-      string: '{"id":52,"scm_type":"git","url":"https://github.com/rails/rails","branch":"master","best_code_set_id":null,"do_not_fetch":false,"status":"active"}'
+      string: '{"id":52,"scm_type":"git","url":"https://github.com/rails/rails","branch":"main","best_code_set_id":null,"do_not_fetch":false,"status":"active"}'
     http_version:
   recorded_at: Tue, 13 Feb 2018 18:28:55 GMT
 recorded_with: VCR 3.0.3

@@ -67,7 +67,7 @@ module WebMocker
   end
 
   def github_api(url, html_url)
-    body = { id: Faker::Number.number(3), default_branch: 'master', html_url: html_url,
+    body = { id: Faker::Number.number(3), default_branch: 'main', html_url: html_url,
              homepage: Faker::Internet.url, name: Faker::Company.name }
     stub_request(:get, url).to_return(body: body.to_json)
   end
@@ -91,7 +91,7 @@ module WebMocker
   end
 
   def code_location_params(id: 42, best_code_set_id: nil)
-    { id: id, scm_type: :git, url: rails_https_url, branch: :master,
+    { id: id, scm_type: :git, url: rails_https_url, branch: :main,
       best_code_set_id: best_code_set_id, do_not_fetch: false, status: :active }
   end
 end
