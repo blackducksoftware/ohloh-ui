@@ -20,6 +20,16 @@ class LinkTest < ActiveSupport::TestCase
     link.errors.must_include(:url)
   end
 
+  it 'must strip url' do
+    url = 'http://example.com'
+    link = build(:link, url: " #{url} ", project: project)
+    link.editor_account = create(:account)
+    link.save!
+
+    link.reload
+    link.url.must_equal url
+  end
+
   it 'must prevent duplicate url' do
     link = create(:link, project: project, link_category_id: Link::CATEGORIES[:Forums])
     link.errors.must_be :empty?

@@ -32,6 +32,8 @@ class Link < ActiveRecord::Base
                   url_format: { message: :invalid_url }
   validates :link_category_id, presence: true
 
+  strip_attributes :url
+
   def revive_or_create
     deleted_link = Link.find_by(url: url, project_id: project_id, deleted: true)
 
