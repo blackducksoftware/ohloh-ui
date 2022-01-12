@@ -3,7 +3,7 @@
 namespace :docker do
   task :deploy do
     on fetch(:web_heads), in: :parallel do
-      execute('wget -O docker-compose.yml https://raw.githubusercontent.com/blackducksoftware/ohloh-ui/master/docker-compose.yml')
+      execute('wget -O docker-compose.yml https://raw.githubusercontent.com/blackducksoftware/ohloh-ui/main/docker-compose.yml')
       execute('docker pull sigost/ohloh-ui:latest')
     end
 
@@ -42,7 +42,7 @@ namespace :docker do
 
   task :utility do
     on fetch(:utility) do
-      execute('wget -O docker-compose.yml https://raw.githubusercontent.com/blackducksoftware/ohloh-ui/master/docker-compose-utility.yml')
+      execute('wget -O docker-compose.yml https://raw.githubusercontent.com/blackducksoftware/ohloh-ui/main/docker-compose-utility.yml')
       execute('docker pull sigost/ohloh-ui:latest')
       execute('docker-compose up -d --build')
     end

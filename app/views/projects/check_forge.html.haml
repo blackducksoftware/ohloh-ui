@@ -30,7 +30,7 @@
                     name: 'project[enlistments_attributes][0][code_location_attributes][url]'
                   - if scm_type.to_s == 'git'
                     = text_field_tag :branch,
-                      @project.code_location_object.branch || 'master',
+                      @project.code_location_object.branch || 'main',
                       style: 'width: 105px; margin-bottom: 1px',
                       name: 'project[enlistments_attributes][0][code_location_attributes][branch]'
                   .clear_left

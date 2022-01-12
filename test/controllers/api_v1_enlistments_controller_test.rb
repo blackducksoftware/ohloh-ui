@@ -25,7 +25,7 @@ describe 'Api::V1::EnlistmentsControllerTest' do
         :unsubscribe,
         JWT: @jwt,
         url: @url,
-        branch: 'master',
+        branch: 'main',
         format: :json
       )
       response.must_be :success?
@@ -38,7 +38,7 @@ describe 'Api::V1::EnlistmentsControllerTest' do
       :unsubscribe,
       JWT: @jwt,
       url: 'https://notacodelocation.biz',
-      branch: 'master',
+      branch: 'main',
       format: :json
     )
     response.wont_be :success?
@@ -49,7 +49,7 @@ describe 'Api::V1::EnlistmentsControllerTest' do
       :unsubscribe,
       JWT: 'eyJhbGciOiJIUzI1.eyJleHBpcmF0aW9uIjoxNjMzMDI1NTcyLCJYWxleCJ9.whiDvp2KfeblCcMRnyskt7nehEcYKP5kEejkugIa0ko',
       url: @url,
-      branch: 'master',
+      branch: 'main',
       format: :json
     )
     response.wont_be :success?

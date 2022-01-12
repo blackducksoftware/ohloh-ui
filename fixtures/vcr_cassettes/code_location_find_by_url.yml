@@ -5,7 +5,7 @@ http_interactions:
     uri: http://vcrlocalhost.org:4004/api/v1/code_locations.json?api_key=0f9bf020-32dd-4846-a7d7-8a48b55c5a5d
     body:
       encoding: US-ASCII
-      string: url=git%3A%2F%2Fgithub.com%2Frails%2Frails.git&scm_type=git&username&password&branch=master&forge_match&best_code_set_id&do_not_fetch&client_relation_id=23
+      string: url=git%3A%2F%2Fgithub.com%2Frails%2Frails.git&scm_type=git&username&password&branch=main&forge_match&best_code_set_id&do_not_fetch&client_relation_id=23
     headers:
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
@@ -48,7 +48,7 @@ http_interactions:
       - Keep-Alive
     body:
       encoding: UTF-8
-      string: '{"id":11,"scm_type":"git","url":"git://github.com/rails/rails.git","branch":"master","best_code_set_id":null,"do_not_fetch":false,"status":"active"}'
+      string: '{"id":11,"scm_type":"git","url":"git://github.com/rails/rails.git","branch":"main","best_code_set_id":null,"do_not_fetch":false,"status":"active"}'
     http_version:
   recorded_at: Mon, 09 Apr 2018 23:38:15 GMT
 - request:
@@ -103,12 +103,12 @@ http_interactions:
       - Keep-Alive
     body:
       encoding: UTF-8
-      string: '[{"id":11,"scm_type":"git","url":"git://github.com/rails/rails.git","branch":"master","best_code_set_id":null,"do_not_fetch":false,"status":"active"}]'
+      string: '[{"id":11,"scm_type":"git","url":"git://github.com/rails/rails.git","branch":"main","best_code_set_id":null,"do_not_fetch":false,"status":"active"}]'
     http_version:
   recorded_at: Mon, 09 Apr 2018 23:38:15 GMT
 - request:
     method: get
-    uri: http://vcrlocalhost.org:4004/api/v1/code_locations.json?api_key=0f9bf020-32dd-4846-a7d7-8a48b55c5a5d&branch=master&url=git://github.com/rails/rails.git
+    uri: http://vcrlocalhost.org:4004/api/v1/code_locations.json?api_key=0f9bf020-32dd-4846-a7d7-8a48b55c5a5d&branch=main&url=git://github.com/rails/rails.git
     body:
       encoding: US-ASCII
       string: ''
@@ -158,7 +158,7 @@ http_interactions:
       - Keep-Alive
     body:
       encoding: UTF-8
-      string: '[{"id":11,"scm_type":"git","url":"git://github.com/rails/rails.git","branch":"master","best_code_set_id":null,"do_not_fetch":false,"status":"active"}]'
+      string: '[{"id":11,"scm_type":"git","url":"git://github.com/rails/rails.git","branch":"main","best_code_set_id":null,"do_not_fetch":false,"status":"active"}]'
     http_version:
   recorded_at: Mon, 09 Apr 2018 23:38:15 GMT
 recorded_with: VCR 3.0.3

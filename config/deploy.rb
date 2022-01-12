@@ -11,7 +11,7 @@ set :repo_url, 'git@github.com:blackducksoftware/ohloh-ui.git'
 set :user, 'serv-deployer'
 set :use_sudo, false
 set :passenger_restart_with_sudo, false
-set :branch, ENV['branch'] || :master
+set :branch, ENV['branch'] || :main
 # role :reverification_server, ['deployer@prd-oh-web02.dc2.lan']
 
 set :deploy_to, "/var/local/#{fetch(:application)}"

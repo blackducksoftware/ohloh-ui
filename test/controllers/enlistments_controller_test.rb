@@ -206,7 +206,7 @@ describe 'EnlistmentsControllerTest' do
       lambda do
         assert_no_difference 'Enlistment.count' do
           post :create, project_id: project.to_param,
-                        code_location: { branch: 'master', url: url, scm_type: 'git' }
+                        code_location: { branch: 'main', url: url, scm_type: 'git' }
         end
       end.must_raise(StandardError)
     end
@@ -232,7 +232,7 @@ describe 'EnlistmentsControllerTest' do
     it 'should create repository and enlistments' do
       CodeLocationSubscription.stubs(:code_location_exists?)
       Project.any_instance.stubs(:ensure_job)
-      branch_name = 'master'
+      branch_name = 'main'
       url = 'https://github.com/rails/rails'
       assert_difference 'Enlistment.count' do
         WebMocker.create_code_location
@@ -259,7 +259,7 @@ describe 'EnlistmentsControllerTest' do
 
     it 'should restore deleted enlistments within the same project' do
       CodeLocationSubscription.stubs(:code_location_exists?)
-      branch_name = 'master'
+      branch_name = 'main'
       url = 'https://github.com/rails/rails'
       post :create, project_id: project.to_param, code_location: { branch: branch_name, url: url, scm_type: 'git' }
       enlistment = Enlistment.last
@@ -280,7 +280,7 @@ describe 'EnlistmentsControllerTest' do
     it 'must show alert message for adding the first enlistment' do
       CodeLocationSubscription.stubs(:code_location_exists?)
       Project.any_instance.stubs(:ensure_job)
-      branch_name = 'master'
+      branch_name = 'main'
       url = 'https://github.com/rails/rails'
 
       Enlistment.any_instance.stubs(:ensure_forge_and_job)
@@ -305,7 +305,7 @@ describe 'EnlistmentsControllerTest' do
     describe 'a code_location can be added to multiple projects' do
       describe 'when code_location already exist for a project' do
         it 'should not add the code_location' do
-          code_location = CodeLocation.new(url: 'https://github.com/rails/rails', branch: :master, scm_type: :git)
+          code_location = CodeLocation.new(url: 'https://github.com/rails/rails', branch: :main, scm_type: :git)
           Enlistment.any_instance.stubs(:ensure_forge_and_job)
 
           assert_difference 'Enlistment.count' do
@@ -327,7 +327,7 @@ describe 'EnlistmentsControllerTest' do
 
       describe 'when code_location exist for a different project' do
         it 'should add a enlistment and reuse existing code_location' do
-          code_location = CodeLocation.new(url: 'https://github.com/rails/rails', branch: :master, scm_type: :git)
+          code_location = CodeLocation.new(url: 'https://github.com/rails/rails', branch: :main, scm_type: :git)
           another_project = create(:project)
           Enlistment.any_instance.stubs(:ensure_forge_and_job)
 

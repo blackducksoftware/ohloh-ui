@@ -8,7 +8,7 @@ describe 'ProjectsController' do
   let(:forge) { Forge.find_by(name: 'Github') }
   let(:enlistment_params) do
     { '0' => { code_location_attributes: { type: 'git', url: 'https://github.com/rails/rails',
-                                           branch: 'master', scm_type: 'git' } } }
+                                           branch: 'main', scm_type: 'git' } } }
   end
   let(:project) { create(:project) }
 
@@ -621,7 +621,7 @@ describe 'ProjectsController' do
     code_location = project.code_locations[0]
     code_location.scm_type.must_equal 'git'
     code_location.url.must_equal 'https://github.com/rails/rails'
-    code_location.branch.must_equal 'master'
+    code_location.branch.must_equal 'main'
   end
 
   it 'should use the project builder' do
@@ -641,7 +641,7 @@ describe 'ProjectsController' do
                                'enlistments_attributes' => { '0' =>
                                             { 'code_location_attributes' => { 'scm_type' => 'git',
                                                                               'url' => 'https://github.com/kelektiv/nnode-uuid',
-                                                                              'branch' => 'master' } } } }
+                                                                              'branch' => 'main' } } } }
     end
     project = Project.where(vanity_url: 'nnode-uuid').last
     project.url.must_equal 'https://github.com/kelektiv/nnode-uuid'

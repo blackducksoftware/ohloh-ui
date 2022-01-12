@@ -132,7 +132,7 @@ class Forge::MatchTest < ActiveSupport::TestCase
         code_locations.length.must_equal 1
         code_locations[0].scm_type.must_equal :git
         code_locations[0].url.must_equal 'https://github.com/rails/rails'
-        code_locations[0].branch.must_equal 'master'
+        code_locations[0].branch.must_equal 'main'
         code_locations[0].forge_match.must_equal match
       end
     end
