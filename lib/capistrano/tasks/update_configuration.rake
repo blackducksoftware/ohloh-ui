@@ -9,7 +9,7 @@ namespace :deploy do
       if test "[ -e #{config_dir_path}/.git ]"
         execute :git, '-C', config_dir_path, :pull
       else
-        execute(:git, :clone, 'git@github.com:blackducksoftware/openhub-config', config_dir_path)
+        execute(:git, :clone, 'https://github.com:blackducksoftware/openhub-config', config_dir_path)
       end
 
       config_path = config_dir_path.join('.env.*.openhub')
