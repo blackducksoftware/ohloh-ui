@@ -33,7 +33,8 @@ class Api::V1::EnlistmentsController < ApplicationController
     branch = params[:branch]
     join_string = 'join code_locations on code_location_id = code_locations.id join repositories'\
                   ' on code_locations.repository_id = repositories.id'
-    @enlistments = Enlistment.joins(:project).joins(join_string).where('code_locations.module_branch_name' => branch, 'repositories.url' => url)
+    @enlistments = Enlistment.joins(:project).joins(join_string).where('code_locations.module_branch_name' => branch,
+                                                                       'repositories.url' => url)
   end
 
   def build_code_location
