@@ -55,6 +55,20 @@ describe 'Api::V1::EnlistmentsControllerTest' do
     response.wont_be :success?
   end
 
+  it 'should remove the enlistment when code_location has no branch' do
+    _(@enlistment.deleted).must_equal false
+    Enlistment.connection.execute('update code_locations set module_branch_name = null where id '\
+                                  "= #{@enlistment.code_location_id}")
+    post(
+      :unsubscribe,
+      JWT: @jwt,
+      url: @url,
+      format: :json
+    )
+    _(response).must_be :successful?
+    _(@enlistment.reload.deleted).must_equal true
+  end
+
   describe 'enlist' do
     it 'should create the enlistment' do
       post(
