@@ -57,6 +57,12 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  rescue_from ActionView::MissingTemplate do |exception|
+    raise exception if Rails.application.config.consider_all_requests_local
+
+    render_404
+  end
+
   rescue_from ParamRecordNotFound, ActionController::UnknownFormat, ActionController::RoutingError do
     render_404
   end

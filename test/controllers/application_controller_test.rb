@@ -225,6 +225,13 @@ describe 'ApplicationController' do
       must_redirect_to new_authentication_path
     end
 
+    it 'must render 404 for MissingTemplate' do
+      Rails.application.config.stubs(:consider_all_requests_local)
+      get :show, id: create(:project).to_param, format: :rss
+      must_respond_with :not_found
+      Rails.application.config.unstub(:consider_all_requests_local)
+    end
+
     describe '#update_last_seen_at_and_ip' do
       let(:time_now) { Time.current }
       let(:account) { create(:account, last_seen_at: time_now) }
