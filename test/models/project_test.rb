@@ -517,4 +517,12 @@ class ProjectTest < ActiveSupport::TestCase
       _(project.searchable_vector[:d]).must_equal project.description
     end
   end
+
+  describe '#coverity_scan_url' do
+    it 'should return project coverity scan URL' do
+      project.update(coverity_project_id: Random.rand(100))
+
+      assert_equal project.coverity_scan_url, ENV['COVERITY_SCAN_URL'] + "/projects/#{project.coverity_project_id}"
+    end
+  end
 end
