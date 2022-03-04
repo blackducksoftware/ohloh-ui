@@ -24,6 +24,6 @@ module EnlistmentsHelper
   end
 
   def code_location_admin_url(id)
-    "#{ApiAccess::URL}/admin/code_locations/#{id}/jobs"
+    "#{ApiAccess.fis_public_url}/admin/code_locations/#{id}/jobs"
   end
 end

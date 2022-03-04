@@ -14,6 +14,12 @@ class ApiAccess
     URI("#{api_url}/#{@resource}#{path}.json?#{query.to_query}")
   end
 
+  class << self
+    def fis_public_url
+      ENV['FISBOT_PUBLIC_URL'] || ENV['FISBOT_API_URL']
+    end
+  end
+
   private
 
   def api_url
