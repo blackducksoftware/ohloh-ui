@@ -7,11 +7,11 @@ class ExploreHelperTest < ActiveSupport::TestCase
 
   describe 'scale_to' do
     it 'should return scaled value with two arguments' do
-      scale_to(94).must_equal 100
+      _(scale_to(94)).must_equal 100
     end
 
     it 'should return scaled value with one argument' do
-      scale_to(94, 1000).must_equal 1000
+      _(scale_to(94, 1000)).must_equal 1000
     end
   end
 end

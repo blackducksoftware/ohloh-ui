@@ -10,7 +10,7 @@ class PasswordStrategyTest < ActiveSupport::TestCase
       original_salt = account.salt
       new_password = :new_password
       account.update!(password: new_password, current_password: old_password, validate_current_password: true)
-      account.salt.wont_equal original_salt
+      _(account.salt).wont_equal original_salt
     end
 
     it 'wont change encrypted_password when updating blank password' do
@@ -21,7 +21,7 @@ class PasswordStrategyTest < ActiveSupport::TestCase
 
       account.save!
 
-      account.encrypted_password.must_equal original_crypted_password
+      _(account.encrypted_password).must_equal original_crypted_password
     end
 
     it 'must change encrypted_password when password is not blank' do
@@ -32,7 +32,7 @@ class PasswordStrategyTest < ActiveSupport::TestCase
 
       account.update!(password: new_password, current_password: old_password, validate_current_password: true)
 
-      original_encrypted_password.wont_equal account.encrypted_password
+      _(original_encrypted_password).wont_equal account.encrypted_password
     end
   end
 end

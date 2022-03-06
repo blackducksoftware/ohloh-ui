@@ -7,7 +7,7 @@ class ActivityFactsByMonthCompounSparkData
 
   def initialize
     @first_date = Time.parse('2004-04-01 00:00:00 UTC').in_time_zone
-    @commits = [0] * 101 + COMMITS + [0] * 13
+    @commits = ([0] * 101) + COMMITS + ([0] * 13)
   end
 
   def data

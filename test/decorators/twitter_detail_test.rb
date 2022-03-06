@@ -14,18 +14,18 @@ class TwitterDetailTest < ActiveSupport::TestCase
             '&region=follow_link&screen_name=mighty_joe&source=followbutton&variant=2.0'
 
       admin.stubs(:twitter_account).returns('mighty_joe')
-      admin_twitter_detail.url('http://twiiter.com/mighty_joe').must_equal url
+      _(admin_twitter_detail.url('http://twiiter.com/mighty_joe')).must_equal url
     end
   end
 
   describe 'twitter_card' do
     it 'should return empty string if markup is absent' do
       admin.stubs(:markup).returns(nil)
-      admin_twitter_detail.description.must_equal ''
+      _(admin_twitter_detail.description).must_equal ''
     end
 
     it 'should return markup if account_analysis_fact is absent' do
-      user_twitter_detail.description.must_equal 'It was'
+      _(user_twitter_detail.description).must_equal 'It was'
     end
 
     it 'should return full description if markup and account_analysis_fact is present' do
@@ -37,7 +37,7 @@ class TwitterDetailTest < ActiveSupport::TestCase
       create(:account_analysis_fact, vita_id: account_analysis.id)
 
       description = "It was, 0 total commits to 0 projects, most experienced in #{language.nice_name}, earned Kudo Rank"
-      user_twitter_detail.description.must_equal description
+      _(user_twitter_detail.description).must_equal description
     end
   end
 end

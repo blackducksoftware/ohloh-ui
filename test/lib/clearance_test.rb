@@ -10,11 +10,11 @@ class ClearanceTest < ActiveSupport::TestCase
     end
 
     it 'should authenticate by login' do
-      @myclass.authenticate(login: { login: @account.login, password: 'mypassword' }).id.must_equal @account.id
+      _(@myclass.authenticate(login: { login: @account.login, password: 'mypassword' }).id).must_equal @account.id
     end
 
     it 'should authenticate by email' do
-      @myclass.authenticate(login: { login: @account.email, password: 'mypassword' }).id.must_equal @account.id
+      _(@myclass.authenticate(login: { login: @account.email, password: 'mypassword' }).id).must_equal @account.id
     end
   end
 end

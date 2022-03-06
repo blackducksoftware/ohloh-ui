@@ -2,7 +2,7 @@
 
 require 'test_helper'
 
-describe 'Admin::JobsController' do
+class Admin::JobsControllerTest < ActionController::TestCase
   let(:admin) { create(:admin) }
   let(:project) { create(:project, name: 'Testing', description: 'This is test project') }
   before do
@@ -11,7 +11,7 @@ describe 'Admin::JobsController' do
   end
 
   it 'should render index template' do
-    get :index, project_id: project.vanity_url
-    must_respond_with :redirect
+    get :index, params: { project_id: project.vanity_url }
+    assert_response :redirect
   end
 end

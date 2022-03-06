@@ -8,16 +8,16 @@ class Account::EncrypterTest < ActiveSupport::TestCase
       email = Faker::Internet.email
       password = Faker::Internet.password
       account = Account.create!(login: Faker::Name.first_name, email: email, password: password)
-      account.activation_code.wont_be_empty
-      account.activation_code.length.must_equal 40
-      account.activation_code.wont_match(/[^a-z0-9]/)
+      _(account.activation_code).wont_be_empty
+      _(account.activation_code.length).must_equal 40
+      _(account.activation_code).wont_match(/[^a-z0-9]/)
     end
 
     it 'must populate salt' do
       account = build(:account)
       account.save!
 
-      account.salt.must_be :present?
+      _(account.salt).must_be :present?
     end
   end
 
@@ -29,7 +29,7 @@ class Account::EncrypterTest < ActiveSupport::TestCase
       account.email = email
       account.save!
 
-      original_email_md5.wont_equal account.email_md5
+      _(original_email_md5).wont_equal account.email_md5
     end
 
     it 'must not encrypt email when it has not changed' do

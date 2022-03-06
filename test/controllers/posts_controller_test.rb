@@ -2,7 +2,7 @@
 
 require 'test_helper'
 
-describe PostsController do
+class PostsControllerTest < ActionController::TestCase
   let(:forum) { create(:forum) }
   let(:user) { create(:account) }
   let(:admin) { create(:admin) }
@@ -15,73 +15,73 @@ describe PostsController do
 
     it 'should render in atom format' do
       create_list(:post, 5)
-      get :index, format: 'atom'
-      must_respond_with :ok
+      get :index, params: { format: 'atom' }
+      assert_response :ok
     end
 
     it 'index should handle search for unlogged users' do
       login_as nil
       create(:post, body: 'oldest', created_at: Time.current - 2.hours)
       create(:post, body: 'newest', created_at: Time.current)
-      get :index, sort: 'newest'
-      must_respond_with :ok
-      response.body.must_match(/newest.*oldest/m)
+      get :index, params: { sort: 'newest' }
+      assert_response :ok
+      _(response.body).must_match(/newest.*oldest/m)
     end
 
     it 'index should handle query param that matches no project' do
-      get :index, query: 'qwertyuioplkjhgfdsazxcvbnm'
-      must_respond_with :ok
-      must_select 'div.advanced_search_tips', true
+      get :index, params: { query: 'qwertyuioplkjhgfdsazxcvbnm' }
+      assert_response :ok
+      assert_select 'div.advanced_search_tips', true
     end
 
     it 'index should strip HTML from markdown' do
       create(:post, body: '**Markdown Me**')
       get :index
-      must_respond_with :ok
-      response.body.must_match 'Markdown Me'
+      assert_response :ok
+      _(response.body).must_match 'Markdown Me'
     end
 
     it 'sorts index posts by newest' do
       create(:post, body: 'oldest', created_at: Time.current - 2.hours)
       create(:post, body: 'newest', created_at: Time.current)
-      get :index, sort: 'newest'
-      must_respond_with :ok
-      response.body.must_match(/newest.*oldest/m)
+      get :index, params: { sort: 'newest' }
+      assert_response :ok
+      _(response.body).must_match(/newest.*oldest/m)
     end
 
     it 'sorts index posts by most recent in default view' do
       create(:post, body: 'oldest', created_at: Time.current - 2.hours)
       create(:post, body: 'newest', created_at: Time.current)
       get :index
-      must_respond_with :ok
-      response.body.must_match(/newest.*oldest/m)
+      assert_response :ok
+      _(response.body).must_match(/newest.*oldest/m)
     end
 
     it 'shows index posts under open topics only' do
       create(:topic, :closed, :with_posts, posts_count: 3)
       create(:topic, :with_posts, posts_count: 5)
       get :index
-      must_respond_with :ok
+      assert_response :ok
       assigns(:posts).count 5
     end
 
     it 'sorts index posts by unanswered' do
       create(:post, body: 'post_count_1')
       create_list(:post, 2, body: 'answered', topic: topic)
-      get :index, sort: 'unanswered'
-      must_respond_with :ok
-      response.body.must_match(/postcount1/)
-      response.body.wont_match(/\Aanswered/)
+      get :index, params: { sort: 'unanswered' }
+      assert_response :ok
+      _(response.body).must_match(/postcount1/)
+      _(response.body).wont_match(/\Aanswered/)
     end
 
     it 'sorts index posts by relevance' do
       post1 = create(:post, body: 'Elon Musk is cool', popularity_factor: 100, created_at: 1.day.from_now)
       post2 = create(:post, body: 'Mark Zuckerberg is cool too, I guess...', popularity_factor: 200)
-      get :index, query: nil, sort: 'relevance'
-      must_respond_with :ok
+      get :index, params: { query: nil, sort: 'relevance' }
+      assert_response :ok
       assigns(:posts).count 2
-      assigns(:posts).first.must_equal post1
-      assigns(:posts).last.must_equal post2
+      _(assigns(:posts).first).must_equal post1
+      _(assigns(:posts).last).must_equal post2
     end
 
     it 'filters index by query parameter' do
@@ -89,12 +89,12 @@ describe PostsController do
       create(:post, body: 'Apache')
       create(:post, body: 'Google')
       create(:post, body: 'Dropbox')
-      get :index, query: 'Mozilla'
-      must_respond_with :ok
-      response.body.must_match(/Mozilla/)
-      response.body.wont_match(/Apache/)
-      response.body.wont_match(/Google/)
-      response.body.wont_match(/Dropbox/)
+      get :index, params: { query: 'Mozilla' }
+      assert_response :ok
+      _(response.body).must_match(/Mozilla/)
+      _(response.body).wont_match(/Apache/)
+      _(response.body).wont_match(/Google/)
+      _(response.body).wont_match(/Dropbox/)
     end
 
     it 'filters index by query parameter and sorts by newest' do
@@ -102,27 +102,27 @@ describe PostsController do
       create(:post, body: 'second Mozilla', created_at: Time.current - 2.hours)
       create(:post, body: 'third Mozilla', created_at: Time.current)
       create(:post, body: 'Dropbox', created_at: Time.current - 4.hours)
-      get :index, query: 'Mozilla', sort: 'newest'
-      must_respond_with :ok
-      response.body.must_match(/third\sMozilla.*second\sMozilla.*first\sMozilla/m)
-      response.body.wont_match(/Dropbox/)
+      get :index, params: { query: 'Mozilla', sort: 'newest' }
+      assert_response :ok
+      _(response.body).must_match(/third\sMozilla.*second\sMozilla.*first\sMozilla/m)
+      _(response.body).wont_match(/Dropbox/)
     end
 
     it 'filters index by query parameter and sorts by unanswered' do
       create(:post, body: 'Mozilla unanswered')
       create_list(:post, 2, body: 'Mozilla answered', topic: topic)
-      get :index, query: 'Mozilla', sort: 'unanswered'
-      must_respond_with :ok
-      response.body.must_match(/Mozilla\sunanswered/)
-      response.body.wont_match(/Mozilla\sanswered/)
+      get :index, params: { query: 'Mozilla', sort: 'unanswered' }
+      assert_response :ok
+      _(response.body).must_match(/Mozilla\sunanswered/)
+      _(response.body).wont_match(/Mozilla\sanswered/)
     end
 
     it 'sorts index posts by relevance and query (popularity_factor)' do
       post1 = create(:post, body: 'Mozilla Google Mozilla Yahoo')
       post2 = create(:post, body: 'Mozilla Google Mozilla Mozilla Google SpaceX Dropbox')
-      get :index, query: 'Mozilla', sort: 'relevance'
-      must_respond_with :ok
-      response.body.must_match(/#{post2.body}.*#{post1.body}/m)
+      get :index, params: { query: 'Mozilla', sort: 'relevance' }
+      assert_response :ok
+      _(response.body).must_match(/#{post2.body}.*#{post1.body}/m)
     end
   end
 
@@ -131,14 +131,14 @@ describe PostsController do
 
     it 'should render in atom format' do
       create_list(:post, 5, account: user)
-      get :index, account: user, format: 'atom'
-      must_respond_with :ok
+      get :index, params: { account: user, format: 'atom' }
+      assert_response :ok
     end
 
     it 'finds no post by a user' do
-      get :index, account_id: user
-      must_respond_with :ok
-      must_select 'div#no-posts', true
+      get :index, params: { account_id: user }
+      assert_response :ok
+      assert_select 'div#no-posts', true
     end
 
     it 'must redirect for disabled account' do
@@ -146,26 +146,26 @@ describe PostsController do
       login_as account
       account.access.spam!
 
-      get :index, account_id: account.id
+      get :index, params: { account_id: account.id }
 
-      must_respond_with 302
+      assert_response 302
     end
 
     it 'sorts by unanswered' do
       create(:post, account: user, body: 'post_count_1')
       create_list(:post, 2, body: 'answered', topic: topic)
-      get :index, account_id: user, sort: 'unanswered'
-      must_respond_with :ok
-      response.body.must_match(/postcount1/)
-      response.body.wont_match(/\Aanswered/)
+      get :index, params: { account_id: user, sort: 'unanswered' }
+      assert_response :ok
+      _(response.body).must_match(/postcount1/)
+      _(response.body).wont_match(/\Aanswered/)
     end
 
     it 'sorts by newest' do
       create(:post, account: user, body: 'oldest', created_at: Time.current - 2.hours)
       create(:post, account: user, body: 'newest', created_at: Time.current)
-      get :index, account_id: user, sort: 'newest'
-      must_respond_with :ok
-      response.body.must_match(/newest.*oldest/m)
+      get :index, params: { account_id: user, sort: 'newest' }
+      assert_response :ok
+      _(response.body).must_match(/newest.*oldest/m)
     end
 
     it 'filters index by query parameter' do
@@ -173,12 +173,12 @@ describe PostsController do
       create(:post, account: user, body: 'Apache')
       create(:post, account: user, body: 'Google')
       create(:post, account: user, body: 'Dropbox')
-      get :index, account_id: user, query: 'Mozilla'
-      must_respond_with :ok
-      response.body.must_match(/Mozilla/)
-      response.body.wont_match(/Apache/)
-      response.body.wont_match(/Google/)
-      response.body.wont_match(/Dropbox/)
+      get :index, params: { account_id: user, query: 'Mozilla' }
+      assert_response :ok
+      _(response.body).must_match(/Mozilla/)
+      _(response.body).wont_match(/Apache/)
+      _(response.body).wont_match(/Google/)
+      _(response.body).wont_match(/Dropbox/)
     end
 
     it 'filters index by query parameter and sorts by newest' do
@@ -186,30 +186,30 @@ describe PostsController do
       create(:post, account: user, body: 'second Mozilla', created_at: Time.current - 2.hours)
       create(:post, account: user, body: 'third Mozilla', created_at: Time.current)
       create(:post, account: user, body: 'Dropbox', created_at: Time.current - 4.hours)
-      get :index, account_id: user, query: 'Mozilla', sort: 'newest'
-      must_respond_with :ok
-      response.body.must_match(/third\sMozilla.*second\sMozilla.*first\sMozilla/m)
-      response.body.wont_match(/Dropbox/)
+      get :index, params: { account_id: user, query: 'Mozilla', sort: 'newest' }
+      assert_response :ok
+      _(response.body).must_match(/third\sMozilla.*second\sMozilla.*first\sMozilla/m)
+      _(response.body).wont_match(/Dropbox/)
     end
 
     it 'filters index by query parameter and sorts by unanswered' do
       create(:post, account: user, body: 'Mozilla unanswered')
       create_list(:post, 2, account: user, body: 'Mozilla answered', topic: topic)
-      get :index, account_id: user, query: 'Mozilla', sort: 'unanswered'
-      must_respond_with :ok
-      response.body.must_match(/Mozilla\sunanswered/)
-      response.body.wont_match(/Mozilla\sanswered/)
+      get :index, params: { account_id: user, query: 'Mozilla', sort: 'unanswered' }
+      assert_response :ok
+      _(response.body).must_match(/Mozilla\sunanswered/)
+      _(response.body).wont_match(/Mozilla\sanswered/)
     end
 
     it 'sorts index posts by relevance' do
       post1 = create(:post, account: user, body: 'Elon Musk is cool', popularity_factor: 100,
                             created_at: 1.day.from_now)
       post2 = create(:post, account: user, body: 'Mark Zuckerberg is cool too, I guess...', popularity_factor: 200)
-      get :index, account: user, query: nil, sort: 'relevance'
-      must_respond_with :ok
+      get :index, params: { account: user, query: nil, sort: 'relevance' }
+      assert_response :ok
       assigns(:posts).count 2
-      assigns(:posts).first.must_equal post1
-      assigns(:posts).last.must_equal post2
+      _(assigns(:posts).first).must_equal post1
+      _(assigns(:posts).last).must_equal post2
     end
   end
 
@@ -217,64 +217,64 @@ describe PostsController do
     it 'should render as xml' do
       create(:post, account: user, body: 'Elon Musk is cool', popularity_factor: 100)
       create(:post, account: user, body: 'Mark Zuckerberg is cool too, I guess...', popularity_factor: 200)
-      get :index, format: 'atom'
-      must_respond_with :ok
+      get :index, params: { format: 'atom' }
+      assert_response :ok
     end
 
     it 'should render as xml for account posts' do
       create(:post, account: user, body: 'Elon Musk is cool', popularity_factor: 100)
       create(:post, account: user, body: 'Mark Zuckerberg is cool too, I guess...', popularity_factor: 200)
-      get :index, account: user, format: 'atom'
-      must_respond_with :ok
+      get :index, params: { account: user, format: 'atom' }
+      assert_response :ok
     end
 
     it 'should render in rss format' do
       create(:post, account: user, body: 'Elon Musk is cool', popularity_factor: 100)
-      get :index, format: 'rss'
-      must_respond_with :ok
-      must_render_template 'index.atom.builder'
+      get :index, params: { format: 'rss' }
+      assert_response :ok
+      assert_template 'index.atom.builder'
     end
   end
 
   describe 'update' do
     it 'update' do
-      put :update, topic_id: topic.id, id: post_object.id, post: { body: 'Updating the body' }
+      put :update, params: { topic_id: topic.id, id: post_object.id, post: { body: 'Updating the body' } }
       post_object.reload
-      post_object.body.must_equal post_object.body
-      must_respond_with :redirect
-      must_redirect_to new_session_path
+      _(post_object.body).must_equal post_object.body
+      assert_response :redirect
+      assert_redirected_to new_session_path
     end
 
     it 'user updates their own post' do
       login_as post_object.account
-      put :update, topic_id: post_object.topic.id, id: post_object.id, post: { body: 'Updating the body' }
+      put :update, params: { topic_id: post_object.topic.id, id: post_object.id, post: { body: 'Updating the body' } }
       post_object.reload
-      post_object.body.must_equal 'Updating the body'
-      must_redirect_to topic_path(post_object.topic.id)
+      _(post_object.body).must_equal 'Updating the body'
+      assert_redirected_to topic_path(post_object.topic.id)
     end
 
     it 'update gracefully handles errors' do
       Post.any_instance.expects(:update).returns(false)
       login_as post_object.account
-      put :update, topic_id: post_object.topic.id, id: post_object.id, post: { body: 'Updating the body' }
+      put :update, params: { topic_id: post_object.topic.id, id: post_object.id, post: { body: 'Updating the body' } }
       post_object.reload
-      post_object.body.wont_equal 'Updating the body'
-      must_render_template 'edit'
+      _(post_object.body).wont_equal 'Updating the body'
+      assert_template 'edit'
     end
 
     it 'admin update' do
       login_as admin
-      put :update, topic_id: topic.id, id: post_object.id, post: { body: 'Admin status edit' }
+      put :update, params: { topic_id: topic.id, id: post_object.id, post: { body: 'Admin status edit' } }
       post_object.reload
-      post_object.body.must_equal 'Admin status edit'
-      must_redirect_to topic_path(topic.id)
+      _(post_object.body).must_equal 'Admin status edit'
+      assert_redirected_to topic_path(topic.id)
     end
   end
 
   it 'delete' do
     post_object2 = create(:post)
     assert_no_difference('Post.count') do
-      delete :destroy, topic_id: topic.id, id: post_object2.id
+      delete :destroy, params: { topic_id: topic.id, id: post_object2.id }
     end
   end
 
@@ -282,7 +282,7 @@ describe PostsController do
   it 'user index' do
     login_as user
     get :index
-    must_respond_with :ok
+    assert_response :ok
   end
 
   describe 'create' do
@@ -294,15 +294,15 @@ describe PostsController do
 
       login_as user
       ActionMailer::Base.deliveries.clear
-      post :create, topic_id: topic.id, post: { body: 'Replying for the first time' }
-      topic.posts.count.must_equal 2
-      ActionMailer::Base.deliveries.size.must_equal 1
+      post :create, params: { topic_id: topic.id, post: { body: 'Replying for the first time' } }
+      _(topic.posts.count).must_equal 2
+      _(ActionMailer::Base.deliveries.size).must_equal 1
 
       email = ActionMailer::Base.deliveries
 
-      email.first.to.must_equal [topic.account.email]
-      email.first.subject.must_equal 'Someone has responded to your post'
-      must_redirect_to topic_path(topic.id)
+      _(email.first.to).must_equal [topic.account.email]
+      _(email.first.subject).must_equal 'Someone has responded to your post'
+      assert_redirected_to topic_path(topic.id)
     end
 
     it 'users who have posted more than once on a topic receive only one email notification' do
@@ -320,14 +320,14 @@ describe PostsController do
 
       ActionMailer::Base.deliveries.clear
       assert_difference(['ActionMailer::Base.deliveries.size'], 2) do
-        post :create, topic_id: topic.id, post: { body: 'This post should trigger a cascade
-                                                                        of emails being sent to all preceding users' }
+        post :create, params: { topic_id: topic.id, post: { body: 'This post should trigger a cascade
+                                                                        of emails being sent to all preceding users' } }
       end
       email = ActionMailer::Base.deliveries
 
-      email.first.to.must_equal [topic.posts[1].account.email]
-      email.first.subject.must_equal 'Someone has responded to your post'
-      must_redirect_to topic_path(topic.id)
+      _(email.first.to).must_equal [topic.posts[1].account.email]
+      _(email.first.subject).must_equal 'Someone has responded to your post'
+      assert_redirected_to topic_path(topic.id)
     end
 
     it 'a user who replies to his own post will not receive a post notification email while everyone else does.' do
@@ -345,13 +345,13 @@ describe PostsController do
       login_as last_user
 
       ActionMailer::Base.deliveries.clear
-      post :create, topic_id: topic.id, post: { body: 'last_user replies to his own post' }
+      post :create, params: { topic_id: topic.id, post: { body: 'last_user replies to his own post' } }
 
       email = ActionMailer::Base.deliveries
 
-      email.first.to.must_equal [topic.posts[2].account.email]
-      email.first.subject.must_equal 'Someone has responded to your post'
-      must_redirect_to topic_path(topic.id)
+      _(email.first.to).must_equal [topic.posts[2].account.email]
+      _(email.first.subject).must_equal 'Someone has responded to your post'
+      assert_redirected_to topic_path(topic.id)
     end
 
     it 'should not send a post notification email respecting their email preference' do
@@ -365,15 +365,15 @@ describe PostsController do
       login_as create(:account)
 
       ActionMailer::Base.deliveries.clear
-      post :create, topic_id: topic.id, post: { body: 'last_user replies to his own post' }
+      post :create, params: { topic_id: topic.id, post: { body: 'last_user replies to his own post' } }
       email = ActionMailer::Base.deliveries
-      email.map(&:to).flatten.wont_include topic.account.email
-      must_redirect_to topic_path(topic.id)
+      _(email.map(&:to).flatten).wont_include topic.account.email
+      assert_redirected_to topic_path(topic.id)
     end
 
     it 'fails for user with no account' do
       assert_no_difference('Post.count') do
-        post :create, topic_id: topic.id, post: { body: 'Creating a post for testing' }
+        post :create, params: { topic_id: topic.id, post: { body: 'Creating a post for testing' } }
       end
     end
 
@@ -382,9 +382,9 @@ describe PostsController do
       topic = create(:topic)
       PostsController.any_instance.expects(:verify_recaptcha).returns(true)
       assert_difference('Post.count', 1) do
-        post :create, topic_id: topic, post: { body: 'Post with valid recaptcha' }
+        post :create, params: { topic_id: topic, post: { body: 'Post with valid recaptcha' } }
       end
-      must_redirect_to topic_path(topic.id)
+      assert_redirected_to topic_path(topic.id)
     end
 
     it 'wont create a post for invalid recaptcha' do
@@ -392,7 +392,7 @@ describe PostsController do
       topic = create(:topic)
       PostsController.any_instance.expects(:verify_recaptcha).returns(false)
       assert_no_difference('Post.count', 1) do
-        post :create, topic_id: topic, post: { body: 'Post with invalid recaptcha' }
+        post :create, params: { topic_id: topic, post: { body: 'Post with invalid recaptcha' } }
       end
     end
 
@@ -400,20 +400,20 @@ describe PostsController do
       login_as admin
 
       assert_difference('Post.count') do
-        post :create, topic_id: topic.id, post: { body: 'Creating a post for testing' }
+        post :create, params: { topic_id: topic.id, post: { body: 'Creating a post for testing' } }
       end
 
-      must_redirect_to topic_path(topic.id)
+      assert_redirected_to topic_path(topic.id)
     end
 
     it 'must render topic show page on failure' do
       login_as admin
 
       assert_no_difference('Post.count') do
-        post :create, topic_id: topic.id, post: { body: nil }
+        post :create, params: { topic_id: topic.id, post: { body: nil } }
       end
 
-      must_render_template 'topics/show'
+      assert_template 'topics/show'
     end
 
     it 'must allow admin to create post without captcha' do
@@ -422,42 +422,42 @@ describe PostsController do
       PostsController.any_instance.stubs(:verify_recaptcha).returns(false)
 
       assert_difference('Post.count', 1) do
-        post :create, topic_id: topic, post: { body: Faker::Lorem.sentence }
+        post :create, params: { topic_id: topic, post: { body: Faker::Lorem.sentence } }
       end
-      must_redirect_to topic_path(topic.id)
+      assert_redirected_to topic_path(topic.id)
     end
   end
 
   describe 'edit' do
     it 'user edits their own post' do
       login_as post_object.account
-      get :edit, topic_id: post_object.topic.id, id: post_object.id
-      must_respond_with :success
+      get :edit, params: { topic_id: post_object.topic.id, id: post_object.id }
+      assert_response :success
     end
 
     it 'user cannot edit their own post' do
       login_as user
-      get :edit, topic_id: post_object.topic.id, id: post_object.id
-      must_redirect_to topic_path(post_object.topic)
+      get :edit, params: { topic_id: post_object.topic.id, id: post_object.id }
+      assert_redirected_to topic_path(post_object.topic)
     end
 
     it 'user cannot edit someone else\'s post' do
       login_as user
-      get :edit, topic_id: post_object.topic.id, id: post_object.id
-      must_redirect_to topic_path(post_object.topic.id)
+      get :edit, params: { topic_id: post_object.topic.id, id: post_object.id }
+      assert_redirected_to topic_path(post_object.topic.id)
     end
 
     it 'admin edit page' do
       login_as admin
       topic.id = post_object.topic_id
-      get :edit, topic_id: topic.id, id: post_object.id
-      must_respond_with :success
+      get :edit, params: { topic_id: topic.id, id: post_object.id }
+      assert_response :success
     end
 
     it 'edit' do
-      get :edit, topic_id: topic.id, id: post_object.id
-      must_respond_with :redirect
-      must_redirect_to new_session_path
+      get :edit, params: { topic_id: topic.id, id: post_object.id }
+      assert_response :redirect
+      assert_redirected_to new_session_path
     end
   end
 
@@ -465,7 +465,7 @@ describe PostsController do
   it 'admin index' do
     login_as admin
     get :index
-    must_respond_with :ok
+    assert_response :ok
   end
 
   it 'admin delete' do
@@ -474,18 +474,18 @@ describe PostsController do
     create(:post, topic: topic)
 
     assert_difference('Post.count', -1) do
-      delete :destroy, topic_id: post_object2.topic.id, id: post_object2.id
+      delete :destroy, params: { topic_id: post_object2.topic.id, id: post_object2.id }
     end
-    must_redirect_to topic_path(post_object2.topic.id)
+    assert_redirected_to topic_path(post_object2.topic.id)
   end
 
   it 'must redirect to forum path' do
     login_as admin
     post_object2 = create(:post)
     assert_difference('Post.count', -1) do
-      delete :destroy, topic_id: post_object2.topic.id, id: post_object2.id
+      delete :destroy, params: { topic_id: post_object2.topic.id, id: post_object2.id }
     end
-    must_redirect_to forums_path
+    assert_redirected_to forums_path
   end
 
   it 'destroy gracefully handles errors' do
@@ -493,8 +493,8 @@ describe PostsController do
     login_as create(:admin)
     Post.any_instance.expects(:destroy).returns(false)
     assert_no_difference('Post.count') do
-      delete :destroy, topic_id: post_object2.topic.id, id: post_object2.id
+      delete :destroy, params: { topic_id: post_object2.topic.id, id: post_object2.id }
     end
-    must_redirect_to topic_path(post_object2.topic.id)
+    assert_redirected_to topic_path(post_object2.topic.id)
   end
 end

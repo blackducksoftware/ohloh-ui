@@ -7,16 +7,16 @@ class FooterHelperTest < ActionView::TestCase
 
   describe 'SettingsController' do
     it 'should be true for edit action' do
-      selected?('edit', 'settings').must_equal true
+      _(selected?('edit', 'settings')).must_equal true
     end
 
     it 'should be true for index action' do
-      selected?('index', 'settings').must_equal true
+      _(selected?('index', 'settings')).must_equal true
     end
 
     it 'should be false for other restful actions' do
-      selected?('show', 'settings').must_equal false
-      selected?('update', 'settings').must_equal false
+      _(selected?('show', 'settings')).must_equal false
+      _(selected?('update', 'settings')).must_equal false
     end
   end
 end

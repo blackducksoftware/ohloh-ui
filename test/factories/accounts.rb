@@ -15,7 +15,7 @@ FactoryBot.define do
     current_password { |account| account.send(:password) }
     twitter_account { 'openhub' }
     name { Faker::Name.name + rand(999_999).to_s }
-    about_raw { Faker::Lorem.characters(10) }
+    about_raw { Faker::Lorem.characters(number: 10) }
     activated_at { Time.current }
     activation_code { nil }
     country_code { 'us' }
@@ -57,7 +57,7 @@ FactoryBot.define do
     association :markup
   end
 
-  # Note: All code downard is for spammer cleanup/reverifications
+  # NOTE: All code downard is for spammer cleanup/reverifications
   factory :unverified_account, parent: :account do
     association :github_verification, strategy: :null
     association :reverification_tracker, strategy: :null

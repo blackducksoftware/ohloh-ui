@@ -7,13 +7,13 @@ class ProjectParamsBuilderTest < ActiveSupport::TestCase
     before do
       @license = create(:license, kb_id: 'ad705c59-6893-4980-bdbf-0837f1823cc4')
       @editor = Account.find_by(login: 'ohloh_slave')
-      @row = { 'project_id': '585910', 'n_customers_12mo': '470', 'channel_id': '8360077',
-               'owner_name': 'kelektiv/node-uuid', 'module_branch': 'main',
-               'description': 'Rigorous implementation of RFC4122 (v1 and v4) UUIDs.',
-               'license_set_id': '113903536',
-               'simple_form': { 'type': 'CONJUNCTIVE',
-                                'set': [{ 'licenseId': 'ad705c59-6893-4980-bdbf-0837f1823cc4',
-                                          'discoveredAs': 'MIT' }.with_indifferent_access] }.to_json }
+      @row = { project_id: '585910', n_customers_12mo: '470', channel_id: '8360077',
+               owner_name: 'kelektiv/node-uuid', module_branch: 'master',
+               description: 'Rigorous implementation of RFC4122 (v1 and v4) UUIDs.',
+               license_set_id: '113903536',
+               simple_form: { type: 'CONJUNCTIVE',
+                              set: [{ licenseId: 'ad705c59-6893-4980-bdbf-0837f1823cc4',
+                                      discoveredAs: 'MIT' }.with_indifferent_access] }.to_json }
              .with_indifferent_access
     end
     it 'should create a project' do
@@ -34,9 +34,9 @@ class ProjectParamsBuilderTest < ActiveSupport::TestCase
       project_builder = ProjectParamsBuilder.new(@editor)
       project_builder.row = @row
       project_builder.build_project
-      project_builder.project.name.wont_equal project.name
-      project_builder.project.name.must_equal @row['owner_name']
-      project_builder.project.vanity_url.must_equal @row['owner_name'].tr('/', '_')
+      _(project_builder.project.name).wont_equal project.name
+      _(project_builder.project.name).must_equal @row['owner_name']
+      _(project_builder.project.vanity_url).must_equal @row['owner_name'].tr('/', '_')
     end
 
     it 'should not save the project if it already exists' do

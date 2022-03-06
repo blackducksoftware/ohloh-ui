@@ -30,14 +30,14 @@ class ProjectAdminTest < ActionDispatch::IntegrationTest
   describe 'create_analyze_job' do
     it 'must mark incomplete ProjectAnalysisJob as failed and create new' do
       job = ProjectAnalysisJob.create!(project_id: project.id)
-      Job.find(job.id).wont_be :failed?
+      _(Job.find(job.id)).wont_be :failed?
 
       assert_difference 'ProjectAnalysisJob.count' do
         get create_analyze_job_admin_project_path(project.id)
       end
 
-      Job.find(job.id).must_be :failed?
-      flash[:success].wont_be :empty?
+      _(Job.find(job.id)).must_be :failed?
+      _(flash[:success]).wont_be :empty?
     end
   end
 end

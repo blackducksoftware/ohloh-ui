@@ -2,41 +2,41 @@
 
 require 'test_helper'
 
-describe 'PositionFactoriesController' do
+class PositionFactoriesControllerTest < ActionController::TestCase
   let(:account) { create(:account) }
 
   describe 'create' do
     it 'must render error for logged out user' do
-      post :create, account_id: account.to_param
+      post :create, params: { account_id: account.to_param }
 
-      must_respond_with :redirect
-      must_redirect_to new_session_path
+      assert_response :redirect
+      assert_redirected_to new_session_path
     end
 
     it 'wont allow for other accounts' do
       login_as(account)
       other_account = create(:account)
 
-      post :create, account_id: other_account.to_param
+      post :create, params: { account_id: other_account.to_param }
 
-      must_redirect_to new_session_path
+      assert_redirected_to new_session_path
     end
 
     it 'must check for valid project_name' do
       login_as(account)
-      post :create, account_id: account.to_param
+      post :create, params: { account_id: account.to_param }
 
-      must_redirect_to projects_path
-      flash[:error].must_equal I18n.t('position_factories.create.project_not_found', name: '')
+      assert_redirected_to projects_path
+      _(flash[:error]).must_equal I18n.t('position_factories.create.project_not_found', name: '')
     end
 
     it 'must check for valid committer_name' do
       login_as(account)
       project = create(:project)
-      post :create, account_id: account.to_param, project_name: project.name, committer_name: 'NonExistent'
+      post :create, params: { account_id: account.to_param, project_name: project.name, committer_name: 'NonExistent' }
 
-      must_redirect_to project_contributors_path(project)
-      flash[:error].must_equal I18n.t('position_factories.create.contributor_not_found', name: 'NonExistent')
+      assert_redirected_to project_contributors_path(project)
+      _(flash[:error]).must_equal I18n.t('position_factories.create.contributor_not_found', name: 'NonExistent')
     end
 
     describe 'current user already has a valid position' do
@@ -49,11 +49,11 @@ describe 'PositionFactoriesController' do
         Alias.expects(:create).returns(Alias.new(preferred_name: name1))
 
         login_as(account)
-        post :create, account_id: account.to_param, project_name: project.name, committer_name: name2.name
+        post :create, params: { account_id: account.to_param, project_name: project.name, committer_name: name2.name }
 
-        must_redirect_to account_positions_path(account)
-        flash[:success].must_equal I18n.t('position_factories.create.rename_commit_author',
-                                          name: name2.name, preferred_name: name1.name)
+        assert_redirected_to account_positions_path(account)
+        _(flash[:success]).must_equal I18n.t('position_factories.create.rename_commit_author',
+                                             name: name2.name, preferred_name: name1.name)
       end
 
       # Covers the case in which the user already has a position, and is trying to claim a second name.
@@ -70,11 +70,11 @@ describe 'PositionFactoriesController' do
         Alias.expects(:create).returns(Alias.new(preferred_name: name1))
 
         login_as(account)
-        post :create, account_id: account.to_param, project_name: project.name, committer_name: name2.name
+        post :create, params: { account_id: account.to_param, project_name: project.name, committer_name: name2.name }
 
-        must_redirect_to account_positions_path(account)
-        flash[:success].must_equal I18n.t('position_factories.create.rename_commit_author',
-                                          name: name2.name, preferred_name: name1.name)
+        assert_redirected_to account_positions_path(account)
+        _(flash[:success]).must_equal I18n.t('position_factories.create.rename_commit_author',
+                                             name: name2.name, preferred_name: name1.name)
       end
     end
 
@@ -89,14 +89,14 @@ describe 'PositionFactoriesController' do
       NameFact.create!(analysis: project.best_analysis, name: new_name)
 
       login_as(account)
-      post :create, account_id: account.to_param, project_name: project.name, committer_name: new_name.name
+      post :create, params: { account_id: account.to_param, project_name: project.name, committer_name: new_name.name }
 
-      must_redirect_to account_positions_path(account)
+      assert_redirected_to account_positions_path(account)
 
-      Position.find_by(name: old_name).wont_be :present?
+      _(Position.find_by(name: old_name)).wont_be :present?
       new_position = account.positions.first
-      new_position.project.must_equal project
-      new_position.name.must_equal new_name
+      _(new_position.project).must_equal project
+      _(new_position.name).must_equal new_name
     end
 
     it 'must successfully render new position page' do
@@ -105,11 +105,11 @@ describe 'PositionFactoriesController' do
       Account::PositionCore.any_instance.stubs(:ensure_position_or_alias!)
       login_as(account)
 
-      post :create, account_id: account.to_param, project_name: project.name, committer_name: name.name
+      post :create, params: { account_id: account.to_param, project_name: project.name, committer_name: name.name }
 
-      must_redirect_to new_account_position_path(account, project_name: project.name, committer_name: name.name)
-      account.positions.first.must_be_nil
-      flash[:success].must_equal I18n.t('position_factories.create.success', name: CGI.escapeHTML(name.name))
+      assert_redirected_to new_account_position_path(account, project_name: project.name, committer_name: name.name)
+      _(account.positions.first).must_be_nil
+      _(flash[:success]).must_equal I18n.t('position_factories.create.success', name: CGI.escapeHTML(name.name))
     end
   end
 end

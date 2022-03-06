@@ -14,32 +14,32 @@ class SlocMetricTest < ActiveSupport::TestCase
   describe 'commit_summaries' do
     it 'should return sloc metric commit summaries' do
       summary = SlocMetric.commit_summaries(@diff.commit, @analysis_sloc_set.analysis_id)
-      summary.length.must_equal 1
-      summary.first.code_added.must_equal 2
-      summary.first.code_removed.must_equal 1
+      _(summary.length).must_equal 1
+      _(summary.first.code_added).must_equal 2
+      _(summary.first.code_removed).must_equal 1
     end
 
     it 'should not return if file is ignored' do
       CodeSet.any_instance.stubs(:code_location).returns(code_location_stub)
       @analysis_sloc_set.update(ignore: "Disallow: #{@diff.fyle.name}")
       summary = SlocMetric.commit_summaries(@diff.commit, @analysis_sloc_set.analysis_id)
-      summary.length.must_equal 0
+      _(summary.length).must_equal 0
     end
 
     it 'should return data for allowed files' do
       CodeSet.any_instance.stubs(:code_location).returns(code_location_stub)
       @analysis_sloc_set.update(allowed_fyles: @diff.fyle.name.to_s)
       summary = SlocMetric.commit_summaries(@diff.commit, @analysis_sloc_set.analysis_id)
-      summary.length.must_equal 1
+      _(summary.length).must_equal 1
     end
   end
 
   describe 'diff_summaries' do
     it 'should return sloc metric of diffs summaries' do
       summary = SlocMetric.diff_summaries(@diff, @analysis_sloc_set.analysis_id)
-      summary.length.must_equal 1
-      summary.first.code_added.must_equal 2
-      summary.first.code_removed.must_equal 1
+      _(summary.length).must_equal 1
+      _(summary.first.code_added).must_equal 2
+      _(summary.first.code_removed).must_equal 1
     end
   end
 end

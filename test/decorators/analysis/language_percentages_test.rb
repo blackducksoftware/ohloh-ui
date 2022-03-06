@@ -16,31 +16,31 @@ class Analysis::LanguagePercentagesTest < ActiveSupport::TestCase
       Analysis::LanguagesBreakdown.any_instance.stubs(:map).returns(language_breakdown)
       results = Analysis::LanguagePercentages.new(analysis).collection
 
-      results.first.first.must_equal 1
-      results.first.second.must_equal 'XML'
-      results.first.third[:vanity_url].must_equal 'xml'
-      results.first.third[:percent].must_equal 30
-      results.first.third[:color].must_equal '555555'
+      _(results.first.first).must_equal 1
+      _(results.first.second).must_equal 'XML'
+      _(results.first.third[:vanity_url]).must_equal 'xml'
+      _(results.first.third[:percent]).must_equal 30
+      _(results.first.third[:color]).must_equal '555555'
 
-      results.second.first.must_equal 2
-      results.second.second.must_equal 'SQL'
-      results.second.third[:vanity_url].must_equal 'sql'
-      results.second.third[:percent].must_equal 23
-      results.second.third[:color].must_equal '493625'
+      _(results.second.first).must_equal 2
+      _(results.second.second).must_equal 'SQL'
+      _(results.second.third[:vanity_url]).must_equal 'sql'
+      _(results.second.third[:percent]).must_equal 23
+      _(results.second.third[:color]).must_equal '493625'
 
-      results.third.first.must_equal 3
-      results.third.second.must_equal 'HTML'
-      results.third.third[:vanity_url].must_equal 'html'
-      results.third.third[:percent].must_equal 20
-      results.third.third[:color].must_equal '47A400'
+      _(results.third.first).must_equal 3
+      _(results.third.second).must_equal 'HTML'
+      _(results.third.third[:vanity_url]).must_equal 'html'
+      _(results.third.third[:percent]).must_equal 20
+      _(results.third.third[:color]).must_equal '47A400'
 
-      assert_nil results.fourth.first
-      results.fourth.second.must_equal '3 Other'
-      results.fourth.third[:percent].must_equal 27
-      results.fourth.third[:color].must_equal '000000'
-      results.fourth.third[:composed_of].first.must_equal [4, 'CSS', { percent: 18 }]
-      results.fourth.third[:composed_of].second.must_equal [5, 'C++', { percent: 6 }]
-      results.fourth.third[:composed_of].last.must_equal [6, 'C', { percent: 3 }]
+      _(results.fourth.first).must_be_nil
+      _(results.fourth.second).must_equal '3 Other'
+      _(results.fourth.third[:percent]).must_equal 27
+      _(results.fourth.third[:color]).must_equal '000000'
+      _(results.fourth.third[:composed_of].first).must_equal [4, 'CSS', { percent: 18 }]
+      _(results.fourth.third[:composed_of].second).must_equal [5, 'C++', { percent: 6 }]
+      _(results.fourth.third[:composed_of].last).must_equal [6, 'C', { percent: 3 }]
     end
   end
 end

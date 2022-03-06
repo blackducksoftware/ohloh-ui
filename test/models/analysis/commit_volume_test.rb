@@ -16,8 +16,8 @@ class Analysis::CommitVolumeTest < ActiveSupport::TestCase
     it 'must return preferred_name and commit count' do
       results = Analysis::CommitVolume.new(@analysis, '2 months').collection
 
-      results.first[0].must_equal @analysis_alias.preferred_name.name
-      results.first[1].must_equal 1
+      _(results.first[0]).must_equal @analysis_alias.preferred_name.name
+      _(results.first[1]).must_equal 1
     end
   end
 end

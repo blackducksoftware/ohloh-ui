@@ -63,26 +63,26 @@ class AnlysisDecoratorTest < ActiveSupport::TestCase
   describe 'display_chart?' do
     it 'should return false and no_commits when commit count is nil' do
       analysis.stubs(:commit_count).returns(nil)
-      analysis.decorate.display_chart?.must_equal [false, :no_commits]
+      _(analysis.decorate.display_chart?).must_equal [false, :no_commits]
     end
 
     it 'should return false and no_commits when commit count is negative' do
       analysis.stubs(:commit_count).returns(-1)
-      analysis.decorate.display_chart?.must_equal [false, :no_commits]
+      _(analysis.decorate.display_chart?).must_equal [false, :no_commits]
     end
 
     it 'should return false and no_understood_lang when markup_total and logic_total is negative' do
       analysis.stubs(:commit_count).returns(1)
       analysis.stubs(:logic_total).returns(-1)
       analysis.stubs(:markup_total).returns(-1)
-      analysis.decorate.display_chart?.must_equal [false, :no_understood_lang]
+      _(analysis.decorate.display_chart?).must_equal [false, :no_understood_lang]
     end
 
     it 'should return true and nil when logic_total, markup_total and commit_count are present' do
       analysis.stubs(:markup_total).returns(1)
       analysis.stubs(:logic_total).returns(1)
       analysis.stubs(:commit_count).returns(1)
-      analysis.decorate.display_chart?.must_equal [true, nil]
+      _(analysis.decorate.display_chart?).must_equal [true, nil]
     end
   end
 
@@ -91,16 +91,16 @@ class AnlysisDecoratorTest < ActiveSupport::TestCase
     let(:ad) { AnalysisDecorator.new(na) }
 
     it 'should have 0 for all differences' do
-      ad.commits_difference.must_equal 0
-      ad.committers_difference.must_equal 0
-      ad.affiliated_commits_difference.must_equal 0
-      ad.affiliated_committers_difference.must_equal 0
-      ad.outside_commits_difference.must_equal 0
-      ad.outside_committers_difference.must_equal 0
+      _(ad.commits_difference).must_equal 0
+      _(ad.committers_difference).must_equal 0
+      _(ad.affiliated_commits_difference).must_equal 0
+      _(ad.affiliated_committers_difference).must_equal 0
+      _(ad.outside_commits_difference).must_equal 0
+      _(ad.outside_committers_difference).must_equal 0
     end
 
     it 'should not display a chart' do
-      ad.display_chart?.must_equal [false, :no_commits]
+      _(ad.display_chart?).must_equal [false, :no_commits]
     end
   end
 
@@ -112,6 +112,6 @@ class AnlysisDecoratorTest < ActiveSupport::TestCase
   end
 
   def commit_difference(column, count)
-    analysis.decorate.send(column).must_equal count
+    _(analysis.decorate.send(column)).must_equal count
   end
 end

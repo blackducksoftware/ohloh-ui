@@ -10,13 +10,13 @@ class HelpfulTest < ActiveSupport::TestCase
 
   it 'test cant helpful your own review' do
     h = review.helpfuls.create(account_id: review.account_id)
-    h.wont_be :valid?
-    h.errors[:account].must_equal ["can't moderate your own review"]
+    _(h).wont_be :valid?
+    _(h.errors[:account]).must_equal ["can't moderate your own review"]
   end
 
   it 'test target' do
     h = review.helpfuls.create!(account_id: create(:account).id)
-    h.review.must_equal review
+    _(h.review).must_equal review
   end
 
   it 'test after save updates helpful score' do

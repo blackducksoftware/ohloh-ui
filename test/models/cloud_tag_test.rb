@@ -15,7 +15,7 @@ class CloudTagTest < ActiveSupport::TestCase
   describe 'list' do
     it 'should return a tag list based on the day' do
       Time.any_instance.stubs(:day).returns(24)
-      CloudTag.list.must_equal tag_list
+      _(CloudTag.list).must_equal tag_list
     end
   end
 end

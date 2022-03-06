@@ -9,7 +9,7 @@ class KudosHelperTest < ActionView::TestCase
     it 'should return kudo name' do
       position = create(:position)
       kudo = create(:kudo, name_id: position.name_id, project_id: position.project_id)
-      kudos_aka_name(kudo).must_match kudo.name.name
+      _(kudos_aka_name(kudo)).must_match kudo.name.name
     end
   end
 end

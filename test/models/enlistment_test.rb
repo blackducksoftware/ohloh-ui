@@ -9,15 +9,15 @@ class EnlistmentTest < ActiveSupport::TestCase
   describe 'ignore_examples' do
     it 'should be nil by default' do
       enlistment.stubs(:code_location).returns(code_location_stub)
-      enlistment.ignore_examples.must_be_nil
+      _(enlistment.ignore_examples).must_be_nil
     end
 
     it 'should return fyles' do
       code_location = code_location_stub
       code_location.stubs(:best_code_set).returns(fyle.code_set)
       enlistment.stubs(:code_location).returns(code_location)
-      enlistment.ignore_examples.count.must_equal 1
-      enlistment.ignore_examples.first.must_equal fyle.name
+      _(enlistment.ignore_examples.count).must_equal 1
+      _(enlistment.ignore_examples.first).must_equal fyle.name
     end
   end
 
@@ -27,9 +27,9 @@ class EnlistmentTest < ActiveSupport::TestCase
       Enlistment.any_instance.stubs(:ensure_forge_and_job)
       code_location_id = create_code_location_with_code_set_and_enlistment
       create(:failed_job, code_location_id: code_location_id, current_step_at: 1.month.ago)
-      Enlistment.joins('join code_locations on code_location_id = code_locations.id
+      _(Enlistment.joins('join code_locations on code_location_id = code_locations.id
                         join repositories on code_locations.repository_id = repositories.id')
-                .by_last_update.count.must_equal 1
+                  .by_last_update.count).must_equal 1
     end
 
     it 'should order based on the jobs.status and current_step_at' do
@@ -44,13 +44,13 @@ class EnlistmentTest < ActiveSupport::TestCase
       create(:complete_job, code_location_id: cl2, current_step_at: 1.month.ago)
       create(:failed_job, code_location_id: cl2, current_step_at: 1.hour.ago)
       create(:fetch_job, code_location_id: cl1, current_step_at: 1.week.ago)
-      Enlistment.by_update_status.pluck(:code_location_id).must_equal [cl2, cl3, cl1, cl4].map(&:to_i)
+      _(Enlistment.by_update_status.pluck(:code_location_id)).must_equal [cl2, cl3, cl1, cl4].map(&:to_i)
     end
   end
 
   describe 'analysis_sloc_set' do
     it 'should return nil if best_analysis is nil' do
-      assert_nil enlistment.analysis_sloc_set
+      _(enlistment.analysis_sloc_set).must_be_nil
     end
 
     it 'should return analysis_sloc_set' do
@@ -61,7 +61,7 @@ class EnlistmentTest < ActiveSupport::TestCase
                                      values (#{analysis_sloc_set.sloc_set.code_set_id})")
       code_location_id = Enlistment.connection.execute('select max(id) from code_locations').values[0][0]
       enlistment.update!(code_location_id: code_location_id)
-      enlistment.analysis_sloc_set.must_equal analysis_sloc_set
+      _(enlistment.analysis_sloc_set).must_equal analysis_sloc_set
     end
   end
 
@@ -79,7 +79,7 @@ class EnlistmentTest < ActiveSupport::TestCase
       enlistment.update!(project_id: project.id)
       enlistment.unstub(:ensure_forge_and_job)
       enlistment.ensure_forge_and_job
-      project.jobs.count.must_equal 1
+      _(project.jobs.count).must_equal 1
     end
   end
 
@@ -87,7 +87,7 @@ class EnlistmentTest < ActiveSupport::TestCase
     assert_difference('KnowledgeBaseStatus.count', 1) do
       enlistment
     end
-    KnowledgeBaseStatus.find_by(project_id: enlistment.project_id).in_sync.must_equal false
+    _(KnowledgeBaseStatus.find_by(project_id: enlistment.project_id).in_sync).must_equal false
   end
 end
 

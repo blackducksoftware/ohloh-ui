@@ -24,10 +24,10 @@ class Analysis::CodeHistoryChartTest < ActiveSupport::TestCase
     it 'should return code_history chart data' do
       series = chart.data['series']
 
-      series.first['id'].must_equal 'code'
-      series.map { |d| d['data'].last }.must_equal [[@time_integer, 5], [@time_integer, 10], [@time_integer, 3]]
-      series.map { |d| d['name'] }.must_equal %w[Code Comments Blanks]
-      assert_nil chart.data['scrollbar']
+      _(series.first['id']).must_equal 'code'
+      _(series.map { |d| d['data'].last }).must_equal [[@time_integer, 5], [@time_integer, 10], [@time_integer, 3]]
+      _(series.map { |d| d['name'] }).must_equal %w[Code Comments Blanks]
+      _(chart.data['scrollbar']).must_be_nil
     end
   end
 
@@ -36,10 +36,10 @@ class Analysis::CodeHistoryChartTest < ActiveSupport::TestCase
       data = chart.data_for_lines_of_code
       series = chart.data_for_lines_of_code['series']
 
-      series.first['id'].must_equal 'code'
-      series.map { |d| d['name'] }.must_equal %w[Code Comments Blanks]
-      series.map { |d| d['data'].last }.must_equal [[@time_integer, 5], [@time_integer, 10], [@time_integer, 3]]
-      data['scrollbar']['enabled'].must_equal false
+      _(series.first['id']).must_equal 'code'
+      _(series.map { |d| d['name'] }).must_equal %w[Code Comments Blanks]
+      _(series.map { |d| d['data'].last }).must_equal [[@time_integer, 5], [@time_integer, 10], [@time_integer, 3]]
+      _(data['scrollbar']['enabled']).must_equal false
     end
   end
 end

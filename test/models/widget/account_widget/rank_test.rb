@@ -8,13 +8,13 @@ class RankTest < ActiveSupport::TestCase
 
   describe 'width' do
     it 'should return 32' do
-      widget.width.must_equal 32
+      _(widget.width).must_equal 32
     end
   end
 
   describe 'height' do
     it 'should return 24' do
-      widget.height.must_equal 24
+      _(widget.height).must_equal 24
     end
   end
 
@@ -29,7 +29,7 @@ class RankTest < ActiveSupport::TestCase
 
   describe 'position' do
     it 'should return 2' do
-      widget.position.must_equal 2
+      _(widget.position).must_equal 2
     end
   end
 end

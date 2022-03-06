@@ -2,77 +2,77 @@
 
 require 'test_helper'
 
-describe 'SessionProjectsController' do
+class SessionProjectsControllerTest < ActionController::TestCase
   let(:project) { create(:project) }
 
   describe 'index' do
     it 'must render successfully' do
-      xhr :get, :index
+      get :index, xhr: true
 
-      must_respond_with :success
+      assert_response :success
     end
 
     it 'must prevent bot access' do
       ApplicationController.any_instance.stubs(:bot?).returns(true)
 
-      xhr :get, :index
+      get :index, xhr: true
 
-      must_respond_with :forbidden
+      assert_response :forbidden
     end
   end
 
   describe 'create' do
     it 'must render successfully' do
-      xhr :post, :create, project_id: project.to_param
+      post :create, params: { project_id: project.to_param }, xhr: true
 
-      must_respond_with :success
+      assert_response :success
 
-      session[:session_projects].must_equal [project.to_param]
+      _(session[:session_projects]).must_equal [project.to_param]
       assert_select "form#sp_frm_#{project.to_param}"
     end
 
     it 'must prevent bot access' do
       ApplicationController.any_instance.stubs(:bot?).returns(true)
 
-      xhr :post, :create, project_id: project.to_param
+      post :create, params: { project_id: project.to_param }, xhr: true
 
-      must_respond_with :forbidden
+      assert_response :forbidden
 
-      response.body.must_equal ''
-      assert_nil session[:session_projects]
+      _(response.body).must_equal ''
+      _(session[:session_projects]).must_be_nil
     end
 
     it 'wont store duplicates in session' do
       session[:session_projects] = [project.to_param]
-      xhr :post, :create, project_id: project.to_param
+      post :create, params: { project_id: project.to_param }, xhr: true
 
-      must_respond_with :success
+      assert_response :success
 
-      session[:session_projects].must_equal [project.to_param]
+      _(session[:session_projects]).must_equal [project.to_param]
     end
 
     it 'wont store non existent project' do
-      -> { xhr :post, :create, project_id: 'not_found' }.must_raise(ActiveRecord::RecordNotFound)
-      session[:session_projects].must_be_nil
+      _(-> { post :create, params: { project_id: 'not_found' }, xhr: true }).must_raise(ActiveRecord::RecordNotFound)
+      _(session[:session_projects]).must_be_nil
     end
 
     it 'must remove non existent projects in session' do
       session[:session_projects] = ['does_not_exist']
-      xhr :post, :create, project_id: project.to_param
+      post :create, params: { project_id: project.to_param }, xhr: true
 
-      must_respond_with :success
-      session[:session_projects].must_equal [project.to_param]
+      assert_response :success
+      _(session[:session_projects]).must_equal [project.to_param]
     end
 
     it 'must allow three projects in session' do
       project2 = create(:project)
       project3 = create(:project)
       session[:session_projects] = [project2.to_param, project3.to_param]
-      xhr :post, :create, project_id: project.to_param
+      post :create, params: { project_id: project.to_param }, xhr: true
 
-      must_respond_with :success
+      assert_response :success
 
-      session[:session_projects].must_equal [project2.to_param, project3.to_param, project.to_param]
+      _(session[:session_projects]).must_equal [project2.to_param, project3.to_param, project.to_param]
     end
 
     it 'wont allow a new project when session already has 3 projects' do
@@ -81,10 +81,10 @@ describe 'SessionProjectsController' do
       project4 = create(:project)
       session[:session_projects] = [project2.to_param, project3.to_param, project4.to_param]
 
-      xhr :post, :create, project_id: project.to_param
-      must_respond_with :forbidden
+      post :create, params: { project_id: project.to_param }, xhr: true
+      assert_response :forbidden
 
-      session[:session_projects].must_equal [project2.to_param, project3.to_param, project4.to_param]
+      _(session[:session_projects]).must_equal [project2.to_param, project3.to_param, project4.to_param]
     end
   end
 
@@ -94,28 +94,28 @@ describe 'SessionProjectsController' do
       project3 = create(:project)
       project4 = create(:project)
       session[:session_projects] = [project2.to_param, project3.to_param, project4.to_param]
-      xhr :delete, :destroy, id: project3.to_param
+      delete :destroy, params: { id: project3.to_param }, xhr: true
 
-      must_respond_with :success
+      assert_response :success
 
-      session[:session_projects].must_equal [project2.to_param, project4.to_param]
-      assigns[:session_projects].must_equal [project2, project4]
+      _(session[:session_projects]).must_equal [project2.to_param, project4.to_param]
+      _(assigns[:session_projects]).must_equal [project2, project4]
     end
 
     it 'must prevent bot access' do
       ApplicationController.any_instance.stubs(:bot?).returns(true)
 
-      xhr :delete, :destroy, id: project.to_param
+      delete :destroy, params: { id: project.to_param }, xhr: true
 
-      must_respond_with :forbidden
-      assert_nil session[:session_projects]
+      assert_response :forbidden
+      _(session[:session_projects]).must_be_nil
     end
 
     it 'wont fail when session has no projects' do
-      xhr :delete, :destroy, id: project.to_param
+      delete :destroy, params: { id: project.to_param }, xhr: true
 
-      must_respond_with :success
-      session[:session_projects].must_equal []
+      assert_response :success
+      _(session[:session_projects]).must_equal []
     end
   end
 end

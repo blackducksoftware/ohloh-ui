@@ -20,7 +20,7 @@ class AccountAnalysisLanguageFactTest < ActiveSupport::TestCase
     it 'should return ordered results' do
       result = [fact2.id, fact1.id, fact3.id, fact4.id, fact6.id, fact5.id]
       ordered_facts = AccountAnalysisLanguageFact.where.not(language_id: nil).ordered
-      ordered_facts.map(&:id).must_equal result
+      _(ordered_facts.map(&:id)).must_equal result
     end
   end
 
@@ -28,7 +28,7 @@ class AccountAnalysisLanguageFactTest < ActiveSupport::TestCase
     it 'should return ordered by most commits' do
       result = [fact1.id, fact6.id, fact5.id, fact4.id, fact3.id, fact2.id]
       ordered_facts = AccountAnalysisLanguageFact.where.not(language_id: nil).with_language_and_projects
-      ordered_facts.map(&:id).must_equal result
+      _(ordered_facts.map(&:id)).must_equal result
     end
   end
 end

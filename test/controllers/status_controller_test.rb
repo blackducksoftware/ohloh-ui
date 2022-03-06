@@ -2,11 +2,11 @@
 
 require 'test_helper'
 
-describe 'StatusControllerTest' do
+class StatusControllerTest < ActionController::TestCase
   describe 'age_spark' do
     it 'should return spark image' do
       get :age_spark
-      must_respond_with :ok
+      assert_response :ok
     end
   end
 end

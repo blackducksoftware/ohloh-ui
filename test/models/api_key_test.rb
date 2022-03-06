@@ -5,15 +5,15 @@ require 'test_helper'
 class ApiKeyTest < ActiveSupport::TestCase
   it 'defaults are populated on new' do
     api_key = create(:api_key)
-    api_key.daily_limit.must_equal ApiKey::DEFAULT_DAILY_LIMIT
-    api_key.status.must_equal ApiKey::STATUS_OK
+    _(api_key.daily_limit).must_equal ApiKey::DEFAULT_DAILY_LIMIT
+    _(api_key.status).must_equal ApiKey::STATUS_OK
   end
 
   it 'may_i_have_another? when under limit' do
     api_key = create(:api_key)
-    api_key.daily_count.must_equal 0
-    api_key.may_i_have_another?.must_equal true
-    api_key.daily_count.must_equal 1
+    _(api_key.daily_count).must_equal 0
+    _(api_key.may_i_have_another?).must_equal true
+    _(api_key.daily_count).must_equal 1
   end
 
   it 'may_i_have_another? a new day dawns' do
@@ -21,27 +21,27 @@ class ApiKeyTest < ActiveSupport::TestCase
     api_key = create(:api_key, day_began_at: Time.current - 1.year,
                                total_count: big_number,
                                daily_count: 27)
-    api_key.may_i_have_another?.must_equal true
-    api_key.total_count.must_equal big_number + 1
-    api_key.daily_count.must_equal 1
+    _(api_key.may_i_have_another?).must_equal true
+    _(api_key.total_count).must_equal big_number + 1
+    _(api_key.daily_count).must_equal 1
   end
 
   it 'may_i_have_another? when reached limit' do
     api_key = create(:api_key, daily_count: ApiKey::DEFAULT_DAILY_LIMIT)
-    api_key.may_i_have_another?.must_equal false
+    _(api_key.may_i_have_another?).must_equal false
     api_key.reload
-    api_key.daily_count.must_equal ApiKey::DEFAULT_DAILY_LIMIT
-    api_key.total_count.must_equal 0
+    _(api_key.daily_count).must_equal ApiKey::DEFAULT_DAILY_LIMIT
+    _(api_key.total_count).must_equal 0
   end
 
   it 'may_i_have_another? false always for disabled_accounts' do
     api_key = create(:api_key, status: ApiKey::STATUS_DISABLED)
-    api_key.may_i_have_another?.must_equal false
+    _(api_key.may_i_have_another?).must_equal false
   end
 
   it 'may_i_have_another? a new day never dawns for disabled_accounts' do
     api_key = create(:api_key, day_began_at: Time.current - 1.year, status: ApiKey::STATUS_DISABLED)
-    api_key.may_i_have_another?.must_equal false
+    _(api_key.may_i_have_another?).must_equal false
   end
 
   it 'reset_all! works as expected' do
@@ -60,17 +60,17 @@ class ApiKeyTest < ActiveSupport::TestCase
     api_key2.reload
     api_key3.reload
 
-    api_key1.daily_count.must_equal 0
-    api_key1.day_began_at.wont_equal day_began_at
-    api_key1.status.must_equal ApiKey::STATUS_OK
+    _(api_key1.daily_count).must_equal 0
+    _(api_key1.day_began_at).wont_equal day_began_at
+    _(api_key1.status).must_equal ApiKey::STATUS_OK
 
-    api_key2.daily_count.must_equal 0
-    api_key2.day_began_at.wont_equal day_began_at
-    api_key2.status.must_equal ApiKey::STATUS_OK
+    _(api_key2.daily_count).must_equal 0
+    _(api_key2.day_began_at).wont_equal day_began_at
+    _(api_key2.status).must_equal ApiKey::STATUS_OK
 
-    api_key3.daily_count.must_equal 0
-    api_key3.day_began_at.wont_equal day_began_at
-    api_key3.status.must_equal ApiKey::STATUS_DISABLED
+    _(api_key3.daily_count).must_equal 0
+    _(api_key3.day_began_at).wont_equal day_began_at
+    _(api_key3.status).must_equal ApiKey::STATUS_DISABLED
   end
 
   it 'must successfully create a nested oauth application' do
@@ -78,9 +78,9 @@ class ApiKeyTest < ActiveSupport::TestCase
     api_key = create(:api_key, oauth_application_attributes: { name: application_name,
                                                                redirect_uri: Faker::Internet.url })
 
-    api_key.oauth_application.name.must_equal application_name
-    api_key.oauth_application.uid.must_be :present?
-    api_key.oauth_application.secret.must_be :present?
+    _(api_key.oauth_application.name).must_equal application_name
+    _(api_key.oauth_application.uid).must_be :present?
+    _(api_key.oauth_application.secret).must_be :present?
   end
 
   it 'must successfully update a nested oauth application' do
@@ -89,7 +89,7 @@ class ApiKeyTest < ActiveSupport::TestCase
     api_key.update!(oauth_application_attributes: { name: application_name,
                                                     redirect_uri: Faker::Internet.url })
 
-    api_key.oauth_application.name.must_equal application_name
+    _(api_key.oauth_application.name).must_equal application_name
   end
 
   describe '#find_for_oauth_application_uid' do
@@ -97,7 +97,7 @@ class ApiKeyTest < ActiveSupport::TestCase
       api_key = create(:api_key)
       oauth_application_uid = Doorkeeper::Application.last.uid
 
-      ApiKey.find_for_oauth_application_uid(oauth_application_uid).must_equal api_key
+      _(ApiKey.find_for_oauth_application_uid(oauth_application_uid)).must_equal api_key
     end
   end
 end

@@ -7,7 +7,7 @@ class NilNameFactTest < ActiveSupport::TestCase
 
   describe 'name' do
     it 'should return empty string' do
-      nil_name.name.must_equal ''
+      _(nil_name.name).must_equal ''
     end
   end
 end

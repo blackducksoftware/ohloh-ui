@@ -2,7 +2,7 @@
 
 require 'test_helper'
 
-describe 'SessionsController' do
+class SessionsControllerTest < ActionController::TestCase
   describe 'create' do
     let(:password) { Faker::Internet.password }
     let(:account) { create(:account, password: password) }
@@ -10,35 +10,35 @@ describe 'SessionsController' do
 
     describe 'success' do
       it 'must redirect to accounts/me after login' do
-        post :create, login: { login: account.login, password: password }
-        must_redirect_to '/accounts/me'
+        post :create, params: { login: { login: account.login, password: password } }
+        assert_redirected_to '/accounts/me'
       end
 
       it 'must reset auth_fail_count' do
         account.update!(auth_fail_count: 3)
-        post :create, login: { login: account.login, password: password }
-        Account.find(account.id).auth_fail_count.must_equal 0
+        post :create, params: { login: { login: account.login, password: password } }
+        _(Account.find(account.id).auth_fail_count).must_equal 0
       end
     end
 
     describe 'failure' do
       it 'must handle invalid email or login' do
-        post :create, login: { login: Faker::Name.name }
+        post :create, params: { login: { login: Faker::Name.name } }
 
-        must_render_template 'sessions/new'
-        flash.now[:error].must_equal I18n.t('flashes.failure_after_create')
+        assert_template 'sessions/new'
+        _(flash.now[:error]).must_equal I18n.t('flashes.failure_after_create')
       end
 
       it 'must increment auth failure count' do
         auth_fail_count = max_login_retries - 2
         account.update!(auth_fail_count: auth_fail_count)
-        post :create, login: { login: account.login }
+        post :create, params: { login: { login: account.login } }
 
-        must_render_template 'sessions/new'
-        must_respond_with :unauthorized
+        assert_template 'sessions/new'
+        assert_response :unauthorized
         account.reload
-        account.auth_fail_count.must_equal(auth_fail_count + 1)
-        flash.now[:error].must_equal I18n.t('flashes.failure_after_create')
+        _(account.auth_fail_count).must_equal(auth_fail_count + 1)
+        _(flash.now[:error]).must_equal I18n.t('flashes.failure_after_create')
         assert_not account.access.disabled?
       end
 
@@ -47,13 +47,13 @@ describe 'SessionsController' do
         account.update!(auth_fail_count: auth_fail_count)
         @controller.expects(:verify_recaptcha)
 
-        post :create, login: { login: account.login, password: password },
-                      'g-recaptcha-response': Faker::Internet.password
+        post :create, params: { login: { login: account.login, password: password },
+                                'g-recaptcha-response': Faker::Internet.password }
         account.reload
 
-        must_render_template 'sessions/new'
-        account.auth_fail_count.must_equal auth_fail_count
-        flash.now[:error].must_equal I18n.t('sessions.create.recaptcha_failure')
+        assert_template 'sessions/new'
+        _(account.auth_fail_count).must_equal auth_fail_count
+        _(flash.now[:error]).must_equal I18n.t('sessions.create.recaptcha_failure')
         assert_not account.access.disabled?
       end
 
@@ -62,13 +62,13 @@ describe 'SessionsController' do
         account.update!(auth_fail_count: auth_fail_count)
         @controller.expects(:verify_recaptcha)
 
-        post :create, login: { login: account.login }, 'g-recaptcha-response': Faker::Internet.password
+        post :create, params: { login: { login: account.login }, 'g-recaptcha-response': Faker::Internet.password }
         account.reload
 
-        must_render_template 'sessions/new'
-        must_select('label.control-label').children.first.text.must_equal I18n.t('shared.captcha.captcha_label')
-        account.auth_fail_count.must_equal auth_fail_count
-        flash.now[:error].must_equal I18n.t('sessions.create.recaptcha_failure')
+        assert_template 'sessions/new'
+        _(assert_select('label.control-label').children.first.text).must_equal I18n.t('shared.captcha.captcha_label')
+        _(account.auth_fail_count).must_equal auth_fail_count
+        _(flash.now[:error]).must_equal I18n.t('sessions.create.recaptcha_failure')
         assert_not account.access.disabled?
       end
 
@@ -77,45 +77,45 @@ describe 'SessionsController' do
         account.update!(auth_fail_count: auth_fail_count)
 
         DataDogReport.expects(:error)
-        AccountMailer.expects(:notify_disabled_account_for_login_failure).returns(stub(:deliver_now))
+        AccountMailer.expects(:notify_disabled_account_for_login_failure).returns(stub(deliver_now: nil))
         @controller.expects(:verify_recaptcha).returns(true)
 
-        post :create, login: { login: account.login }, 'g-recaptcha-response': Faker::Internet.password
+        post :create, params: { login: { login: account.login }, 'g-recaptcha-response': Faker::Internet.password }
         account.reload
 
-        must_render_template 'sessions/new'
-        account.auth_fail_count.must_equal(auth_fail_count + 1)
+        assert_template 'sessions/new'
+        _(account.auth_fail_count).must_equal(auth_fail_count + 1)
         assert account.access.disabled?
       end
 
       it 'must render a captcha form after 3 failed login attempts' do
         account.update!(auth_fail_count: 3)
 
-        post :create, login: { login: account.login }
+        post :create, params: { login: { login: account.login } }
 
-        assigns(:ask_for_recaptcha).must_equal true
-        must_render_template 'sessions/new'
-        must_select('label.control-label').children.first.text.must_equal I18n.t('shared.captcha.captcha_label')
+        _(assigns(:ask_for_recaptcha)).must_equal true
+        assert_template 'sessions/new'
+        _(assert_select('label.control-label').children.first.text).must_equal I18n.t('shared.captcha.captcha_label')
       end
 
       it 'must reset auth_fail_count if login fails after FAILED_LOGIN_TIMEOUT' do
         auth_fail_count = 3
         elapsed_time = ENV['FAILED_LOGIN_TIMEOUT'].to_i.minutes.ago - 1.minute
         account.update!(auth_fail_count: auth_fail_count, updated_at: elapsed_time)
-        post :create, login: { login: account.login }
+        post :create, params: { login: { login: account.login } }
 
-        must_respond_with :unauthorized
+        assert_response :unauthorized
         account.reload
-        account.auth_fail_count.must_equal 1
+        _(account.auth_fail_count).must_equal 1
         assert_not account.access.disabled?
       end
 
       it 'must show appropriate message to disabled users' do
         account.update!(level: Account::Access::DISABLED)
-        post :create, login: { login: account.login, password: password }
+        post :create, params: { login: { login: account.login, password: password } }
 
-        must_render_template 'sessions/new'
-        flash.now[:error].must_equal I18n.t('accounts.disabled_error')
+        assert_template 'sessions/new'
+        _(flash.now[:error]).must_equal I18n.t('accounts.disabled_error')
       end
     end
   end
@@ -123,14 +123,14 @@ describe 'SessionsController' do
   describe 'health' do
     it 'must return the current timestamp when DB is accessible' do
       get :health
-      must_respond_with :success
-      response.body.must_match Time.current.strftime('%F %H')
+      assert_response :success
+      _(response.body).must_match Time.current.strftime('%F %H')
     end
 
     it 'must return status 500 when DB is inaccessible' do
       ActiveRecord::Base.stubs(:connected?)
       get :health
-      response.status.must_equal 500
+      _(response.status).must_equal 500
     end
   end
 end

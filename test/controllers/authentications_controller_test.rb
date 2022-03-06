@@ -2,7 +2,7 @@
 
 require 'test_helper'
 
-describe 'AuthenticationsController' do
+class AuthenticationsControllerTest < ActionController::TestCase
   let(:account) { create(:account) }
   let(:account_params) do
     FactoryBot.attributes_for(:account).select do |k, _v|
@@ -36,8 +36,8 @@ describe 'AuthenticationsController' do
     it 'must redirect to the login page for users who have not logged in' do
       get :new
 
-      must_respond_with :redirect
-      must_redirect_to new_session_path
+      assert_response :redirect
+      assert_redirected_to new_session_path
     end
 
     it 'must render new page correctly for new users' do
@@ -46,9 +46,9 @@ describe 'AuthenticationsController' do
 
       get :new
 
-      must_respond_with :ok
-      assigns(:account).must_be :present?
-      assigns(:account).firebase_verification.must_be :present?
+      assert_response :ok
+      _(assigns(:account)).must_be :present?
+      _(assigns(:account).firebase_verification).must_be :present?
     end
 
     it 'wont allow access to verified users' do
@@ -56,7 +56,7 @@ describe 'AuthenticationsController' do
 
       get :new
 
-      must_redirect_to root_path
+      assert_redirected_to root_path
     end
   end
 
@@ -66,11 +66,11 @@ describe 'AuthenticationsController' do
     it 'must create an account using github' do
       VCR.use_cassette('GithubVerification') do
         assert_difference('Account.count', 1) do
-          get :github_callback, code: Faker::Lorem.word
+          get :github_callback, params: { code: Faker::Lorem.word }
         end
 
-        request.env[:clearance].current_user.id.must_equal Account.last.id
-        must_redirect_to Account.last
+        _(request.env[:clearance].current_user.id).must_equal Account.last.id
+        assert_redirected_to Account.last
       end
     end
 
@@ -79,10 +79,10 @@ describe 'AuthenticationsController' do
       @controller.stubs(:github_api).returns(github_stub)
 
       assert_difference('Account.count') do
-        get :github_callback, code: Faker::Lorem.word
+        get :github_callback, params: { code: Faker::Lorem.word }
       end
 
-      must_redirect_to projects_path
+      assert_redirected_to projects_path
     end
 
     it 'must create verification for logged in user' do
@@ -92,13 +92,13 @@ describe 'AuthenticationsController' do
       @controller.stubs(:github_api).returns(github_account_stub)
 
       assert_no_difference('Account.count') do
-        get :github_callback, code: Faker::Lorem.word
+        get :github_callback, params: { code: Faker::Lorem.word }
       end
 
       account.reload
-      must_redirect_to projects_path
-      flash[:notice].must_equal I18n.t('verification_completed')
-      account.github_verification.must_be :present?
+      assert_redirected_to projects_path
+      _(flash[:notice]).must_equal I18n.t('verification_completed')
+      _(account.github_verification).must_be :present?
     end
 
     it 'must only allow accounts that are atleast a month old' do
@@ -107,12 +107,12 @@ describe 'AuthenticationsController' do
 
         GithubApi.any_instance.stubs(:created_at).returns(20.days.ago)
         assert_no_difference('Account.count', 1) do
-          get :github_callback, code: Faker::Lorem.word
+          get :github_callback, params: { code: Faker::Lorem.word }
         end
 
-        request.env[:clearance].current_user.must_be_nil
-        must_redirect_to new_account_path
-        flash[:notice].must_equal I18n.t('authentications.github_callback.invalid_github_account')
+        _(request.env[:clearance].current_user).must_be_nil
+        assert_redirected_to new_account_path
+        _(flash[:notice]).must_equal I18n.t('authentications.github_callback.invalid_github_account')
       end
     end
 
@@ -123,11 +123,11 @@ describe 'AuthenticationsController' do
         GithubApi.any_instance.stubs(:created_at).returns(2.months.ago)
 
         assert_no_difference('Account.count', 1) do
-          get :github_callback, code: Faker::Lorem.word
+          get :github_callback, params: { code: Faker::Lorem.word }
         end
 
-        must_redirect_to new_authentication_path
-        flash[:notice].must_equal I18n.t('authentications.github_callback.invalid_github_account')
+        assert_redirected_to new_authentication_path
+        _(flash[:notice]).must_equal I18n.t('authentications.github_callback.invalid_github_account')
       end
     end
 
@@ -138,14 +138,14 @@ describe 'AuthenticationsController' do
       @controller.stubs(:github_api).returns(github_account_stub)
 
       assert_no_difference('Account.count') do
-        get :github_callback, code: Faker::Lorem.word
+        get :github_callback, params: { code: Faker::Lorem.word }
       end
 
       account.reload
-      must_redirect_to new_authentication_path
+      assert_redirected_to new_authentication_path
       error_messages = account.errors.messages[:'github_verification.token']
-      error_messages.must_be :present?
-      flash[:notice].must_equal error_messages.last
+      _(error_messages).must_be :present?
+      _(flash[:notice]).must_equal error_messages.last
     end
 
     it 'must display errors when github signup fails for new user' do
@@ -153,24 +153,24 @@ describe 'AuthenticationsController' do
       @controller.stubs(:github_api).returns(github_stub)
 
       assert_no_difference('Account.count') do
-        get :github_callback, code: Faker::Lorem.word
+        get :github_callback, params: { code: Faker::Lorem.word }
       end
 
-      must_redirect_to new_account_path
-      flash[:notice].must_match(/can't be blank/)
+      assert_redirected_to new_account_path
+      _(flash[:notice]).must_match(/can't be blank/)
     end
 
     it 'must assign a random password and set activated_at for new github user' do
       @controller.stubs(:github_api).returns(github_stub)
 
       assert_difference('Account.count', 1) do
-        get :github_callback, code: Faker::Lorem.word
+        get :github_callback, params: { code: Faker::Lorem.word }
       end
 
       account = Account.last
-      account.encrypted_password.must_be :present?
-      account.activated_at.must_be :present?
-      account.login.must_equal github_stub.login
+      _(account.encrypted_password).must_be :present?
+      _(account.activated_at).must_be :present?
+      _(account.login).must_equal github_stub.login
     end
 
     it 'must assign a random login when github login already exists' do
@@ -178,12 +178,12 @@ describe 'AuthenticationsController' do
       @controller.stubs(:github_api).returns(github_stub)
 
       assert_difference('Account.count', 1) do
-        get :github_callback, code: Faker::Lorem.word
+        get :github_callback, params: { code: Faker::Lorem.word }
       end
 
       new_account = Account.last
-      new_account.login.must_match account.login
-      new_account.login.wont_equal account.login
+      _(new_account.login).must_match account.login
+      _(new_account.login).wont_equal account.login
     end
 
     it 'must fix github login if it begins with a number' do
@@ -191,11 +191,11 @@ describe 'AuthenticationsController' do
       @controller.stubs(:github_api).returns(github_stub)
 
       assert_difference('Account.count', 1) do
-        get :github_callback, code: Faker::Lorem.word
+        get :github_callback, params: { code: Faker::Lorem.word }
       end
 
       account = Account.last
-      account.login.must_match github_stub.login
+      _(account.login).must_match github_stub.login
     end
 
     it 'must modify login if default github login is less than 3 chars' do
@@ -203,32 +203,32 @@ describe 'AuthenticationsController' do
       @controller.stubs(:github_api).returns(github_stub)
 
       assert_difference('Account.count', 1) do
-        get :github_callback, code: Faker::Lorem.word
+        get :github_callback, params: { code: Faker::Lorem.word }
       end
 
       new_account = Account.last
-      new_account.login.must_match(/xy\d+/)
+      _(new_account.login).must_match(/xy\d+/)
     end
 
     describe 'redirect_matching_account' do
       it 'must sign in an existing user through github' do
         @controller.stubs(:github_api).returns(github_account_stub)
 
-        get :github_callback, code: Faker::Lorem.word
+        get :github_callback, params: { code: Faker::Lorem.word }
 
         account.reload
-        must_redirect_to account
-        request.env[:clearance].current_user.id.must_equal account.id
-        account.github_verification.token.must_equal github_account_stub.access_token
+        assert_redirected_to account
+        _(request.env[:clearance].current_user.id).must_equal account.id
+        _(account.github_verification.token).must_equal github_account_stub.access_token
       end
 
       it 'must sign in a verified user regardless of github restrictions' do
         github_account_stub.stubs(:created_at).returns(Time.current)
         @controller.stubs(:github_api).returns(github_account_stub)
 
-        get :github_callback, code: Faker::Lorem.word
+        get :github_callback, params: { code: Faker::Lorem.word }
 
-        request.env[:clearance].current_user.id.must_equal account.id
+        _(request.env[:clearance].current_user.id).must_equal account.id
       end
 
       it 'wont sign in a non github verified user which fails github restrictions' do
@@ -238,31 +238,31 @@ describe 'AuthenticationsController' do
         FirebaseVerification.any_instance.stubs(:generate_token)
         create(:firebase_verification, account: account)
 
-        get :github_callback, code: Faker::Lorem.word
+        get :github_callback, params: { code: Faker::Lorem.word }
 
-        request.env[:clearance].current_user.must_be_nil
+        _(request.env[:clearance].current_user).must_be_nil
       end
 
       it 'must create a github verification record for a matching unverified account' do
         account.github_verification.destroy
         @controller.stubs(:github_api).returns(github_account_stub)
 
-        get :github_callback, code: Faker::Lorem.word
+        get :github_callback, params: { code: Faker::Lorem.word }
 
         account.reload
-        account.github_verification.token.must_equal github_account_stub.access_token
-        account.github_verification.unique_id.must_equal github_account_stub.login
+        _(account.github_verification.token).must_equal github_account_stub.access_token
+        _(account.github_verification.unique_id).must_equal github_account_stub.login
       end
 
       it 'must activate email for a matching github email' do
         account.update! activated_at: nil, activation_code: Faker::Lorem.word
         @controller.stubs(:github_api).returns(github_account_stub)
 
-        get :github_callback, code: Faker::Lorem.word
+        get :github_callback, params: { code: Faker::Lorem.word }
 
         account.reload
-        account.access.activated_at.must_be :present?
-        account.access.activation_code.must_be_nil
+        _(account.access.activated_at).must_be :present?
+        _(account.access.activation_code).must_be_nil
       end
 
       it 'must refresh github verification token and unique_id on every login' do
@@ -272,11 +272,11 @@ describe 'AuthenticationsController' do
         github_account_stub.stubs(:access_token).returns(new_access_token)
         @controller.stubs(:github_api).returns(github_account_stub)
 
-        get :github_callback, code: Faker::Lorem.word
+        get :github_callback, params: { code: Faker::Lorem.word }
 
         account.reload
-        account.github_verification.token.must_equal new_access_token
-        account.github_verification.unique_id.must_equal new_login
+        _(account.github_verification.token).must_equal new_access_token
+        _(account.github_verification.unique_id).must_equal new_login
       end
 
       it 'must handle github login failure' do
@@ -284,32 +284,32 @@ describe 'AuthenticationsController' do
         github_account_stub.stubs(:access_token).returns('')
         @controller.stubs(:github_api).returns(github_account_stub)
 
-        get :github_callback, code: Faker::Lorem.word
+        get :github_callback, params: { code: Faker::Lorem.word }
 
-        must_redirect_to new_session_path
-        flash[:notice].must_equal I18n.t('github_sign_in_failed')
+        assert_redirected_to new_session_path
+        _(flash[:notice]).must_equal I18n.t('github_sign_in_failed')
       end
 
       it 'must sign in an existing user whose email matches with github seconday email addresses' do
         @controller.stubs(:github_api).returns(github_account_with_seconday_email)
 
-        get :github_callback, code: Faker::Lorem.word
+        get :github_callback, params: { code: Faker::Lorem.word }
 
         account.reload
-        must_redirect_to account
-        request.env[:clearance].current_user.id.must_equal account.id
+        assert_redirected_to account
+        _(request.env[:clearance].current_user.id).must_equal account.id
       end
 
       it 'must sign into an existing user whose github verification unique_id matches with github login' do
         @controller.stubs(:github_api).returns(github_account_with_email_mismatch)
 
-        get :github_callback, code: Faker::Lorem.word
+        get :github_callback, params: { code: Faker::Lorem.word }
 
         account.reload
-        must_redirect_to account
-        request.env[:clearance].current_user.id.must_equal account.id
-        flash[:notice].must_equal I18n.t('authentications.github_callback.email_mismatch',
-                                         settings_account_link: settings_account_path(account))
+        assert_redirected_to account
+        _(request.env[:clearance].current_user.id).must_equal account.id
+        _(flash[:notice]).must_equal I18n.t('authentications.github_callback.email_mismatch',
+                                            settings_account_link: settings_account_path(account))
       end
     end
   end
@@ -323,11 +323,11 @@ describe 'AuthenticationsController' do
 
       auth_params = { 'firebase_verification_attributes' => { 'credentials' => Faker::Lorem.word } }
 
-      get :firebase_callback, account: auth_params
+      get :firebase_callback, params: { account: auth_params }
 
       account.reload
-      must_redirect_to account
-      account.firebase_verification.must_be :present?
+      assert_redirected_to account
+      _(account.firebase_verification).must_be :present?
     end
 
     it 'must handle verification failure for existing record' do
@@ -338,11 +338,11 @@ describe 'AuthenticationsController' do
 
       auth_params = { 'firebase_verification_attributes' => { 'credentials' => Faker::Lorem.word } }
 
-      get :firebase_callback, account: auth_params
+      get :firebase_callback, params: { account: auth_params }
 
       account.reload
-      must_redirect_to new_authentication_path
-      flash[:notice].must_be :present?
+      assert_redirected_to new_authentication_path
+      _(flash[:notice]).must_be :present?
     end
   end
 end

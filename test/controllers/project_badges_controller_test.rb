@@ -2,7 +2,7 @@
 
 require 'test_helper'
 
-describe 'ProjectBadgesController' do
+class ProjectBadgesControllerTest < ActionController::TestCase
   before do
     @enlistment = create(:enlistment)
     @project = @enlistment.project
@@ -16,51 +16,51 @@ describe 'ProjectBadgesController' do
   describe 'index' do
     it 'Should render index template for valid project' do
       Enlistment.any_instance.stubs(:code_location).returns(code_location_stub_with_id)
-      get :index, project_id: @project_id
+      get :index, params: { project_id: @project_id }
       assert_response :success
     end
   end
 
   describe 'create' do
     it 'Should redirect if user is not logged in' do
-      post :create, project_id: @project_id,
-                    project_badge: @proj_badge_build
-      must_redirect_to new_session_path
+      post :create, params: { project_id: @project_id,
+                              project_badge: @proj_badge_build }
+      assert_redirected_to new_session_path
     end
 
     it 'Should not allow unauthorized users to create' do
       create(:permission, target: @project, remainder: true)
       login_as create(:account)
-      post :create, project_id: @project_id,
-                    project_badge: @proj_badge_build
+      post :create, params: { project_id: @project_id,
+                              project_badge: @proj_badge_build }
       assert_response :unauthorized
     end
 
     it 'Should not create ciibadge if url empty' do
       Enlistment.any_instance.stubs(:code_location).returns(code_location_stub)
       login_as @account
-      post :create, project_id: @project_id,
-                    project_badge: build(:project_badge,
-                                         enlistment: @enlistment,
-                                         type: 'CiiBadge',
-                                         identifier: '',
-                                         status: 1).attributes
-      must_render_template :index
-      @project.project_badges.size.must_equal 0
+      post :create, params: { project_id: @project_id,
+                              project_badge: build(:project_badge,
+                                                   enlistment: @enlistment,
+                                                   type: 'CiiBadge',
+                                                   identifier: '',
+                                                   status: 1).attributes }
+      assert_template :index
+      _(@project.project_badges.size).must_equal 0
     end
 
     it 'Should create badge if user is logged in and correct badge param is passed' do
       Enlistment.any_instance.stubs(:code_location).returns(code_location_stub)
       login_as @account
-      post :create, project_id: @project_id,
-                    project_badge: build(:project_badge,
-                                         enlistment: @enlistment,
-                                         type: 'CiiBadge',
-                                         identifier: '1',
-                                         status: 1).attributes
-      must_redirect_to action: :index
-      flash[:success].must_be :present?
-      @project.project_badges.size.must_equal 1
+      post :create, params: { project_id: @project_id,
+                              project_badge: build(:project_badge,
+                                                   enlistment: @enlistment,
+                                                   type: 'CiiBadge',
+                                                   identifier: '1',
+                                                   status: 1).attributes }
+      assert_redirected_to action: :index
+      _(flash[:success]).must_be :present?
+      _(@project.project_badges.size).must_equal 1
     end
 
     it 'should redirect if project badge is already present' do
@@ -71,13 +71,13 @@ describe 'ProjectBadgesController' do
                               type: 'CiiBadge',
                               identifier: '1',
                               status: 1)
-      post :create, project_id: @project_id,
-                    project_badge: build(:project_badge,
-                                         enlistment: @enlistment,
-                                         type: 'CiiBadge',
-                                         identifier: '1',
-                                         status: 1).attributes
-      must_redirect_to action: :index
+      post :create, params: { project_id: @project_id,
+                              project_badge: build(:project_badge,
+                                                   enlistment: @enlistment,
+                                                   type: 'CiiBadge',
+                                                   identifier: '1',
+                                                   status: 1).attributes }
+      assert_redirected_to action: :index
     end
   end
 
@@ -89,10 +89,10 @@ describe 'ProjectBadgesController' do
                               identifier: '1',
                               status: 1)
       login_as create(:account)
-      patch :update, project_id: @project_id, id: @project_badge.id, project_badge: { identifier: '5' }
+      patch :update, params: { project_id: @project_id, id: @project_badge.id, project_badge: { identifier: '5' } }
       response_body = JSON.parse(@response.body)
-      response_body['success'].must_equal true
-      response_body['value'].must_equal '5'
+      _(response_body['success']).must_equal true
+      _(response_body['value']).must_equal '5'
       assert_response :success
     end
 
@@ -103,9 +103,9 @@ describe 'ProjectBadgesController' do
                               identifier: '1',
                               status: 1)
       login_as create(:account)
-      patch :update, project_id: @project_id, id: @project_badge.id, project_badge: { identifier: '' }
+      patch :update, params: { project_id: @project_id, id: @project_badge.id, project_badge: { identifier: '' } }
       response_body = JSON.parse(@response.body)
-      response_body['success'].must_equal false
+      _(response_body['success']).must_equal false
       assert_response :success
     end
   end
@@ -118,7 +118,7 @@ describe 'ProjectBadgesController' do
                              identifier: '1')
       create(:permission, target: @project, remainder: true)
       login_as create(:account)
-      delete :destroy, project_id: @project_id, id: project_badge.id
+      delete :destroy, params: { project_id: @project_id, id: project_badge.id }
       assert_response :unauthorized
     end
 
@@ -128,9 +128,9 @@ describe 'ProjectBadgesController' do
                              type: 'CiiBadge',
                              identifier: '1')
       login_as @account
-      delete :destroy, project_id: @project_id, id: project_badge.id
-      flash[:success].must_be :present?
-      must_redirect_to action: :index
+      delete :destroy, params: { project_id: @project_id, id: project_badge.id }
+      _(flash[:success]).must_be :present?
+      assert_redirected_to action: :index
     end
   end
 end

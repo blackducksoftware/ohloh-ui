@@ -2,303 +2,303 @@
 
 require 'test_helper'
 
-describe 'ProjectWidgetsController' do
+class ProjectWidgetsControllerTest < ActionController::TestCase
   let(:project) { create(:project, name: "apostro'phic") }
   let(:widget_classes) do
     [
       ProjectWidget::FactoidsStats, ProjectWidget::Factoids, ProjectWidget::BasicStats,
       ProjectWidget::Languages, ProjectWidget::Cocomo,
       ProjectWidget::PartnerBadge, ProjectWidget::ThinBadge, ProjectWidget::UsersLogo
-    ] + [ProjectWidget::Users] * 6
+    ] + ([ProjectWidget::Users] * 6)
   end
 
   describe 'index' do
     it 'should return all project widgets and project' do
-      get :index, project_id: project.id
+      get :index, params: { project_id: project.id }
 
-      must_respond_with :ok
-      assigns(:widgets).map(&:class).must_equal widget_classes
-      assigns(:project).must_equal project
+      assert_response :ok
+      _(assigns(:widgets).map(&:class)).must_equal widget_classes
+      _(assigns(:project)).must_equal project
     end
 
     it 'should render deleted projects page if project was deleted' do
       project = create(:project, deleted: true)
-      get :index, project_id: project.id
+      get :index, params: { project_id: project.id }
 
-      must_respond_with :ok
-      must_render_template 'projects/deleted'
+      assert_response :ok
+      assert_template 'projects/deleted'
     end
 
     it 'should show not found error' do
-      get :index, project_id: 0
+      get :index, params: { project_id: 0 }
 
-      must_respond_with :ok
-      @response.body.must_equal I18n.t('widgets.not_found')
+      assert_response :ok
+      _(@response.body).must_equal I18n.t('widgets.not_found')
     end
 
     it 'must render successfully when no analysis' do
       Project.any_instance.stubs(:best_analysis).returns(NilAnalysis.new)
 
-      get :index, project_id: project.to_param
+      get :index, params: { project_id: project.to_param }
 
-      must_respond_with :ok
+      assert_response :ok
     end
   end
 
   describe 'basic_stats' do
     it 'should set project and widget' do
-      get :basic_stats, project_id: project.id
+      get :basic_stats, params: { project_id: project.id }
 
-      must_respond_with :ok
-      assigns(:widget).class.must_equal ProjectWidget::BasicStats
-      assigns(:project).must_equal project
+      assert_response :ok
+      _(assigns(:widget).class).must_equal ProjectWidget::BasicStats
+      _(assigns(:project)).must_equal project
     end
 
     it 'should render iframe for js format' do
-      get :basic_stats, project_id: project.id, format: :js
+      get :basic_stats, params: { project_id: project.id }, format: :js
 
-      must_respond_with :ok
-      assigns(:widget).class.must_equal ProjectWidget::BasicStats
-      assigns(:project).must_equal project
+      assert_response :ok
+      _(assigns(:widget).class).must_equal ProjectWidget::BasicStats
+      _(assigns(:project)).must_equal project
     end
 
     it 'must not direct browsers to prevent iframing' do
-      get :basic_stats, project_id: project.id
+      get :basic_stats, params: { project_id: project.id }
 
-      must_respond_with :ok
+      assert_response :ok
       response.headers.each do |k, v|
-        v.must_equal '' if k.casecmp('x-frame-options').zero? || k.casecmp('x-xss-protection').zero?
+        _(v).must_equal '' if k.casecmp('x-frame-options').zero? || k.casecmp('x-xss-protection').zero?
       end
     end
 
     it 'should show not found error' do
-      get :basic_stats, project_id: 0
+      get :basic_stats, params: { project_id: 0 }
 
-      must_respond_with :ok
-      @response.body.must_equal I18n.t('widgets.not_found')
+      assert_response :ok
+      _(@response.body).must_equal I18n.t('widgets.not_found')
     end
 
     it 'should render xml format' do
-      get :basic_stats, project_id: project.id, format: :xml
+      get :basic_stats, params: { project_id: project.id }, format: :xml
 
-      must_respond_with :ok
-      assigns(:widget).class.must_equal ProjectWidget::BasicStats
+      assert_response :ok
+      _(assigns(:widget).class).must_equal ProjectWidget::BasicStats
     end
   end
 
   describe 'factoids_stats' do
     it 'should set project and widget' do
-      get :factoids_stats, project_id: project.id
+      get :factoids_stats, params: { project_id: project.id }
 
-      must_respond_with :ok
-      assigns(:widget).class.must_equal ProjectWidget::FactoidsStats
-      assigns(:project).must_equal project
+      assert_response :ok
+      _(assigns(:widget).class).must_equal ProjectWidget::FactoidsStats
+      _(assigns(:project)).must_equal project
     end
 
     it 'should render iframe for js format' do
-      get :factoids_stats, project_id: project.id, format: :js
+      get :factoids_stats, params: { project_id: project.id }, format: :js
 
-      must_respond_with :ok
-      assigns(:widget).class.must_equal ProjectWidget::FactoidsStats
-      assigns(:project).must_equal project
+      assert_response :ok
+      _(assigns(:widget).class).must_equal ProjectWidget::FactoidsStats
+      _(assigns(:project)).must_equal project
     end
 
     it 'should show not found error' do
-      get :factoids_stats, project_id: 0
+      get :factoids_stats, params: { project_id: 0 }
 
-      must_respond_with :ok
-      @response.body.must_equal I18n.t('widgets.not_found')
+      assert_response :ok
+      _(@response.body).must_equal I18n.t('widgets.not_found')
     end
   end
 
   describe 'factoids' do
     it 'should set project and widget' do
-      get :factoids, project_id: project.id
+      get :factoids, params: { project_id: project.id }
 
-      must_respond_with :ok
-      assigns(:widget).class.must_equal ProjectWidget::Factoids
-      assigns(:project).must_equal project
+      assert_response :ok
+      _(assigns(:widget).class).must_equal ProjectWidget::Factoids
+      _(assigns(:project)).must_equal project
     end
 
     it 'should render iframe for js format' do
-      get :factoids, project_id: project.id, format: :js
+      get :factoids, params: { project_id: project.id }, format: :js
 
-      must_respond_with :ok
-      assigns(:widget).class.must_equal ProjectWidget::Factoids
-      assigns(:project).must_equal project
+      assert_response :ok
+      _(assigns(:widget).class).must_equal ProjectWidget::Factoids
+      _(assigns(:project)).must_equal project
     end
 
     it 'should show not found error' do
-      get :factoids, project_id: 0
+      get :factoids, params: { project_id: 0 }
 
-      must_respond_with :ok
-      @response.body.must_equal I18n.t('widgets.not_found')
+      assert_response :ok
+      _(@response.body).must_equal I18n.t('widgets.not_found')
     end
   end
 
   describe 'users' do
     it 'should set project and widget' do
-      get :users, project_id: project.id
+      get :users, params: { project_id: project.id }
 
-      must_respond_with :ok
-      assigns(:widget).class.must_equal ProjectWidget::Users
-      assigns(:project).must_equal project
+      assert_response :ok
+      _(assigns(:widget).class).must_equal ProjectWidget::Users
+      _(assigns(:project)).must_equal project
     end
 
     it 'should render iframe for js format' do
-      get :users, project_id: project.id, format: :js, style: 'blue'
+      get :users, params: { project_id: project.id, format: :js, style: 'blue' }
 
-      must_respond_with :ok
-      assigns(:widget).class.must_equal ProjectWidget::Users
-      assigns(:project).must_equal project
+      assert_response :ok
+      _(assigns(:widget).class).must_equal ProjectWidget::Users
+      _(assigns(:project)).must_equal project
     end
 
     it 'should show not found error' do
-      get :users, project_id: 0
+      get :users, params: { project_id: 0 }
 
-      must_respond_with :ok
-      @response.body.must_equal I18n.t('widgets.not_found')
+      assert_response :ok
+      _(@response.body).must_equal I18n.t('widgets.not_found')
     end
   end
 
   describe 'users_logo' do
     it 'should set project and widget' do
-      get :users_logo, project_id: project.id
+      get :users_logo, params: { project_id: project.id }
 
-      must_respond_with :ok
-      assigns(:widget).class.must_equal ProjectWidget::UsersLogo
-      assigns(:project).must_equal project
+      assert_response :ok
+      _(assigns(:widget).class).must_equal ProjectWidget::UsersLogo
+      _(assigns(:project)).must_equal project
     end
 
     it 'should render iframe for js format' do
-      get :users_logo, project_id: project.id, format: :js
+      get :users_logo, params: { project_id: project.id }, format: :js
 
-      must_respond_with :ok
-      assigns(:widget).class.must_equal ProjectWidget::UsersLogo
-      assigns(:project).must_equal project
+      assert_response :ok
+      _(assigns(:widget).class).must_equal ProjectWidget::UsersLogo
+      _(assigns(:project)).must_equal project
     end
 
     it 'should show not found error' do
-      get :users_logo, project_id: 0
+      get :users_logo, params: { project_id: 0 }
 
-      must_respond_with :ok
-      @response.body.must_equal I18n.t('widgets.not_found')
+      assert_response :ok
+      _(@response.body).must_equal I18n.t('widgets.not_found')
     end
   end
 
   describe 'languages' do
     it 'should set project and widget' do
-      get :languages, project_id: project.id
+      get :languages, params: { project_id: project.id }
 
-      must_respond_with :ok
-      assigns(:widget).class.must_equal ProjectWidget::Languages
-      assigns(:project).must_equal project
+      assert_response :ok
+      _(assigns(:widget).class).must_equal ProjectWidget::Languages
+      _(assigns(:project)).must_equal project
     end
 
     it 'should render iframe for js format' do
-      get :languages, project_id: project.id, format: :js
+      get :languages, params: { project_id: project.id }, format: :js
 
-      must_respond_with :ok
-      assigns(:widget).class.must_equal ProjectWidget::Languages
-      assigns(:project).must_equal project
+      assert_response :ok
+      _(assigns(:widget).class).must_equal ProjectWidget::Languages
+      _(assigns(:project)).must_equal project
     end
 
     it 'should show not found error' do
-      get :languages, project_id: 0
+      get :languages, params: { project_id: 0 }
 
-      must_respond_with :ok
-      @response.body.must_equal I18n.t('widgets.not_found')
+      assert_response :ok
+      _(@response.body).must_equal I18n.t('widgets.not_found')
     end
   end
 
   describe 'cocomo' do
     it 'should set project and widget' do
-      get :cocomo, project_id: project.id
+      get :cocomo, params: { project_id: project.id }
 
-      must_respond_with :ok
-      assigns(:widget).class.must_equal ProjectWidget::Cocomo
-      assigns(:project).must_equal project
+      assert_response :ok
+      _(assigns(:widget).class).must_equal ProjectWidget::Cocomo
+      _(assigns(:project)).must_equal project
     end
 
     it 'should render iframe for js format' do
-      get :cocomo, project_id: project.id, format: :js
+      get :cocomo, params: { project_id: project.id }, format: :js
 
-      must_respond_with :ok
-      assigns(:widget).class.must_equal ProjectWidget::Cocomo
-      assigns(:project).must_equal project
+      assert_response :ok
+      _(assigns(:widget).class).must_equal ProjectWidget::Cocomo
+      _(assigns(:project)).must_equal project
     end
 
     it 'should show not found error' do
-      get :cocomo, project_id: 0
+      get :cocomo, params: { project_id: 0 }
 
-      must_respond_with :ok
-      @response.body.must_equal I18n.t('widgets.not_found')
+      assert_response :ok
+      _(@response.body).must_equal I18n.t('widgets.not_found')
     end
   end
 
   describe 'partner_badge' do
     it 'should set project and widget' do
-      get :partner_badge, project_id: project.id
+      get :partner_badge, params: { project_id: project.id }
 
-      must_respond_with :ok
-      assigns(:widget).class.must_equal ProjectWidget::PartnerBadge
-      assigns(:project).must_equal project
+      assert_response :ok
+      _(assigns(:widget).class).must_equal ProjectWidget::PartnerBadge
+      _(assigns(:project)).must_equal project
     end
 
     it 'should render image for gif format' do
-      get :partner_badge, project_id: project.id, format: :gif
+      get :partner_badge, params: { project_id: project.id }, format: :gif
 
-      must_respond_with :ok
-      assigns(:widget).class.must_equal ProjectWidget::PartnerBadge
-      assigns(:project).must_equal project
+      assert_response :ok
+      _(assigns(:widget).class).must_equal ProjectWidget::PartnerBadge
+      _(assigns(:project)).must_equal project
     end
 
     it 'should render iframe for js format' do
-      get :partner_badge, project_id: project.id, format: :js
+      get :partner_badge, params: { project_id: project.id }, format: :js
 
-      must_respond_with :ok
-      assigns(:widget).class.must_equal ProjectWidget::PartnerBadge
-      assigns(:project).must_equal project
+      assert_response :ok
+      _(assigns(:widget).class).must_equal ProjectWidget::PartnerBadge
+      _(assigns(:project)).must_equal project
     end
 
     it 'should show not found error' do
-      get :partner_badge, project_id: 0
+      get :partner_badge, params: { project_id: 0 }
 
-      must_respond_with :ok
-      @response.body.must_equal I18n.t('widgets.not_found')
+      assert_response :ok
+      _(@response.body).must_equal I18n.t('widgets.not_found')
     end
   end
 
   describe 'thin_badge' do
     it 'should set project and widget' do
-      get :thin_badge, project_id: project.id
+      get :thin_badge, params: { project_id: project.id }
 
-      must_respond_with :ok
-      assigns(:widget).class.must_equal ProjectWidget::ThinBadge
-      assigns(:project).must_equal project
+      assert_response :ok
+      _(assigns(:widget).class).must_equal ProjectWidget::ThinBadge
+      _(assigns(:project)).must_equal project
     end
 
     it 'should render image for gif format' do
-      get :thin_badge, project_id: project.id, format: :gif
+      get :thin_badge, params: { project_id: project.id }, format: :gif
 
-      must_respond_with :ok
-      assigns(:widget).class.must_equal ProjectWidget::ThinBadge
-      assigns(:project).must_equal project
+      assert_response :ok
+      _(assigns(:widget).class).must_equal ProjectWidget::ThinBadge
+      _(assigns(:project)).must_equal project
     end
 
     it 'should render iframe for js format' do
-      get :thin_badge, project_id: project.id, format: :js, ref: 'Thin'
+      get :thin_badge, params: { project_id: project.id, ref: 'Thin' }, format: :js
 
-      must_respond_with :ok
-      assigns(:widget).class.must_equal ProjectWidget::ThinBadge
-      assigns(:project).must_equal project
+      assert_response :ok
+      _(assigns(:widget).class).must_equal ProjectWidget::ThinBadge
+      _(assigns(:project)).must_equal project
     end
 
     it 'should show not found error' do
-      get :thin_badge, project_id: 0
+      get :thin_badge, params: { project_id: 0 }
 
-      must_respond_with :ok
-      @response.body.must_equal I18n.t('widgets.not_found')
+      assert_response :ok
+      _(@response.body).must_equal I18n.t('widgets.not_found')
     end
   end
 end

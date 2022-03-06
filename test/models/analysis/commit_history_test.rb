@@ -19,9 +19,9 @@ class Analysis::CommitHistoryTest < ActiveSupport::TestCase
       commit_history = Analysis::CommitHistory.new(@query_options)
       results = commit_history.execute
 
-      results.count.must_equal 4
-      results.map(&:month).must_equal @date_range
-      results.map(&:commits).must_equal [0, 0, 0, 1]
+      _(results.count).must_equal 4
+      _(results.map(&:month)).must_equal @date_range
+      _(results.map(&:commits)).must_equal [0, 0, 0, 1]
     end
   end
 end

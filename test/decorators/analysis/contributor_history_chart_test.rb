@@ -19,9 +19,9 @@ class Analysis::ContributorHistoryChartTest < ActiveSupport::TestCase
       create(:activity_fact, month: beginning_of_month, analysis: activity_fact.analysis)
       data = Analysis::ContributorHistoryChart.new(activity_fact.analysis).data
 
-      data['series'].first['data'].last.must_equal [@time_integer, 1]
-      data['series'].last['data'].last['x'].must_equal @time_integer
-      data['series'].last['data'].last['y'].must_equal 1
+      _(data['series'].first['data'].last).must_equal [@time_integer, 1]
+      _(data['series'].last['data'].last['x']).must_equal @time_integer
+      _(data['series'].last['data'].last['y']).must_equal 1
     end
   end
 
@@ -31,12 +31,12 @@ class Analysis::ContributorHistoryChartTest < ActiveSupport::TestCase
       create(:activity_fact, month: beginning_of_month, analysis: activity_fact.analysis)
       data = Analysis::ContributorHistoryChart.new(activity_fact.analysis).data_without_auxillaries
 
-      data['series'].first['data'].last.must_equal [@time_integer, 1]
-      data['series'].last['data'].last['x'].must_equal @time_integer
-      data['series'].last['data'].last['y'].must_equal 1
-      data['rangeSelector']['enabled'].must_equal false
-      data['legend']['enabled'].must_equal false
-      data['scrollbar']['enabled'].must_equal false
+      _(data['series'].first['data'].last).must_equal [@time_integer, 1]
+      _(data['series'].last['data'].last['x']).must_equal @time_integer
+      _(data['series'].last['data'].last['y']).must_equal 1
+      _(data['rangeSelector']['enabled']).must_equal false
+      _(data['legend']['enabled']).must_equal false
+      _(data['scrollbar']['enabled']).must_equal false
     end
   end
 end

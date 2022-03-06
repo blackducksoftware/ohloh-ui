@@ -8,13 +8,13 @@ class ThinBadgeTest < ActiveSupport::TestCase
 
   describe 'height' do
     it 'should return 32' do
-      widget.height.must_equal 32
+      _(widget.height).must_equal 32
     end
   end
 
   describe 'width' do
     it 'should return 145' do
-      widget.width.must_equal 145
+      _(widget.width).must_equal 145
     end
   end
 
@@ -27,13 +27,13 @@ class ThinBadgeTest < ActiveSupport::TestCase
 
   describe 'short_nice_name' do
     it 'should return the short_nice_name' do
-      widget.short_nice_name.must_equal I18n.t('project_widgets.thin_badge.short_nice_name')
+      _(widget.short_nice_name).must_equal I18n.t('project_widgets.thin_badge.short_nice_name')
     end
   end
 
   describe 'position' do
     it 'should return 10' do
-      widget.position.must_equal 10
+      _(widget.position).must_equal 10
     end
   end
 end

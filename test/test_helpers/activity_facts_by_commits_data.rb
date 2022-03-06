@@ -8,7 +8,7 @@ class ActivityFactsByMonthData
   def initialize(with_intitial_value = false)
     @with_intitial_value = with_intitial_value
     @first_date = Time.parse('2010-04-01 00:00:00 UTC').in_time_zone
-    @commits = commits_for_first_29_months + COMMITS + [0] * 13
+    @commits = commits_for_first_29_months + COMMITS + ([0] * 13)
   end
 
   def commits_for_first_29_months

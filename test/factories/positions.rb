@@ -7,7 +7,7 @@ FactoryBot.define do
     association :organization
     association :name
     after(:build) do |instance|
-      unless NameFact.where(name_id: instance.name_id).exists?
+      unless NameFact.exists?(name_id: instance.name_id)
         best_analysis = instance.project.try(:best_analysis)
         best_analysis = nil if best_analysis.is_a?(NilAnalysis)
         create(:name_fact, analysis: best_analysis, name: instance.name)

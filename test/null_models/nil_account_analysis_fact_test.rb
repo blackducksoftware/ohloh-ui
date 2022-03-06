@@ -7,43 +7,43 @@ class NilAccountAnalysisFactTest < ActiveSupport::TestCase
 
   describe 'first_checkin' do
     it 'should return nil' do
-      assert_nil nil_account_analysis_fact.first_checkin
+      _(nil_account_analysis_fact.first_checkin).must_be_nil
     end
   end
 
   describe 'last_checkin' do
     it 'should return nil' do
-      assert_nil nil_account_analysis_fact.last_checkin
+      _(nil_account_analysis_fact.last_checkin).must_be_nil
     end
   end
 
   describe 'commits' do
     it 'should return zero' do
-      nil_account_analysis_fact.commits.must_equal 0
+      _(nil_account_analysis_fact.commits).must_equal 0
     end
   end
 
   describe 'commits_by_language' do
     it 'should be empty' do
-      nil_account_analysis_fact.commits_by_language.must_equal []
+      _(nil_account_analysis_fact.commits_by_language).must_equal []
     end
   end
 
   describe 'commits_by_project' do
     it 'should be empty' do
-      nil_account_analysis_fact.commits_by_project.must_equal []
+      _(nil_account_analysis_fact.commits_by_project).must_equal []
     end
   end
 
   describe 'nil?' do
     it 'should return true' do
-      nil_account_analysis_fact.nil?.must_equal true
+      _(nil_account_analysis_fact.nil?).must_equal true
     end
   end
 
   describe 'blank?' do
     it 'should return true' do
-      nil_account_analysis_fact.blank?.must_equal true
+      _(nil_account_analysis_fact.blank?).must_equal true
     end
   end
 end

@@ -12,7 +12,7 @@ class PeopleDecoratorTest < ActiveSupport::TestCase
       position2 = account.positions.last
 
       people_decorator = PeopleDecorator.new(Person.all)
-      people_decorator.commits_by_project_map[account.person.id].must_equal [[position1.id, position2.id], -1]
+      _(people_decorator.commits_by_project_map[account.person.id]).must_equal [[position1.id, position2.id], -1]
     end
   end
 end

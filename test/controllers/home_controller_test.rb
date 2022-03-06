@@ -2,7 +2,7 @@
 
 require 'test_helper'
 
-describe 'HomeController' do
+class HomeControllerTest < ActionController::TestCase
   it 'index should load' do
     Rails.cache.clear
     best_account_analysis = create(:best_account_analysis)
@@ -12,14 +12,14 @@ describe 'HomeController' do
     Rails.cache.stubs(:fetch).returns(Account.recently_active)
 
     get :index
-    must_respond_with :success
-    assigns(:home).class.must_equal HomeDecorator
+    assert_response :success
+    _(assigns(:home).class).must_equal HomeDecorator
   end
 
   it 'server_info should load' do
     get :server_info
-    must_respond_with :success
+    assert_response :success
     resp = JSON.parse(response.body)
-    resp['status'].must_equal 'OK'
+    _(resp['status']).must_equal 'OK'
   end
 end

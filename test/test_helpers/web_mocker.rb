@@ -15,7 +15,7 @@ module WebMocker
 
   def create_another_code_location(url)
     hsh = code_location_params
-    hsh[:id] = Faker::Number.number(3)
+    hsh[:id] = Faker::Number.number(digits: 3)
     hsh[:url] = url.sub('https?', 'git')
     stub_request(:post, code_locations_url).to_return(body: hsh.to_json, status: 201)
   end
@@ -67,7 +67,7 @@ module WebMocker
   end
 
   def github_api(url, html_url)
-    body = { id: Faker::Number.number(3), default_branch: 'main', html_url: html_url,
+    body = { id: Faker::Number.number(digits: 3), default_branch: 'master', html_url: html_url,
              homepage: Faker::Internet.url, name: Faker::Company.name }
     stub_request(:get, url).to_return(body: body.to_json)
   end

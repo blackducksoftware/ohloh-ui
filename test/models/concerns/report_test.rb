@@ -11,7 +11,7 @@ class ReportTest < ActiveSupport::TestCase
     end
     plot_points = project_analysis.contributor_history(@start_date, @end_date)
     plot_points = plot_points.map { |values| values['contributors'].to_i }
-    plot_points.count.must_equal 3
+    _(plot_points.count).must_equal 3
   end
 
   it 'commit_history' do
@@ -22,7 +22,7 @@ class ReportTest < ActiveSupport::TestCase
     end
     plot_points = project_analysis.commit_history(@start_date, @end_date)
     plot_points = plot_points.map { |values| values['commits'].to_i }
-    plot_points.count.must_equal 3
+    _(plot_points.count).must_equal 3
   end
 
   it 'code_total_history' do
@@ -33,7 +33,7 @@ class ReportTest < ActiveSupport::TestCase
     end
     plot_points = project_analysis.code_total_history(@start_date, @end_date)
     plot_points = plot_points.map { |values| values['code_total'].to_i }
-    plot_points.count.must_equal 3
+    _(plot_points.count).must_equal 3
   end
 
   private

@@ -6,8 +6,8 @@ FactoryBot.define do
     association :target, factory: :project, description: 'Linux'
     key { 'description' }
     value { 'Linux 2: Electric Boogaloo' }
-    account_id { 1 }
-    project_id { 1 }
+    account_id { Account.first.id }
+    project_id { Project.first.id }
     organization_id { nil }
     ip { '0.0.0.0' }
     undone { false }

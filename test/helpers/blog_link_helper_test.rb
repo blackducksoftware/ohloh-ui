@@ -9,7 +9,7 @@ class BlogLinkHelperTest < ActionView::TestCase
     it 'should return proper blog link' do
       BLOG_LINKS.each do |k, v|
         link = "<a class='meta' href='https://community.synopsys.com/s/article/#{v}' target='_blank'>rest</a>".html_safe
-        blog_link_to(link: k, link_text: 'rest').must_equal link
+        _(blog_link_to(link: k, link_text: 'rest')).must_equal link
       end
     end
   end
@@ -17,12 +17,12 @@ class BlogLinkHelperTest < ActionView::TestCase
   describe 'blog_url_for' do
     it 'should return proper blog link url when available in BLOG_LINKS' do
       BLOG_LINKS.each do |k, v|
-        blog_url_for(k).must_equal "https://community.synopsys.com/s/article/#{v}"
+        _(blog_url_for(k)).must_equal "https://community.synopsys.com/s/article/#{v}"
       end
     end
 
     it 'should return proper blog link url when not available in BLOG_LINKS' do
-      blog_url_for('test').must_equal 'https://community.synopsys.com/s/article/test'
+      _(blog_url_for('test')).must_equal 'https://community.synopsys.com/s/article/test'
     end
   end
 end

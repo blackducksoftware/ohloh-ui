@@ -9,11 +9,11 @@ class TopCommitVolumeChartTest < ActiveSupport::TestCase
       analysis = name_fact.analysis
       data = Analysis::TopCommitVolumeChart.new(analysis).data
 
-      data['series'].first['name'].must_equal name_fact.name.name
-      data['series'].first['data'].must_equal [50, 8, 5]
-      data['series'].last['name'].must_equal 'Other'
-      data['series'].last['data'].must_equal [0, 0, 0]
-      assert_nil data['warnining']
+      _(data['series'].first['name']).must_equal name_fact.name.name
+      _(data['series'].first['data']).must_equal [50, 8, 5]
+      _(data['series'].last['name']).must_equal 'Other'
+      _(data['series'].last['data']).must_equal [0, 0, 0]
+      _(data['warnining']).must_be_nil
     end
   end
 end

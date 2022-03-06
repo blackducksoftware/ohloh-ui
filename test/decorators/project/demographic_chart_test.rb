@@ -17,20 +17,20 @@ class Project::DemographicChartTest < ActiveSupport::TestCase
       create(:project, name: 'teste', activity_level_index: 40)
 
       data = Project::DemographicChart.data
-      data['plotOptions']['pie']['startAngle'].must_equal(-18.0)
-      data['series'].first['type'].must_equal 'pie'
+      _(data['plotOptions']['pie']['startAngle']).must_equal(-18.0)
+      _(data['series'].first['type']).must_equal 'pie'
       inactive_data = data['series'].last['data'].first
       low_active_data = data['series'].last['data'].last
 
-      inactive_data[:name].must_equal 'Inactive'
-      inactive_data[:y].must_equal 60.0
-      inactive_data[:selected].must_equal true
-      inactive_data[:sliced].must_equal true
+      _(inactive_data[:name]).must_equal 'Inactive'
+      _(inactive_data[:y]).must_equal 60.0
+      _(inactive_data[:selected]).must_equal true
+      _(inactive_data[:sliced]).must_equal true
 
-      low_active_data[:name].must_equal 'Low'
-      low_active_data[:y].must_equal 40.0
-      low_active_data[:selected].must_equal false
-      low_active_data[:sliced].must_equal false
+      _(low_active_data[:name]).must_equal 'Low'
+      _(low_active_data[:y]).must_equal 40.0
+      _(low_active_data[:selected]).must_equal false
+      _(low_active_data[:sliced]).must_equal false
     end
   end
 end

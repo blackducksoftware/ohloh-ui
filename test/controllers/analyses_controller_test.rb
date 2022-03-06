@@ -3,7 +3,7 @@
 require 'test_helper'
 require 'test_helpers/xml_parsing_helpers'
 
-describe 'AnalysesController' do
+class AnalysesControllerTest < ActionController::TestCase
   let(:beginning_of_month) { Time.current.beginning_of_month }
   let(:second_day_of_month) { beginning_of_month.advance(days: 1) }
   let(:account) { create(:account) }
@@ -28,69 +28,69 @@ describe 'AnalysesController' do
 
   describe 'show' do
     it 'should redirect to project page for html request' do
-      get :show, project_id: project.to_param, id: analysis.id
-      must_redirect_to project_path(project)
+      get :show, params: { project_id: project.to_param, id: analysis.id }
+      assert_redirected_to project_path(project)
     end
 
     it 'should respond with 400 if api_key is wrong' do
-      get :show, project_id: project.to_param, id: analysis.id, format: :xml, api_key: 'badkey'
-      must_respond_with :bad_request
+      get :show, params: { project_id: project.to_param, id: analysis.id, format: :xml, api_key: 'badkey' }
+      assert_response :bad_request
     end
 
     it 'must respond with valid data for xml request' do
       url = "http://test.host/p/#{project.vanity_url}/analyses/#{analysis.id}"
       client_id = api_key.oauth_application.uid
 
-      get :show, project_id: project.to_param, id: analysis.id, format: :xml, api_key: client_id
+      get :show, params: { project_id: project.to_param, id: analysis.id, format: :xml, api_key: client_id }
 
       result = xml_hash(@response.body)['response']
       analysis_result = result['result']['analysis']
 
-      must_respond_with :ok
-      result['status'].must_equal 'success'
-      analysis_result['id'].must_equal analysis.id.to_s
-      analysis_result['url'].must_equal "#{url}.xml"
-      analysis_result['project_id'].must_equal project.id.to_s
-      analysis_result['updated_at'].must_equal xml_time(Date.current)
-      analysis_result['min_month'].must_equal((Date.current - 1.month).to_s)
-      analysis_result['max_month'].must_equal((Date.current - 1.day).to_s)
-      assert_nil analysis_result['twelve_month_contributor_count']
-      assert_nil analysis_result['total_contributor_count']
-      analysis_result['twelve_month_commit_count'].must_equal '4'
-      assert_nil analysis_result['total_commit_count']
-      analysis_result['total_code_lines'].must_equal '303'
-      analysis_result['languages']['graph_url'].must_equal "#{url}/languages.png"
-      analysis_result['main_language_id'].must_equal analysis.main_language.id.to_s
-      analysis_result['main_language_name'].must_equal analysis.main_language.nice_name
+      assert_response :ok
+      _(result['status']).must_equal 'success'
+      _(analysis_result['id']).must_equal analysis.id.to_s
+      _(analysis_result['url']).must_equal "#{url}.xml"
+      _(analysis_result['project_id']).must_equal project.id.to_s
+      _(analysis_result['updated_at']).must_equal xml_time(Date.current)
+      _(analysis_result['min_month']).must_equal((Date.current - 1.month).to_s)
+      _(analysis_result['max_month']).must_equal((Date.current - 1.day).to_s)
+      _(analysis_result['twelve_month_contributor_count']).must_be_nil
+      _(analysis_result['total_contributor_count']).must_be_nil
+      _(analysis_result['twelve_month_commit_count']).must_equal '4'
+      _(analysis_result['total_commit_count']).must_be_nil
+      _(analysis_result['total_code_lines']).must_equal '303'
+      _(analysis_result['languages']['graph_url']).must_equal "#{url}/languages.png"
+      _(analysis_result['main_language_id']).must_equal analysis.main_language.id.to_s
+      _(analysis_result['main_language_name']).must_equal analysis.main_language.nice_name
     end
 
     it 'must render projects/deleted when project is deleted' do
       login_as account
       project.update!(deleted: true, editor_account: account)
 
-      get :show, project_id: project.to_param, id: analysis.id
+      get :show, params: { project_id: project.to_param, id: analysis.id }
 
-      must_render_template 'deleted'
+      assert_template 'deleted'
     end
   end
 
   describe 'languages_summary' do
     it 'should set the language_breakdown data' do
       activity_fact_2.update!(language: activity_fact.language)
-      get :languages_summary, project_id: project.to_param, id: analysis.id
+      get :languages_summary, params: { project_id: project.to_param, id: analysis.id }
 
-      must_respond_with :ok
-      assigns(:analysis).must_equal analysis
-      assigns(:project).must_equal project
-      assigns(:languages_breakdown).first.code_total.must_equal 3
-      assigns(:languages_breakdown).first.blanks_total.must_equal 4
+      assert_response :ok
+      _(assigns(:analysis)).must_equal analysis
+      _(assigns(:project)).must_equal project
+      _(assigns(:languages_breakdown).first.code_total).must_equal 3
+      _(assigns(:languages_breakdown).first.blanks_total).must_equal 4
     end
 
     it 'must render the page correctly when no analysis' do
       Project.any_instance.stubs(:best_analysis).returns(NilAnalysis.new)
-      get :languages_summary, project_id: project.to_param, id: 999
+      get :languages_summary, params: { project_id: project.to_param, id: 999 }
 
-      must_respond_with :ok
+      assert_response :ok
     end
   end
 
@@ -98,18 +98,18 @@ describe 'AnalysesController' do
     it 'should return chart data json' do
       name_fact = create(:name_fact, thirty_day_commits: 5, twelve_month_commits: 8, commits: 50)
       analysis = name_fact.analysis
-      get :top_commit_volume_chart, project_id: project.to_param, id: analysis.id
+      get :top_commit_volume_chart, params: { project_id: project.to_param, id: analysis.id }
 
       result = JSON.parse(@response.body)['series']
 
-      must_respond_with :ok
-      assigns(:analysis).must_equal analysis
-      assigns(:project).must_equal project
+      assert_response :ok
+      _(assigns(:analysis)).must_equal analysis
+      _(assigns(:project)).must_equal project
 
-      result.first['name'].must_equal name_fact.name.name
-      result.first['data'].must_equal [50, 8, 5]
-      result.last['name'].must_equal 'Other'
-      result.last['data'].must_equal [0, 0, 0]
+      _(result.first['name']).must_equal name_fact.name.name
+      _(result.first['data']).must_equal [50, 8, 5]
+      _(result.last['name']).must_equal 'Other'
+      _(result.last['data']).must_equal [0, 0, 0]
     end
   end
 
@@ -121,20 +121,20 @@ describe 'AnalysesController' do
 
       create_all_months
 
-      get :commits_history, project_id: project.to_param, id: analysis.id
+      get :commits_history, params: { project_id: project.to_param, id: analysis.id }
 
       result = JSON.parse(@response.body)
 
-      must_respond_with :ok
-      assigns(:analysis).must_equal analysis
-      assigns(:project).must_equal project
+      assert_response :ok
+      _(assigns(:analysis)).must_equal analysis
+      _(assigns(:project)).must_equal project
 
-      result['rangeSelector']['enabled'].must_equal true
-      result['legend']['enabled'].must_equal false
-      result['scrollbar']['enabled'].must_equal true
-      result['series'].first['data'].last.must_equal [time_integer, 1]
-      result['series'].last['data'].last['x'].must_equal time_integer
-      result['series'].last['data'].last['y'].must_equal 1
+      _(result['rangeSelector']['enabled']).must_equal true
+      _(result['legend']['enabled']).must_equal false
+      _(result['scrollbar']['enabled']).must_equal true
+      _(result['series'].first['data'].last).must_equal [time_integer, 1]
+      _(result['series'].last['data'].last['x']).must_equal time_integer
+      _(result['series'].last['data'].last['y']).must_equal 1
     end
   end
 
@@ -145,20 +145,20 @@ describe 'AnalysesController' do
       create(:activity_fact, month: beginning_of_month, analysis: activity_fact.analysis)
       analysis.update!(oldest_code_set_time: Date.current + 32.days)
 
-      get :committer_history, project_id: project.to_param, id: analysis.reload.id
+      get :committer_history, params: { project_id: project.to_param, id: analysis.reload.id }
 
       result = JSON.parse(@response.body)
 
-      must_respond_with :ok
-      assigns(:analysis).must_equal analysis
-      assigns(:project).must_equal project
+      assert_response :ok
+      _(assigns(:analysis)).must_equal analysis
+      _(assigns(:project)).must_equal project
 
-      result['series'].last['data'].last['x'].must_equal time_integer
-      result['series'].last['data'].last['y'].must_equal 1
-      result['series'].first['data'].last.must_equal [time_integer, 1]
-      result['rangeSelector']['enabled'].must_equal false
-      result['legend']['enabled'].must_equal false
-      result['scrollbar']['enabled'].must_equal false
+      _(result['series'].last['data'].last['x']).must_equal time_integer
+      _(result['series'].last['data'].last['y']).must_equal 1
+      _(result['series'].first['data'].last).must_equal [time_integer, 1]
+      _(result['rangeSelector']['enabled']).must_equal false
+      _(result['legend']['enabled']).must_equal false
+      _(result['scrollbar']['enabled']).must_equal false
     end
   end
 
@@ -169,17 +169,17 @@ describe 'AnalysesController' do
       create(:activity_fact, month: beginning_of_month, analysis: activity_fact.analysis)
       analysis.update(oldest_code_set_time: Date.current + 32.days)
 
-      get :contributor_summary, project_id: project.to_param, id: analysis.reload.id
+      get :contributor_summary, params: { project_id: project.to_param, id: analysis.reload.id }
 
       result = JSON.parse(@response.body)
 
-      must_respond_with :ok
-      assigns(:analysis).must_equal analysis
-      assigns(:project).must_equal project
+      assert_response :ok
+      _(assigns(:analysis)).must_equal analysis
+      _(assigns(:project)).must_equal project
 
-      result['series'].last['data'].last['x'].must_equal time_integer
-      result['series'].last['data'].last['y'].must_equal 1
-      result['series'].first['data'].last.must_equal [time_integer, 1]
+      _(result['series'].last['data'].last['x']).must_equal time_integer
+      _(result['series'].last['data'].last['y']).must_equal 1
+      _(result['series'].first['data'].last).must_equal [time_integer, 1]
     end
   end
 
@@ -191,17 +191,17 @@ describe 'AnalysesController' do
       create(:all_month, month: 2.months.ago.beginning_of_month)
       activity_fact.analysis.update(min_month: 3.months.ago.beginning_of_month)
 
-      get :language_history, project_id: project.to_param, id: analysis.id
+      get :language_history, params: { project_id: project.to_param, id: analysis.id }
 
       result = JSON.parse(@response.body)
 
-      must_respond_with :ok
-      assigns(:analysis).must_equal analysis
-      assigns(:project).must_equal project
+      assert_response :ok
+      _(assigns(:analysis)).must_equal analysis
+      _(assigns(:project)).must_equal project
 
-      result['series'].first['name'].must_equal activity_fact.language.nice_name
-      result['series'].first['color'].must_equal '#EEE'
-      result['series'].first['data'].must_equal [[time_integer, 5]]
+      _(result['series'].first['name']).must_equal activity_fact.language.nice_name
+      _(result['series'].first['color']).must_equal '#EEE'
+      _(result['series'].first['data']).must_equal [[time_integer, 5]]
     end
   end
 
@@ -213,20 +213,20 @@ describe 'AnalysesController' do
       create(:all_month, month: 1.month.ago.beginning_of_month)
       analysis.update(min_month: 2.months.ago.beginning_of_month, max_month: beginning_of_month)
 
-      get :code_history, project_id: project.to_param, id: analysis.id
+      get :code_history, params: { project_id: project.to_param, id: analysis.id }
 
       result = JSON.parse(@response.body)
 
-      must_respond_with :ok
-      assigns(:analysis).must_equal analysis
-      assigns(:project).must_equal project
+      assert_response :ok
+      _(assigns(:analysis)).must_equal analysis
+      _(assigns(:project)).must_equal project
 
       series = result['series']
 
-      series.first['id'].must_equal 'code'
-      series.map { |d| d['data'].last }.must_equal [[time_integer, 5], [time_integer, 10], [time_integer, 3]]
-      series.map { |d| d['name'] }.must_equal %w[Code Comments Blanks]
-      assert_nil result['scrollbar']
+      _(series.first['id']).must_equal 'code'
+      _(series.map { |d| d['data'].last }).must_equal [[time_integer, 5], [time_integer, 10], [time_integer, 3]]
+      _(series.map { |d| d['name'] }).must_equal %w[Code Comments Blanks]
+      _(result['scrollbar']).must_be_nil
     end
   end
 
@@ -238,31 +238,31 @@ describe 'AnalysesController' do
       create(:all_month, month: 2.months.ago.beginning_of_month)
       activity_fact.analysis.update(min_month: 3.months.ago.beginning_of_month)
 
-      get :lines_of_code, project_id: project.to_param, id: analysis.id
+      get :lines_of_code, params: { project_id: project.to_param, id: analysis.id }
 
       result = JSON.parse(@response.body)
 
-      must_respond_with :ok
-      assigns(:analysis).must_equal analysis
-      assigns(:project).must_equal project
+      assert_response :ok
+      _(assigns(:analysis)).must_equal analysis
+      _(assigns(:project)).must_equal project
 
       series = result['series']
 
-      series.first['id'].must_equal 'code'
-      series.map { |d| d['data'].last }.must_equal [[time_integer, 5], [time_integer, 10], [time_integer, 3]]
-      series.map { |d| d['name'] }.must_equal %w[Code Comments Blanks]
-      result['scrollbar']['enabled'].must_equal false
+      _(series.first['id']).must_equal 'code'
+      _(series.map { |d| d['data'].last }).must_equal [[time_integer, 5], [time_integer, 10], [time_integer, 3]]
+      _(series.map { |d| d['name'] }).must_equal %w[Code Comments Blanks]
+      _(result['scrollbar']['enabled']).must_equal false
     end
   end
 
   describe 'commits_spark' do
     it 'should return spark image' do
       Spark::SimpleSpark.any_instance.stubs(:width).returns(100)
-      get :commits_spark, project_id: project.to_param, id: analysis.id
+      get :commits_spark, params: { project_id: project.to_param, id: analysis.id }
 
-      must_respond_with :ok
-      assigns(:project).must_equal project
-      assigns(:analysis).must_equal analysis
+      assert_response :ok
+      _(assigns(:project)).must_equal project
+      _(assigns(:analysis)).must_equal analysis
     end
   end
 
@@ -275,11 +275,11 @@ describe 'AnalysesController' do
 
       Analysis::LanguagePercentages.any_instance.stubs(:collection).returns(data)
 
-      get :languages, project_id: project.to_param, id: analysis.id
+      get :languages, params: { project_id: project.to_param, id: analysis.id }
 
-      must_respond_with :ok
-      assigns(:analysis).must_equal analysis
-      assigns(:project).must_equal project
+      assert_response :ok
+      _(assigns(:analysis)).must_equal analysis
+      _(assigns(:project)).must_equal project
     end
   end
 end

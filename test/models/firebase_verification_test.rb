@@ -11,13 +11,13 @@ class FirebaseVerificationTest < ActiveSupport::TestCase
         firebase_verification = FirebaseVerification.create!(
           credentials: Faker::Internet.password
         )
-        firebase_verification.token.must_equal decoded_val[0]['user_id']
+        _(firebase_verification.token).must_equal decoded_val[0]['user_id']
       end
     end
 
     it 'Should add error when decoded token is nil' do
       VCR.use_cassette('google_keys') do
-        proc { FirebaseVerification.create!(credentials: '') }.must_raise ActiveRecord::RecordInvalid
+        _(proc { FirebaseVerification.create!(credentials: '') }).must_raise ActiveRecord::RecordInvalid
       end
     end
   end
@@ -27,15 +27,15 @@ class FirebaseVerificationTest < ActiveSupport::TestCase
     verification = create(:firebase_verification)
     new_verification = build(:firebase_verification, unique_id: verification.unique_id)
 
-    new_verification.wont_be :valid?
+    _(new_verification).wont_be :valid?
     message = I18n.t('activerecord.errors.models.firebase_verification.attributes.unique_id.taken')
-    new_verification.errors.messages[:unique_id].first.must_equal message
+    _(new_verification.errors.messages[:unique_id].first).must_equal message
   end
 
   it 'wont report uniqueness message for blank values' do
     FirebaseVerification.any_instance.stubs(:generate_token)
     verification = build(:firebase_verification, unique_id: nil, token: nil)
-    verification.wont_be :valid?
-    verification.errors.messages[:unique_id].must_equal ["can't be blank"]
+    _(verification).wont_be :valid?
+    _(verification.errors.messages[:unique_id]).must_equal ["can't be blank"]
   end
 end

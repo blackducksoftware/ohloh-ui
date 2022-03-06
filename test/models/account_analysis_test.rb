@@ -10,11 +10,11 @@ class AccountAnalysisTest < ActiveSupport::TestCase
 
   describe 'account_analysis_fact' do
     it 'should return nil_account_analysis_fact when there is not account_analysis_fact' do
-      account_analysis.account_analysis_fact.class.must_equal NilAccountAnalysisFact
+      _(account_analysis.account_analysis_fact.class).must_equal NilAccountAnalysisFact
     end
 
     it 'should return account_analysis_fact when there is account_analysis_fact' do
-      account_analysis_with_fact.account_analysis_fact.class.must_equal AccountAnalysisFact
+      _(account_analysis_with_fact.account_analysis_fact.class).must_equal AccountAnalysisFact
     end
   end
 
@@ -33,10 +33,10 @@ class AccountAnalysisTest < ActiveSupport::TestCase
       logo_id3 = fact2.most_commits_project.logo_id
       logo_id4 = fact2.recent_commit_project.logo_id
 
-      account_analysis.language_logos.must_include Logo.where(id: logo_id1).first
-      account_analysis.language_logos.must_include Logo.where(id: logo_id2).first
-      account_analysis.language_logos.must_include Logo.where(id: logo_id3).first
-      account_analysis.language_logos.must_include Logo.where(id: logo_id4).first
+      _(account_analysis.language_logos).must_include Logo.where(id: logo_id1).first
+      _(account_analysis.language_logos).must_include Logo.where(id: logo_id2).first
+      _(account_analysis.language_logos).must_include Logo.where(id: logo_id3).first
+      _(account_analysis.language_logos).must_include Logo.where(id: logo_id4).first
     end
   end
 end

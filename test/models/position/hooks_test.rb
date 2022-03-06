@@ -36,9 +36,9 @@ class Position::HooksTest < ActiveSupport::TestCase
         create(:name_fact, analysis: position.project.best_analysis, name: new_name)
         position.update!(name: new_name)
 
-        position.account.person.kudo_score.must_equal kudo_score
-        position.account.person.kudo_rank.must_equal kudo_rank
-        position.account.person.kudo_position.must_equal kudo_position
+        _(position.account.person.kudo_score).must_equal kudo_score
+        _(position.account.person.kudo_rank).must_equal kudo_rank
+        _(position.account.person.kudo_position).must_equal kudo_position
       end
     end
 
@@ -60,20 +60,20 @@ class Position::HooksTest < ActiveSupport::TestCase
       it 'must update account.person with maximum kudo_score' do
         position.update!(project: new_project, name: name_obj)
 
-        position.account.person.kudo_score.must_equal kudo_score
+        _(position.account.person.kudo_score).must_equal kudo_score
       end
 
       it 'must update account.person with maximum kudo_rank' do
         account_kudo_rank = position.account.person.kudo_rank
         position.update!(project: new_project, name: name_obj)
 
-        position.account.person.kudo_rank.must_equal account_kudo_rank
+        _(position.account.person.kudo_rank).must_equal account_kudo_rank
       end
 
       it 'must update account.person with minimum kudo_position' do
         position.update!(project: new_project, name: name_obj)
 
-        position.account.person.kudo_position.must_equal kudo_position
+        _(position.account.person.kudo_position).must_equal kudo_position
       end
     end
   end
@@ -107,7 +107,7 @@ class Position::HooksTest < ActiveSupport::TestCase
 
       position.destroy
 
-      kudo.reload.account_id.must_be_nil
+      _(kudo.reload.account_id).must_be_nil
     end
 
     it 'must invoke account analysis job on create and dstroy' do
@@ -125,7 +125,7 @@ class Position::HooksTest < ActiveSupport::TestCase
           position.destroy
         end
 
-        Person.find_by(name: position.name, project: position.project).must_be_nil
+        _(Person.find_by(name: position.name, project: position.project)).must_be_nil
       end
 
       it 'must create an unclaimed person if name has name_facts' do
@@ -135,7 +135,7 @@ class Position::HooksTest < ActiveSupport::TestCase
           position.destroy
         end
 
-        Person.find_by(name: position.name, project: position.project).must_be :present?
+        _(Person.find_by(name: position.name, project: position.project)).must_be :present?
       end
     end
 
@@ -150,77 +150,77 @@ class Position::HooksTest < ActiveSupport::TestCase
 
       it 'must delete associated aliases' do
         create_project_alias(project, commit_name.id, preferred_name.id, account)
-        project.aliases.count.must_equal 1
+        _(project.aliases.count).must_equal 1
 
         position.destroy
 
-        project.reload.aliases.count.must_equal 0
+        _(project.reload.aliases.count).must_equal 0
       end
 
       it 'wont delete aliases created by other users' do
         create_project_alias(project, commit_name.id, preferred_name.id, create(:account))
-        project.aliases.count.must_equal 1
+        _(project.aliases.count).must_equal 1
 
         position.destroy
 
-        project.reload.aliases.count.must_equal 1
+        _(project.reload.aliases.count).must_equal 1
       end
 
       it 'must delete associated aliases without affecting other aliases' do
         create_project_alias(project, commit_name.id, preferred_name.id, account)
         create_project_alias(project, create(:name).id, preferred_name.id, create(:account))
-        project.aliases.count.must_equal 2
+        _(project.aliases.count).must_equal 2
 
         position.destroy
 
-        project.reload.aliases.count.must_equal 1
+        _(project.reload.aliases.count).must_equal 1
       end
 
       it 'wont delete aliases for other names' do
         create_project_alias(project, create(:name).id, commit_name.id, account)
-        project.aliases.count.must_equal 1
+        _(project.aliases.count).must_equal 1
 
         position.destroy
 
-        project.reload.aliases.count.must_equal 1
+        _(project.reload.aliases.count).must_equal 1
       end
 
       it 'wont delete aliases for other projects' do
         new_project = create(:project)
         new_position = create_position(project: new_project, name: preferred_name, account: account)
         create_project_alias(project, commit_name.id, preferred_name.id, account)
-        project.aliases.count.must_equal 1
+        _(project.aliases.count).must_equal 1
 
         new_position.destroy
 
-        project.reload.aliases.count.must_equal 1
+        _(project.reload.aliases.count).must_equal 1
       end
 
       it "wont delete an alias redone by other account when original's position is destroyed" do
         original_alias = create_project_alias(project, commit_name.id, preferred_name.id, account)
-        project.aliases.count.must_equal 1
+        _(project.aliases.count).must_equal 1
         position.destroy
-        project.reload.aliases.count.must_equal 0
+        _(project.reload.aliases.count).must_equal 0
 
         # The alias is revived by other account.
         original_alias.reload.find_create_edit.redo!(create(:account))
-        project.reload.aliases.count.must_equal 1
+        _(project.reload.aliases.count).must_equal 1
 
         # The original account adds the position back,
         position = create_position(project: project, name: preferred_name, account: account)
         # and deletes it again.
         position.destroy
 
-        project.reload.aliases.count.must_equal 1
-        project.reload.aliases.first.commit_name.must_equal commit_name
-        project.reload.aliases.first.preferred_name.must_equal preferred_name
+        _(project.reload.aliases.count).must_equal 1
+        _(project.reload.aliases.first.commit_name).must_equal commit_name
+        _(project.reload.aliases.first.preferred_name).must_equal preferred_name
       end
 
       it "must delete an alias redone by other account when other's position is destroyed" do
         original_alias = create_project_alias(project, commit_name.id, preferred_name.id, account)
-        project.aliases.count.must_equal 1
+        _(project.aliases.count).must_equal 1
         position.destroy
-        project.reload.aliases.count.must_equal 0
+        _(project.reload.aliases.count).must_equal 0
 
         # The other account creates a position.
         other_account = create(:account)
@@ -228,11 +228,11 @@ class Position::HooksTest < ActiveSupport::TestCase
 
         # The alias is revived by other account.
         original_alias.reload.find_create_edit.redo!(other_account)
-        project.reload.aliases.count.must_equal 1
+        _(project.reload.aliases.count).must_equal 1
 
         other_position.destroy
 
-        project.reload.aliases.count.must_equal 0
+        _(project.reload.aliases.count).must_equal 0
       end
     end
   end
@@ -250,7 +250,7 @@ class Position::HooksTest < ActiveSupport::TestCase
 
       position.update(name: kudo.name, project: kudo.project)
 
-      kudo.reload.account_id.must_equal position.account_id
+      _(kudo.reload.account_id).must_equal position.account_id
     end
 
     it 'wont destroy any affected kudos which have the same sender as position.account_id' do
@@ -259,7 +259,7 @@ class Position::HooksTest < ActiveSupport::TestCase
 
       position.update(name: kudo.name, project: kudo.project)
 
-      Kudo.find_by(id: kudo.id).must_be_nil
+      _(Kudo.find_by(id: kudo.id)).must_be_nil
     end
   end
 
@@ -278,8 +278,8 @@ class Position::HooksTest < ActiveSupport::TestCase
         position.update!(name_id: unclaimed_person.name.id)
       end
 
-      Person.find_by(name_id: previous_name_id, project: project).must_be_nil
-      Person.find_by(id: unclaimed_person.id).must_be_nil
+      _(Person.find_by(name_id: previous_name_id, project: project)).must_be_nil
+      _(Person.find_by(id: unclaimed_person.id)).must_be_nil
     end
 
     it 'replacing name must create an unclaimed person for the older name' do
@@ -293,8 +293,8 @@ class Position::HooksTest < ActiveSupport::TestCase
         position.update!(name_id: unclaimed_person.name.id)
       end
 
-      Person.find_by(name_id: previous_name_id, project: project).must_be :present?
-      Person.find_by(id: unclaimed_person.id).must_be_nil
+      _(Person.find_by(name_id: previous_name_id, project: project)).must_be :present?
+      _(Person.find_by(id: unclaimed_person.id)).must_be_nil
     end
   end
 

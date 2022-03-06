@@ -2,7 +2,7 @@
 
 require 'test_helper'
 
-describe EditsController do
+class EditsControllerTest < ActionController::TestCase
   describe 'project edits pages' do
     before do
       Project.any_instance.stubs(:code_locations).returns([])
@@ -19,8 +19,8 @@ describe EditsController do
     # index action
     it 'index should not require a current user' do
       login_as nil
-      get :index, project_id: @project.to_param
-      must_respond_with :ok
+      get :index, params: { project_id: @project.to_param }
+      assert_response :ok
     end
 
     it 'index should support query param' do
@@ -29,33 +29,33 @@ describe EditsController do
       @project.update(description: 'Blah!')
       @project.editor_account = create(:admin)
       @project.update(description: 'Wat?')
-      get :index, project_id: @project.to_param, query: 'blah'
-      must_respond_with :ok
-      must_select "#edit_#{PropertyEdit.where(target: @project, value: 'Blah!').first.id}", true
-      must_select "#edit_#{PropertyEdit.where(target: @project, value: 'Wat?').first.id}", false
+      get :index, params: { project_id: @project.to_param, query: 'blah' }
+      assert_response :ok
+      assert_select "#edit_#{PropertyEdit.where(target: @project, value: 'Blah!').first.id}", true
+      assert_select "#edit_#{PropertyEdit.where(target: @project, value: 'Wat?').first.id}", false
     end
 
     # update action
     it 'undo should require a logged in user' do
       login_as nil
       create_edit = CreateEdit.where(target: @project).first
-      post :update, id: create_edit.id, undo: 'true', project_id: @project.to_param
+      post :update, params: { id: create_edit.id, undo: 'true', project_id: @project.to_param }
       assert_response :redirect
-      must_redirect_to new_session_path
+      assert_redirected_to new_session_path
       assert_equal false, @project.reload.deleted?
     end
 
     it 'should set the parent' do
       login_as create(:admin)
       create_edit = CreateEdit.where(target: @project).first
-      post :update, id: create_edit.id, undo: 'true', project_id: @project.to_param
-      assigns(:parent).wont_be_nil
+      post :update, params: { id: create_edit.id, undo: 'true', project_id: @project.to_param }
+      _(assigns(:parent)).wont_be_nil
     end
 
     it 'undo of creation edit should delete the project' do
       login_as create(:admin)
       create_edit = CreateEdit.where(target: @project).first
-      post :update, id: create_edit.id, undo: 'true', project_id: @project.to_param
+      post :update, params: { id: create_edit.id, undo: 'true', project_id: @project.to_param }
       assert_response :success
       assert_equal true, @project.reload.deleted?
     end
@@ -63,7 +63,8 @@ describe EditsController do
     it 'undo gracefully handles undo/redo errors' do
       login_as create(:admin)
       Edit.any_instance.stubs(:undo!).raises(ActiveRecord::Rollback)
-      post :update, id: CreateEdit.where(target: @project).first.id, undo: 'true', project_id: @project.to_param
+      post :update, params: { id: CreateEdit.where(target: @project).first.id, undo: 'true',
+                              project_id: @project.to_param }
       assert_response 406
     end
 
@@ -71,9 +72,9 @@ describe EditsController do
       login_as nil
       create_edit = CreateEdit.where(target: @project).first
       create_edit.undo! create(:admin)
-      post :update, id: create_edit.id, undo: 'false', project_id: @project.to_param
+      post :update, params: { id: create_edit.id, undo: 'false', project_id: @project.to_param }
       assert_response :redirect
-      must_redirect_to new_session_path
+      assert_redirected_to new_session_path
       assert_equal true, @project.reload.deleted?
     end
 
@@ -81,7 +82,7 @@ describe EditsController do
       create_edit = CreateEdit.where(target: @project).first
       login_as create_edit.account
       @project.destroy
-      post :update, id: create_edit.id, undo: 'false', project_id: @project.to_param
+      post :update, params: { id: create_edit.id, undo: 'false', project_id: @project.to_param }
       assert_equal false, @project.reload.deleted?
       assert_response :success
     end
@@ -91,7 +92,7 @@ describe EditsController do
       create_edit = CreateEdit.where(target: @project).first
       create_edit.undo! create(:admin)
       Edit.any_instance.stubs(:redo!).raises(ActiveRecord::Rollback)
-      post :update, id: create_edit.id, undo: 'false', project_id: @project.to_param
+      post :update, params: { id: create_edit.id, undo: 'false', project_id: @project.to_param }
       assert_response 406
     end
   end
@@ -110,14 +111,14 @@ describe EditsController do
     # index action
     it 'index should not require a current user' do
       login_as nil
-      get :index, organization_id: @organization.to_param
-      must_respond_with :ok
+      get :index, params: { organization_id: @organization.to_param }
+      assert_response :ok
     end
 
     it 'index should be rendered for logged in user' do
       login_as create(:account)
-      get :index, organization_id: @organization.to_param
-      must_respond_with :ok
+      get :index, params: { organization_id: @organization.to_param }
+      assert_response :ok
     end
 
     it 'index should support query param' do
@@ -126,10 +127,10 @@ describe EditsController do
       @organization.update(description: 'Blah!')
       @organization.editor_account = create(:account)
       @organization.update(description: 'Wat?')
-      get :index, organization_id: @organization.to_param, query: 'blah'
-      must_respond_with :ok
-      must_select "#edit_#{PropertyEdit.where(target: @organization, value: 'Blah!').first.id}", true
-      must_select "#edit_#{PropertyEdit.where(target: @organization, value: 'Wat?').first.id}", false
+      get :index, params: { organization_id: @organization.to_param, query: 'blah' }
+      assert_response :ok
+      assert_select "#edit_#{PropertyEdit.where(target: @organization, value: 'Blah!').first.id}", true
+      assert_select "#edit_#{PropertyEdit.where(target: @organization, value: 'Wat?').first.id}", false
     end
   end
 
@@ -142,8 +143,8 @@ describe EditsController do
     # index action
     it 'index should not require a current user' do
       login_as nil
-      get :index, account_id: @account.to_param
-      must_respond_with :ok
+      get :index, params: { account_id: @account.to_param }
+      assert_response :ok
     end
 
     it 'index should support query param' do
@@ -151,10 +152,10 @@ describe EditsController do
       @project.editor_account = @account
       @project.update(description: 'Blah!')
       @project.update(name: 'Wat?')
-      get :index, account_id: @account.to_param, query: 'blah'
-      must_respond_with :ok
-      must_select "#edit_#{PropertyEdit.where(target: @project, value: 'Blah!').first.id}", true
-      must_select "#edit_#{PropertyEdit.where(target: @project, value: 'Wat?').first.id}", false
+      get :index, params: { account_id: @account.to_param, query: 'blah' }
+      assert_response :ok
+      assert_select "#edit_#{PropertyEdit.where(target: @project, value: 'Blah!').first.id}", true
+      assert_select "#edit_#{PropertyEdit.where(target: @project, value: 'Wat?').first.id}", false
     end
   end
 
@@ -167,34 +168,34 @@ describe EditsController do
     # index action
     it 'index should not require a current user' do
       login_as nil
-      get :index, license_id: @license.to_param
-      must_respond_with :ok
+      get :index, params: { license_id: @license.to_param }
+      assert_response :ok
     end
 
     it 'index should show even when a regular user is logged in' do
       login_as create(:account)
-      get :index, license_id: @license.to_param
-      must_respond_with :ok
+      get :index, params: { license_id: @license.to_param }
+      assert_response :ok
     end
 
     it 'index should support query param' do
       login_as nil
       @license.editor_account = create(:account)
-      @license.update(name: 'Blah!')
+      @license.update!(name: 'Blah!')
       @license.editor_account = create(:account)
-      @license.update(name: 'Wat?')
-      get :index, license_id: @license.to_param, query: 'blah'
-      must_respond_with :ok
-      must_select "#edit_#{PropertyEdit.where(target: @license, value: 'Blah!').first.id}", true
-      must_select "#edit_#{PropertyEdit.where(target: @license, value: 'Wat?').first.id}", false
+      @license.update!(name: 'Wat?')
+      get :index, params: { license_id: @license.to_param, query: 'blah' }
+      assert_response :ok
+      assert_select "#edit_#{PropertyEdit.where(target: @license, value: 'Blah!').first.id}", true
+      assert_select "#edit_#{PropertyEdit.where(target: @license, value: 'Wat?').first.id}", false
     end
 
     it 'must work for deleted license' do
       @license.destroy
 
-      get :index, license_id: @license.to_param
+      get :index, params: { license_id: @license.to_param }
 
-      must_respond_with :ok
+      assert_response :ok
     end
   end
 
@@ -203,9 +204,9 @@ describe EditsController do
       it 'should not require a current user' do
         project = create(:project)
         login_as nil
-        xhr :get, :show, id: project.edits.first.id, project_id: project.to_param
-        must_respond_with :ok
-        must_render_template '_show'
+        get :show, params: { id: project.edits.first.id, project_id: project.to_param }, xhr: true
+        assert_response :ok
+        assert_template '_show'
       end
     end
 
@@ -213,9 +214,9 @@ describe EditsController do
       it 'should not require a current user' do
         organization = create(:project).organization
         login_as nil
-        xhr :get, :show, id: organization.edits.first.id, organization_id: organization.to_param
-        must_respond_with :ok
-        must_render_template '_show'
+        get :show, params: { id: organization.edits.first.id, organization_id: organization.to_param }, xhr: true
+        assert_response :ok
+        assert_template '_show'
       end
     end
 
@@ -223,9 +224,9 @@ describe EditsController do
       it 'should not require a current user' do
         account = create(:project).editor_account
         login_as nil
-        xhr :get, :show, id: account.edits.first.id, account_id: account.to_param
-        must_respond_with :ok
-        must_render_template '_show'
+        get :show, params: { id: account.edits.first.id, account_id: account.to_param }, xhr: true
+        assert_response :ok
+        assert_template '_show'
       end
     end
 
@@ -233,18 +234,18 @@ describe EditsController do
       it 'should not require a current user' do
         license = create(:project_license).license
         login_as nil
-        xhr :get, :show, id: license.edits.first.id, license_id: license.to_param
-        must_respond_with :ok
-        must_render_template '_show'
+        get :show, params: { id: license.edits.first.id, license_id: license.to_param }, xhr: true
+        assert_response :ok
+        assert_template '_show'
       end
     end
 
     it 'should not render if it is not a xhr request' do
       license = create(:project_license).license
       login_as nil
-      get :show, id: license.edits.first.id, license_id: license.to_param, format: :js
-      must_respond_with :ok
-      assert_template nil
+      _(lambda do
+        get :show, params: { id: license.edits.first.id, license_id: license.to_param }, format: :js
+      end).must_raise(ActionController::InvalidCrossOriginRequest)
     end
   end
   describe 'set project to deleted' do
@@ -254,12 +255,12 @@ describe EditsController do
       create_code_location(@project)
     end
     it 'should delete associated enlistments' do
-      @project.enlistments.count.must_equal 1
-      @project.enlistments.first.deleted.must_equal false
+      _(@project.enlistments.count).must_equal 1
+      _(@project.enlistments.first.deleted).must_equal false
       login_as create(:admin)
       create_edit = CreateEdit.where(target: @project).first
       WebMocker.delete_subscription(@project.code_locations.first.id, @project.id)
-      post :update, id: create_edit.id, undo: 'true', project_id: @project.to_param
+      post :update, params: { id: create_edit.id, undo: 'true', project_id: @project.to_param }
       assert_response :success
       assert_equal true, @project.reload.deleted?
       assert_equal true, Enlistment.find_by(project_id: @project.id).deleted?
@@ -273,9 +274,9 @@ describe EditsController do
       edit = CreateEdit.where(target_id: enlistment.id, target_type: 'Enlistment', undone: false).first
       CodeLocationSubscription.any_instance.expects(:delete).once
       Enlistment.any_instance.stubs(:code_location).returns(code_location_stub)
-      put :update, id: edit.id, undo: 'true', project_id: enlistment.project_id
+      put :update, params: { id: edit.id, undo: 'true', project_id: enlistment.project_id }
       assert_response :success
-      enlistment.reload.must_be :deleted?
+      _(enlistment.reload).must_be :deleted?
     end
 
     it 'redo must attempt to recreate subscription' do
@@ -287,9 +288,9 @@ describe EditsController do
       edit = CreateEdit.where(target_id: enlistment.id, target_type: 'Enlistment', undone: true).first
       CodeLocationSubscription.expects(:create).once
       Enlistment.any_instance.stubs(:code_location).returns(code_location_stub)
-      put :update, id: edit.id, undo: 'false', project_id: enlistment.project_id
+      put :update, params: { id: edit.id, undo: 'false', project_id: enlistment.project_id }
       assert_response :success
-      enlistment.reload.wont_be :deleted?
+      _(enlistment.reload).wont_be :deleted?
     end
   end
 
@@ -302,8 +303,8 @@ describe EditsController do
 
     it 'should render edit template' do
       create_edit = CreateEdit.where(target: @project).first
-      post :refresh, id: create_edit.id, project_id: @project.to_param
-      must_render_template 'edits/edit'
+      post :refresh, params: { id: create_edit.id, project_id: @project.to_param }
+      assert_template 'edits/edit'
     end
   end
 

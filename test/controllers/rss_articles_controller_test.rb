@@ -2,23 +2,23 @@
 
 require 'test_helper'
 
-describe 'RssArticlesController' do
+class RssArticlesControllerTest < ActionController::TestCase
   describe 'index' do
     it 'must render the page correctly' do
       project = create(:project)
 
-      get :index, project_id: project.to_param
+      get :index, params: { project_id: project.to_param }
 
-      must_respond_with :success
+      assert_response :success
     end
 
     it 'must render the page correctly without analysis' do
       project = create(:project)
       Project.any_instance.stubs(:best_analysis).returns(NilAnalysis.new)
 
-      get :index, project_id: project.to_param
+      get :index, params: { project_id: project.to_param }
 
-      must_respond_with :success
+      assert_response :success
     end
 
     it 'must render projects/deleted when project is deleted' do
@@ -27,9 +27,9 @@ describe 'RssArticlesController' do
       login_as account
       project.update!(deleted: true, editor_account: account)
 
-      get :index, project_id: project.to_param
+      get :index, params: { project_id: project.to_param }
 
-      must_render_template 'deleted'
+      assert_template 'deleted'
     end
   end
 end

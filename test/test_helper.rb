@@ -6,13 +6,15 @@ require 'simplecov-rcov'
 
 SimpleCov.formatter = SimpleCov::Formatter::HTMLFormatter
 SimpleCov.start 'rails'
-SimpleCov.minimum_coverage 99.54
+SimpleCov.minimum_coverage 99.49
+
+require 'dotenv'
+Dotenv.load '.env.test'
 
 require File.expand_path('../config/environment', __dir__)
 require 'rails/test_help'
 require 'minitest/rails'
 require 'mocha/minitest'
-require 'dotenv'
 require 'test_helpers/setup_hamster_account'
 require 'test_helpers/create_forges'
 require 'test_helpers/api_factories'
@@ -23,8 +25,6 @@ require 'clearance/test_unit'
 
 Sidekiq::Testing.fake!
 
-Dotenv.overload '.env.test'
-
 ActiveRecord::Migration.maintain_test_schema!
 
 VCR.configure do |config|
@@ -33,10 +33,11 @@ VCR.configure do |config|
 end
 
 class ActiveSupport::TestCase
-  include FactoryBot::Syntax::Methods
   extend SetupHamsterAccount
   extend CreateForges
   extend MiniTest::Spec::DSL
+  include FactoryBot::Syntax::Methods
+
   TEST_PASSWORD = :test_password
 
   create_hamster_account
@@ -79,7 +80,7 @@ class ActiveSupport::TestCase
   def integration_login_as(account)
     if account
       get new_session_path
-      post sessions_path, login: { login: account.login, password: TEST_PASSWORD }
+      post sessions_path, params: { login: { login: account.login, password: TEST_PASSWORD } }
     else
       delete sessions_path
     end
@@ -132,28 +133,29 @@ class ActiveSupport::TestCase
     end
   end
 
-  def stub_code_location_subscription_api_call(code_location_id, project_id, method = 'create')
+  def stub_code_location_subscription_api_call(code_location_id, project_id, method = 'create', &block)
     VCR.use_cassette("#{method}_code_location_subscription",
                      erb: { code_location_id: code_location_id, client_relation_id: project_id },
-                     match_requests_on: %i[host path method]) do
-      yield
-    end
+                     match_requests_on: %i[host path method], &block)
   end
 
   def stub_firebase_verification(sub = '123', alg = 'RS256', kid = '745c7128cba10e251b9fe712aed52613388a6699')
-    decoded_val = [{  'iss' => 'https://securetoken.google.com/fir-sample-8bb3e',
-                      'aud' => 'fir-sample-8bb3e',
-                      'auth_time' => 1_505_737_344,
-                      'user_id' => '123',
-                      'sub' => sub,
-                      'iat' => 1_505_737_344,
-                      'exp' => 1_505_740_944,
-                      'phone_number' => '+919999999999',
-                      'firebase' => { 'identities' => { 'phone' => ['+919999999999'] },
-                                      'sign_in_provider' => 'phone' } },
-                   { 'alg' => alg,
-                     'kid' => kid },
-                   nil]
-    decoded_val
+    [{ 'iss' => 'https://securetoken.google.com/fir-sample-8bb3e',
+       'aud' => 'fir-sample-8bb3e',
+       'auth_time' => 1_505_737_344,
+       'user_id' => '123',
+       'sub' => sub,
+       'iat' => 1_505_737_344,
+       'exp' => 1_505_740_944,
+       'phone_number' => '+919999999999',
+       'firebase' => { 'identities' => { 'phone' => ['+919999999999'] },
+                       'sign_in_provider' => 'phone' } },
+     { 'alg' => alg,
+       'kid' => kid },
+     nil]
+  end
+
+  def assert_response(code)
+    assert_response(code)
   end
 end

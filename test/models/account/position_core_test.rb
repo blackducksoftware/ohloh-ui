@@ -6,7 +6,7 @@ class PositionCoreTest < ActiveSupport::TestCase
   it 'association callbacks on delegable' do
     account = create(:account)
     create_position(account: account)
-    account.positions.count.must_equal 1
+    _(account.positions.count).must_equal 1
   end
 
   it '#with_projects' do
@@ -20,15 +20,15 @@ class PositionCoreTest < ActiveSupport::TestCase
     common_attributes = { account: admin, start_date: Time.current, stop_date: Time.current }
     create_position(common_attributes.merge(project: project_foo))
     create_position(common_attributes.merge(project: project_bar, title: :bar_title))
-    admin.position_core.with_projects.count.must_equal 2
+    _(admin.position_core.with_projects.count).must_equal 2
 
-    admin.positions.count.must_equal 2
+    _(admin.positions.count).must_equal 2
 
     project_foo.update!(deleted: true)
 
-    admin.positions.count.must_equal 1
-    admin.positions.first.title.to_sym.must_equal :bar_title
-    admin.position_core.with_projects.count.must_equal 1
+    _(admin.positions.count).must_equal 1
+    _(admin.positions.first.title.to_sym).must_equal :bar_title
+    _(admin.position_core.with_projects.count).must_equal 1
   end
 
   it 'ensure_position_or_alias creates a position if try_create is set' do
@@ -38,9 +38,9 @@ class PositionCoreTest < ActiveSupport::TestCase
     NameFact.create!(analysis: project.best_analysis, name: name)
     assert_difference('account.positions.count', 1) do
       position = account.position_core.ensure_position_or_alias!(project, name, true)
-      project.reload.aliases.count.must_equal 0
-      position.project.name.must_equal project.name
-      position.name.must_equal name
+      _(project.reload.aliases.count).must_equal 0
+      _(position.project.name).must_equal project.name
+      _(position.name).must_equal name
     end
   end
 
@@ -50,8 +50,8 @@ class PositionCoreTest < ActiveSupport::TestCase
     project = create(:project)
     assert_no_difference('unactivated_account.positions.count') do
       position = unactivated_account.position_core.ensure_position_or_alias!(project, name)
-      position.must_be_nil
-      project.reload.aliases.count.must_equal 0 # still ensure no aliases
+      _(position).must_be_nil
+      _(project.reload.aliases.count).must_equal 0 # still ensure no aliases
     end
   end
 
@@ -64,9 +64,9 @@ class PositionCoreTest < ActiveSupport::TestCase
     create_position(account: account, project: project, name: name)
     assert_difference 'Alias.count' do
       alias_obj = account.position_core.ensure_position_or_alias!(project, person.name)
-      alias_obj.project_id.must_equal project.id
-      alias_obj.commit_name_id.must_equal person.name_id
-      alias_obj.preferred_name_id.must_equal name.id
+      _(alias_obj.project_id).must_equal project.id
+      _(alias_obj.commit_name_id).must_equal person.name_id
+      _(alias_obj.preferred_name_id).must_equal name.id
     end
   end
 
@@ -80,8 +80,8 @@ class PositionCoreTest < ActiveSupport::TestCase
     alias_obj = create(:alias, project: project, commit_name: person.name)
     assert_no_difference 'Alias.count' do
       account.position_core.ensure_position_or_alias!(project, person.name)
-      alias_obj.reload.deleted?.must_equal false
-      alias_obj.preferred_name_id.must_equal name.id
+      _(alias_obj.reload.deleted?).must_equal false
+      _(alias_obj.preferred_name_id).must_equal name.id
     end
   end
 
@@ -94,7 +94,7 @@ class PositionCoreTest < ActiveSupport::TestCase
     alias_obj = create(:alias, project: project, commit_name: name)
     assert_no_difference 'Alias.count' do
       account.position_core.ensure_position_or_alias!(project, name)
-      alias_obj.reload.deleted?.must_equal true
+      _(alias_obj.reload.deleted?).must_equal true
     end
   end
 
@@ -109,24 +109,24 @@ class PositionCoreTest < ActiveSupport::TestCase
     create(:name_fact, analysis: project.best_analysis, name: new_name)
     new_position = account.position_core.ensure_position_or_alias!(project, new_name)
 
-    account.reload.positions.count.must_equal 1
-    new_position.wont_equal old_position
-    new_position.name.must_equal new_name
-    new_position.account.must_equal account
+    _(account.reload.positions.count).must_equal 1
+    _(new_position).wont_equal old_position
+    _(new_position.name).must_equal new_name
+    _(new_position.account).must_equal account
   end
 
   it 'logos returns a mapping of { logo_id: logo }' do
     position = create_position
     logos = position.account.position_core.logos
-    logos.keys.first.must_equal position.project.logo.id
-    logos.values.first.class.must_equal Logo
+    _(logos.keys.first).must_equal position.project.logo.id
+    _(logos.values.first.class).must_equal Logo
   end
 
   it '#with_only_unclaimed' do
     account = create(:account)
     create_position(account: account)
     account.positions.last.update_column(:name_id, nil)
-    Account::PositionCore.with_only_unclaimed.must_equal [account]
+    _(Account::PositionCore.with_only_unclaimed).must_equal [account]
   end
 
   describe '#name_facts' do
@@ -142,7 +142,7 @@ class PositionCoreTest < ActiveSupport::TestCase
       create(:position, project: project_foo, name: name, account: account)
       create(:position, project: project_bar, name: name, account: account)
 
-      account.position_core.name_facts.keys.must_equal(
+      _(account.position_core.name_facts.keys).must_equal(
         ["#{name_fact1.analysis_id}_#{name.id}", "#{name_fact2.analysis_id}_#{name.id}"]
       )
     end
@@ -161,7 +161,7 @@ class PositionCoreTest < ActiveSupport::TestCase
       position1 = create(:position, project: project_foo, name: name, account: account)
       position2 = create(:position, project: project_bar, name: name, account: account)
 
-      account.position_core.ordered.must_equal [position2, position1]
+      _(account.position_core.ordered).must_equal [position2, position1]
     end
 
     it 'must sort positions by project_name when no name_fact' do
@@ -177,7 +177,7 @@ class PositionCoreTest < ActiveSupport::TestCase
       position_bar = create(:position, project: project_bar, name: name, account: account)
 
       Account::PositionCore.any_instance.stubs(:name_facts).returns({})
-      account.position_core.ordered.must_equal [position_bar, position_foo]
+      _(account.position_core.ordered).must_equal [position_bar, position_foo]
     end
   end
 end

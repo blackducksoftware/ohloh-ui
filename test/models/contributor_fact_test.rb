@@ -24,7 +24,7 @@ class ContributorFactTest < ActiveSupport::TestCase
       ContributorFact.where(analysis_id: analysis).destroy_all
       contributor_fact = create(:contributor_fact, analysis_id: analysis.id)
 
-      ContributorFact.unclaimed_for_project(project).to_a.map(&:id).must_equal [contributor_fact.id]
+      _(ContributorFact.unclaimed_for_project(project).to_a.map(&:id)).must_equal [contributor_fact.id]
     end
   end
 
@@ -33,7 +33,7 @@ class ContributorFactTest < ActiveSupport::TestCase
       cf = create(:name_fact, type: 'ContributorFact', analysis: project.best_analysis)
       create(:analysis_alias, analysis: cf.analysis, commit_name: cf.name, preferred_name: cf.name)
       retval = ContributorFact.first_for_name_id_and_project_id(cf.name.id, cf.analysis.project.id)
-      retval.id.must_equal cf.id
+      _(retval.id).must_equal cf.id
     end
   end
 
@@ -42,21 +42,21 @@ class ContributorFactTest < ActiveSupport::TestCase
       lang = create(:language)
       fact = create(:account_analysis_language_fact, language: lang, analysis_id: analysis.id, name_id: name_object.id)
 
-      contributor_fact.name_language_facts.must_equal [fact]
+      _(contributor_fact.name_language_facts).must_equal [fact]
     end
   end
 
   describe 'person' do
     it 'should' do
       person = create(:person, name_id: name_object.id, project_id: analysis.project_id)
-      contributor_fact.reload.person.must_equal person
+      _(contributor_fact.reload.person).must_equal person
     end
   end
 
   describe 'kudo_rank' do
     it 'should return kudo_rank' do
       _person = create(:person, name_id: name_object.id, project_id: analysis.project_id)
-      assert_nil contributor_fact.kudo_rank
+      _(contributor_fact.kudo_rank).must_be_nil
     end
   end
 
@@ -66,11 +66,11 @@ class ContributorFactTest < ActiveSupport::TestCase
     before { create(:commit, name_id: contributor_fact.name_id) }
 
     it 'should return contributor monthly commits' do
-      contributor_fact.monthly_commits.wont_be_empty
+      _(contributor_fact.monthly_commits).wont_be_empty
     end
 
     it 'should return different monthly commits for different contributors' do
-      other_contributor_fact.monthly_commits.wont_equal contributor_fact.monthly_commits
+      _(other_contributor_fact.monthly_commits).wont_equal contributor_fact.monthly_commits
     end
   end
 end

@@ -2,97 +2,97 @@
 
 require 'test_helper'
 
-describe 'CheckAvailabilitiesController' do
+class CheckAvailabilitiesControllerTest < ActionController::TestCase
   describe 'account' do
     it 'should return true when account is present' do
       create(:account, login: 'robin')
-      xhr :get, :account, query: 'RoBiN'
+      get :account, params: { query: 'RoBiN' }, xhr: true
 
-      response.body.must_equal 'true'
+      _(response.body).must_equal 'true'
     end
 
     it 'should return false when account is not present' do
-      xhr :get, :account, query: 'test'
+      get :account, params: { query: 'test' }, xhr: true
 
-      response.body.must_equal 'false'
+      _(response.body).must_equal 'false'
     end
 
     it 'should return false when passed no query string' do
-      xhr :get, :account
+      get :account, xhr: true
 
-      response.body.must_equal 'false'
+      _(response.body).must_equal 'false'
     end
   end
 
   describe 'project' do
     it 'should return true when project is present' do
       create(:project, vanity_url: 'Mario')
-      xhr :get, :project, query: 'maRio'
+      get :project, params: { query: 'maRio' }, xhr: true
 
-      response.body.must_equal 'true'
+      _(response.body).must_equal 'true'
     end
 
     it 'should return false when project is not present' do
-      xhr :get, :project, query: 'test'
+      get :project, params: { query: 'test' }, xhr: true
 
-      response.body.must_equal 'false'
+      _(response.body).must_equal 'false'
     end
 
     it 'should return false when passed no query string' do
-      xhr :get, :project
+      get :project, xhr: true
 
-      response.body.must_equal 'false'
+      _(response.body).must_equal 'false'
     end
   end
 
   describe 'organization' do
     it 'should return true when organization is present' do
       create(:organization, vanity_url: 'Mario')
-      xhr :get, :organization, query: 'maRio'
+      get :organization, params: { query: 'maRio' }, xhr: true
 
-      response.body.must_equal 'true'
+      _(response.body).must_equal 'true'
     end
 
     it 'should return false when organization is not present' do
-      xhr :get, :organization, query: 'test'
+      get :organization, params: { query: 'test' }, xhr: true
 
-      response.body.must_equal 'false'
+      _(response.body).must_equal 'false'
     end
 
     it 'should return false when passed no query string' do
-      xhr :get, :organization
+      get :organization, xhr: true
 
-      response.body.must_equal 'false'
+      _(response.body).must_equal 'false'
     end
   end
 
   describe 'license' do
     it 'should return true when license is present' do
       create(:license, vanity_url: 'Mario')
-      xhr :get, :license, query: 'maRio'
+      get :license, params: { query: 'maRio' }, xhr: true
 
-      response.body.must_equal 'true'
+      _(response.body).must_equal 'true'
     end
 
     it 'should return false when license is not present' do
-      xhr :get, :license, query: 'test'
+      get :license, params: { query: 'test' }, xhr: true
 
-      response.body.must_equal 'false'
+      _(response.body).must_equal 'false'
     end
 
     it 'should return false when passed no query string' do
-      xhr :get, :license
+      get :license, xhr: true
 
-      response.body.must_equal 'false'
+      _(response.body).must_equal 'false'
     end
 
     it 'must return false if license is deleted' do
       license = create(:license)
       license.destroy
 
-      xhr :get, :license, query: license.vanity_url
+      get :license, params: { query: license.vanity_url }, xhr: true
 
-      response.body.must_equal 'false'
+      _(response.body).must_equal 'false'
     end
   end
 end

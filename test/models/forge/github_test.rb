@@ -5,11 +5,11 @@ require 'test_helper'
 class Forge::GithubTest < ActiveSupport::TestCase
   describe 'match' do
     it 'should return nil for garbage' do
-      assert_nil Forge::Github.new.match('I am a banana!')
+      _(Forge::Github.new.match('I am a banana!')).must_be_nil
     end
 
     it 'should return nil for random URL' do
-      assert_nil Forge::Github.new.match('http://lolcats.com')
+      _(Forge::Github.new.match('http://lolcats.com')).must_be_nil
     end
 
     it 'should accept git url and create a new Forge::Match with the correct initialization parameters' do
@@ -38,7 +38,7 @@ class Forge::GithubTest < ActiveSupport::TestCase
       mock_match = mock
       mock_match.expects(:owner_at_forge).returns('UserName')
       mock_match.expects(:name_at_forge).returns('project_name')
-      Forge::Github.new.json_api_url(mock_match).must_equal correct_url
+      _(Forge::Github.new.json_api_url(mock_match)).must_equal correct_url
       ENV['GITHUB_AUTH_TOKEN'] = old_github_auth_token
     end
 
@@ -49,7 +49,7 @@ class Forge::GithubTest < ActiveSupport::TestCase
       mock_match = mock
       mock_match.expects(:owner_at_forge).returns('UserName')
       mock_match.expects(:name_at_forge).returns('project_name')
-      Forge::Github.new.json_api_url(mock_match).must_equal correct_url
+      _(Forge::Github.new.json_api_url(mock_match)).must_equal correct_url
       ENV['GITHUB_AUTH_TOKEN'] = old_github_auth_token
     end
   end

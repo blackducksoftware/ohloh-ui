@@ -12,8 +12,8 @@ class StackCoreTest < ActiveSupport::TestCase
     end
 
     it 'should be reverse chronological ordered' do
-      account.stacks.first.must_equal @newer_stack
-      account.stacks.last.must_equal @older_stack
+      _(account.stacks.first).must_equal @newer_stack
+      _(account.stacks.last).must_equal @older_stack
     end
   end
 
@@ -21,7 +21,7 @@ class StackCoreTest < ActiveSupport::TestCase
     account = create(:admin)
 
     default_stack = account.stack_core.default
-    account.stacks.size.must_equal 1
+    _(account.stacks.size).must_equal 1
 
     stack = create(:stack, account: account)
     stack.projects << create(:project)
@@ -29,7 +29,7 @@ class StackCoreTest < ActiveSupport::TestCase
     account.reload
 
     account_stack_core = account.stack_core
-    account.stacks.size.must_equal 2
-    account_stack_core.default.must_equal default_stack
+    _(account.stacks.size).must_equal 2
+    _(account_stack_core.default).must_equal default_stack
   end
 end

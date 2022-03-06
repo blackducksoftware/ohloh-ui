@@ -17,9 +17,9 @@ class DuplicateTest < ActiveSupport::TestCase
 
       create(:duplicate, good_project: good_project, bad_project: bad_project).resolve!(create(:admin))
 
-      StackEntry.where(id: bad_stack_entry1.id).first.deleted_at.wont_equal nil
-      assert_nil StackEntry.where(id: bad_stack_entry2.id).first.deleted_at
-      StackEntry.where(id: bad_stack_entry2.id).first.project_id.must_equal good_project.id
+      _(StackEntry.where(id: bad_stack_entry1.id).first.deleted_at).wont_equal nil
+      _(StackEntry.where(id: bad_stack_entry2.id).first.deleted_at).must_be_nil
+      _(StackEntry.where(id: bad_stack_entry2.id).first.project_id).must_equal good_project.id
     end
 
     it 'properly cleans up ratings' do
@@ -30,8 +30,8 @@ class DuplicateTest < ActiveSupport::TestCase
 
       create(:duplicate, good_project: good_project, bad_project: bad_project).resolve!(create(:admin))
 
-      Rating.where(id: bad_rating1.id).count.must_equal 0
-      Rating.where(id: bad_rating2.id).first.project_id.must_equal good_project.id
+      _(Rating.where(id: bad_rating1.id).count).must_equal 0
+      _(Rating.where(id: bad_rating2.id).first.project_id).must_equal good_project.id
     end
 
     it 'properly cleans up reviews' do
@@ -43,10 +43,10 @@ class DuplicateTest < ActiveSupport::TestCase
 
       create(:duplicate, good_project: good_project, bad_project: bad_project).resolve!(create(:admin))
 
-      Review.where(id: bad_review1.id).count.must_equal 0
-      Helpful.where(id: helpful_review1.id).count.must_equal 0
-      Review.where(id: bad_review2.id).first.project_id.must_equal good_project.id
-      Helpful.where(id: helpful_review2.id).count.must_equal 1
+      _(Review.where(id: bad_review1.id).count).must_equal 0
+      _(Helpful.where(id: helpful_review1.id).count).must_equal 0
+      _(Review.where(id: bad_review2.id).first.project_id).must_equal good_project.id
+      _(Helpful.where(id: helpful_review2.id).count).must_equal 1
     end
 
     it 'properly cleans up links' do
@@ -56,9 +56,9 @@ class DuplicateTest < ActiveSupport::TestCase
 
       create(:duplicate, good_project: good_project, bad_project: bad_project).resolve!(create(:admin))
 
-      Link.where(id: bad_link1.id).first.deleted.must_equal true
-      Link.where(id: bad_link2.id).first.deleted.must_equal false
-      Link.where(id: bad_link2.id).first.project_id.must_equal good_project.id
+      _(Link.where(id: bad_link1.id).first.deleted).must_equal true
+      _(Link.where(id: bad_link2.id).first.deleted).must_equal false
+      _(Link.where(id: bad_link2.id).first.project_id).must_equal good_project.id
     end
 
     it 'properly cleans up kudos' do
@@ -69,8 +69,8 @@ class DuplicateTest < ActiveSupport::TestCase
 
       create(:duplicate, good_project: good_project, bad_project: bad_project).resolve!(create(:admin))
 
-      Kudo.where(id: bad_kudo1.id).count.must_equal 0
-      Kudo.where(id: bad_kudo2.id).first.project_id.must_equal good_project.id
+      _(Kudo.where(id: bad_kudo1.id).count).must_equal 0
+      _(Kudo.where(id: bad_kudo2.id).first.project_id).must_equal good_project.id
     end
 
     it 'properly cleans up aliases' do
@@ -81,8 +81,8 @@ class DuplicateTest < ActiveSupport::TestCase
 
       create(:duplicate, good_project: good_project, bad_project: bad_project).resolve!(create(:admin))
 
-      Alias.where(id: the_alias.id).first.deleted.must_equal true
-      Alias.where(project: good_project, commit_name: commit_name, preferred_name: preferred_name).count.must_equal 1
+      _(Alias.where(id: the_alias.id).first.deleted).must_equal true
+      _(Alias.where(project: good_project, commit_name: commit_name, preferred_name: preferred_name).count).must_equal 1
     end
 
     it 'properly cleans up positions' do
@@ -95,8 +95,8 @@ class DuplicateTest < ActiveSupport::TestCase
 
       create(:duplicate, good_project: good_project, bad_project: bad_project).resolve!(create(:admin))
 
-      Position.where(id: bad_position1.id).count.must_equal 0
-      Position.where(id: bad_position2.id).first.project_id.must_equal good_project.id
+      _(Position.where(id: bad_position1.id).count).must_equal 0
+      _(Position.where(id: bad_position2.id).first.project_id).must_equal good_project.id
     end
 
     it 'properly cleans up enlistments' do
@@ -109,9 +109,9 @@ class DuplicateTest < ActiveSupport::TestCase
         code_location_id = bad_enlistment2.code_location_id
         create(:duplicate, good_project: good_project, bad_project: bad_project).resolve!(create(:admin))
 
-        bad_enlistment1.reload.deleted.must_equal true
-        bad_enlistment2.reload.deleted.must_equal true
-        Enlistment.where(project: good_project, code_location_id: code_location_id).count.must_equal 1
+        _(bad_enlistment1.reload.deleted).must_equal true
+        _(bad_enlistment2.reload.deleted).must_equal true
+        _(Enlistment.where(project: good_project, code_location_id: code_location_id).count).must_equal 1
       end
     end
 
@@ -128,53 +128,53 @@ class DuplicateTest < ActiveSupport::TestCase
 
       create(:duplicate, good_project: good_project, bad_project: bad_project).resolve!(create(:admin))
 
-      ProjectExperience.where(id: bad_project_experience1.id).count.must_equal 0
-      ProjectExperience.where(id: bad_project_experience2.id).first.project_id.must_equal good_project.id
+      _(ProjectExperience.where(id: bad_project_experience1.id).count).must_equal 0
+      _(ProjectExperience.where(id: bad_project_experience2.id).first.project_id).must_equal good_project.id
     end
   end
 
   describe 'validations' do
     it 'require a good_project' do
       duplicate = build(:duplicate, good_project: nil)
-      duplicate.valid?.must_equal false
+      _(duplicate.valid?).must_equal false
       duplicate.save
-      duplicate.errors.messages.length.must_equal 1
-      duplicate.errors.messages[:good_project].length.must_equal 1
+      _(duplicate.errors.messages.length).must_equal 1
+      _(duplicate.errors.messages[:good_project].length).must_equal 1
     end
 
     it 'require a bad_project' do
       duplicate = build(:duplicate, bad_project: nil)
-      duplicate.valid?.must_equal false
+      _(duplicate.valid?).must_equal false
       duplicate.save
-      duplicate.errors.messages.length.must_equal 1
-      duplicate.errors.messages[:bad_project].length.must_equal 1
+      _(duplicate.errors.messages.length).must_equal 1
+      _(duplicate.errors.messages[:bad_project].length).must_equal 1
     end
 
     it 'require good_project and bad_project are different projects' do
       project = create(:project)
       duplicate = build(:duplicate, good_project: project, bad_project: project)
-      duplicate.valid?.must_equal false
+      _(duplicate.valid?).must_equal false
       duplicate.save
-      duplicate.errors.messages.length.must_equal 1
-      duplicate.errors.messages[:good_project].length.must_equal 1
+      _(duplicate.errors.messages.length).must_equal 1
+      _(duplicate.errors.messages[:good_project].length).must_equal 1
     end
 
     it 'require good_project not having bet made a duplicate of another project' do
       duplicate1 = create(:duplicate)
       duplicate2 = build(:duplicate, good_project: duplicate1.bad_project)
-      duplicate2.valid?.must_equal false
+      _(duplicate2.valid?).must_equal false
       duplicate2.save
-      duplicate2.errors.messages.length.must_equal 1
-      duplicate2.errors.messages[:good_project].length.must_equal 1
+      _(duplicate2.errors.messages.length).must_equal 1
+      _(duplicate2.errors.messages[:good_project].length).must_equal 1
     end
 
     it 'require bad_project not already reported' do
       duplicate1 = create(:duplicate)
       duplicate2 = build(:duplicate, bad_project: duplicate1.good_project)
-      duplicate2.valid?.must_equal false
+      _(duplicate2.valid?).must_equal false
       duplicate2.save
-      duplicate2.errors.messages.length.must_equal 1
-      duplicate2.errors.messages[:bad_project].length.must_equal 1
+      _(duplicate2.errors.messages.length).must_equal 1
+      _(duplicate2.errors.messages[:bad_project].length).must_equal 1
     end
   end
 end

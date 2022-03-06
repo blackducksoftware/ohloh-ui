@@ -44,7 +44,7 @@ class BaseballCardTest < ActiveSupport::TestCase
                   partial: 'accounts/show/orgs',
                   locals: { orgs: [org] }
                 }]
-      BaseballCard.new(best_account_analysis.account).rows.must_equal result
+      _(BaseballCard.new(best_account_analysis.account).rows).must_equal result
     end
   end
 end

@@ -2,7 +2,7 @@
 
 require 'test_helper'
 
-describe 'OhAdmin::AccountsController' do
+class OhAdmin::AccountsControllerTest < ActionController::TestCase
   let(:admin) { create(:admin) }
   before do
     login_as admin
@@ -11,8 +11,8 @@ describe 'OhAdmin::AccountsController' do
   describe '#charts' do
     it 'should render index template' do
       [3, 6, 12].each do |period|
-        get :charts, period: period
-        must_respond_with :ok
+        get :charts, params: { period: period }
+        assert_response :ok
       end
     end
   end

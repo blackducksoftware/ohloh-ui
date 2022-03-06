@@ -2,7 +2,7 @@
 
 require 'test_helper'
 
-describe 'TagsController' do
+class TagsControllerTest < ActionController::TestCase
   describe 'index' do
     it 'should return tag cloud if no tag names are specified' do
       project = create(:project)
@@ -15,9 +15,9 @@ describe 'TagsController' do
       assert_select 'a[href="/tags?names=c"]', 1
       assert_select 'a[href="/tags?names=algol"]', 0
       assert_select 'a[href="/tags?names=c%2B%2B"]', 1
-      response.body.must_match 'c'
-      response.body.wont_match 'agol'
-      response.body.must_match 'c++'
+      _(response.body).must_match 'c'
+      _(response.body).wont_match 'agol'
+      _(response.body).must_match 'c++'
     end
 
     it 'should return list of projects that match the specified tags' do
@@ -31,18 +31,18 @@ describe 'TagsController' do
       create(:tagging, tag: tag2, taggable: project1)
       create(:tagging, tag: tag2, taggable: project2)
       create(:tagging, tag: tag2, taggable: project3)
-      get :index, names: %w[color word]
+      get :index, params: { names: %w[color word] }
       assert_response :success
       assert_select "#project_#{project1.id}", 1
       assert_select "#project_#{project2.id}", 0
       assert_select "#project_#{project3.id}", 1
-      response.body.must_match 'Red'
-      response.body.wont_match 'Apple'
-      response.body.must_match 'Blue'
+      _(response.body).must_match 'Red'
+      _(response.body).wont_match 'Apple'
+      _(response.body).must_match 'Blue'
     end
 
     it 'should support old syntax structure' do
-      get :index, name: 'php/ruby/web'
+      get :index, params: { name: 'php/ruby/web' }
       assert_response :success
     end
 
@@ -52,10 +52,10 @@ describe 'TagsController' do
       tag2 = create(:tag, name: 'ruby')
       create(:tagging, tag: tag1, taggable: project1)
       create(:tagging, tag: tag2, taggable: project1)
-      get :index, name: 'web/ruby'
+      get :index, params: { name: 'web/ruby' }
       assert_response :success
-      response.body.must_match 'web'
-      response.body.must_match 'ruby'
+      _(response.body).must_match 'web'
+      _(response.body).must_match 'ruby'
     end
   end
 end
