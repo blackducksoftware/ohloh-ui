@@ -41,7 +41,7 @@ module ProjectsHelper
     project.description.to_s.empty? ? '' : project.description
   end
 
-  def truncate_project_name(name, link = false, len = 25)
+  def truncate_project_name(name, len = 25, link: false)
     if name.length > len && link == false
       content_tag(:abbr, name.truncate(len), title: name)
     elsif name.length > len && link == true

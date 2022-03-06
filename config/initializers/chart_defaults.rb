@@ -12,10 +12,13 @@ def chart_background_image(image_name)
 end
 
 CHART_DEFAULTS = load_chart_options('defaults.yml')
+
+# rubocop:disable Lint/ConstantDefinitionInBlock
 ActiveSupport.on_load(:after_initialize) do
   path = Rails.root.join('config', 'charting', 'commits_by_project.yml')
   COMMITS_BY_PROJECT_CHART_DEFAULTS = YAML.safe_load(ERB.new(File.read(path)).result(binding))
 end
+# rubocop:enable Lint/ConstantDefinitionInBlock
 
 DEMOGRAPHIC_CHART_DEFAULTS = load_chart_options('demographic.yml')
 

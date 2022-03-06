@@ -23,14 +23,14 @@ xml.response do
             xml.commits tms.try(:commits_count)
             xml.change_in_commits commits_diff
 
-            if commits_diff != 0 && ptms.commits_count.to_f != 0
+            if commits_diff != 0 && ptms.commits_count.to_i != 0
               xml.percentage_change_in_commits((commits_diff.to_f.abs / ptms.commits_count.to_f.abs * 100).to_i)
             end
 
             xml.contributors tms.try(:committer_count)
             xml.change_in_contributors committers_diff
 
-            if committers_diff != 0 && ptms.committer_count.to_f != 0
+            if committers_diff != 0 && ptms.committer_count.to_i != 0
               xml.percentage_change_in_committers((committers_diff.to_f.abs / ptms.committer_count.to_f.abs * 100).to_i)
             end
           end

@@ -130,11 +130,11 @@ class ProjectsHelperTest < ActionView::TestCase
 
   describe 'truncate_project_name' do
     it 'should return content tag if name greater than length' do
-      _(truncate_project_name('abc123', false, 4)).must_match 'a...'
+      _(truncate_project_name('abc123', 4)).must_match 'a...'
     end
 
     it 'should return truncated name if it is a link' do
-      _(truncate_project_name('abc123', true, 4)).must_equal 'a...'
+      _(truncate_project_name('abc123', 4, link: true)).must_equal 'a...'
     end
 
     it 'should return name if name less than length' do

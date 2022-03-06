@@ -4,7 +4,6 @@ module WidgetsHelper
   def factoid_image_path(factoid)
     path = case factoid.severity
            when 1..100 then 'fact_good.png'
-           when 0 then 'fact_info.png'
            when -2..-1 then 'fact_warning.png'
            when -100..-3 then 'fact_bad.png'
            else 'fact_info.png'

@@ -37,7 +37,7 @@ class PositionCoreTest < ActiveSupport::TestCase
     project = create(:project)
     NameFact.create!(analysis: project.best_analysis, name: name)
     assert_difference('account.positions.count', 1) do
-      position = account.position_core.ensure_position_or_alias!(project, name, true)
+      position = account.position_core.ensure_position_or_alias!(project, name, try_create: true)
       _(project.reload.aliases.count).must_equal 0
       _(position.project.name).must_equal project.name
       _(position.name).must_equal name

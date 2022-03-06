@@ -10,7 +10,7 @@
         .compact_rating_and_review
           %span.header Community rating:
           .rating_stars
-            != rating_stars('average_rating_stars', stack_entry.project.rating_average.to_i, true)
+            != rating_stars('average_rating_stars', stack_entry.project.rating_average.to_i, mini: true)
         %br
       .note
         %span.header.note= t :notes, scope: 'stacks.stack_entry'

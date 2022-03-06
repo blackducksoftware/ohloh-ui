@@ -12,7 +12,7 @@
   - if p.rating_average.to_i.zero?
     = t('.none')
   - else
-    != rating_stars('average_rating_stars', p.rating_average || 0, true)
+    != rating_stars('average_rating_stars', p.rating_average || 0, mini: true)
 
 %td.center{ style: 'padding-right:15px;' }= p.reviews.count
 %td.wrapword= expander(h(p.description.to_s), 100, 300)

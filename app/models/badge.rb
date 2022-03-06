@@ -33,7 +33,7 @@ class Badge
     eligibility_count > (level_limits.first || 1) - 1
   end
 
-  def description(and_name = true)
+  def description(and_name: true)
     desc = levels? ? "Level #{level} " : ''
     if and_name
       desc += name

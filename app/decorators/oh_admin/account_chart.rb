@@ -8,15 +8,19 @@ class OhAdmin::AccountChart
 
   def render
     chart = ACCOUNTS_CHART_DEFAULTS
-    chart['series'][0][:data] = @spam.values
-    chart['series'][1][:data] = @regular.values
-    chart['series'][2][:data] = @total_count
+    set_series_data(chart)
     chart['xAxis']['tickInterval'] = set_interval(@period)
     chart['xAxis']['categories'] = @x_axis
     chart.to_json
   end
 
   private
+
+  def set_series_data(chart)
+    chart['series'][0][:data] = @spam.values
+    chart['series'][1][:data] = @regular.values
+    chart['series'][2][:data] = @total_count
+  end
 
   def process_account_data(period)
     from = period.months.ago.to_date

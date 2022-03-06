@@ -14,7 +14,8 @@ class AffiliatedCommittersActivityTest < ActiveSupport::TestCase
 
   describe 'short_nice_name' do
     it 'should return shortened nice name' do
-      _(widget.short_nice_name).must_equal I18n.t('.organization_widgets.affiliated_committers_activity.short_nice_name')
+      default_nice_name = I18n.t('.organization_widgets.affiliated_committers_activity.short_nice_name')
+      _(widget.short_nice_name).must_equal default_nice_name
     end
   end
 

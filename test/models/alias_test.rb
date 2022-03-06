@@ -126,7 +126,7 @@ class AliasTest < ActiveSupport::TestCase
 
   it '#create_for_project with override bypasses validation' do
     Alias.any_instance.expects(:save_without_validation!)
-    Alias.create_for_project(@account, @project, create(:name), @preferred_name.id, true)
+    Alias.create_for_project(@account, @project, create(:name), @preferred_name.id, override_permissions: true)
   end
 
   it 'allow_undo_to_nil?' do

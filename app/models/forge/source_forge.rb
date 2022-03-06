@@ -3,6 +3,7 @@
 class Forge::SourceForge < Forge
   # attr_accessor :url
 
+  # rubocop:disable Lint/DuplicateBranch # Trying to avoid a long oneliner.
   def match(url)
     @url = url
     case @url
@@ -17,6 +18,7 @@ class Forge::SourceForge < Forge
       Forge::Match.new(self, nil, $1)
     end
   end
+  # rubocop:enable Lint/DuplicateBranch
 
   def json_api_url(match)
     "http://sourceforge.net/rest/p/#{match.name_at_forge}/"

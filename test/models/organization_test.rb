@@ -124,9 +124,6 @@ class OrganizationTest < ActiveSupport::TestCase
   end
 
   describe 'jobs' do
-    it 'ensure_job should schedule organization job successfully' do
-    end
-
     it 'ensure_job should not schedule organization job if there is a job already scheduled' do
       Job.delete_all
       assert_equal 0, OrganizationJob.count

@@ -27,14 +27,16 @@ module WebMocker
       .to_return(body: response_body)
   end
 
+  # rubocop:disable Style/OptionalBooleanParameter
   def get_project_code_locations(valid_result = true, hsh = {})
     response_body = valid_result ? [code_location_params(hsh)] : []
     url_with_stub = subscriptions_api.resource_uri('code_locations/42').to_s
     stub_request(:get, %r{#{url_with_stub.sub('42', '\d+').sub('?', '\?')}})
       .to_return(body: response_body.to_json)
   end
+  # rubocop:enable Style/OptionalBooleanParameter
 
-  def code_location_valid(valid_url = true)
+  def code_location_valid(valid_url: true)
     error_message = 'The URL does not appear to be a valid server connection string.'
     expected_response = valid_url ? '' : { error: { url: [error_message] } }
     status = valid_url ? 200 : 400

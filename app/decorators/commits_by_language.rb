@@ -37,6 +37,9 @@ class CommitsByLanguage < Cherry::Decorator
     @dates ||= TimeParser.months_in_range(start_date, end_date)
   end
 
+  # rubocop:disable Style/OpenStructUse
+  # Struct results in a different json format compared to OpenStruct.
+  # We have endpoints that expect a certain json format, hence we cant replace with Struct without proper investigation.
   def language(entries)
     language_entry = entries.first
     OpenStruct.new(language_id: language_entry['l_id'],
@@ -46,6 +49,7 @@ class CommitsByLanguage < Cherry::Decorator
                    commits: commits_by_months(entries),
                    category: language_entry['l_category'])
   end
+  # rubocop:enable Style/OpenStructUse
 
   def commits_by_months(entries)
     commits_hash = entries.each_with_object({}) do |f, hsh|

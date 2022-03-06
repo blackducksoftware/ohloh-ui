@@ -2,6 +2,7 @@
 
 class Organization::Affiliated < Organization::AccountFacts
   def initialize(organization)
+    super()
     @organization = organization
   end
 

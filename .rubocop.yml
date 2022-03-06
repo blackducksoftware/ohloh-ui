@@ -80,6 +80,10 @@ Style/ClassAndModuleChildren:
 Naming/AccessorMethodName:
   Enabled: false
 
+Naming/VariableNumber:
+  CheckMethodNames: false
+  CheckSymbols: false
+
 Style/PerlBackrefs:
   Enabled: false
 

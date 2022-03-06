@@ -466,8 +466,7 @@ Rails.application.routes.draw do
       end
     end
     resources :projects do
-      resources :jobs do
-      end
+      resources :jobs
     end
     resources :broken_links, only: %i[index destroy]
     resources :license_permissions
@@ -479,8 +478,7 @@ Rails.application.routes.draw do
         post 'unsubscribe'
         post 'enlist'
       end
-      resources :jwt, only: [:create] do
-      end
+      resources :jwt, only: [:create]
     end
   end
 

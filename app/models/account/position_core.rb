@@ -48,7 +48,7 @@ class Account::PositionCore < OhDelegator::Base
   end
 
   # claim a position if there is no existing position for the project or create an alias
-  def ensure_position_or_alias!(project, name, try_create = false, position_attributes = {})
+  def ensure_position_or_alias!(project, name, try_create: false, position_attributes: {})
     existing_position = project.positions.claimed_by(account).first
     return unless existing_position || try_create
 

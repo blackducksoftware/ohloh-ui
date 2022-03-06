@@ -10,7 +10,7 @@ describe 'FisbotApi' do
 
   describe 'valid' do
     it 'must return false when attributes are not valid' do
-      WebMocker.code_location_valid(false)
+      WebMocker.code_location_valid(valid_url: false)
       code_location = CodeLocation.new(url: 'fake_url', scm_type: :git)
       _(code_location).wont_be :valid?
     end

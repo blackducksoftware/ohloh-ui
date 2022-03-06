@@ -5,7 +5,7 @@ require 'test_helpers/activity_facts_by_commits_data'
 require 'test_helpers/create_contributions_data'
 
 class ContributionsControllerTest < ActionController::TestCase
-  let(:activity_facts_by_commits_data) { ActivityFactsByMonthData.new(true).data }
+  let(:activity_facts_by_commits_data) { ActivityFactsByMonthData.new(init_value: true).data }
 
   before do
     @person = create(:person)

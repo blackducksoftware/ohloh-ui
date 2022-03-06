@@ -2,10 +2,11 @@
 
 require 'test_helper'
 
+CiiProject = Struct.new(:id, :name, :homepage_url, :repo_url) unless defined?(CiiProject)
+
 describe ProjectBadgeMailer do
   describe '#check_cii_projects' do
     before do
-      CiiProject = Struct.new(:id, :name, :homepage_url, :repo_url)
       @cii_projects = (1..3).map do |i|
         CiiProject.new(i, Faker::Lorem.word, "http://#{Faker::Lorem.word}.com",
                        "http://github.com/#{Faker::Lorem.word}/#{Faker::Lorem.word}")

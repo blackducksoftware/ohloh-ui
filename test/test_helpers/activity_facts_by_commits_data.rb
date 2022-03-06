@@ -5,8 +5,8 @@ require 'ostruct'
 class ActivityFactsByMonthData
   COMMITS = [5, 42, 7, 20, 19, 18, 24, 16, 39, 0, 20, 65, 22, 24, 23, 30, 54, 6, 9].freeze
 
-  def initialize(with_intitial_value = false)
-    @with_intitial_value = with_intitial_value
+  def initialize(init_value: false)
+    @with_intitial_value = init_value
     @first_date = Time.parse('2010-04-01 00:00:00 UTC').in_time_zone
     @commits = commits_for_first_29_months + COMMITS + ([0] * 13)
   end

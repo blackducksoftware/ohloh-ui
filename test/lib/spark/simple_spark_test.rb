@@ -5,7 +5,7 @@ require 'test_helpers/image_helper'
 require 'test_helpers/activity_facts_by_commits_data'
 
 describe 'Spark::SimpleSpark' do
-  let(:data) { ActivityFactsByMonthData.new(false).data }
+  let(:data) { ActivityFactsByMonthData.new.data }
 
   describe '#render' do
     it 'must render commits spark successfully' do

@@ -40,7 +40,7 @@ class Alias < ApplicationRecord
            .where(aliases[:project_id].eq(projects[:id]).and(projects[:id].eq(project.id)))
     end
 
-    def create_for_project(editor_account, project, commit_name_id, preferred_name_id, override_permissions = false)
+    def create_for_project(editor_account, project, commit_name_id, preferred_name_id, override_permissions: false)
       alias_obj = where(project_id: project.id, commit_name_id: commit_name_id).first_or_initialize
       alias_obj.editor_account = editor_account
       if alias_obj.persisted?

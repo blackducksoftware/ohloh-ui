@@ -6,11 +6,13 @@ class Analysis::TopCommitVolume < Analysis::QueryBase
 
   arel_tables :contributor_fact, :name
 
+  # rubocop:disable Lint/MissingSuper # parent has differing args.
   def initialize(analysis, interval)
     @analysis = analysis
     @interval = interval
     raise ArgumentError, "Unknown interval - #{interval}" unless interval_attr
   end
+  # rubocop:enable Lint/MissingSuper
 
   def collection
     execute.map { |fact| [fact.committer_name[0..27], fact.count] }

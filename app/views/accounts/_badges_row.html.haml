@@ -11,4 +11,4 @@
       - if badge.levels?
         .pips{ class: "pip-#{badge.level_bits}" }
   - elsif badge.levels?
-    .pips{ class: "pip-#{badge.level_bits}", title: badge.description(false) }
+    .pips{ class: "pip-#{badge.level_bits}", title: badge.description(and_name: false) }

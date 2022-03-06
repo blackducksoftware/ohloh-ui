@@ -51,7 +51,7 @@
               none
             - else
               %span.org_project_rating
-                != rating_stars('rating_star', project.rating_average, true)
+                != rating_stars('rating_star', project.rating_average, mini: true)
         %tr
           %td.center &nbsp;
           %td.proj_commit_stats

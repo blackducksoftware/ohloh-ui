@@ -37,7 +37,7 @@ class CommittersControllerTest < ActionController::TestCase
     end
 
     it 'must limit results when it exceeds OBJECT_MEMORY_CAP' do
-      UnclaimedControllerTest.limit_by_memory_cap(self, false) do |people, unclaimed_tile_limit|
+      UnclaimedControllerTest.limit_by_memory_cap(self, with_query: false) do |people, unclaimed_tile_limit|
         _(people.length).must_equal unclaimed_tile_limit
       end
     end
