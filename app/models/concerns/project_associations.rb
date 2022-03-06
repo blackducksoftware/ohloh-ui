@@ -34,7 +34,7 @@ module ProjectAssociations
     has_many :jobs
     belongs_to :forge, optional: true
     has_many :project_licenses, -> { where("project_licenses.deleted = 'f'") }
-    has_many :licenses, -> { order('lower(licenses.name)') }, through: :project_licenses
+    has_many :licenses, -> { order(Arel.sql('lower(licenses.name)')) }, through: :project_licenses
     has_many :duplicates, -> { order(created_at: :desc) }, class_name: 'Duplicate', foreign_key: 'good_project_id'
     has_one :is_a_duplicate, -> { where.not(resolved: true) }, class_name: 'Duplicate', foreign_key: 'bad_project_id'
     has_many :analysis_sloc_sets, primary_key: :best_analysis_id, foreign_key: :analysis_id

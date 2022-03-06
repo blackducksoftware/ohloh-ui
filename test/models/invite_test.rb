@@ -58,7 +58,7 @@ class InviteTest < ActiveSupport::TestCase
   end
 
   it 'should not send invite for an existing account' do
-    accounts = Account.limit(1).order('RANDOM()')
+    accounts = Account.limit(1).order(Arel.sql('RANDOM()'))
     hash = { invitor: accounts.first, invitee_email: accounts.last.email }
     invite = build(:invite, hash)
     _(invite).wont_be :save

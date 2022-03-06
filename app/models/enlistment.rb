@@ -33,7 +33,7 @@ class Enlistment < ApplicationRecord
   }
   scope :by_update_status, lambda {
     joins('left join fis.jobs on jobs.code_location_id = enlistments.code_location_id')
-      .group('enlistments.id').order('min(jobs.status), max(jobs.current_step_at) DESC')
+      .group('enlistments.id').order(Arel.sql('min(jobs.status), max(jobs.current_step_at) DESC'))
   }
 
   scope :by_dnf, ->(dnf) { where(code_locations: { do_not_fetch: true }) if dnf.eql?('1') }

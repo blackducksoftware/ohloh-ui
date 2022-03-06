@@ -20,7 +20,8 @@ class Organization < ApplicationRecord
   has_many :jobs
   has_many :organization_jobs
 
-  validates :name, presence: true, length: 3..85, allow_blank: true
+  validates :name, presence: true, length: 3..85, allow_blank: true,
+                   format: { without: Patterns::BAD_NAME }
   validates :homepage_url, allow_blank: true, url_format: { message: I18n.t('accounts.invalid_url_format') }
   validates :name, presence: true, length: 3..85, uniqueness: { case_sensitive: false }
   validates :vanity_url, presence: true, length: 1..60, allow_nil: false, uniqueness: { case_sensitive: false },

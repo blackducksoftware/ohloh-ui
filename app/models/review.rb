@@ -24,8 +24,8 @@ class Review < ApplicationRecord
   scope :order_by, lambda { |key = :helpful|
     {
       'helpful' => order_by_helpfulness_arel,
-      'highest_rated' => order(ratings_sql('DESC')).order(created_at: :desc),
-      'lowest_rated' => order(ratings_sql).order(:created_at),
+      'highest_rated' => order(Arel.sql(ratings_sql('DESC'))).order(created_at: :desc), # No user defined values here.
+      'lowest_rated' => order(Arel.sql(ratings_sql)).order(:created_at), # No user defined values here.
       'project' => includes(:project).order('projects.name'),
       'recently_added' => order(created_at: :desc),
       'author' => joins(:account).order('accounts.login').order(created_at: :desc)
@@ -65,7 +65,7 @@ class Review < ApplicationRecord
       positive_sql = pos_or_neg_sql(true)
       negative_sql = pos_or_neg_sql(false)
       order_by = "(#{positive_sql}) - (#{negative_sql}) DESC, (#{positive_sql}) DESC"
-      order(sanitize_sql(order_by)).order(:created_at)
+      order(Arel.sql(sanitize_sql(order_by))).order(:created_at) # No user defined values are used in SQL here.
     end
 
     def ratings_sql(sort_order = 'ASC')

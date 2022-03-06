@@ -21,8 +21,8 @@ module Tsearch
 
       def tsearch_sort_by(query, sort_by)
         if sort_by.blank? && query.present?
-          order("greatest(#{tsearch_rank('simple', query)},
-                #{tsearch_rank('default', query)})*(1+popularity_factor) desc")
+          order(Arel.sql("greatest(#{tsearch_rank('simple', query)},
+                #{tsearch_rank('default', query)})*(1+popularity_factor) desc"))
         elsif sort_by.blank?
           order(popularity_factor: :desc)
         else

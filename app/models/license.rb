@@ -3,7 +3,8 @@
 class License < ApplicationRecord
   validates :vanity_url, uniqueness: { case_sensitive: false }, length: { in: 2..50 },
                          default_param_format: true
-  validates :name, uniqueness: { case_sensitive: false }, length: { in: 1..100 }
+  validates :name, uniqueness: { case_sensitive: false }, length: { in: 1..100 },
+                   format: { without: Patterns::BAD_NAME }
   validates :description, length: { maximum: 50_000 }, allow_nil: true
   validates :url, url_format: true, allow_blank: true
 

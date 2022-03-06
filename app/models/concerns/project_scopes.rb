@@ -20,9 +20,11 @@ module ProjectScopes
     scope :by_activity, -> { joins(:analyses).joins(:analysis_summaries).by_popularity.thirty_day_summaries }
     scope :by_new, -> { order(created_at: :desc) }
     scope :by_users, -> { order(user_count: :desc) }
-    scope :by_rating, -> { order('COALESCE(rating_average,0) DESC, user_count DESC, projects.created_at ASC') }
+    scope :by_rating, lambda {
+      order(Arel.sql('COALESCE(rating_average,0) DESC, user_count DESC, projects.created_at ASC'))
+    }
     scope :by_activity_level, -> { order('COALESCE(activity_level_index,0) DESC, projects.name ASC') }
-    scope :by_active_committers, -> { order('COALESCE(active_committers,0) DESC, projects.created_at ASC') }
+    scope :by_active_committers, -> { order(Arel.sql('COALESCE(active_committers,0) DESC, projects.created_at ASC')) }
     scope :by_project_name, -> { order(name: :asc) }
     scope :language, -> { joins(best_analysis: :main_language).select('languages.name').map(&:name).first }
     scope :managed_by, lambda { |account|
@@ -34,8 +36,8 @@ module ProjectScopes
       joins(best_analysis: :analysis_summaries)
         .where(analysis_summaries: { type: 'ThirtyDaySummary' })
         .active
-        .order(' COALESCE(analysis_summaries.affiliated_commits_count, 0) +
-                 COALESCE(analysis_summaries.outside_commits_count, 0) DESC ')
+        .order(Arel.sql(' COALESCE(analysis_summaries.affiliated_commits_count, 0) +
+                          COALESCE(analysis_summaries.outside_commits_count, 0) DESC '))
         .limit(10)
     }
     scope :with_pai_available, -> { active.where(arel_table[:activity_level_index].gt(0)).size }

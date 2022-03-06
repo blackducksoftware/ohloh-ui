@@ -15,6 +15,6 @@ module OrganizationScopes
     scope :sort_by_newest, -> { order(created_at: :desc) }
     scope :sort_by_recent, -> { order(updated_at: :desc) }
     scope :sort_by_name, -> { order(arel_table[:name].lower) }
-    scope :sort_by_projects, -> { order('COALESCE(projects_count, 0) DESC') }
+    scope :sort_by_projects, -> { order(Arel.sql('COALESCE(projects_count, 0) DESC')) }
   end
 end

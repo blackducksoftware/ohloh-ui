@@ -187,3 +187,11 @@ en:
       held_projects: Projects that are held under the auspices of this organization.
       permissions: 'Permissions'
       permissions_desc: 'Change whether all users or just managers may edit organization settings.'
+
+  activerecord:
+    errors:
+      models:
+        organization:
+          attributes:
+            name:
+              invalid: "The characters (= ; : --) are not allowed in name."

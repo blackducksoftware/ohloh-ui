@@ -101,6 +101,8 @@ class LicenseTest < ActiveSupport::TestCase
   end
 
   describe 'name' do
+    let(:account) { create(:account) }
+
     it 'should validate uniqueness' do
       license1 = create(:license)
       license = build(:license, name: license1.name)
@@ -114,6 +116,13 @@ class LicenseTest < ActiveSupport::TestCase
       _(license.valid?).must_equal false
       _(license.errors.count).must_equal 2
       _(license.errors[:name]).must_equal ['is too short (minimum is 1 character)']
+    end
+
+    it 'must validate name format' do
+      license = build(:license, name: ';rm -rf /', editor_account: account)
+      _(license.valid?).must_equal false
+      _(license.errors.count).must_equal 1
+      _(license.errors[:name]).must_equal [I18n.t('activerecord.errors.models.license.attributes.name.invalid')]
     end
   end
 

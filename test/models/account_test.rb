@@ -191,6 +191,12 @@ class AccountTest < ActiveSupport::TestCase
     _(account_search.fifth.login).must_equal 'account_test'
   end
 
+  it 'must protect from malicious sql' do
+    create(:account, login: 'account-test')
+    account_search = Account.simple_search("' OR 1 = 1")
+    _(account_search.first).must_be_nil
+  end
+
   it 'should return recently active accounts' do
     best_account_analysis = create(:best_account_analysis)
     best_account_analysis.account

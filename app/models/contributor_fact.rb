@@ -37,7 +37,7 @@ class ContributorFact < NameFact
     Commit.for_contributor_fact(self)
           .select(daily_commits_select_clause)
           .group("date_trunc('day', commits.time)")
-          .order("date_trunc('day', commits.time) desc")
+          .order(Arel.sql("date_trunc('day', commits.time) desc"))
           .limit(300)
   end
 
