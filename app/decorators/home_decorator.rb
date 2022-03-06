@@ -9,7 +9,7 @@ class HomeDecorator
     ids = Rails.cache.fetch('HomeDecorator-most_active_projects-cache', expires_in: 1.day) do
       Project.most_active.includes(:logo, best_analysis: %i[main_language thirty_day_summary]).map(&:id)
     end
-    includes = [:logo, best_analysis: %i[main_language thirty_day_summary]]
+    includes = [:logo, { best_analysis: %i[main_language thirty_day_summary] }]
     Project.includes(includes).find(ids).index_by(&:id).slice(*ids).values
   end
 

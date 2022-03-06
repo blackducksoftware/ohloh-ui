@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-class Action < ActiveRecord::Base
+class Action < ApplicationRecord
   attr_reader :payload_required
 
-  belongs_to :account
-  belongs_to :claim, class_name: 'Person', foreign_key: 'claim_person_id'
-  belongs_to :stack_project, class_name: 'Project', foreign_key: 'stack_project_id'
+  belongs_to :account, optional: true
+  belongs_to :claim, class_name: 'Person', foreign_key: 'claim_person_id', optional: true
+  belongs_to :stack_project, class_name: 'Project', optional: true
 
   validates :account, presence: true
   validate :action_payload_present

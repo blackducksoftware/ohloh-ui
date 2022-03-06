@@ -51,4 +51,16 @@ class ActsAsEditable::ActsAsEditableTest < ActiveSupport::TestCase
     project.deleted.must_equal false
     CreateEdit.where(target: project).first.undone.must_equal false
   end
+
+  it 'must record edits for custom attributes' do
+    project = create(:project, organization: nil)
+    _(PropertyEdit.where(key: %w[tag_list url], target: project).count).must_equal 0
+    edits_count = PropertyEdit.where(target: project).count
+
+    project.update(tag_list: Faker::Lorem.words.join(' '), url: Faker::Internet.url)
+
+    _(PropertyEdit.where(target: project).count).must_equal edits_count + 2
+    _(PropertyEdit.where(key: 'tag_list', target: project).count).must_equal 1
+    _(PropertyEdit.where(key: 'url', target: project).count).must_equal 1
+  end
 end

@@ -6,11 +6,9 @@ module VulnerabilitiesHelper
   EMPTY_SEVERITY = 'unknown_severity'
 
   def major_releases(releases, project)
-    # Note: This is a temporary fix for the android project
+    # NOTE: This is a temporary fix for the android project
     if project.vanity_url == 'android'
-      releases.map do |r|
-        r[:version]
-      end
+      releases.pluck(:version)
     else
       releases.map do |r|
         r[:version].to_i

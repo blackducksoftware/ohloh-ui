@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-class ReplaceContributionView < ActiveRecord::Migration
+class ReplaceContributionView < ActiveRecord::Migration[4.2]
   def up
-    execute <<-SQL
+    execute <<-SQL.squish
       CREATE OR REPLACE VIEW contributions AS (
         (
           SELECT id,
@@ -33,7 +33,7 @@ class ReplaceContributionView < ActiveRecord::Migration
   end
 
   def down
-    execute <<-SQL
+    execute <<-SQL.squish
       CREATE OR REPLACE VIEW contributions AS
        SELECT
               CASE

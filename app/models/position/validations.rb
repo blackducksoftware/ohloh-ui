@@ -12,7 +12,7 @@ module Position::Validations
     validate :name_fact_existence, if: :committer_name_and_project?
     validate :position_uniqueness, if: :committer_name_and_project?
     validates :committer_name,
-              presence: true, unless: -> { name_id || start_date && (stop_date || ongoing) }
+              presence: true, unless: -> { name_id || (start_date && (stop_date || ongoing)) }
     validate :start_date_must_be_in_past, if: :start_date
     validate :stop_date_must_be_in_past, if: :stop_date
     validate :stop_date_must_be_later_than_start_date, if: -> { start_date && stop_date }

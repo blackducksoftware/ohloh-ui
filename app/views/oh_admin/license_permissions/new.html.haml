@@ -21,7 +21,7 @@
             - wrapper_col_start =  index < permissions_count / 2 ? 'wrapper_left' : 'wrapper_right'
 
             .license_right{:class => license_right_col_start}
-              - element_name = "right_" + permission_right['id']
+              - element_name = "right_" + permission_right['id'].to_s
               - status = permission_right['status']
 
               =permission_right['name']

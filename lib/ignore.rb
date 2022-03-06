@@ -9,7 +9,7 @@ module Ignore
     end
 
     def parse_line(line)
-      line.to_s.strip.slice(/^Disallow:\s*([^#\*\s][^\*\s]+)\*?(\s+|$)/i, 1)
+      line.to_s.strip.slice(/^Disallow:\s*([^#*\s][^*\s]+)\*?(\s+|$)/i, 1)
     end
 
     def match?(prefixes, fyle_name)

@@ -39,7 +39,7 @@ class CodeLocation < FisbotApi
 
   def scm_attributes
     array = TRAITS.map { |trait_name| [trait_name, send(trait_name)] }
-    Hash[array]
+    array.to_h
   end
 
   def attributes

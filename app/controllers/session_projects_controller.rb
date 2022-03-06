@@ -16,7 +16,7 @@ class SessionProjectsController < ApplicationController
       session[:session_projects] = @session_projects.map(&:to_param)
       render partial: 'menu'
     else
-      render text: t('.limit_exceeded'), status: :forbidden
+      render plain: t('.limit_exceeded'), status: :forbidden
     end
   end
 
@@ -29,7 +29,7 @@ class SessionProjectsController < ApplicationController
   protected
 
   def prevent_bot_access
-    render text: '', status: :forbidden if bot?
+    render plain: '', status: :forbidden if bot?
   end
 
   def set_project

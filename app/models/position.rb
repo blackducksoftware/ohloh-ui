@@ -1,17 +1,17 @@
 # frozen_string_literal: true
 
-class Position < ActiveRecord::Base
+class Position < ApplicationRecord
   include AffiliationValidation
   include Position::Validations
 
   attr_reader :project_oss
 
-  belongs_to :account
-  belongs_to :project
-  belongs_to :organization
-  belongs_to :name
+  belongs_to :account, optional: true
+  belongs_to :project, optional: true
+  belongs_to :organization, optional: true
+  belongs_to :name, optional: true
   # we have a method named organization to maintain backward compatibility
-  belongs_to :affiliation, class_name: 'Organization', foreign_key: :organization_id
+  belongs_to :affiliation, class_name: 'Organization', foreign_key: :organization_id, optional: true
   has_one :contribution
   has_many :language_experiences, dependent: :destroy
   has_many :project_experiences, dependent: :destroy
@@ -25,9 +25,9 @@ class Position < ActiveRecord::Base
   }
 
   after_create Position::Hooks.new
-  after_save Position::Hooks.new
   after_update Position::Hooks.new
   after_destroy Position::Hooks.new
+  after_save Position::Hooks.new
 
   accepts_nested_attributes_for :project_experiences, allow_destroy: true, reject_if: :all_blank
 
@@ -44,7 +44,7 @@ class Position < ActiveRecord::Base
   end
 
   def committer_name
-    @committer_name || (name&.name)
+    @committer_name || name&.name
   end
 
   def committer_name=(name)
@@ -76,13 +76,11 @@ class Position < ActiveRecord::Base
   # 2 possible values
   # time: this is when it stopped
   # nil: unknown (for some reason)
-  # rubocop:disable Metrics/CyclomaticComplexity
   def effective_stop_date
     stop_date || (ongoing && Time.current) ||
       (name_fact.try(:active?) && Time.current) ||
       name_fact.try(:last_checkin) || Time.current
   end
-  # rubocop:enable Metrics/CyclomaticComplexity
 
   def effective_duration
     effective_stop_date - effective_start_date
@@ -92,7 +90,7 @@ class Position < ActiveRecord::Base
   # 1. It was indicated as such (checked 'ongoing!')
   # 2. It was marked as 'auto' and the person made a commit in the last 12 months (yeah, we consider that ongoing)
   def effective_ongoing?
-    ongoing || stop_date.nil? && name_fact.try(:active?)
+    ongoing || (stop_date.nil? && name_fact.try(:active?))
   end
 
   def active?

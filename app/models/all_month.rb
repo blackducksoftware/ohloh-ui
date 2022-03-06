@@ -1,5 +1,5 @@
 # frozen_string_literal: true
 
-class AllMonth < ActiveRecord::Base
+class AllMonth < ApplicationRecord
   attr_accessor :ticks
 end

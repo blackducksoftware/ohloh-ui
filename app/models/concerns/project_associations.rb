@@ -10,18 +10,19 @@ module ProjectAssociations
     has_many :analysis_summaries, through: :analyses
     has_many :taggings, as: :taggable
     has_many :tags, through: :taggings
+    has_many :enlistments, -> { where(deleted: false) }
     has_many :project_badges, through: :enlistments
     has_many :travis_badges, through: :enlistments
     has_many :cii_badges, through: :enlistments
-    belongs_to :best_analysis, foreign_key: :best_analysis_id, class_name: 'Analysis'
-    belongs_to :best_project_security_set, foreign_key: :best_project_security_set_id, class_name: 'ProjectSecuritySet'
+    belongs_to :best_analysis, class_name: 'Analysis', optional: true
+    belongs_to :best_project_security_set, class_name: 'ProjectSecuritySet', optional: true
     has_many :aliases, -> { where(deleted: false).where.not(preferred_name_id: nil) }
     has_many :contributions
     has_many :positions
     has_many :stack_entries, -> { where(deleted_at: nil) }
     has_many :stacks, -> { where(deleted_at: nil).where.not(arel_table[:account_id].eq(nil)) }, through: :stack_entries
-    belongs_to :logo
-    belongs_to :organization
+    belongs_to :logo, optional: true
+    belongs_to :organization, optional: true
     has_many :manages, -> { where(deleted_at: nil, deleted_by: nil) }, as: 'target'
     has_many :managers, through: :manages, source: :account
     has_many :project_security_sets
@@ -31,8 +32,7 @@ module ProjectAssociations
     has_many :ratings
     has_many :kudos
     has_many :jobs
-    belongs_to :forge, class_name: 'Forge::Base'
-    has_many :enlistments, -> { where(deleted: false) }
+    belongs_to :forge, optional: true
     has_many :project_licenses, -> { where("project_licenses.deleted = 'f'") }
     has_many :licenses, -> { order('lower(licenses.name)') }, through: :project_licenses
     has_many :duplicates, -> { order(created_at: :desc) }, class_name: 'Duplicate', foreign_key: 'good_project_id'
@@ -65,7 +65,7 @@ module ProjectAssociations
     def contributions_within_timespan(options)
       contributions
         .within_timespan(options[:time_span], best_analysis.oldest_code_set_time)
-        .sort(options[:sort])
+        .sort_scope(options[:sort])
         .filter_by(options[:query])
         .includes(person: :account, contributor_fact: :primary_language)
         .references(:all)

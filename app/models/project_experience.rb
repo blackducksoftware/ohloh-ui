@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-class ProjectExperience < ActiveRecord::Base
-  belongs_to :position
-  belongs_to :project
-  belongs_to :project_with_experience, class_name: 'Project'
+class ProjectExperience < ApplicationRecord
+  belongs_to :position, optional: true
+  belongs_to :project, optional: true
+  belongs_to :project_with_experience, class_name: 'Project', optional: true
   attr_accessor :form_id
 
   validate :project_existence

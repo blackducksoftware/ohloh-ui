@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class ProjectBadgeMailer < ActionMailer::Base
+class ProjectBadgeMailer < ApplicationMailer
   default from: 'mailer@openhub.net'
 
   def check_cii_projects(projects)

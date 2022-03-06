@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class PostNotifier < ActionMailer::Base
+class PostNotifierMailer < ApplicationMailer
   default from: 'mailer@blackducksoftware.com'
 
   def post_replied_notification(user, user_who_replied, post)

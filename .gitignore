@@ -22,3 +22,4 @@ tags
 logfile
 .vscode/settings.json
 .vscode/launch.json
+.tool-versions

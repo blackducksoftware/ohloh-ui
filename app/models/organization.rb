@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Organization < ActiveRecord::Base
+class Organization < ApplicationRecord
   include OrganizationSearchables
   include OrganizationJobs
   include OrganizationScopes
@@ -11,7 +11,7 @@ class Organization < ActiveRecord::Base
   ALLOWED_SORT_OPTIONS = %w[newest recent name projects].freeze
   KB_SYNC_ATTRS = %w[id name org_type deleted].freeze
 
-  belongs_to :logo
+  belongs_to :logo, optional: true
   has_one :permission, as: :target
   has_many :projects, -> { where.not(deleted: true) }
   has_many :accounts, -> { where(Account.arel_table[:level].gteq(0)) }
@@ -35,8 +35,8 @@ class Organization < ActiveRecord::Base
   acts_as_protected
 
   after_create :create_restricted_permission
+  after_update :schedule_analysis, if: :saved_change_to_org_type?
   after_save :check_change_in_delete
-  after_update :schedule_analysis, if: :org_type_changed?
 
   def to_param
     vanity_url.presence || id.to_s
@@ -47,7 +47,7 @@ class Organization < ActiveRecord::Base
   end
 
   def allow_undo_to_nil?(key)
-    !%i[name org_type vanity_url].include?(key)
+    %i[name org_type vanity_url].exclude?(key)
   end
 
   def org_type_label
@@ -117,7 +117,7 @@ class Organization < ActiveRecord::Base
   end
 
   def check_change_in_delete
-    return false unless changed.include?('deleted')
+    return false unless saved_changes.keys.include?('deleted')
 
     project_claim_edits(!deleted?).each { |edit| edit.send(deleted? ? :undo! : :redo!, editor_account) }
     schedule_analysis

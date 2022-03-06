@@ -337,6 +337,11 @@ en:
               taken: 'has already been submitted'
               invalid_url: 'Invalid Link URL'
 
+        license:
+          attributes:
+            name:
+              format: Most special characters are not allowed in name.
+
         repository:
           attributes:
             url:

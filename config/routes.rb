@@ -57,11 +57,9 @@ Rails.application.routes.draw do
   resources :tags, only: %i[index show]
 
   resources :passwords, controller: 'password_resets', only: %i[new create]
-  resources :user, only: [] do
-    resource :password, controller: 'password_resets', only: %i[edit update]
-  end
 
   resources :accounts do
+    resource :password, controller: 'password_resets', only: %i[edit update]
     resources :autocompletes, only: [] do
       get :projects_for_stack, on: :member, defaults: { format: 'json' }
     end

@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-class Factoid < ActiveRecord::Base
-  belongs_to :analysis
-  belongs_to :language
-  belongs_to :license
+class Factoid < ApplicationRecord
+  belongs_to :analysis, optional: true
+  belongs_to :language, optional: true
+  belongs_to :license, optional: true
 
   delegate :project, to: :analysis
 end

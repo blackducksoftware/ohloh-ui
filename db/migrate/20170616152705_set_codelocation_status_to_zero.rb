@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class SetCodelocationStatusToZero < ActiveRecord::Migration
+class SetCodelocationStatusToZero < ActiveRecord::Migration[4.2]
   def up
     SetCodeLocationStatus.new.execute
   end

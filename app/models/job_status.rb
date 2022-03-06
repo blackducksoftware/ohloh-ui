@@ -1,5 +1,5 @@
 # frozen_string_literal: true
 
-class JobStatus < ActiveRecord::Base
+class JobStatus < ApplicationRecord
   self.primary_key = 'id'
 end

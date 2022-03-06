@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-class Edit < ActiveRecord::Base
-  belongs_to :account
-  belongs_to :target, polymorphic: true
-  belongs_to :undoer, class_name: 'Account', foreign_key: 'undone_by'
-  belongs_to :project
-  belongs_to :organization
+class Edit < ApplicationRecord
+  belongs_to :account, optional: true
+  belongs_to :target, polymorphic: true, optional: true
+  belongs_to :undoer, class_name: 'Account', foreign_key: 'undone_by', optional: true
+  belongs_to :project, optional: true
+  belongs_to :organization, optional: true
 
   before_validation :populate_project
   before_validation :populate_organization
@@ -47,10 +47,8 @@ class Edit < ActiveRecord::Base
   private
 
   class << self
-    private
-
     def similar_to_edit_arel(edit)
-      where(type: edit.class, key: edit.key, target_id: edit.target_id, target_type: edit.target_type)
+      where(type: edit.class.to_s, key: edit.key, target_id: edit.target_id, target_type: edit.target_type)
         .where.not(id: edit.id)
     end
   end

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class InviteMailer < ActionMailer::Base
+class InviteMailer < ApplicationMailer
   default from: 'mailer@openhub.net'
   default template_path: 'mailers'
 

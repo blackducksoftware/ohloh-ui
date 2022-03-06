@@ -73,7 +73,7 @@ module OrgFilters
   end
 
   def can_claim_project
-    render text: t('.unauthorized') unless request.xhr? && @organization.edit_authorized?
+    render plain: t('.unauthorized') unless request.xhr? && @organization.edit_authorized?
   end
 
   def set_project

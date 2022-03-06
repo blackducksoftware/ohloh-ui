@@ -13,6 +13,7 @@ namespace :OH do
       @log.info("#{@link.id}, #{@link.url}")
       code, new_url = fetch_response(@link.url)
       broken_link.destroy && next if code == '200'
+
       handle_url_redirection(new_url)
     end
   end

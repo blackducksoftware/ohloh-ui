@@ -1,4 +1,4 @@
-- key, klass = { error: 'alert-danger', notice: 'alert-info', success: 'alert-success' }.find { |k, _v| flash[k] }
+- key, klass = { error: 'alert-danger', notice: 'alert-info', success: 'alert-success', alert: 'alert-info' }.find { |k, _v| flash[k] }
 - if key
   #flash-msg
     .alert{ class: klass }
@@ -7,7 +7,7 @@
         icon = case key
                when :error
                  'exclamation'
-               when :notice
+               when :notice, :alert
                  'info'
                when :success
                  'ok'

@@ -1,26 +1,31 @@
 # frozen_string_literal: true
 
-class Alias < ActiveRecord::Base
+class Alias < ApplicationRecord
   include AliasScopes
-  belongs_to :project
-  belongs_to :commit_name, class_name: 'Name', foreign_key: :commit_name_id
-  belongs_to :preferred_name, class_name: 'Name', foreign_key: :preferred_name_id
+  belongs_to :project, optional: true
+  belongs_to :commit_name, class_name: 'Name', optional: true
+  belongs_to :preferred_name, class_name: 'Name', optional: true
   has_one :create_edit, as: :target
   has_many :edits, as: :target
 
   validates :commit_name_id, presence: true
   validates :preferred_name_id, presence: true
 
-  after_save :update_unclaimed_person, if: proc { |obj| (obj.changed & %w[id deleted]).present? }
   after_update :remove_unclaimed_person
-  after_save :schedule_project_analysis, if: proc { |obj| (obj.changed & %w[preferred_name_id deleted]).present? }
-  after_update :move_name_facts_to_preferred_name, if: proc { |obj| (obj.changed & %w[preferred_name_id]).present? }
+
+  after_update :move_name_facts_to_preferred_name, if: proc { |obj|
+                                                         (obj.saved_changes.keys & %w[preferred_name_id]).present?
+                                                       }
+  after_save :update_unclaimed_person, if: proc { |obj| (obj.saved_changes.keys & %w[id deleted]).present? }
+  after_save :schedule_project_analysis, if: proc { |obj|
+                                               (obj.saved_changes.keys & %w[preferred_name_id deleted]).present?
+                                             }
 
   acts_as_editable editable_attributes: [:preferred_name_id]
   acts_as_protected parent: :project
 
   def allow_undo_to_nil?(key)
-    ![:preferred_name_id].include?(key)
+    [:preferred_name_id].exclude?(key)
   end
 
   class << self
@@ -77,7 +82,7 @@ class Alias < ActiveRecord::Base
   def remove_unclaimed_person
     return unless Person.exists?(name_id: commit_name_id, project_id: project_id)
 
-    update_unclaimed_person if preferred_name_id_changed?
+    update_unclaimed_person if saved_change_to_preferred_name_id?
   end
 
   def update_unclaimed_person
@@ -97,7 +102,7 @@ class Alias < ActiveRecord::Base
     name_fact = contributor_fact_for_commit
     ContributorFact.find_by(name_id: preferred_name_id, analysis_id: project.best_analysis_id)
                    .try(:append_name_fact, name_fact)
-    ContributorFact.find_by(name_id: changed_attributes[:preferred_name_id], analysis_id: project.best_analysis_id)
+    ContributorFact.find_by(name_id: saved_changes[:preferred_name_id][0], analysis_id: project.best_analysis_id)
                    .try(:remove_name_fact, name_fact)
   end
 

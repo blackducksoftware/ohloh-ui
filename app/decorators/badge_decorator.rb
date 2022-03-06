@@ -4,7 +4,7 @@ class BadgeDecorator < Cherry::Decorator
   delegate :to_underscore, :level, :level_bits, :levels?, :description, to: :object
 
   def image_url(request)
-    url = BADGE_IMAGE_ROOT + to_underscore + '.png'
+    url = "#{BADGE_IMAGE_ROOT}#{to_underscore}.png"
     base_url(request) + url if url
   end
 

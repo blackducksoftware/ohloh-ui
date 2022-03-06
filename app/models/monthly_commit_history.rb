@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class MonthlyCommitHistory < ActiveRecord::Base
-  belongs_to :analysis
+class MonthlyCommitHistory < ApplicationRecord
+  belongs_to :analysis, optional: true
   attr_accessor :ticks, :month, :commits
 end

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class CodeSet < FisBase
-  belongs_to :best_sloc_set, foreign_key: :best_sloc_set_id, class_name: 'SlocSet'
+  belongs_to :best_sloc_set, class_name: 'SlocSet', optional: true
   has_many :commits, -> { order(:position) }, dependent: :destroy
   has_many :fyles, dependent: :delete_all
   has_many :sloc_sets, dependent: :destroy
@@ -57,9 +57,9 @@ class CodeSet < FisBase
 
     def code_set_conditions
       "COALESCE(code_sets.logged_at, '1970-01-01') + "\
-      "code_locations.update_interval * INTERVAL '1 second' <= NOW() AT TIME ZONE 'utc'"\
-      " AND COALESCE(analyses.oldest_code_set_time, '1970-01-01') >="\
-      " COALESCE(code_sets.logged_at, '1970-01-01') - INTERVAL '1 second'"
+        "code_locations.update_interval * INTERVAL '1 second' <= NOW() AT TIME ZONE 'utc'"\
+        " AND COALESCE(analyses.oldest_code_set_time, '1970-01-01') >="\
+        " COALESCE(code_sets.logged_at, '1970-01-01') - INTERVAL '1 second'"
     end
   end
 

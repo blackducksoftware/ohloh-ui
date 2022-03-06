@@ -43,7 +43,7 @@ module ApplicationHelper
     text = text.sanitize
     return text.html_safe if text.length < max
 
-    l = (text[0..min].rindex(regex) || min + 1) + regex_offset
+    l = (text[0..min].rindex(regex) || (min + 1)) + regex_offset
     l -= 1 if text[l..l] == ','
     render_expander(text, l).html_safe
   end
@@ -53,7 +53,7 @@ module ApplicationHelper
   end
 
   def pluralize_with_delimiter(count, singular, plural = nil)
-    number_with_delimiter(count || 0) + ' ' + (count.to_i == 1 ? singular : (plural || singular.pluralize))
+    "#{number_with_delimiter(count || 0)} #{count.to_i == 1 ? singular : (plural || singular.pluralize)}"
   end
 
   def generate_page_name
@@ -145,7 +145,7 @@ module ApplicationHelper
     #{text[0..limit]}
     <span class="expander">
     <span x-wrapper>... #{link_to t('expander.more'), 'javascript:void(0);', class: 'ctrl'}</span>
-    <span x-wrapper style="display:none">#{text[limit + 1..-1]} #{link_to t('expander.less'), 'javascript:void(0);', class: 'ctrl'}</span>
+    <span x-wrapper style="display:none">#{text[limit + 1..]} #{link_to t('expander.less'), 'javascript:void(0);', class: 'ctrl'}</span>
     </span>
     EXPANDER
   end

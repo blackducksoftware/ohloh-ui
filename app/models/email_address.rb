@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class EmailAddress < ActiveRecord::Base
+class EmailAddress < ApplicationRecord
   BLACKLISTED_EMAILS = ['root@localhost'].freeze
   include EmailObfuscation
 

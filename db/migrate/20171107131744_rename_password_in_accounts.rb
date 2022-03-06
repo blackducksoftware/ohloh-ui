@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class RenamePasswordInAccounts < ActiveRecord::Migration
+class RenamePasswordInAccounts < ActiveRecord::Migration[4.2]
   def change
     change_table :accounts, bulk: true do |t|
       t.rename :crypted_password, :encrypted_password

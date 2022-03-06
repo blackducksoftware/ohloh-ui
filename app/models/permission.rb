@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-class Permission < ActiveRecord::Base
-  belongs_to :target, polymorphic: true
+class Permission < ApplicationRecord
+  belongs_to :target, polymorphic: true, optional: true
 
   acts_as_editable editable_attributes: [:remainder],
                    merge_within: 30.minutes

@@ -122,7 +122,7 @@ class PostsController < ApplicationController
 
   def send_reply_emails_to_everyone
     @all_users_preceding_the_last_user.uniq.each do |user|
-      PostNotifier.post_replied_notification(user, @user_who_replied, @post).deliver_now
+      PostNotifierMailer.post_replied_notification(user, @user_who_replied, @post).deliver_now
     end
   end
 end

@@ -13,7 +13,7 @@ module DashboardHelper
     revision, file_modified = get_revision_details
     github_url = "https://github.com/blackducksoftware/ohloh-ui/commit/#{revision}"
     link_text = " (#{revision[0..7]}) "
-    deployed = time_ago_in_words(file_modified) + ' ago '
+    deployed = "#{time_ago_in_words(file_modified)} ago "
     link = link_to(link_text, github_url, style: 'color: #fff', target: '_blank', rel: 'noopener')
     (deployed + link).html_safe
   end

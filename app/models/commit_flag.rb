@@ -3,8 +3,8 @@
 class CommitFlag < FisBase
   serialize :data
 
-  belongs_to :commit
-  belongs_to :sloc_set
+  belongs_to :commit, optional: true
+  belongs_to :sloc_set, optional: true
 
   scope :new_languages, -> { where(type: 'CommitFlag::NewLanguage') }
 end

@@ -1,7 +1,7 @@
 :ruby
   content_for(:html_title) { t('.page_title') }
   page_context[:select_top_menu_nav] = 'select_tools'
-  proj_names = params.select { |k, _| k.to_s.match(/project/) }
+  proj_names = params.select { |k, _| k.to_s.match(/project/) }.permit(:project_0, :project_1, :project_2)
 
 .projects_compare
   %h1.float_left.margin_left_10= t('.compare_projects')

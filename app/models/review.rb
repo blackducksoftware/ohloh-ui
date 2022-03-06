@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-class Review < ActiveRecord::Base
+class Review < ApplicationRecord
   include KnowledgeBaseCallbacks
 
-  belongs_to :account
-  belongs_to :project
+  belongs_to :account, optional: true
+  belongs_to :project, optional: true
   has_many :helpfuls, dependent: :destroy
 
   validates :title, presence: true
@@ -21,7 +21,7 @@ class Review < ActiveRecord::Base
   scope :by_account, ->(account) { where(account_id: account.id) }
   scope :for_project, ->(project) { where(project_id: project.id) }
   scope :top, ->(limit = 2) { three_quarters_helpful_arel.order_by_helpfulness_arel.limit(limit) }
-  scope :sort_by, lambda { |key = :helpful|
+  scope :order_by, lambda { |key = :helpful|
     {
       'helpful' => order_by_helpfulness_arel,
       'highest_rated' => order(ratings_sql('DESC')).order(created_at: :desc),
@@ -68,14 +68,14 @@ class Review < ActiveRecord::Base
       order(sanitize_sql(order_by)).order(:created_at)
     end
 
-    private
-
     def ratings_sql(sort_order = 'ASC')
       sql = Rating.where('ratings.account_id = reviews.account_id AND ratings.project_id = reviews.project_id')
                   .select(:score).to_sql
       sql = "( #{sql} ) #{sort_order.eql?('DESC') ? ' DESC NULLS LAST' : ' ASC NULLS FIRST'}"
       sanitize_sql(sql)
     end
+
+    private
 
     def pos_or_neg_sql(pos)
       helpfuls = Helpful.arel_table

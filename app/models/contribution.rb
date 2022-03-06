@@ -1,15 +1,15 @@
 # frozen_string_literal: true
 
-class Contribution < ActiveRecord::Base
+class Contribution < ApplicationRecord
   SORT_OPTIONS = %i[name kudo_position commits twelve_month_commits
                     language latest_commit newest oldest].freeze
   self.primary_key = :id
 
-  belongs_to :position
-  belongs_to :project
-  belongs_to :person
-  belongs_to :name_fact
-  belongs_to :contributor_fact, foreign_key: 'name_fact_id'
+  belongs_to :position, optional: true
+  belongs_to :project, optional: true
+  belongs_to :person, optional: true
+  belongs_to :name_fact, optional: true
+  belongs_to :contributor_fact, foreign_key: 'name_fact_id', optional: true
   has_many :invites
   has_many :kudos, ->(contribution) { joins(:name_fact).where(NameFact.arel_table[:id].eq(contribution.name_fact_id)) },
            primary_key: :project_id, foreign_key: :project_id
@@ -41,7 +41,7 @@ class Contribution < ActiveRecord::Base
   end
 
   def kudoable
-    (person&.account) || self
+    person&.account || self
   end
 
   def recent_kudos(limit = 3)
@@ -61,7 +61,7 @@ class Contribution < ActiveRecord::Base
   end
 
   class << self
-    def sort(key)
+    def sort_scope(key)
       key = :commits unless key && SORT_OPTIONS.include?(key.to_sym)
       send("sort_by_#{key}")
     end

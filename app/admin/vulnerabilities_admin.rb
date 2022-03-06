@@ -5,7 +5,7 @@ ActiveAdmin.register Vulnerability do
   filter :generated_on
   filter :published_on
 
-  belongs_to :release
+  belongs_to :release, optional: true
 
   actions :index, :show
 

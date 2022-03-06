@@ -5,7 +5,7 @@
       Error Type
       %span.caret
     %ul.dropdown-menu.scrollable-menu
-      - errors = BrokenLink.uniq.pluck(:error).sort
+      - errors = BrokenLink.distinct.pluck(:error).sort
       - errors.each do |error|
         %li.font-weight-light
           = link_to error, oh_admin_broken_links_path(query: error)

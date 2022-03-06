@@ -37,7 +37,7 @@ class PositionsController < ApplicationController
     if @position.destroy
       redirect_to account_positions_path, notice: t('destroy.success')
     else
-      redirect_to :back, flash: { error: t('destroy.failure') }
+      redirect_to_saved_path(flash: { error: t('destroy.failure') })
     end
   end
 

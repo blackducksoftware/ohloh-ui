@@ -28,11 +28,12 @@ module JobApiHelper
   def job_progress(job)
     return unless [1, 3, 5].include?(job['status'])
 
-    if job['status'] == 1
+    case job['status']
+    when 1
       css = ['progress progress-xs progress-striped active', 'progress-bar progress-bar-success']
-    elsif job['status'] == 3
+    when 3
       css = ['progress progress-xs', 'progress-bar progress-bar-danger']
-    elsif job['status'] == 5
+    when 5
       css = ['progress progress-xs', 'progress-bar progress-bar-success']
     end
     show_job_progress(job, css)

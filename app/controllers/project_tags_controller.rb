@@ -15,7 +15,7 @@ class ProjectTagsController < SettingsController
 
   def create
     @project.update!(tag_list: "#{@project.tag_list} #{params[:tag_name]}")
-    render text: ERB::Util.html_escape(@project.tag_list).split.sort.join("\n")
+    render plain: ERB::Util.html_escape(@project.tag_list).split.sort.join("\n")
   rescue StandardError
     render_create_error
   end
@@ -56,6 +56,6 @@ class ProjectTagsController < SettingsController
                           .join('<br/>')
     end
     error_msg ||= custom_description_error
-    render text: error_msg, status: :unprocessable_entity
+    render plain: error_msg, status: :unprocessable_entity
   end
 end

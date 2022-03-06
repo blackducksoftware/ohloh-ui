@@ -2,7 +2,7 @@
 
 require 'feedjira'
 
-class RssFeed < ActiveRecord::Base
+class RssFeed < ApplicationRecord
   has_many :rss_subscriptions
   has_many :projects, through: :rss_subscriptions
   has_many :rss_articles
@@ -41,7 +41,7 @@ class RssFeed < ActiveRecord::Base
   end
 
   def schedule_next_fetch
-    next_fetch_date = error ? (Time.current + (Time.current - last_fetch) * 2) : (last_fetch + 1.day)
+    next_fetch_date = error ? (Time.current + ((Time.current - last_fetch) * 2)) : (last_fetch + 1.day)
     self.next_fetch = next_fetch_date
   end
 
@@ -52,7 +52,8 @@ class RssFeed < ActiveRecord::Base
   end
 
   def new_rss_article_items
-    rss = Feedjira::Feed.fetch_and_parse(url)
+    xml = Net::HTTP.get(URI(url))
+    rss = Feedjira.parse(xml)
     existing_rss_articles = rss_articles.pluck(:guid)
 
     rss.sanitize_entries!.reject do |item|

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class OrgThirtyDayActivity < ActiveRecord::Base
+class OrgThirtyDayActivity < ApplicationRecord
   SORT_TYPES = [['All Organizations', 'all_orgs'], %w[Commercial commercial], %w[Education educational],
                 %w[Government government], %w[Non-Profit non_profit], %w[Large large],
                 %w[Medium medium], %w[Small small]].freeze
@@ -10,7 +10,7 @@ class OrgThirtyDayActivity < ActiveRecord::Base
                    government: :filter_government_orgs, non_profit: :filter_non_profit_orgs,
                    educational: :filter_educational_orgs }.freeze
 
-  belongs_to :organization
+  belongs_to :organization, optional: true
 
   scope :filter_all_orgs, -> { with_thirty_day_commit_count }
   scope :filter_small_orgs, -> { with_thirty_day_commit_count.where(project_count: 1..10) }
@@ -38,8 +38,6 @@ class OrgThirtyDayActivity < ActiveRecord::Base
       filter_type = :all_orgs unless FILTER_TYPES.key?(filter_type)
       send(FILTER_TYPES[filter_type])
     end
-
-    private
 
     def with_commits_and_affiliates
       joins(:organization)

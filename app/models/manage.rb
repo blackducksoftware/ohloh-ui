@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
-class Manage < ActiveRecord::Base
+class Manage < ApplicationRecord
   MAX_PROJECTS = 200
 
-  belongs_to :account
-  belongs_to :target, polymorphic: true
-  belongs_to :approver, class_name: 'Account', foreign_key: :approved_by
-  belongs_to :destroyer, class_name: 'Account', foreign_key: :deleted_by
+  belongs_to :account, optional: true
+  belongs_to :target, polymorphic: true, optional: true
+  belongs_to :approver, class_name: 'Account', foreign_key: :approved_by, optional: true
+  belongs_to :destroyer, class_name: 'Account', foreign_key: :deleted_by, optional: true
 
   validates :target_type, presence: true,
                           uniqueness: { scope: %i[target_id account_id deleted_at],

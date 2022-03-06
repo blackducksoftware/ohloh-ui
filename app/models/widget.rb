@@ -6,7 +6,7 @@ class Widget
   attr_reader :vars
 
   def initialize(vars = {})
-    @vars = vars.with_indifferent_access.delete_if { |key, _| KEYS_TO_BE_REMOVED.include? key.to_sym }
+    @vars = vars.delete_if { |key, _| KEYS_TO_BE_REMOVED.include? key.to_sym }
   end
 
   def title
@@ -22,7 +22,7 @@ class Widget
   end
 
   def short_nice_name
-    nice_name.split(' ').last
+    nice_name.split.last
   end
 
   def name

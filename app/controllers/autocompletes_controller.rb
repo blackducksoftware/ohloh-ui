@@ -34,7 +34,7 @@ class AutocompletesController < ApplicationController
 
   def licenses
     licenses = params[:term] ? License.autocomplete(params[:term]) : []
-    render text: licenses.map { |l| { name: l.name, id: l.id.to_s } }.to_json
+    render plain: licenses.map { |l| { name: l.name, id: l.id.to_s } }.to_json
   end
 
   def contributions
@@ -57,7 +57,7 @@ class AutocompletesController < ApplicationController
   def check_for_project
     project_name = params[:project].to_s.strip.downcase
     @project = Project.active.where(['lower(name) = ?', project_name]).first unless project_name.empty?
-    render text: '' if @project.nil? || @project.best_analysis_id.nil?
+    render plain: '' if @project.nil? || @project.best_analysis_id.nil?
   end
 
   def set_projects_to_ignore

@@ -12,7 +12,7 @@ class StackIgnoresController < ApplicationController
 
   def delete_all
     @stack.stack_ignores.destroy_all
-    render nothing: true, status: :ok
+    head :ok
   end
 
   private

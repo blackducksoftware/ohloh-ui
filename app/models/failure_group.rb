@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class FailureGroup < ActiveRecord::Base
+class FailureGroup < ApplicationRecord
   has_many :jobs, -> { where(status: Job::STATUS_FAILED).with_exception }
   REPORTABLE = %w[connection_reset_by_peer investigate dnf_present].freeze
 

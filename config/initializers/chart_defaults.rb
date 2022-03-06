@@ -6,7 +6,9 @@ def load_chart_options(source)
 end
 
 def chart_background_image(image_name)
-  ApplicationController.helpers.asset_url('charts/' + image_name)
+  return '' if ENV['ASSETS_PRECOMPILE']
+
+  ApplicationController.helpers.asset_url("charts/#{image_name}")
 end
 
 CHART_DEFAULTS = load_chart_options('defaults.yml')

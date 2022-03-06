@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class ContributorFact < NameFact
-  belongs_to :analysis
-  belongs_to :name
+  belongs_to :analysis, optional: true
+  belongs_to :name, optional: true
 
   def name_language_facts
     NameLanguageFact.where(name_id: name_id, analysis_id: analysis_id)

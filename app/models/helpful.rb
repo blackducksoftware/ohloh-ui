@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-class Helpful < ActiveRecord::Base
-  belongs_to :review
-  belongs_to :account
+class Helpful < ApplicationRecord
+  belongs_to :review, optional: true
+  belongs_to :account, optional: true
 
   validate :cant_moderate_own_reviews
 

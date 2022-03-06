@@ -23,7 +23,8 @@ module ActsAsTaggable
     end
 
     def tag_list
-      tags.pluck('DISTINCT name').compact.join(' ').fix_encoding_if_invalid
+      query_string = Arel.sql('DISTINCT name') # tags.name format is validated.
+      tags.pluck(query_string).compact.join(' ').fix_encoding_if_invalid
     end
 
     private
@@ -36,4 +37,4 @@ module ActsAsTaggable
   end
 end
 
-ActiveRecord::Base.send :include, ActsAsTaggable
+ApplicationRecord.include ActsAsTaggable

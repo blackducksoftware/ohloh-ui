@@ -27,9 +27,9 @@ class Account::Hooks
 
   def after_update(account)
     destroy_spammer_dependencies(account) if account.access.spam?
-    return unless account.organization_id_changed?
+    return unless account.saved_change_to_organization_id?
 
-    schedule_organization_analysis(account.organization_id_was)
+    schedule_organization_analysis(account.organization_id_before_last_save)
     schedule_organization_analysis(account.organization_id)
   end
 
@@ -74,7 +74,6 @@ class Account::Hooks
     Organization.find_by(id: organization_id).schedule_analysis
   end
 
-  # rubocop:disable Metrics/AbcSize
   def destroy_spammer_dependencies(account)
     account.posts.each(&:destroy_with_empty_topic)
     account.all_manages.each { |manage| manage.destroy_by!(account) }
@@ -85,7 +84,6 @@ class Account::Hooks
   rescue StandardError
     raise ActiveRecord::Rollback
   end
-  # rubocop:enable Metrics/AbcSize
 
   # All edits cannot be undone due to the edits order and validations
   def safe_undo(edit)
@@ -109,10 +107,10 @@ class Account::Hooks
 
   def transfer_associations_to_anonymous_account(account)
     @anonymous_account = Account.find_or_create_anonymous_account
-    account.posts.update_all(account_id: @anonymous_account)
-    # account.account_reports.update_all(account_id: @anonymous_account)
-    account.topics.update_all(account_id: @anonymous_account)
-    account.edits.update_all(account_id: @anonymous_account)
+    account.posts.update_all(account_id: @anonymous_account.id)
+    # account.account_reports.update_all(account_id: @anonymous_account.id)
+    account.topics.update_all(account_id: @anonymous_account.id)
+    account.edits.update_all(account_id: @anonymous_account.id)
     update_edit(account.id)
     update_invite(account.id)
     update_manage(account.id)
@@ -126,7 +124,7 @@ class Account::Hooks
   def update_invite(account_id)
     invites = Invite.arel_table
     Invite.where(invites[:invitor_id].eq(account_id).or(invites[:invitee_id].eq(account_id)))
-          .update_all(invitor_id: @anonymous_account, invitee_id: @anonymous_account)
+          .update_all(invitor_id: @anonymous_account.id, invitee_id: @anonymous_account.id)
   end
 
   def update_manage(account_id)

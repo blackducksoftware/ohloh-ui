@@ -21,7 +21,7 @@ module WidgetsHelper
   end
 
   def widget_url(widget, type)
-    url_params = widget.vars.dup.delete_if { |k, _| k == "#{type}_id" }
+    url_params = widget.vars.reject { |k, _| k.to_s == "#{type}_id" }
     send("#{widget.name.underscore}_#{controller_name}_url", widget.send(type)) +
       "?#{url_params.merge(format: 'js').to_query}"
   end
@@ -32,7 +32,7 @@ module WidgetsHelper
   end
 
   def widget_url_without_format(widget, type)
-    url_params = widget.vars.dup.delete_if { |k, _| k == "#{type}_id" }
+    url_params = widget.vars.reject { |k, _| k.to_s == "#{type}_id" }
     send("#{widget.name.underscore}_#{controller_name}_url", widget.send(type), url_params)
   end
 

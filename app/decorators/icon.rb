@@ -12,7 +12,7 @@ class Icon < Cherry::Decorator
   def image(with_dimensions: true)
     if logo
       width_and_height = with_dimensions ? dimensions : ''
-      css_style = width_and_height + ' border:0 none;'
+      css_style = "#{width_and_height} border:0 none;"
       image_tag(logo.attachment.url(size), style: css_style, itemprop: 'image', alt: 'img avatar')
     else
       content_tag :p, name.first.capitalize, style: default_style
@@ -43,7 +43,7 @@ class Icon < Cherry::Decorator
     margin_right = int_size == 64 ? 0 : 2
 
     "background-color:##{opts[:bg]}; color:##{opts[:color]}; border:1px dashed ##{opts[:color]};"\
-    "font-size:#{font_size}px; line-height:#{int_size}px; #{dimensions}"\
-    "text-align:center; float:left; margin-bottom:0; margin-top:3px; margin-right:#{margin_right}px"
+      "font-size:#{font_size}px; line-height:#{int_size}px; #{dimensions}"\
+      "text-align:center; float:left; margin-bottom:0; margin-top:3px; margin-right:#{margin_right}px"
   end
 end

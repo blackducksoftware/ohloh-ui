@@ -17,7 +17,7 @@ class Account
     def sanitized_login
       return login unless login =~ /\A\d.+\Z/
 
-      ('a'..'z').to_a.sample(3).join('') + login
+      ('a'..'z').to_a.sample(3).join + login
     end
 
     def get_unique_login(clean_login)

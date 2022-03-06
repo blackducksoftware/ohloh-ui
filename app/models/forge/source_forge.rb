@@ -1,19 +1,19 @@
 # frozen_string_literal: true
 
 class Forge::SourceForge < Forge
-  attr_accessor :url
+  # attr_accessor :url
 
   def match(url)
     @url = url
     case @url
     # Source control URL
-    when /\b([^@\/\.]+)\.(cvs|svn|hg|git|bzr)\.(sourceforge|sf)\.net\b/
+    when /\b([^@\/.]+)\.(cvs|svn|hg|git|bzr)\.(sourceforge|sf)\.net\b/
       Forge::Match.new(self, nil, $1)
     # Project web page URL, project name in path
-    when /\b(sourceforge|sf)\.net\/(projects|p)\/([^\/\.]+)\b/
+    when /\b(sourceforge|sf)\.net\/(projects|p)\/([^\/.]+)\b/
       Forge::Match.new(self, nil, $3)
     # Project web page URL, project name in subdomain
-    when /\b([^\/\.]+)\.(sourceforge|sf)\.net\b/
+    when /\b([^\/.]+)\.(sourceforge|sf)\.net\b/
       Forge::Match.new(self, nil, $1)
     end
   end

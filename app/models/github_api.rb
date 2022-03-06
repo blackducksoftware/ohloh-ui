@@ -86,7 +86,7 @@ class GithubApi
   end
 
   def email_responses
-    email_uri = URI(GITHUB_USER_URI + '/emails')
+    email_uri = URI("#{GITHUB_USER_URI}/emails")
     @email_responses ||= get_response_using_token(email_uri)
   end
 

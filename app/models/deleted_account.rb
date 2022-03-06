@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class DeletedAccount < ActiveRecord::Base
+class DeletedAccount < ApplicationRecord
   validates :login, :email, presence: true
   after_create :notify_admin
 
@@ -28,7 +28,7 @@ class DeletedAccount < ActiveRecord::Base
   private
 
   def notify_admin
-    mail = DeletedAccountNotifier.deletion(self)
+    mail = DeletedAccountNotifierMailer.deletion(self)
     mail.respond_to?(:deliver_now) ? mail.deliver_now : mail.deliver
   end
 end

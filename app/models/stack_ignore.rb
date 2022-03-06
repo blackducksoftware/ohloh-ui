@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-class StackIgnore < ActiveRecord::Base
-  belongs_to :stack
-  belongs_to :project
+class StackIgnore < ApplicationRecord
+  belongs_to :stack, optional: true
+  belongs_to :project, optional: true
 
   scope :for_project, ->(project) { where(project_id: project.id) }
 

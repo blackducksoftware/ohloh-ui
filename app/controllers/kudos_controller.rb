@@ -30,7 +30,7 @@ class KudosController < ApplicationController
     else
       flash[:error] = @kudo.errors.full_messages.first
     end
-    redirect_to :back
+    redirect_to_saved_path
   end
 
   def destroy
@@ -40,7 +40,7 @@ class KudosController < ApplicationController
     else
       flash[:error] = t('.error')
     end
-    redirect_to :back
+    redirect_to_saved_path
   end
 
   private

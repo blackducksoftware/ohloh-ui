@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-class Job < ActiveRecord::Base
-  belongs_to :project
-  belongs_to :worker
-  belongs_to :job_status, foreign_key: 'status'
-  belongs_to :failure_group
+class Job < ApplicationRecord
+  belongs_to :project, optional: true
+  belongs_to :worker, optional: true
+  belongs_to :job_status, foreign_key: 'status', optional: true
+  belongs_to :failure_group, optional: true
   has_many :slave_logs
 
   STATUS_SCHEDULED = 0
@@ -43,10 +43,10 @@ class Job < ActiveRecord::Base
   scope :categorized_failure_group, -> { where.not(failure_group_id: nil).failed.with_exception }
   scope :with_exception, -> { where.not(exception: nil) }
 
-  belongs_to :code_set
-  belongs_to :sloc_set
-  belongs_to :account
-  belongs_to :organization
+  belongs_to :code_set, optional: true
+  belongs_to :sloc_set, optional: true
+  belongs_to :account, optional: true
+  belongs_to :organization, optional: true
 
   def categorize_failure
     failure_group = FailureGroup.find_by('pattern ILIKE ?', exception)

@@ -8,7 +8,7 @@ module AccountScopes
 
   included do
     scope :simple_search, lambda { |query|
-      where(['lower(name) like :term OR lower(login) like :term', term: "%#{query.downcase}%"])
+      where(['lower(name) like :term OR lower(login) like :term', { term: "%#{query.downcase}%" }])
         .order("COALESCE( NULLIF( POSITION('#{query}' in lower(login)), 0), 100), CHAR_LENGTH(login)")
         .limit(10)
     }

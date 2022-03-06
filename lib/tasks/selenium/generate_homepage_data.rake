@@ -5,9 +5,7 @@
 
 namespace :selenium do
   file :write_data do
-    File.open('tmp/homepage_data.yml', 'w+') do |file|
-      file.write({ 'homepage' => @data }.to_yaml)
-    end
+    File.write('tmp/homepage_data.yml', { 'homepage' => @data }.to_yaml)
   end
 
   desc 'Generates test data for home page'

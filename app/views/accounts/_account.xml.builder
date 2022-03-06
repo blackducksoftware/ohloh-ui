@@ -40,7 +40,7 @@ xml.account do
             xml.experience_months nlf.total_months
             xml.total_commits number_with_delimiter(nlf.total_commits)
             xml.total_lines_changed number_with_delimiter(nlf.total_activity_lines)
-            cr = nlf.comment_ratio ? number_with_precision(nlf.comment_ratio.to_f * 100, precision: 1).to_s + '%' : '-'
+            cr = nlf.comment_ratio ? "#{number_with_precision(nlf.comment_ratio.to_f * 100, precision: 1)}%" : '-'
             xml.comment_ratio cr
           end
         end

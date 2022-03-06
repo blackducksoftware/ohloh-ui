@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class CreateCodeLocationTarballsTable < ActiveRecord::Migration
+class CreateCodeLocationTarballsTable < ActiveRecord::Migration[4.2]
   def change
     create_table :code_location_tarballs do |t|
       t.references :code_location, foreign_key: true, index: true

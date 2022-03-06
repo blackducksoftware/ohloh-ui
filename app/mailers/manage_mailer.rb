@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class ManageMailer < ActionMailer::Base
+class ManageMailer < ApplicationMailer
   default to: proc { (@manager || @manage.account).email },
           from: 'mailer@openhub.net'
 
@@ -51,7 +51,7 @@ class ManageMailer < ActionMailer::Base
 
   class << self
     def deliver_emails(manage)
-      return if manage.changed.blank?
+      return unless manage.has_changes_to_save?
 
       %i[check_automatic_approval check_removed check_approved check_applied].each do |message|
         break if send(message, manage)
@@ -83,7 +83,7 @@ class ManageMailer < ActionMailer::Base
     end
 
     def check_removed(manage)
-      return false unless manage.changed.include?('deleted_by')
+      return false unless manage.changed_attribute_names_to_save.include?('deleted_by')
 
       manage.target.active_managers.each { |manager| deliver_deletion(manager, manage) }
       true
@@ -99,7 +99,7 @@ class ManageMailer < ActionMailer::Base
     end
 
     def check_approved(manage)
-      return false unless manage.changed.include?('approved_by') && manage.approver
+      return false unless manage.changed_attribute_names_to_save.include?('approved_by') && manage.approver
 
       manage.target.active_managers.each do |manager|
         approved(manager, manage).deliver_now
@@ -108,7 +108,7 @@ class ManageMailer < ActionMailer::Base
     end
 
     def check_applied(manage)
-      return false unless manage.changed.include?('account_id') && manage.account
+      return false unless manage.changed_attribute_names_to_save.include?('account_id') && manage.account
 
       manage.target.active_managers.each do |manager|
         applied(manager, manage).deliver_now
@@ -117,7 +117,7 @@ class ManageMailer < ActionMailer::Base
     end
 
     def check_rejection(manage)
-      return false if !manage.changed.include?('deleted_by') || manage.deleted_by.blank?
+      return false if manage.changed_attribute_names_to_save.exclude?('deleted_by') || manage.deleted_by.blank?
       return false if manage.destroyer == manage.account
 
       manage.approver ? removal(manage).deliver_now : rejection(manage).deliver_now

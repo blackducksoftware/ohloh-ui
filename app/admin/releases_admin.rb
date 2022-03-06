@@ -7,7 +7,7 @@ ActiveAdmin.register Release do
 
   actions :index, :show
 
-  belongs_to :project_security_set
+  belongs_to :project_security_set, optional: true
 
   index do
     column :id

@@ -1,6 +1,6 @@
 :ruby
   has_header = opts[:include_header]
-  proj_names = params.select { |k, _| k.to_s.match(/project/) }
+  proj_names = params.select { |k, _| k.to_s.match(/project/) }.permit(:project_0, :project_1, :project_2)
 
 %tr.section
   %th{ colspan: (has_header ? 1 : 4), style: (has_header ? 'padding-top: 7px;' : '') }

@@ -31,7 +31,7 @@ module KnowledgeBaseCallbacks
   end
 
   def get_organization_project_ids
-    can_sync = changed && changes.keys.any? { |attr| Organization::KB_SYNC_ATTRS.include?(attr) }
+    can_sync = saved_changes? && saved_changes.keys.any? { |attr| Organization::KB_SYNC_ATTRS.include?(attr) }
     project_ids if can_sync
   end
 end

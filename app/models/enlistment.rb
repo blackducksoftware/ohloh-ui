@@ -1,17 +1,17 @@
 # frozen_string_literal: true
 
-class Enlistment < ActiveRecord::Base
+class Enlistment < ApplicationRecord
   include KnowledgeBaseCallbacks
 
   has_one :create_edit, as: :target
   has_many :project_badges
   has_many :travis_badges
   has_many :cii_badges
-  belongs_to :project
+  belongs_to :project, optional: true
 
   before_save :save_code_location, if: -> { @nested_code_location }
+  after_update :update_subscription, if: :saved_change_to_deleted?
   after_save :ensure_forge_and_job
-  after_update :update_subscription, if: :deleted_changed?
 
   acts_as_editable editable_attributes: [:ignore]
   acts_as_protected parent: :project

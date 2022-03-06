@@ -6,7 +6,7 @@ class Organization::Outside < Organization::AccountFacts
   end
 
   def stats
-    Organization.connection.select_one <<-SQL
+    Organization.connection.select_one <<-SQL.squish
       SELECT
         COUNT(DISTINCT(A.id)) as out_committers,
         COALESCE(SUM(NF.commits), 0) as out_commits,
@@ -28,7 +28,7 @@ class Organization::Outside < Organization::AccountFacts
   private
 
   def outside_committers_sql
-    <<-SQL
+    <<-SQL.squish
       SELECT A.id, A.login, A.name, A.organization_id, A.email_md5, PER.kudo_rank, array_agg(P.id) as projs,
         COALESCE(SUM(NF.twelve_month_commits),0) as twelve_mo_commits, SUM(NF.commits) as all_time_commits
       FROM accounts A #{Organization.send(:sanitize_sql, account_facts_joins)}
@@ -41,7 +41,7 @@ class Organization::Outside < Organization::AccountFacts
   end
 
   def outside_projects_sql
-    <<-SQL
+    <<-SQL.squish
       SELECT #{project_select_clause},
         COUNT(DISTINCT(A.id)) as contribs_count, COALESCE(SUM(NF.commits),0) as commits
       FROM accounts A #{Organization.send(:sanitize_sql, account_facts_joins)}

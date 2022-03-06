@@ -17,7 +17,7 @@ class Api::V1::EnlistmentsController < ApplicationController
       en.create_edit.undo!(current_user)
       delete_all_subscriptions(en.code_location_id)
     end
-    render json: 'No Code Locations', status: :success if @enlistments.length.zero?
+    render json: 'No Code Locations', status: :not_found if @enlistments.length.zero?
     render json: @enlistments, status: :ok unless @enlistments.length.zero?
   end
 

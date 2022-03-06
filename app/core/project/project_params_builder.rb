@@ -50,7 +50,7 @@ class ProjectParamsBuilder
 
     # check if project and owner already exists if it does,
     # a ProjectExistsError will be raised in validate_row method
-    return if Project.where(owner_at_forge: owner, name_at_forge: project).exists?
+    return if Project.exists?(owner_at_forge: owner, name_at_forge: project)
 
     # if project exists with a different owner set name of project to owner_name
     project = owner_name if Project.exists?(name_at_forge: project)
@@ -62,7 +62,7 @@ class ProjectParamsBuilder
     raise ProjectExistsError, "kb id:#{@kb_project_id} project already exists"  if @row['owner'].nil?
   end
 
-  # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
+  # rubocop:disable Metrics/MethodLength
   def set_params
     name = @row['project_name']
     url = get_url(@row['owner_name'])
@@ -78,7 +78,7 @@ class ProjectParamsBuilder
       'enlistments_attributes' => { '0' => { 'code_location_attributes' =>
         { 'scm_type' => 'git', 'url' => url, 'branch' => row['module_branch'] } } } }
   end
-  # rubocop:enable Metrics/AbcSize,Metrics/MethodLength
+  # rubocop:enable Metrics/MethodLength
 
   def get_url(raw_url)
     "https://github.com/#{raw_url}"

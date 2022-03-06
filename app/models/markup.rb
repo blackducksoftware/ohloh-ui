@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Markup < ActiveRecord::Base
+class Markup < ApplicationRecord
   before_save :sanitize_html
 
   validates :raw, length: { maximum: 500 }, allow_blank: true

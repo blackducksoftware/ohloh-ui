@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class AssociateProjectBadgeToEnlistment < ActiveRecord::Migration
+class AssociateProjectBadgeToEnlistment < ActiveRecord::Migration[4.2]
   def change
     remove_column :project_badges, :project_id, :integer
     remove_column :project_badges, :repository_id, :integer

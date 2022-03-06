@@ -1,4 +1,4 @@
 # frozen_string_literal: true
 
-class Recommendation < ActiveRecord::Base
+class Recommendation < ApplicationRecord
 end

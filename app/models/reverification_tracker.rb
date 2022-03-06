@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
-class ReverificationTracker < ActiveRecord::Base
+class ReverificationTracker < ApplicationRecord
   MAX_ATTEMPTS = 3
   NOTIFICATION1_DUE_DAYS = 21
   NOTIFICATION2_DUE_DAYS = 140
   NOTIFICATION3_DUE_DAYS = 28
   NOTIFICATION4_DUE_DAYS = 14
-  belongs_to :account
+  belongs_to :account, optional: true
   enum status: %i[pending delivered soft_bounced complained]
   enum phase: %i[initial marked_for_disable disabled final_warning]
 

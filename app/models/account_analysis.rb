@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-class AccountAnalysis < ActiveRecord::Base
+class AccountAnalysis < ApplicationRecord
   self.table_name = 'vitae'
-  belongs_to :account
+  belongs_to :account, optional: true
   has_one :account_analysis_fact, foreign_key: :vita_id
   has_many :account_analysis_language_facts, foreign_key: :vita_id
   has_one :name_fact, foreign_key: :vita_id

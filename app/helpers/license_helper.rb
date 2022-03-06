@@ -3,7 +3,7 @@
 module LicenseHelper
   def categorize_permission(permission)
     permission_exists = permission['license_permission_id'].present?
-    new_permission_status = params['right_' + permission['id']]
+    new_permission_status = params["right_#{permission['id']}"]
     new_permission_exists = new_permission_status.present?
 
     # skip if permission was not originally set and remains unset

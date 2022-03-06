@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class ChangeBadgesAttributes < ActiveRecord::Migration
+class ChangeBadgesAttributes < ActiveRecord::Migration[4.2]
   def self.up
     remove_column :project_badges, :deleted
     add_column :project_badges, :status, :integer, default: 1

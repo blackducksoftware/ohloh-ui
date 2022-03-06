@@ -2,7 +2,7 @@
 
 # rubocop: disable Metrics/AbcSize
 
-class AddCodeLocationTable < ActiveRecord::Migration
+class AddCodeLocationTable < ActiveRecord::Migration[4.2]
   def up
     create_table :code_locations do |t|
       t.references :repository, index: true, foreign_key: true
@@ -27,7 +27,7 @@ class AddCodeLocationTable < ActiveRecord::Migration
     add_index :code_sets, :code_location_id
     add_index :code_locations, %i[repository_id module_branch_name], unique: true
 
-    execute <<-SQL
+    execute <<-SQL.squish
       ALTER TABLE enlistments DROP CONSTRAINT unique_project_id_repository_id;
     SQL
   end
@@ -40,7 +40,7 @@ class AddCodeLocationTable < ActiveRecord::Migration
     change_column_null :enlistments, :repository_id, false
     change_column_null :code_sets, :repository_id, false
 
-    execute <<-SQL
+    execute <<-SQL.squish
       ALTER TABLE enlistments ADD CONSTRAINT unique_project_id_repository_id
         UNIQUE(project_id, repository_id)
     SQL

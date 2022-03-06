@@ -34,10 +34,10 @@ module ActsAsProtected
     end
 
     def must_be_authorized
-      return unless changed?
+      return unless has_changes_to_save?
       return if edit_authorized?
 
-      errors.add :permission, I18n.t(:edit_permission_failed, klass: self.class)
+      errors.add :permission, I18n.t(:edit_permission_failed, klass: self.class.to_s)
     end
 
     private
@@ -52,4 +52,4 @@ module ActsAsProtected
   end
 end
 
-ActiveRecord::Base.send :include, ActsAsProtected
+ApplicationRecord.include ActsAsProtected

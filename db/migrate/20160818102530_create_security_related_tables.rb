@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # rubocop:disable Metrics/AbcSize
-class CreateSecurityRelatedTables < ActiveRecord::Migration
+class CreateSecurityRelatedTables < ActiveRecord::Migration[4.2]
   def change
     create_table :project_security_sets do |t|
       t.references :project, index: true, foreign_key: true

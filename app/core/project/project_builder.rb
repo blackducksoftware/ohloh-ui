@@ -8,9 +8,7 @@ class ProjectBuilder
   end
 
   def create
-    if @project.save
-      create_code_location_subscription if @project.enlistments.exists?
-    end
+    create_code_location_subscription if @project.save && @project.enlistments.exists?
     @project
   end
 

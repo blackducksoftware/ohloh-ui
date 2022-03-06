@@ -23,7 +23,7 @@ xml.project do
   xml.rating_count project.ratings.count
   xml.review_count project.reviews.count
   xml.analysis_id project.best_analysis_id
-  tags = project.tag_list.split(' ')
+  tags = project.tag_list.split
   if tags.any?
     xml.tags do
       tags.each do |t|

@@ -4,7 +4,7 @@ class FisJob < Job
   self.abstract_class = true
   self.table_name = 'fis.jobs'
 
-  belongs_to :slave
+  belongs_to :slave, optional: true
   has_many :slave_logs
 
   class << self
@@ -31,8 +31,9 @@ class FisJob < Job
     def failure_group_patterns
       # Converts "Connection Reset by Peer (SVN?)" to 'connection_reset_by_peer'.
       # e.g. output: { 11 => 'connection_reset_by_peer', 86 => 'investigate', ... }
-      @failure_group_patterns ||= Hash[FailureGroup.pluck(:id, :name)
-                                                   .map { |id, name| [id, underscore_and_clean(name)] }]
+      @failure_group_patterns ||= FailureGroup.pluck(:id, :name)
+                                              .map { |id, name| [id, underscore_and_clean(name)] }
+                                              .to_h
     end
 
     def underscore_and_clean(name)

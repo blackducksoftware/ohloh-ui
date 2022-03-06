@@ -21,7 +21,7 @@ class Chart
       years = date_objects(@commits_by_project.first.last.map { |af| af[:month].strftime('%b-%Y') })
     end
     series = @commits_by_project.each_with_object([]) do |(pname, afs), array|
-      array.push('name' => pname, 'data' => afs.map { |af| af[:commits] })
+      array.push('name' => pname, 'data' => afs.pluck(:commits))
     end
     { 'xAxis' => { 'categories' => years }, 'series' => series, 'noCommits' => @commits_by_project.empty? }
   end

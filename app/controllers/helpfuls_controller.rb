@@ -5,7 +5,7 @@ class HelpfulsController < ApplicationController
 
   def create
     @helpful = Helpful.where(model_params).first_or_initialize
-    @helpful.yes = params[:yes].present?
+    @helpful.yes = params[:yes].present? && params[:yes]
     @helpful.save
   end
 

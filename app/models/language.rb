@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Language < ActiveRecord::Base
+class Language < ApplicationRecord
   serialize :active_contributors, Array
   serialize :experienced_contributors, Array
 

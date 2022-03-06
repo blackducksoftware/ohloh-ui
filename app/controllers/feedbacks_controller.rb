@@ -11,7 +11,7 @@ class FeedbacksController < ApplicationController
 
   def create
     Feedback.create(feedback_params)
-    render nothing: true
+    head :ok
   end
 
   private

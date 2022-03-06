@@ -10,7 +10,7 @@ class Chart::Pie
     @data = data
     @width = (width || 120).to_i
     @height = (height || 120).to_i
-    @radius = @width / 2 - BORDER
+    @radius = (@width / 2) - BORDER
     @half_height = @height / 2
     @half_width = @width / 2
   end
@@ -60,7 +60,7 @@ class Chart::Pie
     dy0 = y_value(rad0)
     dy1 = y_value(rad1)
     "path 'M#{@half_width},#{@half_width} l#{dx0},#{dy0} A#{@radius},#{@radius} "\
-    "0 #{arc_scale(angle0, angle1)},#{SWEEP_POSITIVE} #{dx1 + @half_width},#{(dy1 + @half_height)} z'"
+      "0 #{arc_scale(angle0, angle1)},#{SWEEP_POSITIVE} #{dx1 + @half_width},#{dy1 + @half_height} z'"
   end
 
   def arc_scale(angle0, angle1)

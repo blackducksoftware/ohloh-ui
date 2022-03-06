@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class License < ActiveRecord::Base
+class License < ApplicationRecord
   validates :vanity_url, uniqueness: { case_sensitive: false }, length: { in: 2..50 },
                          default_param_format: true
   validates :name, uniqueness: { case_sensitive: false }, length: { in: 1..100 }
@@ -20,14 +20,14 @@ class License < ActiveRecord::Base
   scope :from_param, ->(vanity_url) { where(vanity_url: vanity_url) }
   scope :resolve_vanity_url, ->(vanity_url) { where('lower(vanity_url) = ?', vanity_url.downcase) }
 
-  after_update :undo_redo_project_licenses, if: ->(license) { license.deleted_changed? }
+  after_update :undo_redo_project_licenses, if: ->(license) { license.saved_change_to_deleted? }
 
   def to_param
     vanity_url
   end
 
   def allow_undo_to_nil?(key)
-    !%i[vanity_url name].include?(key)
+    %i[vanity_url name].exclude?(key)
   end
 
   def allow_edit?

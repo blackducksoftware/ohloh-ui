@@ -3,7 +3,7 @@
 module RatingsHelper
   def rating_stars(id, score, mini = false)
     dim = rating_star_dimensions(mini)
-    width = (score.to_f * (dim[:max] - dim[:min]) / 5.0 + 0.5 + dim[:min]).to_i
+    width = ((score.to_f * (dim[:max] - dim[:min]) / 5.0) + 0.5 + dim[:min]).to_i
     rating_star_html(id, score, dim, width)
   end
 

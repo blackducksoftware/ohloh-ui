@@ -82,6 +82,6 @@ module AvatarHelper
   end
 
   def avatar_laurels_img(rank, imag_base)
-    "<img src='" + image_path("icons/#{imag_base}_#{rank || 1}.png") + "' alt='KudoRank #{rank || 1}'/>".html_safe
+    "<img src='#{image_path("icons/#{imag_base}_#{rank || 1}.png")}#{"' alt='KudoRank #{rank || 1}'/>".html_safe}"
   end
 end

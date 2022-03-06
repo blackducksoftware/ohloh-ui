@@ -41,8 +41,8 @@ class OhAdmin::AccountChart
   end
 
   def sort_by_date
-    @spam = Hash[@spam.sort_by { |date, _count| date }]
-    @regular = Hash[@regular.sort_by { |date, _count| date }]
+    @spam = @spam.sort_by { |date, _count| date }.to_h
+    @regular = @regular.sort_by { |date, _count| date }.to_h
   end
 
   def spam_accounts(from, to)

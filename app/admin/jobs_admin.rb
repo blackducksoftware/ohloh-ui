@@ -41,13 +41,13 @@ ActiveAdmin.register Job do
       job.update!(status: Job::STATUS_SCHEDULED, worker: nil, exception: nil, backtrace: nil)
       flash[:success] = 'Job has been rescheduled.'
     end
-    redirect_to :back
+    redirect_to_saved_path
   end
 
   member_action :rebuild_people, method: :put do
     job = Job.find(params[:id])
     Person.rebuild_by_project_id(job.project_id)
-    redirect_to :back, flash: { success: 'People records for this project have been rebuilt' }
+    redirect_to_saved_path(flash: { success: 'People records for this project have been rebuilt' })
   end
 
   member_action :mark_as_failed, method: :get do
@@ -57,7 +57,7 @@ ActiveAdmin.register Job do
     job.update(status: Job::STATUS_FAILED)
     job.categorize_failure
     flash[:notice] = "Job #{job.id} marked as failed."
-    redirect_to :back
+    redirect_to_saved_path
   end
 
   member_action :recount do

@@ -14,7 +14,7 @@ class EditsController < SettingsController
   end
 
   def show
-    render nothing: true, status: :ok unless request.xhr?
+    head :ok unless request.xhr?
   end
 
   def refresh
@@ -26,7 +26,7 @@ class EditsController < SettingsController
     undo ? perform_undo : @edit.redo!(current_user)
     render template: 'edits/edit', layout: false
   rescue StandardError
-    render text: undo ? t('.failed_undo') : t('.failed_redo'), status: :not_acceptable
+    render plain: undo ? t('.failed_undo') : t('.failed_redo'), status: :not_acceptable
   end
 
   private

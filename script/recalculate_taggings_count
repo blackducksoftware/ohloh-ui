@@ -5,7 +5,7 @@ raise 'RAILS_ENV is undefined' unless ENV['RAILS_ENV']
 
 require_relative '../config/environment'
 
-sql = <<-SQL
+sql = <<-SQL.squish
   SELECT t.id FROM (
   SELECT tag_id, COUNT(*) AS counts FROM taggings AS t
   INNER JOIN projects p ON t.taggable_id = p.id AND t.taggable_type = 'Project' WHERE p.deleted = FALSE GROUP BY tag_id

@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 class AnalysisAlias < FisBase
-  belongs_to :analysis
-  belongs_to :commit_name, class_name: 'Name', foreign_key: :commit_name_id
-  belongs_to :preferred_name, class_name: 'Name', foreign_key: :preferred_name_id
+  belongs_to :analysis, optional: true
+  belongs_to :commit_name, class_name: 'Name', optional: true
+  belongs_to :preferred_name, class_name: 'Name', optional: true
   has_one :project, through: :analysis
 
   scope :for_contribution, lambda { |contribution|

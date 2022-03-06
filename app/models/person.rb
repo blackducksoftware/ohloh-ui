@@ -1,17 +1,18 @@
 # frozen_string_literal: true
 
-class Person < ActiveRecord::Base
+class Person < ApplicationRecord
   self.primary_key = :id
   self.per_page = 10
 
   include Tsearch
 
-  belongs_to :account
-  belongs_to :name
-  belongs_to :project
-  belongs_to :name_fact
-  belongs_to :contributor_fact, foreign_key: :name_fact_id
-  belongs_to :contributor_fact_on_name_id, primary_key: :name_id, foreign_key: :name_id, class_name: 'ContributorFact'
+  belongs_to :account, optional: true
+  belongs_to :name, optional: true
+  belongs_to :project, optional: true
+  belongs_to :name_fact, optional: true
+  belongs_to :contributor_fact, foreign_key: :name_fact_id, optional: true
+  belongs_to :contributor_fact_on_name_id, primary_key: :name_id, foreign_key: :name_id, class_name: 'ContributorFact',
+                                           optional: true
   has_many :contributions
 
   scope :sort_by_kudo_position, -> { order('kudo_position nulls last') }
@@ -60,7 +61,7 @@ class Person < ActiveRecord::Base
     def rebuild_by_project_id(project_id)
       return if project_id.blank?
 
-      Person.delete_all(project_id: project_id)
+      Person..where(project_id: project_id).delete_all
       connection.execute("insert into people (select * from people_view where project_id = #{sanitize_sql project_id})")
     end
 

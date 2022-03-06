@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
 # rubocop:disable Metrics/ClassLength
-class Stack < ActiveRecord::Base
+class Stack < ApplicationRecord
   SAMPLE_PROJECT_IDS = { lamp: [3141, 72, 4139, 28],
                          sash: [41, 3468, 3568, 55],
                          gnome: [3760, 43, 9, 29, 36] }.freeze
   MAX_STACKS_PER_ACCOUNT = 30
 
-  belongs_to :account
-  belongs_to :project
+  belongs_to :account, optional: true
+  belongs_to :project, optional: true
 
   has_many :stack_entries, -> { where(deleted_at: nil) }, dependent: :destroy, inverse_of: :stack
   has_many :projects, -> { where.not(deleted: true) }, through: :stack_entries
@@ -36,8 +36,8 @@ class Stack < ActiveRecord::Base
   end
 
   def suggest_projects(limit = 8)
-    sql = proj_suggest_select + proj_suggest_join_stack_entries + proj_suggest_join_stack_ignores +
-          proj_suggest_wheres + proj_suggest_suffix(limit)
+    sql = [proj_suggest_select, proj_suggest_join_stack_entries, proj_suggest_join_stack_ignores,
+           proj_suggest_wheres, proj_suggest_suffix(limit)].join(' ')
     pad_project_suggestions(Project.find_by_sql(sql), limit)
   end
 
@@ -69,7 +69,7 @@ class Stack < ActiveRecord::Base
   end
 
   def similar_stacks_sql(limit)
-    <<-SQL
+    <<-SQL.squish
       SELECT S.*, shared_count, s_count.count, shared_count/sqrt(s_count.count) as func
       FROM stacks S INNER JOIN (#{stack_entry_to_stack_join_sql}) AS se_to_s ON S.id = se_to_s.stack_id
       INNER JOIN ( SELECT count(*), stack_id from stack_entries where deleted_at IS NULL group by stack_id) as s_count
@@ -80,7 +80,7 @@ class Stack < ActiveRecord::Base
   end
 
   def stack_entry_to_stack_join_sql
-    <<-SQL
+    <<-SQL.squish
       SELECT SE1.stack_id AS stack_id, count(*) AS shared_count
       FROM stack_entries SE0
       INNER JOIN stack_entries SE1
@@ -96,7 +96,7 @@ class Stack < ActiveRecord::Base
   end
 
   def proj_suggest_join_stack_entries
-    <<-SQL
+    <<-SQL.squish
       INNER JOIN ( SELECT project_id_recommends, sum(weight) as total_weight
         FROM recommend_entries INNER JOIN stack_entries ON recommend_entries.project_id = stack_entries.project_id
         WHERE stack_entries.stack_id = #{id} AND stack_entries.deleted_at IS NULL
@@ -105,7 +105,7 @@ class Stack < ActiveRecord::Base
   end
 
   def proj_suggest_join_stack_ignores
-    <<-SQL
+    <<-SQL.squish
       LEFT OUTER JOIN ( SELECT project_id_recommends as project_id_smells, sum(weight) as total_weight
         FROM recommend_entries WHERE project_id IN
         ( SELECT project_id FROM stack_ignores WHERE stack_id = #{id} ORDER BY created_at LIMIT 25 )
@@ -114,7 +114,7 @@ class Stack < ActiveRecord::Base
   end
 
   def proj_suggest_wheres
-    <<-SQL
+    <<-SQL.squish
       WHERE projects.id NOT IN (SELECT project_id FROM stack_entries WHERE stack_id = #{id} AND deleted_at IS NULL)
       AND projects.id NOT IN (SELECT project_id FROM stack_ignores WHERE stack_id = #{id}) AND projects.deleted IS FALSE
     SQL
@@ -128,7 +128,7 @@ class Stack < ActiveRecord::Base
     return projects unless projects.size < limit
 
     xtra_where = projects.empty? ? '' : "AND projects.id NOT IN (#{projects.collect { |p| p.id.to_s }.join(',')})"
-    sql = <<-SQL
+    sql = <<-SQL.squish
       SELECT projects.* FROM projects WHERE projects.deleted IS FALSE AND projects.user_count > 0 #{xtra_where}
       AND projects.id NOT IN (SELECT project_id FROM stack_ignores WHERE stack_id = #{id})
       AND projects.id NOT IN (SELECT project_id FROM stack_entries WHERE stack_id = #{id} AND deleted_at IS NULL)

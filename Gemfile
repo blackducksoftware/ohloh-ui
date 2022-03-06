@@ -1,8 +1,7 @@
 # frozen_string_literal: true
 
 source 'https://rubygems.org'
-gem 'activeadmin', '1.0.0'
-gem 'activerecord-postgres-dump-schemas'
+gem 'activeadmin'
 gem 'airbrake', '~> 5.5'
 gem 'aws-sdk', '~> 2.3'
 gem 'bcrypt_pbkdf', '~> 1.0'
@@ -31,25 +30,26 @@ gem 'ohloh_scm', '2.4.0'
 gem 'open4'
 gem 'paperclip', '~> 5.3'
 gem 'pg', '0.20'
-gem 'rails', '>= 4.2'
+gem 'rails', '5.2.6'
 gem 'rails-html-sanitizer', '~> 1.3.0'
-gem 'ransack', '1.8.4'
+gem 'ransack', github: 'activerecord-hackery/ransack'
 gem 'rbnacl', '~>3.2'
 gem 'rbnacl-libsodium'
 gem 'recaptcha', require: 'recaptcha/rails'
 gem 'redcarpet'
 gem 'redis-rails', '>= 5.0.2'
-gem 'rubocop-rails', require: false
-gem 'rubocop-rspec', '> 1.28'
+gem 'rubocop-rails'
+gem 'rubocop-rspec'
 gem 'sass-rails'
 gem 'sidekiq'
 gem 'simplemde-rails'
-gem 'sprockets-rails', '~> 2.3.3'
+gem 'sprockets'
+gem 'sprockets-rails'
 gem 'sql_tracker'
 gem 'statsd-instrument'
 gem 'therubyracer'
 gem 'thor'
-gem 'twitter-bootstrap-rails'
+gem 'twitter-bootstrap-rails', '~> 3.2'
 gem 'uglifier', '>= 2.7.2'
 gem 'whenever', require: false
 gem 'will_paginate'
@@ -58,6 +58,7 @@ gem 'will_paginate-bootstrap'
 group :development do
   gem 'better_errors'
   gem 'binding_of_caller'
+  gem 'bootsnap', '~> 1.10.3', require: false
   gem 'capistrano'
   gem 'capistrano-faster-assets'
   gem 'capistrano-passenger'
@@ -71,7 +72,7 @@ group :development do
   gem 'guard-livereload', '~> 2.5', '>= 2.5.2', require: false
   gem 'guard-rubocop'
   gem 'meta_request'
-  gem 'quiet_assets'
+  # gem 'quiet_assets'
 end
 
 group :test do
@@ -79,7 +80,9 @@ group :test do
   gem 'haml_lint', '~> 0.21'
   gem 'm', '~> 1.5.0'
   gem 'minitest-rails'
+  gem 'minitest-spec-rails'
   gem 'mocha'
+  gem 'rails-controller-testing'
   gem 'ruby_parser'
   gem 'simplecov'
   gem 'simplecov-rcov'
@@ -95,12 +98,14 @@ group :development, :test do
   gem 'database_cleaner'
   gem 'factory_bot_rails'
   gem 'faker'
+  gem 'jasmine'
   gem 'jasmine-jquery-rails'
   gem 'jasmine-rails'
   gem 'pry-byebug'
   gem 'pry-rails'
   gem 'rails-erd'
   gem 'rb-readline', '~> 0.5.5'
+  gem 'rubocop-faker'
   gem 'selenium-webdriver'
   gem 'spinach'
   gem 'spinach-console-reporter'
@@ -113,5 +118,5 @@ end
 
 group :development, :staging do
   gem 'letter_opener'
-  gem 'letter_opener_web', '~> 1.2.0'
+  gem 'letter_opener_web'
 end

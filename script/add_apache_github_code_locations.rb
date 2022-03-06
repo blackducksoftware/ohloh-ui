@@ -18,7 +18,7 @@ class AddGithubCodeLocations
     filename = ARGV[0]
     CSV.foreach(filename, headers: true) do |row|
       if row['in_github_as'] != 'False'
-        url = 'https://github.com/apache/' + row['in_github_as']
+        url = "https://github.com/apache/#{row['in_github_as']}"
         code_location_id = create_code_location(url)
         next unless code_location_id
 

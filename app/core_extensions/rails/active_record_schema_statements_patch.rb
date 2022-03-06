@@ -7,8 +7,8 @@ ActiveRecord::ConnectionAdapters::SchemaStatements.module_eval do
     insert_queries = []
     schemas.each do |schema_name|
       sm_table = "#{schema_name}.#{ActiveRecord::SchemaMigration.table_name}"
-      insert_queries << ActiveRecord::Base.connection.execute("select version from #{sm_table}")
-                                          .values.flatten.sort.map do |version|
+      insert_queries << ApplicationRecord.connection.execute("select version from #{sm_table}")
+                                         .values.flatten.sort.map do |version|
         "INSERT INTO #{sm_table} (version) VALUES ('#{version}');"
       end
     end
