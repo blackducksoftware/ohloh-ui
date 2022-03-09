@@ -10,19 +10,19 @@ class PositionDecoratorTest < ActiveSupport::TestCase
   describe 'analyzed?' do
     it 'should return false when position is not analyzed' do
       create_position(account: admin)
-      admin.positions.first.decorate.analyzed?.must_equal false
+      _(admin.positions.first.decorate.analyzed?).must_equal false
     end
 
     it 'should return true when position is analyzed' do
       account = create_account_with_commits_by_project
-      account.positions.first.decorate.analyzed?.must_equal true
+      _(account.positions.first.decorate.analyzed?).must_equal true
     end
   end
 
   describe 'affiliation' do
     it 'must return blank string when unaffiliated' do
       position = Position.new(affiliation_type: 'unaffiliated')
-      position.decorate.affiliation.must_be_nil
+      _(position.decorate.affiliation).must_be_nil
     end
 
     it 'must return affiliated information affiliation is other and organization_name is present' do
@@ -30,13 +30,13 @@ class PositionDecoratorTest < ActiveSupport::TestCase
       position = Position.new(affiliation_type: 'other', organization_name: organization_name)
 
       expected_result = I18n.t('position.affiliated_with', name: organization_name)
-      position.decorate.affiliation.must_equal expected_result
+      _(position.decorate.affiliation).must_equal expected_result
     end
 
     it 'must be blank when no organization and affiliation is neither unaffiliated or other' do
       position = Position.new(affiliation_type: nil)
       position.stubs(:affiliation).returns(stub(name: ''))
-      position.decorate.affiliation.must_be_nil
+      _(position.decorate.affiliation).must_be_nil
     end
 
     it 'must return organization name when it is present' do
@@ -44,7 +44,7 @@ class PositionDecoratorTest < ActiveSupport::TestCase
       position = Position.new(organization_name: organization_name, affiliation_type: nil)
 
       expected_result = I18n.t('position.affiliated_with', name: position.organization)
-      position.decorate.affiliation.must_equal expected_result
+      _(position.decorate.affiliation).must_equal expected_result
     end
   end
 
@@ -52,7 +52,7 @@ class PositionDecoratorTest < ActiveSupport::TestCase
     it 'must return Present when effective_ongoing' do
       position = Position.new
       position.stubs(:effective_ongoing?).returns(true)
-      position.decorate.stop_date.must_equal 'Present'
+      _(position.decorate.stop_date).must_equal 'Present'
     end
 
     it 'must return formatted effective_stop_date when no effective_ongoing' do
@@ -60,7 +60,7 @@ class PositionDecoratorTest < ActiveSupport::TestCase
       position = Position.new(stop_date: effective_stop_date)
       position.stubs(:effective_ongoing?).returns(false)
 
-      position.decorate.stop_date.must_equal effective_stop_date.strftime('%b %Y')
+      _(position.decorate.stop_date).must_equal effective_stop_date.strftime('%b %Y')
     end
   end
 
@@ -71,7 +71,7 @@ class PositionDecoratorTest < ActiveSupport::TestCase
       name_fact = create(:name_fact, analysis: project.best_analysis, name: name)
       position = create(:position, project: project, name: name)
 
-      position.decorate.name_fact.must_equal name_fact
+      _(position.decorate.name_fact).must_equal name_fact
     end
   end
 
@@ -81,7 +81,7 @@ class PositionDecoratorTest < ActiveSupport::TestCase
       position = create_position(account: account)
       position.stubs(:contribution)
       path = "/accounts/#{account.login}/positions/#{position.id}"
-      position.decorate.project_contributor_or_show_path.must_equal path
+      _(position.decorate.project_contributor_or_show_path).must_equal path
     end
 
     it 'must return project contributior path when there is a contribution' do
@@ -93,7 +93,7 @@ class PositionDecoratorTest < ActiveSupport::TestCase
       position = create_position(account: account, project: project)
 
       path = "/p/#{project.vanity_url}/contributors/#{position.contribution.id}"
-      account.positions.first.decorate.project_contributor_or_show_path.must_equal path
+      _(account.positions.first.decorate.project_contributor_or_show_path).must_equal path
     end
   end
 
@@ -101,7 +101,7 @@ class PositionDecoratorTest < ActiveSupport::TestCase
     it 'must return true when less than 1 hour old and certain attributes are nil' do
       Position.any_instance.stubs(:organization)
       position = create_position(description: nil, title: nil)
-      position.decorate.new_and_has_null_description_title_and_organization?.must_equal true
+      _(position.decorate.new_and_has_null_description_title_and_organization?).must_equal true
     end
   end
 
@@ -110,14 +110,14 @@ class PositionDecoratorTest < ActiveSupport::TestCase
       position = Position.new
       decorator = position.decorate
       decorator.stubs(:analyzed?).returns(true)
-      decorator.analyzed_class_name.must_equal 'one-project data'
+      _(decorator.analyzed_class_name).must_equal 'one-project data'
     end
 
     it 'must return no_data class when not analyzed' do
       position = Position.new
       decorator = position.decorate
       decorator.stubs(:analyzed?).returns(false)
-      decorator.analyzed_class_name.must_equal 'one-project no_data'
+      _(decorator.analyzed_class_name).must_equal 'one-project no_data'
     end
   end
 end

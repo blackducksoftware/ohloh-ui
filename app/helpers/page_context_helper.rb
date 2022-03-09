@@ -4,7 +4,7 @@ module PageContextHelper
   include ForumsHelper
 
   def account_context
-    @account ||= @parent if @parent&.is_a?(Account)
+    @account ||= @parent if @parent.is_a?(Account)
     return if @account.blank?
 
     set_page_context(footer_menu_list: @account.decorate.sidebar_for(current_user),
@@ -14,7 +14,7 @@ module PageContextHelper
   end
 
   def organization_context
-    @organization ||= @parent if @parent&.is_a?(Organization)
+    @organization ||= @parent if @parent.is_a?(Organization)
     return if @organization.blank?
 
     set_page_context(footer_menu_list: @organization.decorate.sidebar,
@@ -24,7 +24,7 @@ module PageContextHelper
   end
 
   def project_context
-    @project ||= @parent if @parent&.is_a?(Project)
+    @project ||= @parent if @parent.is_a?(Project)
     return if @project.blank?
 
     set_page_context(footer_menu_list: @project.decorate.sidebar,

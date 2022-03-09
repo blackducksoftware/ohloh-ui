@@ -1,21 +1,21 @@
 # frozen_string_literal: true
 
-class NameFact < ActiveRecord::Base
+class NameFact < ApplicationRecord
   include Comparable
   serialize :commits_by_project
   serialize :commits_by_language
 
-  belongs_to :name
-  belongs_to :analysis
-  belongs_to :primary_language, class_name: 'Language', foreign_key: :primary_language_id
-  belongs_to :account_analysis, foreign_key: :vita_id, class_name: 'AccountAnalysis'
+  belongs_to :name, optional: true
+  belongs_to :analysis, optional: true
+  belongs_to :primary_language, class_name: 'Language', optional: true
+  belongs_to :account_analysis, foreign_key: :vita_id, class_name: 'AccountAnalysis', optional: true
   has_one :project, -> { where("projects.deleted != 't'") }, foreign_key: :best_analysis_id, primary_key: :analysis_id
 
   scope :for_project, ->(project) { where(analysis_id: project.best_analysis_id) }
   scope :with_positions, lambda {
     joins(:project)
       .where('name_facts.name_id = positions.name_id and projects.id = positions.project_id')
-      .exists
+      .arel.exists
   }
 
   def active?

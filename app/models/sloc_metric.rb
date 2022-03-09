@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
 class SlocMetric < FisBase
-  belongs_to :diff
-  belongs_to :language
-  belongs_to :sloc_set
-  belongs_to :analysis_sloc_set, primary_key: :sloc_set_id, foreign_key: :sloc_set_id
+  belongs_to :diff, optional: true
+  belongs_to :language, optional: true
+  belongs_to :sloc_set, optional: true
+  belongs_to :analysis_sloc_set, primary_key: :sloc_set_id, foreign_key: :sloc_set_id, optional: true
 
   scope :commit_summaries, lambda { |commit, analysis_id|
     return none unless analysis_id

@@ -9,7 +9,7 @@ class HomeDecoratorTest < ActiveSupport::TestCase
       project = create(:project)
       commits_count = 5
       project.best_analysis.thirty_day_summary.update! affiliated_commits_count: commits_count
-      HomeDecorator.new.commit_count.must_equal [commits_count]
+      _(HomeDecorator.new.commit_count).must_equal [commits_count]
     end
   end
 end

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Setting < ActiveRecord::Base
+class Setting < ApplicationRecord
   serialize :value
   class << self
     def get_value(key)

@@ -17,7 +17,7 @@ module EditsHelper
   end
 
   def edit_show_subject(edit)
-    html_escape(edit_subject(edit)) + ' ' + edit_enlistment_branch_info(edit)
+    "#{html_escape(edit_subject(edit))} #{edit_enlistment_branch_info(edit)}"
   end
 
   def get_edit_summary(edit)
@@ -52,7 +52,7 @@ module EditsHelper
   end
 
   def edit_org_explanation_org_type(edit)
-    t('edits.org_explanation_org_type', value: Organization::ORG_TYPES.map { |k, v| [v, k] }.to_h[edit.value.to_i])
+    t('edits.org_explanation_org_type', value: Organization::ORG_TYPES.to_h { |k, v| [v, k] }[edit.value.to_i])
   end
 
   def edit_org_explanation_org_id(edit)

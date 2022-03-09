@@ -2,8 +2,8 @@
 
 require 'digest/sha1'
 
-class RssArticle < ActiveRecord::Base
-  belongs_to :rss_feed
+class RssArticle < ApplicationRecord
+  belongs_to :rss_feed, optional: true
   validates :guid, presence: true
   validates :title, presence: true
 

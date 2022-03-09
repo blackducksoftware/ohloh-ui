@@ -11,3 +11,9 @@ Metrics/MethodLength:
 
 Metrics/BlockLength:
   Enabled: false
+
+Lint/ConstantDefinitionInBlock:
+  Enabled: false
+
+Style/OpenStructUse:
+  Enabled: false

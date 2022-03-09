@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class OrganizationDecorator < Cherry::Decorator
-  # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
+  # rubocop:disable Metrics/MethodLength
   def sidebar
     [
       [
@@ -22,10 +22,10 @@ class OrganizationDecorator < Cherry::Decorator
 
   class << self
     def select_options
-      options = Organization.active.select(:name, :id).order('lower(name)').map { |org| [org.name, org.id] }
+      options = Organization.active.select(:name, :id).order(Arel.sql('lower(name)')).map { |org| [org.name, org.id] }
       options.unshift(['Unaffiliated', ''])
       options.push(['Other', ''])
     end
   end
-  # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
+  # rubocop:enable Metrics/MethodLength
 end

@@ -24,20 +24,20 @@ class OrgThirtyDayActivityTest < ActiveSupport::TestCase
       ota5.update_column(:organization_id, nil)
       most_active_orgs = OrgThirtyDayActivity.most_active_orgs
 
-      most_active_orgs.map(&:name).must_equal [ota4.name, ota3.name, ota2.name]
+      _(most_active_orgs.map(&:name)).must_equal [ota4.name, ota3.name, ota2.name]
     end
   end
 
   describe 'filter_all_orgs' do
     it 'should return org_thirty_day_activities of top 5 orgs(only with orgs present)' do
       ota5.update_column(:organization_id, nil)
-      OrgThirtyDayActivity.filter_all_orgs.must_equal [ota4, ota3, ota2, ota1]
+      _(OrgThirtyDayActivity.filter_all_orgs).must_equal [ota4, ota3, ota2, ota1]
     end
 
     it 'should return org_thirty_day_activities of top 5 orgs(only with thirty_day_commit_count prsent)' do
       ota5.update_column(:organization_id, org5.id)
       ota4.update_column(:thirty_day_commit_count, nil)
-      OrgThirtyDayActivity.filter_all_orgs.must_equal [ota5, ota3, ota2, ota1]
+      _(OrgThirtyDayActivity.filter_all_orgs).must_equal [ota5, ota3, ota2, ota1]
     end
   end
 
@@ -48,7 +48,7 @@ class OrgThirtyDayActivityTest < ActiveSupport::TestCase
       OrgThirtyDayActivity.where(id: [ota2.id, ota1.id]).update_all(project_count: 12)
 
       all_orgs = OrgThirtyDayActivity.filter_small_orgs
-      all_orgs.must_equal [ota4, ota3]
+      _(all_orgs).must_equal [ota4, ota3]
     end
 
     it 'should return org_thirty_day_activities of top 5 small orgs(only with thirty_day_commit_count prsent)' do
@@ -58,7 +58,7 @@ class OrgThirtyDayActivityTest < ActiveSupport::TestCase
       OrgThirtyDayActivity.where(id: [ota2.id, ota1.id]).update_all(project_count: 12)
 
       all_orgs = OrgThirtyDayActivity.filter_small_orgs
-      all_orgs.must_equal [ota5, ota3]
+      _(all_orgs).must_equal [ota5, ota3]
     end
   end
 
@@ -69,7 +69,7 @@ class OrgThirtyDayActivityTest < ActiveSupport::TestCase
       OrgThirtyDayActivity.where(id: [ota2.id, ota1.id]).update_all(project_count: 8)
 
       all_orgs = OrgThirtyDayActivity.filter_medium_orgs
-      all_orgs.must_equal [ota4, ota3]
+      _(all_orgs).must_equal [ota4, ota3]
     end
 
     it 'should return org_thirty_day_activities of top 5 medium orgs(only with thirty_day_commit_count prsent)' do
@@ -79,7 +79,7 @@ class OrgThirtyDayActivityTest < ActiveSupport::TestCase
       OrgThirtyDayActivity.where(id: [ota2.id, ota1.id]).update_all(project_count: 8)
 
       all_orgs = OrgThirtyDayActivity.filter_medium_orgs
-      all_orgs.must_equal [ota5, ota3]
+      _(all_orgs).must_equal [ota5, ota3]
     end
   end
 
@@ -90,7 +90,7 @@ class OrgThirtyDayActivityTest < ActiveSupport::TestCase
       OrgThirtyDayActivity.where(id: [ota2.id, ota1.id]).update_all(project_count: 8)
 
       all_orgs = OrgThirtyDayActivity.filter_large_orgs
-      all_orgs.must_equal [ota4, ota3]
+      _(all_orgs).must_equal [ota4, ota3]
     end
 
     it 'should return org_thirty_day_activities of top 5 large orgs(only with thirty_day_commit_count prsent)' do
@@ -100,7 +100,7 @@ class OrgThirtyDayActivityTest < ActiveSupport::TestCase
       OrgThirtyDayActivity.where(id: [ota2.id, ota1.id]).update_all(project_count: 8)
 
       all_orgs = OrgThirtyDayActivity.filter_large_orgs
-      all_orgs.must_equal [ota5, ota3]
+      _(all_orgs).must_equal [ota5, ota3]
     end
   end
 
@@ -111,7 +111,7 @@ class OrgThirtyDayActivityTest < ActiveSupport::TestCase
       OrgThirtyDayActivity.where(id: [ota2.id, ota1.id]).update_all(org_type: 2)
 
       all_orgs = OrgThirtyDayActivity.filter_commercial_orgs
-      all_orgs.must_equal [ota4, ota3]
+      _(all_orgs).must_equal [ota4, ota3]
     end
 
     it 'should return org_thirty_day_activities of top 5 commercial orgs(only with thirty_day_commit_count prsent)' do
@@ -121,7 +121,7 @@ class OrgThirtyDayActivityTest < ActiveSupport::TestCase
       OrgThirtyDayActivity.where(id: [ota2.id, ota1.id]).update_all(org_type: 2)
 
       all_orgs = OrgThirtyDayActivity.filter_commercial_orgs
-      all_orgs.must_equal [ota5, ota3]
+      _(all_orgs).must_equal [ota5, ota3]
     end
   end
 
@@ -132,7 +132,7 @@ class OrgThirtyDayActivityTest < ActiveSupport::TestCase
       OrgThirtyDayActivity.where(id: [ota2.id, ota1.id]).update_all(org_type: 1)
 
       all_orgs = OrgThirtyDayActivity.filter_educational_orgs
-      all_orgs.must_equal [ota4, ota3]
+      _(all_orgs).must_equal [ota4, ota3]
     end
 
     it 'should return org_thirty_day_activities of top 5 educational orgs(only with thirty_day_commit_count prsent)' do
@@ -142,7 +142,7 @@ class OrgThirtyDayActivityTest < ActiveSupport::TestCase
       OrgThirtyDayActivity.where(id: [ota2.id, ota1.id]).update_all(org_type: 1)
 
       all_orgs = OrgThirtyDayActivity.filter_educational_orgs
-      all_orgs.must_equal [ota5, ota3]
+      _(all_orgs).must_equal [ota5, ota3]
     end
   end
 
@@ -153,7 +153,7 @@ class OrgThirtyDayActivityTest < ActiveSupport::TestCase
       OrgThirtyDayActivity.where(id: [ota2.id, ota1.id]).update_all(org_type: 1)
 
       all_orgs = OrgThirtyDayActivity.filter_government_orgs
-      all_orgs.must_equal [ota4, ota3]
+      _(all_orgs).must_equal [ota4, ota3]
     end
 
     it 'should return org_thirty_day_activities of top 5 government orgs(only with thirty_day_commit_count prsent)' do
@@ -163,7 +163,7 @@ class OrgThirtyDayActivityTest < ActiveSupport::TestCase
       OrgThirtyDayActivity.where(id: [ota2.id, ota1.id]).update_all(org_type: 1)
 
       all_orgs = OrgThirtyDayActivity.filter_government_orgs
-      all_orgs.must_equal [ota5, ota3]
+      _(all_orgs).must_equal [ota5, ota3]
     end
   end
 
@@ -174,7 +174,7 @@ class OrgThirtyDayActivityTest < ActiveSupport::TestCase
       OrgThirtyDayActivity.where(id: [ota2.id, ota1.id]).update_all(org_type: 1)
 
       all_orgs = OrgThirtyDayActivity.filter_non_profit_orgs
-      all_orgs.must_equal [ota4, ota3]
+      _(all_orgs).must_equal [ota4, ota3]
     end
 
     it 'should return org_thirty_day_activities of top 5 non_profit orgs(only with thirty_day_commit_count prsent)' do
@@ -184,7 +184,7 @@ class OrgThirtyDayActivityTest < ActiveSupport::TestCase
       OrgThirtyDayActivity.where(id: [ota2.id, ota1.id]).update_all(org_type: 1)
 
       all_orgs = OrgThirtyDayActivity.filter_non_profit_orgs
-      all_orgs.must_equal [ota5, ota3]
+      _(all_orgs).must_equal [ota5, ota3]
     end
   end
 

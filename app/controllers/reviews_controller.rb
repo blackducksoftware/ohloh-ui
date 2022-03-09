@@ -14,14 +14,14 @@ class ReviewsController < ApplicationController
   def index
     @reviews = @parent.reviews
                       .find_by_comment_or_title_or_accounts_login(params[:query])
-                      .sort_by(params[:sort])
+                      .order_by(params[:sort])
                       .paginate(page: page_param, per_page: 10)
   end
 
   def summary
     @account_reviews = current_user.reviews.where(project: @project) if logged_in?
     @most_helpful_reviews = @parent.reviews.top(5)
-    @recent_reviews = @parent.reviews.sort_by('recently_added').limit(5)
+    @recent_reviews = @parent.reviews.order_by('recently_added').limit(5)
     @rating = logged_in? ? current_user.ratings.where(project_id: @project).take : nil
   end
 

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class ReimportAccountsInForeignDb < ActiveRecord::Migration
+class ReimportAccountsInForeignDb < ActiveRecord::Migration[4.2]
   def up
     SecondBase::Base.connection.execute('DROP FOREIGN TABLE accounts;')
     SecondBase::Base.connection

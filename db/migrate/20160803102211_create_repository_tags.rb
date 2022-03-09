@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class CreateRepositoryTags < ActiveRecord::Migration
+class CreateRepositoryTags < ActiveRecord::Migration[4.2]
   def change
     create_table :repository_tags do |t|
       t.references :repository, index: true, foreign_key: true

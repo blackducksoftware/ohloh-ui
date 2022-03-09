@@ -13,12 +13,13 @@ class WidgetsController < ApplicationController
   private
 
   def record_not_found
-    render text: I18n.t('widgets.not_found')
+    render plain: I18n.t('widgets.not_found')
   end
 
   def set_widget
     widget_name = action_name.split('_') - WIDGET_TYPES
-    @widget = Object.const_get("#{controller_name.camelize[0..-2]}::#{widget_name.join('_').camelize}").new(params)
+    @widget = Object.const_get("#{controller_name.camelize[0..-2]}::#{widget_name.join('_').camelize}")
+                    .new(permitted_params)
   end
 
   def render_image_for_gif_format
@@ -50,5 +51,10 @@ class WidgetsController < ApplicationController
     raise ParamRecordNotFound unless @parent
 
     render template: 'widgets/metadata'
+  end
+
+  def permitted_params
+    params.permit(:height, :width, :stack_id, :account_id, :organization_id, :project_id, :style, :title, :ref, :query,
+                  :projects_shown, :noclear, :icon_width, :icon_height)
   end
 end

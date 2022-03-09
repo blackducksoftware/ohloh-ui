@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class RenameVerificationsAuthColumns < ActiveRecord::Migration
+class RenameVerificationsAuthColumns < ActiveRecord::Migration[4.2]
   def change
     rename_column :verifications, :auth_id, :token
     add_column :verifications, :unique_id, :string

@@ -8,7 +8,7 @@ class Doorkeeper::OauthApplicationsController < ApplicationController
 
   def revoke_access
     @oauth_application.access_tokens.where(resource_owner_id: @account.id).each(&:revoke)
-    redirect_to :back, notice: t('.success', name: @oauth_application.name)
+    redirect_to_saved_path(notice: t('.success', name: @oauth_application.name))
   end
 
   private

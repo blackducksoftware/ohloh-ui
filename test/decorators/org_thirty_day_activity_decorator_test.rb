@@ -7,25 +7,25 @@ class OrgThrityDayActivityDecoratorTest < ActiveSupport::TestCase
     it 'should return "S" for small orgs' do
       ota = create(:org_thirty_day_activity).decorate
       stub_orgs_projects_count(10)
-      ota.project_count_text.must_equal 'S'
+      _(ota.project_count_text).must_equal 'S'
     end
 
     it 'should return "M" for medium orgs' do
       ota = create(:org_thirty_day_activity).decorate
       stub_orgs_projects_count(20)
-      ota.project_count_text.must_equal 'M'
+      _(ota.project_count_text).must_equal 'M'
     end
 
     it 'should return "L" for large orgs' do
       ota = create(:org_thirty_day_activity).decorate
       stub_orgs_projects_count(55)
-      ota.project_count_text.must_equal 'L'
+      _(ota.project_count_text).must_equal 'L'
     end
 
     it 'should return "N/A" with no projects' do
       ota = create(:org_thirty_day_activity).decorate
       stub_orgs_projects_count
-      ota.project_count_text.must_equal 'N/A'
+      _(ota.project_count_text).must_equal 'N/A'
     end
   end
 

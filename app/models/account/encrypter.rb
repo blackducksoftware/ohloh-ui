@@ -8,7 +8,7 @@ class Account::Encrypter
   end
 
   def before_save(account)
-    encrypt_email(account) if account.email_changed?
+    encrypt_email(account) if account.will_save_change_to_email?
   end
 
   private

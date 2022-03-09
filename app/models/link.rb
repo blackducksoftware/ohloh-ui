@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Link < ActiveRecord::Base
+class Link < ApplicationRecord
   include KnowledgeBaseCallbacks
 
   # Maintain this order for the index page.
@@ -15,7 +15,7 @@ class Link < ActiveRecord::Base
     Other: 8
   ).freeze
 
-  belongs_to :project
+  belongs_to :project, optional: true
   acts_as_editable editable_attributes: %i[title url link_category_id],
                    merge_within: 30.minutes
   acts_as_protected parent: :project
@@ -49,7 +49,7 @@ class Link < ActiveRecord::Base
   end
 
   def allow_undo_to_nil?(key)
-    !%i[title url link_category_id].include?(key)
+    %i[title url link_category_id].exclude?(key)
   end
 
   class << self

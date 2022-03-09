@@ -5,11 +5,11 @@ require 'test_helper'
 class Forge::SourceForgeTest < ActiveSupport::TestCase
   describe 'match' do
     it 'should return nil for garbage' do
-      assert_nil Forge::SourceForge.new.match('I am a banana!')
+      _(Forge::SourceForge.new.match('I am a banana!')).must_be_nil
     end
 
     it 'should return nil for random URL' do
-      assert_nil Forge::SourceForge.new.match('http://lolcats.com')
+      _(Forge::SourceForge.new.match('http://lolcats.com')).must_be_nil
     end
 
     it 'should accept cvs url and create a new Forge::Match with the correct initialization parameters' do
@@ -60,7 +60,7 @@ class Forge::SourceForgeTest < ActiveSupport::TestCase
       correct_url = 'http://sourceforge.net/rest/p/name_at_forge/'
       mock_match = mock
       mock_match.expects(:name_at_forge).returns('name_at_forge')
-      Forge::SourceForge.new.json_api_url(mock_match).must_equal correct_url
+      _(Forge::SourceForge.new.json_api_url(mock_match)).must_equal correct_url
     end
   end
 end

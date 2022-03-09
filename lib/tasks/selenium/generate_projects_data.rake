@@ -18,7 +18,7 @@ namespace :selenium do
     yaml_file = File.open('projects_data.yml', 'w')
     projects = {}
 
-    args[:project_name].split(' ').each do |project_name|
+    args[:project_name].split.each do |project_name|
       project = Project.from_param(project_name).take
       if project.blank?
         puts "Project[#{project_name}] does not exist"
@@ -94,8 +94,8 @@ namespace :selenium do
         'top_contributions' => project.top_contributions.collect do |contribution|
           fact = contribution.contributor_fact
           [contribution.person.person_name, fact.twelve_month_commits,
-           fact.commits, fact.primary_language.nice_name, time_ago_in_words(fact.first_checkin) + ' ago',
-           time_ago_in_words(fact.last_checkin) + ' ago']
+           fact.commits, fact.primary_language.nice_name, "#{time_ago_in_words(fact.first_checkin)} ago",
+           "#{time_ago_in_words(fact.last_checkin)} ago"]
         end
       }
 
@@ -139,7 +139,7 @@ namespace :selenium do
   def newest_contributions(project)
     project.newest_contributions.collect do |contribution|
       [contribution.person.try(:person_name), contribution.contributor_fact.commits,
-       time_ago_in_words(contribution.contributor_fact.first_checkin) + ' ago']
+       "#{time_ago_in_words(contribution.contributor_fact.first_checkin)} ago"]
     end
   end
 

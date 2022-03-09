@@ -20,7 +20,7 @@ class CodeHistoryTest < ActiveSupport::TestCase
       create(:activity_fact, analysis: activity_fact.analysis, code_added: 5,
                              code_removed: 5, month: Date.current.beginning_of_month)
       results = Analysis::CodeHistory.new(analysis: activity_fact.analysis).execute
-      results.map(&:code_total).must_equal [nil, nil, -3, 0]
+      _(results.map(&:code_total)).must_equal [nil, nil, -3, 0]
     end
 
     it 'must return comments added or removed details over multiple activity_facts' do
@@ -28,7 +28,7 @@ class CodeHistoryTest < ActiveSupport::TestCase
       create(:activity_fact, analysis: activity_fact.analysis, comments_added: 5,
                              comments_removed: 5, month: Date.current.beginning_of_month)
       results = Analysis::CodeHistory.new(analysis: activity_fact.analysis).execute
-      results.map(&:comments_total).must_equal [nil, nil, -3, 0]
+      _(results.map(&:comments_total)).must_equal [nil, nil, -3, 0]
     end
 
     it 'must return blanks added or removed details over multiple activity_facts' do
@@ -36,13 +36,13 @@ class CodeHistoryTest < ActiveSupport::TestCase
       create(:activity_fact, analysis: activity_fact.analysis, blanks_added: 5,
                              blanks_removed: 5, month: Date.current.beginning_of_month)
       results = Analysis::CodeHistory.new(analysis: activity_fact.analysis).execute
-      results.map(&:blanks_total).must_equal [nil, nil, 3, 0]
+      _(results.map(&:blanks_total)).must_equal [nil, nil, 3, 0]
     end
 
     it 'must return nil values for months older than activity_facts.month' do
       results = Analysis::CodeHistory.new(analysis: activity_fact.analysis).execute
-      results.select { |result| result.month < activity_fact.month }
-             .map(&:code_total).compact.must_be :empty?
+      _(results.select { |result| result.month < activity_fact.month }
+               .map(&:code_total).compact).must_be :empty?
     end
   end
 end

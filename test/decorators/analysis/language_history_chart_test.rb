@@ -18,9 +18,9 @@ class Analysis::LanguageHistoryChartTest < ActiveSupport::TestCase
 
       data = Analysis::LanguageHistoryChart.new(activity_fact.analysis).data
 
-      data['series'].first['name'].must_equal activity_fact.language.nice_name
-      data['series'].first['color'].must_equal '#EEE'
-      data['series'].first['data'].must_equal [[time_integer, 5]]
+      _(data['series'].first['name']).must_equal activity_fact.language.nice_name
+      _(data['series'].first['color']).must_equal '#EEE'
+      _(data['series'].first['data']).must_equal [[time_integer, 5]]
     end
   end
 end

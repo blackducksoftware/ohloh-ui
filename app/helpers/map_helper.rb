@@ -6,7 +6,7 @@ module MapHelper
   end
 
   def map_near_stacks_json(project, params)
-    accounts = Account.find_by_sql <<-SQL
+    accounts = Account.find_by_sql <<-SQL.squish
       SELECT id, latitude, longitude
       FROM (SELECT DISTINCT ON(id) PROJECT_USERS.*, SE.created_at AS stacked_at FROM accounts PROJECT_USERS
         INNER JOIN stacks S ON S.account_id = PROJECT_USERS.id
@@ -19,7 +19,7 @@ module MapHelper
   end
 
   def map_near_contributors_json(project, params)
-    accounts = Account.find_by_sql <<-SQL
+    accounts = Account.find_by_sql <<-SQL.squish
       SELECT A.id, A.latitude, A.longitude
       FROM accounts A
       INNER JOIN positions PO ON PO.account_id = A.id

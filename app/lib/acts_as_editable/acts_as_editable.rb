@@ -38,7 +38,9 @@ module ActsAsEditable
 
     def attribute_changed?(attribute)
       dirty_method = "#{attribute}_is_dirty".to_sym
-      changes_include?(attribute) || (respond_to?(dirty_method) && send(dirty_method))
+      return true if respond_to?(dirty_method) && send(dirty_method)
+
+      super
     end
 
     private
@@ -79,11 +81,14 @@ module ActsAsEditable
     end
 
     def changed_editable_properties
-      editable_attributes.select { |attribute| attribute_changed?(attribute) }.compact
+      editable_attributes.select do |attribute|
+        # custom attribute changed?   || DB backed attribute changed?
+        attribute_changed?(attribute) || saved_change_to_attribute?(attribute)
+      end.compact
     end
 
     def after_undo(current_user); end
   end
 end
 
-ActiveRecord::Base.send :include, ActsAsEditable
+ApplicationRecord.include ActsAsEditable

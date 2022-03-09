@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-class ProjectLicense < ActiveRecord::Base
+class ProjectLicense < ApplicationRecord
   include KnowledgeBaseCallbacks
 
-  belongs_to :project
-  belongs_to :license
+  belongs_to :project, optional: true
+  belongs_to :license, optional: true
 
   acts_as_editable
   acts_as_protected parent: :project
@@ -14,6 +14,6 @@ class ProjectLicense < ActiveRecord::Base
   validates :license_id, numericality: { greater_than: 0 }
 
   def allow_redo?(_key)
-    license.deleted? ? false : true
+    !license.deleted?
   end
 end

@@ -7,7 +7,7 @@ class Forge::Launchpad < Forge
       owner_name = $5
       base_name = $6
       Forge::Match.new(self, owner_name, base_name)
-    when /\blaunchpad\.net[:\/]([^\/\.]+)\b/
+    when /\blaunchpad\.net[:\/]([^\/.]+)\b/
       Forge::Match.new(self, nil, $1)
     end
   end

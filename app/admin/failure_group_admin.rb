@@ -51,12 +51,12 @@ ActiveAdmin.register FailureGroup do
 
   collection_action :recategorize do
     FailureGroup.recategorize
-    redirect_to :back, notice: 'All failed jobs were successfully recategorized'
+    redirect_to_saved_path(notice: 'All failed jobs were successfully recategorized')
   end
 
   collection_action :categorize do
     FailureGroup.categorize
-    redirect_to :back, notice: 'Failed jobs were successfully categorized'
+    redirect_to_saved_path(notice: 'Failed jobs were successfully categorized')
   end
 
   controller do

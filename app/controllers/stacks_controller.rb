@@ -34,9 +34,9 @@ class StacksController < ApplicationController
 
   def update
     if @stack.update(model_params)
-      render nothing: true, status: :ok
+      head :ok
     else
-      render text: ERB::Util.html_escape(@stack.errors.full_messages.to_sentence), status: :unprocessable_entity
+      render plain: ERB::Util.html_escape(@stack.errors.full_messages.to_sentence), status: :unprocessable_entity
     end
   end
 
@@ -67,7 +67,7 @@ class StacksController < ApplicationController
   end
 
   def near
-    render text: view_context.map_near_stacks_json(@project, params)
+    render plain: view_context.map_near_stacks_json(@project, params)
   end
 
   def project_stacks; end

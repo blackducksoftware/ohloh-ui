@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class DropColumnsOnRepositories < ActiveRecord::Migration
+class DropColumnsOnRepositories < ActiveRecord::Migration[4.2]
   def up
     remove_column :repositories, :branch_name, :text
     remove_column :repositories, :module_name, :text

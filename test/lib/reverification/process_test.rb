@@ -28,10 +28,10 @@ class Reverification::ProcessTest < ActiveSupport::TestCase
 
     it "should not update an account's rev_tracker to delivered if status is not pending" do
       rev_tracker = create(:success_initial_rev_tracker, status: 2)
-      rev_tracker.wont_be :pending?
+      _(rev_tracker).wont_be :pending?
       Reverification::Process.poll_success_queue
       rev_tracker.reload
-      rev_tracker.wont_be :delivered?
+      _(rev_tracker).wont_be :delivered?
     end
 
     it 'should skip to polling next feedback notification when reverification tracker does not exist' do
@@ -67,11 +67,11 @@ class Reverification::ProcessTest < ActiveSupport::TestCase
       it 'should delete the account' do
         mock_queue.stubs(:poll).yields(HardBounceMessage.new)
         Reverification::Process.stubs(:bounce_queue).returns(mock_queue)
-        hard_bounce_account.must_be :present?
-        hard_bounce_account.reverification_tracker.must_be :present?
+        _(hard_bounce_account).must_be :present?
+        _(hard_bounce_account.reverification_tracker).must_be :present?
         Reverification::Process.poll_bounce_queue
-        Account.find_by(id: hard_bounce_account.id).must_be_nil
-        ReverificationTracker.find_by(id: hard_bounce_account.reverification_tracker.id).must_be_nil
+        _(Account.find_by(id: hard_bounce_account.id)).must_be_nil
+        _(ReverificationTracker.find_by(id: hard_bounce_account.reverification_tracker.id)).must_be_nil
       end
     end
 
@@ -79,9 +79,9 @@ class Reverification::ProcessTest < ActiveSupport::TestCase
       it 'should update the reverification tracker status to soft_bounced' do
         mock_queue.stubs(:poll).yields(TransientBounceMessage.new)
         Reverification::Process.stubs(:bounce_queue).returns(mock_queue)
-        soft_bounce_account.reverification_tracker.wont_be :soft_bounced?
+        _(soft_bounce_account.reverification_tracker).wont_be :soft_bounced?
         Reverification::Process.poll_bounce_queue
-        soft_bounce_account.reload.reverification_tracker.must_be :soft_bounced?
+        _(soft_bounce_account.reload.reverification_tracker).must_be :soft_bounced?
       end
     end
 
@@ -89,9 +89,9 @@ class Reverification::ProcessTest < ActiveSupport::TestCase
       it 'should update the reverification tracker status to soft_bounced' do
         mock_queue.stubs(:poll).yields(UndeterminedBounceMessage.new)
         Reverification::Process.stubs(:bounce_queue).returns(mock_queue)
-        bounce_undetermined_account.reverification_tracker.wont_be :soft_bounced?
+        _(bounce_undetermined_account.reverification_tracker).wont_be :soft_bounced?
         Reverification::Process.poll_bounce_queue
-        bounce_undetermined_account.reload.reverification_tracker.must_be :soft_bounced?
+        _(bounce_undetermined_account.reload.reverification_tracker).must_be :soft_bounced?
       end
     end
 
@@ -116,9 +116,9 @@ class Reverification::ProcessTest < ActiveSupport::TestCase
     end
 
     it 'should update reverification tracker status to complained' do
-      complained_account.reverification_tracker.wont_be :complained?
+      _(complained_account.reverification_tracker).wont_be :complained?
       Reverification::Process.poll_complaints_queue
-      complained_account.reload.reverification_tracker.must_be :complained?
+      _(complained_account.reload.reverification_tracker).must_be :complained?
     end
 
     it 'should skip to polling next feedback notification if email address is not matching any account' do
@@ -147,28 +147,28 @@ class Reverification::ProcessTest < ActiveSupport::TestCase
   describe 'success_queue' do
     it 'should return AWS::SQS::Queue instance for success queue' do
       queue_instance = Reverification::Process.success_queue
-      queue_instance.url.must_match(/success-queue/)
+      _(queue_instance.url).must_match(/success-queue/)
     end
   end
 
   describe 'bounce_queue' do
     it 'should return AWS::SQS::Queue instance for bounce queue' do
       queue_instance = Reverification::Process.bounce_queue
-      queue_instance.url.must_match(/bounces-queue/)
+      _(queue_instance.url).must_match(/bounces-queue/)
     end
   end
 
   describe 'complaints_queue' do
     it 'should return AWS::SQS::Queue instance for complaints queue' do
       queue_instance = Reverification::Process.complaints_queue
-      queue_instance.url.must_match(/complaints-queue/)
+      _(queue_instance.url).must_match(/complaints-queue/)
     end
   end
 
   describe 'bad_email_queue' do
     it 'should return AWS::SQS::Queue instance for badly formatted emails queue' do
       queue_instance = Reverification::Process.bad_email_queue
-      queue_instance.url.must_match(/bad-email-queue/)
+      _(queue_instance.url).must_match(/bad-email-queue/)
     end
   end
 
@@ -188,7 +188,7 @@ class Reverification::ProcessTest < ActiveSupport::TestCase
       Aws::SES::Client.any_instance.stubs(:get_send_statistics).returns(under_bounce_limit)
       Aws::SES::Client.any_instance.stubs(:get_send_quota).returns(stub(sent_last_24_hours: 60))
       Reverification::Process.stubs(:amazon_stat_settings).returns(bounce_rate: 5.0, amount_of_email: 100.0)
-      assert_nothing_raised Reverification::ExceptionHandlers::BounceRateLimitError do
+      assert_nothing_raised do
         Reverification::Process.check_statistics_of_last_24_hrs
       end
     end
@@ -208,7 +208,7 @@ class Reverification::ProcessTest < ActiveSupport::TestCase
       Aws::SES::Client.any_instance.stubs(:get_send_statistics).returns(under_complaint_limit)
       Aws::SES::Client.any_instance.stubs(:get_send_quota).returns(stub(sent_last_24_hours: 1000))
       Reverification::Process.stubs(:amazon_stat_settings).returns(bounce_rate: 5.0, amount_of_email: 1001.0)
-      assert_nothing_raised Reverification::ExceptionHandlers::ComplaintRateLimitError do
+      assert_nothing_raised do
         Reverification::Process.check_statistics_of_last_24_hrs
       end
     end

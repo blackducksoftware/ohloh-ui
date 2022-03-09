@@ -5,7 +5,7 @@ en:
     sign_off:
       greeting: Sincerely
       unsubscribe_help_html: You're receiving this because your Privacy Settings are configured to get these notifications. You can %{link} your privacy settings to unsubscribe from getting these notifications or unsubscribe directly %{unsubscribe_emails_link}. If you've received this email in error, may we ask you please notify us by emailing us at info@openhub.net? Thanks!
-  post_notifier:
+  post_notifier_mailer:
     post_begins: The post begins
     post_replied_notification:
       subject: "Someone has responded to your post"

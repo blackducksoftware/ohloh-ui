@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class AddCodeLocationEventsTable < ActiveRecord::Migration
+class AddCodeLocationEventsTable < ActiveRecord::Migration[4.2]
   def change
     create_table :code_location_events do |t|
       t.references :code_location, index: true, foreign_key: true

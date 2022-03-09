@@ -2,7 +2,7 @@
 
 require 'test_helper'
 
-describe ForumsController do
+class ForumsControllerTest < ActionController::TestCase
   let(:forum) { create(:forum) }
   let(:admin) { create(:admin) }
   let(:user) { create(:account) }
@@ -10,65 +10,65 @@ describe ForumsController do
   #----------------Admin functionality----------
   it 'admin index' do
     get :index
-    must_respond_with :success
+    assert_response :success
   end
 
   it 'admin new' do
     login_as admin
     get :new
-    must_respond_with :success
+    assert_response :success
   end
 
   it 'admin create' do
     login_as admin
     assert_difference('Forum.count', 1) do
-      post :create, forum: { name: 'Ruby vs. Javascript, who will win?' }
+      post :create, params: { forum: { name: 'Ruby vs. Javascript, who will win?' } }
     end
-    must_redirect_to forums_path
+    assert_redirected_to forums_path
   end
 
   it 'admin fails create for blank name' do
     login_as admin
     assert_no_difference('Forum.count') do
-      post :create, forum: { name: '' }
+      post :create, params: { forum: { name: '' } }
     end
-    must_render_template :new
-    flash[:alert].must_equal 'There was a problem!'
+    assert_template :new
+    _(flash[:alert]).must_equal 'There was a problem!'
   end
 
   it 'admin fails create for position field with text' do
     login_as admin
     assert_no_difference('Forum.count') do
-      post :create, forum: { name: 'Valid Forum Name', position: 'abcdef' }
+      post :create, params: { forum: { name: 'Valid Forum Name', position: 'abcdef' } }
     end
-    must_render_template :new
-    flash[:alert].must_equal 'There was a problem!'
+    assert_template :new
+    _(flash[:alert]).must_equal 'There was a problem!'
   end
 
   it 'admin fails create for position field for floating point' do
     login_as admin
     assert_no_difference('Forum.count') do
-      post :create, forum: { name: 'Valid Forum Name', position: 1.2 }
+      post :create, params: { forum: { name: 'Valid Forum Name', position: 1.2 } }
     end
-    must_render_template :new
-    flash[:alert].must_equal 'There was a problem!'
+    assert_template :new
+    _(flash[:alert]).must_equal 'There was a problem!'
   end
 
   it 'admin fails create for position field for floating point' do
     login_as admin
     assert_no_difference('Forum.count') do
-      post :create, forum: { name: 'Valid Forum Name', position: 9_987_654_321 }
+      post :create, params: { forum: { name: 'Valid Forum Name', position: 9_987_654_321 } }
     end
-    must_render_template :new
-    flash[:alert].must_equal 'There was a problem!'
+    assert_template :new
+    _(flash[:alert]).must_equal 'There was a problem!'
   end
 
   it 'admin show with pagination' do
     create_list(:topic, 20, :with_posts, forum: forum)
     login_as create(:account)
-    must_respond_with :success
+    assert_response :success
 
-    get :show, id: forum.id
+    get :show, params: { id: forum.id }
     # Should have 15 topics per page
     html = 'table.table.table-striped tbody tr'
     assert_select html, 15
@@ -76,70 +76,71 @@ describe ForumsController do
 
   it 'admin edit' do
     login_as admin
-    get :edit, id: forum.id
-    must_respond_with :success
+    get :edit, params: { id: forum.id }
+    assert_response :success
   end
 
   it 'admin update' do
     login_as admin
-    put :update, id: forum.id, forum: { name: 'Ruby vs. Python vs. Javascript deathmatch', description: 'Ruby' }
+    put :update,
+        params: { id: forum.id, forum: { name: 'Ruby vs. Python vs. Javascript deathmatch', description: 'Ruby' } }
     forum.reload
-    forum.name.must_equal 'Ruby vs. Python vs. Javascript deathmatch'
-    forum.description.must_equal 'Ruby'
+    _(forum.name).must_equal 'Ruby vs. Python vs. Javascript deathmatch'
+    _(forum.description).must_equal 'Ruby'
   end
 
   it 'admin fails to update' do
     login_as admin
-    put :update, id: forum.id, forum: { name: '' }
+    put :update, params: { id: forum.id, forum: { name: '' } }
     forum.reload
-    forum.name.must_equal forum.name
-    flash[:alert].must_equal 'There was a problem saving!'
+    _(forum.name).must_equal forum.name
+    _(flash[:alert]).must_equal 'There was a problem saving!'
   end
 
   it 'admin destroy' do
     forum = create(:forum)
     login_as admin
     assert_difference('Forum.count', -1) do
-      delete :destroy, id: forum.id
+      delete :destroy, params: { id: forum.id }
     end
-    must_redirect_to forums_path
+    assert_redirected_to forums_path
   end
 
   #------------------User Functionality----------------------
   it 'index' do
     login_as user
     get :index
-    must_respond_with :success
+    assert_response :success
   end
 
   it 'new' do
     login_as user
     get :new
-    must_respond_with :unauthorized
+    assert_response :unauthorized
   end
 
   it 'create fails for a regular user' do
     login_as user
     assert_no_difference('Forum.count') do
-      post :create, forum: { name: 'Ruby vs. Javascript, who will win?' }
+      post :create, params: { forum: { name: 'Ruby vs. Javascript, who will win?' } }
     end
-    must_respond_with :unauthorized
+    assert_response :unauthorized
   end
 
   it 'show should render for unlogged user' do
     create_list(:topic, 20)
     login_as nil
-    get :show, id: forum.id
-    must_respond_with :success
+    get :show, params: { id: forum.id }
+    assert_response :success
   end
 
   it 'show with pagination' do
     create_list(:topic, 20, :with_posts, forum: forum)
     login_as create(:account)
 
-    get :show, id: forum.id
+    get :show, params: { id: forum.id }
 
-    must_respond_with :success
+    assert_response :success
 
     # Should have 15 topics per page
     html = 'table.table.table-striped tbody tr'
@@ -148,25 +149,25 @@ describe ForumsController do
 
   it 'edit' do
     login_as user
-    get :edit, id: forum.id
-    must_respond_with :unauthorized
+    get :edit, params: { id: forum.id }
+    assert_response :unauthorized
   end
 
   it 'update' do
     login_as user
-    put :update, id: forum.id, forum: { name: 'Ruby vs. Python vs. Javascript deathmatch' }
+    put :update, params: { id: forum.id, forum: { name: 'Ruby vs. Python vs. Javascript deathmatch' } }
     forum.reload
-    forum.name.must_equal forum.name
-    must_respond_with :unauthorized
+    _(forum.name).must_equal forum.name
+    assert_response :unauthorized
   end
 
   it 'destroy' do
     forum = create(:forum)
     login_as user
     assert_no_difference('Forum.count') do
-      delete :destroy, id: forum.id
+      delete :destroy, params: { id: forum.id }
     end
-    must_respond_with :unauthorized
+    assert_response :unauthorized
   end
 
   it 'destroy gracefully handles errors' do
@@ -174,8 +175,8 @@ describe ForumsController do
     login_as create(:admin)
     Forum.any_instance.expects(:destroy).returns(false)
     assert_no_difference('Forum.count') do
-      delete :destroy, id: forum.id
+      delete :destroy, params: { id: forum.id }
     end
-    must_redirect_to forums_path
+    assert_redirected_to forums_path
   end
 end

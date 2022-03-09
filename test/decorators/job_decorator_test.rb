@@ -12,7 +12,7 @@ class JobDecoratorTest < ActiveSupport::TestCase
       job = create(:fetch_job, code_location_id: enlistment.code_location_id, current_step: 5, max_steps: 12,
                                project: project)
       text = "(5/12)\n#{project.name}\n#{code_location.url} #{code_location.branch}"
-      JobDecorator.new(job).tool_tip.must_equal text
+      _(JobDecorator.new(job).tool_tip).must_equal text
     end
   end
 end

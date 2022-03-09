@@ -16,12 +16,12 @@ class ActiveAdminTest < ActionDispatch::IntegrationTest
   it 'disallows regular users' do
     login_as create(:account)
     get admin_root_path
-    must_respond_with :unauthorized
+    assert_response :unauthorized
   end
 
   it 'disallows unlogged users' do
     login_as nil
     get admin_root_path
-    must_respond_with :unauthorized
+    assert_response :unauthorized
   end
 end

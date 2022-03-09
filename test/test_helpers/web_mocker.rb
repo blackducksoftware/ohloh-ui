@@ -15,7 +15,7 @@ module WebMocker
 
   def create_another_code_location(url)
     hsh = code_location_params
-    hsh[:id] = Faker::Number.number(3)
+    hsh[:id] = Faker::Number.number(digits: 3)
     hsh[:url] = url.sub('https?', 'git')
     stub_request(:post, code_locations_url).to_return(body: hsh.to_json, status: 201)
   end
@@ -27,14 +27,16 @@ module WebMocker
       .to_return(body: response_body)
   end
 
+  # rubocop:disable Style/OptionalBooleanParameter
   def get_project_code_locations(valid_result = true, hsh = {})
     response_body = valid_result ? [code_location_params(hsh)] : []
     url_with_stub = subscriptions_api.resource_uri('code_locations/42').to_s
     stub_request(:get, %r{#{url_with_stub.sub('42', '\d+').sub('?', '\?')}})
       .to_return(body: response_body.to_json)
   end
+  # rubocop:enable Style/OptionalBooleanParameter
 
-  def code_location_valid(valid_url = true)
+  def code_location_valid(valid_url: true)
     error_message = 'The URL does not appear to be a valid server connection string.'
     expected_response = valid_url ? '' : { error: { url: [error_message] } }
     status = valid_url ? 200 : 400
@@ -67,7 +69,7 @@ module WebMocker
   end
 
   def github_api(url, html_url)
-    body = { id: Faker::Number.number(3), default_branch: 'main', html_url: html_url,
+    body = { id: Faker::Number.number(digits: 3), default_branch: 'master', html_url: html_url,
              homepage: Faker::Internet.url, name: Faker::Company.name }
     stub_request(:get, url).to_return(body: body.to_json)
   end

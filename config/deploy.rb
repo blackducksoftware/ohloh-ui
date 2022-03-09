@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-lock '3.11.0'
+lock '3.16.0'
 
 set :whoami, `whoami`.strip
 set :default_env, 'PATH' => '/home/serv-deployer/.rbenv/shims:$PATH',

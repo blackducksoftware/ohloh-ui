@@ -5,11 +5,11 @@ require 'test_helper'
 class Forge::LaunchpadTest < ActiveSupport::TestCase
   describe 'match' do
     it 'should return nil for garbage' do
-      assert_nil Forge::Launchpad.new.match('I am a banana!')
+      _(Forge::Launchpad.new.match('I am a banana!')).must_be_nil
     end
 
     it 'should return nil for random URL' do
-      assert_nil Forge::Launchpad.new.match('http://lolcats.com')
+      _(Forge::Launchpad.new.match('http://lolcats.com')).must_be_nil
     end
 
     it 'should accept code url and create a new Forge::Match with the correct initialization parameters' do
@@ -48,7 +48,7 @@ class Forge::LaunchpadTest < ActiveSupport::TestCase
       correct_url = 'https://api.launchpad.net/1.0/name_at_forge'
       mock_match = mock
       mock_match.expects(:name_at_forge).returns('name_at_forge')
-      Forge::Launchpad.new.json_api_url(mock_match).must_equal correct_url
+      _(Forge::Launchpad.new.json_api_url(mock_match)).must_equal correct_url
     end
   end
 end

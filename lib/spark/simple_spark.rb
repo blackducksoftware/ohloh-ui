@@ -17,7 +17,7 @@ class Spark::SimpleSpark < Spark::Base
   private
 
   def merge_5_year_commit_image_with_spark_image
-    label = MiniMagick::Image.open(IMAGE_DIR + '5_year.png')
+    label = MiniMagick::Image.open(IMAGE_DIR.join('5_year.png'))
     commits_graph.composite(label) do |c|
       c.compose 'Over'
       c.geometry "+#{width - 78}+#{height - 9}"
@@ -52,7 +52,7 @@ class Spark::SimpleSpark < Spark::Base
     elsif value >= @max_value
       SPARK[:column_variant]
     else
-      (Math.log(value) / Math.log(@max_value) * (SPARK[:column_variant] - 1) + 1).to_i
+      ((Math.log(value) / Math.log(@max_value) * (SPARK[:column_variant] - 1)) + 1).to_i
     end
   end
 end

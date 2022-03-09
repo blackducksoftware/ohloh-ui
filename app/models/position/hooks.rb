@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class Position::Hooks
-  delegate :project_id, :project_id_was, :project_id_changed?,
-           :name_id, :name_id_was, :name_id_changed?, :account, :account_id, to: :@position
+  delegate :project_id, :project_id_before_last_save, :saved_change_to_project_id?,
+           :name_id, :name_id_before_last_save, :saved_change_to_name_id?, :account, :account_id, to: :@position
 
   def after_save(position)
     @position = position
@@ -30,7 +30,7 @@ class Position::Hooks
     @position = position
 
     transfer_kudos_and_destroy_previous_unclaimed_person if name_id && name_or_project_changed?
-    create_unclaimed_person_for_previous_state if name_id_was && name_or_project_changed?
+    create_unclaimed_person_for_previous_state if name_id_before_last_save && name_or_project_changed?
   end
 
   private
@@ -83,11 +83,11 @@ class Position::Hooks
   # rubocop:enable Metrics/AbcSize
 
   def name_or_project_changed?
-    name_id_changed? || project_id_changed?
+    saved_change_to_name_id? || saved_change_to_project_id?
   end
 
   def create_unclaimed_person_for_previous_state
-    Person.create(project_id: project_id_was, name_id: name_id_was)
+    Person.create(project_id: project_id_before_last_save, name_id: name_id_before_last_save)
   end
 
   def create_person
@@ -107,11 +107,11 @@ class Position::Hooks
 
   def update_affected_kudos
     Kudo.where(project_id: project_id, name_id: name_id).find_each do |kudo|
-      if kudo.sender != account
-        kudo.update(account_id: account_id)
-      else
+      if kudo.sender == account
         # Can't kudo yourself! If you claim a contribution you've kudo'd, you lose the kudo.
         kudo.destroy
+      else
+        kudo.update(account_id: account_id)
       end
     end
   end

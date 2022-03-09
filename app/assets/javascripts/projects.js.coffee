@@ -5,6 +5,9 @@ class App.ProjectForm
       $(this).closest('.license-cell').remove()
       $('.no-license').show() unless $('.license-cell:visible').length
 
+    @autocompleteLicense() if $('#add_license').length
+
+  autocompleteLicense: ->
     $('#add_license').autocomplete(
       source: '/autocompletes/licenses'
       focus: (event, ui) ->

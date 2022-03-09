@@ -13,7 +13,7 @@ class LanguagesHelperTest < ActionView::TestCase
         'loc_changed' => I18n.t('languages.monthly_loc'),
         'projects' => I18n.t('languages.monthly_projects')
       }
-      measures.must_equal expected_hash
+      _(measures).must_equal expected_hash
     end
 
     it 'should match the measure_description hash' do
@@ -23,7 +23,7 @@ class LanguagesHelperTest < ActionView::TestCase
         'loc_changed' => I18n.t('languages.loc_desc'),
         'projects' => I18n.t('languages.projects_desc')
       }
-      measure_description.must_equal expected_hash
+      _(measure_description).must_equal expected_hash
     end
   end
 end

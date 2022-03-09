@@ -57,7 +57,7 @@ class CommitsByProject < Cherry::Decorator
   end
 
   def positions
-    @positions ||= Position.where(id: symbolized.map { |c| c[:position_id] }.uniq.sort)
+    @positions ||= Position.where(id: symbolized.pluck(:position_id).uniq.sort)
                            .includes(:project).references(:all).group_by(&:id)
   end
 

@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
 FactoryBot.define do
-  factory :repository_directory do
-  end
+  factory :repository_directory
 end

@@ -20,7 +20,7 @@ class CodeFactsTest < ActiveSupport::TestCase
       create(:activity_fact, analysis: activity_fact.analysis, code_added: 5,
                              code_removed: 5, month: 1.month.ago.beginning_of_month)
       results = Analysis::CodeFacts.new(analysis: activity_fact.analysis).execute
-      results.map(&:code_total).must_equal [-3, 0]
+      _(results.map(&:code_total)).must_equal [-3, 0]
     end
 
     it 'must not return comments added or removed details over multiple activity_facts' do
@@ -28,7 +28,7 @@ class CodeFactsTest < ActiveSupport::TestCase
       create(:activity_fact, analysis: activity_fact.analysis, comments_added: 5,
                              comments_removed: 5, month: 1.month.ago.beginning_of_month)
       results = Analysis::CodeFacts.new(analysis: activity_fact.analysis).execute
-      results.map(&:comments_total).must_equal [-3, 0]
+      _(results.map(&:comments_total)).must_equal [-3, 0]
     end
 
     it 'must not return blanks added or removed details over multiple activity_facts' do
@@ -36,7 +36,7 @@ class CodeFactsTest < ActiveSupport::TestCase
       create(:activity_fact, analysis: activity_fact.analysis, blanks_added: 5,
                              blanks_removed: 5, month: 1.month.ago.beginning_of_month)
       results = Analysis::CodeFacts.new(analysis: activity_fact.analysis).execute
-      results.map(&:blanks_total).must_equal [3, 0]
+      _(results.map(&:blanks_total)).must_equal [3, 0]
     end
   end
 end

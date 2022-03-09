@@ -52,7 +52,7 @@ class Person::Builder
     # The reason the query is complicated that it should is because it attempts to avoid deadlock
     # when multiple processes are updating people table rows by ordering updates by id.
     def fix_contributor_fact_associations_to_match_name_id(project)
-      Person.connection.execute <<-SQL
+      Person.connection.execute <<-SQL.squish
         UPDATE people SET name_fact_id = people_name_facts.name_fact_id
         FROM (
           #{people_with_contributor_facts_for_project(project).to_sql}
@@ -66,7 +66,7 @@ class Person::Builder
         .select(['people.id as person_id', 'name_facts.id as name_fact_id'])
         .joins(:contributor_fact_on_name_id)
         .where(project: project)
-        .where('name_facts.analysis_id = ?', project.best_analysis_id)
+        .where(name_facts: { analysis_id: project.best_analysis_id })
         .order('people.id')
     end
   end

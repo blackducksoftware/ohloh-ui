@@ -5,15 +5,15 @@ require 'test_helper'
 class GithubUserTest < ActiveSupport::TestCase
   it 'must use url as username' do
     github_user = GithubUser.new(url: 'stan')
-    github_user.username.must_equal 'stan'
+    _(github_user.username).must_equal 'stan'
   end
 
   describe 'valid?' do
     it 'wont be valid for invalid username' do
       username = 'github.com/stan'
       github_user = GithubUser.new(url: username)
-      github_user.wont_be :valid?
-      github_user.errors.messages[:url].first.must_equal I18n.t('invalid_github_username')
+      _(github_user).wont_be :valid?
+      _(github_user.errors.messages[:url].first).must_equal I18n.t('invalid_github_username')
     end
 
     it 'wont be valid when username does not exist on github' do
@@ -22,14 +22,14 @@ class GithubUserTest < ActiveSupport::TestCase
       Open3.stubs(:popen3).returns [nil, stub(read: output)]
       github_user = GithubUser.new(url: username)
       github_user.valid?
-      github_user.errors.messages[:url].first.must_equal I18n.t('invalid_github_username')
+      _(github_user.errors.messages[:url].first).must_equal I18n.t('invalid_github_username')
     end
 
     it 'must avoid duplicate error messages for url' do
       username = 'github.com/stan'
       github_user = GithubUser.new(url: username)
-      github_user.wont_be :valid?
-      github_user.errors.messages[:url].count.must_equal 1
+      _(github_user).wont_be :valid?
+      _(github_user.errors.messages[:url].count).must_equal 1
     end
   end
 

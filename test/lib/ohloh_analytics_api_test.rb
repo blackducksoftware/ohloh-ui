@@ -9,13 +9,13 @@ class OhlohAnalyticsApiTest < ActiveSupport::TestCase
     Net::HTTP.stubs(:get_response).returns(Net::HTTPServerError.new('1', '503', 'error'))
     Net::HTTPServerError.any_instance.stubs(:body).returns('')
     path = 'api/v1/jobs/project_jobs'
-    -> { OhlohAnalyticsApi.get_response(path) }.must_raise(OhlohAnalyticsError)
+    _(-> { OhlohAnalyticsApi.get_response(path) }).must_raise(OhlohAnalyticsError)
   end
 
   it 'must return true when attributes are valid' do
     path = 'api/v1/jobs/project_jobs'
     VCR.use_cassette('project_jobs', match_requests_on: [:path]) do
-      OhlohAnalyticsApi.get_response(path, id: project.id, page: 1).wont_be_empty
+      _(OhlohAnalyticsApi.get_response(path, id: project.id, page: 1)).wont_be_empty
     end
   end
 end

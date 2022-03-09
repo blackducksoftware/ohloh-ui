@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class ContributorFact < NameFact
-  belongs_to :analysis
-  belongs_to :name
+  belongs_to :analysis, optional: true
+  belongs_to :name, optional: true
 
   def name_language_facts
     NameLanguageFact.where(name_id: name_id, analysis_id: analysis_id)
@@ -37,7 +37,7 @@ class ContributorFact < NameFact
     Commit.for_contributor_fact(self)
           .select(daily_commits_select_clause)
           .group("date_trunc('day', commits.time)")
-          .order("date_trunc('day', commits.time) desc")
+          .order(Arel.sql("date_trunc('day', commits.time) desc"))
           .limit(300)
   end
 

@@ -1,9 +1,9 @@
-.chzn-container + .help-inline
+.chosen-container + .help-inline
   vertical-align: middle
 
 /** chosen select boxes -- replace sprite icons with FontAwesome icons
 
-.chzn-select
+.chosen-select
   display: inline !important
   /* for validation plugin to work it must be displayed
   visibility: hidden
@@ -11,20 +11,20 @@
   position: absolute
   z-index: -1
 
-.chzn-container, [class*="chzn-container"]
+.chosen-container, [class*="chosen-container"]
   vertical-align: middle
 
-.chzn-container > .chzn-single, [class*="chzn-container"] > .chzn-single
+.chosen-container > .chosen-single, [class*="chosen-container"] > .chosen-single
   line-height: 26px
   height: 26px
   box-shadow: none
   background: #eee
 
-.chzn-choices
+.chosen-choices
   box-shadow: none !important
 
-.chzn-container-single
-  .chzn-single abbr
+.chosen-container-single
+  .chosen-single abbr
     background: none
     &:after
       content: "\f00d"
@@ -37,10 +37,10 @@
       top: -7px
     &:hover:after
       color: #464646
-  &.chzn-disabled .chzn-single abbr:hover:after
+  &.chosen-disabled .chosen-single abbr:hover:after
     color: #464646
 
-.chzn-single div b
+.chosen-single div b
   background: none !important
   &:before
     content: "\f0d7"
@@ -52,27 +52,18 @@
     top: -1px
     left: 1px
 
-.chzn-container-active.chzn-with-drop .chzn-single div b:before
+.chosen-container-active.chosen-with-drop .chosen-single div b:before
   content: "\f0d8"
 
-.chzn-container-single .chzn-search
+.chosen-container-single .chosen-search
   position: relative
   input
     background: none
     border-radius: 0
     line-height: 28px
     height: 28px
-  &:after
-    content: "\f002"
-    display: inline-block
-    color: #888
-    font-family: FontAwesome
-    font-size: 14px
-    position: absolute
-    top: 8px
-    right: 12px
 
-.chzn-container-multi .chzn-choices
+.chosen-container-multi .chosen-choices
   .search-choice .search-choice-close
     background: none
     &:before
@@ -91,10 +82,10 @@
   .search-choice-focus .search-choice-close:before
     color: #464646
 
-.chzn-container
-  .chzn-results-scroll-down span, .chzn-results-scroll-up span
+.chosen-container
+  .chosen-results-scroll-down span, .chosen-results-scroll-up span
     background: none
-  .chzn-results-scroll-down span:before
+  .chosen-results-scroll-down span:before
     content: "\f0d7"
     display: inline-block
     color: #888
@@ -103,7 +94,7 @@
     position: relative
     top: -1px
     left: 1px
-  .chzn-results-scroll-up span:before
+  .chosen-results-scroll-up span:before
     content: "\f0d7"
     display: inline-block
     color: #888
@@ -114,10 +105,10 @@
     left: 1px
     content: "\f0d8"
 
-.chzn-container-active .chzn-single-with-drop div b:before
+.chosen-container-active .chosen-single-with-drop div b:before
   content: "\f0d8"
 
-.chzn-rtl .chzn-search
+.chosen-rtl .chosen-search
   input
     background: none
   &:after
@@ -135,59 +126,59 @@
 
 /** chosen - etc
 
-.chzn-container-single .chzn-single
+.chosen-container-single .chosen-single
   border-radius: 0
 
-.chzn-container .chzn-results .highlighted
+.chosen-container .chosen-results .highlighted
   @include chzn-container-background-color
   color: #FFF
 
-.chzn-container-single .chzn-drop
+.chosen-container-single .chosen-drop
   @include chzn-container-border-color
   border-bottom: 3px solid color-gradient($SECONDARY_SLATE_BLUE, 120)
   border-radius: 0
 
-.chzn-single.chzn-single-with-drop, .chzn-container-active .chzn-single
+.chosen-single.chosen-single-with-drop, .chosen-container-active .chosen-single
   @include chzn-container-border-color
 
 .control-group
-  &.error .chzn-single
+  &.error .chosen-single
     border-color: #f09784 !important
-  &.info .chzn-single
+  &.info .chosen-single
     border-color: #64a6bc !important
-  &.warning .chzn-single
+  &.warning .chosen-single
     border-color: #e0c43a !important
-  &.success .chzn-single
+  &.success .chosen-single
     border-color: #92bf65 !important
 
-.chzn-rtl
-  .chzn-container-single-nosearch .chzn-search, .chzn-drop
+.chosen-rtl
+  .chosen-container-single-nosearch .chosen-search, .chosen-drop
     left: -9999px
 
-.chzn-container-active.chzn-with-drop .chzn-single
+.chosen-container-active.chosen-with-drop .chosen-single
   @include chzn-container-border-color
 
 @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-resolution: 144dpi)
-  .chzn-rtl .chzn-search input
+  .chosen-rtl .chosen-search input
     background-image: none !important
     background-repeat: no-repeat !important
     background-size: auto !important
-  .chzn-container-single
-    .chzn-single
+  .chosen-container-single
+    .chosen-single
       abbr, div b
         background-image: none !important
         background-repeat: no-repeat !important
         background-size: auto !important
-    .chzn-search input
+    .chosen-search input
       background-image: none !important
       background-repeat: no-repeat !important
       background-size: auto !important
-  .chzn-container-multi .chzn-choices .search-choice .search-choice-close
+  .chosen-container-multi .chosen-choices .search-choice .search-choice-close
     background-image: none !important
     background-repeat: no-repeat !important
     background-size: auto !important
-  .chzn-container
-    .chzn-results-scroll-down span, .chzn-results-scroll-up span
+  .chosen-container
+    .chosen-results-scroll-down span, .chosen-results-scroll-up span
       background-image: none !important
       background-repeat: no-repeat !important
       background-size: auto !important

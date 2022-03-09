@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
-class Forge < ActiveRecord::Base
+class Forge < ApplicationRecord
+  self.primary_key = :id
   has_many :repositories
   has_many :projects
 

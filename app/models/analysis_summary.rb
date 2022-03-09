@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-class AnalysisSummary < ActiveRecord::Base
+class AnalysisSummary < ApplicationRecord
   serialize :recent_contributors
 
-  belongs_to :analysis
+  belongs_to :analysis, optional: true
 
   scope :by_popularity, -> { where.not(commit_count: 0).order(commit_count: :desc) }
   scope :thirty_day_summaries, -> { where(type: 'ThirtyDaySummary') }
@@ -27,7 +27,7 @@ class AnalysisSummary < ActiveRecord::Base
   def find_recent_contribution_persons(has_name_ids)
     if has_name_ids
       project_id = analysis.project_id
-      name_ids = recent_contributors[1..-1]
+      name_ids = recent_contributors[1..]
       person_with_name_sql = Person.where(project_id: project_id, name_id: name_ids).to_sql
       person_with_account_sql = Person.where(account_id: Position.select(:account_id)
                                 .where(project_id: project_id, name_id: name_ids)).to_sql

@@ -4,7 +4,6 @@ module WidgetsHelper
   def factoid_image_path(factoid)
     path = case factoid.severity
            when 1..100 then 'fact_good.png'
-           when 0 then 'fact_info.png'
            when -2..-1 then 'fact_warning.png'
            when -100..-3 then 'fact_bad.png'
            else 'fact_info.png'
@@ -21,7 +20,7 @@ module WidgetsHelper
   end
 
   def widget_url(widget, type)
-    url_params = widget.vars.dup.delete_if { |k, _| k == "#{type}_id" }
+    url_params = widget.vars.reject { |k, _| k.to_s == "#{type}_id" }
     send("#{widget.name.underscore}_#{controller_name}_url", widget.send(type)) +
       "?#{url_params.merge(format: 'js').to_query}"
   end
@@ -32,7 +31,7 @@ module WidgetsHelper
   end
 
   def widget_url_without_format(widget, type)
-    url_params = widget.vars.dup.delete_if { |k, _| k == "#{type}_id" }
+    url_params = widget.vars.reject { |k, _| k.to_s == "#{type}_id" }
     send("#{widget.name.underscore}_#{controller_name}_url", widget.send(type), url_params)
   end
 

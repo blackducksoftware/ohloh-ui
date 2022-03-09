@@ -1,4 +1,4 @@
 # frozen_string_literal: true
 
-class SuccessfulAccounts < ActiveRecord::Base
+class SuccessfulAccounts < ApplicationRecord
 end

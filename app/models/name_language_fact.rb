@@ -1,5 +1,5 @@
 # frozen_string_literal: true
 
-class NameLanguageFact < ActiveRecord::Base
-  belongs_to :language
+class NameLanguageFact < ApplicationRecord
+  belongs_to :language, optional: true
 end

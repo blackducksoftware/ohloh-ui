@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class RemoveUnusedTables < ActiveRecord::Migration
+class RemoveUnusedTables < ActiveRecord::Migration[4.2]
   def up
     remove_foreign_key :old_edits, :project
     remove_foreign_key :old_edits, :account
@@ -14,7 +14,7 @@ class RemoveUnusedTables < ActiveRecord::Migration
     remove_foreign_key :code_set_gestalts, :code_set
     remove_foreign_key :code_set_gestalts, :gestalt
 
-    execute <<-SQL
+    execute <<-SQL.squish
       DROP VIEW project_gestalt_view;
     SQL
     drop_table :code_set_gestalts
@@ -67,7 +67,7 @@ class RemoveUnusedTables < ActiveRecord::Migration
       t.references :gestalt, foreign_key: true, index: true
     end
 
-    execute <<-SQL
+    execute <<-SQL.squish
       CREATE VIEW project_gestalt_view as SELECT p.id AS project_id, p.vanity_url AS url_name,
       g.id AS gestalt_id, g.name, g.type FROM projects p
       JOIN project_gestalts pg ON p.id = pg.project_id

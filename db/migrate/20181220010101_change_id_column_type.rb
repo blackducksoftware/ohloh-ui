@@ -1,5 +1,5 @@
 # rubocop:disable all
-class ChangeIdColumnType < ActiveRecord::Migration
+class ChangeIdColumnType < ActiveRecord::Migration[4.2]
   def up
     # Change fisbot sequences
     change_column :slave_logs, :id, :bigint

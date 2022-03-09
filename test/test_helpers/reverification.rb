@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Note: These classes are used for mocking Reverification Aws::SES responses and messages.
+# NOTE: These classes are used for mocking Reverification Aws::SES responses and messages.
 #        Used for the spammer cleanup initiative.
 module MOCK
   module AWS
@@ -66,7 +66,7 @@ module MOCK
         end
 
         def url
-          'https://sqs.us-east-1.amazonaws.com/637372123053/' + @queue_name
+          "https://sqs.us-east-1.amazonaws.com/637372123053/#{@queue_name}"
         end
       end
     end

@@ -44,3 +44,11 @@ en:
       home_page: 'Home Page for License'
       provide_license: 'Provide license text'
       read_more: "Read more about this license at"
+
+  activerecord:
+    errors:
+      models:
+        license:
+          attributes:
+            name:
+              invalid: "The characters (= ; : --) are not allowed in name."

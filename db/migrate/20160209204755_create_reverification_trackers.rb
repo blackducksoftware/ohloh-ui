@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class CreateReverificationTrackers < ActiveRecord::Migration
+class CreateReverificationTrackers < ActiveRecord::Migration[4.2]
   def change
     create_table :reverification_trackers do |t|
       t.integer :account_id, null: false

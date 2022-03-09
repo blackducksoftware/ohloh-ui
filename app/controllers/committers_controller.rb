@@ -54,9 +54,9 @@ class CommittersController < UnclaimedController
 
   def create_positions
     params[:positions].each do |position|
-      current_user.position_core.ensure_position_or_alias!(@projects_map[position[:project_id].to_i], @name, true,
-                                                           title: position[:title],
-                                                           description: position[:description])
+      attributes = { title: position[:title], description: position[:description] }
+      current_user.position_core.ensure_position_or_alias!(@projects_map[position[:project_id].to_i], @name,
+                                                           try_create: true, position_attributes: attributes)
     rescue StandardError => e
       capture_failed_positions(e, position)
     end

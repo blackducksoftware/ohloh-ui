@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-class ProjectBadge < ActiveRecord::Base
-  belongs_to :enlistment
+class ProjectBadge < ApplicationRecord
+  belongs_to :enlistment, optional: true
   delegate :project, :code_location, to: :enlistment
 
   validates :type, :identifier, presence: true

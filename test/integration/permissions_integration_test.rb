@@ -16,25 +16,25 @@ class PermissionsIntegrationTest < ActionDispatch::IntegrationTest
       it 'unlogged users should see permissions alert' do
         login_as nil
         get permissions_organization_path(@organization)
-        must_respond_with :ok
-        response.body.must_include(I18n.t('permissions.must_log_in'))
-        must_select 'input[disabled="disabled"]'
+        assert_response :ok
+        _(response.body).must_include(I18n.t('permissions.must_log_in'))
+        assert_select 'input[disabled="disabled"]'
       end
 
       it 'admins should not see permissions alert' do
         login_as admin
         get permissions_organization_path(@organization)
-        must_respond_with :ok
-        response.body.wont_include(I18n.t('permissions.must_log_in'))
-        must_select 'input[disabled="disabled"]', false
+        assert_response :ok
+        _(response.body).wont_include(I18n.t('permissions.must_log_in'))
+        assert_select 'input[disabled="disabled"]', false
       end
 
       it 'non-managers should see permissions alert' do
         login_as account
         get permissions_organization_path(@organization)
-        must_respond_with :ok
-        response.body.must_include(I18n.t('permissions.not_manager'))
-        must_select 'input[disabled="disabled"]'
+        assert_response :ok
+        _(response.body).must_include(I18n.t('permissions.not_manager'))
+        assert_select 'input[disabled="disabled"]'
       end
 
       it 'managers pending approval should see permissions alert' do
@@ -42,24 +42,24 @@ class PermissionsIntegrationTest < ActionDispatch::IntegrationTest
         Manage.create(target: @organization, account_id: account.id) # pending approval
         login_as account
         get permissions_organization_path(@organization)
-        must_respond_with :ok
-        response.body.must_include(I18n.t('permissions.not_manager'))
-        must_select 'input[disabled="disabled"]'
+        assert_response :ok
+        _(response.body).must_include(I18n.t('permissions.not_manager'))
+        assert_select 'input[disabled="disabled"]'
       end
 
       it 'approved managers should not see permissions alert' do
         login_as account
         Manage.create(target: @organization, account_id: account.id, approved_by: admin.id)
         get permissions_organization_path(@organization)
-        must_respond_with :ok
-        response.body.wont_include(I18n.t('permissions.not_manager'))
-        must_select 'input[disabled="disabled"]', false
+        assert_response :ok
+        _(response.body).wont_include(I18n.t('permissions.not_manager'))
+        assert_select 'input[disabled="disabled"]', false
       end
 
       it 'should gracefully handle non-existent organizations' do
         login_as nil
         get permissions_organization_path(:i_am_a_banana)
-        must_respond_with :not_found
+        assert_response :not_found
       end
 
       it 'must respond with not_found when organization is deleted' do
@@ -70,7 +70,7 @@ class PermissionsIntegrationTest < ActionDispatch::IntegrationTest
 
         get permissions_organization_path(organization)
 
-        must_respond_with :not_found
+        assert_response :not_found
       end
     end
   end
@@ -79,50 +79,50 @@ class PermissionsIntegrationTest < ActionDispatch::IntegrationTest
     describe 'organization' do
       it 'unlogged users should 401' do
         login_as nil
-        put update_permissions_organization_path(@organization), permission: { remainder: true }
-        must_respond_with :redirect
-        must_redirect_to new_session_path
+        put update_permissions_organization_path(@organization), params: { permission: { remainder: true } }
+        assert_response :redirect
+        assert_redirected_to new_session_path
       end
 
       it 'admins should be able to update the permissions' do
         login_as admin
-        put update_permissions_organization_path(@organization), permission: { remainder: true }
+        put update_permissions_organization_path(@organization), params: { permission: { remainder: true } }
         @permission.reload
-        must_respond_with :ok
-        @permission.remainder.must_equal true
+        assert_response :ok
+        _(@permission.remainder).must_equal true
       end
 
       it 'non-managers should 401' do
         login_as account
-        put update_permissions_organization_path(@organization), permission: { remainder: true }
-        must_respond_with :unauthorized
+        put update_permissions_organization_path(@organization), params: { permission: { remainder: true } }
+        assert_response :unauthorized
       end
 
       it 'managers pending approval should 401' do
         Manage.create(target: @organization, account_id: admin.id) # auto-approved
         Manage.create(target: @organization, account_id: account.id) # pending approval
         login_as account
-        put update_permissions_organization_path(@organization), permission: { remainder: true }
-        must_respond_with :unauthorized
+        put update_permissions_organization_path(@organization), params: { permission: { remainder: true } }
+        assert_response :unauthorized
       end
 
       it 'approved managers should be able to update the permissions' do
         login_as account
         Manage.create(target: @organization, account_id: account.id, approved_by: admin.id)
-        put update_permissions_organization_path(@organization), permission: { remainder: true }
+        put update_permissions_organization_path(@organization), params: { permission: { remainder: true } }
         @permission.reload
-        must_respond_with :ok
-        @permission.remainder.must_equal true
+        assert_response :ok
+        _(@permission.remainder).must_equal true
       end
 
       it 'save failures should 422' do
         login_as account
         Manage.create(target: @organization, account_id: account.id, approved_by: admin.id)
         Permission.any_instance.expects(:update).returns false
-        put update_permissions_organization_path(@organization), permission: { remainder: true }
+        put update_permissions_organization_path(@organization), params: { permission: { remainder: true } }
         @permission.reload
-        must_respond_with :unprocessable_entity
-        @permission.remainder.must_equal true
+        assert_response :unprocessable_entity
+        _(@permission.remainder).must_equal true
       end
     end
   end

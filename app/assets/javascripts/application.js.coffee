@@ -10,12 +10,13 @@
 # Read Sprockets README (https:#github.com/sstephenson/sprockets#sprockets-directives) for details
 # about supported directives.
 #
-#= require jquery
-#= require jquery_ujs
-#= require jquery-ui
+#= require rails-ujs
+# From active_admin -> jquery-rails # Using node_modules/jquery raises issues due to double jquery load.
+#= require jquery3
+#= require jquery/jquery-ui.min
 #= require twitter/bootstrap
 #= require underscore-min
-#= require chosen.jquery.min
+#= require jquery/chosen.jquery.min
 #= require highcharts/highstock
 #= require highcharts/highcharts-more
 #= require highcharts/solid-gauge

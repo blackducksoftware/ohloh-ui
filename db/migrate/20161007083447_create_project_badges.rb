@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class CreateProjectBadges < ActiveRecord::Migration
+class CreateProjectBadges < ActiveRecord::Migration[4.2]
   def change
     create_table :project_badges do |t|
       t.references :repository, index: true, foreign_key: true

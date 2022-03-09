@@ -1,12 +1,13 @@
 # frozen_string_literal: true
 
+CiiProject = Struct.new(:id, :name, :homepage_url, :repo_url)
+
 namespace :project_badge do
   namespace :cii do
     desc 'Check CII best practices projects'
     task check_projects: :environment do
       puts '-------------- CII projects check started ----------'
       puts "Start Time: #{Time.current}"
-      CiiProject = Struct.new(:id, :name, :homepage_url, :repo_url)
       cii_projects = []
       page = 1
       loop do

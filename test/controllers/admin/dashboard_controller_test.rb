@@ -2,7 +2,7 @@
 
 require 'test_helper'
 
-describe 'Admin::DashboardController' do
+class Admin::DashboardControllerTest < ActionController::TestCase
   let(:admin) { create(:admin) }
   before do
     login_as admin
@@ -12,15 +12,15 @@ describe 'Admin::DashboardController' do
   describe '#index' do
     it 'should render index template' do
       get :index
-      must_respond_with :ok
-      must_render_template :index
-      must_render_template '_overview'
-      must_render_template '_job_overview'
+      assert_response :ok
+      assert_template :index
+      assert_template '_overview'
+      assert_template '_job_overview'
     end
 
     it 'should show last run time of check CII projects cronjob' do
       get :index
-      response.body.must_match 'Last ran CII Projects'
+      _(response.body).must_match 'Last ran CII Projects'
     end
   end
 end

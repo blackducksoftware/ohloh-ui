@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Analysis < ActiveRecord::Base
+class Analysis < ApplicationRecord
   include Analysis::Report
   AVG_SALARY = 55_000
   EARLIEST_DATE = Time.utc(1971, 1, 1)
@@ -21,8 +21,8 @@ class Analysis < ActiveRecord::Base
   has_many :factoids, -> { order('severity DESC') }, dependent: :delete_all
   has_many :activity_facts, dependent: :delete_all
 
-  belongs_to :project
-  belongs_to :main_language, class_name: 'Language', foreign_key: :main_language_id
+  belongs_to :project, optional: true
+  belongs_to :main_language, class_name: 'Language', optional: true
 
   scope :fresh, -> { where(Analysis.arel_table[:created_at].gt(Time.current - 2.days)) }
   scope :hot, -> { where.not(hotness_score: nil).order(hotness_score: :desc) }

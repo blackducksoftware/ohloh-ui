@@ -37,7 +37,7 @@ namespace :docker do
     internal_registry = 'coreos.blackducksoftware.com:5000'
     Rake::Task['version:bump'].invoke
     system 'git push'
-    version = File.open(Rails.root.join('VERSION')).read.delete("\n")
+    version = File.read(Rails.root.join('VERSION')).delete("\n")
     Rake::Task['docker:build'].invoke
     system "docker tag ohloh-ui:latest #{internal_registry}/ohloh-ui:#{version}"
     system "docker push #{internal_registry}/ohloh-ui"

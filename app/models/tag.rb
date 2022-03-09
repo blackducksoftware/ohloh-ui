@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
-class Tag < ActiveRecord::Base
+class Tag < ApplicationRecord
   MAX_ALLOWED_PER_PROJECT = 20
 
   has_many :taggings
   has_many :projects, through: :taggings
 
-  scope :for_projects, -> { joins(:taggings).where(['taggings.taggable_type = ?', 'Project']).group('tags.id') }
+  scope :for_projects, -> { joins(:taggings).where(taggings: { taggable_type: 'Project' }).group('tags.id') }
   scope :by_popularity, -> { order(taggings_count: :desc, name: :asc) }
   scope :popular, -> { by_popularity.for_projects.where(['tags.taggings_count > ?', 1]) }
   scope :related_tags, lambda { |tags|
@@ -17,7 +17,7 @@ class Tag < ActiveRecord::Base
   }
 
   validates :name, length: { within: 1..50 }, allow_nil: false,
-                   format: { with: /\A[\w\+\(\)\_\-#]*\Z/, message: I18n.t('tags.allowed_characters') }
+                   format: { with: /\A[\w+()_\-#]*\Z/, message: I18n.t('tags.allowed_characters') }
 
   class << self
     def autocomplete(project_id, query)
@@ -34,7 +34,7 @@ class Tag < ActiveRecord::Base
   end
 
   def recalc_taggings_count
-    sql = <<-SQL
+    sql = <<-SQL.squish
       SELECT COUNT(*) FROM taggings AS t INNER JOIN projects p ON t.taggable_id = p.id AND t.taggable_type = 'Project'
       WHERE t.tag_id = #{id} AND p.deleted = FALSE
     SQL

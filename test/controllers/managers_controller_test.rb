@@ -15,16 +15,16 @@ class ManagersControllerTest < ActionController::TestCase
   it 'test index of project for manager' do
     login_as admin
     setup_admin_user_umlaut
-    get :index, project_id: @proj.to_param
-    must_respond_with :success
-    @response.body.must_match(/Pending/i)
+    get :index, params: { project_id: @proj.to_param }
+    assert_response :success
+    _(@response.body).must_match(/Pending/i)
   end
 
   it 'test index for i manage this project button for admin' do
     login_as admin
-    get :index, project_id: @proj.to_param
-    must_respond_with :success
-    must_select 'a.btn.btn-primary'
+    get :index, params: { project_id: @proj.to_param }
+    assert_response :success
+    assert_select 'a.btn.btn-primary'
     assert_select '.col-md-4 a.btn.btn-primary', text: 'I manage this project on Open Hub'
   end
 
@@ -34,9 +34,9 @@ class ManagersControllerTest < ActionController::TestCase
 
     project.update!(deleted: true, editor_account: create(:account))
 
-    get :index, project_id: project.to_param
+    get :index, params: { project_id: project.to_param }
 
-    must_render_template 'deleted'
+    assert_template 'deleted'
   end
 
   it 'test index for i manage this project button for admin when admin is manager' do
@@ -45,39 +45,39 @@ class ManagersControllerTest < ActionController::TestCase
     a.editor_account = admin
     a.managers << admin
     a.save
-    get :index, project_id: @proj.to_param
-    must_respond_with :success
+    get :index, params: { project_id: @proj.to_param }
+    assert_response :success
     assert_select 'p a.btn.btn-small.btn-danger', text: /remove manager/
   end
 
   it 'test index for applicant' do
     login_as account_with_umlaut
     setup_admin_user_umlaut
-    get :index, project_id: @proj.to_param
-    must_respond_with :success
-    @response.body.must_match(/Pending/i)
-    @response.body.must_match(/#{account_with_umlaut.name}/i)
+    get :index, params: { project_id: @proj.to_param }
+    assert_response :success
+    _(@response.body).must_match(/Pending/i)
+    _(@response.body).must_match(/#{account_with_umlaut.name}/i)
   end
 
   it 'test index for random' do
     login_as joe_account
     setup_admin_user_umlaut
-    get :index, project_id: @proj.to_param
-    must_respond_with :success
-    @response.body.wont_match(/Pending/i)
-    @response.body.wont_match(/#{account_with_umlaut.name}/i)
+    get :index, params: { project_id: @proj.to_param }
+    assert_response :success
+    _(@response.body).wont_match(/Pending/i)
+    _(@response.body).wont_match(/#{account_with_umlaut.name}/i)
   end
 
   it 'test index of non existant project' do
     login_as admin
-    get :index, project_id: 'I_AM_A_BANANA!'
-    must_respond_with :not_found
+    get :index, params: { project_id: 'I_AM_A_BANANA!' }
+    assert_response :not_found
   end
 
   it 'test index of non existant organization' do
     login_as admin
-    get :index, organization_id: 'I_AM_A_BANANA!'
-    must_respond_with :not_found
+    get :index, params: { organization_id: 'I_AM_A_BANANA!' }
+    assert_response :not_found
   end
 
   it 'test reject should fail unless logged in' do
@@ -85,18 +85,18 @@ class ManagersControllerTest < ActionController::TestCase
     set_manager(admin, @proj)
     login_as admin
     assert_difference 'Manage.where.not(deleted_by: nil).count' do
-      post :reject, project_id: @proj.to_param, id: account.to_param
+      post :reject, params: { project_id: @proj.to_param, id: account.to_param }
     end
-    must_respond_with :redirect
+    assert_response :redirect
   end
 
   it 'test reject should succeed for self' do
     manager_apply(account, @proj)
     login_as account
     assert_difference 'Manage.where.not(deleted_by: nil).count' do
-      post :reject, project_id: @proj.to_param, id: account.to_param
+      post :reject, params: { project_id: @proj.to_param, id: account.to_param }
     end
-    must_respond_with :redirect
+    assert_response :redirect
   end
 
   it 'test reject should succeed for orgs' do
@@ -104,18 +104,18 @@ class ManagersControllerTest < ActionController::TestCase
     manager_apply(account, org)
     login_as account
     assert_difference 'Manage.where.not(deleted_by: nil).count' do
-      post :reject, organization_id: org.to_param, id: account.to_param
+      post :reject, params: { organization_id: org.to_param, id: account.to_param }
     end
-    must_respond_with :redirect
+    assert_response :redirect
   end
 
   it 'test reject should not succeed for unlogged in' do
     manager_apply(account, @proj)
     assert_no_difference 'Manage.where.not(deleted_by: nil).count' do
-      post :reject, project_id: @proj.to_param, id: account.to_param
+      post :reject, params: { project_id: @proj.to_param, id: account.to_param }
     end
-    must_respond_with :redirect
-    must_redirect_to new_session_path
+    assert_response :redirect
+    assert_redirected_to new_session_path
   end
 
   it 'test accept should succeed for manager' do
@@ -123,23 +123,23 @@ class ManagersControllerTest < ActionController::TestCase
     set_manager(admin, @proj)
     manager_apply(account, @proj)
     assert_difference 'Manage.where.not(approved_by: nil).where(deleted_at: nil).count' do
-      post :approve, project_id: @proj.to_param, id: account.to_param
+      post :approve, params: { project_id: @proj.to_param, id: account.to_param }
     end
-    @proj.active_managers.include?(account).must_equal true
+    _(@proj.active_managers.include?(account)).must_equal true
     manage = Manage.where(target: @proj, account_id: account.id).first
-    manage.approver.must_equal admin
-    must_respond_with :redirect
+    _(manage.approver).must_equal admin
+    assert_response :redirect
   end
 
   it 'test accept should fail for not logged in' do
     set_manager(admin, @proj)
     manager_apply(account, @proj)
     assert_no_difference 'Manage.where.not(approved_by: nil).where(deleted_at: nil).count' do
-      post :approve, project_id: @proj.to_param, id: account.to_param
+      post :approve, params: { project_id: @proj.to_param, id: account.to_param }
     end
-    @proj.active_managers.include?(account).must_equal false
-    must_respond_with :redirect
-    must_redirect_to new_session_path
+    _(@proj.active_managers.include?(account)).must_equal false
+    assert_response :redirect
+    assert_redirected_to new_session_path
   end
 
   it 'test accept should fail for non manager' do
@@ -147,10 +147,10 @@ class ManagersControllerTest < ActionController::TestCase
     set_manager(admin, @proj) # joe's logged in but admin's the manager
     manager_apply(account, @proj)
     assert_no_difference 'Manage.where.not(approved_by: nil).where(deleted_at: nil).count' do
-      post :approve, project_id: @proj.to_param, id: account.to_param
+      post :approve, params: { project_id: @proj.to_param, id: account.to_param }
     end
-    @proj.active_managers.include?(account).must_equal false
-    must_respond_with :unauthorized
+    _(@proj.active_managers.include?(account)).must_equal false
+    assert_response :unauthorized
   end
 
   it 'test accept should fail for rejected manager' do
@@ -160,40 +160,40 @@ class ManagersControllerTest < ActionController::TestCase
     set_manager(admin, @proj) # auto-approved
     manager_apply(account, @proj)
     assert_no_difference 'Manage.where.not(approved_by: nil).where(deleted_at: nil).count' do
-      post :approve, project_id: @proj.to_param, id: account.to_param
+      post :approve, params: { project_id: @proj.to_param, id: account.to_param }
     end
-    @proj.active_managers.include?(account).must_equal false
-    must_respond_with :unauthorized
+    _(@proj.active_managers.include?(account)).must_equal false
+    assert_response :unauthorized
   end
 
   it 'test new' do
     login_as admin
-    get :new, project_id: @proj.to_param
-    must_respond_with :success
+    get :new, params: { project_id: @proj.to_param }
+    assert_response :success
   end
 
   it 'test create' do
     login_as admin
     assert_difference 'Manage.count' do
-      post :create, project_id: @proj.to_param, manage: { message: 'testing' }
-      must_respond_with :redirect
+      post :create, params: { project_id: @proj.to_param, manage: { message: 'testing' } }
+      assert_response :redirect
     end
   end
 
   it 'test create doesnt allow books' do
     login_as admin
     assert_no_difference 'Manage.count' do
-      post :create, project_id: @proj.to_param, manage: { message: 'testing' * 1_000 }
-      must_respond_with :unprocessable_entity
+      post :create, params: { project_id: @proj.to_param, manage: { message: 'testing' * 1_000 } }
+      assert_response :unprocessable_entity
     end
   end
 
   it 'test edit' do
     login_as admin
     admin_manages_linux
-    get :edit, project_id: @proj.to_param, id: admin.to_param
-    must_respond_with :success
-    assigns(:manage).message.must_equal 'test message'
+    get :edit, params: { project_id: @proj.to_param, id: admin.to_param }
+    assert_response :success
+    _(assigns(:manage).message).must_equal 'test message'
   end
 
   it 'test edit for non-admin' do
@@ -202,8 +202,8 @@ class ManagersControllerTest < ActionController::TestCase
     account = create(:account)
     create(:manage, account: account, target: proj)
     login_as account
-    get :edit, project_id: proj.to_param, id: account.to_param
-    must_respond_with :success
+    get :edit, params: { project_id: proj.to_param, id: account.to_param }
+    assert_response :success
   end
 
   it 'test edit of others manager requests' do
@@ -212,39 +212,39 @@ class ManagersControllerTest < ActionController::TestCase
     account = create(:account)
     create(:manage, account: account, target: proj)
     login_as create(:account)
-    get :edit, project_id: proj.to_param, id: account.to_param
-    must_respond_with :unauthorized
+    get :edit, params: { project_id: proj.to_param, id: account.to_param }
+    assert_response :unauthorized
   end
 
   it 'test edit of a non existant account' do
     login_as admin
-    get :edit, project_id: @proj.to_param, id: 'I_AM_A_BANANA!'
-    must_respond_with :not_found
+    get :edit, params: { project_id: @proj.to_param, id: 'I_AM_A_BANANA!' }
+    assert_response :not_found
   end
 
   it 'test update' do
     login_as admin
     admin_manages_linux
-    post :update, id: admin.to_param, project_id: @proj.to_param, manage: { message: 'hihi' }
-    @proj.reload.manages.first.message.must_equal 'hihi'
+    post :update, params: { id: admin.to_param, project_id: @proj.to_param, manage: { message: 'hihi' } }
+    _(@proj.reload.manages.first.message).must_equal 'hihi'
     assert flash[:notice] == 'Save successful!'
   end
 
   it 'test update doesnt allow books' do
     login_as admin
     admin_manages_linux
-    post :update, id: admin.to_param, project_id: @proj.to_param,
-                  manage: { message: 'testing' * 1_000 }
-    must_respond_with :unprocessable_entity
-    @proj.reload.manages.first.message.must_equal 'test message'
+    post :update, params: { id: admin.to_param, project_id: @proj.to_param,
+                            manage: { message: 'testing' * 1_000 } }
+    assert_response :unprocessable_entity
+    _(@proj.reload.manages.first.message).must_equal 'test message'
   end
 
   it 'test update wont edit someone elses' do
     login_as account
     admin_manages_linux
-    post :update, id: admin.to_param, project_id: @proj.to_param, manage: { message: 'hihi' }
-    must_respond_with :unauthorized
-    @proj.manages.first.message.wont_equal 'hihi'
+    post :update, params: { id: admin.to_param, project_id: @proj.to_param, manage: { message: 'hihi' } }
+    assert_response :unauthorized
+    _(@proj.manages.first.message).wont_equal 'hihi'
   end
 
   protected

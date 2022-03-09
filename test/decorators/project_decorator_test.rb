@@ -35,18 +35,18 @@ class ProjectDecoratorTest < ActiveSupport::TestCase
 
   describe 'sidebar' do
     it 'should contain 4 sections' do
-      linux.decorate.sidebar.length.must_equal 4
+      _(linux.decorate.sidebar.length).must_equal 4
     end
 
     it 'should return projects menu list' do
-      linux.decorate.sidebar.must_equal sidebar
+      _(linux.decorate.sidebar).must_equal sidebar
     end
   end
 
   describe 'icon' do
     it 'should return icon image for project' do
       Icon.any_instance.expects(:image).returns(nil)
-      assert_nil linux.decorate.icon
+      _(linux.decorate.icon).must_be_nil
     end
   end
 
@@ -56,7 +56,7 @@ class ProjectDecoratorTest < ActiveSupport::TestCase
       create(:link, project: project, link_category_id: Link::CATEGORIES[:Community])
       create(:link, project: project, link_category_id: Link::CATEGORIES[:Homepage])
 
-      project.decorate.sorted_link_list.keys.must_equal %w[Homepage Community]
+      _(project.decorate.sorted_link_list.keys).must_equal %w[Homepage Community]
     end
 
     it 'must sort links by category name' do
@@ -66,7 +66,7 @@ class ProjectDecoratorTest < ActiveSupport::TestCase
       create(:link, project: project, link_category_id: Link::CATEGORIES[:Community])
       create(:link, project: project, link_category_id: Link::CATEGORIES[:Download])
 
-      project.decorate.sorted_link_list.keys.must_equal %w[Homepage Community Download Forums]
+      _(project.decorate.sorted_link_list.keys).must_equal %w[Homepage Community Download Forums]
     end
 
     it 'group the links by category' do
@@ -76,9 +76,9 @@ class ProjectDecoratorTest < ActiveSupport::TestCase
       link3 = create(:link, project: project, link_category_id: Link::CATEGORIES[:Download])
 
       sorted_links = project.decorate.sorted_link_list
-      sorted_links.keys.must_equal %w[Community Download]
-      sorted_links['Community'].map(&:id).sort.must_equal [link1.id, link2.id].sort
-      sorted_links['Download'].must_equal [link3]
+      _(sorted_links.keys).must_equal %w[Community Download]
+      _(sorted_links['Community'].map(&:id).sort).must_equal [link1.id, link2.id].sort
+      _(sorted_links['Download']).must_equal [link3]
     end
   end
 end

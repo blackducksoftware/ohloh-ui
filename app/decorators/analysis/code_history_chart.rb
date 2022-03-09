@@ -2,6 +2,7 @@
 
 class Analysis::CodeHistoryChart < Analysis::Chart
   def initialize(analysis)
+    super()
     @analysis = analysis
     @history = Analysis::CodeHistory.new(analysis: analysis).execute
     @defaults = ANALYSIS_CHART_DEFAULTS.deep_merge(ANALYSIS_CHARTS_OPTIONS['code_history'])

@@ -6,6 +6,6 @@ class StackIgnoreTest < ActiveSupport::TestCase
   it '#clean_up_entries will clear any previous entries on create' do
     stack_entry = create(:stack_entry)
     create(:stack_ignore, project: stack_entry.project, stack: stack_entry.stack)
-    StackEntry.find(stack_entry.id).deleted_at.wont_equal nil
+    _(StackEntry.find(stack_entry.id).deleted_at).wont_equal nil
   end
 end

@@ -5,20 +5,20 @@ require 'test_helper'
 class AllowedTest < ActiveSupport::TestCase
   describe 'parse' do
     it 'line empty' do
-      Allowed.parse(nil).must_be_empty
-      Allowed.parse('').must_be_empty
-      Allowed.parse("\n").must_be_empty
+      _(Allowed.parse(nil)).must_be_empty
+      _(Allowed.parse('')).must_be_empty
+      _(Allowed.parse("\n")).must_be_empty
     end
 
     it 'should parse line Allow' do
-      Allowed.parse('foo').must_equal ['foo']
-      Allowed.parse("foo\n").must_equal ['foo']
-      Allowed.parse("foo    \n").must_equal ['foo']
-      Allowed.parse("testfile.txt\n lib/").must_equal ['testfile.txt', 'lib/']
+      _(Allowed.parse('foo')).must_equal ['foo']
+      _(Allowed.parse("foo\n")).must_equal ['foo']
+      _(Allowed.parse("foo    \n")).must_equal ['foo']
+      _(Allowed.parse("testfile.txt\n lib/")).must_equal ['testfile.txt', 'lib/']
     end
 
     it 'should allow with trailing wildcard' do
-      Allowed.parse('foo*').must_equal ['foo']
+      _(Allowed.parse('foo*')).must_equal ['foo']
     end
   end
 

@@ -88,7 +88,7 @@ class Analysis::QueryBase
   end
 
   def contributor_monthly_commits_query
-    sql = <<-SQL
+    sql = <<-SQL.squish
       select to_char(date(C.time),'MON,YYYY') as month, count (*) as count
       FROM  commits C INNER JOIN code_sets CS ON C.code_set_id = CS.id
       INNER JOIN sloc_sets SS ON SS.code_set_id = CS.id INNER JOIN analysis_sloc_sets ASS ON ASS.sloc_set_id = SS.id
@@ -96,6 +96,6 @@ class Analysis::QueryBase
       WHERE ASS.analysis_id = #{@analysis.id} AND K.analysis_id = #{@analysis.id} AND C.position <= ASS.as_of AND K.preferred_name_id = #{@name_id}
       group by month
     SQL
-    JSON.parse(ActiveRecord::Base.connection.execute(sql).try(:to_json))
+    JSON.parse(ApplicationRecord.connection.execute(sql).try(:to_json))
   end
 end

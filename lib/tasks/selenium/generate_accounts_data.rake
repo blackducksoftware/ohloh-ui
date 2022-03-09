@@ -9,9 +9,7 @@ namespace :selenium do
   include ActionView::Helpers::DateHelper
 
   file :generate_data do
-    File.open(OUTPUT_FILE, 'w+') do |file|
-      file.write(@accounts_data.to_yaml)
-    end
+    File.write(OUTPUT_FILE, @accounts_data.to_yaml)
   end
 
   desc 'Prepare Accounts data for selenium'

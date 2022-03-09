@@ -7,37 +7,37 @@ class NilKudoScoreTest < ActiveSupport::TestCase
 
   describe 'id' do
     it 'should' do
-      assert_nil nil_kudo_score.id
+      _(nil_kudo_score.id).must_be_nil
     end
   end
 
   describe 'position' do
     it 'should' do
-      assert_nil nil_kudo_score.position
+      _(nil_kudo_score.position).must_be_nil
     end
   end
 
   describe 'score' do
     it 'should' do
-      assert_nil nil_kudo_score.score
+      _(nil_kudo_score.score).must_be_nil
     end
   end
 
   describe 'rank' do
     it 'should' do
-      assert_nil nil_kudo_score.rank
+      _(nil_kudo_score.rank).must_be_nil
     end
   end
 
   describe 'nil?' do
     it 'should' do
-      nil_kudo_score.nil?.must_equal true
+      _(nil_kudo_score.nil?).must_equal true
     end
   end
 
   describe 'blank?' do
     it 'should' do
-      nil_kudo_score.blank?.must_equal true
+      _(nil_kudo_score.blank?).must_equal true
     end
   end
 end

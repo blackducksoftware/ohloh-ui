@@ -2,7 +2,7 @@
 
 require 'test_helper'
 
-describe 'AliasesController' do
+class AliasesControllerTest < ActionController::TestCase
   before do
     Project.any_instance.stubs(:code_locations).returns([])
     Enlistment.any_instance.stubs(:code_location).returns(code_location_stub)
@@ -24,29 +24,29 @@ describe 'AliasesController' do
   it 'index' do
     create(:analysis_alias, analysis_id: @project.best_analysis_id,
                             commit_name_id: @commit_name.id, preferred_name_id: @preferred_name.id)
-    get :index, project_id: @project.id
-    must_respond_with :ok
-    must_render_template :index
-    assigns(:best_analysis_aliases).count.must_equal 1
-    assigns(:best_analysis_aliases).first.must_equal @alias
-    assigns(:aliases).count.must_equal 1
-    assigns(:aliases).first.must_equal @alias
+    get :index, params: { project_id: @project.id }
+    assert_response :ok
+    assert_template :index
+    _(assigns(:best_analysis_aliases).count).must_equal 1
+    _(assigns(:best_analysis_aliases).first).must_equal @alias
+    _(assigns(:aliases).count).must_equal 1
+    _(assigns(:aliases).first).must_equal @alias
   end
 
   describe 'new' do
     it 'with login user' do
       login_as @account
-      get :new, project_id: @commit_project.id
-      must_respond_with :ok
-      must_render_template :new
-      # assigns(:committer_names).count.must_equal 1
+      get :new, params: { project_id: @commit_project.id }
+      assert_response :ok
+      assert_template :new
+      # _(assigns(:committer_names).count).must_equal 1
     end
 
     it 'without login user' do
-      get :new, project_id: @project.id
-      must_respond_with :redirect
-      must_redirect_to new_session_path
-      assert_nil assigns(:committer_names)
+      get :new, params: { project_id: @project.id }
+      assert_response :redirect
+      assert_redirected_to new_session_path
+      _(assigns(:committer_names)).must_be_nil
     end
 
     it 'must render projects/deleted when project is deleted' do
@@ -54,59 +54,60 @@ describe 'AliasesController' do
       ApplicationController.any_instance.stubs(:current_user_can_manage?).returns(true)
       @project.update!(deleted: true, editor_account: @account)
 
-      get :new, project_id: @project.id
+      get :new, params: { project_id: @project.id }
 
-      must_render_template 'deleted'
+      assert_template 'deleted'
     end
   end
 
   describe 'create' do
     it 'without user logged in' do
-      post :create, project_id: @project.id
-      must_respond_with :redirect
-      must_redirect_to new_session_path
+      post :create, params: { project_id: @project.id }
+      assert_response :redirect
+      assert_redirected_to new_session_path
     end
 
     it 'with user login' do
       login_as @account
       before = Alias.count
-      post :create, project_id: @project.id, commit_name_id: create(:name).id, preferred_name_id: create(:name).id
-      Alias.count.must_equal(before + 1)
-      must_respond_with :redirect
-      must_redirect_to action: :index
+      post :create,
+           params: { project_id: @project.id, commit_name_id: create(:name).id, preferred_name_id: create(:name).id }
+      _(Alias.count).must_equal(before + 1)
+      assert_response :redirect
+      assert_redirected_to action: :index
     end
 
     it 'handles invalid params' do
       login_as @account
       before = Alias.count
-      post :create, project_id: @project.id, commit_name_id: create(:name).id
-      Alias.count.must_equal(before)
-      must_respond_with :unprocessable_entity
+      post :create, params: { project_id: @project.id, commit_name_id: create(:name).id }
+      _(Alias.count).must_equal(before)
+      assert_response :unprocessable_entity
     end
   end
 
   it 'undo' do
     login_as @account
-    @alias.deleted.must_equal false
-    post :undo, project_id: @project.id, id: @alias.id
-    must_respond_with :redirect
-    must_redirect_to action: :index
-    @alias.reload.deleted.must_equal true
+    _(@alias.deleted).must_equal false
+    post :undo, params: { project_id: @project.id, id: @alias.id }
+    assert_response :redirect
+    assert_redirected_to action: :index
+    _(@alias.reload.deleted).must_equal true
   end
 
   it 'redo' do
     login_as @account
     @alias.create_edit.undo!(@account)
-    @alias.reload.deleted.must_equal true
-    post :redo, project_id: @project.id, id: @alias.id
-    must_respond_with :redirect
-    must_redirect_to action: :index
-    @alias.reload.deleted.must_equal false
+    _(@alias.reload.deleted).must_equal true
+    post :redo, params: { project_id: @project.id, id: @alias.id }
+    assert_response :redirect
+    assert_redirected_to action: :index
+    _(@alias.reload.deleted).must_equal false
   end
 
   it 'preferred_names' do
     login_as @account
-    get :preferred_names, project_id: @commit_project.id
-    assigns(:preferred_names).first.must_equal @commit.name
+    get :preferred_names, params: { project_id: @commit_project.id }
+    _(assigns(:preferred_names).first).must_equal @commit.name
   end
 end

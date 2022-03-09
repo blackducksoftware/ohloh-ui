@@ -6,9 +6,7 @@ class Forge::Match
 
   MAX_FORGE_COMM_TIME = 10
 
-  attr_accessor :forge
-  attr_accessor :owner_at_forge
-  attr_accessor :name_at_forge
+  attr_accessor :forge, :owner_at_forge, :name_at_forge
 
   def initialize(forge, owner_at_forge, name_at_forge)
     @forge = forge

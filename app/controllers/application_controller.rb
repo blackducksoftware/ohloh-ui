@@ -21,6 +21,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
   attr_reader :page_context
+
   helper_method :page_context
   before_action :validate_request_format
   before_action :store_location
@@ -50,7 +51,7 @@ class ApplicationController < ActionController::Base
     when SocketError, Errno::ECONNREFUSED, FisbotApiError
       DataDogReport.error(exception.backtrace.to_s)
       flash[:notice] = t(:api_exception)
-      redirect_back
+      redirect_to_saved_path
     else
       notify_airbrake(exception) unless blank_user_agent?
       render_404
@@ -200,8 +201,8 @@ class ApplicationController < ActionController::Base
     session[:return_to] = request.fullpath
   end
 
-  def redirect_back(default = root_path)
-    redirect_to(session[:return_to] || default)
+  def redirect_to_saved_path(default = root_path, **args)
+    redirect_back(fallback_location: (session[:return_to] || default), **args)
     session[:return_to] = nil
   end
 

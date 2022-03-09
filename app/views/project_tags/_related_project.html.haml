@@ -1,7 +1,7 @@
 .project{ id: "related_project_#{related_project.to_param}" }
   %h4.col-md-6.similar_tags_project_name.no_margin_top
     = related_project.decorate.icon(:small)
-    - name = truncate_project_name(related_project.name, true, 20)
+    - name = truncate_project_name(related_project.name, 20, link: true)
     = link_to name, project_path(related_project), title: related_project.name
   .col-md-6.show_tags.similar_tags_tagged.tags
     - related_project.tags.sort { |a, b| a.name <=> b.name }.each do |tag|

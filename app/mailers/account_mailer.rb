@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
-class AccountMailer < ActionMailer::Base
+class AccountMailer < ApplicationMailer
   default from: 'mailer@openhub.net'
 
   def signup_notification(account)
     @account = account
     @url = activate_account_accesses_url(account_id: account.to_param, code: account.activation_code,
                                          host: ENV['URL_HOST'], protocol: 'https')
-    mail to: account.email, subject: t('.subject'), bcc: 'peterdp@synopsys.com'
+    mail to: account.email, subject: t('.subject'), bcc: 'info@openhub.net'
   end
 
   def activation(account)

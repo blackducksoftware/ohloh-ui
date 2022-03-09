@@ -11,7 +11,7 @@ class FirebaseServiceTest < ActiveSupport::TestCase
       JWT.stubs(:decode).returns(decoded_val)
       VCR.use_cassette('google_keys') do
         token = firebase.decode(id_token)
-        token.must_equal decoded_val
+        _(token).must_equal decoded_val
       end
     end
 
@@ -22,7 +22,7 @@ class FirebaseServiceTest < ActiveSupport::TestCase
       JWT.stubs(:decode).returns(decoded_val)
       VCR.use_cassette('google_keys') do
         token = firebase.decode(id_token)
-        token.must_be_nil
+        _(token).must_be_nil
       end
     end
 
@@ -33,7 +33,7 @@ class FirebaseServiceTest < ActiveSupport::TestCase
       JWT.stubs(:decode).returns(decoded_val)
       VCR.use_cassette('google_keys') do
         token = firebase.decode(id_token)
-        token.must_be_nil
+        _(token).must_be_nil
       end
     end
 
@@ -44,7 +44,7 @@ class FirebaseServiceTest < ActiveSupport::TestCase
       JWT.stubs(:decode).returns(decoded_val)
       VCR.use_cassette('google_keys') do
         token = firebase.decode(id_token)
-        token.must_be_nil
+        _(token).must_be_nil
       end
     end
   end

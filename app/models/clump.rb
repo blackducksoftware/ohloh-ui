@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-class Clump < ActiveRecord::Base
-  belongs_to :code_set
-  belongs_to :slave
+class Clump < ApplicationRecord
+  belongs_to :code_set, optional: true
+  belongs_to :slave, optional: true
 
   def path
     slave.path_from_code_set_id(code_set_id)

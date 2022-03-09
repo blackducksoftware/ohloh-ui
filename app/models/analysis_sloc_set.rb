@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class AnalysisSlocSet < FisBase
-  belongs_to :analysis
-  belongs_to :sloc_set
+  belongs_to :analysis, optional: true
+  belongs_to :sloc_set, optional: true
   has_many :commit_flags, class_name: 'CommitFlag', foreign_key: :sloc_set_id, primary_key: :sloc_set_id
   has_one :project, primary_key: :analysis_id, foreign_key: :best_analysis_id
 
@@ -38,7 +38,7 @@ class AnalysisSlocSet < FisBase
     # TODO: Remove dependence on code_locations table here.
     def for_code_location(code_location_id)
       joins(sloc_set: :code_set).joins('join code_locations on best_code_set_id = code_sets.id')
-                                .where('code_locations.id = ?', code_location_id)
+                                .where(code_locations: { id: code_location_id })
     end
   end
 

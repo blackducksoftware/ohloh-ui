@@ -15,15 +15,15 @@ class ChartTest < ActiveSupport::TestCase
   describe 'commits_by_project' do
     it 'should return chart data for user' do
       chart_data = JSON.parse(account_chart.commits_by_project)
-      chart_data['noCommits'].must_equal false
-      chart_data['series'].first['data'].must_equal [nil] * 13 + [25, 40, 28, 18, 1, 8, 26, 9] + [nil] * 64
-      chart_data['series'].first['name'].must_equal position1.project.name
+      _(chart_data['noCommits']).must_equal false
+      _(chart_data['series'].first['data']).must_equal ([nil] * 13) + [25, 40, 28, 18, 1, 8, 26, 9] + ([nil] * 64)
+      _(chart_data['series'].first['name']).must_equal position1.project.name
     end
 
     it 'should return chart data for admin' do
       chart_data = JSON.parse(admin_chart.commits_by_project)
-      chart_data['noCommits'].must_equal true
-      chart_data['series'].must_equal []
+      _(chart_data['noCommits']).must_equal true
+      _(chart_data['series']).must_equal []
     end
   end
 
@@ -31,17 +31,17 @@ class ChartTest < ActiveSupport::TestCase
     it 'should return chart data for user when' do
       chart_data = JSON.parse(account_chart.commits_by_language)
       first_lanugage = chart_data['object_array'].first['table']
-      first_lanugage['language_id'].must_equal '17'
-      first_lanugage['name'].must_equal 'csharp'
-      first_lanugage['color_code'].must_equal '4096EE'
-      first_lanugage['nice_name'].must_equal 'C#'
-      first_lanugage['commits'].must_equal [0] * 12 + [24, 37, 27, 16, 1, 8, 26, 9] + [0] * 64
-      first_lanugage['category'].must_equal '0'
+      _(first_lanugage['language_id']).must_equal '17'
+      _(first_lanugage['name']).must_equal 'csharp'
+      _(first_lanugage['color_code']).must_equal '4096EE'
+      _(first_lanugage['nice_name']).must_equal 'C#'
+      _(first_lanugage['commits']).must_equal ([0] * 12) + [24, 37, 27, 16, 1, 8, 26, 9] + ([0] * 64)
+      _(first_lanugage['category']).must_equal '0'
     end
 
     it 'should return chart data for admin' do
       chart_data = JSON.parse(admin_chart.commits_by_language)
-      chart_data['object_array'].must_equal []
+      _(chart_data['object_array']).must_equal []
     end
   end
 end

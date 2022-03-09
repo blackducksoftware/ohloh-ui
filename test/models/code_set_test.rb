@@ -15,7 +15,7 @@ describe CodeSet do
       Slave.any_instance.stubs(:run_local_or_remote).returns(true)
 
       job = code_set.reimport
-      CodeSet.last.must_equal job.code_set
+      _(CodeSet.last).must_equal job.code_set
     end
   end
 
@@ -23,7 +23,7 @@ describe CodeSet do
     it 'should ignore file names' do
       enlistment = create(:enlistment)
       code_set = create(:code_set, code_location_id: enlistment.code_location_id)
-      code_set.ignore_prefixes(enlistment.project).must_be_empty
+      _(code_set.ignore_prefixes(enlistment.project)).must_be_empty
     end
   end
 
@@ -31,7 +31,7 @@ describe CodeSet do
     it 'should ignore file names' do
       enlistment = create(:enlistment, allowed_fyles: nil)
       code_set = create(:code_set, code_location_id: enlistment.code_location_id)
-      code_set.allow_prefixes(enlistment.project).must_be_empty
+      _(code_set.allow_prefixes(enlistment.project)).must_be_empty
     end
   end
 end

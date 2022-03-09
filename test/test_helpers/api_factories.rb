@@ -7,7 +7,7 @@ end
 
 def code_location_stub_with_id
   code_location = code_location_stub
-  code_location.instance_variable_set('@id', Faker::Number.number(4))
+  code_location.instance_variable_set('@id', Faker::Number.number(digits: 4))
   code_location
 end
 

@@ -7,7 +7,7 @@ class CommitFlag::NewLanguageTest < ActiveSupport::TestCase
     lang = create(:language)
     cf = create(:commit_flag, type: 'CommitFlag::NewLanguage', data: { language_id: lang.id })
     nl = CommitFlag::NewLanguage.find(cf.id)
-    nl.language.id.must_equal lang.id
+    _(nl.language.id).must_equal lang.id
   end
 
   it '#language_id=' do
@@ -16,6 +16,6 @@ class CommitFlag::NewLanguageTest < ActiveSupport::TestCase
     nl = CommitFlag::NewLanguage.find(cf.id)
     nl.language_id = lang.id
     nl.save!
-    nl.language.id.must_equal lang.id
+    _(nl.language.id).must_equal lang.id
   end
 end

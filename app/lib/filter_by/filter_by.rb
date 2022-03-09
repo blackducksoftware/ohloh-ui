@@ -13,7 +13,7 @@ module FilterBy
 
   def build_sql_query(query)
     query.split.collect do |q|
-      surround sanitize_sql([@filter_attributes, query: "%#{q.downcase}%"])
+      surround sanitize_sql([@filter_attributes, { query: "%#{q.downcase}%" }])
     end.join(' AND ')
   end
 
@@ -22,4 +22,4 @@ module FilterBy
   end
 end
 
-ActiveRecord::Base.send :extend, FilterBy
+ApplicationRecord.extend FilterBy

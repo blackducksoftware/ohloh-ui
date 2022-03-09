@@ -21,38 +21,38 @@ class AliasTest < ActiveSupport::TestCase
   it 'should validate commit_name_id presence' do
     alias_obj = build(:alias, commit_name: nil)
     alias_obj.valid?
-    alias_obj.errors[:commit_name_id].count.must_equal 1
-    alias_obj.errors[:commit_name_id].first.must_equal "can't be blank"
+    _(alias_obj.errors[:commit_name_id].count).must_equal 1
+    _(alias_obj.errors[:commit_name_id].first).must_equal "can't be blank"
   end
 
   it 'should validate preferred_name_id presence' do
     alias_obj = build(:alias, preferred_name: nil)
     alias_obj.valid?
-    alias_obj.errors[:preferred_name_id].count.must_equal 1
-    alias_obj.errors[:preferred_name_id].first.must_equal "can't be blank"
+    _(alias_obj.errors[:preferred_name_id].count).must_equal 1
+    _(alias_obj.errors[:preferred_name_id].first).must_equal "can't be blank"
   end
 
   it '#for_project' do
     alias_project = Alias.for_project(@alias.project)
-    alias_project.count.must_equal 1
-    alias_project.first.must_equal @alias
+    _(alias_project.count).must_equal 1
+    _(alias_project.first).must_equal @alias
   end
 
   it '#committer_names' do
     committer_names = Alias.committer_names(@commit_project)
-    committer_names.count.must_equal 1
-    committer_names.first.id.must_equal @commit.name_id
+    _(committer_names.count).must_equal 1
+    _(committer_names.first.id).must_equal @commit.name_id
   end
 
   it '#preferred_names' do
     preferred_names = Alias.preferred_names(@commit_project)
-    preferred_names.count.must_equal 1
-    preferred_names.first.id.must_equal @commit.name_id
+    _(preferred_names.count).must_equal 1
+    _(preferred_names.first.id).must_equal @commit.name_id
   end
 
   it '#preferred_names with name_id' do
     preferred_names = Alias.preferred_names(@commit_project, @commit.name_id)
-    preferred_names.count.must_equal 0
+    _(preferred_names.count).must_equal 0
   end
 
   it 'expected callbacks when alias is created' do
@@ -88,35 +88,35 @@ class AliasTest < ActiveSupport::TestCase
     @alias.preferred_name_id = contributor_fact2.name_id
     @alias.save!
     contributor_fact = ContributorFact.where(analysis_id: @project.best_analysis_id)
-    contributor_fact.find_by(name: contributor_fact1.name).commits.must_equal 3
-    contributor_fact.find_by(name: contributor_fact1.name).email_address_ids.must_equal [2]
-    contributor_fact.find_by(name: contributor_fact2.name).commits.must_equal 9
-    contributor_fact.find_by(name: contributor_fact2.name).email_address_ids.must_equal [3, 1]
+    _(contributor_fact.find_by(name: contributor_fact1.name).commits).must_equal 3
+    _(contributor_fact.find_by(name: contributor_fact1.name).email_address_ids).must_equal [2]
+    _(contributor_fact.find_by(name: contributor_fact2.name).commits).must_equal 9
+    _(contributor_fact.find_by(name: contributor_fact2.name).email_address_ids).must_equal [3, 1]
   end
 
   it '#best_analysis_aliases' do
     create(:analysis_alias, analysis_id: @project.best_analysis_id,
                             commit_name_id: @commit_name.id, preferred_name_id: @preferred_name.id)
 
-    Alias.best_analysis_aliases(@project).to_a.map(&:id).sort.must_equal [@alias.id]
+    _(Alias.best_analysis_aliases(@project).to_a.map(&:id).sort).must_equal [@alias.id]
   end
 
   it '#create_for_project creates a new alias' do
     alias_obj = Alias.create_for_project(@account, @project, @commit_name.id, @preferred_name.id)
-    alias_obj.must_be :persisted?
+    _(alias_obj).must_be :persisted?
   end
 
   it '#create_for_project deletes an alias when one assigns an alias to have the same commit and preferred names' do
     Alias.create_for_project(@account, @project, @commit_name.id, @preferred_name.id)
     alias_obj = Alias.create_for_project(@account, @project, @commit_name.id, @commit_name.id)
-    alias_obj.deleted.must_equal true
+    _(alias_obj.deleted).must_equal true
   end
 
   it '#create_for_project restores an alias when flipped back' do
     Alias.create_for_project(@account, @project, @commit_name.id, @preferred_name.id)
     Alias.create_for_project(@account, @project, @commit_name.id, @commit_name.id)
     alias_obj = Alias.create_for_project(@account, @project, @commit_name.id, @preferred_name.id)
-    alias_obj.deleted.must_equal false
+    _(alias_obj.deleted).must_equal false
   end
 
   it '#create_for_project with NO override bypasses validation' do
@@ -126,7 +126,7 @@ class AliasTest < ActiveSupport::TestCase
 
   it '#create_for_project with override bypasses validation' do
     Alias.any_instance.expects(:save_without_validation!)
-    Alias.create_for_project(@account, @project, create(:name), @preferred_name.id, true)
+    Alias.create_for_project(@account, @project, create(:name), @preferred_name.id, override_permissions: true)
   end
 
   it 'allow_undo_to_nil?' do
@@ -145,14 +145,14 @@ class AliasTest < ActiveSupport::TestCase
     end
     it 'should increment count only if preferred_name_id is changed ' do
       @alias.update(deleted: false)
-      @contributor_fact.reload.commits.must_equal 8
+      _(@contributor_fact.reload.commits).must_equal 8
     end
 
     it 'should increment count only if preferred_name_id is changed-positive' do
       contributor_fact1 = create(:contributor_fact, name_id: @person1.name_id, analysis_id: @project.best_analysis_id,
                                                     commits: 8)
       @alias.update(preferred_name_id: contributor_fact1.name_id)
-      contributor_fact1.reload.commits.must_equal 10
+      _(contributor_fact1.reload.commits).must_equal 10
     end
   end
 end

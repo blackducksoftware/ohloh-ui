@@ -1,7 +1,7 @@
 #! /usr/bin/env ruby
 # frozen_string_literal: true
 
-# rubocop:disable LineLength
+# rubocop:disable Layout/LineLength
 
 raise 'RAILS_ENV is undefined' unless ENV['RAILS_ENV']
 
@@ -188,4 +188,4 @@ end
 ['Include Copyright', 'Include License', 'Distribute Original', 'Disclose Source', 'Include Install Instructions', 'Compensate Damages'].each do |required|
   assign_permission(license, required, 'required')
 end
-# rubocop:enable LineLength
+# rubocop:enable Layout/LineLength

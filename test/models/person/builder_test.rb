@@ -19,7 +19,7 @@ class Person::BuilderTest < ActiveSupport::TestCase
     describe 'names relative to project\'s best_analysis_id' do
       it 'must create people with related names' do
         contributor_fact = create(:contributor_fact, analysis_id: analysis.id)
-        ContributorFact.unclaimed_for_project(project).to_a.map(&:id).must_equal [contributor_fact.id]
+        _(ContributorFact.unclaimed_for_project(project).to_a.map(&:id)).must_equal [contributor_fact.id]
 
         assert_difference -> { Person.count }, 1 do
           Person::Builder.rebuild_for_analysis_matching_names(project)
@@ -33,7 +33,7 @@ class Person::BuilderTest < ActiveSupport::TestCase
 
         Person::Builder.rebuild_for_analysis_matching_names(project)
 
-        Person.find_by(id: unrelateable_person).must_be_nil
+        _(Person.find_by(id: unrelateable_person)).must_be_nil
       end
     end
 
@@ -41,7 +41,7 @@ class Person::BuilderTest < ActiveSupport::TestCase
       matching_contributor_fact = create(:contributor_fact, analysis_id: project.best_analysis_id)
       person = Person.create!(name_id: matching_contributor_fact.name_id, project_id: project.id,
                               name_fact: create(:contributor_fact))
-      person.name_fact_id.wont_equal matching_contributor_fact.id
+      _(person.name_fact_id).wont_equal matching_contributor_fact.id
 
       # Stub everthing before the private method call.
       Person.stubs(:delete_all)
@@ -50,13 +50,13 @@ class Person::BuilderTest < ActiveSupport::TestCase
       Person::Builder.rebuild_for_analysis_matching_names(project)
 
       person.reload
-      person.name_fact_id.must_equal matching_contributor_fact.id
+      _(person.name_fact_id).must_equal matching_contributor_fact.id
     end
   end
 
   describe 'rebuild_kudos' do
     let(:person) { create(:account).person }
-    before { Person.where('id != ?', person.id).delete_all }
+    before { Person.where.not(id: person.id).delete_all }
 
     it 'must attempt to find kudo_score' do
       KudoScore.expects(:find_by_account_or_name_and_project).once
@@ -69,10 +69,10 @@ class Person::BuilderTest < ActiveSupport::TestCase
       Person::Builder.rebuild_kudos
 
       person.reload
-      person.kudo_rank.must_equal kudo_score.rank
-      person.kudo_score.must_equal kudo_score.score
-      person.kudo_position.must_equal kudo_score.position
-      person.popularity_factor.to_f.must_equal person.searchable_factor
+      _(person.kudo_rank).must_equal kudo_score.rank
+      _(person.kudo_score).must_equal kudo_score.score
+      _(person.kudo_position).must_equal kudo_score.position
+      _(person.popularity_factor.to_f).must_equal person.searchable_factor
     end
 
     it 'must nullify kudo related data when it is absent' do
@@ -80,10 +80,10 @@ class Person::BuilderTest < ActiveSupport::TestCase
       Person::Builder.rebuild_kudos
 
       person.reload
-      person.kudo_rank.must_be_nil
-      person.kudo_score.must_be_nil
-      person.kudo_position.must_be_nil
-      person.popularity_factor.must_equal 0.0
+      _(person.kudo_rank).must_be_nil
+      _(person.kudo_score).must_be_nil
+      _(person.kudo_position).must_be_nil
+      _(person.popularity_factor).must_equal 0.0
     end
   end
 end

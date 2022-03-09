@@ -4,6 +4,7 @@ class Analysis::LanguageHistoryChart < Analysis::Chart
   include ColorsHelper
 
   def initialize(analysis)
+    super()
     @analysis = analysis
     @history = Analysis::LanguageHistory.new(analysis: analysis).execute
     @defaults = ANALYSIS_CHART_DEFAULTS.deep_merge(ANALYSIS_CHARTS_OPTIONS['language_history'])

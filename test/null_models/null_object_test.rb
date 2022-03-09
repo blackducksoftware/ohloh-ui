@@ -7,20 +7,20 @@ class NullObjectTest < ActiveSupport::TestCase
 
   describe 'nil?' do
     it 'should return true' do
-      null_object.nil?.must_equal true
+      _(null_object.nil?).must_equal true
     end
   end
 
   describe 'blank?' do
     it 'should return true' do
-      null_object.blank?.must_equal true
+      _(null_object.blank?).must_equal true
     end
   end
 
   describe 'nought_methods' do
     it 'should create methods that return zero' do
       NullObject.nought_methods :test
-      NullObject.new.test.must_equal 0
+      _(NullObject.new.test).must_equal 0
     end
   end
 end

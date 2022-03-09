@@ -53,21 +53,21 @@ class PageContextHelperTest < ActionView::TestCase
     stubs(:current_user).returns(@account)
     account_context
     page_context.delete(:footer_menu_list)
-    page_context.must_equal account_menus
+    _(page_context).must_equal account_menus
   end
 
   it 'should return organization page context' do
     @organization = linux_organization
     organization_context
     page_context.delete(:footer_menu_list)
-    page_context.must_equal organization_menus
+    _(page_context).must_equal organization_menus
   end
 
   it 'should return project page context' do
     @project = linux
     project_context
     page_context.delete(:footer_menu_list)
-    page_context.must_equal project_menus
+    _(page_context).must_equal project_menus
   end
 
   it 'should return forum page context' do
@@ -75,12 +75,12 @@ class PageContextHelperTest < ActionView::TestCase
     @forum = rails
     forum_context
     page_context.delete(:footer_menu_list)
-    page_context.must_equal forum_menus
+    _(page_context).must_equal forum_menus
   end
 
   it 'should return tools page context' do
     tool_context
     page_context.delete(:footer_menu_list)
-    page_context.must_equal tool_menus
+    _(page_context).must_equal tool_menus
   end
 end

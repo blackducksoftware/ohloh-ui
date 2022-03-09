@@ -1,4 +1,4 @@
 # frozen_string_literal: true
 
-class Attachment < ActiveRecord::Base
+class Attachment < ApplicationRecord
 end

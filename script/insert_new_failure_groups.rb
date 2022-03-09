@@ -5,7 +5,7 @@ raise 'RAILS_ENV is undefined' unless ENV['RAILS_ENV']
 
 require_relative '../config/environment'
 
-# rubocop:disable LineLength
+# rubocop:disable Layout/LineLength
 ActiveRecord::Base.connection.execute("
 
 INSERT INTO failure_groups(
@@ -28,5 +28,5 @@ INSERT INTO failure_groups(
     ('Investigate: Ambiguous argument - unknown revision', '%fatal: ambiguous argument%unknown revision or path not in the working tree%', 0, false),
     ('Investigate: Non fast-forward', '%(non-fast-forward)%', 0, false) ;")
 
-# rubocop:enable LineLength
+# rubocop:enable Layout/LineLength
 FailureGroup.categorize

@@ -10,13 +10,13 @@ class LicenseLicensePermissionTest < ActiveSupport::TestCase
              license: license,
              license_permission: create(:license_permission,
                                         license_right: create(:license_right, name: 'permitted')))
-      license.license_license_permissions.count.must_equal 1
-      license.license_license_permissions.first.license.blank?.must_equal false
+      _(license.license_license_permissions.count).must_equal 1
+      _(license.license_license_permissions.first.license.blank?).must_equal false
     end
 
     it 'is not valid if it does not have a license permission or license' do
       lpr = build(:license_license_permission, license_permission: nil, license: nil)
-      lpr.valid?.must_equal false
+      _(lpr.valid?).must_equal false
     end
   end
 end

@@ -18,43 +18,43 @@ class ContributionTest < ActiveSupport::TestCase
     end
 
     it '#commits when no sort order is specified' do
-      results = Contribution.joins(:contributor_fact).sort(nil).map(&:id)
-      results.must_equal [@person1.id, @person2.id, @person3.id, @person.id]
+      results = Contribution.joins(:contributor_fact).sort_scope(nil).map(&:id)
+      _(results).must_equal [@person1.id, @person2.id, @person3.id, @person.id]
     end
 
     it '#name' do
-      find_contribution(:person, 'name').must_equal [@person2.id, @person1.id, @person3.id]
+      _(find_contribution(:person, 'name')).must_equal [@person2.id, @person1.id, @person3.id]
     end
 
     it '#kudo_position' do
-      find_contribution(:person, 'kudo_position')
+      _(find_contribution(:person, 'kudo_position'))
         .must_equal [@person3.id, @person2.id, @person1.id]
     end
 
     it '#commits' do
-      find_contribution(:contributor_fact, 'commits')
+      _(find_contribution(:contributor_fact, 'commits'))
         .must_equal [@person1.id, @person2.id, @person3.id]
     end
 
     it '#twelve_month_commits' do
-      find_contribution(:contributor_fact, 'twelve_month_commits')
+      _(find_contribution(:contributor_fact, 'twelve_month_commits'))
         .must_equal [@person3.id, @person2.id, @person1.id]
     end
 
     it '#latest_commit' do
-      find_contribution(:contributor_fact, 'latest_commit')
+      _(find_contribution(:contributor_fact, 'latest_commit'))
         .must_equal [@person3.id, @person2.id, @person1.id]
     end
 
     it '#newest' do
-      find_contribution(:contributor_fact, 'newest')
+      _(find_contribution(:contributor_fact, 'newest'))
         .must_equal [@person3.id, @person2.id, @person1.id]
     end
   end
 
   describe '#filter_by' do
     it 'filter_by with nil string' do
-      Contribution.filter_by(nil).count.must_equal Contribution.count
+      _(Contribution.filter_by(nil).count).must_equal Contribution.count
     end
   end
 
@@ -62,54 +62,54 @@ class ContributionTest < ActiveSupport::TestCase
     it 'must return empty array if contributor_fact is nil' do
       contribution = Contribution.first
       contribution.stubs(:contributor_fact).returns(nil)
-      contribution.analysis_aliases.must_equal []
+      _(contribution.analysis_aliases).must_equal []
     end
 
     it 'must return analysis_aliases if contributor_fact is present' do
-      @contribution.analysis_aliases.first.must_equal @analysis_alias
+      _(@contribution.analysis_aliases.first).must_equal @analysis_alias
     end
   end
 
   describe '#scm_names' do
     it 'must return committers name' do
-      @contribution.scm_names.must_equal [@analysis_alias.commit_name]
+      _(@contribution.scm_names).must_equal [@analysis_alias.commit_name]
     end
 
     it 'must return empty array if contributor_fact is nil' do
       contribution = Contribution.first
       contribution.stubs(:contributor_fact).returns(NilContributorFact.new)
-      contribution.scm_names.must_equal []
+      _(contribution.scm_names).must_equal []
     end
   end
 
   describe '#committer_name' do
     it 'must return contributors name' do
-      @contribution.committer_name.must_equal @contributor_fact.name.name
+      _(@contribution.committer_name).must_equal @contributor_fact.name.name
     end
 
     it 'must return persons effective_name if zero contributors' do
       contribution = Contribution.first
       contribution.stubs(:name_fact_id).returns(nil)
-      contribution.committer_name.must_equal contribution.person.effective_name
+      _(contribution.committer_name).must_equal contribution.person.effective_name
     end
   end
 
   it '#generate_id_from_project_id_and_name_id' do
-    Contribution.generate_id_from_project_id_and_name_id(1, 1).must_equal 644_245_094_5
+    _(Contribution.generate_id_from_project_id_and_name_id(1, 1)).must_equal 644_245_094_5
   end
 
   it '#generate_id_from_project_id_and_account_id' do
-    Contribution.generate_id_from_project_id_and_account_id(1, 1).must_equal 429_496_729_7
+    _(Contribution.generate_id_from_project_id_and_account_id(1, 1)).must_equal 429_496_729_7
   end
 
   it '#generate_project_id_and_name_id_from_id' do
-    Contribution.generate_project_id_and_name_id_from_id(1).must_equal [0, 1]
+    _(Contribution.generate_project_id_and_name_id_from_id(1)).must_equal [0, 1]
   end
 
   it 'recent_kudos must return kudos' do
     kudo = create(:kudo, project_id: @person.project_id, name_id: @person.name_fact.name_id)
-    @contribution.recent_kudos.count.must_equal 1
-    @contribution.recent_kudos.first.must_equal kudo
+    _(@contribution.recent_kudos.count).must_equal 1
+    _(@contribution.recent_kudos.first).must_equal kudo
   end
 
   describe '#find_indirectly' do
@@ -121,7 +121,7 @@ class ContributionTest < ActiveSupport::TestCase
       create(:alias, project: project, commit_name_id: person1.name_id, preferred_name_id: person2.name_id)
 
       contribution = Contribution.find_indirectly(contribution_id: person1.contributions.first.id, project: project)
-      contribution.must_equal person2.contributions.first
+      _(contribution).must_equal person2.contributions.first
     end
 
     it 'via position' do
@@ -135,7 +135,7 @@ class ContributionTest < ActiveSupport::TestCase
       fact.update(analysis_id: project.best_analysis_id, name_id: name.id)
       position = create(:position, project: project, name_id: name.id)
       contribution = Contribution.find_indirectly(contribution_id: person1.contributions.first.id, project: project)
-      contribution.must_equal position.contribution
+      _(contribution).must_equal position.contribution
     end
   end
 

@@ -12,55 +12,55 @@ class OrganizationTest < ActiveSupport::TestCase
     proj2.update(organization_id: org.id)
     pe1 = PropertyEdit.where(target: proj1, key: 'organization_id', value: org.id.to_s).first
     pe2 = PropertyEdit.where(target: proj2, key: 'organization_id', value: org.id.to_s).first
-    pe1.undone.must_equal false
-    pe2.undone.must_equal false
+    _(pe1.undone).must_equal false
+    _(pe2.undone).must_equal false
     org.destroy
-    pe1.reload.undone.must_equal true
-    pe2.reload.undone.must_equal true
-    assert_nil proj1.reload.organization_id
-    assert_nil proj2.reload.organization_id
+    _(pe1.reload.undone).must_equal true
+    _(pe2.reload.undone).must_equal true
+    _(proj1.reload.organization_id).must_be_nil
+    _(proj2.reload.organization_id).must_be_nil
     CreateEdit.where(target: org).first.redo!(create(:admin))
-    pe1.reload.undone.must_equal false
-    pe2.reload.undone.must_equal false
-    proj1.reload.organization_id.must_equal org.id
-    proj2.reload.organization_id.must_equal org.id
+    _(pe1.reload.undone).must_equal false
+    _(pe2.reload.undone).must_equal false
+    _(proj1.reload.organization_id).must_equal org.id
+    _(proj2.reload.organization_id).must_equal org.id
   end
 
   describe 'managed_by' do
     it 'should return all orgs managed by an account' do
       account = create(:account)
       create(:manage, account: account, target: org)
-      Organization.managed_by(account).must_equal [org]
+      _(Organization.managed_by(account)).must_equal [org]
     end
   end
 
   describe 'CreateEdit' do
     it 'should not allow to undo a creat CreateEdit' do
-      org.allow_undo?(nil).must_equal false
+      _(org.allow_undo?(nil)).must_equal false
     end
   end
 
   describe 'from_param' do
     it 'should match organization vanity_url' do
       organization = create(:organization)
-      Organization.from_param(organization.vanity_url).first.id.must_equal organization.id
+      _(Organization.from_param(organization.vanity_url).first.id).must_equal organization.id
     end
 
     it 'should match organization id as string' do
       organization = create(:organization)
-      Organization.from_param(organization.id.to_s).first.id.must_equal organization.id
+      _(Organization.from_param(organization.id.to_s).first.id).must_equal organization.id
     end
 
     it 'should match organization id as integer' do
       organization = create(:organization)
-      Organization.from_param(organization.id).first.id.must_equal organization.id
+      _(Organization.from_param(organization.id).first.id).must_equal organization.id
     end
 
     it 'should not match deleted organizations' do
       organization = create(:organization)
-      Organization.from_param(organization.to_param).count.must_equal 1
+      _(Organization.from_param(organization.to_param).count).must_equal 1
       organization.destroy
-      Organization.from_param(organization.to_param).count.must_equal 0
+      _(Organization.from_param(organization.to_param).count).must_equal 0
     end
   end
 
@@ -69,7 +69,7 @@ class OrganizationTest < ActiveSupport::TestCase
       org1 = create(:organization, name: 'test1')
       org2 = create(:organization, name: 'test2')
 
-      Organization.sort_by_newest.must_equal [org2, org1]
+      _(Organization.sort_by_newest).must_equal [org2, org1]
     end
   end
 
@@ -78,7 +78,7 @@ class OrganizationTest < ActiveSupport::TestCase
       org1 = create(:organization, name: 'test1', updated_at: Time.current + 5.days)
       org2 = create(:organization, name: 'test2')
 
-      Organization.sort_by_recent.must_equal [org1, org2]
+      _(Organization.sort_by_recent).must_equal [org1, org2]
     end
   end
 
@@ -87,7 +87,7 @@ class OrganizationTest < ActiveSupport::TestCase
       org1 = create(:organization, name: 'test1')
       org2 = create(:organization, name: 'test2')
 
-      Organization.sort_by_name.must_equal [org1, org2]
+      _(Organization.sort_by_name).must_equal [org1, org2]
     end
   end
 
@@ -96,7 +96,7 @@ class OrganizationTest < ActiveSupport::TestCase
       org1 = create(:organization, name: 'test1', projects_count: 5)
       org2 = create(:organization, name: 'test2', projects_count: 10)
 
-      Organization.sort_by_projects.must_equal [org2, org1]
+      _(Organization.sort_by_projects).must_equal [org2, org1]
     end
   end
 
@@ -106,7 +106,7 @@ class OrganizationTest < ActiveSupport::TestCase
       org2 = create(:organization, name: 'test na2', projects_count: 10)
       org3 = create(:organization, name: 'test na3', projects_count: 9)
 
-      Organization.search_and_sort('test', 'projects', nil).must_equal [org2, org3, org1]
+      _(Organization.search_and_sort('test', 'projects', nil)).must_equal [org2, org3, org1]
     end
   end
 
@@ -114,19 +114,16 @@ class OrganizationTest < ActiveSupport::TestCase
     it 'must return non zero count' do
       account = create(:account, organization_id: org.id)
       create_position(account: account)
-      org.affiliators_count.must_equal 1
+      _(org.affiliators_count).must_equal 1
     end
 
     it 'must return zero if no positions found' do
       create(:account, organization_id: org.id)
-      org.affiliators_count.must_equal 0
+      _(org.affiliators_count).must_equal 0
     end
   end
 
   describe 'jobs' do
-    it 'ensure_job should schedule organization job successfully' do
-    end
-
     it 'ensure_job should not schedule organization job if there is a job already scheduled' do
       Job.delete_all
       assert_equal 0, OrganizationJob.count
@@ -183,7 +180,7 @@ class OrganizationTest < ActiveSupport::TestCase
         valid_vanity_urls = %w[org-name org_name orgé org_]
         valid_vanity_urls.each do |name|
           organization = build(:organization, vanity_url: name)
-          organization.wont_be :valid?
+          _(organization).wont_be :valid?
         end
       end
 
@@ -192,7 +189,7 @@ class OrganizationTest < ActiveSupport::TestCase
 
         invalid_vanity_urls.each do |name|
           organization = build(:organization, vanity_url: name)
-          organization.wont_be :valid?
+          _(organization).wont_be :valid?
         end
       end
     end
@@ -202,6 +199,6 @@ class OrganizationTest < ActiveSupport::TestCase
     project = create(:project, organization: org)
 
     org.update_attributes(name: Faker::Lorem.word + rand(999).to_s)
-    KnowledgeBaseStatus.find_by(project_id: project.id).in_sync.must_equal false
+    _(KnowledgeBaseStatus.find_by(project_id: project.id).in_sync).must_equal false
   end
 end

@@ -8,12 +8,12 @@ class SparkDataTest < ActiveSupport::TestCase
       create_project_and_analysis
 
       spark_data = Analysis::SparkData.generate
-      spark_data.length.must_equal 64
+      _(spark_data.length).must_equal 64
       data_with_values = spark_data.reject { |datum| datum.last.zero? }
-      data_with_values.map(&:first).must_equal [(Date.current - 2.days).to_time(:utc),
-                                                (Date.current - 1.day).to_time(:utc),
-                                                Date.current.to_time(:utc)]
-      data_with_values.map(&:last).must_equal [2, 2, 2]
+      _(data_with_values.map(&:first)).must_equal [(Date.current - 2.days).to_time(:utc),
+                                                   (Date.current - 1.day).to_time(:utc),
+                                                   Date.current.to_time(:utc)]
+      _(data_with_values.map(&:last)).must_equal [2, 2, 2]
     end
   end
 end

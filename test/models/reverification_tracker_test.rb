@@ -51,16 +51,16 @@ class ReverificationTrackerTest < ActiveSupport::TestCase
 
     it 'should return initial notifications tracker which are not verified within 21 days' do
       exp_noti = ReverificationTracker.expired_initial_phase_notifications
-      exp_noti.must_equal [initial_tracker1, initial_tracker2]
+      _(exp_noti).must_equal [initial_tracker1, initial_tracker2]
       assert_equal ['initial'], exp_noti.map(&:phase).uniq
       assert_equal [true, true], (exp_noti.map { |n| (Time.now.utc - n.sent_at).to_i >= NOTIFICATION1_DUE_DAYS })
     end
 
     it 'should return initial notifications tracker which are successfully delivered to recipients' do
       exp_noti = ReverificationTracker.expired_initial_phase_notifications
-      # Note: Here the lazy loading of ActiveRecord::Relation breaks the
+      # NOTE: Here the lazy loading of ActiveRecord::Relation breaks the
       # execution sequence cause of belonging methods not loaded into memory early.
-      exp_noti.must_equal [initial_tracker1, initial_tracker2]
+      _(exp_noti).must_equal [initial_tracker1, initial_tracker2]
       assert_equal [true, true], exp_noti.map(&:delivered?)
     end
 
@@ -71,9 +71,9 @@ class ReverificationTrackerTest < ActiveSupport::TestCase
                                             attempts: 3,
                                             sent_at: Time.now.utc - NOTIFICATION1_DUE_DAYS.days)
       exp_noti = ReverificationTracker.expired_initial_phase_notifications
-      exp_noti.must_include soft_bounced_thrice_tracker2
+      _(exp_noti).must_include soft_bounced_thrice_tracker2
       assert_equal 3, soft_bounced_thrice_tracker2.attempts
-      exp_noti.wont_include soft_bounced_tracker1
+      _(exp_noti).wont_include soft_bounced_tracker1
     end
   end
 
@@ -93,16 +93,16 @@ class ReverificationTrackerTest < ActiveSupport::TestCase
 
     it 'should return marked for disable notifications tracker which are not verified within 140 days' do
       exp_noti = ReverificationTracker.expired_second_phase_notifications
-      exp_noti.must_equal [marked_disable_tracker1, marked_disable_tracker2]
+      _(exp_noti).must_equal [marked_disable_tracker1, marked_disable_tracker2]
       assert_equal ['marked_for_disable'], exp_noti.map(&:phase).uniq
       assert_equal [true, true], (exp_noti.map { |n| (Time.now.utc - n.sent_at).to_i >= NOTIFICATION2_DUE_DAYS })
     end
 
     it 'should return marked for disable notifications tracker which are successfully delivered to recipients' do
       exp_noti = ReverificationTracker.expired_second_phase_notifications
-      # Note: Here the lazy loading of ActiveRecord::Relation breaks the execution
+      # NOTE: Here the lazy loading of ActiveRecord::Relation breaks the execution
       # sequence cause of belonging methods not loaded into memory early.
-      exp_noti.must_equal [marked_disable_tracker1, marked_disable_tracker2]
+      _(exp_noti).must_equal [marked_disable_tracker1, marked_disable_tracker2]
       assert_equal [true, true], exp_noti.map(&:delivered?)
     end
 
@@ -113,9 +113,9 @@ class ReverificationTrackerTest < ActiveSupport::TestCase
                                             attempts: 3,
                                             sent_at: Time.now.utc - NOTIFICATION2_DUE_DAYS.days)
       exp_noti = ReverificationTracker.expired_second_phase_notifications
-      exp_noti.must_include soft_bounced_thrice_tracker2
+      _(exp_noti).must_include soft_bounced_thrice_tracker2
       assert_equal 3, soft_bounced_thrice_tracker2.attempts
-      exp_noti.wont_include soft_bounced_tracker1
+      _(exp_noti).wont_include soft_bounced_tracker1
     end
   end
 
@@ -135,16 +135,16 @@ class ReverificationTrackerTest < ActiveSupport::TestCase
 
     it 'should return disabled notifications trackers which are not verified within 28 days' do
       exp_noti = ReverificationTracker.expired_third_phase_notifications
-      exp_noti.must_equal [disable_tracker1, disable_tracker2]
+      _(exp_noti).must_equal [disable_tracker1, disable_tracker2]
       assert_equal ['disabled'], exp_noti.map(&:phase).uniq
       assert_equal [true, true], (exp_noti.map { |n| (Time.now.utc - n.sent_at).to_i >= NOTIFICATION3_DUE_DAYS })
     end
 
     it 'should return disablemed notifications trackers which are successfully delivered to recipients' do
       exp_noti = ReverificationTracker.expired_third_phase_notifications
-      # Note: Here the lazy loading of ActiveRecord::Relation breaks the execution
+      # NOTE: Here the lazy loading of ActiveRecord::Relation breaks the execution
       # sequence cause of belonging methods not loaded into memory early.
-      exp_noti.must_equal [disable_tracker1, disable_tracker2]
+      _(exp_noti).must_equal [disable_tracker1, disable_tracker2]
       assert_equal [true, true], exp_noti.map(&:delivered?)
     end
 
@@ -155,9 +155,9 @@ class ReverificationTrackerTest < ActiveSupport::TestCase
                                             attempts: 3,
                                             sent_at: Time.now.utc - NOTIFICATION3_DUE_DAYS.days)
       exp_noti = ReverificationTracker.expired_third_phase_notifications
-      exp_noti.must_include soft_bounced_thrice_tracker2
+      _(exp_noti).must_include soft_bounced_thrice_tracker2
       assert_equal 3, soft_bounced_thrice_tracker2.attempts
-      exp_noti.wont_include soft_bounced_tracker1
+      _(exp_noti).wont_include soft_bounced_tracker1
     end
   end
 
@@ -177,16 +177,16 @@ class ReverificationTrackerTest < ActiveSupport::TestCase
 
     it 'should return final warning notifications trackers which are not verified within 14 days' do
       exp_noti = ReverificationTracker.expired_final_phase_notifications
-      exp_noti.must_equal [final_warning_rev_tracker1, final_warning_rev_tracker2]
+      _(exp_noti).must_equal [final_warning_rev_tracker1, final_warning_rev_tracker2]
       assert_equal ['final_warning'], exp_noti.map(&:phase).uniq
       assert_equal [true, true], (exp_noti.map { |n| (Time.now.utc - n.sent_at).to_i >= NOTIFICATION4_DUE_DAYS })
     end
 
     it 'should return final warning notifications trackers which are successfully delivered to recipients' do
       exp_noti = ReverificationTracker.expired_final_phase_notifications
-      # Note: Here the lazy loading of ActiveRecord::Relation breaks the execution
+      # NOTE: Here the lazy loading of ActiveRecord::Relation breaks the execution
       # sequence cause of belonging methods not loaded into memory early.
-      exp_noti.must_equal [final_warning_rev_tracker1, final_warning_rev_tracker2]
+      _(exp_noti).must_equal [final_warning_rev_tracker1, final_warning_rev_tracker2]
       assert_equal [true, true], exp_noti.map(&:delivered?)
     end
 
@@ -197,9 +197,9 @@ class ReverificationTrackerTest < ActiveSupport::TestCase
                                             attempts: 3,
                                             sent_at: Time.now.utc - NOTIFICATION4_DUE_DAYS.days)
       exp_noti = ReverificationTracker.expired_final_phase_notifications
-      exp_noti.must_include soft_bounced_thrice_tracker2
+      _(exp_noti).must_include soft_bounced_thrice_tracker2
       assert_equal 3, soft_bounced_thrice_tracker2.attempts
-      exp_noti.wont_include soft_bounced_tracker1
+      _(exp_noti).wont_include soft_bounced_tracker1
     end
   end
 
@@ -211,8 +211,8 @@ class ReverificationTrackerTest < ActiveSupport::TestCase
       orphaned_rt = create(:reverification_tracker)
       orphaned_rt.update_attribute(:account_id, 1010)
       ReverificationTracker.cleanup
-      ReverificationTracker.count.must_equal 1
-      rt_needs_to_be_disabled.reload.account.access.level.must_equal(-10)
+      _(ReverificationTracker.count).must_equal 1
+      _(rt_needs_to_be_disabled.reload.account.access.level).must_equal(-10)
     end
   end
 
@@ -267,13 +267,13 @@ class ReverificationTrackerTest < ActiveSupport::TestCase
     it 'should disable an account' do
       account = create(:reverification_tracker, phase: 2).account
       ReverificationTracker.disable_accounts
-      account.reload.access.level.must_equal(-10)
+      _(account.reload.access.level).must_equal(-10)
     end
 
     it 'should not try to disable an account that is already disabled' do
       account = create(:reverification_tracker, phase: 2).account
       account.update(level: -10)
-      account.reload.access.level.must_equal(-10)
+      _(account.reload.access.level).must_equal(-10)
       ReverificationTracker.disable_accounts
       Account.any_instance.expects(:update_attributes!).never
     end

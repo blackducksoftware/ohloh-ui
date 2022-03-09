@@ -16,12 +16,12 @@ class Organization::AffiliatedTest < ActiveSupport::TestCase
     NameFact.where(analysis_id: proj2.best_analysis_id, name_id: po3.name_id).first.update(commits: 2)
 
     acs = proj1.organization.affiliated_committers_stats
-    acs['affl_committers'].must_equal '2'
-    acs['affl_commits'].must_equal '3'
-    acs['affl_projects'].must_equal '1'
-    acs['affl_committers_out'].must_equal '1'
-    acs['affl_commits_out'].must_equal '2'
-    acs['affl_projects_out'].must_equal '1'
+    _(acs['affl_committers']).must_equal 2
+    _(acs['affl_commits']).must_equal 3
+    _(acs['affl_projects']).must_equal 1
+    _(acs['affl_committers_out']).must_equal 1
+    _(acs['affl_commits_out']).must_equal 2
+    _(acs['affl_projects_out']).must_equal 1
   end
 
   it '#committers' do
@@ -33,9 +33,9 @@ class Organization::AffiliatedTest < ActiveSupport::TestCase
     create_position(account: account2, project: proj, organization: proj.organization)
 
     accounts = proj.organization.affiliated_committers(1, 1)
-    accounts.length.must_equal 1
-    accounts.total_entries.must_equal 2
-    accounts.first.id.must_equal account1.id
+    _(accounts.length).must_equal 1
+    _(accounts.total_entries).must_equal 2
+    _(accounts.first.id).must_equal account1.id
   end
 
   it '#projects' do
@@ -43,9 +43,9 @@ class Organization::AffiliatedTest < ActiveSupport::TestCase
     proj1 = create(:project, organization: org, user_count: 2)
     proj2 = create(:project, organization: org, user_count: 1)
     projects = org.affiliated_projects(1, 2)
-    projects.length.must_equal 2
-    projects.total_entries.must_equal 2
-    projects.first.id.must_equal proj1.id
-    projects.last.id.must_equal proj2.id
+    _(projects.length).must_equal 2
+    _(projects.total_entries).must_equal 2
+    _(projects.first.id).must_equal proj1.id
+    _(projects.last.id).must_equal proj2.id
   end
 end

@@ -10,7 +10,7 @@ class CompareProjectCsvDecoratorTest < ActionView::TestCase
 
   describe 'unimplemented methods' do
     it 'should be delegated to the project' do
-      @decorator.name.must_equal @project.name
+      _(@decorator.name).must_equal @project.name
     end
   end
 end

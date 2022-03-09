@@ -2,6 +2,7 @@
 
 class Analysis::ContributorHistoryChart < Analysis::Chart
   def initialize(analysis)
+    super()
     @analysis = analysis
     @history = Analysis::ContributorHistory.new(analysis: analysis).execute
     @defaults = ANALYSIS_CHART_DEFAULTS.deep_merge(ANALYSIS_CHARTS_OPTIONS['committer_history'])

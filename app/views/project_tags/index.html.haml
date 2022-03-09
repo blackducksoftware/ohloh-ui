@@ -11,7 +11,7 @@
 .row#settings_tags
   .col-md-6
     .well
-      %h4= t('.tags_for', name: truncate_project_name(@project.name, false, 43))
+      %h4= t('.tags_for', name: truncate_project_name(@project.name, 43))
       %div
         %p.tags_left!= tags_left(remaining_tags)
         %span.tags#current_tags

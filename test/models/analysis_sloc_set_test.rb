@@ -6,15 +6,15 @@ class AnalysisSlocSetTest < ActiveSupport::TestCase
   describe 'for_repository' do
     it 'should return AnalysisSlocSet' do
       create_analysis_sloc_set
-      AnalysisSlocSet.for_code_location(@analysis_sloc_set.sloc_set.code_set.code_location_id)
-                     .first.must_equal @analysis_sloc_set
+      _(AnalysisSlocSet.for_code_location(@analysis_sloc_set.sloc_set.code_set.code_location_id)
+                       .first).must_equal @analysis_sloc_set
     end
   end
 
   describe 'for_analysis' do
     it 'should return AnalysisSlocSet for analysis' do
       create_analysis_sloc_set
-      AnalysisSlocSet.for_analysis(@analysis_sloc_set.analysis_id).first.must_equal @analysis_sloc_set
+      _(AnalysisSlocSet.for_analysis(@analysis_sloc_set.analysis_id).first).must_equal @analysis_sloc_set
     end
   end
 
@@ -22,25 +22,25 @@ class AnalysisSlocSetTest < ActiveSupport::TestCase
     it 'should return parsed file names' do
       create_analysis_sloc_set('Disallow: foo.txt')
       code_set = " and fyles.code_set_id = #{@analysis_sloc_set.sloc_set.code_set_id}"
-      @analysis_sloc_set.ignore_tuples.must_equal "fyles.name like 'foo.txt%'#{code_set}"
+      _(@analysis_sloc_set.ignore_tuples).must_equal "fyles.name like 'foo.txt%'#{code_set}"
     end
 
     it 'should remove prepend slash for directory' do
       create_analysis_sloc_set('Disallow: /foo')
       code_set = " and fyles.code_set_id = #{@analysis_sloc_set.sloc_set.code_set_id}"
-      @analysis_sloc_set.ignore_tuples.must_equal "fyles.name like 'foo%'#{code_set}"
+      _(@analysis_sloc_set.ignore_tuples).must_equal "fyles.name like 'foo%'#{code_set}"
     end
 
     it 'should leave prepend slash for SvnSyncRepository' do
       create_analysis_sloc_set('Disallow: /foo', nil, svn_sync: true)
       code_set = " and fyles.code_set_id = #{@analysis_sloc_set.sloc_set.code_set_id}"
-      @analysis_sloc_set.ignore_tuples.must_equal "fyles.name like '/foo%'#{code_set}"
+      _(@analysis_sloc_set.ignore_tuples).must_equal "fyles.name like '/foo%'#{code_set}"
     end
 
     it 'should prepend with slash for SvnSyncRepository' do
       create_analysis_sloc_set('Disallow: foo', nil, svn_sync: true)
       code_set = " and fyles.code_set_id = #{@analysis_sloc_set.sloc_set.code_set_id}"
-      @analysis_sloc_set.ignore_tuples.must_equal "fyles.name like '/foo%'#{code_set}"
+      _(@analysis_sloc_set.ignore_tuples).must_equal "fyles.name like '/foo%'#{code_set}"
     end
   end
 
@@ -48,7 +48,7 @@ class AnalysisSlocSetTest < ActiveSupport::TestCase
     it 'should return parsed file names' do
       create_analysis_sloc_set(nil, 'debian/')
       code_set = " and fyles.code_set_id = #{@analysis_sloc_set.sloc_set.code_set_id}"
-      @analysis_sloc_set.allowed_tuples.must_equal "fyles.name like 'debian/%'#{code_set}"
+      _(@analysis_sloc_set.allowed_tuples).must_equal "fyles.name like 'debian/%'#{code_set}"
     end
   end
 

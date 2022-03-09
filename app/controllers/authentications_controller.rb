@@ -34,7 +34,7 @@ class AuthenticationsController < ApplicationController
     if account.update(auth_params)
       flash[:notice] = t('verification_completed')
       statsd_increment('Openhub.Account.Signup.success')
-      redirect_back(account)
+      redirect_to_saved_path(account)
     else
       statsd_increment('Openhub.Account.Signup.failure')
       redirect_to new_authentication_path, notice: account.errors.messages.values.last.last
@@ -47,7 +47,7 @@ class AuthenticationsController < ApplicationController
     if account.save
       statsd_increment('Openhub.Account.Signup.success')
       clearance_session.sign_in account
-      redirect_back(account)
+      redirect_to_saved_path(account)
     else
       statsd_increment('Openhub.Account.Signup.failure')
       redirect_to new_account_path, notice: account.errors.full_messages.join(', ')

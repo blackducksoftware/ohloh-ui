@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class CreateLicensePermissionRoles < ActiveRecord::Migration
+class CreateLicensePermissionRoles < ActiveRecord::Migration[4.2]
   def change
     create_table :license_permission_roles do |t|
       t.references :license

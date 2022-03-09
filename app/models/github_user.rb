@@ -31,11 +31,10 @@ class GithubUser
 
   def create_code_locations
     # rubocop:disable Naming/MemoizedInstanceVariableName
-    @code_locations ||= begin
-      fetch_repository_urls.map do |url, branch_name|
-        CodeLocation.create(url: url, branch: branch_name)
-      end
+    @code_locations ||= fetch_repository_urls.map do |url, branch_name|
+      CodeLocation.create(url: url, branch: branch_name)
     end
+
     # rubocop:enable Naming/MemoizedInstanceVariableName
   end
 

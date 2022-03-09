@@ -23,10 +23,10 @@ class SessionsController < Clearance::SessionsController
   end
 
   def health
-    if ActiveRecord::Base.connected?
-      render text: Time.current
+    if ApplicationRecord.connected?
+      render plain: Time.current
     else
-      render nothing: true, status: :internal_server_error
+      head :internal_server_error
     end
   end
 

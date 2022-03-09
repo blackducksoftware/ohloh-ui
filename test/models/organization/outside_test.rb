@@ -16,9 +16,9 @@ class Organization::OutsideTest < ActiveSupport::TestCase
     NameFact.where(analysis_id: proj2.best_analysis_id, name_id: po3.name_id).first.update(commits: 2)
 
     stats = proj1.organization.outside_committers_stats
-    stats['out_committers'].must_equal '1'
-    stats['out_commits'].must_equal '2'
-    stats['out_projs'].must_equal '1'
+    _(stats['out_committers']).must_equal 1
+    _(stats['out_commits']).must_equal 2
+    _(stats['out_projs']).must_equal 1
   end
 
   it '#committers' do
@@ -31,9 +31,9 @@ class Organization::OutsideTest < ActiveSupport::TestCase
     create_position(account: account2, project: proj)
 
     accounts = proj.organization.outside_committers(1, 1)
-    accounts.length.must_equal 1
-    accounts.total_entries.must_equal 2
-    accounts.first.id.must_equal account1.id
+    _(accounts.length).must_equal 1
+    _(accounts.total_entries).must_equal 2
+    _(accounts.first.id).must_equal account1.id
   end
 
   it '#projects' do
@@ -46,8 +46,8 @@ class Organization::OutsideTest < ActiveSupport::TestCase
     create_position(account: account, project: proj3, organization: proj3.organization)
 
     projects = proj1.organization.outside_projects(1, 1)
-    projects.length.must_equal 1
-    projects.total_entries.must_equal 2
-    projects.first.id.must_equal proj2.id
+    _(projects.length).must_equal 1
+    _(projects.total_entries).must_equal 2
+    _(projects.first.id).must_equal proj2.id
   end
 end

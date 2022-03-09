@@ -1,6 +1,6 @@
 :ruby
   has_header = opts[:include_header]
-  proj_names = params.select { |k, _| k.to_s.match(/project/) }
+  proj_names = params.select { |k, _| k.to_s.match(/project/) }.permit(:project_0, :project_1, :project_2)
 
 %tr.section
   %th{ colspan: (has_header ? 1 : 4), style: (has_header ? 'padding-top: 7px;' : '') }
@@ -11,7 +11,7 @@
         - if project
           %div
             - project_icon(project)
-            %big= link_to(truncate_project_name(project.name, true, 14), project_path(project), title: project.name)
+            %big= link_to(truncate_project_name(project.name, 14, link: true), project_path(project), title: project.name)
             .pull-right
               - link = compare_projects_path(proj_names.except("project_#{index}"))
               %a.btn.btn-minier.btn-info{ href: link, rel: 'tooltip', style: 'margin: 5px 10px 0 0;',

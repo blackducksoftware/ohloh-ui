@@ -38,42 +38,42 @@ class AccountDecoratorTest < ActiveSupport::TestCase
 
   describe 'symbolized_commits_by_project' do
     it 'must be empty when account has no best_account_analysis' do
-      admin.decorate.symbolized_commits_by_project.must_be_empty
+      _(admin.decorate.symbolized_commits_by_project).must_be_empty
     end
 
     it 'should return commits_by_project with keys as symbols' do
-      account.decorate.symbolized_commits_by_project.must_equal symbolized_cbp
+      _(account.decorate.symbolized_commits_by_project).must_equal symbolized_cbp
     end
   end
 
   describe 'sorted_commits_by_project' do
     it 'should return [] when account has no best_account_analysis' do
-      admin.decorate.sorted_commits_by_project.must_be_empty
+      _(admin.decorate.sorted_commits_by_project).must_be_empty
     end
 
     it 'should return sorted commits_by_project data' do
-      account.decorate.sorted_commits_by_project.must_include [account.positions.first.id, 155]
-      account.decorate.sorted_commits_by_project.must_include [account.positions.last.id, 7]
+      _(account.decorate.sorted_commits_by_project).must_include [account.positions.first.id, 155]
+      _(account.decorate.sorted_commits_by_project).must_include [account.positions.last.id, 7]
     end
   end
 
   describe 'symbolized_commits_by_language' do
     it 'should return [] when account has no best_account_analysis' do
-      admin.decorate.symbolized_commits_by_language.must_be_empty
+      _(admin.decorate.symbolized_commits_by_language).must_be_empty
     end
 
     it 'should return commits_by_language with keys as symbols' do
-      account.decorate.symbolized_commits_by_language.must_equal symbolized_cbl
+      _(account.decorate.symbolized_commits_by_language).must_equal symbolized_cbl
     end
   end
 
   describe 'sorted_commits_by_language' do
     it 'should return [] when account has no best_account_analysis' do
-      admin.decorate.sorted_commits_by_language.must_be_empty
+      _(admin.decorate.sorted_commits_by_language).must_be_empty
     end
 
     it 'should return sorted commits_by_language data' do
-      account.decorate.sorted_commits_by_language.must_equal sorted_cbl
+      _(account.decorate.sorted_commits_by_language).must_equal sorted_cbl
     end
   end
 
@@ -81,44 +81,44 @@ class AccountDecoratorTest < ActiveSupport::TestCase
     let(:current_account) { NilAccount.new }
 
     it 'should return four sections of menu list' do
-      admin.decorate.sidebar_for(current_account).length.must_equal 4
+      _(admin.decorate.sidebar_for(current_account).length).must_equal 4
     end
 
     it 'should have three menus in first section' do
-      admin.decorate.sidebar_for(current_account).first.length.must_equal 3
-      admin.decorate.sidebar_for(current_account).first.must_equal sidebars.first
+      _(admin.decorate.sidebar_for(current_account).first.length).must_equal 3
+      _(admin.decorate.sidebar_for(current_account).first).must_equal sidebars.first
     end
 
     it 'should have three menus in second section' do
-      admin.decorate.sidebar_for(current_account).second.length.must_equal 3
-      admin.decorate.sidebar_for(current_account).second.must_equal sidebars.second
+      _(admin.decorate.sidebar_for(current_account).second.length).must_equal 3
+      _(admin.decorate.sidebar_for(current_account).second).must_equal sidebars.second
     end
 
     it 'should have two menus in third section' do
-      admin.decorate.sidebar_for(current_account).third.length.must_equal 2
-      admin.decorate.sidebar_for(current_account).third.must_equal sidebars.third
+      _(admin.decorate.sidebar_for(current_account).third.length).must_equal 2
+      _(admin.decorate.sidebar_for(current_account).third).must_equal sidebars.third
     end
 
     it 'should have 4 menus in fourth sections' do
-      admin.decorate.sidebar_for(current_account).fourth.length.must_equal 4
-      admin.decorate.sidebar_for(current_account).fourth.must_equal sidebars.fourth
+      _(admin.decorate.sidebar_for(current_account).fourth.length).must_equal 4
+      _(admin.decorate.sidebar_for(current_account).fourth).must_equal sidebars.fourth
     end
   end
 
   describe 'account_analysis_status_message' do
     it 'should return ananlyses_scheduled message' do
       create_position(account: admin, name: create(:name))
-      admin.decorate.account_analysis_status_message.must_equal I18n.t('accounts.show.analysis_scheduled')
+      _(admin.decorate.account_analysis_status_message).must_equal I18n.t('accounts.show.analysis_scheduled')
     end
 
     it 'should return no contributions message' do
-      create(:account).decorate.account_analysis_status_message.must_equal I18n.t('accounts.show.no_contributions')
+      _(create(:account).decorate.account_analysis_status_message).must_equal I18n.t('accounts.show.no_contributions')
     end
 
     it 'should return no commits message' do
       position = create_position(account: admin)
       position.update_column(:name_id, nil)
-      admin.decorate.account_analysis_status_message.must_equal I18n.t('accounts.show.no_commits')
+      _(admin.decorate.account_analysis_status_message).must_equal I18n.t('accounts.show.no_commits')
     end
   end
 end

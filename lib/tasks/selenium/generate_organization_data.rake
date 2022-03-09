@@ -17,16 +17,16 @@ namespace :selenium do
     organizations.merge!(
       'most_active_orgs' => OrgThirtyDayActivity.most_active_orgs
       .collect { |o| [o.organization.name.truncate(24), o.commits_per_affiliate] },
-      'most_active_last_calc' => time_ago_in_words(OrgThirtyDayActivity.most_active_orgs.first.created_at) + ' ago',
+      'most_active_last_calc' => "#{time_ago_in_words(OrgThirtyDayActivity.most_active_orgs.first.created_at)} ago",
       'newest_orgs' => Organization.active.order(created_at: :desc).limit(3)
-      .collect { |o| [o.name.truncate(24), o.projects_count, time_ago_in_words(o.updated_at) + ' ago'] },
+      .collect { |o| [o.name.truncate(24), o.projects_count, "#{time_ago_in_words(o.updated_at)} ago"] },
       'stats_by_sector' => OrgStatsBySector.recent
         .collect { |o| [get_org_type(o), o.average_commits, o.organization_count] },
       '30_day_commmits' => collect_30_days_commit_volume
     )
 
     # Organization show page data
-    args[:organization_name].to_s.split(' ').each do |org_name|
+    args[:organization_name].to_s.split.each do |org_name|
       org = Organization.from_param(org_name).take
       if org.blank?
         puts "Organization[#{org_name}] does not exist"
@@ -75,7 +75,7 @@ namespace :selenium do
 
   def collect_30_days_commit_volume
     {}.tap do |org_by_sector|
-      OrgThirtyDayActivity::FILTER_TYPES.keys.each do |key|
+      OrgThirtyDayActivity::FILTER_TYPES.each_key do |key|
         org_by_sector[key.to_s] = OrgThirtyDayActivity.filter(key).collect do |o|
           [o.name.truncate(14), get_org_type(o), o.organization.projects_count,
            o.affiliate_count, o.thirty_day_commit_count]

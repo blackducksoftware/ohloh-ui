@@ -6,11 +6,11 @@ class Forge::GoogleCode < Forge
 
   def match(url)
     case url
-    when /\bcode\.google\.com(\/a\/([^\/]+))?\/p\/([^\/\.]+)\b/
+    when /\bcode\.google\.com(\/a\/([^\/]+))?\/p\/([^\/.]+)\b/
       org_name = $2
       base_name = $3
       Forge::Match.new(self, org_name, base_name)
-    when /\b([^\/\.]+)\.googlecode.com\/(svn|hg|git)\b/
+    when /\b([^\/.]+)\.googlecode.com\/(svn|hg|git)\b/
       Forge::Match.new(self, nil, $1)
     end
   end

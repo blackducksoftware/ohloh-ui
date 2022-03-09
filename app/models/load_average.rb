@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class LoadAverage < ActiveRecord::Base
+class LoadAverage < ApplicationRecord
   def too_high?
     (current.to_f > max.to_f)
   end

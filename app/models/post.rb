@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-class Post < ActiveRecord::Base
+class Post < ApplicationRecord
   include Tsearch
-  belongs_to :forum, counter_cache: true
-  belongs_to :topic, inverse_of: :posts, counter_cache: true, touch: true
-  belongs_to :account
+  belongs_to :forum, counter_cache: true, optional: true
+  belongs_to :topic, inverse_of: :posts, counter_cache: true, touch: true, optional: true
+  belongs_to :account, optional: true
 
   validates :body, :topic, presence: true
   # Popularity_factor is not increasing at all. Get antoher pair of eyes
@@ -21,8 +21,8 @@ class Post < ActiveRecord::Base
   }
   scope :open_topics, -> { joins(:topic).where(topics: { closed: false }).by_newest }
 
-  after_save :update_topic_with_post_data, if: :body_changed?
   after_destroy :update_topic
+  after_save :update_topic_with_post_data, if: :saved_change_to_body?
 
   def update_topic_with_post_data
     topic.update(replied_at: updated_at,

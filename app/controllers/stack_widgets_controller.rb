@@ -12,7 +12,7 @@ class StackWidgetsController < WidgetsController
   private
 
   def set_widget
-    @widget = StackWidget.new(params)
+    @widget = StackWidget.new(permitted_params)
   end
 
   def set_stack_and_account

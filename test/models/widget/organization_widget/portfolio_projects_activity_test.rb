@@ -8,19 +8,19 @@ class PortfolioProjectsActivityTest < ActiveSupport::TestCase
 
   describe 'title' do
     it 'should return title' do
-      widget.title.must_equal I18n.t('organization_widgets.portfolio_projects_activity.title')
+      _(widget.title).must_equal I18n.t('organization_widgets.portfolio_projects_activity.title')
     end
   end
 
   describe 'short_nice_name' do
     it 'should return shortned name' do
-      widget.short_nice_name.must_equal I18n.t('organization_widgets.portfolio_projects_activity.short_nice_name')
+      _(widget.short_nice_name).must_equal I18n.t('organization_widgets.portfolio_projects_activity.short_nice_name')
     end
   end
 
   describe 'position' do
     it 'should return 2' do
-      widget.position.must_equal 2
+      _(widget.position).must_equal 2
     end
   end
 end

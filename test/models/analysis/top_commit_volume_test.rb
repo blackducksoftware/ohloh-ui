@@ -11,8 +11,8 @@ class TopCommitVolumeTest < ActiveSupport::TestCase
       analysis = name_fact.analysis
       results = Analysis::TopCommitVolume.new(analysis, '1 month').collection
 
-      results.first[0].must_equal name_fact.name.name
-      results.first[1].must_equal thirty_day_commits_count
+      _(results.first[0]).must_equal name_fact.name.name
+      _(results.first[1]).must_equal thirty_day_commits_count
     end
 
     it 'must return the committer_name and twelve_month_commits count' do
@@ -22,8 +22,8 @@ class TopCommitVolumeTest < ActiveSupport::TestCase
       analysis = name_fact.analysis
       results = Analysis::TopCommitVolume.new(analysis, '12 months').collection
 
-      results.first[0].must_equal name_fact.name.name
-      results.first[1].must_equal twelve_month_commits_count
+      _(results.first[0]).must_equal name_fact.name.name
+      _(results.first[1]).must_equal twelve_month_commits_count
     end
 
     it 'must return the committer_name and 50 year commit count' do
@@ -33,8 +33,8 @@ class TopCommitVolumeTest < ActiveSupport::TestCase
       analysis = name_fact.analysis
       results = Analysis::TopCommitVolume.new(analysis, '50 years').collection
 
-      results.first[0].must_equal name_fact.name.name
-      results.first[1].must_equal commits_count
+      _(results.first[0]).must_equal name_fact.name.name
+      _(results.first[1]).must_equal commits_count
     end
   end
 end

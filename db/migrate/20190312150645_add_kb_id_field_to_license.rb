@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class AddKbIdFieldToLicense < ActiveRecord::Migration
+class AddKbIdFieldToLicense < ActiveRecord::Migration[4.2]
   def change
     add_column :licenses, :kb_id, :uuid
     update_records

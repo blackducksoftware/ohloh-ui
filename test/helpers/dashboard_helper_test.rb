@@ -16,6 +16,6 @@ class DashboardHelperTest < ActionView::TestCase
     fyle = stub(read: commit_sha, mtime: time, close: true)
     File.stubs(:open).returns(fyle)
 
-    get_revision_details.must_equal [commit_sha.strip, time]
+    _(get_revision_details).must_equal [commit_sha.strip, time]
   end
 end

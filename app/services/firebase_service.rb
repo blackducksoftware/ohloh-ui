@@ -20,8 +20,7 @@ class FirebaseService
 
     kid = decoded_token[1]['kid']
     public_key = OpenSSL::X509::Certificate.new(valid_public_keys[kid]).public_key
-    decoded_token = FirebaseService.decode_jwt_token(id_token, @firebase_project_id, public_key)
-    decoded_token
+    FirebaseService.decode_jwt_token(id_token, @firebase_project_id, public_key)
   end
 
   def check_validations(token, valid_public_keys)
@@ -61,7 +60,7 @@ class FirebaseService
     { verify_iat: true,
       verify_aud: true, aud: firebase_project_id,
       verify_iss: true,
-      iss: 'https://securetoken.google.com/' + firebase_project_id }
+      iss: "https://securetoken.google.com/#{firebase_project_id}" }
   end
 
   def self.decode_jwt_token(firebase_jwt_token, firebase_project_id, public_key)

@@ -2,6 +2,7 @@
 
 class Analysis::CommitHistoryChart < Analysis::Chart
   def initialize(analysis)
+    super()
     @analysis = analysis
     @history = Analysis::CommitHistory.new(analysis: analysis).execute
     @defaults = ANALYSIS_CHART_DEFAULTS.deep_merge(ANALYSIS_CHARTS_OPTIONS['commits_history'])

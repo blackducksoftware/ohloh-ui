@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-class Tagging < ActiveRecord::Base
+class Tagging < ApplicationRecord
   include KnowledgeBaseCallbacks
 
-  belongs_to :tag
-  belongs_to :taggable, polymorphic: true
+  belongs_to :tag, optional: true
+  belongs_to :taggable, polymorphic: true, optional: true
 
   after_create :recalc_weight!
   after_destroy :recalc_weight!
@@ -15,7 +15,7 @@ class Tagging < ActiveRecord::Base
       Tagging.select('taggings.taggable_id as project_id, SUM(tags.weight) AS weight')
              .joins(:tag)
              .where(tags[:id].in(tag_ids))
-             .where(taggable_type: klass)
+             .where(taggable_type: klass.to_s)
              .group(:taggable_id).to_sql
     end
   end

@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
-class ApiKey < ActiveRecord::Base
+class ApiKey < ApplicationRecord
   DEFAULT_DAILY_LIMIT = 1000
   STATUS_OK = 0
   STATUS_LIMIT_EXCEEDED = 1
   STATUS_DISABLED = 2
   KEY_LIMIT_PER_ACCOUNT = 10
 
-  belongs_to :account
-  belongs_to :oauth_application, class_name: 'Doorkeeper::Application', dependent: :destroy
+  belongs_to :account, optional: true
+  belongs_to :oauth_application, class_name: 'Doorkeeper::Application', dependent: :destroy, optional: true
 
   after_initialize :defaults
 

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class AddConfidentialToDoorkeeperApplication < ActiveRecord::Migration
+class AddConfidentialToDoorkeeperApplication < ActiveRecord::Migration[4.2]
   def change
     add_column(
       :oauth_applications,

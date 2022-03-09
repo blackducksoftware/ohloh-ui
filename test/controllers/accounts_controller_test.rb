@@ -4,7 +4,7 @@ require 'test_helper'
 require 'test_helpers/commits_by_project_data'
 require 'test_helpers/commits_by_language_data'
 
-describe 'AccountsController' do
+class AccountsControllerTest < ActionController::TestCase
   let(:start_date) { (Date.current - 6.years).beginning_of_month }
   let(:admin) { create(:admin) }
   let(:account_attributes) do
@@ -19,8 +19,8 @@ describe 'AccountsController' do
     it 'must build a new account' do
       get :new
 
-      must_respond_with :success
-      assigns(:account).must_be_instance_of Account
+      assert_response :success
+      _(assigns(:account)).must_be_instance_of Account
     end
 
     it 'must redirect to accounts show page if logged in' do
@@ -29,44 +29,44 @@ describe 'AccountsController' do
       login_as account
       get :new
 
-      must_respond_with :redirect
-      must_redirect_to account_path(account)
+      assert_response :redirect
+      assert_redirected_to account_path(account)
     end
   end
 
   describe 'create' do
     it 'must return errors for invalid email' do
-      post :create, account_params.merge(account: { email: '' })
-      assigns(:account).wont_be :valid?
-      must_render_template :new
+      post :create, params: account_params.merge(account: { email: '' })
+      _(assigns(:account)).wont_be :valid?
+      assert_template :new
     end
 
     it 'must render the new template when validations fail' do
-      post :create, account_params.merge(account: { email: '' })
+      post :create, params: account_params.merge(account: { email: '' })
 
-      assigns(:account).wont_be :valid?
-      must_render_template :new
+      _(assigns(:account)).wont_be :valid?
+      assert_template :new
     end
 
     it 'must require login' do
-      post :create, account_params.merge(account: { login: '' })
-      assigns(:account).errors.messages[:login].must_be :present?
+      post :create, params: account_params.merge(account: { login: '' })
+      _(assigns(:account).errors.messages[:login]).must_be :present?
     end
 
     it 'must require password' do
-      post :create, account_params.merge(account: { password: '' })
-      assigns(:account).errors.messages[:password].must_be :present?
+      post :create, params: account_params.merge(account: { password: '' })
+      _(assigns(:account).errors.messages[:password]).must_be :present?
     end
 
     it 'must require email' do
-      post :create, account_params.merge(account: { email: '' })
-      assigns(:account).errors.messages[:email].must_be :present?
+      post :create, params: account_params.merge(account: { email: '' })
+      _(assigns(:account).errors.messages[:email]).must_be :present?
     end
 
     it 'must redirect to accounts page after create' do
-      post :create, account_params
+      post :create, params: account_params
 
-      must_redirect_to Account.last
+      assert_redirected_to Account.last
     end
 
     it 'must return error when phone number is a duplicate' do
@@ -76,10 +76,10 @@ describe 'AccountsController' do
       create(:firebase_verification, account: existing_account)
 
       params = account_params[:account].merge(firebase_verification_attributes: { credentials: Faker::Lorem.word })
-      post :create, account: params
+      post :create, params: { account: params }
 
-      assigns(:account).wont_be :valid?
-      assigns(:account).errors['firebase_verification.unique_id'].must_be :present?
+      _(assigns(:account)).wont_be :valid?
+      _(assigns(:account).errors['firebase_verification.unique_id']).must_be :present?
     end
   end
 
@@ -89,76 +89,77 @@ describe 'AccountsController' do
 
       get :index
 
-      must_respond_with :ok
-      assigns(:positions_map).length.must_equal 2
-      assigns(:people).length.must_equal 10
-      assigns(:cbp_map).length.must_equal 10
+      assert_response :ok
+      _(assigns(:positions_map).length).must_equal 2
+      _(assigns(:people).length).must_equal 10
+      _(assigns(:cbp_map).length).must_equal 10
     end
 
     it 'should support being queried via the api' do
       key = create(:api_key, account_id: create(:account).id)
-      get :index, format: :xml, api_key: key.oauth_application.uid
-      must_respond_with :ok
+      get :index, params: { format: :xml, api_key: key.oauth_application.uid }
+      assert_response :ok
     end
   end
 
   describe 'show' do
     it 'should set the account and logos' do
-      get :show, id: admin.login
+      get :show, params: { id: admin.login }
 
-      must_respond_with :ok
-      assigns(:account).must_equal admin
-      assigns(:logos).must_be_empty
+      assert_response :ok
+      _(assigns(:account)).must_equal admin
+      _(assigns(:logos)).must_be_empty
     end
 
     it 'should support being queried via the api' do
       key = create(:api_key, account_id: create(:account).id)
-      get :show, id: admin.login, format: :xml, api_key: key.oauth_application.uid
-      must_respond_with :ok
+      get :show, params: { id: admin.login, format: :xml, api_key: key.oauth_application.uid }
+      assert_response :ok
     end
 
     it 'should show error messages being queried without API key' do
-      get :show, id: admin.login, format: :xml
-      must_respond_with :bad_request
+      get :show, params: { id: admin.login }, format: :xml
+      assert_response :bad_request
     end
 
     it 'should show error messages being queried with Invalid API key' do
-      get :show, id: admin.login, format: :xml, api_key: 'inavlid_key'
-      must_respond_with :bad_request
+      get :show, params: { id: admin.login, format: :xml, api_key: 'inavlid_key' }
+      assert_response :bad_request
     end
 
     it 'should show the account queried via email MD5 and a valid API key' do
       account = create(:account)
       key = create(:api_key, account_id: account.id)
-      get :show, id: account.email_md5, format: :xml, api_key: key.oauth_application.uid
-      must_respond_with :ok
+      get :show, params: { id: account.email_md5, format: :xml, api_key: key.oauth_application.uid }
+      assert_response :ok
     end
 
     it 'should support accounts with account_analyses' do
       best_account_analysis = create(:best_account_analysis)
       key = create(:api_key, account_id: create(:account).id)
-      get :show, id: best_account_analysis.account.to_param, format: :xml, api_key: key.oauth_application.uid
-      must_respond_with :ok
+      get :show,
+          params: { id: best_account_analysis.account.to_param, format: :xml, api_key: key.oauth_application.uid }
+      assert_response :ok
     end
 
     it 'should respond to json format' do
-      get :show, id: admin.login, format: 'json'
+      get :show, params: { id: admin.login, format: 'json' }
 
-      must_respond_with :ok
-      assigns(:account).must_equal admin
+      assert_response :ok
+      _(assigns(:account)).must_equal admin
     end
 
     it 'should have view jobs link if current user is admin' do
       login_as admin
-      get :show, id: admin.login
-      must_select "a[href='/admin/accounts/#{admin.login}/account_analysis_jobs']", true
+      get :show, params: { id: admin.login }
+      assert_select "a[href='/admin/accounts/#{admin.login}/account_analysis_jobs']", true
     end
 
     it 'should have no view jobs link if current user is not admin' do
       account = create(:account)
       login_as account
-      get :show, id: account.login
-      must_select "a[href='/admin/accounts/#{account.login}/account_analysis_jobs']", false
+      get :show, params: { id: account.login }
+      assert_select "a[href='/admin/accounts/#{account.login}/account_analysis_jobs']", false
     end
   end
 
@@ -168,73 +169,73 @@ describe 'AccountsController' do
       login_as create(:account)
       account.access.spam!
 
-      get :show, id: account.login
+      get :show, params: { id: account.login }
 
-      must_redirect_to disabled_account_url(account)
-      @controller.current_user.wont_be_nil
+      assert_redirected_to disabled_account_url(account)
+      _(@controller.current_user).wont_be_nil
     end
 
     it 'must sign out and redirect if current account is disabled' do
       login_as admin
       Account::Access.any_instance.stubs(:disabled?).returns(true)
 
-      get :show, id: admin.login
+      get :show, params: { id: admin.login }
 
-      must_redirect_to disabled_account_url(admin)
-      @controller.current_user.must_be_nil
+      assert_redirected_to disabled_account_url(admin)
+      _(@controller.current_user).must_be_nil
     end
 
     it 'should redirect json requests if account is disabled' do
       login_as admin
       Account::Access.any_instance.stubs(:disabled?).returns(true)
 
-      get :show, id: admin.login, format: :json
-      must_redirect_to disabled_account_url(admin)
+      get :show, params: { id: admin.login }, format: :json
+      assert_redirected_to disabled_account_url(admin)
     end
 
     it 'should redirect if account is labeled a spammer' do
       account = create(:account)
       login_as account
       account.access.spam!
-      account.level.must_equal Account::Access::SPAM
-      get :show, id: account.id
-      must_redirect_to disabled_account_url(account)
+      _(account.level).must_equal Account::Access::SPAM
+      get :show, params: { id: account.id }
+      assert_redirected_to disabled_account_url(account)
     end
   end
 
   describe 'me' do
     it 'should redirect_to sign in page for unlogged users' do
-      get :show, id: 'me'
-      must_redirect_to new_session_path
+      get :show, params: { id: 'me' }
+      assert_redirected_to new_session_path
     end
 
     it 'should render current_users account page for logged users' do
       account = create(:account)
       login_as account
-      get :show, id: 'me'
-      assigns(:account).must_equal account
-      must_respond_with :ok
+      get :show, params: { id: 'me' }
+      _(assigns(:account)).must_equal account
+      assert_response :ok
     end
   end
 
   describe 'unsubscribe_emails' do
     it 'a valid key for a account should unsubscribe the user' do
       key = Ohloh::Cipher.encrypt(create(:account).id.to_s)
-      get :unsubscribe_emails, key: CGI.unescape(key)
-      must_respond_with :ok
-      assigns(:account).email_master.must_equal false
+      get :unsubscribe_emails, params: { key: CGI.unescape(key) }
+      assert_response :ok
+      _(assigns(:account).email_master).must_equal false
     end
   end
 
   describe 'disabled' do
     it 'must respond with success when queried via html' do
-      get :disabled, id: create(:spammer).to_param
-      must_respond_with :success
+      get :disabled, params: { id: create(:spammer).to_param }
+      assert_response :success
     end
 
     it 'must respond with success when queried via json' do
-      get :disabled, id: create(:spammer).to_param, format: :json
-      must_respond_with :success
+      get :disabled, params: { id: create(:spammer).to_param }, format: :json
+      assert_response :success
     end
   end
 
@@ -244,9 +245,9 @@ describe 'AccountsController' do
       account.verifications.destroy_all
       login_as account
 
-      get :edit, id: account.id
+      get :edit, params: { id: account.id }
 
-      must_redirect_to new_authentication_path
+      assert_redirected_to new_authentication_path
     end
 
     it 'must redirect to email activation page when not activated' do
@@ -254,37 +255,37 @@ describe 'AccountsController' do
       account.update!(activated_at: nil)
       login_as account
 
-      get :edit, id: account.id
+      get :edit, params: { id: account.id }
 
-      must_redirect_to new_activation_resend_path
+      assert_redirected_to new_activation_resend_path
     end
 
     it 'must respond with unauthorized when account does not exist' do
-      get :edit, id: :anything
-      must_respond_with :redirect
-      must_redirect_to new_session_path
+      get :edit, params: { id: :anything }
+      assert_response :redirect
+      assert_redirected_to new_session_path
     end
 
     it 'must respond with success' do
       account = create(:account)
       login_as account
-      get :edit, id: account.to_param
-      must_render_template 'edit'
-      must_respond_with :success
+      get :edit, params: { id: account.to_param }
+      assert_template 'edit'
+      assert_response :success
     end
 
     it 'must redirect to new_session if account is not owned' do
       account = create(:account)
       login_as account
-      get :edit, id: create(:account).id
-      must_redirect_to new_session_path
+      get :edit, params: { id: create(:account).id }
+      assert_redirected_to new_session_path
     end
 
     it 'must render the edit page if admin' do
       account = create(:account)
       login_as admin
-      get :edit, id: account.id
-      must_respond_with :success
+      get :edit, params: { id: account.id }
+      assert_response :success
     end
 
     it 'must logout spammer trying to edit or update' do
@@ -293,11 +294,12 @@ describe 'AccountsController' do
       cookies[:remember_token] = account.remember_token
       account.access.spam!
 
-      get :edit, id: account.to_param
-      must_respond_with :redirect
-      must_redirect_to disabled_account_url(account.to_param)
-      @request.env[:clearance].current_user.must_be_nil
-      cookies[:remember_token].must_be_nil
+      get :edit, params: { id: account.to_param }
+      account.reload
+      assert_response :redirect
+      assert_redirected_to disabled_account_url(account.to_param)
+      _(@request.env[:clearance].current_user).must_be_nil
+      _(cookies[:remember_token]).wont_equal account.remember_token
     end
   end
 
@@ -307,45 +309,45 @@ describe 'AccountsController' do
 
     it 'must fail for invalid data' do
       url = :not_an_url
-      post :update, id: account, account: { url: url }
-      must_render_template 'edit'
-      account.reload.url.wont_equal url
+      post :update, params: { id: account, account: { url: url } }
+      assert_template 'edit'
+      _(account.reload.url).wont_equal url
     end
 
     it 'must display description after a validation error' do
       text = 'about raw content'
-      post :update, id: account.to_param, account: { email: '', about_raw: text }
+      post :update, params: { id: account.to_param, account: { email: '', about_raw: text } }
 
-      must_select 'textarea.edit-description', text: text
+      assert_select 'textarea.edit-description', text: text
     end
 
     it 'must not allow description beyond 500 characters' do
-      post :update, id: account.to_param, account: { about_raw: 'a' * 501 }
+      post :update, params: { id: account.to_param, account: { about_raw: 'a' * 501 } }
 
-      assigns(:account).wont_be_nil
-      assigns(:account).errors.wont_be_nil
-      assigns(:account).errors.messages[:'markup.raw'].must_be :present?
-      must_select "p.error[rel='markup.raw']", text: 'is too long (maximum is 500 characters)'
+      _(assigns(:account)).wont_be_nil
+      _(assigns(:account).errors).wont_be_nil
+      _(assigns(:account).errors.messages[:'markup.raw']).must_be :present?
+      assert_select "p.error[rel='markup.raw']", text: 'is too long (maximum is 500 characters)'
     end
 
     it 'must accept description within 500 characters' do
-      post :update, id: account.to_param, account: {
-        about_raw: 'a' * 99 + "\n" + 'a' * 99 + "\r" + 'a' * 300
-      }
-      must_redirect_to account
+      post :update, params: { id: account.to_param, account: {
+        about_raw: "#{'a' * 99}\n#{'a' * 99}\r#{'a' * 300}"
+      } }
+      assert_redirected_to account
     end
 
     it 'must be successful' do
       location = 'Washington'
-      post :update, id: account.to_param, account: { location: location }
-      flash[:notice].must_equal 'Save successful!'
-      account.reload.location.must_equal location
+      post :update, params: { id: account.to_param, account: { location: location } }
+      _(flash[:notice]).must_equal 'Save successful!'
+      _(account.reload.location).must_equal location
     end
 
     it 'must not allow updating other user\'s account' do
-      post :update, id: create(:account).id, account: { location: :Wherever }
-      must_redirect_to new_session_path
-      flash.now[:error].must_match(/You can't edit another's account/)
+      post :update, params: { id: create(:account).id, account: { location: :Wherever } }
+      assert_redirected_to new_session_path
+      _(flash.now[:error]).must_match(/You can't edit another's account/)
     end
   end
 
@@ -356,8 +358,8 @@ describe 'AccountsController' do
       login_as account
 
       assert_difference 'Account.count', -1 do
-        post :destroy, id: account.to_param
-        must_redirect_to edit_deleted_account_path(account.login)
+        post :destroy, params: { id: account.to_param }
+        assert_redirected_to edit_deleted_account_path(account.login)
       end
     end
 
@@ -367,9 +369,9 @@ describe 'AccountsController' do
       login_as my_account
 
       assert_no_difference 'Account.count' do
-        post :destroy, id: your_account.to_param
+        post :destroy, params: { id: your_account.to_param }
       end
-      must_redirect_to edit_deleted_account_path(your_account)
+      assert_redirected_to edit_deleted_account_path(your_account)
     end
 
     it 'while deleting an account, edits.account_id and edits.undone_by should be marked with Anonymous Coward ID' do
@@ -383,12 +385,12 @@ describe 'AccountsController' do
       manage.update!(approved_by: account.id)
       project.update!(best_analysis_id: nil, editor_account: account)
 
-      project.edits.first.account_id.must_equal account.id
-      assert_nil project.edits.first.undone_by
+      _(project.edits.first.account_id).must_equal account.id
+      _(project.edits.first.undone_by).must_be_nil
 
-      post :destroy, id: account.to_param
+      post :destroy, params: { id: account.to_param }
 
-      project.edits.first.account_id.must_equal anonymous_account_id
+      _(project.edits.first.account_id).must_equal anonymous_account_id
     end
 
     it 'when deleting an account set the approved_by and deleted_by fields to Anonymous Coward ID' do
@@ -401,11 +403,11 @@ describe 'AccountsController' do
       manage.update!(approved_by: account.id)
       project.update!(best_analysis_id: nil, editor_account: account)
 
-      project.manages.wont_be :empty?
+      _(project.manages).wont_be :empty?
 
-      post :destroy, id: account.to_param
+      post :destroy, params: { id: account.to_param }
 
-      project.reload.manages.must_be :empty?
+      _(project.reload.manages).must_be :empty?
     end
 
     it 'must delete an account analysis job when account is deleted' do
@@ -413,14 +415,14 @@ describe 'AccountsController' do
       create(:account_analysis_job, account: account)
       login_as account
       assert_difference 'AccountAnalysisJob.count', -1 do
-        post :destroy, id: account.to_param
+        post :destroy, params: { id: account.to_param }
       end
     end
   end
 
   describe 'settings' do
     it 'should render settings' do
-      get :settings, id: create(:account).id
+      get :settings, params: { id: create(:account).id }
     end
   end
 end

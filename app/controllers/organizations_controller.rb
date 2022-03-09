@@ -68,7 +68,7 @@ class OrganizationsController < ApplicationController
     if @project.update_attribute(:organization_id, @organization.id)
       render partial: 'active_remove_project_button', locals: { p: @project }
     else
-      render text: t('.failed')
+      render plain: t('.failed')
     end
   end
 

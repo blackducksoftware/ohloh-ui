@@ -49,7 +49,7 @@
 
   .col-md-4.nutshell_container
     .well
-      - p_name = truncate_project_name(@project.name, false, 40)
+      - p_name = truncate_project_name(@project.name, 40)
       %h4.nutshell_heading!= t('.in_a_nutshell', name: @project.name.length > 40 ? p_name : p_name + '...')
       - if @analysis.present?
         = render 'projects/show/factoids'

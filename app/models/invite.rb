@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-class Invite < ActiveRecord::Base
+class Invite < ApplicationRecord
   include OnBehalf
-  belongs_to :project
-  belongs_to :name
-  belongs_to :contribution
+  belongs_to :project, optional: true
+  belongs_to :name, optional: true
+  belongs_to :contribution, optional: true
 
   after_initialize :set_project_id_name_id
 

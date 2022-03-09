@@ -77,7 +77,7 @@ class OhAdmin::LicensePermissionsController < ApplicationController
 
     license_id = params[:license_id]
     sql = get_sql(license_id)
-    @permission_rights = ActiveRecord::Base.connection.select_all(sql).to_hash
+    @permission_rights = ApplicationRecord.connection.select_all(sql).to_hash
   end
 
   def check_params
@@ -85,13 +85,17 @@ class OhAdmin::LicensePermissionsController < ApplicationController
     build_query unless params[:commit] == 'Clear Filter'
   end
 
+  def permitted_params
+    params.permit(:license_id, :status, :license_right_id, :commit)
+  end
+
   def build_query
-    p = params.slice(:license_id, :status, :license_right_id)
+    p = permitted_params.slice(:license_id, :status, :license_right_id).to_h
     params[:query] = p.map { |k, v| "#{k}=#{v}" if v.present? }.compact.join(' and ')
   end
 
   def clear_params
     scrubbed = %i[license_id status license_right_id]
-    params.except!(*scrubbed)
+    permitted_params.to_h.except!(*scrubbed)
   end
 end

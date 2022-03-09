@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Duplicate < ActiveRecord::Base
+class Duplicate < ApplicationRecord
   RESOLVES = %i[stack_entries kudos tags ratings reviews links aliases enlistments
                 positions project_experiences edits self].freeze
   include DuplicateAssociations

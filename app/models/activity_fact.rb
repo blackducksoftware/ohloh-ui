@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-class ActivityFact < ActiveRecord::Base
-  belongs_to :name
-  belongs_to :language
-  belongs_to :analysis
+class ActivityFact < ApplicationRecord
+  belongs_to :name, optional: true
+  belongs_to :language, optional: true
+  belongs_to :analysis, optional: true
 end

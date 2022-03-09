@@ -3,7 +3,7 @@
 class Forge::Github < Forge
   def match(url)
     case url
-    when /\bgithub\.com[:\/]([^\/\.]+)\/([^\/]+)\b/
+    when /\bgithub\.com[:\/]([^\/.]+)\/([^\/]+)\b/
       owner_name = $1
       base_name = $2
       Forge::Match.new(self, owner_name, base_name.gsub('.git', ''))

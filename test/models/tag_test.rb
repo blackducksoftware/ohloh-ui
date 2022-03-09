@@ -48,6 +48,6 @@ class TagTest < ActiveSupport::TestCase
     assert_difference('KnowledgeBaseStatus.count', 1) do
       project1.tags = [tag1]
     end
-    KnowledgeBaseStatus.find_by(project_id: project1.id).in_sync.must_equal false
+    _(KnowledgeBaseStatus.find_by(project_id: project1.id).in_sync).must_equal false
   end
 end

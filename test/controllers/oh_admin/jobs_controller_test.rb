@@ -2,7 +2,7 @@
 
 require 'test_helper'
 
-describe 'OhAdmin::JobsController' do
+class OhAdmin::JobsControllerTest < ActionController::TestCase
   let(:admin) { create(:admin) }
   let(:project) { create(:project, id: 1, name: 'Testing', description: 'This is test project') }
 
@@ -10,20 +10,20 @@ describe 'OhAdmin::JobsController' do
     login_as admin
     create(:slave, id: 1)
     VCR.use_cassette('project_jobs', match_requests_on: [:path]) do
-      get :index, project_id: project.vanity_url, page: 1
-      must_respond_with :success
+      get :index, params: { project_id: project.vanity_url, page: 1 }
+      assert_response :success
     end
   end
 
   it 'should unauthorized for non admins' do
-    get :index, project_id: project.vanity_url, page: 1
-    must_respond_with :unauthorized
+    get :index, params: { project_id: project.vanity_url, page: 1 }
+    assert_response :unauthorized
   end
 
   it 'should raise not found for invalid project' do
     login_as admin
-    get :index, project_id: 'invalid_project', page: 1
-    must_respond_with :not_found
+    get :index, params: { project_id: 'invalid_project', page: 1 }
+    assert_response :not_found
   end
 
   it 'should render queued project jobs in jobs index page' do
@@ -31,9 +31,9 @@ describe 'OhAdmin::JobsController' do
     create(:slave, id: 1)
 
     VCR.use_cassette('project_jobs', match_requests_on: [:path]) do
-      get :index, project_id: project.vanity_url
+      get :index, params: { project_id: project.vanity_url }
     end
 
-    assigns(:response)['entries'].collect { |j| j.values[0]['status'] }.uniq.must_include Job::STATUS_QUEUED
+    _(assigns(:response)['entries'].collect { |j| j.values[0]['status'] }.uniq).must_include Job::STATUS_QUEUED
   end
 end

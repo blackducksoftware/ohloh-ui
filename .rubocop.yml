@@ -1,13 +1,15 @@
 require: rubocop-rails
 
+Rails:
+  Enabled: true
+
 AllCops:
-  TargetRubyVersion: 2.5
+  TargetRubyVersion: 2.6
+  TargetRailsVersion: 5.0
+  NewCops: enable
   Exclude:
     - vagrant/**/*
     - script/*_temp.rb
-
-Rails:
-  Enabled: true
 
 Rails/ActiveRecordAliases:
   Enabled: false
@@ -51,7 +53,7 @@ Rails/UnknownEnv:
 Style/FormatStringToken:
   Enabled: false
 
-Metrics/LineLength:
+Layout/LineLength:
   Max: 120
 
 Metrics/BlockLength:
@@ -78,6 +80,10 @@ Style/ClassAndModuleChildren:
 Naming/AccessorMethodName:
   Enabled: false
 
+Naming/VariableNumber:
+  CheckMethodNames: false
+  CheckSymbols: false
+
 Style/PerlBackrefs:
   Enabled: false
 
@@ -87,3 +93,6 @@ Style/RegexpLiteral:
 Style/EmptyCaseCondition:
   Description: 'Avoid empty condition in case statements.'
   Enabled: false
+
+Rails/HttpPositionalArguments:
+  Enabled: true

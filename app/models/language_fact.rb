@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-class LanguageFact < ActiveRecord::Base
-  belongs_to :language
-  belongs_to :all_month, primary_key: :month, foreign_key: :month
+class LanguageFact < ApplicationRecord
+  belongs_to :language, optional: true
+  belongs_to :all_month, primary_key: :month, foreign_key: :month, optional: true
 
   class << self
     def report(language, options = {})

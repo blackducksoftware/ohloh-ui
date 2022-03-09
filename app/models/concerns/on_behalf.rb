@@ -7,8 +7,8 @@ module OnBehalf
   MAX_SENT = 50
 
   included do
-    belongs_to :invitor, class_name: 'Account', foreign_key: 'invitor_id'
-    belongs_to :invitee, class_name: 'Account', foreign_key: 'invitee_id'
+    belongs_to :invitor, class_name: 'Account', optional: true
+    belongs_to :invitee, class_name: 'Account', optional: true
 
     validates :invitor, presence: true
     validates :invitee_email, presence: { message: I18n.t('invites.invitee_email_blank') }

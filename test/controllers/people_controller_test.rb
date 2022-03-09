@@ -4,7 +4,7 @@ require 'test_helper'
 require 'test_helpers/commits_by_language_data'
 require 'support/unclaimed_controller_test'
 
-describe 'PeopleControllerTest' do
+class PeopleControllerTest < ActionController::TestCase
   before do
     Account.destroy_all
     Person.destroy_all
@@ -12,7 +12,9 @@ describe 'PeopleControllerTest' do
     best_account_analysis = create(:best_account_analysis, account: account)
     account.update(best_vita_id: best_account_analysis.id)
     @claimed = create(:person, kudo_score: 12, kudo_rank: 3)
-    @claimed.update(id: account.id, account_id: account.id)
+    # rubocop:disable Style/RescueModifier
+    @claimed.update(id: account.id, account_id: account.id) rescue nil
+    # rubocop:enable Style/RescueModifier
     @unclaimed = create(:person, kudo_score: 12, kudo_rank: 3, effective_name: 'Bubba Amon')
     @project1 = create(:project)
     @project2 = create(:project)
@@ -24,29 +26,31 @@ describe 'PeopleControllerTest' do
 
   describe 'index' do
     it 'should render the people found' do
-      get :index, query: 'Bubba'
-      must_respond_with :ok
-      response.body.must_match @claimed.account.name
-      response.body.must_match @unclaimed.name.name
+      get :index, params: { query: 'Bubba' }
+      assert_response :ok
+      _(response.body).must_match @claimed.account.name
+      _(response.body).must_match @unclaimed.name.name
     end
 
     it 'must limit results when it exceeds OBJECT_MEMORY_CAP' do
-      UnclaimedControllerTest.limit_by_memory_cap(self)
+      UnclaimedControllerTest.limit_by_memory_cap(self) do |people, unclaimed_tile_limit|
+        _(people.length).must_equal unclaimed_tile_limit
+      end
     end
 
     it 'should render the people page' do
       get :index
-      must_respond_with :ok
-      must_render_template :index
+      assert_response :ok
+      assert_template :index
     end
   end
 
   describe 'rankings' do
     it 'should render the people found' do
-      get :rankings, query: 'Bubba'
-      must_respond_with :ok
-      response.body.must_match @claimed.account.name
-      response.body.must_match @unclaimed.name.name
+      get :rankings, params: { query: 'Bubba' }
+      assert_response :ok
+      _(response.body).must_match @claimed.account.name
+      _(response.body).must_match @unclaimed.name.name
     end
   end
 end

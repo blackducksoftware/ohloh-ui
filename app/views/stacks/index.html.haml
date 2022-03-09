@@ -25,7 +25,7 @@
         %a.description{ href: stack_path(stack), title: stack.title }
           %p.nomargin.soft= stack.description
         .clear
-          - stack.projects.order('logo_id IS NULL, stack_entries.created_at DESC').to_a.each do |project|
+          - stack.projects.order(Arel.sql('logo_id IS NULL, stack_entries.created_at DESC')).to_a.each do |project|
             - project_link(project, :tiny, title: project.name)
         %a{ href: stack_widgets_path(stack) }= t('.embed')
     - if @stacks.blank?

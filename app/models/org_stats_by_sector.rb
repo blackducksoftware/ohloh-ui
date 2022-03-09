@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class OrgStatsBySector < ActiveRecord::Base
+class OrgStatsBySector < ApplicationRecord
   class << self
     def recent
       order(id: :desc).limit(4).sort_by(&:organization_count).reverse

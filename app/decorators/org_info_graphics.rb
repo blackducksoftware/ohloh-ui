@@ -52,7 +52,7 @@ class OrgInfoGraphics < Cherry::Decorator
     @hash = { out_commits: @out_commits, affl_commits_out: @affl_commits_out, affl_commits: @affl_commits }
   end
 
-  def other_attributes(type, positioning = false)
+  def other_attributes(type, positioning: false)
     set_basic_attributes
     set_stick_attributes
     @dyamic_value = @hash[type.to_sym].to_i

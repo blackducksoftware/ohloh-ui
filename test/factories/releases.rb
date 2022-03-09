@@ -6,7 +6,7 @@ FactoryBot.define do
     sequence :version do |n|
       "#{n}.#{n}.#{n}"
     end
-    released_on { Faker::Date.between(20.years.ago, Time.zone.today) }
+    released_on { Faker::Date.between(from: 20.years.ago, to: Time.zone.today) }
     association :project_security_set
   end
 
@@ -14,21 +14,21 @@ FactoryBot.define do
     sequence :version do |n|
       "1.#{n}.#{n}"
     end
-    released_on { Faker::Date.between(20.years.ago, 15.years.ago) }
+    released_on { Faker::Date.between(from: 20.years.ago, to: 15.years.ago) }
   end
 
   factory :major_release_two, parent: :release do
     sequence :version do |n|
       "2.#{n}.#{n}"
     end
-    released_on { Faker::Date.between(14.years.ago, 10.years.ago) }
+    released_on { Faker::Date.between(from: 14.years.ago, to: 10.years.ago) }
   end
 
   factory :major_release_three, parent: :release do
     sequence :version do |n|
       "3.#{n}.#{n}"
     end
-    released_on { Faker::Date.between(9.years.ago, 5.years.ago) }
+    released_on { Faker::Date.between(from: 9.years.ago, to: 5.years.ago) }
   end
 
   factory :major_release_four, parent: :release do

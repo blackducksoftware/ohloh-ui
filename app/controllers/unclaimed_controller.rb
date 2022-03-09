@@ -29,7 +29,7 @@ class UnclaimedController < ApplicationController
   end
 
   def preload_projects_from_positions
-    project_ids = params[:positions].map { |position| position[:project_id] }
+    project_ids = params[:positions].pluck(:project_id)
     @projects_map = Project.where(id: project_ids).index_by(&:id)
   end
 

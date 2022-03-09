@@ -34,7 +34,7 @@ class ContributionsController < ApplicationController
   end
 
   def near
-    render text: view_context.map_near_contributors_json(@project, params)
+    render plain: view_context.map_near_contributors_json(@project, params)
   end
 
   def commits_spark
@@ -62,7 +62,7 @@ class ContributionsController < ApplicationController
   end
 
   def send_sample_image_if_bot
-    image_path = Rails.root.join(self.class.const_get(action_name.upcase + '_IMAGE'))
+    image_path = Rails.root.join(self.class.const_get("#{action_name.upcase}_IMAGE"))
     send_file image_path, filename: 'commits.png', type: 'image/png', disposition: 'inline'
   end
 

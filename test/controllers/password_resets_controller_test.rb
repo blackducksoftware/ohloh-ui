@@ -2,15 +2,15 @@
 
 require 'test_helper'
 
-describe 'PasswordResetsController' do
+class PasswordResetsControllerTest < ActionController::TestCase
   describe 'create' do
     it 'must send the password reset email' do
       account = create(:account)
 
-      post :create, password: { email: account.email }
+      post :create, params: { password: { email: account.email } }
 
       email = ActionMailer::Base.deliveries.last
-      email.subject.must_match I18n.t('clearance.models.clearance_mailer.change_password')
+      _(email.subject).must_match I18n.t('clearance.models.clearance_mailer.change_password')
     end
   end
 
@@ -21,10 +21,10 @@ describe 'PasswordResetsController' do
       account = create(:account)
       account.update!(confirmation_token: Clearance::Token.new)
 
-      put :update, user_id: account.login, token: account.confirmation_token,
-                   password_reset: { password: Faker::Internet.password }
+      put :update, params: { account_id: account.login, token: account.confirmation_token,
+                             password_reset: { password: Faker::Internet.password } }
 
-      assigns(:user).id.must_equal account.id
+      _(assigns(:user).id).must_equal account.id
     end
 
     it 'must render error when token is expired' do
@@ -33,11 +33,11 @@ describe 'PasswordResetsController' do
       account = create(:account)
       account.update!(confirmation_token: Clearance::Token.new)
 
-      put :update, user_id: account.login, token: Faker::Internet.password,
-                   password_reset: { password: Faker::Internet.password }
+      put :update, params: { account_id: account.login, token: Faker::Internet.password,
+                             password_reset: { password: Faker::Internet.password } }
 
-      must_render_template 'passwords/new'
-      flash[:error].must_equal I18n.t('passwords.token_expired_error')
+      assert_template 'passwords/new'
+      _(flash[:error]).must_equal I18n.t('passwords.token_expired_error')
     end
   end
 end

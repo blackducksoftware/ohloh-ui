@@ -9,12 +9,12 @@ class ActivityFactByMonthQueryTest < ActiveSupport::TestCase
 
   describe 'execute' do
     it 'should fail if analysis is nil' do
-      proc { nil_fact.execute }.must_raise ActiveRecord::RecordNotFound
+      _(proc { nil_fact.execute }).must_raise ActiveRecord::RecordNotFound
     end
 
     it 'should return [] if analysis min_month is nil' do
-      assert_nil analysis.min_month
-      analysis_fact.execute.must_equal []
+      _(analysis.min_month).must_be_nil
+      _(analysis_fact.execute).must_equal []
     end
 
     it 'should return activity facts month by month' do
@@ -24,7 +24,7 @@ class ActivityFactByMonthQueryTest < ActiveSupport::TestCase
         create(:all_month, month: Date.current - value.months)
         facts << create(:activity_fact, month: Date.current - value.months, analysis_id: analysis.id)
       end
-      analysis_fact.execute.map(&:month).must_equal facts.map(&:month).reverse
+      _(analysis_fact.execute.map(&:month)).must_equal facts.map(&:month).reverse
     end
   end
 end

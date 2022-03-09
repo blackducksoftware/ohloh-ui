@@ -6,12 +6,12 @@ class StackDecoratorTest < ActiveSupport::TestCase
   describe '#name' do
     it 'must return stack title when ' do
       stack = create(:stack)
-      stack.decorate.name(nil, nil).must_equal stack.title
+      _(stack.decorate.name(nil, nil)).must_equal stack.title
     end
 
     it 'must return default message when stack.account is present' do
       stack = create(:stack, title: nil)
-      stack.decorate.name(stack.account, nil).must_equal I18n.t('projects.users.default')
+      _(stack.decorate.name(stack.account, nil)).must_equal I18n.t('projects.users.default')
     end
 
     describe 'title is nil' do
@@ -22,11 +22,11 @@ class StackDecoratorTest < ActiveSupport::TestCase
 
         it 'must return project name stack when project is present' do
           project = create(:project)
-          stack.decorate.name(account, project).must_equal "#{project.name}'s Stack"
+          _(stack.decorate.name(account, project)).must_equal "#{project.name}'s Stack"
         end
 
         it 'must return unnamed when no project' do
-          stack.decorate.name(account, nil).must_equal I18n.t('unnamed')
+          _(stack.decorate.name(account, nil)).must_equal I18n.t('unnamed')
         end
       end
 
@@ -35,11 +35,11 @@ class StackDecoratorTest < ActiveSupport::TestCase
 
         it 'must return project name stack when project is present' do
           project = create(:project)
-          stack.decorate.name(account, project).must_equal "#{project.name}'s Stack"
+          _(stack.decorate.name(account, project)).must_equal "#{project.name}'s Stack"
         end
 
         it 'must return unnamed when no project' do
-          stack.decorate.name(account, nil).must_equal I18n.t('unnamed')
+          _(stack.decorate.name(account, nil)).must_equal I18n.t('unnamed')
         end
       end
     end

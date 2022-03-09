@@ -5,7 +5,7 @@ FactoryBot.define do
     association :sender, factory: :account
     association :account
     association :project
-    message { Faker::Lorem.sentence(2) }
+    message { Faker::Lorem.sentence(word_count: 2) }
   end
 
   factory :kudo_with_name, parent: :kudo do

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-class Feedback < ActiveRecord::Base
-  belongs_to :project
+class Feedback < ApplicationRecord
+  belongs_to :project, optional: true
   before_create :set_project_id
   attr_accessor :count, :interested, :logo, :project_name
 
@@ -9,7 +9,7 @@ class Feedback < ActiveRecord::Base
     def interested(project_id)
       total = Feedback.where(project_id: project_id).count.to_f
       interested = Feedback.where(project_id: project_id, more_info: 1).count.to_f
-      ((interested / total) * 100).to_i.to_s + '%'
+      "#{((interested / total) * 100).to_i}%"
     end
 
     def rating_scale(project_id)

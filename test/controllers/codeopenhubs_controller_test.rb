@@ -2,7 +2,7 @@
 
 require 'test_helper'
 
-describe 'CodeopenhubController' do
+class CodeopenhubControllerTest < ActionController::TestCase
   it 'should return 200 for index' do
     get :index
     assert_response :success

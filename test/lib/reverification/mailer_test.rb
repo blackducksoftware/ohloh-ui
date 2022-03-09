@@ -53,7 +53,7 @@ class Reverification::MailerTest < ActiveSupport::TestCase
                       # .raises(Aws::SES::Errors::InvalidParameterValue)
       # bad_email_queue.expects(:send_message).with("Account id: #{bad_account.id} with email: #{bad_account.email}")
       # Reverification::Mailer.send_email(template, bad_account, 0)
-      # bad_account.reverification_tracker.must_be_nil
+      # _(bad_account.reverification_tracker).must_be_nil
     # end
     # rubocop: enable Layout/CommentIndentation
   end
@@ -71,7 +71,7 @@ class Reverification::MailerTest < ActiveSupport::TestCase
 
     describe 'First notification' do
       before do
-        unverified_account.reverification_tracker.must_be_nil
+        _(unverified_account.reverification_tracker).must_be_nil
       end
 
       it 'should create a reverification tracker' do
@@ -79,9 +79,9 @@ class Reverification::MailerTest < ActiveSupport::TestCase
                  message: { subject: { data: 'foobar' },
                             body: { text: { data: 'foobar' } } } }
         Reverification::Mailer.send_email(data, unverified_account, 0)
-        unverified_account.reverification_tracker.must_be :present?
-        unverified_account.reverification_tracker.must_be :initial?
-        unverified_account.reverification_tracker.must_be :pending?
+        _(unverified_account.reverification_tracker).must_be :present?
+        _(unverified_account.reverification_tracker).must_be :initial?
+        _(unverified_account.reverification_tracker).must_be :pending?
         assert_equal 1, unverified_account.reverification_tracker.attempts
         assert_equal Time.zone.now.to_date, unverified_account.reverification_tracker.sent_at.to_date
       end
@@ -95,8 +95,8 @@ class Reverification::MailerTest < ActiveSupport::TestCase
 
       it 'should update reverification tracker attributes - phase, status, attempts and sent_at' do
         Reverification::Mailer.send_email('dummy - second email content', unverified_account, 1)
-        unverified_account.reverification_tracker.wont_be :initial?
-        unverified_account.reverification_tracker.must_be :pending?
+        _(unverified_account.reverification_tracker).wont_be :initial?
+        _(unverified_account.reverification_tracker).must_be :pending?
         assert_equal 1, unverified_account.reverification_tracker.attempts
         assert_equal Time.zone.now.to_date, unverified_account.reverification_tracker.sent_at.to_date
       end
@@ -105,19 +105,19 @@ class Reverification::MailerTest < ActiveSupport::TestCase
     describe 'Resend notification' do
       before do
         Reverification::Mailer.send_email('dummy - first email content', unverified_account, 0)
-        unverified_account.reverification_tracker.must_be :present?
-        unverified_account.reverification_tracker.must_be :initial?
-        unverified_account.reverification_tracker.must_be :pending?
+        _(unverified_account.reverification_tracker).must_be :present?
+        _(unverified_account.reverification_tracker).must_be :initial?
+        _(unverified_account.reverification_tracker).must_be :pending?
         assert_equal 1, unverified_account.reverification_tracker.attempts
         assert_equal Time.zone.now.to_date, unverified_account.reverification_tracker.sent_at.to_date
         unverified_account.reverification_tracker.soft_bounced!
-        unverified_account.reverification_tracker.must_be :soft_bounced?
+        _(unverified_account.reverification_tracker).must_be :soft_bounced?
       end
 
       it 'should update reverification tracker attributes - status, attempts and sent_at' do
         Reverification::Mailer.send_email('dummy - first email content', unverified_account, 0)
-        unverified_account.reverification_tracker.must_be :initial?
-        unverified_account.reverification_tracker.must_be :pending?
+        _(unverified_account.reverification_tracker).must_be :initial?
+        _(unverified_account.reverification_tracker).must_be :pending?
         assert_equal 2, unverified_account.reverification_tracker.attempts
         assert_equal Time.zone.now.to_date, unverified_account.reverification_tracker.sent_at.to_date
       end
@@ -143,13 +143,13 @@ class Reverification::MailerTest < ActiveSupport::TestCase
         Reverification::Mailer.stubs(:amazon_stat_settings).returns(below_specified_settings)
         Account.expects(:reverification_not_initiated).returns([unverified_account_sucess])
         Reverification::Template.expects(:first_reverification_notice)
-        unverified_account_sucess.reverification_tracker.must_be_nil
+        _(unverified_account_sucess.reverification_tracker).must_be_nil
 
         Reverification::Mailer.send_first_notification
-        unverified_account_sucess.reload.reverification_tracker.must_be :present?
-        unverified_account_sucess.reverification_tracker.phase.must_equal 'initial'
-        unverified_account_sucess.reverification_tracker.attempts.must_equal 1
-        unverified_account_sucess.reverification_tracker.sent_at.to_date.must_equal Time.zone.now.to_date
+        _(unverified_account_sucess.reload.reverification_tracker).must_be :present?
+        _(unverified_account_sucess.reverification_tracker.phase).must_equal 'initial'
+        _(unverified_account_sucess.reverification_tracker.attempts).must_equal 1
+        _(unverified_account_sucess.reverification_tracker.sent_at.to_date).must_equal Time.zone.now.to_date
       end
     end
 
@@ -169,22 +169,22 @@ class Reverification::MailerTest < ActiveSupport::TestCase
 
       it 'should change the phase to marked_for_disable' do
         Reverification::Mailer.send_marked_for_disable_notification
-        @rev_tracker.phase.must_equal 'marked_for_disable'
+        _(@rev_tracker.phase).must_equal 'marked_for_disable'
       end
 
       it 'should reset the status to pending' do
         Reverification::Mailer.send_marked_for_disable_notification
-        @rev_tracker.status.must_equal 'pending'
+        _(@rev_tracker.status).must_equal 'pending'
       end
 
       it 'should reset the attempts to 1' do
         Reverification::Mailer.send_marked_for_disable_notification
-        @rev_tracker.attempts.must_equal 1
+        _(@rev_tracker.attempts).must_equal 1
       end
 
       it 'should update the sent_at time' do
         Reverification::Mailer.send_marked_for_disable_notification
-        @rev_tracker.sent_at.to_date.must_equal Time.zone.now.to_date
+        _(@rev_tracker.sent_at.to_date).must_equal Time.zone.now.to_date
       end
     end
 
@@ -206,22 +206,22 @@ class Reverification::MailerTest < ActiveSupport::TestCase
 
       it 'should change the phase to disabled' do
         Reverification::Mailer.send_account_is_disabled_notification
-        @rev_tracker.phase.must_equal 'disabled'
+        _(@rev_tracker.phase).must_equal 'disabled'
       end
 
       it 'should reset the status to pending' do
         Reverification::Mailer.send_account_is_disabled_notification
-        @rev_tracker.status.must_equal 'pending'
+        _(@rev_tracker.status).must_equal 'pending'
       end
 
       it 'should reset the attempts to 1' do
         Reverification::Mailer.send_account_is_disabled_notification
-        @rev_tracker.attempts.must_equal 1
+        _(@rev_tracker.attempts).must_equal 1
       end
 
       it 'should update the sent_at time' do
         Reverification::Mailer.send_account_is_disabled_notification
-        @rev_tracker.sent_at.to_date.must_equal Time.zone.now.to_date
+        _(@rev_tracker.sent_at.to_date).must_equal Time.zone.now.to_date
       end
     end
 
@@ -243,22 +243,22 @@ class Reverification::MailerTest < ActiveSupport::TestCase
 
       it 'should change the phase to final warning' do
         Reverification::Mailer.send_final_notification
-        @rev_tracker.phase.must_equal 'final_warning'
+        _(@rev_tracker.phase).must_equal 'final_warning'
       end
 
       it 'should reset the status to pending' do
         Reverification::Mailer.send_final_notification
-        @rev_tracker.status.must_equal 'pending'
+        _(@rev_tracker.status).must_equal 'pending'
       end
 
       it 'should reset the attempts to 1' do
         Reverification::Mailer.send_final_notification
-        @rev_tracker.attempts.must_equal 1
+        _(@rev_tracker.attempts).must_equal 1
       end
 
       it 'should update the sent_at time' do
         Reverification::Mailer.send_final_notification
-        @rev_tracker.sent_at.to_date.must_equal Time.zone.now.to_date
+        _(@rev_tracker.sent_at.to_date).must_equal Time.zone.now.to_date
       end
     end
 
@@ -281,19 +281,19 @@ class Reverification::MailerTest < ActiveSupport::TestCase
 
         it 'should not change the phase' do
           Reverification::Mailer.resend_soft_bounced_notifications
-          @rev_tracker.reload.must_be :initial?
+          _(@rev_tracker.reload).must_be :initial?
         end
 
         it 'should increment attempts by one' do
-          @rev_tracker.attempts.must_equal 1
+          _(@rev_tracker.attempts).must_equal 1
           Reverification::Mailer.resend_soft_bounced_notifications
-          @rev_tracker.reload.attempts.must_equal 2
+          _(@rev_tracker.reload.attempts).must_equal 2
         end
 
         it 'should update the sent_at time' do
-          @rev_tracker.sent_at.to_date.wont_equal Time.zone.now.to_date
+          _(@rev_tracker.sent_at.to_date).wont_equal Time.zone.now.to_date
           Reverification::Mailer.resend_soft_bounced_notifications
-          @rev_tracker.reload.sent_at.to_date.must_equal Time.zone.now.to_date
+          _(@rev_tracker.reload.sent_at.to_date).must_equal Time.zone.now.to_date
         end
 
         it 'should not resend email when sent_at is not lesser than current date' do
@@ -321,19 +321,19 @@ class Reverification::MailerTest < ActiveSupport::TestCase
 
         it 'should not change the phase' do
           Reverification::Mailer.resend_soft_bounced_notifications
-          @rev_tracker.reload.must_be :marked_for_disable?
+          _(@rev_tracker.reload).must_be :marked_for_disable?
         end
 
         it 'should increment attempts by one' do
-          @rev_tracker.attempts.must_equal 1
+          _(@rev_tracker.attempts).must_equal 1
           Reverification::Mailer.resend_soft_bounced_notifications
-          @rev_tracker.reload.attempts.must_equal 2
+          _(@rev_tracker.reload.attempts).must_equal 2
         end
 
         it 'should update the sent_at time' do
-          @rev_tracker.sent_at.to_date.wont_equal Time.zone.now.to_date
+          _(@rev_tracker.sent_at.to_date).wont_equal Time.zone.now.to_date
           Reverification::Mailer.resend_soft_bounced_notifications
-          @rev_tracker.reload.sent_at.to_date.must_equal Time.zone.now.to_date
+          _(@rev_tracker.reload.sent_at.to_date).must_equal Time.zone.now.to_date
         end
 
         it 'should not resend email when sent_at is not lesser than current date' do
@@ -361,19 +361,19 @@ class Reverification::MailerTest < ActiveSupport::TestCase
 
         it 'should not change the phase' do
           Reverification::Mailer.resend_soft_bounced_notifications
-          @rev_tracker.reload.must_be :disabled?
+          _(@rev_tracker.reload).must_be :disabled?
         end
 
         it 'should increment attempts by one' do
-          @rev_tracker.attempts.must_equal 1
+          _(@rev_tracker.attempts).must_equal 1
           Reverification::Mailer.resend_soft_bounced_notifications
-          @rev_tracker.reload.attempts.must_equal 2
+          _(@rev_tracker.reload.attempts).must_equal 2
         end
 
         it 'should update the sent_at time' do
-          @rev_tracker.sent_at.to_date.wont_equal Time.zone.now.to_date
+          _(@rev_tracker.sent_at.to_date).wont_equal Time.zone.now.to_date
           Reverification::Mailer.resend_soft_bounced_notifications
-          @rev_tracker.reload.sent_at.to_date.must_equal Time.zone.now.to_date
+          _(@rev_tracker.reload.sent_at.to_date).must_equal Time.zone.now.to_date
         end
 
         it 'should not resend email when sent_at is not lesser than current date' do
@@ -401,19 +401,19 @@ class Reverification::MailerTest < ActiveSupport::TestCase
 
         it 'should not change the phase' do
           Reverification::Mailer.resend_soft_bounced_notifications
-          @rev_tracker.reload.must_be :final_warning?
+          _(@rev_tracker.reload).must_be :final_warning?
         end
 
         it 'should increment attempts by one' do
-          @rev_tracker.attempts.must_equal 1
+          _(@rev_tracker.attempts).must_equal 1
           Reverification::Mailer.resend_soft_bounced_notifications
-          @rev_tracker.reload.attempts.must_equal 2
+          _(@rev_tracker.reload.attempts).must_equal 2
         end
 
         it 'should update the sent_at time' do
-          @rev_tracker.sent_at.to_date.wont_equal Time.zone.now.to_date
+          _(@rev_tracker.sent_at.to_date).wont_equal Time.zone.now.to_date
           Reverification::Mailer.resend_soft_bounced_notifications
-          @rev_tracker.reload.sent_at.to_date.must_equal Time.zone.now.to_date
+          _(@rev_tracker.reload.sent_at.to_date).must_equal Time.zone.now.to_date
         end
 
         it 'should not resend email when sent_at is not lesser than current date' do

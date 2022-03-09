@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class CreateVerifications < ActiveRecord::Migration
+class CreateVerifications < ActiveRecord::Migration[4.2]
   def change
     create_table :verifications do |t|
       t.integer :account_id

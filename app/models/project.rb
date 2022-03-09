@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # rubocop:disable Metrics/ClassLength
-class Project < ActiveRecord::Base
+class Project < ApplicationRecord
   has_one :create_edit, as: :target
   acts_as_editable editable_attributes: %i[name vanity_url organization_id best_analysis_id
                                            description tag_list missing_source url download_url],
@@ -27,9 +27,9 @@ class Project < ActiveRecord::Base
     record.errors.add(field, I18n.t(:not_a_valid_url)) unless value.blank? || value.valid_http_url?
   end
   before_validation :clean_strings_and_urls
+  after_update :remove_people, if: ->(project) { project.saved_change_to_deleted? && project.deleted? }
+  after_update :recalc_tags_weight!, if: ->(project) { project.saved_change_to_deleted? }
   after_save :update_organzation_project_count
-  after_update :remove_people, if: ->(project) { project.deleted_changed? && project.deleted? }
-  after_update :recalc_tags_weight!, if: ->(project) { project.deleted_changed? }
 
   attr_accessor :managed_by_creator
 
@@ -56,7 +56,7 @@ class Project < ActiveRecord::Base
   end
 
   def allow_undo_to_nil?(key)
-    !%i[vanity_url name].include?(key)
+    %i[vanity_url name].exclude?(key)
   end
 
   def allow_redo?(key)
@@ -125,7 +125,7 @@ class Project < ActiveRecord::Base
   end
 
   def update_organzation_project_count
-    org = Organization.find_by(id: organization_id || organization_id_was)
+    org = Organization.find_by(id: organization_id || organization_id_before_last_save)
     return unless org
 
     org.update(editor_account: editor_account, projects_count: org.projects.count)

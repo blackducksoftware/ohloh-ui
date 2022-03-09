@@ -4,9 +4,9 @@ module AccountAssociations
   extend ActiveSupport::Concern
 
   included do
-    belongs_to :markup, foreign_key: :about_markup_id, autosave: true, class_name: 'Markup'
-    belongs_to :best_account_analysis, foreign_key: 'best_vita_id', class_name: 'AccountAnalysis'
-    belongs_to :organization
+    belongs_to :markup, foreign_key: :about_markup_id, autosave: true, class_name: 'Markup', optional: true
+    belongs_to :best_account_analysis, foreign_key: 'best_vita_id', class_name: 'AccountAnalysis', optional: true
+    belongs_to :organization, optional: true
     has_one :person
     has_many :api_keys
     has_many :actions

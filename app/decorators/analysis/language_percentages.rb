@@ -6,7 +6,7 @@ class Analysis::LanguagePercentages
   def initialize(analysis)
     @analysis = analysis
     @languages_breakdown = Analysis::LanguagesBreakdown.new(analysis: analysis).map
-    @total_lines = @languages_breakdown.map { |language| language[:lines] }.sum
+    @total_lines = @languages_breakdown.pluck(:lines).sum
     @languages = create_broken_down_languages
   end
 
@@ -31,7 +31,7 @@ class Analysis::LanguagePercentages
   end
 
   def combined_low_percentages_info(index)
-    others_info = @languages[index..-1].map(&:brief_info)
+    others_info = @languages[index..].map(&:brief_info)
     percentage = remaining_percentage(index)
     [nil, "#{others_info.size} Other", { percent: percentage, composed_of: others_info, color: '000000' }]
   end

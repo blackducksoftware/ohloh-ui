@@ -48,7 +48,7 @@ class LinksController < SettingsController
       redirect_to project_links_path(@project), flash: { success: t('.success') }
     else
       flash[:error] = t('.error')
-      redirect_back
+      redirect_to_saved_path(current_user)
     end
   end
 

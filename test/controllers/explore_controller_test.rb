@@ -2,7 +2,7 @@
 
 require 'test_helper'
 
-describe 'ExploreController' do
+class ExploreControllerTest < ActionController::TestCase
   describe 'explore orgs' do
     (1..5).to_a.each do |value|
       let("org#{value}") { create(:organization, name: "org_#{value}", vanity_url: "org#{value}") }
@@ -29,42 +29,42 @@ describe 'ExploreController' do
       it 'should respond with the necessary data when filter is all' do
         get :orgs
 
-        must_respond_with :ok
-        assigns(:newest_orgs).must_equal [org5, org4, org3]
-        assigns(:most_active_orgs).map(&:name).must_equal [ota5.name, ota4.name, ota3.name]
-        assigns(:stats_by_sector).must_equal [@stat4, @stat3, @stat2, @stat1]
-        assigns(:org_by_30_day_commits).must_equal [ota5, ota4, ota3, ota2, ota1]
+        assert_response :ok
+        _(assigns(:newest_orgs)).must_equal [org5, org4, org3]
+        _(assigns(:most_active_orgs).map(&:name)).must_equal [ota5.name, ota4.name, ota3.name]
+        _(assigns(:stats_by_sector)).must_equal [@stat4, @stat3, @stat2, @stat1]
+        _(assigns(:org_by_30_day_commits)).must_equal [ota5, ota4, ota3, ota2, ota1]
       end
     end
 
     describe 'orgs_by_thirty_day_commit_volume' do
       it 'should return json of filtered record when filter is all_orgs' do
-        xhr :get, :orgs_by_thirty_day_commit_volume, format: :js, filter: 'all_orgs'
+        get :orgs_by_thirty_day_commit_volume, params: { filter: 'all_orgs' }, format: :js, xhr: true
 
-        must_respond_with :ok
-        assigns(:org_by_30_day_commits).must_equal [ota5, ota4, ota3, ota2, ota1]
+        assert_response :ok
+        _(assigns(:org_by_30_day_commits)).must_equal [ota5, ota4, ota3, ota2, ota1]
       end
 
       it 'should return json of filtered record when filter is government' do
         OrgThirtyDayActivity.where(id: [ota5.id, ota4.id, ota3.id]).update_all(org_type: 3)
-        xhr :get, :orgs_by_thirty_day_commit_volume, filter: 'government', format: 'js'
+        get :orgs_by_thirty_day_commit_volume, params: { filter: 'government' }, format: 'js', xhr: true
 
-        must_respond_with :ok
-        assigns(:org_by_30_day_commits).must_equal [ota5, ota4, ota3]
+        assert_response :ok
+        _(assigns(:org_by_30_day_commits)).must_equal [ota5, ota4, ota3]
       end
 
       it 'should return json of filtered record when filter is all' do
-        xhr :get, :orgs_by_thirty_day_commit_volume, filter: 'all_orgs', format: :js
+        get :orgs_by_thirty_day_commit_volume, params: { filter: 'all_orgs' }, format: :js, xhr: true
 
-        must_respond_with :ok
-        assigns(:org_by_30_day_commits).must_equal [ota5, ota4, ota3, ota2, ota1]
+        assert_response :ok
+        _(assigns(:org_by_30_day_commits)).must_equal [ota5, ota4, ota3, ota2, ota1]
       end
 
       it 'should return json of filtered record when filter is none' do
-        xhr :get, :orgs_by_thirty_day_commit_volume, format: :js, filter: ''
+        get :orgs_by_thirty_day_commit_volume, params: { filter: '' }, format: :js, xhr: true
 
-        must_respond_with :ok
-        assigns(:org_by_30_day_commits).must_equal [ota5, ota4, ota3, ota2, ota1]
+        assert_response :ok
+        _(assigns(:org_by_30_day_commits)).must_equal [ota5, ota4, ota3, ota2, ota1]
       end
     end
   end
@@ -88,15 +88,15 @@ describe 'ExploreController' do
       it 'should return all projects related data' do
         get :projects
 
-        must_respond_with :ok
-        assigns(:projects).must_equal [project_1, project_2]
-        assigns(:project_logos_map)[logo_1.id].must_equal logo_1
-        assigns(:project_logos_map)[logo_2.id].must_equal logo_2
-        assigns(:with_pai_count).must_equal 2
-        assigns(:total_count).must_equal Project.active.count
-        assigns(:languages).must_include ['All Languages', '']
-        assigns(:languages).must_include [lang_1.nice_name, lang_1.name]
-        assigns(:languages).must_include [lang_2.nice_name, lang_2.name]
+        assert_response :ok
+        _(assigns(:projects)).must_equal [project_1, project_2]
+        _(assigns(:project_logos_map)[logo_1.id]).must_equal logo_1
+        _(assigns(:project_logos_map)[logo_2.id]).must_equal logo_2
+        _(assigns(:with_pai_count)).must_equal 2
+        _(assigns(:total_count)).must_equal Project.active.count
+        _(assigns(:languages)).must_include ['All Languages', '']
+        _(assigns(:languages)).must_include [lang_1.nice_name, lang_1.name]
+        _(assigns(:languages)).must_include [lang_2.nice_name, lang_2.name]
       end
     end
 
@@ -104,23 +104,23 @@ describe 'ExploreController' do
       it 'should return all projects related data' do
         get :index
 
-        must_respond_with :ok
-        must_render_template :projects
+        assert_response :ok
+        assert_template :projects
 
-        assigns(:projects).map(&:id).sort.must_equal [project_1.id, project_2.id].sort
-        assigns(:project_logos_map)[logo_1.id].must_equal logo_1
-        assigns(:project_logos_map)[logo_2.id].must_equal logo_2
-        assigns(:with_pai_count).must_equal 2
-        assigns(:total_count).must_equal Project.active.count
-        assigns(:languages).must_include ['All Languages', '']
-        assigns(:languages).must_include [lang_1.nice_name, lang_1.name]
-        assigns(:languages).must_include [lang_2.nice_name, lang_2.name]
+        _(assigns(:projects).map(&:id).sort).must_equal [project_1.id, project_2.id].sort
+        _(assigns(:project_logos_map)[logo_1.id]).must_equal logo_1
+        _(assigns(:project_logos_map)[logo_2.id]).must_equal logo_2
+        _(assigns(:with_pai_count)).must_equal 2
+        _(assigns(:total_count)).must_equal Project.active.count
+        _(assigns(:languages)).must_include ['All Languages', '']
+        _(assigns(:languages)).must_include [lang_1.nice_name, lang_1.name]
+        _(assigns(:languages)).must_include [lang_2.nice_name, lang_2.name]
       end
 
       it 'should render projects explore page with language param' do
-        get :index, lang: lang_1.name
-        must_respond_with :ok
-        must_render_template :projects
+        get :index, params: { lang: lang_1.name }
+        assert_response :ok
+        assert_template :projects
       end
     end
 
@@ -131,12 +131,12 @@ describe 'ExploreController' do
         result = JSON.parse(@response.body)
         data = result['series'].last['data'].first
 
-        must_respond_with :ok
-        result['chart']['type'].must_equal 'pie'
-        data['name'].must_equal 'Inactive'
-        data['y'].must_equal 50.0
-        data['sliced'].must_equal true
-        data['selected'].must_equal true
+        assert_response :ok
+        _(result['chart']['type']).must_equal 'pie'
+        _(data['name']).must_equal 'Inactive'
+        _(data['y']).must_equal 50.0
+        _(data['sliced']).must_equal true
+        _(data['selected']).must_equal true
       end
     end
   end

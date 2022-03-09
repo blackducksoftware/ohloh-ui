@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-class Kudo < ActiveRecord::Base
-  belongs_to :sender, foreign_key: :sender_id, class_name: 'Account'
-  belongs_to :account
-  belongs_to :project
-  belongs_to :name
+class Kudo < ApplicationRecord
+  belongs_to :sender, class_name: 'Account', optional: true
+  belongs_to :account, optional: true
+  belongs_to :project, optional: true
+  belongs_to :name, optional: true
   has_one :name_fact, foreign_key: :name_id, primary_key: :name_id
 
   scope :recent, ->(limit = 3) { limit(limit) }
@@ -20,7 +20,7 @@ class Kudo < ActiveRecord::Base
   end
 
   def person_name
-    (name&.name) || account.name
+    name&.name || account.name
   end
 
   class << self

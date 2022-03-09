@@ -2,7 +2,7 @@
 
 require 'test_helper'
 
-describe 'Accounts::LanguagesController' do
+class Accounts::LanguagesControllerTest < ActionController::TestCase
   let(:account) { create(:account) }
   let(:admin) { create(:admin) }
 
@@ -12,12 +12,12 @@ describe 'Accounts::LanguagesController' do
       contribution = admin.positions.first.contribution
       project = contribution.project
 
-      get :index, account_id: admin.id
+      get :index, params: { account_id: admin.id }
 
-      must_respond_with :ok
-      assigns(:contributions)[project.id].must_equal [contribution]
-      assert_nil assigns(:vlfs)
-      assert_nil assigns(:logos_map)
+      assert_response :ok
+      _(assigns(:contributions)[project.id]).must_equal [contribution]
+      _(assigns(:vlfs)).must_be_nil
+      _(assigns(:logos_map)).must_be_nil
     end
 
     it 'should respond with contributions & language facts data when best account_analysis for account is present' do
@@ -34,12 +34,12 @@ describe 'Accounts::LanguagesController' do
       logos_map = { most_commits_project.logo_id => most_commits_project.logo,
                     recent_commit_project.logo_id => recent_commit_project.logo }
 
-      get :index, account_id: account.id
+      get :index, params: { account_id: account.id }
 
-      must_respond_with :ok
-      assigns(:contributions)[project.id].must_equal [contribution]
-      assigns(:vlfs).must_equal [account_analysis_language_fact]
-      assigns(:logos_map).must_equal logos_map
+      assert_response :ok
+      _(assigns(:contributions)[project.id]).must_equal [contribution]
+      _(assigns(:vlfs)).must_equal [account_analysis_language_fact]
+      _(assigns(:logos_map)).must_equal logos_map
     end
 
     it 'must redirect for disabled account' do
@@ -47,9 +47,9 @@ describe 'Accounts::LanguagesController' do
       login_as account
       account.access.spam!
 
-      get :index, account_id: account.id
+      get :index, params: { account_id: account.id }
 
-      must_respond_with 302
+      assert_response 302
     end
   end
 end

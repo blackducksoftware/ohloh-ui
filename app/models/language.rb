@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-class Language < ActiveRecord::Base
+class Language < ApplicationRecord
   serialize :active_contributors, Array
   serialize :experienced_contributors, Array
 
-  scope :by_name, -> { order('lower(name)') }
-  scope :by_nice_name, -> { order('lower(nice_name)') }
+  scope :by_name, -> { order(Arel.sql('lower(name)')) } # name is set by ohcount -> fis
+  scope :by_nice_name, -> { order(Arel.sql('lower(nice_name)')) } # TODO: find how nice_name is set.
   scope :by_total, -> { order('(code + comments + blanks) desc').by_name }
   scope :by_code, -> { order(code: :desc).by_name }
   scope :by_comment_ratio, -> { order(avg_percent_comments: :desc).by_name }

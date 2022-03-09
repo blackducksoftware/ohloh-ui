@@ -9,7 +9,7 @@ class OrgStatsBySectorTest < ActiveSupport::TestCase
       stat2 = create(:org_stats_by_sector, org_type: 2, organization_count: 20)
       stat3 = create(:org_stats_by_sector, org_type: 3, organization_count: 40)
       stat4 = create(:org_stats_by_sector, org_type: 4, organization_count: 50)
-      OrgStatsBySector.recent.must_equal [stat4, stat3, stat2, stat1]
+      _(OrgStatsBySector.recent).must_equal [stat4, stat3, stat2, stat1]
     end
   end
 end

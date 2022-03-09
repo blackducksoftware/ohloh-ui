@@ -12,7 +12,7 @@
         = (review_summary.title ? truncate(review_summary.title.camelize, length: 35) : "#{account.name}'s Review")
         &nbsp;
       .pull-left{ style: 'margin-top:1px' }
-        != rating_stars('rating_star', review_summary.score.to_f, true)
+        != rating_stars('rating_star', review_summary.score.to_f, mini: true)
       .clearfix
       .col-md
         %abbr.soft.small{ title: review_summary.created_at }

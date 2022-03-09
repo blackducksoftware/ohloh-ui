@@ -25,7 +25,7 @@
           = t('.accounts_review', name: review_list.account.name)
         &nbsp;
       .pull-left{ style: 'margin-top:1px' }
-        != rating_stars('rating_star', review_list.score.to_f, true)
+        != rating_stars('rating_star', review_list.score.to_f, mini: true)
       .clear
       .col-md
         %abbr.soft.small{ title: review_list.created_at }

@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-class MoveTwitterIdToVerifications < ActiveRecord::Migration
+class MoveTwitterIdToVerifications < ActiveRecord::Migration[4.2]
   def up
-    Account.where('twitter_id is not null').each do |account|
+    Account.where.not(twitter_id: nil).each do |account|
       next if account.twitter_digits_verification
 
       verification = account.build_twitter_digits_verification

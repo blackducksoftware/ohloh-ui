@@ -99,13 +99,13 @@
     %tr.actions
       %td= t('.action')
       %td.good
-        = link_to t('.keep', project: truncate_project_name(@duplicate.good_project.name, true)),
+        = link_to t('.keep', project: truncate_project_name(@duplicate.good_project.name, link: true)),
         "/duplicates/#{@duplicate.id}/resolve/#{@duplicate.good_project.id}",
         method: :post, class: 'btn btn-large btn-success good keep-good',
         title: t('.keep_title', bad: @duplicate.good_project.name, good: @duplicate.bad_project.name),
         data: { confirm: t('.keep_confirm', bad: @duplicate.good_project.name, good: @duplicate.bad_project.name) }
       %td.bad
-        = link_to t('.keep', project: truncate_project_name(@duplicate.bad_project.name, true)),
+        = link_to t('.keep', project: truncate_project_name(@duplicate.bad_project.name, link: true)),
         "/duplicates/#{@duplicate.id}/resolve/#{@duplicate.bad_project.id}",
         method: :post, class: 'btn btn-large btn-success bad keep-bad',
         title: t('.keep_title', good: @duplicate.good_project.name, bad: @duplicate.bad_project.name),

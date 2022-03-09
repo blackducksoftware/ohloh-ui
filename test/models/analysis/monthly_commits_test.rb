@@ -16,8 +16,8 @@ class MonthlyCommitsTest < ActiveSupport::TestCase
 
       results = Analysis::MonthlyCommits.new(analysis: monthly_commit_history.analysis).execute
 
-      results.first.month.must_equal 3.months.ago.beginning_of_month
-      results.map(&:commits).must_equal [0, 1, 0, 0]
+      _(results.first.month).must_equal 3.months.ago.beginning_of_month
+      _(results.map(&:commits)).must_equal [0, 1, 0, 0]
     end
   end
 end

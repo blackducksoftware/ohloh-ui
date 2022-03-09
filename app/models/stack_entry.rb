@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-class StackEntry < ActiveRecord::Base
+class StackEntry < ApplicationRecord
   MAX_NOTE_LENGTH = 255
 
-  belongs_to :stack
-  belongs_to :project
+  belongs_to :stack, optional: true
+  belongs_to :project, optional: true
 
   scope :active, -> { where(deleted_at: nil) }
   scope :for_project_id, ->(project_id) { for_project_id_arel(project_id) }
@@ -47,8 +47,6 @@ class StackEntry < ActiveRecord::Base
                 .where(other_entries[:deleted_at].eq(nil))
                 .group(other_entries[:project_id]).to_sql
     end
-
-    private
 
     def for_project_id_arel(project_id)
       joins(:stack).where(project_id: project_id).where(deleted_at: nil).merge(Stack.has_account)

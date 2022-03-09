@@ -6,7 +6,7 @@ describe ProjectSecuritySet do
   it 'should return true if most_recent_vulnerabilites? is greater than one' do
     release = create(:release)
     release.vulnerabilities << create(:vulnerability)
-    release.project_security_set.most_recent_vulnerabilities?.must_equal true
+    _(release.project_security_set.most_recent_vulnerabilities?).must_equal true
   end
 
   describe '#release_history' do
@@ -21,19 +21,19 @@ describe ProjectSecuritySet do
     end
 
     it 'should return the count of vulnerabilities with low severity' do
-      release.project_security_set.release_history.last.low.must_equal 1
+      _(release.project_security_set.release_history.last.low).must_equal 1
     end
 
     it 'should return the count of vulnerabilities with medium severity' do
-      release.project_security_set.release_history.last.medium.must_equal 1
+      _(release.project_security_set.release_history.last.medium).must_equal 1
     end
 
     it 'should return the count of vulnerabilities with high severity' do
-      release.project_security_set.release_history.last.high.must_equal 1
+      _(release.project_security_set.release_history.last.high).must_equal 1
     end
 
     it 'should return the count of vulnerabilities with null severity' do
-      release.project_security_set.release_history.last.unknown_severity.must_equal 2
+      _(release.project_security_set.release_history.last.unknown_severity).must_equal 2
     end
   end
 end

@@ -11,7 +11,7 @@ class StackEntriesController < ApplicationController
   before_action :set_project_or_fail, only: :new
 
   def new
-    render nothing: true, status: :not_acceptable unless request.xhr?
+    head :not_acceptable unless request.xhr?
   end
 
   def create

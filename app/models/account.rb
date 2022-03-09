@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Account < ActiveRecord::Base
+class Account < ApplicationRecord
   include AffiliationValidation
   include AccountValidations
   include AccountAssociations
