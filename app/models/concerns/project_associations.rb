@@ -46,6 +46,7 @@ module ProjectAssociations
 
     scope :by_collection, ->(ids, sort, query) { collection_arel(ids, sort, query) }
 
+    delegate :account,  to: :create_edit, prefix: :created_by
     attr_accessor :code_location_object
 
     def code_locations
