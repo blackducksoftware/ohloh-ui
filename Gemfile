@@ -55,7 +55,6 @@ gem 'will_paginate-bootstrap'
 
 group :development do
   gem 'better_errors'
-  gem 'binding_of_caller'
   gem 'bootsnap', '~> 1.10.3', require: false
   gem 'capistrano'
   gem 'capistrano-faster-assets'
@@ -64,27 +63,16 @@ group :development do
   gem 'capistrano-rbenv', '~> 2.0'
   gem 'capistrano-sidekiq'
   gem 'ed25519'
-  gem 'guard'
-  gem 'guard-coffeescript'
-  gem 'guard-haml_lint'
-  gem 'guard-livereload', '~> 2.5', '>= 2.5.2', require: false
-  gem 'guard-rubocop'
-  gem 'meta_request'
-  # gem 'quiet_assets'
 end
 
 group :test do
-  gem 'flog'
   gem 'haml_lint', '~> 0.21'
-  gem 'm', '~> 1.5.0'
   gem 'minitest-rails'
   gem 'minitest-spec-rails'
   gem 'mocha'
   gem 'rails-controller-testing'
-  gem 'ruby_parser'
   gem 'simplecov'
   gem 'simplecov-rcov'
-  gem 'spring'
   gem 'timecop'
   gem 'vcr'
   gem 'webmock'
@@ -92,19 +80,9 @@ end
 
 group :development, :test do
   gem 'byebug'
-  gem 'capybara'
   gem 'database_cleaner'
   gem 'factory_bot_rails'
   gem 'faker'
-  gem 'pry-byebug'
-  gem 'pry-rails'
-  gem 'rails-erd'
-  gem 'rb-readline', '~> 0.5.5'
-  gem 'rubocop-faker'
-  gem 'selenium-webdriver'
-  gem 'spinach'
-  gem 'spinach-console-reporter'
-  gem 'teaspoon-jasmine'
 end
 
 group :production, :staging do
