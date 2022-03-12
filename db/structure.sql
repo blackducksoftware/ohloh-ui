@@ -2161,6 +2161,7 @@ CREATE TABLE oh.projects (
     activity_level_index integer,
     uuid character varying,
     best_project_security_set_id integer,
+    coverity_project_id integer,
     CONSTRAINT valid_missing_source CHECK (((missing_source IS NULL) OR (missing_source = 'not available'::text) OR (missing_source = 'not supported'::text)))
 );
 
@@ -18394,6 +18395,8 @@ INSERT INTO oh.schema_migrations (version) VALUES ('20200719174850');
 INSERT INTO oh.schema_migrations (version) VALUES ('20201130144849');
 
 INSERT INTO oh.schema_migrations (version) VALUES ('20210621143713');
+
+INSERT INTO oh.schema_migrations (version) VALUES ('20220302133936');
 
 INSERT INTO oh.schema_migrations (version) VALUES ('21');
 
