@@ -16,7 +16,7 @@ class ApiAccess
 
   class << self
     def fis_public_url
-      ENV['FISBOT_PUBLIC_URL'] || ENV['FISBOT_API_URL']
+      ENV['FISBOT_PUBLIC_URL'].presence || ENV['FISBOT_API_URL']
     end
   end
 
