@@ -12,7 +12,6 @@ gem 'clearance'
 gem 'coffee-rails'
 gem 'coffee-script-source', '~>1.8.0'
 gem 'datadog_api_client'
-gem 'ddtrace', require: 'ddtrace/auto_instrument'
 gem 'doorkeeper', '~> 4.4.0'
 gem 'dotenv-rails'
 gem 'execjs'
@@ -87,6 +86,7 @@ end
 
 group :production, :staging do
   gem 'activerecord-nulldb-adapter', require: false
+  gem 'ddtrace', require: 'ddtrace/auto_instrument'
 end
 
 group :development, :staging do

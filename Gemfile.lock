@@ -158,10 +158,10 @@ GEM
     database_cleaner-core (2.0.1)
     datadog_api_client (1.5.0)
       typhoeus (~> 1.0, >= 1.0.1)
-    ddtrace (0.54.1)
-      debase-ruby_core_source (= 0.10.12)
+    ddtrace (0.54.2)
+      debase-ruby_core_source (<= 0.10.14)
       msgpack
-    debase-ruby_core_source (0.10.12)
+    debase-ruby_core_source (0.10.14)
     docile (1.4.0)
     doorkeeper (4.4.3)
       railties (>= 4.2)
