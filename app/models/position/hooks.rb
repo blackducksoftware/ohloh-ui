@@ -44,7 +44,7 @@ class Position::Hooks
                    .where('edits.undone' => false)
                    .where('(edits.account_id = :account_id AND undone_by IS NULL)
                             OR undone_by = :account_id', account_id: account_id)
-                   .uniq
+                   .distinct
 
     soft_delete_aliases(aliases)
   end

@@ -34,13 +34,13 @@ module DashboardHelper
     from = convert_to_datetime(from)
     to = convert_to_datetime(to) || Time.current
     projects_count = Project.active_enlistments.joins(:best_analysis)
-                            .where(analyses: { updated_on: from..to }).uniq.count
+                            .where(analyses: { updated_on: from..to }).distinct.count
     number_to_percentage((projects_count.to_f / active_projects_count) * 100, precision: 2)
   end
 
   def outdated_projects(date)
     projects_count = Project.active_enlistments.joins(:best_analysis)
-                            .where('analyses.updated_on < ?', date).uniq.count
+                            .where('analyses.updated_on < ?', date).distinct.count
     number_to_percentage((projects_count.to_f / active_projects_count) * 100, precision: 2)
   end
 
@@ -49,6 +49,6 @@ module DashboardHelper
   end
 
   def active_projects_count
-    Project.active_enlistments.uniq.count
+    Project.active_enlistments.distinct.count
   end
 end
