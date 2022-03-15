@@ -39,7 +39,7 @@ class PrivacyController < ApplicationController
                           .joins(:access_tokens)
                           .where('oauth_access_tokens.resource_owner_id' => @account.id)
                           .where('oauth_access_tokens.revoked_at' => nil)
-                          .uniq
+                          .distinct
   end
 
   def account_params
