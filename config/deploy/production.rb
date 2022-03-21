@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
-set :web_heads, ['serv-deployer@prd-oh-web04.dc2.lan', 'serv-deployer@prd-oh-web05.dc2.lan',
-                 'serv-deployer@prd-oh-web06.dc2.lan']
+set :web_heads, ['serv-deployer@sdc-oh-web04.prd.sig.synopsys.com',
+                 'serv-deployer@sdc-oh-web05.prd.sig.synopsys.com',
+                 'serv-deployer@sdc-oh-web06.prd.sig.synopsys.com']
 
-set :utility, 'serv-deployer@prd-oh-utility01.dc2.lan'
+set :utility, 'sdc-oh-utility01.prd.sig.synopsys.com'
 
 namespace :deploy do
   task started: 'docker:deploy'
