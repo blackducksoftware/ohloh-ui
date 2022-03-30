@@ -6,7 +6,7 @@ class OhAdmin::AccountsController < ApplicationController
 
   def charts
     json_data = Rails.cache.fetch("account_charts_#{params[:period]}", expires_in: 1.day) do
-      OhAdmin::AccountChart.new(params[:period].to_i).render
+      OhAdmin::AccountChart.new(params[:period].to_i, params[:filter_by]).render
     end
     render json: json_data
   end
