@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# rubocop:disable Metrics/BlockLength
 Rails.application.configure do
   # Settings specified here will take precedence over those in
   # config/application.rb.
@@ -67,18 +68,20 @@ Rails.application.configure do
   # raise delivery errors.
   # config.action_mailer.raise_delivery_errors = false
 
-  config.action_mailer.smtp_settings = { address: ENV['SMTP_ADDRESS'],
-    openssl_verify_mode: OpenSSL::SSL::VERIFY_NONE } unless ENV['KUBERNETES_PORT']
-
-  config.action_mailer.smtp_settings = {
-    :user_name => 'apikey', # This is the string literal 'apikey', NOT the ID of your API key
-  :password => 'ENV['SENDGRID_API_KEY']', # This is the secret sendgrid API key which was issued during API key creation
-  :domain => 'openhub.net',
-  :address => 'smtp.sendgrid.net',
-  :port => 587,
-  :authentication => :plain,
-  :enable_starttls_auto => true} IF ENV['KUBERNETES_PORT']
-
+  if ENV['KUBERNETES_PORT']
+    config.action_mailer.smtp_settings = {
+      user_name: 'apikey', # This is the string literal 'apikey', NOT the ID of your API key
+      password: ENV['SENDGRID_API_KEY'], # This is the secret sendgrid API key which was issued during API key creation
+      domain: 'openhub.net',
+      address: 'smtp.sendgrid.net',
+      port: 587,
+      authentication: :plain,
+      enable_starttls_auto: true
+    }
+  else
+    config.action_mailer.smtp_settings = { address: ENV['SMTP_ADDRESS'],
+                                           openssl_verify_mode: OpenSSL::SSL::VERIFY_NONE }
+  end
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation cannot be found).
   config.i18n.fallbacks = true
@@ -99,3 +102,4 @@ Rails.application.configure do
   SqlTracker::Config.tracked_sql_command = %w[sloc_metrics]
   SqlTracker::Config.output_path = File.join(ENV['SQL_TRACER_TEMP_PATH'] || '/tmp', 'sql_tracker')
 end
+# rubocop:enable Metrics/BlockLength
