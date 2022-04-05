@@ -66,8 +66,18 @@ Rails.application.configure do
   # Set this to true and configure the email server for immediate delivery to
   # raise delivery errors.
   # config.action_mailer.raise_delivery_errors = false
+
   config.action_mailer.smtp_settings = { address: ENV['SMTP_ADDRESS'],
-                                         openssl_verify_mode: OpenSSL::SSL::VERIFY_NONE }
+    openssl_verify_mode: OpenSSL::SSL::VERIFY_NONE } unless ENV['KUBERNETES_PORT']
+
+  config.action_mailer.smtp_settings = {
+    :user_name => 'apikey', # This is the string literal 'apikey', NOT the ID of your API key
+  :password => 'ENV['SENDGRID_API_KEY']', # This is the secret sendgrid API key which was issued during API key creation
+  :domain => 'openhub.net',
+  :address => 'smtp.sendgrid.net',
+  :port => 587,
+  :authentication => :plain,
+  :enable_starttls_auto => true} IF ENV['KUBERNETES_PORT']
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation cannot be found).
