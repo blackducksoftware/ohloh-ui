@@ -23,9 +23,10 @@ namespace :kb_updater do
   end
 
   def kb_rmq_connection
-    connection = Bunny.new(ENV['KB_AMQP_SERVER'], log_level: Logger::DEBUG, log_file: '/tmp/bunny.log',
-                                                  heartbeat: 0, connection_timeout: ENV['KB_CONNECTION_TIMEOUT'].to_i,
-                                                  threaded: false, automatically_recover: false)
+    rmq_connection_url = "amqp://#{ENV['KB_AMQP_USER']}:#{ENV['KB_AMQP_PASSWORD']}@#{ENV['KB_AMQP_HOST']}"
+    connection = Bunny.new(rmq_connection_url, log_level: Logger::DEBUG, log_file: '/tmp/bunny.log',
+                                               heartbeat: 0, connection_timeout: ENV['KB_CONNECTION_TIMEOUT'].to_i,
+                                               threaded: false, automatically_recover: false)
     connection.start
   end
 
