@@ -1,16 +1,16 @@
 # frozen_string_literal: true
 
 class OhAdmin::AccountChart
-  def initialize(period)
+  def initialize(period, filter)
     @period = period
-    process_account_data(period)
+    @filter = filter
+    account_data(period, filter)
   end
 
   def render
     chart = ACCOUNTS_CHART_DEFAULTS
     set_series_data(chart)
-    chart['xAxis']['tickInterval'] = set_interval(@period)
-    chart['xAxis']['categories'] = @x_axis
+    chart['xAxis']['categories'] = @x_axis.uniq
     chart.to_json
   end
 
@@ -22,15 +22,22 @@ class OhAdmin::AccountChart
     chart['series'][2][:data] = @total_count
   end
 
-  def process_account_data(period)
+  def account_data(period, filter)
     from = period.months.ago.to_date
     yesterday = Date.yesterday
-    @spam = spam_accounts(from, yesterday)
-    @regular = regular_accounts(from, yesterday)
-    @total_count = []
+    @spam = spam_accounts(from, yesterday, filter)
+    @regular = regular_accounts(from, yesterday, filter)
+    monthly_data if filter == 'monthly'
     @x_axis = []
-    fill_zero_gaps(from, yesterday)
-    sort_by_date
+    @total_count = []
+    filter == 'monthly' ? fill_zero_gaps_monthly(from, yesterday) : fill_zero_gaps(from, yesterday)
+    sort_by_date(filter)
+    @total_count = @regular.values if filter == 'monthly'
+  end
+
+  def monthly_data
+    @spam = @spam.inject({}) { |memo, (k, v)| memo.merge(k.strftime('%b %Y') => v) }
+    @regular = @regular.inject({}) { |memo, (k, v)| memo.merge(k.strftime('%b %Y') => v) }
   end
 
   def fill_zero_gaps(from, yesterday)
@@ -39,33 +46,47 @@ class OhAdmin::AccountChart
       @spam[date] = 0 if @spam[date].nil?
       @regular[date] = 0 if @regular[date].nil?
       total_count_till_from_date += @regular[date]
-      @total_count <<  total_count_till_from_date
+      @total_count <<  total_count_till_from_date if total_count_till_from_date
       @x_axis << date.strftime('%a, %b %d')
     end
   end
 
-  def sort_by_date
-    @spam = @spam.sort_by { |date, _count| date }.to_h
-    @regular = @regular.sort_by { |date, _count| date }.to_h
+  def fill_zero_gaps_monthly(from, yesterday)
+    (from..yesterday).map { |date| date.strftime('%b %Y') }.each do |date|
+      @spam[date] = 0 if @spam[date].nil?
+      @regular[date] = 0 if @regular[date].nil?
+      @x_axis << date
+    end
   end
 
-  def spam_accounts(from, to)
-    Account.group('date(created_at)').where(created_at: from..to, level: Account::Access::SPAM).count
+  def sort_by_date(filter)
+    if filter == 'monthly'
+      @regular = @regular.sort_by { |month, _count| Date.strptime(month, '%b %Y') }.to_h
+      @spam = @spam.sort_by { |month, _count| Date.strptime(month, '%b %Y') }.to_h
+    else
+      @spam = @spam.sort_by { |date, _count| date }.to_h
+      @regular = @regular.sort_by { |date, _count| date }.to_h
+    end
   end
 
-  def regular_accounts(from, to)
-    Account.group('date(created_at)').where(created_at: from..to, level: Account::Access::DEFAULT).count
+  def spam_accounts(from, to, filter)
+    if filter == 'monthly'
+      Account.group("DATE_TRUNC('month', created_at)").where(created_at: from..to, level: Account::Access::SPAM).count
+    else
+      Account.group('date(created_at)').where(created_at: from..to, level: Account::Access::SPAM).count
+    end
+  end
+
+  def regular_accounts(from, to, filter)
+    if filter == 'monthly'
+      Account.group("DATE_TRUNC('month', created_at)")
+             .where(created_at: from..to, level: Account::Access::DEFAULT).count
+    else
+      Account.group('date(created_at)').where(created_at: from..to, level: Account::Access::DEFAULT).count
+    end
   end
 
   def total_accounts(date)
     Account.where('DATE(created_at) < ?', date).where(level: Account::Access::DEFAULT).count
-  end
-
-  def set_interval(period)
-    case period
-    when 12 then 10
-    when 6  then 5
-    when 3  then 3
-    end
   end
 end
