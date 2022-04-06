@@ -53,7 +53,15 @@ var Charts = {
 
     if (data.xAxis) {
       $.extend(data.xAxis.labels, {formatter: function(){
-        return this.value.stringify;
+        var first_day = new Date(this.value)
+        var last_day = new Date(first_day.getFullYear(), first_day.getMonth()+1, 0);
+        var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+        if (months.includes(this.value.split(' ')[0]))
+          return '<a href="/admin/accounts?commit=Filter&q[created_at_gteq_datetime]=' + first_day + '&q[created_at_lteq_datetime]=' + last_day + '" target="_blank">' +
+                    this.value + '</a>';
+        else
+          return '<a href="/admin/accounts?commit=Filter&q[created_at_gteq_datetime]=' + this.value + '&q[created_at_lteq_datetime]=' + this.value + '" target="_blank">' +
+                    this.value + '</a>';
       }});
     }
     data.chart.renderTo = chart;

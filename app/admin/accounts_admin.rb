@@ -19,6 +19,7 @@ ActiveAdmin.register Account do
                                            ['Spammer', Account::Access::SPAM]]
   filter :last_seen_at
   filter :last_seen_ip
+  filter :created_at
 
   index do
     column :id
@@ -45,6 +46,7 @@ ActiveAdmin.register Account do
       ip = account.last_seen_ip
       ip.blank? ? '' : link_to(ip, admin_accounts_path('q[last_seen_ip_contains]' => ip, 'commit' => 'Filter'))
     end
+    column :created_at
     actions
   end
 
