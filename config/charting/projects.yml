@@ -1,0 +1,45 @@
+chart:
+  type: 'column'
+title:
+  text: ''
+xAxis:
+  categories: []
+yAxis:
+  - title:
+      text: null
+    stackLabels:
+      enabled: false
+  - title:
+      text: null
+    labels:
+        enabled: false
+legend:
+  align: 'right'
+  x: -30
+  verticalAlign: 'top'
+  y: 25
+  floating: true
+  borderColor: '#CCC'
+  borderWidth: 1
+  shadow: false
+tooltip:
+  headerFormat: '<b>{point.x}</b><br/>'
+  pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
+plotOptions:
+  column:
+    stacking: 'normal'
+    dataLabels:
+      enabled: false
+series:
+  - name: 'ANALYZED'
+    color: 'green'
+  - name: 'NON ANALYZED'
+    color: 'red'
+  - name: 'Total Count'
+    type: 'spline'
+    yAxis: 1
+    color: 'orange'
+credits:
+  enabled: false
+exporting:
+  enabled: false

@@ -466,6 +466,9 @@ Rails.application.routes.draw do
       end
     end
     resources :projects do
+      collection do
+        get :charts
+      end
       resources :jobs
     end
     resources :broken_links, only: %i[index destroy]
