@@ -8,6 +8,7 @@ class ApplicationControllerTest < ActionController::TestCase
       @controller = TestController.new
       @controller.request = @request
       @controller.response = @response
+      ENV['KUBERNETES_PORT'] = 'true'
     end
 
     it 'render_404 as html' do
@@ -101,6 +102,15 @@ class ApplicationControllerTest < ActionController::TestCase
     it 'does invoke airbrake on generic errors' do
       Rails.application.config.stubs(:consider_all_requests_local).returns false
       @controller.expects(:notify_airbrake).once
+      get :throws_standard_error
+      assert_response :not_found
+      Rails.application.config.unstub(:consider_all_requests_local)
+    end
+
+    it 'must report to Datadog when not on kubernetes' do
+      Rails.application.config.stubs(:consider_all_requests_local).returns false
+      ENV.delete('KUBERNETES_PORT')
+      DataDogReport.expects(:error).once
       get :throws_standard_error
       assert_response :not_found
       Rails.application.config.unstub(:consider_all_requests_local)

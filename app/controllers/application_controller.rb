@@ -53,7 +53,7 @@ class ApplicationController < ActionController::Base
       flash[:notice] = t(:api_exception)
       redirect_to_saved_path
     else
-      notify_airbrake(exception) unless blank_user_agent?
+      report_errors(exception) unless blank_user_agent?
       render_404
     end
   end
@@ -271,6 +271,14 @@ class ApplicationController < ActionController::Base
   def access_denied
     store_location
     redirect_to new_session_path
+  end
+
+  def report_errors(exception)
+    if ENV['KUBERNETES_PORT']
+      notify_airbrake(exception)
+    else
+      DataDogReport.error(exception.backtrace.to_s)
+    end
   end
 
   def set_session_projects
