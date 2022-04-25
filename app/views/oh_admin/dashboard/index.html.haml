@@ -61,40 +61,40 @@
   Accounts BreakDown Stats
   .btn-group#account_window{ 'data-toggle' => 'buttons' }
     %label.btn.btn-primary.active
-      %input#option1{ checked: 'checked', name: 'options', type: 'radio', value: '3' } 3 Months
+      %input#option1{ checked: 'checked', name: 'options', type: 'radio', value: '3', "data-div" => "three_months"} 3 Months
     %label.btn.btn-primary
-      %input#option2{ name: 'options', type: 'radio', value: '6' } 6 Months
+      %input#option2{ name: 'options', type: 'radio', value: '6', "data-div" => "six_months" } 6 Months
     %label.btn.btn-primary
-      %input#option3{ name: 'options', type: 'radio', value: '12' } 1 Year
+      %input#option3{ name: 'options', type: 'radio', value: '12', "data-div" => "one_year" } 1 Year
   .btn-group.radio#account_window
     %label
-      %input{checked: 'checked', name: "radio", type: "radio", value: "weekly"}
+      %input{checked: true, name: "radio", type: "radio", value: "weekly"}
       by weekly    
     %label
       %input{name: "radio", type: "radio", value: "monthly"}
       by monthly
 
-#three_months
+#three_months.account
   %h1 3 Months Accounts Creation Trend
   .chart{ 'datasrc' => chart_url + '?period=3' + '&filter_by=weekly' }
 
-#six_months
+#six_months.account
   %h1 6 Months Accounts Creation Trend
   .chart{ 'datasrc' => chart_url + '?period=6' + '&filter_by=weekly'}
 
-#one_year
+#one_year.account
   %h1 1 Year Accounts Creation Trend
   .chart{ 'datasrc' => chart_url + '?period=12' + '&filter_by=weekly'}
 
-#three_months_monthly
+#three_months_monthly.account
   %h1 3 Months Accounts Creation Trend
   .chart{ 'datasrc' => chart_url + '?period=3' + '&filter_by=monthly'}
 
-#six_months_monthly
+#six_months_monthly.account
   %h1 6 Months Accounts Creation Trend
   .chart{ 'datasrc' => chart_url + '?period=6' + '&filter_by=monthly'}
 
-#one_year_monthly
+#one_year_monthly.account
   %h1 1 Year Accounts Creation Trend
   .chart{ 'datasrc' => chart_url + '?period=12' + '&filter_by=monthly'}
 
