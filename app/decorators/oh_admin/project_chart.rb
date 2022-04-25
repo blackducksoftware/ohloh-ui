@@ -8,7 +8,7 @@ class OhAdmin::ProjectChart
     @filter = filter
     @from = period.months.ago.to_date
     @to = Date.yesterday
-    account_data
+    project_data
   end
 
   def render
@@ -26,7 +26,7 @@ class OhAdmin::ProjectChart
     chart['series'][2][:data] = @total_count.flatten
   end
 
-  def account_data
+  def project_data
     @analyzed = best_analysis_project
     @non_analyzed = no_analysis_project
     monthly_data if @filter == 'monthly'
@@ -99,7 +99,7 @@ class OhAdmin::ProjectChart
 
   def total_projects(date)
     if @filter == 'monthly'
-      Project.left_joins(:best_analysis).group("DATE_TRUNC('month', projects.created_at)")
+      Project.group("DATE_TRUNC('month', projects.created_at)")
              .where('projects.created_at >= ? AND projects.created_at <= ?',
                     date.to_date.beginning_of_month, date.to_date.end_of_month)
              .references(:best_analysis).count
