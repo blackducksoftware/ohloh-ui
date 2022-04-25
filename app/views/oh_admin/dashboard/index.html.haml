@@ -45,40 +45,40 @@
   Projects BreakDown Stats
   .btn-group#account_window{ 'data-toggle' => 'buttons' }
     %label.btn.btn-primary.active
-      %input#option1{ checked: 'checked', name: 'options_project', type: 'radio', value: '3' } 3 Months
+      %input#option1{ checked: 'checked', name: 'project_options', type: 'radio', value: '3' , "data-div" => "three_months"} 3 Months
     %label.btn.btn-primary
-      %input#option2{ name: 'options_project', type: 'radio', value: '6' } 6 Months
+      %input#option2{ name: 'project_options', type: 'radio', value: '6', "data-div" => "six_months"} 6 Months
     %label.btn.btn-primary
-      %input#option3{ name: 'options_project', type: 'radio', value: '12' } 1 Year
+      %input#option3{ name: 'project_options', type: 'radio', value: '12', "data-div" => "one_year"} 1 Year
   .btn-group.radio#account_window
     %label.active
-      %input{checked: true, name: "radio_project", type: "radio", value: "weekly"}
+      %input{checked: true, name: "project_filter", type: "radio", value: "weekly"}
       by weekly    
     %label
-      %input{name: "radio_project", type: "radio", value: "monthly"}
+      %input{name: "project_filter", type: "radio", value: "monthly"}
       by monthly
 
-#three_months_project
+#three_months_project.project
   %h1 3 Months Projects Creation Trend
   .chart{ 'datasrc' => project_chart_url + '?period=3' + '&filter_by=weekly' }
 
-#six_months_project
+#six_months_project.project
   %h1 6 Months Projects Creation Trend
   .chart{ 'datasrc' => project_chart_url + '?period=6' + '&filter_by=weekly'}
 
-#one_year_project
+#one_year_project.project
   %h1 1 Year Projects Creation Trend
   .chart{ 'datasrc' => project_chart_url + '?period=12' + '&filter_by=weekly'}
 
-#three_months_monthly_project
+#three_months_monthly_project.project
   %h1 3 Months Projects Creation Trend
   .chart{ 'datasrc' => project_chart_url + '?period=3' + '&filter_by=monthly'}
 
-#six_months_monthly_project
+#six_months_monthly_project.project
   %h1 6 Months Projects Creation Trend
   .chart{ 'datasrc' => project_chart_url + '?period=6' + '&filter_by=monthly'}
 
-#one_year_monthly_project
+#one_year_monthly_project.project
   %h1 1 Year Projects Creation Trend
   .chart{ 'datasrc' => project_chart_url + '?period=12' + '&filter_by=monthly'}
 

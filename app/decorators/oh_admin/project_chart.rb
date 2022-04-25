@@ -102,7 +102,7 @@ class OhAdmin::ProjectChart
       Project.group("DATE_TRUNC('month', projects.created_at)")
              .where('projects.created_at >= ? AND projects.created_at <= ?',
                     date.to_date.beginning_of_month, date.to_date.end_of_month)
-             .references(:best_analysis).count
+             .count
     else
       Project.where('DATE(created_at) < ?', date).count
     end
