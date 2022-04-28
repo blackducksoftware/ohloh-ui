@@ -107,10 +107,10 @@ class ApplicationControllerTest < ActionController::TestCase
       Rails.application.config.unstub(:consider_all_requests_local)
     end
 
-    it 'must report to Datadog when not on kubernetes' do
+    it 'must log errors to file when not on kubernetes' do
       Rails.application.config.stubs(:consider_all_requests_local).returns false
       ENV.delete('KUBERNETES_PORT')
-      DataDogReport.expects(:error).once
+      Logger.any_instance.expects(:error).times(3)
       get :throws_standard_error
       assert_response :not_found
       Rails.application.config.unstub(:consider_all_requests_local)
