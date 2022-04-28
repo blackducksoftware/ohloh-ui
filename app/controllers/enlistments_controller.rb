@@ -4,6 +4,7 @@ class EnlistmentsController < SettingsController
   helper EnlistmentsHelper
   helper ProjectsHelper
 
+  before_action :session_required, :redirect_unverified_account, except: %i[index]
   include EnlistmentFilters
 
   before_action :set_enlistments, only: :index
@@ -32,7 +33,7 @@ class EnlistmentsController < SettingsController
       redirect_to project_enlistments_path(@project)
     else
       flash[:error] = @code_location.errors['error']
-      render :new, status: :unprocessable_entity
+      render :new
     end
   end
 

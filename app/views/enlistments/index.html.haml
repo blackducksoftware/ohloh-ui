@@ -89,6 +89,6 @@
   - if logged_in? && @project.edit_authorized?
     = link_to t('.new_code_location'), new_project_enlistment_path(@project), class: 'btn btn-primary'
   - else
-    = disabled_button t('.new_code_location'), class: 'btn-primary'
+    = icon_button(new_project_enlistment_url(@project), text: t('.new_code_location'), class: 'btn btn-primary')
 
 = render partial: 'about_code_locations'
