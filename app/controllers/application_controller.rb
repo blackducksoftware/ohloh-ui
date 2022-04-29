@@ -277,7 +277,11 @@ class ApplicationController < ActionController::Base
     if ENV['KUBERNETES_PORT']
       notify_airbrake(exception)
     else
-      DataDogReport.error(exception.backtrace.to_s)
+      logger = Logger.new(Rails.root.join('log/errors.log'))
+      logger.error(exception.message)
+      logger.error(exception.backtrace)
+      logger.error('-' * 150)
+      logger.close
     end
   end
 
