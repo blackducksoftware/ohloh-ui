@@ -17,7 +17,7 @@ module EditsHelper
   end
 
   def edit_show_subject(edit)
-    "#{html_escape(edit_subject(edit))} #{edit_enlistment_branch_info(edit)}"
+    "#{edit_subject(edit)} #{edit_enlistment_branch_info(edit)}".html_safe
   end
 
   def get_edit_summary(edit)
