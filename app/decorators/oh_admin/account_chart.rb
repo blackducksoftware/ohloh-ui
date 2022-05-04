@@ -4,7 +4,9 @@ class OhAdmin::AccountChart
   def initialize(period, filter)
     @period = period
     @filter = filter
-    account_data(period, filter)
+    @from = period.months.ago.to_date
+    @to = Date.yesterday
+    account_data
   end
 
   def render
@@ -22,17 +24,15 @@ class OhAdmin::AccountChart
     chart['series'][2][:data] = @total_count
   end
 
-  def account_data(period, filter)
-    from = period.months.ago.to_date
-    yesterday = Date.yesterday
-    @spam = spam_accounts(from, yesterday, filter)
-    @regular = regular_accounts(from, yesterday, filter)
-    monthly_data if filter == 'monthly'
+  def account_data
+    @spam = spam_accounts
+    @regular = regular_accounts
+    monthly_data if @filter == 'monthly'
     @x_axis = []
     @total_count = []
-    filter == 'monthly' ? fill_zero_gaps_monthly(from, yesterday) : fill_zero_gaps(from, yesterday)
-    sort_by_date(filter)
-    @total_count = @regular.values if filter == 'monthly'
+    @filter == 'monthly' ? fill_zero_gaps_monthly : fill_zero_gaps
+    sort_by_date
+    @total_count = @regular.values if @filter == 'monthly'
   end
 
   def monthly_data
@@ -40,9 +40,9 @@ class OhAdmin::AccountChart
     @regular = @regular.inject({}) { |memo, (k, v)| memo.merge(k.strftime('%b %Y') => v) }
   end
 
-  def fill_zero_gaps(from, yesterday)
-    total_count_till_from_date = total_accounts(from)
-    (from..yesterday).each do |date|
+  def fill_zero_gaps
+    total_count_till_from_date = total_accounts(@from)
+    (@from..@to).each do |date|
       @spam[date] = 0 if @spam[date].nil?
       @regular[date] = 0 if @regular[date].nil?
       total_count_till_from_date += @regular[date]
@@ -51,16 +51,16 @@ class OhAdmin::AccountChart
     end
   end
 
-  def fill_zero_gaps_monthly(from, yesterday)
-    (from..yesterday).map { |date| date.strftime('%b %Y') }.each do |date|
+  def fill_zero_gaps_monthly
+    (@from..@to).map { |date| date.strftime('%b %Y') }.uniq.each do |date|
       @spam[date] = 0 if @spam[date].nil?
       @regular[date] = 0 if @regular[date].nil?
       @x_axis << date
     end
   end
 
-  def sort_by_date(filter)
-    if filter == 'monthly'
+  def sort_by_date
+    if @filter == 'monthly'
       @regular = @regular.sort_by { |month, _count| Date.strptime(month, '%b %Y') }.to_h
       @spam = @spam.sort_by { |month, _count| Date.strptime(month, '%b %Y') }.to_h
     else
@@ -69,20 +69,20 @@ class OhAdmin::AccountChart
     end
   end
 
-  def spam_accounts(from, to, filter)
-    if filter == 'monthly'
-      Account.group("DATE_TRUNC('month', created_at)").where(created_at: from..to, level: Account::Access::SPAM).count
+  def spam_accounts
+    if @filter == 'monthly'
+      Account.group("DATE_TRUNC('month', created_at)").where(created_at: @from..@to, level: Account::Access::SPAM).count
     else
-      Account.group('date(created_at)').where(created_at: from..to, level: Account::Access::SPAM).count
+      Account.group('date(created_at)').where(created_at: @from..@to, level: Account::Access::SPAM).count
     end
   end
 
-  def regular_accounts(from, to, filter)
-    if filter == 'monthly'
+  def regular_accounts
+    if @filter == 'monthly'
       Account.group("DATE_TRUNC('month', created_at)")
-             .where(created_at: from..to, level: Account::Access::DEFAULT).count
+             .where(created_at: @from..@to, level: Account::Access::DEFAULT).count
     else
-      Account.group('date(created_at)').where(created_at: from..to, level: Account::Access::DEFAULT).count
+      Account.group('date(created_at)').where(created_at: @from..@to, level: Account::Access::DEFAULT).count
     end
   end
 
