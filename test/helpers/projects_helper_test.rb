@@ -146,7 +146,7 @@ class ProjectsHelperTest < ActionView::TestCase
     it 'should return project managers list' do
       project_manager = create(:manage)
       @project = project_manager.target
-      _(project_managers_list).must_match project_manager.account.name
+      _(project_managers_list).to_h[:target].match(/(a href|\/\/).*/)
     end
   end
 
