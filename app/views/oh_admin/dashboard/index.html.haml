@@ -19,6 +19,7 @@
   last_activity_bg    = ['bg-aqua', 'bg-green', 'bg-yellow']
 
   chart_url = charts_oh_admin_accounts_url.to_s
+  project_chart_url = charts_oh_admin_projects_url.to_s
 
 %h1 Project Stats Overview
 %p
@@ -40,7 +41,46 @@
           %h3= number_with_delimiter(project_values[i])
           %p= project_titles[i]
 
-%p &nbsp;
+%h1
+  Projects BreakDown Stats
+  .btn-group#account_window{ 'data-toggle' => 'buttons' }
+    %label.btn.btn-primary.active
+      %input#option1{ checked: 'checked', name: 'project_options', type: 'radio', value: '3' , "data-div" => "three_months"} 3 Months
+    %label.btn.btn-primary
+      %input#option2{ name: 'project_options', type: 'radio', value: '6', "data-div" => "six_months"} 6 Months
+    %label.btn.btn-primary
+      %input#option3{ name: 'project_options', type: 'radio', value: '12', "data-div" => "one_year"} 1 Year
+  .btn-group.radio#account_window
+    %label.active
+      %input{checked: true, name: "project_filter", type: "radio", value: "weekly"}
+      by weekly    
+    %label
+      %input{name: "project_filter", type: "radio", value: "monthly"}
+      by monthly
+
+#three_months_project.project
+  %h1 3 Months Projects Creation Trend
+  .chart{ 'datasrc' => project_chart_url + '?period=3' + '&filter_by=weekly' }
+
+#six_months_project.project
+  %h1 6 Months Projects Creation Trend
+  .chart{ 'datasrc' => project_chart_url + '?period=6' + '&filter_by=weekly'}
+
+#one_year_project.project
+  %h1 1 Year Projects Creation Trend
+  .chart{ 'datasrc' => project_chart_url + '?period=12' + '&filter_by=weekly'}
+
+#three_months_monthly_project.project
+  %h1 3 Months Projects Creation Trend
+  .chart{ 'datasrc' => project_chart_url + '?period=3' + '&filter_by=monthly'}
+
+#six_months_monthly_project.project
+  %h1 6 Months Projects Creation Trend
+  .chart{ 'datasrc' => project_chart_url + '?period=6' + '&filter_by=monthly'}
+
+#one_year_monthly_project.project
+  %h1 1 Year Projects Creation Trend
+  .chart{ 'datasrc' => project_chart_url + '?period=12' + '&filter_by=monthly'}
 
 %h1 Accounts Overview
 %p
