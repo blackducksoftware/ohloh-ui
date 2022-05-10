@@ -21,6 +21,10 @@ ActiveAdmin.register Account do
   filter :last_seen_ip
   filter :created_at
 
+  action_item :maintenance, only: :index do
+    link_to 'Set Maintenance Mode', maintenance_admin_accounts_path
+  end
+
   index do
     column :id
     column :name do |account|
