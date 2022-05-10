@@ -20,6 +20,20 @@ class Account < ApplicationRecord
 
   accepts_nested_attributes_for :github_verification, :firebase_verification
 
+  class << self
+    def maintenance
+      logout_users
+    end
+
+    private
+
+    def logout_users
+      Account.active.each do |user|
+        user.reset_remember_token!
+      end
+    end
+  end
+
   def anonymous?
     login == AnonymousAccount::LOGIN
   end
