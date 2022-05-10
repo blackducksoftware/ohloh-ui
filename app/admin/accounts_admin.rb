@@ -54,7 +54,7 @@ ActiveAdmin.register Account do
     actions
   end
 
-  form do |f|
+  index do |f|
     f.semantic_errors(*f.object.errors.keys)
     f.inputs 'Details' do
       account_params.exclude(:level).each do |field|
@@ -67,5 +67,10 @@ ActiveAdmin.register Account do
                                     'Spammer' => Account::Access::SPAM }
     end
     f.actions
+  end
+
+  collection_action :maintenance do
+    Account.maintenance
+    redirect_to_saved_path(notice: 'Accounts successfully logged out')
   end
 end
