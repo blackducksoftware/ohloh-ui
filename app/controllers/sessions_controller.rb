@@ -3,7 +3,6 @@
 class SessionsController < Clearance::SessionsController
   helper StatsdHelper
 
-  before_action :check_in_maintenance
   before_action :account_must_exist, only: :create
   before_action :captcha_verify, only: :create, if: :failed_login_thrice?
   before_action :reset_auth_fail_count, only: :create, if: :auth_failure_timeout?
@@ -92,10 +91,5 @@ class SessionsController < Clearance::SessionsController
 
     flash.now[:error] = t('flashes.failure_after_create')
     render 'sessions/new', status: :unauthorized
-  end
-
-  def check_in_maintenance
-    return false unless ENV['MAINTENANCE'] == 'true'
-    flash.now[:notice] = 'Openhub is in maintenance mode.  Unable to login at this time.  Please try again in a couple of hours'
   end
 end
