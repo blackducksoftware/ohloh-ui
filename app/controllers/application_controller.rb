@@ -325,6 +325,7 @@ class ApplicationController < ActionController::Base
 
   def update_last_seen_at_and_ip
     return unless logged_in?
+    return unless expired_token?
 
     current_user.update_columns(last_seen_at: Time.current, last_seen_ip: request.remote_ip)
   end

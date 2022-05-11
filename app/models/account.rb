@@ -28,9 +28,8 @@ class Account < ApplicationRecord
     private
 
     def logout_users
-      Account.active.each do |user|
-        user.reset_remember_token!
-      end
+      Account.active.where("last_seen_at > now() - interval '3 weeks'")
+             .find_each(&:reset_remember_token!)
     end
   end
 
