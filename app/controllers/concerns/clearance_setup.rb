@@ -16,6 +16,12 @@ module ClearanceSetup
       super || NilAccount.new
     end
 
+    def expired_token?
+      return unless current_user && current_user.last_seen_at < 3.weeks.ago
+
+      current_user.reset_remember_token!
+    end
+
     private
 
     def sign_in_url
