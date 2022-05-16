@@ -17,14 +17,15 @@ module ClearanceSetup
     end
 
     def expired_token?
-      return unless current_user && current_user.last_seen_at < expiration_days.days.ago
+      return false unless current_user&.last_seen_at && current_user.last_seen_at < expiration_days.days.ago
 
       current_user.reset_remember_token!
       request.env[:clearance].sign_out
+      true
     end
 
     def expiration_days
-      ENV['EXPRIATION_DAYS'].to_i || 21  # default to 3 weeks
+      ENV['EXPRIATION_DAYS'] ? ENV['EXPRIATION_DAYS'].to_i : 21  # default to 3 weeks
     end
 
     private
