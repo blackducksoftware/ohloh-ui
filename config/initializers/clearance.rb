@@ -8,5 +8,7 @@ Clearance.configure do |config|
   config.rotate_csrf_on_sign_in = true
   config.sign_in_guards = [Account::DisabledGuard]
   config.user_model = Account
-  config.cookie_expiration = (ENV['EXPIRATION_DAYS'].to_i || 21).days.from_now.utc
+  config.cookie_expiration = -> (cookies) do
+    (ENV['EXPIRATION_DAYS'].to_i).days.from_now
+  end
 end
