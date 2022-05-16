@@ -20,19 +20,6 @@ class Account < ApplicationRecord
 
   accepts_nested_attributes_for :github_verification, :firebase_verification
 
-  class << self
-    def maintenance
-      logout_users
-    end
-
-    private
-
-    def logout_users
-      Account.active.where("last_seen_at > now() - interval '3 weeks'")
-             .find_each(&:reset_remember_token!)
-    end
-  end
-
   def anonymous?
     login == AnonymousAccount::LOGIN
   end

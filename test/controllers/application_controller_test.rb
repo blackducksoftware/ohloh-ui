@@ -273,6 +273,24 @@ class ApplicationControllerTest < ActionController::TestCase
         get :index
         _(account.reload.last_seen_ip).must_equal ip
       end
+
+      it 'should access with valid token' do
+        login_as account
+        get :new
+        assert_response :success
+      end
+
+      it 'should not access if not logged in' do
+        get :new
+        assert_redirected_to '/sessions/new'
+      end
+
+      it 'should not access with invalid token' do
+        account.update!(last_seen_at: 4.weeks.ago)
+        login_as account
+        get :new
+        assert_redirected_to '/sessions/new'
+      end
     end
   end
 end

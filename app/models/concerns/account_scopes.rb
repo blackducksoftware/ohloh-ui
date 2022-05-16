@@ -3,6 +3,7 @@
 module AccountScopes
   ANONYMOUS_ACCOUNTS = %w[anonymous_coward ohloh_slave uber_data_crawler].freeze
   ANONYMOUS_ACCOUNTS_EMAILS = %w[anon@openhub.net info@openhub.net uber_data_crawler@openhub.net].freeze
+  EXPIRATION_DAYS = (ENV['EXPIRATION_DAYS'].to_i || 21).days
 
   extend ActiveSupport::Concern
 
@@ -33,6 +34,7 @@ module AccountScopes
     scope :in_good_standing, -> { where('level >= 0') }
     scope :from_param, ->(param) { in_good_standing.where(arel_table[:login].eq(param).or(arel_table[:id].eq(param))) }
     scope :active, -> { where(level: 0) }
+    scope :logged_in, -> { where("last_seen_at > '#{EXPIRATION_DAYS.ago}'") }
     scope :non_anonymous, -> { where.not(login: ANONYMOUS_ACCOUNTS, email: ANONYMOUS_ACCOUNTS_EMAILS) }
 
     scope :reverification_not_initiated, lambda { |limit = 0|
