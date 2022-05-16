@@ -9,5 +9,15 @@ module Account::ClearanceUser
     def email_optional?
       true
     end
+
+    def maintenance
+      logout_users
+    end
+
+    private
+
+    def logout_users
+      Account.logged_in.find_each(&:reset_remember_token!)
+    end
   end
 end

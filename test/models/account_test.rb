@@ -215,6 +215,24 @@ class AccountTest < ActiveSupport::TestCase
     _(recently_active.count).must_equal 0
   end
 
+  it 'should return no logged in accounts' do
+    logged_in = Account.logged_in
+    _(logged_in).must_be_empty
+    _(logged_in.count).must_equal 0
+  end
+
+  it 'should return all logged in accounts' do
+    create(:account, login: 'account-test', last_seen_at: DateTime.now)
+    logged_in = Account.logged_in
+    _(logged_in.count).must_equal 1
+  end
+
+  it 'should return all non-expired accounts' do
+    create(:account, login: 'account-test', last_seen_at: 22.days.ago)
+    logged_in = Account.logged_in
+    _(logged_in.count).must_equal 0
+  end
+
   it 'should not include BOT accounts in active accounts' do
     best_account_analysis = create(:best_account_analysis)
     level = Account::Access::BOT
