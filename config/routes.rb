@@ -401,6 +401,7 @@ Rails.application.routes.draw do
   end
 
   get 'maintenance' => 'home#maintenance'
+  get 'health' => 'home#health'
 
   get 'repositories/compare' => 'compare_repositories#index', as: :compare_repositories
   get 'repositories/chart' => 'compare_repositories#chart', as: :compare_repositories_chart

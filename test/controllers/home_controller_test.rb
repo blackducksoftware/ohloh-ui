@@ -16,6 +16,12 @@ class HomeControllerTest < ActionController::TestCase
     _(assigns(:home).class).must_equal HomeDecorator
   end
 
+  it 'must respond with 200 for health' do
+    get :health
+
+    assert_response :success
+  end
+
   it 'server_info should load' do
     get :server_info
     assert_response :success
