@@ -23,11 +23,7 @@ class SessionsController < Clearance::SessionsController
   end
 
   def health
-    # if ApplicationRecord.connected?
-      render plain: Time.current
-    # else
-    #   head :internal_server_error
-    # end
+    render plain: Time.current
   end
 
   private
