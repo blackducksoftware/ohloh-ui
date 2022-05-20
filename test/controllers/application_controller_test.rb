@@ -11,6 +11,10 @@ class ApplicationControllerTest < ActionController::TestCase
       ENV['KUBERNETES_PORT'] = 'true'
     end
 
+    after do
+      ENV['KUBERNETES_PORT'] = nil
+    end
+
     it 'render_404 as html' do
       get :renders_404
       assert_response :not_found

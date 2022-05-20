@@ -126,11 +126,5 @@ class SessionsControllerTest < ActionController::TestCase
       assert_response :success
       _(response.body).must_match Time.current.strftime('%F %H')
     end
-
-    it 'must return status 500 when DB is inaccessible' do
-      ActiveRecord::Base.stubs(:connected?)
-      get :health
-      _(response.status).must_equal 500
-    end
   end
 end
