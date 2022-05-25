@@ -38,7 +38,7 @@ module HomeHelper
   end
 
   def home_top_lists
-    Rails.cache.fetch 'homepage_top_lists', expires_in: 6.hours do
+    Rails.cache.fetch 'homepage_top_lists' do
       render partial: 'top_lists'
     end
   end

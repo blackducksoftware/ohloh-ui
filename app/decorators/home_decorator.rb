@@ -6,9 +6,7 @@ class HomeDecorator
   end
 
   def most_active_projects
-    ids = Rails.cache.fetch('HomeDecorator-most_active_projects-cache', expires_in: 1.day) do
-      Project.most_active.includes(:logo, best_analysis: %i[main_language thirty_day_summary]).map(&:id)
-    end
+    ids = Rails.cache.fetch('HomeDecorator-most_active_projects-cache') || []
     includes = [:logo, { best_analysis: %i[main_language thirty_day_summary] }]
     Project.includes(includes).find(ids).index_by(&:id).slice(*ids).values
   end
@@ -34,11 +32,11 @@ class HomeDecorator
   end
 
   def active_project_count
-    Rails.cache.fetch('HomeDecorator-active_project_count-cache') { Project.active.count }
+    Rails.cache.fetch('HomeDecorator-active_project_count-cache') || 0
   end
 
   def person_count
-    Rails.cache.fetch('HomeDecorator-person_count-cache') { Person.count }
+    Rails.cache.fetch('HomeDecorator-person_count-cache') || 0
   end
 
   def repository_count
