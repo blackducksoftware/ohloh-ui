@@ -48,6 +48,6 @@ module ProjectScopes
                  .having('count(*) >= ?', tags.split.flatten.length)
     }
     scope :with_analysis, -> { active.where.not(best_analysis_id: nil) }
-    scope :active_enlistments, -> { active.joins(:enlistments).where(enlistments: { deleted: false }) }
+    scope :active_enlistments, -> { active.joins(:enlistments) }
   end
 end

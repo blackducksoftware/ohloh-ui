@@ -1,0 +1,26 @@
+:ruby
+  chart_url = charts_oh_admin_accounts_url.to_s
+
+#three_months.account
+  %h1 3 Months Accounts Creation Trend
+  .chart{ 'datasrc' => chart_url + '?period=3' + '&filter_by=weekly' }
+
+#six_months.account
+  %h1 6 Months Accounts Creation Trend
+  .chart{ 'datasrc' => chart_url + '?period=6' + '&filter_by=weekly'}
+
+#one_year.account
+  %h1 1 Year Accounts Creation Trend
+  .chart{ 'datasrc' => chart_url + '?period=12' + '&filter_by=weekly'}
+
+#three_months_monthly.account
+  %h1 3 Months Accounts Creation Trend
+  .chart{ 'datasrc' => chart_url + '?period=3' + '&filter_by=monthly'}
+
+#six_months_monthly.account
+  %h1 6 Months Accounts Creation Trend
+  .chart{ 'datasrc' => chart_url + '?period=6' + '&filter_by=monthly'}
+
+#one_year_monthly.account
+  %h1 1 Year Accounts Creation Trend
+  .chart{ 'datasrc' => chart_url + '?period=12' + '&filter_by=monthly'}

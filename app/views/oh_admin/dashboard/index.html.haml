@@ -9,17 +9,12 @@
                      'Projects with enlistments & Best Analysis (Not updated since 2 weeks)']
   project_colors  = ['bg-aqua', 'bg-green', 'bg-light-blue-active', 'bg-green', 'bg-yellow', 'bg-red']
   project_icons   = ['fa-area-chart', 'fa-bar-chart', 'fa-shield']
-  analyses_count  = Analysis.where(updated_on: get_window.utc..Time.current).count
-  project_values  = [analyses_count, Project.active.count, active_projects_count, updated_projects_count(3.days),
-                     updated_projects_count(2.weeks, 3.days), outdated_projects(2.weeks.ago.to_date)]
+  project_values  = [analyses_count, project_count, active_projects_count, days_projects_count,  weeks_projects_count, outdated_projects]
 
   last_activity_icons = ['fa-calendar', 'fa-check-square', 'fa-server']
   last_activity_text  = ['Monthly Language Analysis', 'CII Projects', 'Deployment']
   last_activity_info  = [Analysis::MonthlyLanguage.last_run, ProjectBadge.check_cii_projects_last_run, last_deployment]
   last_activity_bg    = ['bg-aqua', 'bg-green', 'bg-yellow']
-
-  chart_url = charts_oh_admin_accounts_url.to_s
-  project_chart_url = charts_oh_admin_projects_url.to_s
 
 %h1 Project Stats Overview
 %p
@@ -58,29 +53,7 @@
       %input{name: "project_filter", type: "radio", value: "monthly"}
       by monthly
 
-#three_months_project.project
-  %h1 3 Months Projects Creation Trend
-  .chart{ 'datasrc' => project_chart_url + '?period=3' + '&filter_by=weekly' }
-
-#six_months_project.project
-  %h1 6 Months Projects Creation Trend
-  .chart{ 'datasrc' => project_chart_url + '?period=6' + '&filter_by=weekly'}
-
-#one_year_project.project
-  %h1 1 Year Projects Creation Trend
-  .chart{ 'datasrc' => project_chart_url + '?period=12' + '&filter_by=weekly'}
-
-#three_months_monthly_project.project
-  %h1 3 Months Projects Creation Trend
-  .chart{ 'datasrc' => project_chart_url + '?period=3' + '&filter_by=monthly'}
-
-#six_months_monthly_project.project
-  %h1 6 Months Projects Creation Trend
-  .chart{ 'datasrc' => project_chart_url + '?period=6' + '&filter_by=monthly'}
-
-#one_year_monthly_project.project
-  %h1 1 Year Projects Creation Trend
-  .chart{ 'datasrc' => project_chart_url + '?period=12' + '&filter_by=monthly'}
+  = admin_project_trends
 
 %h1 Accounts Overview
 %p
@@ -114,29 +87,7 @@
       %input{name: "radio", type: "radio", value: "monthly"}
       by monthly
 
-#three_months.account
-  %h1 3 Months Accounts Creation Trend
-  .chart{ 'datasrc' => chart_url + '?period=3' + '&filter_by=weekly' }
-
-#six_months.account
-  %h1 6 Months Accounts Creation Trend
-  .chart{ 'datasrc' => chart_url + '?period=6' + '&filter_by=weekly'}
-
-#one_year.account
-  %h1 1 Year Accounts Creation Trend
-  .chart{ 'datasrc' => chart_url + '?period=12' + '&filter_by=weekly'}
-
-#three_months_monthly.account
-  %h1 3 Months Accounts Creation Trend
-  .chart{ 'datasrc' => chart_url + '?period=3' + '&filter_by=monthly'}
-
-#six_months_monthly.account
-  %h1 6 Months Accounts Creation Trend
-  .chart{ 'datasrc' => chart_url + '?period=6' + '&filter_by=monthly'}
-
-#one_year_monthly.account
-  %h1 1 Year Accounts Creation Trend
-  .chart{ 'datasrc' => chart_url + '?period=12' + '&filter_by=monthly'}
+  = admin_accounts_trends
 
 
 %h1 Last Activities
