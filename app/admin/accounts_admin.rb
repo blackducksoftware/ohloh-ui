@@ -54,7 +54,7 @@ ActiveAdmin.register Account do
     actions
   end
 
-  index do |f|
+  form do |f|
     f.semantic_errors(*f.object.errors.keys)
     f.inputs 'Details' do
       account_params.exclude(:level).each do |field|
