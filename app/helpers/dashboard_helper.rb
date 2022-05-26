@@ -47,10 +47,6 @@ module DashboardHelper
     number_to_percentage((projects_count.to_f / active_projects_count) * 100, precision: 2)
   end
 
-  def convert_to_datetime(value)
-    Time.current.ago(value).utc if value
-  end
-
   def active_projects_count
     Rails.cache.fetch('Admin-active-project-count-cache') { Project.active_enlistments.distinct.size }
   end
