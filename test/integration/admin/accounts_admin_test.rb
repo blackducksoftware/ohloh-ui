@@ -74,8 +74,7 @@ class AccountsAdminTest < ActionDispatch::IntegrationTest
     account = create(:account)
     create_and_login_admin
     get admin_account_path(account)
-    byebug
-    get maintenance_admin_account_path, headers: { 'HTTP_REFERER' => admin_account_path }
+    get maintenance_admin_accounts_path, headers: { 'HTTP_REFERER' => admin_account_path }
     assert_response :success
     _(flash[:notice]).must_equal 'Accounts successfully logged out'
 
