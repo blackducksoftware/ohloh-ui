@@ -18,4 +18,12 @@ class DashboardHelperTest < ActionView::TestCase
 
     _(get_revision_details).must_equal [commit_sha.strip, time]
   end
+
+  it 'must return active project count' do
+    _(project_count).must_equal Project.active.count
+  end
+
+  it 'must return active enlistments project count' do
+    _(active_projects_count).must_equal Project.active_enlistments.distinct.size
+  end
 end

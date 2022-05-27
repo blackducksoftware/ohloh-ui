@@ -27,28 +27,47 @@ module DashboardHelper
   end
 
   def accounts_count(level)
-    number_with_delimiter(Account.where(level: level).count)
+    Rails.cache.fetch("Admin-accounts-count-cache_#{level}", expires_in: 1.day) do
+      number_with_delimiter(Account.group(:level).size[level])
+    end
   end
 
-  def updated_projects_count(from, to = nil)
-    from = convert_to_datetime(from)
-    to = convert_to_datetime(to) || Time.current
-    projects_count = Project.active_enlistments.joins(:best_analysis)
-                            .where(analyses: { updated_on: from..to }).distinct.count
+  def days_projects_count
+    projects_count = Rails.cache.fetch('Admin-updated-project-count-cache')
     number_to_percentage((projects_count.to_f / active_projects_count) * 100, precision: 2)
   end
 
-  def outdated_projects(date)
-    projects_count = Project.active_enlistments.joins(:best_analysis)
-                            .where('analyses.updated_on < ?', date).distinct.count
+  def weeks_projects_count
+    projects_count = Rails.cache.fetch('Admin-updated-project-count-cache')
     number_to_percentage((projects_count.to_f / active_projects_count) * 100, precision: 2)
   end
 
-  def convert_to_datetime(value)
-    Time.current.ago(value).utc if value
+  def outdated_projects
+    projects_count = Rails.cache.fetch('Admin-outdated-project-count-cache') || 0
+    number_to_percentage((projects_count.to_f / active_projects_count) * 100, precision: 2)
   end
 
   def active_projects_count
-    Project.active_enlistments.distinct.count
+    Rails.cache.fetch('Admin-active-project-count-cache') { Project.active_enlistments.distinct.size }
+  end
+
+  def analyses_count
+    Rails.cache.fetch('Admin-project-analyses-count-cache') || 0
+  end
+
+  def project_count
+    Rails.cache.fetch('Admin-project-count-cache') { Project.active.size }
+  end
+
+  def admin_project_trends
+    Rails.cache.fetch 'admin_project_trend', expires_in: 1.day do
+      render partial: 'project_trend_graph'
+    end
+  end
+
+  def admin_accounts_trends
+    Rails.cache.fetch 'admin_accounts_trend', expires_in: 1.day do
+      render partial: 'accounts_trend_graph'
+    end
   end
 end
