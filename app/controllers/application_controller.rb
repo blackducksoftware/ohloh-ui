@@ -274,15 +274,7 @@ class ApplicationController < ActionController::Base
   end
 
   def report_errors(exception)
-    if ENV['KUBERNETES_PORT']
-      notify_airbrake(exception)
-    else
-      logger = Logger.new(Rails.root.join('log/errors.log'))
-      logger.error(exception.message)
-      logger.error(exception.backtrace)
-      logger.error('-' * 150)
-      logger.close
-    end
+    notify_airbrake(exception)
   end
 
   def set_session_projects

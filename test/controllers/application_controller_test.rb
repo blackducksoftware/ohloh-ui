@@ -8,11 +8,6 @@ class ApplicationControllerTest < ActionController::TestCase
       @controller = TestController.new
       @controller.request = @request
       @controller.response = @response
-      ENV['KUBERNETES_PORT'] = 'true'
-    end
-
-    after do
-      ENV['KUBERNETES_PORT'] = nil
     end
 
     it 'render_404 as html' do
@@ -113,8 +108,7 @@ class ApplicationControllerTest < ActionController::TestCase
 
     it 'must log errors to file when not on kubernetes' do
       Rails.application.config.stubs(:consider_all_requests_local).returns false
-      ENV.delete('KUBERNETES_PORT')
-      Logger.any_instance.expects(:error).times(3)
+      Logger.any_instance.expects(:error).never
       get :throws_standard_error
       assert_response :not_found
       Rails.application.config.unstub(:consider_all_requests_local)
