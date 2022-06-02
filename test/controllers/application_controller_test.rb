@@ -106,14 +106,6 @@ class ApplicationControllerTest < ActionController::TestCase
       Rails.application.config.unstub(:consider_all_requests_local)
     end
 
-    it 'must log errors to file when not on kubernetes' do
-      Rails.application.config.stubs(:consider_all_requests_local).returns false
-      Logger.any_instance.expects(:error).never
-      get :throws_standard_error
-      assert_response :not_found
-      Rails.application.config.unstub(:consider_all_requests_local)
-    end
-
     it 'reports to Datadog on FisbotApiError' do
       Rails.application.config.stubs(:consider_all_requests_local)
       DataDogReport.expects(:error).once
