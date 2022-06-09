@@ -40,7 +40,7 @@ module OhlohUi
     config.passenger_version = matches ? matches[0] : '???'
 
     redis_config = { host: ENV['REDIS_HOST'], port: ENV['REDIS_PORT'], namespace: ENV['REDIS_NAMESPACE'] }
-    redis_config[:password] = ENV['REDIS_PASSWORD'] unless ENV['KUBERNETES_PORT']
+    redis_config[:password] = ENV['REDIS_PASSWORD'] if Rails.env.development?
     config.cache_store = :redis_store, redis_config
     config.action_dispatch.default_headers = { 'X-Content-Type-Options' => 'nosniff' }
     config.active_record.dump_schemas = :all

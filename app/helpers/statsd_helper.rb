@@ -2,10 +2,10 @@
 
 module StatsdHelper
   def statsd_increment(msg)
-    StatsD.increment(msg) unless ENV['KUBERNETES_PORT']
+    StatsD.increment(msg) if Rails.env.development?
   end
 
   def statsd_set(msg, params)
-    StatsD.set(msg, params) unless ENV['KUBERNETES_PORT']
+    StatsD.set(msg, params) if Rails.env.development?
   end
 end
