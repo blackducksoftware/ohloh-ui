@@ -22,6 +22,10 @@ class HomeHelperTest < ActionView::TestCase
       project = stub(user_count: nil)
       _(width(project, 'most_popular_projects', nil)).must_equal 1
     end
+
+    it 'must return 40 when required is most_recent_projects' do
+      _(width(nil, 'most_recent_projects', nil)).must_equal 40
+    end
   end
 
   describe 'project_count' do
@@ -40,6 +44,11 @@ class HomeHelperTest < ActionView::TestCase
     it 'must return thirty_day_commits when most_active_contributors ' do
       best_account_analysis = create(:best_account_analysis)
       _(project_count(best_account_analysis.account, 'most_active_contributors')).must_be_nil
+    end
+
+    it 'must return created_at when most_recent_projects ' do
+      project = create(:project)
+      _(project_count(project, 'most_recent_projects')).must_equal project.created_at.strftime('%b %d, %Y')
     end
   end
 

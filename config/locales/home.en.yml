@@ -14,6 +14,7 @@ en:
       popular_projects: 'Most Popular Projects'
       active_projects: 'Most Active Projects'
       active_contributors: 'Most Active Contributors'
+      recent_projects: 'Most Recent Projects'
 
     join_now_home:
       claim: 'Claim'

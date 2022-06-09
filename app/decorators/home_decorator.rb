@@ -47,4 +47,8 @@ class HomeDecorator
       Enlistment.connection.execute('select count(*) from repositories').values[0][0].to_i
     end
   end
+
+  def most_recent_projects
+    Project.where('created_at > ?', 30.days.ago).limit(10)
+  end
 end
