@@ -25,9 +25,12 @@ task project_status: :environment do
       if analyzed_on && analyzed_on < 2.months.ago
         project.enlistments.each do |en|
           exception = en.code_location.jobs.last&.exception
-          status = 'Do not fetch' if en.code_location.do_not_fetch == true
-          dnf_count += 1 if en.code_location.do_not_fetch == true
-          fetch_count += 1
+          if en.code_location.do_not_fetch == true
+            status = 'Do not fetch'
+            dnf_count += 1
+          else
+            fetch_count += 1
+          end
         end
       elsif analyzed_on && analyzed_on > 2.months.ago
         status = 'Active'
