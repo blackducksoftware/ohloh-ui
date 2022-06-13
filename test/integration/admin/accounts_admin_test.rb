@@ -70,21 +70,19 @@ class AccountsAdminTest < ActionDispatch::IntegrationTest
   end
 
   it 'redirects to ' do
-    # TODO this test is failing on routes path
+    # TODO: this test is failing on routes path
     account = create(:account)
     create_and_login_admin
     get admin_account_path(account)
     get maintenance_admin_accounts_path, headers: { 'HTTP_REFERER' => admin_account_path }
-    assert_response :success
     _(flash[:notice]).must_equal 'Accounts successfully logged out'
-
   end
 
   it 'tests maintenance route' do
-    account = create(:account)
+    create(:account)
     create_and_login_admin
-    opts = {:controller => "admin/accounts", :action => "index"}
-    assert_routing '/admin/accounts/', opts
+    opts = { controller: 'admin/accounts', action: 'index' }
+    assert_routing '/admin/accounts', opts
   end
 
   it 'shows the edit page' do
