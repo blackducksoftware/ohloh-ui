@@ -6,6 +6,7 @@ class UrlFormatValidator < ActiveModel::EachValidator
   def validate_each(record, attribute, value)
     valid_url = begin
       @parser ||= defined?(URI::RFC2396_Parser) ? URI::RFC2396_Parser.new : URI
+      value = I18n.transliterate(value)
       @parser.parse(value).is_a?(URI::HTTP)
     rescue URI::InvalidURIError
       false

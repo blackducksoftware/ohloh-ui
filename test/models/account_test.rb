@@ -501,6 +501,11 @@ class AccountTest < ActiveSupport::TestCase
     _(account.errors.messages[:url]).must_be :present?
   end
 
+  it 'allow latin url in account url' do
+    account = create(:account, url: 'https://mickaël.bucas.name/')
+    _(account).must_be :valid?
+  end
+
   it 'must create an organization job when account is deleted' do
     account = create(:account)
     organization = create(:organization)
