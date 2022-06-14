@@ -2,9 +2,13 @@
 
 module HomeHelper
   def width(project, required, max)
-    count = project_count(project, required)
-    max = 1 if max.to_i.zero?
-    [1, count.to_i * 60 / max].max
+    if required == 'most_recent_projects'
+      40
+    else
+      count = project_count(project, required)
+      max = 1 if max.to_i.zero?
+      [1, count.to_i * 60 / max].max
+    end
   end
 
   def project_count(item, required)
@@ -14,9 +18,9 @@ module HomeHelper
     when 'most_active_projects'
       item.best_analysis.thirty_day_summary.commits_count if item.best_analysis.present?
     when 'most_active_contributors'
-      if item.best_account_analysis.account_analysis_fact.present?
-        item.best_account_analysis.account_analysis_fact.thirty_day_commits
-      end
+      item.best_account_analysis.account_analysis_fact&.thirty_day_commits
+    when 'most_recent_projects'
+      item.created_at.strftime('%b %d, %Y')
     end
   end
 
