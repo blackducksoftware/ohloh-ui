@@ -38,6 +38,7 @@ class ProjectAdminTest < ActionDispatch::IntegrationTest
 
       _(Job.find(job.id)).must_be :failed?
       _(flash[:success]).wont_be :empty?
+      assert_equal job.reload.do_not_retry, true
     end
   end
 end

@@ -44,10 +44,10 @@ ActiveAdmin.register Project do
 
   member_action :create_analyze_job do
     project = Project.from_param(params[:id]).first
-    job = ProjectAnalysisJob.incomplete.find_by(project_id: project.id)
-    job&.update!(status: 3, notes: 'Rescheduling Job')
+    ProjectAnalysisJob.incomplete.where(project_id: project.id)
+                      .update_all(status: 3, do_not_retry: true, notes: 'Scheduled Another Job Manually')
 
-    ProjectAnalysisJob.create!(project_id: project.id)
+    ProjectAnalysisJob.create!(project_id: project.id, notes: 'Scheduled Manually')
 
     redirect_to oh_admin_project_jobs_path(project),
                 flash: { success: 'ProjectAnalysisJob scheduled successfully' }
