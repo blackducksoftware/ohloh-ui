@@ -38,7 +38,7 @@ module DashboardHelper
   end
 
   def weeks_projects_count
-    projects_count = Rails.cache.fetch('Admin-updated-project-count-cache')
+    projects_count = Rails.cache.fetch('Admin-weeks-updated-project-count-cache')
     number_to_percentage((projects_count.to_f / active_projects_count) * 100, precision: 2)
   end
 
