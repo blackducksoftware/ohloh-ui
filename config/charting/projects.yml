@@ -4,6 +4,8 @@ title:
   text: ''
 xAxis:
   categories: []
+  labels:
+    enabled: true
 yAxis:
   - title:
       text: null

@@ -22,11 +22,6 @@ class ProjectAdminTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  it 'must render the edit page' do
-    get edit_admin_project_path(create(:project).to_param)
-    assert_response :success
-  end
-
   describe 'create_analyze_job' do
     it 'must mark incomplete ProjectAnalysisJob as failed and create new' do
       job = ProjectAnalysisJob.create!(project_id: project.id)
