@@ -57,11 +57,20 @@ var Charts = {
         var last_day = new Date(first_day.getFullYear(), first_day.getMonth()+1, 0);
         var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
         if (months.includes(this.value.split(' ')[0]))
-          return '<a href="/admin/accounts?commit=Filter&q[created_at_gteq_datetime]=' + first_day + '&q[created_at_lteq_datetime]=' + last_day + '" target="_blank">' +
+          if (data.series[0].name == "SPAM")
+            return '<a href="/admin/accounts?commit=Filter&q[created_at_gteq_datetime]=' + first_day + '&q[created_at_lteq_datetime]=' + last_day + '" target="_blank">' +
+                    this.value + '</a>';
+          else 
+            return '<a href="/admin/projects?commit=Filter&q[created_at_gteq_datetime]=' + first_day + '&q[created_at_lteq_datetime]=' + last_day + '" target="_blank">' +
                     this.value + '</a>';
         else
-          return '<a href="/admin/accounts?commit=Filter&q[created_at_gteq_datetime]=' + this.value + '&q[created_at_lteq_datetime]=' + this.value + '" target="_blank">' +
+          if (data.series[0].name == "SPAM")
+            return '<a href="/admin/accounts?commit=Filter&q[created_at_gteq_datetime]=' + this.value + '&q[created_at_lteq_datetime]=' + this.value + '" target="_blank">' +
                     this.value + '</a>';
+          else
+            return '<a href="/admin/projects?commit=Filter&q[created_at_gteq_datetime]=' + this.value + '&q[created_at_lteq_datetime]=' + this.value + '" target="_blank">' +
+                    this.value + '</a>';
+          end
       }});
     }
     data.chart.renderTo = chart;

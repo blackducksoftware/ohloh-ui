@@ -1,44 +1,27 @@
 # frozen_string_literal: true
 
 ActiveAdmin.register Project do
-  menu false
-  actions :index, :show, :edit, :update
-
-  editable_params = %i[uuid best_analysis_id]
-  permit_params editable_params
+  actions :index, :show
 
   filter :name
-  filter :vanity_url
   filter :created_at
-  filter :updated_at
-  filter :deleted
-  filter :user_count
 
   controller do
     defaults finder: :find_by_vanity_url!
   end
 
-  before_update do |project|
-    project.editor_account = current_user
-  end
-
-  action_item :jobs, only: :show do
-    link_to 'Jobs', admin_project_jobs_path(project)
-  end
-
   index do
     column :id
-    column :name
-    column :vanity_url do |project|
-      link_to project.vanity_url, project_path(project)
+    column :name do |project|
+      link_to project.name, project_path(project)
     end
-    column :uuid
-    column :description do |project|
-      simple_format project.description
+    column :created_by do |project|
+      link_to project.edits.first.account&.name, account_path(project.edits.first.account)
     end
-    column :project_security_set do |project|
-      link_to project.best_project_security_set_id, admin_project_security_sets_path(project.best_project_security_set)
+    column :managers do |project|
+      project.active_managers.map { |m| link_to(m.name, account_path(m)) }
     end
+    column :created_at
     actions
   end
 
@@ -51,17 +34,5 @@ ActiveAdmin.register Project do
 
     redirect_to oh_admin_project_jobs_path(project),
                 flash: { success: 'ProjectAnalysisJob scheduled successfully' }
-  end
-
-  form do |f|
-    f.semantic_errors(*f.object.errors.keys)
-
-    f.inputs do
-      editable_params.each do |attribute|
-        f.input attribute
-      end
-    end
-
-    f.actions
   end
 end
