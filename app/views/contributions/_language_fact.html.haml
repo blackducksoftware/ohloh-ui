@@ -25,7 +25,7 @@
     - if most_committed_project
       - contribution = @contributions[most_committed_project.id].try(:first)
       - if contribution
-        = link_to language_fact.total_commits, project_contributor_path(most_committed_project, contribution)
+        = link_to language_fact.most_commits, project_contributor_path(most_committed_project, contribution)
   %td
   %td.left
     - if recent_project
