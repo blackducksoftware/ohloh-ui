@@ -56,6 +56,9 @@ var Charts = {
         var first_day = new Date(this.value)
         var last_day = new Date(first_day.getFullYear(), first_day.getMonth()+1, 0);
         var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+        if (data.highchart) {
+          return this.value.stringify;
+        }
         if (months.includes(this.value.split(' ')[0]))
           if (data.series[0].name == "SPAM")
             return '<a href="/admin/accounts?commit=Filter&q[created_at_gteq_datetime]=' + first_day + '&q[created_at_lteq_datetime]=' + last_day + '" target="_blank">' +
