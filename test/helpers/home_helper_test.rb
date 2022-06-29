@@ -24,7 +24,7 @@ class HomeHelperTest < ActionView::TestCase
     end
 
     it 'must return 40 when required is most_recent_projects' do
-      _(width(nil, 'most_recent_projects', nil)).must_equal 40
+      _(width(nil, 'most_recent_projects', nil)).must_equal 1
     end
   end
 

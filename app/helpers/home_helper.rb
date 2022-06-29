@@ -3,7 +3,7 @@
 module HomeHelper
   def width(project, required, max)
     if required == 'most_recent_projects'
-      40
+      1
     else
       count = project_count(project, required)
       max = 1 if max.to_i.zero?
