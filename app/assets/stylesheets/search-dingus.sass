@@ -64,6 +64,14 @@
     &:hover
       @include search-button-hover-colors
 
+@media (min-width: 320px) and (max-width: 576px)
+  form#quicksearch
+    width: 42%
+    margin-top: -23px !important
+    margin-right: -85px !important
+  .btn-small
+    font-size: 9px !important
+
 .global_top_search
   height: 18px !important
   @include global-top-search-colors
