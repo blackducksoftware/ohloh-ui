@@ -23,7 +23,7 @@ module ProjectScopes
     scope :by_rating, lambda {
       order(Arel.sql('COALESCE(rating_average,0) DESC, user_count DESC, projects.created_at ASC'))
     }
-    scope :by_activity_level, -> { order('COALESCE(activity_level_index,0) DESC, projects.name ASC') }
+    scope :by_activity_level, -> { order(Arel.sql('COALESCE(activity_level_index,0) DESC, projects.name ASC')) }
     scope :by_active_committers, -> { order(Arel.sql('COALESCE(active_committers,0) DESC, projects.created_at ASC')) }
     scope :by_project_name, -> { order(name: :asc) }
     scope :language, -> { joins(best_analysis: :main_language).select('languages.name').map(&:name).first }

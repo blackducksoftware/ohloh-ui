@@ -73,6 +73,18 @@ class StackTest < ActiveSupport::TestCase
     _(stack3.suggest_projects(2).map(&:id)).must_equal [proj2.id, proj4.id]
   end
 
+  it 'must ensure title values have safe sql patterns' do
+    bad_stack_one = build(:stack, title: 'foo--bar')
+    bad_stack_two = build(:stack, title: 'foo=bar')
+    bad_stack_three = build(:stack, title: 'foobar;')
+    bad_stack_four = build(:stack, title: 'http://foobar')
+
+    _(bad_stack_one).wont_be :valid?
+    _(bad_stack_two).wont_be :valid?
+    _(bad_stack_three).wont_be :valid?
+    _(bad_stack_four).wont_be :valid?
+  end
+
   describe 'name' do
     it 'should return if title is present' do
       stack.stubs(:title).returns('test')
