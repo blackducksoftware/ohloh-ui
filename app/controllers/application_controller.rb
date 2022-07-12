@@ -274,6 +274,7 @@ class ApplicationController < ActionController::Base
   end
 
   def report_errors(exception)
+    logger.error(exception)
     notify_airbrake(exception)
   end
 
