@@ -7,21 +7,28 @@
     margin-bottom: 2%
   display: none
 
-@media (min-width: 320px) and (max-width: 576px)
-  .btn-block
-    width: 80% !important
+@media only all and (min-width: 320px) and (max-width: 340px)
+  #sign-in-options
+    width: auto
   #sign-in-fields
     .github-oauth
       padding: 2% 0 !important
-      font-size: 15px
+      font-size: 12px
       margin-bottom: 2%
+
+@media only all and (min-width: 341px) and (max-width: 480px)
+  #sign-in-options
+    width: auto
+  #sign-in-fields
+    .github-oauth
+      font-size: 10px
 
 @media (min-width: 768px) and (max-width: 1024px)
   .btn-block
-    width: 52% !important
+    width: auto !important
   #sign-in-fields
     .github-oauth
       padding: 2% 0 !important
-      font-size: 15px
+      font-size: 13px
       margin-bottom: 2%
 

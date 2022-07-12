@@ -1,15 +1,11 @@
 @import "base"
 
 body
-  background-color: #005272
+  background-color: #005272 !important
   font-family: Roboto
   font-size: 1.3rem
   margin: 0
   color: #000
-
-@media (min-width: 320px) and (max-width: 576px)
-  body
-    font-size: 10px
 
 #page
   width: 980px
@@ -21,17 +17,19 @@ header
   background-color: white
   margin: -10px -10px 0px -10px
 
-@media (min-width: 320px) and (max-width: 576px)
+@media only all and (min-width: 320px) and (max-width: 480px)
+  body
+    font-size: 10px !important
+    overflow-x: hidden !important
+    width: revert !important
   #page
-    width: 576px
-    margin: 0 auto
-    padding: 10px 10px 0 10px
+    width: inherit !important
+    overflow-x: hidden !important
 
 @media (min-width: 768px) and (max-width: 1024px)
   #page
     width: 786px
     margin: 0 auto
-    padding: 10px 10px 0 10px
     padding: 10px 10px 0 10px
 
 #nav-top-bar
@@ -55,11 +53,22 @@ header
   margin-right: 5px
   height: 42px
 
-@media (min-width: 320px) and (max-width: 576px)
-  #navbar-inner
-    width: 576px
-    margin-left: 0px
-    margin-right: -85px
+@media (min-width: 320px) and (max-width: 340px)
+  #nav-top-bar
+    margin: 11px 4px 0 0px !important
+    .new_main_menu
+      li
+        margin-right: 2px !important
+        a
+          font-size: 10px !important
+@media (min-width: 341px) and (max-width: 480px)
+  #nav-top-bar
+    margin: 11px 10px 0 11px !important
+  .new_main_menu
+    li
+      margin-right: 6px !important
+      a
+        font-size: 10px !important
 
 #page_contents
   .separator-div
@@ -87,10 +96,16 @@ header
   .quick_reference_heading, .nutshell_heading
     padding-left: 2rem
 
-@media (min-width: 320px) and (max-width: 576px)
+@media (min-width: 320px) and (max-width: 480px)
   .navbar
+    margin-right: 0px !important
     .btn
       font-size: 10px !important
+  .company-div
+    float: none !important
+    .navbar_large_text
+      font-size: 18px !important
+
 .navbar
   border-width: 0
   margin-top: 15px
@@ -117,7 +132,7 @@ header
     .navbar_small_text
       font-size: 10px !important
     .navbar_large_text
-      font-size: 24px !important
+      font-size: 24px
     a
       @include top-navigation-colors
       text-decoration: none
@@ -179,6 +194,11 @@ header
 #top_nav_actions
   float: right
   margin-right: 5px
+
+@media (min-width: 320px) and (max-width: 340px)
+  #top_nav_actions
+    margin-right: 0px !important
+
 #logged_user_menu
   a
     color: black !important
@@ -211,13 +231,6 @@ header
 #page-contents
   margin-left: 5px
   margin-right: 5px
-  width: 940px
-
-@media (min-width: 320px) and (max-width: 576px)
-  #page-contents
-    margin-left: 10px
-    margin-right: 10px
-    width: 576px
 
 .no_padding
   padding: 0px !important
@@ -259,6 +272,11 @@ header
 
 .col-md-12
   @extend .no_padding
+
+@media (min-width: 320px) and (max-width: 480px)
+  h2
+    font-size: 12px !important
+    margin-top: 5px !important
 
 .busy, a.busy
   background: transparent asset_url('ui/spinner.gif') no-repeat center
@@ -308,15 +326,9 @@ table
   border-radius: 0px
   width: auto
 
-@media (min-width: 320px) and (max-width: 576px)
-  .well
-    width: 80%
-  .well#sign-in-text
-    width: auto
-
 @media (min-width: 768px) and (max-width: 1024px)
-  .well
-    width: 52%
+  .well#new_login
+    width: auto
 
 .well#accounts-sign-up
   @include site-well-color

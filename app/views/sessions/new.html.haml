@@ -1,7 +1,7 @@
 - content_for(:html_title) { t '.page_title' }
 
 .sessions-new{ style: 'margin-top: 1em;' }
-  .col-xs-7.col-sm-7
+  .col-xs-6.col-sm-7
     %h2= t('.page_header')
     %p= t('.account_help1')
     .well#sign-in-text
@@ -12,7 +12,7 @@
     %p
       %a.btn.btn-success{ href: new_account_path(invite: params[:invite]) }= t('.register_today')
       != t('.register_today_cta')
-  .col-xs-5.col-sm-5
+  .col-xs-6.col-sm-5
     - if request.get?
       #sign-in-options
         = link_to 'javascript:', { class: 'btn btn-primary btn-block github-oauth' }.merge(github_data_attributes) do

@@ -7,7 +7,7 @@
     != t('.login_link_description')
 
 - if @account.errors.none?
-  .col-xs-6.col-sm-5.no_right_padding#sign-up-options
+  .col-xs-6.col-sm-5#sign-up-options
     .row-first
 
     = link_to 'javascript:', { class: 'btn btn-primary btn-block github-oauth' }.merge(github_data_attributes) do

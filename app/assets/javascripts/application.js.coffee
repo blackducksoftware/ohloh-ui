@@ -15,6 +15,7 @@
 #= require jquery3
 #= require jquery/jquery-ui.min
 #= require twitter/bootstrap
+#= require bootstrap.min
 #= require underscore-min
 #= require jquery/chosen.jquery.min
 #= require highcharts/highstock
@@ -29,6 +30,7 @@
 #= require tipso.min
 #= require simplemde.min
 #= require slick.min
+
 
 $(document).on 'page:change', ->
   StackShow.init()
