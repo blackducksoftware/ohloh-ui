@@ -61,6 +61,18 @@ class AccountTest < ActiveSupport::TestCase
     _(unique_account).must_be :valid?
   end
 
+  it 'must ensure name values have safe sql patterns' do
+    bad_account_one = build(:account, name: 'foo--bar')
+    bad_account_two = build(:account, name: 'foo=bar')
+    bad_account_three = build(:account, name: 'foobar;')
+    bad_account_four = build(:account, name: 'http://foobar')
+
+    _(bad_account_one).wont_be :valid?
+    _(bad_account_two).wont_be :valid?
+    _(bad_account_three).wont_be :valid?
+    _(bad_account_four).wont_be :valid?
+  end
+
   it 'should validate URL format when value is available' do
     account = build(:account)
     _(account).must_be :valid?

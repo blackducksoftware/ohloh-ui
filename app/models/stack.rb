@@ -19,7 +19,7 @@ class Stack < ApplicationRecord
   validates :title, uniqueness: { case_sensitive: true, scope: [:account_id],
                                   if: proc { |stack| stack.session_id.nil? } }
   validates :description, length: { within: 0..120 }, allow_nil: true
-  validates :title, length: { within: 0..20 }, allow_nil: true
+  validates :title, length: { within: 0..20 }, allow_nil: true, format: { without: Patterns::BAD_NAME }
 
   before_validation :sanitize_description
 

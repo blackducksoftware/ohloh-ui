@@ -19,9 +19,10 @@ class Project < ApplicationRecord
   acts_as_taggable
   link_accessors accessors: { url: :Homepage, download_url: :Download }
 
-  validates :name, presence: true, length: 1..100, allow_nil: false, uniqueness: { case_sensitive: false }
+  validates :name, presence: true, length: 1..100, allow_nil: false, uniqueness: { case_sensitive: false },
+                   format: { without: Patterns::BAD_NAME }
   validates :vanity_url, presence: true, length: 1..60, allow_nil: false, uniqueness: { case_sensitive: false },
-                         default_param_format: true
+                         default_param_format: true, format: { without: Patterns::BAD_NAME }
   validates :description, length: 0..800, allow_nil: true # , if: proc { |p| p.validate_vanity_url_and_desc == 'true' }
   validates_each :url, :download_url, allow_blank: true do |record, field, value|
     record.errors.add(field, I18n.t(:not_a_valid_url)) unless value.blank? || value.valid_http_url?
