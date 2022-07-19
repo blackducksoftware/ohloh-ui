@@ -5,6 +5,13 @@
   margin-left: -15px
   padding-left: 5px
   padding-right: 5px
+@media only all and (min-width: 320px) and (max-width: 480px)
+  .showcase
+    width: auto
+    margin-left: 0px
+  .billboard
+    height: 185px !important
+
 .billboard
   @include billboard-background-color
   color: white
@@ -20,11 +27,22 @@
     padding: 0
   .discover_msg
     font-size: 2.1em !important
-    font-weight: 100 !important
+    font-weight: 400!important
     margin-top: -10px
     margin-bottom: 24px
     h1
       line-height: 1.2em !important
+@media only all and (min-width: 320px) and (max-width: 480px)
+  .billboard
+    .discover_msg
+      font-size: 13px !important
+  #global_statistics
+    p
+      font-size: 10px !important
+@media (min-width: 540px) and (max-width: 1024px)
+  .showcase
+    width: auto
+    margin-left: 0px
 .global_stats
     margin-top: 25px
 #icon_text
@@ -39,7 +57,6 @@
     margin-top: -20px
     text-align: center
     font-size: 14px
-    font-weight: 200 !important
 .join_now
   @include join-now-header-colors
   padding-bottom: 5px
@@ -67,11 +84,37 @@
   .col-md-4
     @include site-well-color
     padding-bottom: 20px
-    width: 32%
     h2
       font-weight: 500 !important
       margin-left: 5px !important
       text-indent: -10px !important
+
+@media only all and (min-width: 320px) and (max-width: 480px)
+  .home_page_row
+    .col-md-8
+      h2
+        margin-left: 0px !important
+      a
+        img
+          width: 100%
+          margin-left: 0px !important
+  .for_search_all_code
+    width: auto !important
+  .join_now_home
+    padding-top: 5px
+    font-size: 12px
+    li
+      height: 10px
+      width: 10px
+@media (min-width: 540px) and (max-width: 1024px)
+  .home_page_row
+    .col-md-8
+      h2
+        margin-left: 0px !important
+      a
+        img
+          width: 100%
+          margin-left: 0px !important
 .btn.btn_join_now
   @include join-now-button-colors
   font-family: 'Roboto' !important
@@ -96,6 +139,11 @@ input:focus::-moz-placeholder
   color: transparent
 input:focus::-ms-input-placeholder
   color: transparent
+@media only all and (min-width: 320px) and (max-width: 480px)
+  .btn.btn_join_now
+    margin-left: 0px !important
+    width: 135px !important
+    font-size: 15px !important
 
 .landing
   margin-top: 20px
@@ -118,9 +166,9 @@ input:focus::-ms-input-placeholder
 .top_ten
   h2
     font-weight: 500 !important
-    font-size: 18px !important
+    font-size: 16px !important
 .top_ten.middle
-  @include site-well-color
+  //@include site-well-color
 .top_ten.last
   h2
     margin-right: -25px !important
@@ -178,3 +226,9 @@ input:focus::-ms-input-placeholder
   @include most-recent-projects-colors
 .recent
   @include most-recent-projects-background-color
+button
+ border: none
+.toggle-icon
+  float: right
+
+

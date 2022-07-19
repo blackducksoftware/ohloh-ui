@@ -1,18 +1,34 @@
 .col-md-3.top_ten
-  %h2.most_popular_projects= t('.popular_projects')
-  = render partial: 'content', locals: { popular_items: @home.most_popular_projects,
-    commit: 'user', colors: 'popular', required: 'most_popular_projects',
-    max: @home.most_popular_projects.map(&:user_count).max }
+  %h2.most_popular_projects
+    %button.collapsed{"aria-controls" => "collapseOne", "aria-expanded" => "false", "data-target" => "#collapseOne", "data-toggle" => "collapse"}
+      %span.toggle-icon.glyphicon.glyphicon-chevron-down.pull-right#collpase1
+      =t('.popular_projects')
+  .collapse#collapseOne
+    = render partial: 'content', locals: { popular_items: @home.most_popular_projects,
+      commit: 'user', colors: 'popular', required: 'most_popular_projects',
+      max: @home.most_popular_projects.map(&:user_count).max }
 .col-md-3.top_ten.middle
-  %h2.most_active_projects= t('.active_projects')
-  = render partial: 'content', locals: { popular_items: @home.most_active_projects,
-    commit: 'commit', colors: 'active', required: 'most_active_projects', max: @home.commit_count.max }
+  %h2.most_active_projects
+    %button.collapsed{"aria-controls" => "collapseTwo", "aria-expanded" => "false", "data-target" => "#collapseTwo", "data-toggle" => "collapse"}
+      %span.toggle-icon.glyphicon.glyphicon-chevron-down.pull-right#collpase2
+      =t('.active_projects')
+  .collapse#collapseTwo
+    = render partial: 'content', locals: { popular_items: @home.most_active_projects,
+      commit: 'commit', colors: 'active', required: 'most_active_projects', max: @home.commit_count.max }
 .col-md-3.top_ten.last
-  %h2.most_recent_projects= t('.recent_projects')
-  = render partial: 'content', locals: { popular_items: @home.most_recent_projects,
-    commit: 'since', colors: 'recent', required: 'most_recent_projects',
-    max: @home.most_recent_projects.size }
+  %h2.most_recent_projects
+    %button.collapsed{"aria-controls" => "collapseThree", "aria-expanded" => "false", "data-target" => "#collapseThree", "data-toggle" => "collapse"}
+      %span.toggle-icon.glyphicon.glyphicon-chevron-down.pull-right#collpase3
+      =t('.recent_projects')
+  .collapse#collapseThree
+    = render partial: 'content', locals: { popular_items: @home.most_recent_projects,
+      commit: 'since', colors: 'recent', required: 'most_recent_projects',
+      max: @home.most_recent_projects.size }
 .col-md-3.top_ten.middle
-  %h2.most_active_contributors= t('.active_contributors')
-  = render partial: 'content', locals: { popular_items: @home.most_active_contributors,
-    commit: 'commit', colors: 'contributor', required: 'most_active_contributors', max: @home.account_analysis_count.max }
+  %h2.most_active_contributors
+    %button.collapsed{"aria-controls" => "collapseFour", "aria-expanded" => "false", "data-target" => "#collapseFour", "data-toggle" => "collapse"}
+      %span.toggle-icon.glyphicon.glyphicon-chevron-down.pull-right#collpase4
+      =t('.active_contributors')
+  .collapse#collapseFour
+    = render partial: 'content', locals: { popular_items: @home.most_active_contributors,
+      commit: 'commit', colors: 'contributor', required: 'most_active_contributors', max: @home.account_analysis_count.max }
