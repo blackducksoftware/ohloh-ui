@@ -1,5 +1,5 @@
 .row#page-contents
-  .col-md-12{ id: generate_page_name }
+  .col-xs-12.col-sm-12.col-md-12{ id: generate_page_name }
     = render partial: page_context[:page_header] if page_context[:page_header]
     - if page_context[:nav_type]
       = render partial: "layouts/partials/#{page_context[:nav_type]}", locals: { responsive_layout: responsive_layout }

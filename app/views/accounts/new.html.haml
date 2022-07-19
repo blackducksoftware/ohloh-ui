@@ -1,13 +1,13 @@
 - content_for(:html_title) { t('.html_title') }
 
-.col-md-7#welcome-message-container
+.col-xs-6.col-sm-7#welcome-message-container
   = render 'welcome'
   %p
     = link_to t('.login_text'), new_session_path, class: 'btn btn-success'
     != t('.login_link_description')
 
 - if @account.errors.none?
-  .col-md-5.no_right_padding#sign-up-options
+  .col-xs-6.col-sm-5#sign-up-options
     .row-first
 
     = link_to 'javascript:', { class: 'btn btn-primary btn-block github-oauth' }.merge(github_data_attributes) do
@@ -25,7 +25,7 @@
         %i.fa.fa-mobile
           Phone & Email
 
-.col-md-5.no_right_padding{ id: ('sign-up-fields' if @account.errors.none?) }
+.col-xs-6.col-sm-5.no_right_padding{ id: ('sign-up-fields' if @account.errors.none?) }
   - if flash[:message]
     %p= flash[:message]
   - unless @account.invite_code.blank?

@@ -31,6 +31,14 @@ legend
     font-size: 15px
     color: #999999
 
+@media (min-width: 768px) and (max-width: 1024px)
+  legend
+    font-size: 15px
+
+@media (min-width: 320px) and (max-width: 480px)
+  legend
+    font-size: 11px !important
+
 label, input, button, select, textarea
   font-size: 14px
   font-weight: normal
@@ -97,6 +105,23 @@ input
 
 input, textarea, .uneditable-input
   width: 206px
+
+@media (min-width: 768px) and (max-width: 1024px)
+  input
+    width: 145px
+
+@media (min-width: 320px) and (max-width: 480px)
+  input
+    width: 17%
+
+  input#login
+    width: 80%
+
+  input#email
+    width: 80%
+
+  input#password
+    width: 80%
 
 textarea
   @include static-forms-background-color
@@ -249,6 +274,15 @@ input:-moz-placeholder, textarea:-moz-placeholder, input:-ms-input-placeholder, 
 
 .input-xlarge
   width: 270px
+
+@media (min-width: 768px) and (max-width: 1024px)
+  .input-xlarge
+    width: -webkit-fill-available
+
+@media (min-width: 320px) and (max-width: 480px)
+  .input-xlarge
+    width: 70%
+    font-size: 10px !important
 
 .input-xxlarge
   width: 530px
@@ -422,6 +456,14 @@ input:focus:invalid:focus, textarea:focus:invalid:focus, select:focus:invalid:fo
 .help-block
   display: block
   margin-bottom: 10px
+
+@media (min-width: 768px) and (max-width: 1024px)
+  .help-block
+    width: auto
+
+@media (min-width: 320px) and (max-width: 480px)
+  .help-block
+    width: auto
 
 .help-inline
   display: inline-block
@@ -655,3 +697,41 @@ span.add-on
   -moz-box-sizing: content-box
   -ms-box-sizing: content-box
   box-sizing: content-box
+
+@media (min-width: 768px) and (max-width: 1024px)
+  #firebaseui-auth-container
+    width: 115%
+    margin-left: -10px
+
+  .firebaseui-country-selector
+    width: 65px
+
+  .firebaseui-flag
+    width: 15px
+
+  .firebaseui-button
+    width: 60px
+    padding: 0px 10px !important
+    margin-left: -15px !important
+
+  .firebaseui-title
+    font-size: 15px
+
+@media (min-width: 320px) and (max-width: 601px)
+  #firebaseui-auth-container
+    width: 115%
+    margin-left: -10px
+
+  .firebaseui-country-selector
+    width: 65px
+
+  .firebaseui-flag
+    width: 15px
+
+  .firebaseui-button
+    width: 60px
+    padding: 0px 10px !important
+    margin-left: -15px !important
+
+  .firebaseui-title
+    font-size: 15px

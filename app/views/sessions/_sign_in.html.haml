@@ -12,7 +12,7 @@
         %i.icon-key
       = f.password_field(:password, class: 'input-xlarge', placeholder: t('.password'))
     .control-group
-      %label.checkbox{ style: 'padding-left: 0px;' }
+      %label.checkbox{ style: 'padding-left: -1px;' }
         = f.check_box :remember_me
         = t('.remember_me')
     - if @ask_for_recaptcha

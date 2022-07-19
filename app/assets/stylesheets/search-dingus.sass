@@ -55,7 +55,7 @@
         &:hover
           @include search-dropdown-link-hover-colors
   .btn-small
-    font-size: 14px
+    font-size: 10px
     border-width: 2px !important
     margin-right: 0px !important
     .selection
@@ -63,6 +63,19 @@
       text-transform: none
     &:hover
       @include search-button-hover-colors
+
+@media (min-width: 320px) and (max-width: 360px)
+  form#quicksearch
+    margin-top: -20px !important
+    margin-right: -61px !important
+    .btn-small
+      font-size: 8px !important
+@media (min-width: 361px) and (max-width: 480px)
+  form#quicksearch
+    margin-top: -6px !important
+    margin-right: -61px !important
+    .btn-small
+      font-size: 8px !important
 
 .global_top_search
   height: 18px !important
@@ -72,3 +85,10 @@
   @include global-top-search-icon-color
   padding-bottom: 5px
   font-size: 18px
+
+@media (min-width: 320px) and (max-width: 480px)
+  .global_top_search
+    height: 15px !important
+    font-size: 8px !important
+  .global_top_search_icon
+    font-size: 10px !important
