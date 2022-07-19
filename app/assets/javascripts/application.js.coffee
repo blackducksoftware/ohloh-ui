@@ -15,7 +15,6 @@
 #= require jquery3
 #= require jquery/jquery-ui.min
 #= require twitter/bootstrap
-#= require bootstrap.min
 #= require underscore-min
 #= require jquery/chosen.jquery.min
 #= require highcharts/highstock
