@@ -14,7 +14,7 @@ class AutocompletesController < ApplicationController
     @projects = Project.not_deleted
                        .where('lower(name) like ?', "%#{(params[:term] || '').downcase}%")
                        .where.not(id: params[:exclude_project_id].to_i)
-                       .order('length(name)')
+                       .order(Arel.sql('length(name)'))
                        .limit(25)
   end
 
@@ -22,7 +22,7 @@ class AutocompletesController < ApplicationController
     @projects = Project.not_deleted
                        .where.not(id: @projects_to_ignore)
                        .where('lower(name) like ?', "%#{(params[:term] || '').downcase}%")
-                       .order('length(name)')
+                       .order(Arel.sql('length(name)'))
                        .limit(25)
     render json: @projects.map { |p| { value: p.name, id: p.id } }
   end

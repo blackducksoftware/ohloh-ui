@@ -32,6 +32,32 @@ class ProjectTest < ActiveSupport::TestCase
           _(project).wont_be :valid?
         end
       end
+
+      it 'wont allow unsafe sql patterns' do
+        bad_project_one = build(:project, vanity_url: 'foo--bar')
+        bad_project_two = build(:project, vanity_url: 'foo=bar')
+        bad_project_three = build(:project, vanity_url: 'foobar;')
+        bad_project_four = build(:project, vanity_url: 'http://foobar')
+
+        _(bad_project_one).wont_be :valid?
+        _(bad_project_two).wont_be :valid?
+        _(bad_project_three).wont_be :valid?
+        _(bad_project_four).wont_be :valid?
+      end
+    end
+
+    describe 'name' do
+      it 'wont allow unsafe sql patterns' do
+        bad_project_one = build(:project, name: 'foo--bar')
+        bad_project_two = build(:project, name: 'foo=bar')
+        bad_project_three = build(:project, name: 'foobar;')
+        bad_project_four = build(:project, name: 'http://foobar')
+
+        _(bad_project_one).wont_be :valid?
+        _(bad_project_two).wont_be :valid?
+        _(bad_project_three).wont_be :valid?
+        _(bad_project_four).wont_be :valid?
+      end
     end
   end
 

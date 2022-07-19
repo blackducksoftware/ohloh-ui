@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-order = 'lower(accounts.name), lower(stacks.title)'
+order = Arel.sql('lower(accounts.name), lower(stacks.title)')
 stacks = @project.stacks.joins(:account).includes(:account, :stack_entries).order(order)
 stacks = stacks.paginate(page: page_param, per_page: 10)
 

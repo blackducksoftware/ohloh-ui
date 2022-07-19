@@ -48,13 +48,10 @@ Rails.application.configure do
   # config.force_ssl = true
 
   # Set to :debug to see everything in the log.
-  config.log_level = :warn
+  config.log_level = ENV.fetch('LOG_LEVEL', 'error').to_sym
 
   # Prepend all log lines with the following tags.
   # config.log_tags = [ :subdomain, :uuid ]
-
-  # Use a different logger for distributed setups.
-  # config.logger = ActiveSupport::TaggedLogging.new(SyslogLogger.new)
 
   # Use a different cache store in production.
   # config.cache_store = :mem_cache_store
@@ -91,6 +88,11 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
+
+  # Use a different logger for distributed setups.
+  logger           = ActiveSupport::Logger.new('/proc/1/fd/1')
+  logger.formatter = config.log_formatter
+  config.logger    = ActiveSupport::TaggedLogging.new(logger)
 
   SqlTracker::Config.enabled = ENV['SQL_TRACKER'].eql?('enabled')
   SqlTracker::Config.tracked_sql_command = %w[sloc_metrics]

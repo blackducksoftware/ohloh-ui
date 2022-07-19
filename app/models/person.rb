@@ -21,6 +21,7 @@ class Person < ApplicationRecord
   validates :account_id, presence: true, unless: :unclaimed_person?
   validates :name_id, uniqueness: { scope: :project_id }, if: :unclaimed_person?
   validates :name_fact_id, presence: true, if: :unclaimed_person?
+  validates :effective_name, format: { without: Patterns::BAD_NAME }
 
   before_validation Person::Hooks.new
 
@@ -68,7 +69,7 @@ class Person < ApplicationRecord
     def include_relations_and_order_by_kudo_position_and_name(name_id)
       includes({ project: [{ best_analysis: :main_language }, :logo] }, :name, name_fact: :primary_language)
         .where(name_id: name_id)
-        .order('COALESCE(kudo_position, 999999999), lower(effective_name)')
+        .order(Arel.sql('COALESCE(kudo_position, 999999999), lower(effective_name)'))
     end
 
     def unclaimed_people(opts)
@@ -77,7 +78,7 @@ class Person < ApplicationRecord
         query_with_email_or_name(sub_query, opts)
       else
         sub_query.group(%i[name_id effective_name])
-                 .reorder('MIN(COALESCE(kudo_position,999999999)), lower(effective_name)')
+                 .reorder(Arel.sql('MIN(COALESCE(kudo_position,999999999)), lower(effective_name)'))
                  .select(:name_id)
       end
     end
@@ -93,7 +94,7 @@ class Person < ApplicationRecord
 
     def query_with_email_or_name(sub_query, opts)
       sub_query.find_by_name_or_email(opts).group(%i[name_id effective_name])
-               .reorder('MIN(COALESCE(kudo_position,999999999)), lower(effective_name)')
+               .reorder(Arel.sql('MIN(COALESCE(kudo_position,999999999)), lower(effective_name)'))
                .select(:name_id)
     end
 

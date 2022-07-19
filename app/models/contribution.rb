@@ -14,7 +14,7 @@ class Contribution < ApplicationRecord
   has_many :kudos, ->(contribution) { joins(:name_fact).where(NameFact.arel_table[:id].eq(contribution.name_fact_id)) },
            primary_key: :project_id, foreign_key: :project_id
 
-  scope :sort_by_name, -> { order('LOWER(people.effective_name)') }
+  scope :sort_by_name, -> { order(Arel.sql('LOWER(people.effective_name)')) }
   scope :sort_by_kudo_position, -> { order('people.kudo_position NULLS LAST') }
   scope :sort_by_commits, -> { order('name_facts.commits DESC NULLS LAST') }
   scope :sort_by_twelve_month_commits, -> { order('name_facts.twelve_month_commits DESC NULLS LAST') }

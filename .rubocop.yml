@@ -66,6 +66,7 @@ Metrics/BlockLength:
     - app/views/*/*/*.xml.builder
     - app/admin/*
     - app/views/admin/*/*.html.arb
+    - config/environments/*
 
 Lint/ScriptPermission:
   Exclude:

@@ -23,7 +23,7 @@ class Analysis::CommitVolume < Analysis::QueryBase
             .where(id: @analysis.id)
             .where(["commits.time >= analyses.max_month + INTERVAL '1 month' - INTERVAL ? ", @interval])
             .group(name)
-            .order('count DESC, LOWER(names.name)')
+            .order(Arel.sql('count DESC, LOWER(names.name)'))
   end
 
   def name
