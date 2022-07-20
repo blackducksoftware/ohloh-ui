@@ -120,6 +120,7 @@ Rails.application.routes.draw do
       collection do
         post :manual_verification
         post :make_spammer
+        post :make_not_spammer
         get :activate
         post :make_bot
       end

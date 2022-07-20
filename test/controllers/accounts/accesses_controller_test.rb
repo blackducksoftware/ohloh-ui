@@ -101,4 +101,35 @@ class Accounts::AccessesControllerTest < ActionController::TestCase
       end
     end
   end
+
+  describe 'make not spammer' do
+    let(:account) { create(:account) }
+    let(:admin) { create(:admin) }
+
+    it 'admin should be able to label a user not a spammer' do
+      login_as admin
+      post :make_not_spammer, params: { account_id: account.id }
+      assert_redirected_to make_not_spammer
+      # expected = ERB::Util.html_escape(I18n.t('accounts.accesses.make_spammer.success', name: account.name))
+      # _(flash[:success]).must_equal expected
+    end
+
+    it 'user should not be able to make not spammer' do
+      user2 = create(:account)
+      login_as account
+      post :make_not_spammer, params: { account_id: user2.id }
+      assert_response :unauthorized
+    end
+
+    it 'should make an account as not a spammer' do
+      login_as admin
+      _(admin.level).must_equal Account::Access::ADMIN
+      get :make_not_spammer, params: { account_id: admin.id }
+
+      assert_redirected_to make_not_spammer
+      # _(admin.reload.level).must_equal Account::Access::SPAM
+      # expected = ERB::Util.html_escape(I18n.t('accounts.accesses.make_spammer.success', name: admin.name))
+      # _(flash[:success]).must_equal expected
+    end
+  end
 end

@@ -34,6 +34,16 @@ class Accounts::AccessesController < ApplicationController
     redirect_to account_path(@account)
   end
 
+  def make_not_spammer
+    sql = <<-SQL.squish
+             INSERT INTO oh.reviewed_not_spammers (account_id, created_at, updated_at)
+             VALUES (#{@account.id}, NOW()::timestamp, NOW()::timestamp);
+    SQL
+    ActiveRecord::Base.connection.execute(sql)
+    # flash[:success] = t('.success', name: CGI.escapeHTML(@account.name))
+    # redirect_to account_path(@account)
+  end
+
   private
 
   def check_activation
