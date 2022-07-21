@@ -17,5 +17,5 @@ $(document).on 'page:change', ->
   $('#collpase3').parent().click ->
     $('#collpase3').toggleClass('glyphicon-chevron-down glyphicon-chevron-up')
   $('#collpase4').parent().click ->
-    $('#collpase3').toggleClass('glyphicon-chevron-down glyphicon-chevron-up')
+    $('#collpase4').toggleClass('glyphicon-chevron-down glyphicon-chevron-up')
   
