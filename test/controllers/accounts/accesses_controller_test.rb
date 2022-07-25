@@ -40,7 +40,7 @@ class Accounts::AccessesControllerTest < ActionController::TestCase
     it 'admin should be able to label a spammer' do
       login_as admin
       post :make_spammer, params: { account_id: account.id }
-      assert_redirected_to account_path(account)
+      assert_redirected_to admin_spam_path
       expected = ERB::Util.html_escape(I18n.t('accounts.accesses.make_spammer.success', name: account.name))
       _(flash[:success]).must_equal expected
     end
@@ -57,7 +57,7 @@ class Accounts::AccessesControllerTest < ActionController::TestCase
       _(admin.level).must_equal Account::Access::ADMIN
       get :make_spammer, params: { account_id: admin.id }
 
-      assert_redirected_to account_path(admin)
+      assert_redirected_to admin_spam_path
       _(admin.reload.level).must_equal Account::Access::SPAM
       expected = ERB::Util.html_escape(I18n.t('accounts.accesses.make_spammer.success', name: admin.name))
       _(flash[:success]).must_equal expected
@@ -109,9 +109,9 @@ class Accounts::AccessesControllerTest < ActionController::TestCase
     it 'admin should be able to label a user not a spammer' do
       login_as admin
       post :make_not_spammer, params: { account_id: account.id }
-      assert_redirected_to make_not_spammer
-      # expected = ERB::Util.html_escape(I18n.t('accounts.accesses.make_spammer.success', name: account.name))
-      # _(flash[:success]).must_equal expected
+      assert_redirected_to admin_spam_path
+      expected = ERB::Util.html_escape(I18n.t('accounts.accesses.make_not_spammer.success', name: account.name))
+      _(flash[:success]).must_equal expected
     end
 
     it 'user should not be able to make not spammer' do
@@ -124,12 +124,16 @@ class Accounts::AccessesControllerTest < ActionController::TestCase
     it 'should make an account as not a spammer' do
       login_as admin
       _(admin.level).must_equal Account::Access::ADMIN
-      get :make_not_spammer, params: { account_id: admin.id }
+      post :make_not_spammer, params: { account_id: account.id }
 
-      assert_redirected_to make_not_spammer
-      # _(admin.reload.level).must_equal Account::Access::SPAM
-      # expected = ERB::Util.html_escape(I18n.t('accounts.accesses.make_spammer.success', name: admin.name))
-      # _(flash[:success]).must_equal expected
+      assert_redirected_to admin_spam_path
+      sql = <<-SQL.squish
+             SELECT 1 FROM  oh.reviewed_not_spammers
+             WHERE account_id = #{account.id};
+      SQL
+      _(ActiveRecord::Base.connection.execute(sql).num_tuples).must_equal 1
+      expected = ERB::Util.html_escape(I18n.t('accounts.accesses.make_not_spammer.success', name: admin.name))
+      _(flash[:success]).must_equal expected
     end
   end
 end

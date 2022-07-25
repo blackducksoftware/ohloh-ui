@@ -4,14 +4,15 @@ class Accounts::AccessesController < ApplicationController
   include SetAccountByAccountId
 
   before_action :check_activation, only: :activate
-  before_action :session_required, only: %i[make_spammer manual_verification make_bot]
-  before_action :admin_session_required, only: %i[make_spammer manual_verification make_bot]
+  before_action :session_required, only: %i[make_spammer make_not_spammer manual_verification make_bot]
+  before_action :admin_session_required, only: %i[make_spammer make_not_spammer manual_verification make_bot]
   before_action :disabled_during_read_only_mode, only: :activate
 
   def make_spammer
     @account.access.spam!
     flash[:success] = t('.success', name: CGI.escapeHTML(@account.name))
-    redirect_to account_path(@account)
+
+    redirect_to admin_spam_path
   end
 
   def activate
@@ -40,8 +41,9 @@ class Accounts::AccessesController < ApplicationController
              VALUES (#{@account.id}, NOW()::timestamp, NOW()::timestamp);
     SQL
     ActiveRecord::Base.connection.execute(sql)
-    # flash[:success] = t('.success', name: CGI.escapeHTML(@account.name))
-    # redirect_to account_path(@account)
+    flash[:success] = t('.success', name: CGI.escapeHTML(@account.name))
+    
+    redirect_to admin_spam_path
   end
 
   private
