@@ -42,7 +42,6 @@ class Accounts::AccessesController < ApplicationController
     SQL
     ActiveRecord::Base.connection.execute(sql)
     flash[:success] = t('.success', name: CGI.escapeHTML(@account.name))
-    
     redirect_to admin_spam_path
   end
 
