@@ -21,6 +21,10 @@
       method: :post, data: { confirm: t('.spammer.confirm', name: @account.name) },
       class: 'btn btn-warning btn-small', title: t('.spammer.title', name: @account.name)
     &nbsp; &nbsp;
+    = link_to t('.not_spammer.link_html'), make_not_spammer_account_accesses_path(@account),
+      method: :post, data: { confirm: t('.not_spammer.confirm', name: @account.name) },
+      class: 'btn btn-small btn-success', title: t('.not_spammer.title', name: @account.name)
+    &nbsp; &nbsp;
     - if @account.access.verified?
       = link_to t('.delete.link_html'), account_path(@account),
         method: :delete, data: { confirm: t('.delete.confirm', name: @account.name) },
