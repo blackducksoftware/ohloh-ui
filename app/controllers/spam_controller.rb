@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 class SpamController < ApplicationController
+  before_action :session_required, only: %i[redirect_to_first_potential_spammer]
+  before_action :admin_session_required, only: %i[redirect_to_first_potential_spammer]
+
   def redirect_to_first_potential_spammer
     sql = <<-SQL.squish
              SELECT id FROM oh.potential_spammers LIMIT 1;
