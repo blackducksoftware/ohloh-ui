@@ -13,7 +13,7 @@ class SpamControllerTest < ActionController::TestCase
       assert_response :unauthorized
     end
 
-    it 'should redirect to an account' do
+    it 'should redirect to an account if there is one in oh.potential_spammers' do
       login_as admin
       sql = <<-SQL.squish
              SELECT id FROM oh.potential_spammers LIMIT 1;
@@ -27,6 +27,17 @@ class SpamControllerTest < ActionController::TestCase
         get :redirect_to_first_potential_spammer
         assert_redirected_to admin_path
       end
+    end
+
+    it 'should redirect to admin_path if there is nothing in oh.potential_spammers' do
+      login_as admin
+      sql = <<-SQL.squish
+            DELETE FROM OH.MARKUPS;
+            DELETE FROM oh.reviewed_not_spammers;
+      SQL
+      ActiveRecord::Base.connection.execute(sql)
+      get :redirect_to_first_potential_spammer
+      assert_redirected_to admin_path
     end
   end
 end
