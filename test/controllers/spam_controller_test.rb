@@ -25,7 +25,7 @@ class SpamControllerTest < ActionController::TestCase
         assert_redirected_to account_path(account.login)
       else
         get :redirect_to_first_potential_spammer
-        assert_redirect_to admin_path
+        assert_redirected_to admin_path
       end
     end
   end
