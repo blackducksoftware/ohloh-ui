@@ -4,8 +4,8 @@ class Accounts::AccessesController < ApplicationController
   include SetAccountByAccountId
 
   before_action :check_activation, only: :activate
-  before_action :session_required, only: %i[make_spammer make_not_spammer manual_verification make_bot]
-  before_action :admin_session_required, only: %i[make_spammer make_not_spammer manual_verification make_bot]
+  before_action :session_required, only: %i[make_spammer make_non_spammer manual_verification make_bot]
+  before_action :admin_session_required, only: %i[make_spammer make_non_spammer manual_verification make_bot]
   before_action :disabled_during_read_only_mode, only: :activate
 
   def make_spammer
@@ -35,9 +35,9 @@ class Accounts::AccessesController < ApplicationController
     redirect_to account_path(@account)
   end
 
-  def make_not_spammer
+  def make_non_spammer
     sql = <<-SQL.squish
-             INSERT INTO oh.reviewed_not_spammers (account_id, created_at, updated_at)
+             INSERT INTO oh.reviewed_non_spammers (account_id, created_at, updated_at)
              VALUES (#{@account.id}, NOW()::timestamp, NOW()::timestamp);
     SQL
     ActiveRecord::Base.connection.execute(sql)
