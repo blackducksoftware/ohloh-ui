@@ -2,12 +2,12 @@
   %h2.pull-left= t('.title')
   = render partial: 'accounts/show/account_analysis_timestamp', locals: { best_account_analysis: @account.best_account_analysis }
   .clearfix
-  .col-md-5
+  .col-sm-5.col-md-5
     .margin_bottom_10px{ itemprop: 'description' }
       = render partial: 'accounts/show/description', locals: { markup: @account.markup, desc_size: ACCOUNT_DESC_LENGTH }
     %h4.projects_used
       = link_to t('.projects_used'), account_stacks_path(@account)
     .stacked_projects
       = render partial: 'accounts/show/stacked_projects'
-  .baseball_card
+  .col-sm-7.baseball_card
     = render partial: 'accounts/show/baseball_card'

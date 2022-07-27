@@ -3,7 +3,6 @@ plotOptions:
     minPointLength: 3
 chart:
   marginLeft: 60
-  width: 950
   backgroundColor: 'transparent'
   style:
     background-image: url(<%= chart_background_image('watermark_692.png') %>)

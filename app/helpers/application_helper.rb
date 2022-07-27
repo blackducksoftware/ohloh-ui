@@ -140,6 +140,18 @@ module ApplicationHelper
     will_paginate(numbers.paginate(page: response['current_page'], per_page: response['per_page']))
   end
 
+  def device?
+    request.env['HTTP_USER_AGENT'] && request.env['HTTP_USER_AGENT'][/(iPhone|iPad|iPod|BlackBerry|Android)/]
+  end
+
+  def only_device?
+    request.env['HTTP_USER_AGENT'] && request.env['HTTP_USER_AGENT'][/(iPhone|BlackBerry|Android)/]
+  end
+
+  def only_tab?
+    request.env['HTTP_USER_AGENT'] && request.env['HTTP_USER_AGENT'][/(iPad|iPod)/]
+  end
+
   private
 
   def render_expander(text, limit)

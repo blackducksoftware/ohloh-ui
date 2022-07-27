@@ -1,6 +1,6 @@
 - item_type ||= (@account ? 'Person' : 'ItemPage')
 %div{ id: generate_page_name, itemscope: '', itemtype: "http://schema.org/#{item_type}" }
-  .col-md-12
+  .col-sm-12.col-md-12
     #page_contents= yield
   .clearfix
   - if responsive_layout && page_context[:footer_menu_list]

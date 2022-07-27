@@ -1,7 +1,7 @@
 - chart_url = commits_by_language_account_charts_url(@account, scope: 'regular').to_s
 
 .margin_top_10
-  .pull-left
+  .pull-left#commits_lang
     %h4= link_to t('.link'), account_languages_path(@account)
   .pull-left.soft.margin_top_10.margin_left_20= chart_default_time_span
   .clearfix

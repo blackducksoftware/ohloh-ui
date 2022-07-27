@@ -4,16 +4,16 @@
   text_color = language_text_color(lang.try(:name))
 
 - if !@account.best_account_analysis.nil? && lang
-  .col-md-7.statistic
+  .col-xs-7.col-sm-7.col-md-7.statistic
     .inner
-      .col-md-3.pull-left.name= t('.lang_title')
+      .col-xs-3.col-sm-3.col-md-3.pull-left.name= t('.lang_title')
       .pull-left.language-box{ style: "background-color:##{bg_color}; color:##{text_color};" }= lang.nice_name
 
 - BaseballCard.new(@account).rows.each do |row|
-  .col-md-7.statistic{ row[:css] }
+  .col-xs-7.col-sm-7.col-md-7.statistic{ row[:css] }
     .inner
-      .col-md-3.pull-left.name= row[:label]
-      .col-md-4.pull-left.value
+      .col-xs-3.col-sm-3.col-md-3.pull-left.name= row[:label]
+      .col-xs-4.col-sm-4.col-md-4.pull-left.value
         - if row[:value]
           = row[:value]
         - else

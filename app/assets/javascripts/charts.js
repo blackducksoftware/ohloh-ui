@@ -145,6 +145,7 @@ var Charts = {
   charts: [],
   init: function() {
     Highcharts.setOptions({
+      width: 950,
       lang: {
         thousandsSep: ','
       }
