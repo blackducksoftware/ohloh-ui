@@ -31,7 +31,7 @@ class SpamControllerTest < ActionController::TestCase
       login_as admin
       sql = <<-SQL.squish
             DELETE FROM OH.MARKUPS;
-            DELETE FROM oh.reviewed_not_spammers;
+            DELETE FROM oh.reviewed_non_spammers;
       SQL
       ActiveRecord::Base.connection.execute(sql)
       get :redirect_to_first_potential_spammer

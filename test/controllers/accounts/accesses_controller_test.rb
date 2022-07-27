@@ -106,33 +106,33 @@ class Accounts::AccessesControllerTest < ActionController::TestCase
     let(:account) { create(:account) }
     let(:admin) { create(:admin) }
 
-    it 'admin should be able to label a user not a spammer' do
+    it 'admin should be able to label a user a non spammer' do
       login_as admin
-      post :make_not_spammer, params: { account_id: account.id }
+      post :make_non_spammer, params: { account_id: account.id }
       assert_redirected_to admin_spam_path
-      expected = ERB::Util.html_escape(I18n.t('accounts.accesses.make_not_spammer.success', name: account.name))
+      expected = ERB::Util.html_escape(I18n.t('accounts.accesses.make_non_spammer.success', name: account.name))
       _(flash[:success]).must_equal expected
     end
 
-    it 'user should not be able to make not spammer' do
+    it 'user should not be able to make a user a non spammer' do
       user2 = create(:account)
       login_as account
-      post :make_not_spammer, params: { account_id: user2.id }
+      post :make_non_spammer, params: { account_id: user2.id }
       assert_response :unauthorized
     end
 
-    it 'should make an account as not a spammer' do
+    it 'should make an account as a non spammer' do
       login_as admin
       _(admin.level).must_equal Account::Access::ADMIN
-      post :make_not_spammer, params: { account_id: account.id }
+      post :make_non_spammer, params: { account_id: account.id }
 
       assert_redirected_to admin_spam_path
       sql = <<-SQL.squish
-             SELECT 1 FROM  oh.reviewed_not_spammers
+             SELECT 1 FROM  oh.reviewed_non_spammers
              WHERE account_id = #{account.id};
       SQL
       _(ActiveRecord::Base.connection.execute(sql).num_tuples).must_equal 1
-      expected = ERB::Util.html_escape(I18n.t('accounts.accesses.make_not_spammer.success', name: admin.name))
+      expected = ERB::Util.html_escape(I18n.t('accounts.accesses.make_non_spammer.success', name: account.name))
       _(flash[:success]).must_equal expected
     end
   end
