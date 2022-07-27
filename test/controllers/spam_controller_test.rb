@@ -15,9 +15,7 @@ class SpamControllerTest < ActionController::TestCase
 
     it 'should redirect to an account if there is one in oh.potential_spammers' do
       login_as admin
-      sql = <<-SQL.squish
-             SELECT id FROM oh.potential_spammers LIMIT 1;
-      SQL
+      sql = 'SELECT id FROM oh.potential_spammers LIMIT 1;'
       result = ActiveRecord::Base.connection.execute(sql)
       if result.num_tuples.positive?
         account = Account.find(result[0]['id'])

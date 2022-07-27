@@ -5,9 +5,7 @@ class SpamController < ApplicationController
   before_action :admin_session_required, only: %i[redirect_to_first_potential_spammer]
 
   def redirect_to_first_potential_spammer
-    sql = <<-SQL.squish
-             SELECT id FROM oh.potential_spammers LIMIT 1;
-    SQL
+    sql = 'SELECT id FROM oh.potential_spammers LIMIT 1;'
     result = ActiveRecord::Base.connection.execute(sql)
     if result.num_tuples.positive?
       account = Account.find(result[0]['id'])
