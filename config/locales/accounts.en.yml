@@ -143,7 +143,7 @@ en:
           link_html: '<i class="icon-check">&nbsp;</i>MARK AS SPAMMER LEVEL'
           confirm: 'Are you sure you want to mark %{name} as a spammer, disabling the account and removing all posts?'
           title: 'Mark %{name} as spammer!'
-        not_spammer:
+        non_spammer:
           link_html: '<i class="icon-check">&nbsp;</i>CONFIRM NOT SPAMMER'
           confirm: 'Are you sure you want to mark %{name} as not a spammer'
           title: 'Mark %{name} as a verified not spammer'
