@@ -88,7 +88,7 @@ Streamgraph = {
         if (window.innerWidth >= 320 && window.innerWidth <= 480)
           {var width = 150; var height = 300; var transform_new = 0;}
         else if (window.innerWidth >= 768 && window.innerWidth <= 1024)
-          {var width = 615; var height = 300; var transform_new = 0;}
+          {var width = 515; var height = 300; var transform_new = 0;}
         else
           {var width = 715; var height = 300; var transform_new = 0;}
 
