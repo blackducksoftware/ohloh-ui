@@ -180,17 +180,6 @@ Rails.application.routes.draw do
   get 'maintenance', to: 'abouts#maintenance'
   get 'tools', to: 'abouts#tools'
 
-  get 'p/_compare', to: 'compares#projects', as: :compare_projects
-  get 'p/_project_graph', to: 'compares#projects_graph', as: :compare_graph_projects, defaults: { format: 'js' }
-  get 'projects/:id/stacks', to: 'stacks#project_stacks', constraints: { format: /xml/ }
-  get 'p/:id/stacks', to: 'stacks#project_stacks', as: :project_stacks, constraints: { format: /xml/ }
-  get 'p/:id/stacks', to: redirect('/p/%{id}/users'), constraints: { format: /html/ }
-  get 'projects', to: 'projects#index', as: :project_xml_api, constraints: { format: /xml/ }
-  get 'projects/:project_id/badge_js',      to: 'project_widgets#thin_badge', defaults: { format: 'js' }
-  get 'projects/:project_id/badge.:format', to: 'project_widgets#thin_badge'
-  get 'p/:project_id/badge_js', to: 'project_widgets#thin_badge', defaults: { format: 'js' }
-  get 'p/:project_id/badge.:format', to: 'project_widgets#thin_badge'
-
   resources :duplicates, only: %i[index show] do
     member do
       post 'resolve/:keep_id', to: 'duplicates#resolve'
@@ -320,6 +309,17 @@ Rails.application.routes.draw do
       end
     end
   end
+
+  get 'p/_compare', to: 'compares#projects', as: :compare_projects
+  get 'p/_project_graph', to: 'compares#projects_graph', as: :compare_graph_projects, defaults: { format: 'js' }
+  get 'projects/:id/stacks', to: 'stacks#project_stacks', constraints: { format: /xml/ }
+  get 'p/:id/stacks', to: 'stacks#project_stacks', as: :project_stacks, constraints: { format: /xml/ }
+  get 'p/:id/stacks', to: redirect('/p/%{id}/users'), constraints: { format: /html/ }
+  get 'projects', to: 'projects#index', as: :project_xml_api, constraints: { format: /xml/ }
+  get 'projects/:project_id/badge_js',      to: 'project_widgets#thin_badge', defaults: { format: 'js' }
+  get 'projects/:project_id/badge.:format', to: 'project_widgets#thin_badge'
+  get 'p/:project_id/badge_js', to: 'project_widgets#thin_badge', defaults: { format: 'js' }
+  get 'p/:project_id/badge.:format', to: 'project_widgets#thin_badge'
 
   resources :organizations, path: :orgs do
     member do
