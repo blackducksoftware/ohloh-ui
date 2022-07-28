@@ -85,7 +85,12 @@ Streamgraph = {
       if (scope == "full")
         {var width = 900; var height = 300; var transform_new = 0;}
       else
-        {var width = 715; var height = 300; var transform_new = 0;}
+        if (window.innerWidth >= 320 && window.innerWidth <= 480)
+          {var width = 150; var height = 300; var transform_new = 0;}
+        else if (window.innerWidth >= 768 && window.innerWidth <= 1024)
+          {var width = 515; var height = 300; var transform_new = 0;}
+        else
+          {var width = 715; var height = 300; var transform_new = 0;}
 
       var margin = {top: 0, right: 0, bottom: 0, left: 0};
       var width = width - margin.left - margin.right

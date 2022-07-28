@@ -1,10 +1,16 @@
 - chart_url = commits_by_project_account_charts_url(@account).to_s
 
-.pull-left
+.pull-left#commit_projects
   %h4= link_to t('.link'), account_positions_path(@account)
 .pull-left.soft.margin_top_10.margin_left_20
   = chart_default_time_span
 .clearfix
-
-%div{ style: 'height:350px;' }
-  .chart#project_contributions{ style: 'width:950px; height:300px; margin-left:-28px', 'datasrc' => chart_url }
+- if only_device?
+  %div{ style: 'height:250px;' }
+    .chart#project_contributions{ style: 'width:450px; height:200px; margin-left:-26px;', 'datasrc' => chart_url }
+- elsif only_tab?
+  %div{ style: 'height:350px;' }
+    .chart#project_contributions{ style: 'width:750px; height:300px; margin-left:-28px;', 'datasrc' => chart_url }
+- else
+  %div{ style: 'height:350px;' }
+    .chart#project_contributions{ style: 'width:950px; height:300px; margin-left:-28px;', 'datasrc' => chart_url }

@@ -61,3 +61,19 @@
 .regular
   .background-watermark
     background: asset_url('charts/watermark_692.png') no-repeat center left
+@media only all and (min-width: 320px) and (max-width: 480px)
+  #ohloh_streamgraph
+    &.languages
+      height: 150px !important
+    #ohloh_stream
+      width: auto !important
+    width: auto !important
+  #streamgraph_legend
+    font-size: 13px !important
+@media (min-width: 540px) and (max-width: 1024px)
+  #ohloh_streamgraph
+    #ohloh_stream
+      width: auto !important
+    width: auto !important
+  #streamgraph_legend
+    margin-right: 48px

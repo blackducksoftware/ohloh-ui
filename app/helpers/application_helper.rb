@@ -144,6 +144,14 @@ module ApplicationHelper
     request.env['HTTP_USER_AGENT'] && request.env['HTTP_USER_AGENT'][/(iPhone|iPad|iPod|BlackBerry|Android)/]
   end
 
+  def only_device?
+    request.env['HTTP_USER_AGENT'] && request.env['HTTP_USER_AGENT'][/(iPhone|BlackBerry|Android)/]
+  end
+
+  def only_tab?
+    request.env['HTTP_USER_AGENT'] && request.env['HTTP_USER_AGENT'][/(iPad|iPod)/]
+  end
+  
   private
 
   def render_expander(text, limit)
