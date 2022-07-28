@@ -21,11 +21,11 @@
             %p.hide#content-2= t('.connecting', count: number_with_delimiter(@home.person_count))
             %p.hide#content-3= t('.tracking', count: number_with_delimiter(@home.repository_count))
 .home_page_row
-  .col-md-4
+  .col-md-4.col-xs-7.col-sm-6
     %h2.join_now= t('.join_now')
     = render partial: '/home/join_now_home'
-  .col-md-8
+  .col-md-8.col-xs-5.col-sm-6
     %h2.wh_new= t('.whats_new')
     = render partial: '/home/whats_new'
-.landing.col-md-12.last_section
+.landing.col-md-12.col-sm-12.col-xs-12.last_section
   = home_top_lists

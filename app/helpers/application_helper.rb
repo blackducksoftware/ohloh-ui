@@ -151,7 +151,7 @@ module ApplicationHelper
   def only_tab?
     request.env['HTTP_USER_AGENT'] && request.env['HTTP_USER_AGENT'][/(iPad|iPod)/]
   end
-
+  
   private
 
   def render_expander(text, limit)
