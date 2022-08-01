@@ -84,6 +84,8 @@ Rails.application.configure do
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
 
+  config.active_record.yaml_column_permitted_classes = [Symbol]
+
   # Use a different logger for distributed setups.
   logger           = ActiveSupport::Logger.new('/proc/1/fd/1')
   logger.formatter = config.log_formatter

@@ -42,6 +42,8 @@ Rails.application.configure do
 
   config.active_support.test_order = :sorted
 
+  config.active_record.yaml_column_permitted_classes = [Symbol]
+
   config.cache_store = :null_store
 
   config.middleware.use Clearance::BackDoor do |login|
