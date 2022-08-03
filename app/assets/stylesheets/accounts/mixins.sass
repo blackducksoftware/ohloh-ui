@@ -1,11 +1,13 @@
 @mixin sign_buttons
-  a
-    border-radius: 8px
-    font-size: 150% !important
-    padding: 4% 0 !important
-    i
-      padding: 4% 0
-
-  @media only all and (min-width: 320px) and (max-width: 360px)
+  @media only all and (min-width: 768px)
     a
-      font-size: 100% !important
+      border-radius: 8px
+      font-size: 150% !important
+      padding: 4% 0 !important
+      i
+        padding: 4% 0
+
+  @media only all and (min-width: 320px) and (max-width: 480px)
+    a
+      border-radius: 8px
+      font-size: 12px !important

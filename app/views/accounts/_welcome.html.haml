@@ -1,6 +1,7 @@
 %h2
   = t('.title')
-%p
-  = t('.description')
+-unless only_device?
+  %p
+    = t('.description')
 .well#accounts-sign-up
   = render 'join_now'
