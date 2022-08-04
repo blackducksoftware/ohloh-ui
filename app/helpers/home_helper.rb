@@ -38,8 +38,14 @@ module HomeHelper
   end
 
   def home_top_lists
-    Rails.cache.fetch 'homepage_top_lists' do
-      render partial: 'top_lists'
+    if device?
+      Rails.cache.fetch 'homepage_top_lists_device' do
+        render partial: 'top_lists'
+      end
+    else
+      Rails.cache.fetch 'homepage_top_lists' do
+        render partial: 'top_lists'
+      end
     end
   end
 end
