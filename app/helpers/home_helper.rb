@@ -36,6 +36,7 @@ module HomeHelper
     path = project.is_a?(Account) ? account_path(project) : project_path(project)
     link_to(h(project.name), path)
   end
+  # :nocov:
 
   def home_top_lists
     if device?
@@ -48,4 +49,5 @@ module HomeHelper
       end
     end
   end
+  # :nocov:
 end
