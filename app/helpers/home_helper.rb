@@ -39,14 +39,8 @@ module HomeHelper
   # :nocov:
 
   def home_top_lists
-    if device?
-      Rails.cache.fetch 'homepage_top_lists_device' do
-        render partial: 'top_lists'
-      end
-    else
-      Rails.cache.fetch 'homepage_top_lists' do
-        render partial: 'top_lists'
-      end
+    Rails.cache.fetch device? ? 'homepage_top_lists_device' : 'homepage_top_lists' do
+      render partial: 'top_lists'
     end
   end
   # :nocov:
