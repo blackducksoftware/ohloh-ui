@@ -39,6 +39,8 @@ en:
          success: "The account %{name} has been marked as BOT."
       make_spammer:
         success: "The account %{name} has been marked as spammer."
+      make_non_spammer:
+        success: "The account %{name} has been marked as a non spammer."
       manual_verification:
         success: "The account %{name} has been manually verified"
 
@@ -143,6 +145,10 @@ en:
           link_html: '<i class="icon-check">&nbsp;</i>MARK AS SPAMMER LEVEL'
           confirm: 'Are you sure you want to mark %{name} as a spammer, disabling the account and removing all posts?'
           title: 'Mark %{name} as spammer!'
+        non_spammer:
+          link_html: '<i class="icon-check">&nbsp;</i>CONFIRM NON SPAMMER'
+          confirm: 'Are you sure you want to mark %{name} as a non spammer'
+          title: 'Mark %{name} as a verified non spammer'
         delete:
           link_html: '<i class="icon-remove-sign">&nbsp;</i>DELETE ACCOUNT'
           confirm: 'Deleting an account is permament and cannot be undone! It will also take several minutes to finish, be patient. Are you sure you want to delete %{name}?'

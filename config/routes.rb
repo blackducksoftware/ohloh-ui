@@ -12,6 +12,7 @@ Rails.application.routes.draw do
   get 'admin/comments' => redirect('/404')
   get 'admin', to: 'oh_admin/dashboard#index'
   get 'admin/dashboard', to: 'oh_admin/dashboard#index'
+  get 'admin/spam', to: 'spam#redirect_to_first_potential_spammer'
 
   root to: 'home#index', defaults: { format: 'html' }
 
@@ -120,6 +121,7 @@ Rails.application.routes.draw do
       collection do
         post :manual_verification
         post :make_spammer
+        post :make_non_spammer
         get :activate
         post :make_bot
       end
