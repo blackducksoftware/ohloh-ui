@@ -216,6 +216,7 @@ en:
       welcome_bullet_1: 'Claim all of your commits to projects across all of Open Hub, building a complete picture of your contributions to FOSS.'
       welcome_bullet_2: 'Manage projects.'
       welcome_bullet_3: 'Create project "stacks" that detail your usage of FOSS, and rate and review the projects you know.'
+      description: 'You can use Open Hub without logging in, or having an account.  But with an account, you can do so much more:'
 
     welcome:
       title: 'Welcome to Open Hub!'

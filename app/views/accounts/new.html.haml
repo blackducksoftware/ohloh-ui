@@ -2,30 +2,41 @@
 
 .col-xs-6.col-sm-7#welcome-message-container
   = render 'welcome'
-  %p
-    = link_to t('.login_text'), new_session_path, class: 'btn btn-success'
-    != t('.login_link_description')
 
 - if @account.errors.none?
-  .col-xs-6.col-sm-5#sign-up-options
-    .row-first
+  .col-xs-12.col-sm-5#sign-up-options
+    -if only_device?
+      .col-xs-3.pull-left#sign-up-git
+        = link_to 'javascript:', { class: 'btn btn-primary github-oauth' }.merge(github_data_attributes) do
+          = t('.sign_up_with')
+          %br
+            %i.fa.fa-github
+              Github
+    -else
+      .row-first
+      = link_to 'javascript:', { class: 'btn btn-primary btn-block github-oauth' }.merge(github_data_attributes) do
+        = t('.sign_up_with')
+        %br
+          %i.fa.fa-github
+            Github
 
-    = link_to 'javascript:', { class: 'btn btn-primary btn-block github-oauth' }.merge(github_data_attributes) do
-      = t('.sign_up_with')
-      %br
-        %i.fa.fa-github
-          Github
+      %p.help-block
+        = t('.github_disclaimer')
+    -if only_device?
+      .col-xs-3.pull-right#sign-up-email
+        = link_to 'javascript:', id: 'digits-sign-up', class: 'btn btn-primary' do
+          = t('.sign_up_with')
+          %br
+            %i.fa.fa-mobile
+              Phone & Email
+    -else
+      = link_to 'javascript:', id: 'digits-sign-up', class: 'btn btn-primary btn-block' do
+        = t('.sign_up_with')
+        %br
+          %i.fa.fa-mobile
+            Phone & Email
 
-    %p.help-block
-      = t('.github_disclaimer')
-
-    = link_to 'javascript:', id: 'digits-sign-up', class: 'btn btn-primary btn-block' do
-      = t('.sign_up_with')
-      %br
-        %i.fa.fa-mobile
-          Phone & Email
-
-.col-xs-6.col-sm-5.no_right_padding{ id: ('sign-up-fields' if @account.errors.none?) }
+.col-xs-12.col-sm-5.no_right_padding{ id: ('sign-up-fields' if @account.errors.none?) }
   - if flash[:message]
     %p= flash[:message]
   - unless @account.invite_code.blank?

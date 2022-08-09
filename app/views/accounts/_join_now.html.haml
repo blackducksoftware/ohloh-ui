@@ -1,23 +1,57 @@
-%ul#welcome-message
-  %li
-    = t('.welcome_bullet_1')
-  %li
-    = t('.welcome_bullet_2')
-  %li
-    = t('.welcome_bullet_3')
-%hr
-%h4
-  %span.fa.fa-exclamation-triangle
-  = t('.please_note')
-%p
-  = t('.creating_account_html', terms: link_to(t('.terms_of_use'), 'https://community.synopsys.com/s/article/Black-Duck-Open-Hub-Terms-of-Use'))
-%ul
-  %li
-    = t('.note_bullet_1')
-  %li
-    = t('.note_bullet_2')
-  %li
-    = t('.note_bullet_3')
-%p
-  = t('.we_dont_like_disabling')
-  %span.fa.fa-smile-o
+-if only_device?
+  #profile-description-2
+    .text-2.show-more-height-2
+      %p
+        = t('.description')
+      %ul#welcome-message
+        %li
+          = t('.welcome_bullet_1')
+        %li
+          = t('.welcome_bullet_2')
+        %li
+          = t('.welcome_bullet_3')
+    .show-more-2 Show More
+  %hr
+    #profile-description-1
+      .text-1.show-more-height-1
+        %h4
+          %span.fa.fa-exclamation-triangle
+          = t('.please_note')
+        %p
+          = t('.creating_account_html', terms: link_to(t('.terms_of_use'), 'https://community.synopsys.com/s/article/Black-Duck-Open-Hub-Terms-of-Use'))
+        %ul
+          %li
+            = t('.note_bullet_1')
+          %li
+            = t('.note_bullet_2')
+          %li
+            = t('.note_bullet_3')
+        %p
+          = t('.we_dont_like_disabling')
+          %span.fa.fa-smile-o
+      .show-more-1 Show More
+- else
+  %ul#welcome-message
+    %li
+      = t('.welcome_bullet_1')
+    %li
+      = t('.welcome_bullet_2')
+    %li
+      = t('.welcome_bullet_3')
+  %hr
+  %h4
+    %span.fa.fa-exclamation-triangle
+    = t('.please_note')
+  %p
+    = t('.creating_account_html', terms: link_to(t('.terms_of_use'), 'https://community.synopsys.com/s/article/Black-Duck-Open-Hub-Terms-of-Use'))
+  %ul
+    %li
+      = t('.note_bullet_1')
+    %li
+      = t('.note_bullet_2')
+    %li
+      = t('.note_bullet_3')
+  %p
+    = t('.we_dont_like_disabling')
+    %span.fa.fa-smile-o
+
