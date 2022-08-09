@@ -37,4 +37,5 @@ end
 
 def clear_front_page_lists_cache
   Rails.cache.delete('homepage_top_lists')
+  Rails.cache.delete('homepage_top_lists_device')
 end

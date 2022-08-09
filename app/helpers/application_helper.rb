@@ -139,6 +139,7 @@ module ApplicationHelper
     numbers = (1..response['total_entries']).to_a
     will_paginate(numbers.paginate(page: response['current_page'], per_page: response['per_page']))
   end
+  # :nocov:
 
   def device?
     request.env['HTTP_USER_AGENT'] && request.env['HTTP_USER_AGENT'][/(iPhone|iPad|iPod|BlackBerry|Android)/]
@@ -151,6 +152,7 @@ module ApplicationHelper
   def only_tab?
     request.env['HTTP_USER_AGENT'] && request.env['HTTP_USER_AGENT'][/(iPad|iPod)/]
   end
+  # :nocov:
 
   private
 

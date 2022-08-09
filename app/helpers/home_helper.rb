@@ -36,10 +36,12 @@ module HomeHelper
     path = project.is_a?(Account) ? account_path(project) : project_path(project)
     link_to(h(project.name), path)
   end
+  # :nocov:
 
   def home_top_lists
-    Rails.cache.fetch 'homepage_top_lists' do
+    Rails.cache.fetch device? ? 'homepage_top_lists_device' : 'homepage_top_lists' do
       render partial: 'top_lists'
     end
   end
+  # :nocov:
 end
