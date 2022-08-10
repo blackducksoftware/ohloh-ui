@@ -17,7 +17,12 @@
         - manages_count_text = t 'people.claimed_person.manages', what: pluralize(account.projects.count, 'project')
         %p= link_to manages_count_text, account_projects_path(account)
       %p= t '.member_since', since: account.created_at.strftime('%B %Y')
+  - if only_device?
+    .pull-left.kudo_rank.signature_color
+      = account.kudo_rank
 
+    .mini-badges-section.pull-left.kudo_badge
+      = render 'badges_row', badges: [BadgeDecorator.new(KudoRankBadge.new(account))]
   .pull-left.commits_summary
     - if vf.commits > 0 && @positions_map.any?
       .commits_count.pull-left
@@ -61,10 +66,10 @@
           = link_to t('.positions_link_text2'), account_positions_path(account), class: 'more_commits_padding'
     - else
       %p.no_commits= t('.no_commits')
+  - unless only_device?
+    .pull-left.kudo_rank.signature_color
+      = account.kudo_rank
 
-  .pull-left.kudo_rank.signature_color
-    = account.kudo_rank
-
-  .mini-badges-section.pull-left.kudo_badge
-    = render 'badges_row', badges: [BadgeDecorator.new(KudoRankBadge.new(account))]
+    .mini-badges-section.pull-left.kudo_badge
+      = render 'badges_row', badges: [BadgeDecorator.new(KudoRankBadge.new(account))]
   .clear
