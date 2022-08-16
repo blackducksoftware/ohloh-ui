@@ -4,7 +4,6 @@
   - if @claimed_people.total_entries > 3
     %p
       %a.btn.btn-mini.btn-primary#more_account{ href: accounts_path(query: params[:query]) }= t('.more_account_holders')
-    %p &nbsp;
 
 - if @unclaimed_people.any?
   %h3.margin_bottom_15= t('.unclaimed_committer_ids')
@@ -13,4 +12,3 @@
   - if @unclaimed_people_count > 3
     %p
       %a.btn.btn-mini.btn-primary#more_unclaimed{ href: committers_path(query: params[:query]) }= t('.more_commiters')
-    %p &nbsp;

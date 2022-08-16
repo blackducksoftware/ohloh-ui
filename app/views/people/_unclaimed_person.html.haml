@@ -6,7 +6,7 @@
   unclaimed_people ||= people.to_a.first(UNCLAIMED_TILE_LIMIT)
 
 = form_tag(claim_committer_path(name_id), method: :post) do
-  .well.col-md-12.unclaimed_committers_box
+  .well.col-md-12.col-sm-12.col-xs-12.unclaimed_committers_box
     .header_row{ style: 'padding-bottom: 0;' }
       .pull-left
         %h4.no_margin_bottom{ style: 'margin: 0;' }

@@ -17,7 +17,7 @@ module PeopleHelper
 
   def render_people_list
     if params[:query].blank?
-      Rails.cache.fetch('people_index_page', expires_in: 4.hours) do
+      Rails.cache.fetch((only_device? ? 'people_index_page_device' : 'people_index_page'), expires_in: 4.hours) do
         render 'people'
       end
     else
