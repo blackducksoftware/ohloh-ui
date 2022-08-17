@@ -76,7 +76,7 @@ class ManageMailer < ApplicationMailer
 
   class << self
     def check_automatic_approval(manage)
-      return false unless manage.approved_by == Account.hamster.id && !manage.deleted_by
+      return false unless manage.approved_by == Account.hamster&.id && !manage.deleted_by
 
       automatic_approval(manage).deliver_now
       true

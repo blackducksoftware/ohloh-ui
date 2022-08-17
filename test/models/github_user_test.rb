@@ -42,5 +42,13 @@ class GithubUserTest < ActiveSupport::TestCase
         @github_user.save!
       end
     end
+
+    it 'must create subscription from given code location' do
+      @github_user = GithubUser.new(url: 'renamed')
+      @proj = create(:project, deleted: false)
+      WebMocker.get_code_location
+      CodeLocationSubscription.expects(:create).never
+      WebMocker.create_subscriptions_for_code_locations
+    end
   end
 end
