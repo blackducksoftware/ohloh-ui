@@ -4,7 +4,7 @@ require 'test_helper'
 
 class EnlistmentWorkerTest < ActiveSupport::TestCase
   it 'should create a enlistment for a project' do
-    VCR.use_cassette('find_by_and_create_code_locations', record: :new_episodes) do
+    VCR.use_cassette('find_by_and_create_code_locations') do
       Enlistment.any_instance.stubs(:ensure_forge_and_job)
       project = create(:project)
       _(project.enlistments.count).must_equal 0
