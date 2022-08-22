@@ -1797,8 +1797,6 @@ ALTER TEXT SEARCH CONFIGURATION oh.pg
 
 SET default_tablespace = '';
 
-SET default_with_oids = false;
-
 --
 -- Name: admin_dashboard_stats; Type: TABLE; Schema: fis; Owner: -
 --
@@ -2310,7 +2308,6 @@ CREATE TABLE fis.diffs_0 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_0 FOR VALUES WITH (modulus 100, remainder 0);
 
 
 --
@@ -2328,7 +2325,6 @@ CREATE TABLE fis.diffs_1 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_1 FOR VALUES WITH (modulus 100, remainder 1);
 
 
 --
@@ -2346,7 +2342,6 @@ CREATE TABLE fis.diffs_10 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_10 FOR VALUES WITH (modulus 100, remainder 10);
 
 
 --
@@ -2364,7 +2359,6 @@ CREATE TABLE fis.diffs_11 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_11 FOR VALUES WITH (modulus 100, remainder 11);
 
 
 --
@@ -2382,7 +2376,6 @@ CREATE TABLE fis.diffs_12 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_12 FOR VALUES WITH (modulus 100, remainder 12);
 
 
 --
@@ -2400,7 +2393,6 @@ CREATE TABLE fis.diffs_13 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_13 FOR VALUES WITH (modulus 100, remainder 13);
 
 
 --
@@ -2418,7 +2410,6 @@ CREATE TABLE fis.diffs_14 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_14 FOR VALUES WITH (modulus 100, remainder 14);
 
 
 --
@@ -2436,7 +2427,6 @@ CREATE TABLE fis.diffs_15 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_15 FOR VALUES WITH (modulus 100, remainder 15);
 
 
 --
@@ -2454,7 +2444,6 @@ CREATE TABLE fis.diffs_16 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_16 FOR VALUES WITH (modulus 100, remainder 16);
 
 
 --
@@ -2472,7 +2461,6 @@ CREATE TABLE fis.diffs_17 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_17 FOR VALUES WITH (modulus 100, remainder 17);
 
 
 --
@@ -2490,7 +2478,6 @@ CREATE TABLE fis.diffs_18 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_18 FOR VALUES WITH (modulus 100, remainder 18);
 
 
 --
@@ -2508,7 +2495,6 @@ CREATE TABLE fis.diffs_19 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_19 FOR VALUES WITH (modulus 100, remainder 19);
 
 
 --
@@ -2526,7 +2512,6 @@ CREATE TABLE fis.diffs_2 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_2 FOR VALUES WITH (modulus 100, remainder 2);
 
 
 --
@@ -2544,7 +2529,6 @@ CREATE TABLE fis.diffs_20 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_20 FOR VALUES WITH (modulus 100, remainder 20);
 
 
 --
@@ -2562,7 +2546,6 @@ CREATE TABLE fis.diffs_21 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_21 FOR VALUES WITH (modulus 100, remainder 21);
 
 
 --
@@ -2580,7 +2563,6 @@ CREATE TABLE fis.diffs_22 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_22 FOR VALUES WITH (modulus 100, remainder 22);
 
 
 --
@@ -2598,7 +2580,6 @@ CREATE TABLE fis.diffs_23 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_23 FOR VALUES WITH (modulus 100, remainder 23);
 
 
 --
@@ -2616,7 +2597,6 @@ CREATE TABLE fis.diffs_24 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_24 FOR VALUES WITH (modulus 100, remainder 24);
 
 
 --
@@ -2634,7 +2614,6 @@ CREATE TABLE fis.diffs_25 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_25 FOR VALUES WITH (modulus 100, remainder 25);
 
 
 --
@@ -2652,7 +2631,6 @@ CREATE TABLE fis.diffs_26 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_26 FOR VALUES WITH (modulus 100, remainder 26);
 
 
 --
@@ -2670,7 +2648,6 @@ CREATE TABLE fis.diffs_27 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_27 FOR VALUES WITH (modulus 100, remainder 27);
 
 
 --
@@ -2688,7 +2665,6 @@ CREATE TABLE fis.diffs_28 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_28 FOR VALUES WITH (modulus 100, remainder 28);
 
 
 --
@@ -2706,7 +2682,6 @@ CREATE TABLE fis.diffs_29 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_29 FOR VALUES WITH (modulus 100, remainder 29);
 
 
 --
@@ -2724,7 +2699,6 @@ CREATE TABLE fis.diffs_3 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_3 FOR VALUES WITH (modulus 100, remainder 3);
 
 
 --
@@ -2742,7 +2716,6 @@ CREATE TABLE fis.diffs_30 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_30 FOR VALUES WITH (modulus 100, remainder 30);
 
 
 --
@@ -2760,7 +2733,6 @@ CREATE TABLE fis.diffs_31 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_31 FOR VALUES WITH (modulus 100, remainder 31);
 
 
 --
@@ -2778,7 +2750,6 @@ CREATE TABLE fis.diffs_32 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_32 FOR VALUES WITH (modulus 100, remainder 32);
 
 
 --
@@ -2796,7 +2767,6 @@ CREATE TABLE fis.diffs_33 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_33 FOR VALUES WITH (modulus 100, remainder 33);
 
 
 --
@@ -2814,7 +2784,6 @@ CREATE TABLE fis.diffs_34 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_34 FOR VALUES WITH (modulus 100, remainder 34);
 
 
 --
@@ -2832,7 +2801,6 @@ CREATE TABLE fis.diffs_35 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_35 FOR VALUES WITH (modulus 100, remainder 35);
 
 
 --
@@ -2850,7 +2818,6 @@ CREATE TABLE fis.diffs_36 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_36 FOR VALUES WITH (modulus 100, remainder 36);
 
 
 --
@@ -2868,7 +2835,6 @@ CREATE TABLE fis.diffs_37 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_37 FOR VALUES WITH (modulus 100, remainder 37);
 
 
 --
@@ -2886,7 +2852,6 @@ CREATE TABLE fis.diffs_38 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_38 FOR VALUES WITH (modulus 100, remainder 38);
 
 
 --
@@ -2904,7 +2869,6 @@ CREATE TABLE fis.diffs_39 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_39 FOR VALUES WITH (modulus 100, remainder 39);
 
 
 --
@@ -2922,7 +2886,6 @@ CREATE TABLE fis.diffs_4 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_4 FOR VALUES WITH (modulus 100, remainder 4);
 
 
 --
@@ -2940,7 +2903,6 @@ CREATE TABLE fis.diffs_40 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_40 FOR VALUES WITH (modulus 100, remainder 40);
 
 
 --
@@ -2958,7 +2920,6 @@ CREATE TABLE fis.diffs_41 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_41 FOR VALUES WITH (modulus 100, remainder 41);
 
 
 --
@@ -2976,7 +2937,6 @@ CREATE TABLE fis.diffs_42 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_42 FOR VALUES WITH (modulus 100, remainder 42);
 
 
 --
@@ -2994,7 +2954,6 @@ CREATE TABLE fis.diffs_43 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_43 FOR VALUES WITH (modulus 100, remainder 43);
 
 
 --
@@ -3012,7 +2971,6 @@ CREATE TABLE fis.diffs_44 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_44 FOR VALUES WITH (modulus 100, remainder 44);
 
 
 --
@@ -3030,7 +2988,6 @@ CREATE TABLE fis.diffs_45 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_45 FOR VALUES WITH (modulus 100, remainder 45);
 
 
 --
@@ -3048,7 +3005,6 @@ CREATE TABLE fis.diffs_46 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_46 FOR VALUES WITH (modulus 100, remainder 46);
 
 
 --
@@ -3066,7 +3022,6 @@ CREATE TABLE fis.diffs_47 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_47 FOR VALUES WITH (modulus 100, remainder 47);
 
 
 --
@@ -3084,7 +3039,6 @@ CREATE TABLE fis.diffs_48 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_48 FOR VALUES WITH (modulus 100, remainder 48);
 
 
 --
@@ -3102,7 +3056,6 @@ CREATE TABLE fis.diffs_49 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_49 FOR VALUES WITH (modulus 100, remainder 49);
 
 
 --
@@ -3120,7 +3073,6 @@ CREATE TABLE fis.diffs_5 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_5 FOR VALUES WITH (modulus 100, remainder 5);
 
 
 --
@@ -3138,7 +3090,6 @@ CREATE TABLE fis.diffs_50 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_50 FOR VALUES WITH (modulus 100, remainder 50);
 
 
 --
@@ -3156,7 +3107,6 @@ CREATE TABLE fis.diffs_51 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_51 FOR VALUES WITH (modulus 100, remainder 51);
 
 
 --
@@ -3174,7 +3124,6 @@ CREATE TABLE fis.diffs_52 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_52 FOR VALUES WITH (modulus 100, remainder 52);
 
 
 --
@@ -3192,7 +3141,6 @@ CREATE TABLE fis.diffs_53 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_53 FOR VALUES WITH (modulus 100, remainder 53);
 
 
 --
@@ -3210,7 +3158,6 @@ CREATE TABLE fis.diffs_54 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_54 FOR VALUES WITH (modulus 100, remainder 54);
 
 
 --
@@ -3228,7 +3175,6 @@ CREATE TABLE fis.diffs_55 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_55 FOR VALUES WITH (modulus 100, remainder 55);
 
 
 --
@@ -3246,7 +3192,6 @@ CREATE TABLE fis.diffs_56 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_56 FOR VALUES WITH (modulus 100, remainder 56);
 
 
 --
@@ -3264,7 +3209,6 @@ CREATE TABLE fis.diffs_57 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_57 FOR VALUES WITH (modulus 100, remainder 57);
 
 
 --
@@ -3282,7 +3226,6 @@ CREATE TABLE fis.diffs_58 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_58 FOR VALUES WITH (modulus 100, remainder 58);
 
 
 --
@@ -3300,7 +3243,6 @@ CREATE TABLE fis.diffs_59 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_59 FOR VALUES WITH (modulus 100, remainder 59);
 
 
 --
@@ -3318,7 +3260,6 @@ CREATE TABLE fis.diffs_6 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_6 FOR VALUES WITH (modulus 100, remainder 6);
 
 
 --
@@ -3336,7 +3277,6 @@ CREATE TABLE fis.diffs_60 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_60 FOR VALUES WITH (modulus 100, remainder 60);
 
 
 --
@@ -3354,7 +3294,6 @@ CREATE TABLE fis.diffs_61 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_61 FOR VALUES WITH (modulus 100, remainder 61);
 
 
 --
@@ -3372,7 +3311,6 @@ CREATE TABLE fis.diffs_62 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_62 FOR VALUES WITH (modulus 100, remainder 62);
 
 
 --
@@ -3390,7 +3328,6 @@ CREATE TABLE fis.diffs_63 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_63 FOR VALUES WITH (modulus 100, remainder 63);
 
 
 --
@@ -3408,7 +3345,6 @@ CREATE TABLE fis.diffs_64 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_64 FOR VALUES WITH (modulus 100, remainder 64);
 
 
 --
@@ -3426,7 +3362,6 @@ CREATE TABLE fis.diffs_65 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_65 FOR VALUES WITH (modulus 100, remainder 65);
 
 
 --
@@ -3444,7 +3379,6 @@ CREATE TABLE fis.diffs_66 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_66 FOR VALUES WITH (modulus 100, remainder 66);
 
 
 --
@@ -3462,7 +3396,6 @@ CREATE TABLE fis.diffs_67 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_67 FOR VALUES WITH (modulus 100, remainder 67);
 
 
 --
@@ -3480,7 +3413,6 @@ CREATE TABLE fis.diffs_68 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_68 FOR VALUES WITH (modulus 100, remainder 68);
 
 
 --
@@ -3498,7 +3430,6 @@ CREATE TABLE fis.diffs_69 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_69 FOR VALUES WITH (modulus 100, remainder 69);
 
 
 --
@@ -3516,7 +3447,6 @@ CREATE TABLE fis.diffs_7 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_7 FOR VALUES WITH (modulus 100, remainder 7);
 
 
 --
@@ -3534,7 +3464,6 @@ CREATE TABLE fis.diffs_70 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_70 FOR VALUES WITH (modulus 100, remainder 70);
 
 
 --
@@ -3552,7 +3481,6 @@ CREATE TABLE fis.diffs_71 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_71 FOR VALUES WITH (modulus 100, remainder 71);
 
 
 --
@@ -3570,7 +3498,6 @@ CREATE TABLE fis.diffs_72 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_72 FOR VALUES WITH (modulus 100, remainder 72);
 
 
 --
@@ -3588,7 +3515,6 @@ CREATE TABLE fis.diffs_73 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_73 FOR VALUES WITH (modulus 100, remainder 73);
 
 
 --
@@ -3606,7 +3532,6 @@ CREATE TABLE fis.diffs_74 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_74 FOR VALUES WITH (modulus 100, remainder 74);
 
 
 --
@@ -3624,7 +3549,6 @@ CREATE TABLE fis.diffs_75 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_75 FOR VALUES WITH (modulus 100, remainder 75);
 
 
 --
@@ -3642,7 +3566,6 @@ CREATE TABLE fis.diffs_76 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_76 FOR VALUES WITH (modulus 100, remainder 76);
 
 
 --
@@ -3660,7 +3583,6 @@ CREATE TABLE fis.diffs_77 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_77 FOR VALUES WITH (modulus 100, remainder 77);
 
 
 --
@@ -3678,7 +3600,6 @@ CREATE TABLE fis.diffs_78 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_78 FOR VALUES WITH (modulus 100, remainder 78);
 
 
 --
@@ -3696,7 +3617,6 @@ CREATE TABLE fis.diffs_79 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_79 FOR VALUES WITH (modulus 100, remainder 79);
 
 
 --
@@ -3714,7 +3634,6 @@ CREATE TABLE fis.diffs_8 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_8 FOR VALUES WITH (modulus 100, remainder 8);
 
 
 --
@@ -3732,7 +3651,6 @@ CREATE TABLE fis.diffs_80 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_80 FOR VALUES WITH (modulus 100, remainder 80);
 
 
 --
@@ -3750,7 +3668,6 @@ CREATE TABLE fis.diffs_81 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_81 FOR VALUES WITH (modulus 100, remainder 81);
 
 
 --
@@ -3768,7 +3685,6 @@ CREATE TABLE fis.diffs_82 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_82 FOR VALUES WITH (modulus 100, remainder 82);
 
 
 --
@@ -3786,7 +3702,6 @@ CREATE TABLE fis.diffs_83 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_83 FOR VALUES WITH (modulus 100, remainder 83);
 
 
 --
@@ -3804,7 +3719,6 @@ CREATE TABLE fis.diffs_84 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_84 FOR VALUES WITH (modulus 100, remainder 84);
 
 
 --
@@ -3822,7 +3736,6 @@ CREATE TABLE fis.diffs_85 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_85 FOR VALUES WITH (modulus 100, remainder 85);
 
 
 --
@@ -3840,7 +3753,6 @@ CREATE TABLE fis.diffs_86 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_86 FOR VALUES WITH (modulus 100, remainder 86);
 
 
 --
@@ -3858,7 +3770,6 @@ CREATE TABLE fis.diffs_87 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_87 FOR VALUES WITH (modulus 100, remainder 87);
 
 
 --
@@ -3876,7 +3787,6 @@ CREATE TABLE fis.diffs_88 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_88 FOR VALUES WITH (modulus 100, remainder 88);
 
 
 --
@@ -3894,7 +3804,6 @@ CREATE TABLE fis.diffs_89 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_89 FOR VALUES WITH (modulus 100, remainder 89);
 
 
 --
@@ -3912,7 +3821,6 @@ CREATE TABLE fis.diffs_9 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_9 FOR VALUES WITH (modulus 100, remainder 9);
 
 
 --
@@ -3930,7 +3838,6 @@ CREATE TABLE fis.diffs_90 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_90 FOR VALUES WITH (modulus 100, remainder 90);
 
 
 --
@@ -3948,7 +3855,6 @@ CREATE TABLE fis.diffs_91 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_91 FOR VALUES WITH (modulus 100, remainder 91);
 
 
 --
@@ -3966,7 +3872,6 @@ CREATE TABLE fis.diffs_92 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_92 FOR VALUES WITH (modulus 100, remainder 92);
 
 
 --
@@ -3984,7 +3889,6 @@ CREATE TABLE fis.diffs_93 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_93 FOR VALUES WITH (modulus 100, remainder 93);
 
 
 --
@@ -4002,7 +3906,6 @@ CREATE TABLE fis.diffs_94 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_94 FOR VALUES WITH (modulus 100, remainder 94);
 
 
 --
@@ -4020,7 +3923,6 @@ CREATE TABLE fis.diffs_95 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_95 FOR VALUES WITH (modulus 100, remainder 95);
 
 
 --
@@ -4038,7 +3940,6 @@ CREATE TABLE fis.diffs_96 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_96 FOR VALUES WITH (modulus 100, remainder 96);
 
 
 --
@@ -4056,7 +3957,6 @@ CREATE TABLE fis.diffs_97 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_97 FOR VALUES WITH (modulus 100, remainder 97);
 
 
 --
@@ -4074,7 +3974,6 @@ CREATE TABLE fis.diffs_98 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_98 FOR VALUES WITH (modulus 100, remainder 98);
 
 
 --
@@ -4092,7 +3991,6 @@ CREATE TABLE fis.diffs_99 (
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
 );
-ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_99 FOR VALUES WITH (modulus 100, remainder 99);
 
 
 --
@@ -5413,6 +5311,36 @@ CREATE SEQUENCE oh.clumps_id_seq
 --
 
 ALTER SEQUENCE oh.clumps_id_seq OWNED BY oh.clumps.id;
+
+
+--
+-- Name: code_location_scan; Type: TABLE; Schema: oh; Owner: -
+--
+
+CREATE TABLE oh.code_location_scan (
+    id bigint NOT NULL,
+    code_location_id integer,
+    scan_project_id integer
+);
+
+
+--
+-- Name: code_location_scan_id_seq; Type: SEQUENCE; Schema: oh; Owner: -
+--
+
+CREATE SEQUENCE oh.code_location_scan_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: code_location_scan_id_seq; Type: SEQUENCE OWNED BY; Schema: oh; Owner: -
+--
+
+ALTER SEQUENCE oh.code_location_scan_id_seq OWNED BY oh.code_location_scan.id;
 
 
 --
@@ -7228,8 +7156,6 @@ CREATE SEQUENCE oh.permissions_id_seq
 ALTER SEQUENCE oh.permissions_id_seq OWNED BY oh.permissions.id;
 
 
-SET default_with_oids = true;
-
 --
 -- Name: pg_ts_cfg; Type: TABLE; Schema: oh; Owner: -
 --
@@ -7283,8 +7209,6 @@ CREATE SEQUENCE oh.posts_id_seq
     CACHE 1;
 
 
-SET default_with_oids = false;
-
 --
 -- Name: posts; Type: TABLE; Schema: oh; Owner: -
 --
@@ -7300,6 +7224,30 @@ CREATE TABLE oh.posts (
     vector tsvector,
     popularity_factor numeric
 );
+
+
+--
+-- Name: reviewed_non_spammers; Type: TABLE; Schema: oh; Owner: -
+--
+
+CREATE TABLE oh.reviewed_non_spammers (
+    id bigint NOT NULL,
+    account_id bigint,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: potential_spammers; Type: VIEW; Schema: oh; Owner: -
+--
+
+CREATE VIEW oh.potential_spammers AS
+ SELECT ac.id
+   FROM (oh.markups
+     JOIN oh.accounts ac ON ((ac.about_markup_id = markups.id)))
+  WHERE ((markups.raw ~ 'http'::text) AND (ac.level = 0) AND (NOT (ac.id IN ( SELECT reviewed_non_spammers.account_id
+           FROM oh.reviewed_non_spammers))));
 
 
 --
@@ -7831,6 +7779,25 @@ ALTER SEQUENCE oh.reverification_trackers_id_seq OWNED BY oh.reverification_trac
 
 
 --
+-- Name: reviewed_non_spammers_id_seq; Type: SEQUENCE; Schema: oh; Owner: -
+--
+
+CREATE SEQUENCE oh.reviewed_non_spammers_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: reviewed_non_spammers_id_seq; Type: SEQUENCE OWNED BY; Schema: oh; Owner: -
+--
+
+ALTER SEQUENCE oh.reviewed_non_spammers_id_seq OWNED BY oh.reviewed_non_spammers.id;
+
+
+--
 -- Name: reviews_id_seq; Type: SEQUENCE; Schema: oh; Owner: -
 --
 
@@ -7957,6 +7924,40 @@ CREATE TABLE oh.rss_subscriptions (
     rss_feed_id integer,
     deleted boolean DEFAULT false
 );
+
+
+--
+-- Name: scan_analytics; Type: TABLE; Schema: oh; Owner: -
+--
+
+CREATE TABLE oh.scan_analytics (
+    id bigint NOT NULL,
+    data_type character varying,
+    analysis_id bigint,
+    code_set_id bigint,
+    data jsonb,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: scan_analytics_id_seq; Type: SEQUENCE; Schema: oh; Owner: -
+--
+
+CREATE SEQUENCE oh.scan_analytics_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: scan_analytics_id_seq; Type: SEQUENCE OWNED BY; Schema: oh; Owner: -
+--
+
+ALTER SEQUENCE oh.scan_analytics_id_seq OWNED BY oh.scan_analytics.id;
 
 
 --
@@ -8496,6 +8497,706 @@ ALTER SEQUENCE oh.vulnerabilities_id_seq OWNED BY oh.vulnerabilities.id;
 
 
 --
+-- Name: diffs_0; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_0 FOR VALUES WITH (modulus 100, remainder 0);
+
+
+--
+-- Name: diffs_1; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_1 FOR VALUES WITH (modulus 100, remainder 1);
+
+
+--
+-- Name: diffs_10; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_10 FOR VALUES WITH (modulus 100, remainder 10);
+
+
+--
+-- Name: diffs_11; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_11 FOR VALUES WITH (modulus 100, remainder 11);
+
+
+--
+-- Name: diffs_12; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_12 FOR VALUES WITH (modulus 100, remainder 12);
+
+
+--
+-- Name: diffs_13; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_13 FOR VALUES WITH (modulus 100, remainder 13);
+
+
+--
+-- Name: diffs_14; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_14 FOR VALUES WITH (modulus 100, remainder 14);
+
+
+--
+-- Name: diffs_15; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_15 FOR VALUES WITH (modulus 100, remainder 15);
+
+
+--
+-- Name: diffs_16; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_16 FOR VALUES WITH (modulus 100, remainder 16);
+
+
+--
+-- Name: diffs_17; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_17 FOR VALUES WITH (modulus 100, remainder 17);
+
+
+--
+-- Name: diffs_18; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_18 FOR VALUES WITH (modulus 100, remainder 18);
+
+
+--
+-- Name: diffs_19; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_19 FOR VALUES WITH (modulus 100, remainder 19);
+
+
+--
+-- Name: diffs_2; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_2 FOR VALUES WITH (modulus 100, remainder 2);
+
+
+--
+-- Name: diffs_20; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_20 FOR VALUES WITH (modulus 100, remainder 20);
+
+
+--
+-- Name: diffs_21; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_21 FOR VALUES WITH (modulus 100, remainder 21);
+
+
+--
+-- Name: diffs_22; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_22 FOR VALUES WITH (modulus 100, remainder 22);
+
+
+--
+-- Name: diffs_23; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_23 FOR VALUES WITH (modulus 100, remainder 23);
+
+
+--
+-- Name: diffs_24; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_24 FOR VALUES WITH (modulus 100, remainder 24);
+
+
+--
+-- Name: diffs_25; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_25 FOR VALUES WITH (modulus 100, remainder 25);
+
+
+--
+-- Name: diffs_26; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_26 FOR VALUES WITH (modulus 100, remainder 26);
+
+
+--
+-- Name: diffs_27; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_27 FOR VALUES WITH (modulus 100, remainder 27);
+
+
+--
+-- Name: diffs_28; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_28 FOR VALUES WITH (modulus 100, remainder 28);
+
+
+--
+-- Name: diffs_29; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_29 FOR VALUES WITH (modulus 100, remainder 29);
+
+
+--
+-- Name: diffs_3; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_3 FOR VALUES WITH (modulus 100, remainder 3);
+
+
+--
+-- Name: diffs_30; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_30 FOR VALUES WITH (modulus 100, remainder 30);
+
+
+--
+-- Name: diffs_31; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_31 FOR VALUES WITH (modulus 100, remainder 31);
+
+
+--
+-- Name: diffs_32; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_32 FOR VALUES WITH (modulus 100, remainder 32);
+
+
+--
+-- Name: diffs_33; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_33 FOR VALUES WITH (modulus 100, remainder 33);
+
+
+--
+-- Name: diffs_34; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_34 FOR VALUES WITH (modulus 100, remainder 34);
+
+
+--
+-- Name: diffs_35; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_35 FOR VALUES WITH (modulus 100, remainder 35);
+
+
+--
+-- Name: diffs_36; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_36 FOR VALUES WITH (modulus 100, remainder 36);
+
+
+--
+-- Name: diffs_37; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_37 FOR VALUES WITH (modulus 100, remainder 37);
+
+
+--
+-- Name: diffs_38; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_38 FOR VALUES WITH (modulus 100, remainder 38);
+
+
+--
+-- Name: diffs_39; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_39 FOR VALUES WITH (modulus 100, remainder 39);
+
+
+--
+-- Name: diffs_4; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_4 FOR VALUES WITH (modulus 100, remainder 4);
+
+
+--
+-- Name: diffs_40; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_40 FOR VALUES WITH (modulus 100, remainder 40);
+
+
+--
+-- Name: diffs_41; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_41 FOR VALUES WITH (modulus 100, remainder 41);
+
+
+--
+-- Name: diffs_42; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_42 FOR VALUES WITH (modulus 100, remainder 42);
+
+
+--
+-- Name: diffs_43; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_43 FOR VALUES WITH (modulus 100, remainder 43);
+
+
+--
+-- Name: diffs_44; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_44 FOR VALUES WITH (modulus 100, remainder 44);
+
+
+--
+-- Name: diffs_45; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_45 FOR VALUES WITH (modulus 100, remainder 45);
+
+
+--
+-- Name: diffs_46; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_46 FOR VALUES WITH (modulus 100, remainder 46);
+
+
+--
+-- Name: diffs_47; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_47 FOR VALUES WITH (modulus 100, remainder 47);
+
+
+--
+-- Name: diffs_48; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_48 FOR VALUES WITH (modulus 100, remainder 48);
+
+
+--
+-- Name: diffs_49; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_49 FOR VALUES WITH (modulus 100, remainder 49);
+
+
+--
+-- Name: diffs_5; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_5 FOR VALUES WITH (modulus 100, remainder 5);
+
+
+--
+-- Name: diffs_50; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_50 FOR VALUES WITH (modulus 100, remainder 50);
+
+
+--
+-- Name: diffs_51; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_51 FOR VALUES WITH (modulus 100, remainder 51);
+
+
+--
+-- Name: diffs_52; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_52 FOR VALUES WITH (modulus 100, remainder 52);
+
+
+--
+-- Name: diffs_53; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_53 FOR VALUES WITH (modulus 100, remainder 53);
+
+
+--
+-- Name: diffs_54; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_54 FOR VALUES WITH (modulus 100, remainder 54);
+
+
+--
+-- Name: diffs_55; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_55 FOR VALUES WITH (modulus 100, remainder 55);
+
+
+--
+-- Name: diffs_56; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_56 FOR VALUES WITH (modulus 100, remainder 56);
+
+
+--
+-- Name: diffs_57; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_57 FOR VALUES WITH (modulus 100, remainder 57);
+
+
+--
+-- Name: diffs_58; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_58 FOR VALUES WITH (modulus 100, remainder 58);
+
+
+--
+-- Name: diffs_59; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_59 FOR VALUES WITH (modulus 100, remainder 59);
+
+
+--
+-- Name: diffs_6; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_6 FOR VALUES WITH (modulus 100, remainder 6);
+
+
+--
+-- Name: diffs_60; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_60 FOR VALUES WITH (modulus 100, remainder 60);
+
+
+--
+-- Name: diffs_61; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_61 FOR VALUES WITH (modulus 100, remainder 61);
+
+
+--
+-- Name: diffs_62; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_62 FOR VALUES WITH (modulus 100, remainder 62);
+
+
+--
+-- Name: diffs_63; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_63 FOR VALUES WITH (modulus 100, remainder 63);
+
+
+--
+-- Name: diffs_64; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_64 FOR VALUES WITH (modulus 100, remainder 64);
+
+
+--
+-- Name: diffs_65; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_65 FOR VALUES WITH (modulus 100, remainder 65);
+
+
+--
+-- Name: diffs_66; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_66 FOR VALUES WITH (modulus 100, remainder 66);
+
+
+--
+-- Name: diffs_67; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_67 FOR VALUES WITH (modulus 100, remainder 67);
+
+
+--
+-- Name: diffs_68; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_68 FOR VALUES WITH (modulus 100, remainder 68);
+
+
+--
+-- Name: diffs_69; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_69 FOR VALUES WITH (modulus 100, remainder 69);
+
+
+--
+-- Name: diffs_7; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_7 FOR VALUES WITH (modulus 100, remainder 7);
+
+
+--
+-- Name: diffs_70; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_70 FOR VALUES WITH (modulus 100, remainder 70);
+
+
+--
+-- Name: diffs_71; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_71 FOR VALUES WITH (modulus 100, remainder 71);
+
+
+--
+-- Name: diffs_72; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_72 FOR VALUES WITH (modulus 100, remainder 72);
+
+
+--
+-- Name: diffs_73; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_73 FOR VALUES WITH (modulus 100, remainder 73);
+
+
+--
+-- Name: diffs_74; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_74 FOR VALUES WITH (modulus 100, remainder 74);
+
+
+--
+-- Name: diffs_75; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_75 FOR VALUES WITH (modulus 100, remainder 75);
+
+
+--
+-- Name: diffs_76; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_76 FOR VALUES WITH (modulus 100, remainder 76);
+
+
+--
+-- Name: diffs_77; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_77 FOR VALUES WITH (modulus 100, remainder 77);
+
+
+--
+-- Name: diffs_78; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_78 FOR VALUES WITH (modulus 100, remainder 78);
+
+
+--
+-- Name: diffs_79; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_79 FOR VALUES WITH (modulus 100, remainder 79);
+
+
+--
+-- Name: diffs_8; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_8 FOR VALUES WITH (modulus 100, remainder 8);
+
+
+--
+-- Name: diffs_80; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_80 FOR VALUES WITH (modulus 100, remainder 80);
+
+
+--
+-- Name: diffs_81; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_81 FOR VALUES WITH (modulus 100, remainder 81);
+
+
+--
+-- Name: diffs_82; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_82 FOR VALUES WITH (modulus 100, remainder 82);
+
+
+--
+-- Name: diffs_83; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_83 FOR VALUES WITH (modulus 100, remainder 83);
+
+
+--
+-- Name: diffs_84; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_84 FOR VALUES WITH (modulus 100, remainder 84);
+
+
+--
+-- Name: diffs_85; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_85 FOR VALUES WITH (modulus 100, remainder 85);
+
+
+--
+-- Name: diffs_86; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_86 FOR VALUES WITH (modulus 100, remainder 86);
+
+
+--
+-- Name: diffs_87; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_87 FOR VALUES WITH (modulus 100, remainder 87);
+
+
+--
+-- Name: diffs_88; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_88 FOR VALUES WITH (modulus 100, remainder 88);
+
+
+--
+-- Name: diffs_89; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_89 FOR VALUES WITH (modulus 100, remainder 89);
+
+
+--
+-- Name: diffs_9; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_9 FOR VALUES WITH (modulus 100, remainder 9);
+
+
+--
+-- Name: diffs_90; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_90 FOR VALUES WITH (modulus 100, remainder 90);
+
+
+--
+-- Name: diffs_91; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_91 FOR VALUES WITH (modulus 100, remainder 91);
+
+
+--
+-- Name: diffs_92; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_92 FOR VALUES WITH (modulus 100, remainder 92);
+
+
+--
+-- Name: diffs_93; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_93 FOR VALUES WITH (modulus 100, remainder 93);
+
+
+--
+-- Name: diffs_94; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_94 FOR VALUES WITH (modulus 100, remainder 94);
+
+
+--
+-- Name: diffs_95; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_95 FOR VALUES WITH (modulus 100, remainder 95);
+
+
+--
+-- Name: diffs_96; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_96 FOR VALUES WITH (modulus 100, remainder 96);
+
+
+--
+-- Name: diffs_97; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_97 FOR VALUES WITH (modulus 100, remainder 97);
+
+
+--
+-- Name: diffs_98; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_98 FOR VALUES WITH (modulus 100, remainder 98);
+
+
+--
+-- Name: diffs_99; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_99 FOR VALUES WITH (modulus 100, remainder 99);
+
+
+--
 -- Name: admin_dashboard_stats id; Type: DEFAULT; Schema: fis; Owner: -
 --
 
@@ -8696,6 +9397,13 @@ ALTER TABLE ONLY oh.broken_links ALTER COLUMN id SET DEFAULT nextval('oh.broken_
 --
 
 ALTER TABLE ONLY oh.clumps ALTER COLUMN id SET DEFAULT nextval('oh.clumps_id_seq'::regclass);
+
+
+--
+-- Name: code_location_scan id; Type: DEFAULT; Schema: oh; Owner: -
+--
+
+ALTER TABLE ONLY oh.code_location_scan ALTER COLUMN id SET DEFAULT nextval('oh.code_location_scan_id_seq'::regclass);
 
 
 --
@@ -9018,6 +9726,20 @@ ALTER TABLE ONLY oh.reports ALTER COLUMN id SET DEFAULT nextval('oh.reports_id_s
 --
 
 ALTER TABLE ONLY oh.reverification_trackers ALTER COLUMN id SET DEFAULT nextval('oh.reverification_trackers_id_seq'::regclass);
+
+
+--
+-- Name: reviewed_non_spammers id; Type: DEFAULT; Schema: oh; Owner: -
+--
+
+ALTER TABLE ONLY oh.reviewed_non_spammers ALTER COLUMN id SET DEFAULT nextval('oh.reviewed_non_spammers_id_seq'::regclass);
+
+
+--
+-- Name: scan_analytics id; Type: DEFAULT; Schema: oh; Owner: -
+--
+
+ALTER TABLE ONLY oh.scan_analytics ALTER COLUMN id SET DEFAULT nextval('oh.scan_analytics_id_seq'::regclass);
 
 
 --
@@ -9505,6 +10227,14 @@ ALTER TABLE ONLY oh.positions
 
 ALTER TABLE ONLY oh.clumps
     ADD CONSTRAINT clumps_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: code_location_scan code_location_scan_pkey; Type: CONSTRAINT; Schema: oh; Owner: -
+--
+
+ALTER TABLE ONLY oh.code_location_scan
+    ADD CONSTRAINT code_location_scan_pkey PRIMARY KEY (id);
 
 
 --
@@ -10068,6 +10798,14 @@ ALTER TABLE ONLY oh.reverification_trackers
 
 
 --
+-- Name: reviewed_non_spammers reviewed_non_spammers_pkey; Type: CONSTRAINT; Schema: oh; Owner: -
+--
+
+ALTER TABLE ONLY oh.reviewed_non_spammers
+    ADD CONSTRAINT reviewed_non_spammers_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: reviews reviews_account_id_key; Type: CONSTRAINT; Schema: oh; Owner: -
 --
 
@@ -10105,6 +10843,14 @@ ALTER TABLE ONLY oh.rss_feeds
 
 ALTER TABLE ONLY oh.rss_subscriptions
     ADD CONSTRAINT rss_subscriptions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: scan_analytics scan_analytics_pkey; Type: CONSTRAINT; Schema: oh; Owner: -
+--
+
+ALTER TABLE ONLY oh.scan_analytics
+    ADD CONSTRAINT scan_analytics_pkey PRIMARY KEY (id);
 
 
 --
@@ -14081,6 +14827,13 @@ CREATE INDEX index_releases_vulnerabilities_on_vulnerability_id ON oh.releases_v
 
 
 --
+-- Name: index_reviewed_non_spammers_on_account_id; Type: INDEX; Schema: oh; Owner: -
+--
+
+CREATE INDEX index_reviewed_non_spammers_on_account_id ON oh.reviewed_non_spammers USING btree (account_id);
+
+
+--
 -- Name: index_reviews_on_account_id; Type: INDEX; Schema: oh; Owner: -
 --
 
@@ -14113,6 +14866,13 @@ CREATE INDEX index_rss_articles_time ON oh.rss_articles USING btree ("time");
 --
 
 CREATE INDEX index_rss_subscriptions_project_id ON oh.rss_subscriptions USING btree (project_id);
+
+
+--
+-- Name: index_scan_analytics_on_data; Type: INDEX; Schema: oh; Owner: -
+--
+
+CREATE INDEX index_scan_analytics_on_data ON oh.scan_analytics USING gin (data);
 
 
 --
@@ -17425,6 +18185,14 @@ ALTER TABLE ONLY oh.project_badges
 
 
 --
+-- Name: reviewed_non_spammers fk_rails_8e42d136f8; Type: FK CONSTRAINT; Schema: oh; Owner: -
+--
+
+ALTER TABLE ONLY oh.reviewed_non_spammers
+    ADD CONSTRAINT fk_rails_8e42d136f8 FOREIGN KEY (account_id) REFERENCES oh.accounts(id);
+
+
+--
 -- Name: api_keys fk_rails_8faa63554c; Type: FK CONSTRAINT; Schema: oh; Owner: -
 --
 
@@ -18124,7 +18892,7 @@ ALTER TABLE ONLY oh.vitae
 -- PostgreSQL database dump complete
 --
 
-SET search_path TO oh, fis, public;
+SET search_path TO oh,oa,fis,public;
 
 INSERT INTO oh.schema_migrations (version) VALUES ('1');
 
@@ -18397,6 +19165,12 @@ INSERT INTO oh.schema_migrations (version) VALUES ('20201130144849');
 INSERT INTO oh.schema_migrations (version) VALUES ('20210621143713');
 
 INSERT INTO oh.schema_migrations (version) VALUES ('20220302133936');
+
+INSERT INTO oh.schema_migrations (version) VALUES ('20220718210823');
+
+INSERT INTO oh.schema_migrations (version) VALUES ('20220822144901');
+
+INSERT INTO oh.schema_migrations (version) VALUES ('20220822144949');
 
 INSERT INTO oh.schema_migrations (version) VALUES ('21');
 
