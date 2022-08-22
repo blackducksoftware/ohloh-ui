@@ -428,4 +428,59 @@ http_interactions:
       string: '{"id":1419914,"scm_type":"git","url":"https://github.com/stan/after-dark-css","branch":"gh-pages","best_code_set_id":null,"do_not_fetch":false,"status":"active"}'
     http_version:
   recorded_at: Tue, 03 Nov 2020 12:03:47 GMT
+- request:
+    method: post
+    uri: http://vcrlocalhost.org:4004/api/v1/subscriptions.json?api_key=0f9bf020-32dd-4846-a7d7-8a48b55c5a5d
+    body:
+      encoding: US-ASCII
+      string: code_location_id&client_relation_id
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+      Host:
+      - vcrlocalhost.org:4004
+      Content-Type:
+      - application/x-www-form-urlencoded
+  response:
+    status:
+      code: 201
+      message: Created
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Status:
+      - 201 Created
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Etag:
+      - W/"78776aefcaa1724298f68f97e5798efa"
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Content-Type-Options:
+      - nosniff
+      X-Runtime:
+      - '0.205916'
+      X-Request-Id:
+      - '078277d6-6d69-463f-970e-e7391b5b2f63'
+      Date:
+      - Tue, 03 Nov 2020 12:03:47 GMT
+      X-Powered-By:
+      - Phusion Passenger 6.0.6
+      Server:
+      - nginx/1.14.0 + Phusion Passenger 6.0.6
+    body:
+      encoding: UTF-8
+      string: '{"id":1,"client_relation_id":22,"code_location_id":42}'
+    http_version:
+  recorded_at: Tue, 03 Nov 2020 12:03:47 GMT
 recorded_with: VCR 3.0.3
