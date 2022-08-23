@@ -13,6 +13,10 @@ module WebMocker
     stub_request(:post, code_locations_url).to_return(body: code_location_params(hsh).to_json, status: status)
   end
 
+  def create_subscriptions_for_code_locations(status = 201, hsh = {})
+    stub_request(:post, subscriptions_url).to_return(body: subscription_params(hsh).to_json, status: status)
+  end
+
   def create_another_code_location(url)
     hsh = code_location_params
     hsh[:id] = Faker::Number.number(digits: 3)
@@ -88,6 +92,10 @@ module WebMocker
     code_locations_api.resource_uri(id)
   end
 
+  def subscriptions_url(id = nil)
+    subscriptions_api.resource_uri(id)
+  end
+
   def rails_https_url
     'https://github.com/rails/rails'
   end
@@ -95,5 +103,9 @@ module WebMocker
   def code_location_params(id: 42, best_code_set_id: nil)
     { id: id, scm_type: :git, url: rails_https_url, branch: :main,
       best_code_set_id: best_code_set_id, do_not_fetch: false, status: :active }
+  end
+
+  def subscription_params(id: 1, code_location_id: 42)
+    { id: id, code_location_id: code_location_id, client_relation_id: 22 }
   end
 end

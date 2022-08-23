@@ -27,6 +27,13 @@ class GithubUser
     end
   end
 
+  def create_subscriptions_for_code_locations(project)
+    @code_locations.each do |code_location|
+      params = { code_location_id: code_location&.id, client_relation_id: project }
+      CodeLocationSubscription.create(params) if code_location.errors.empty?
+    end
+  end
+
   private
 
   def create_code_locations
