@@ -12,7 +12,7 @@ ActiveAdmin.register Project do
     defaults finder: :find_by_vanity_url!
 
     def scoped_collection
-      super.includes(:best_analysis).references(:best_analysis).select("*, analyses.created_at as last_analyzed")
+      super.includes(:best_analysis).references(:best_analysis).select('*, analyses.created_at as last_analyzed')
     end
   end
 
