@@ -5,6 +5,7 @@ ActiveAdmin.register Project do
 
   filter :name
   filter :last_analyzed, as: :date_range, label: 'Last Analyzed Range'
+  filter :has_active_enlistments, as: :radio, label: 'Show only Active Enlisted'
   filter :created_at
 
   controller do
