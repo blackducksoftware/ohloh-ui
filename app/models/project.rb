@@ -14,6 +14,7 @@ class Project < ApplicationRecord
   include ProjectScopes
   include ProjectJobs
   include KnowledgeBaseCallbacks
+  include Project::ActiveAdminHelpers
 
   acts_as_protected
   acts_as_taggable

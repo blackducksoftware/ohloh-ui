@@ -4,6 +4,7 @@ ActiveAdmin.register Project do
   actions :index, :show
 
   filter :name
+  filter :last_analyzed, as: :date_range, label: 'Last Analyzed Range'
   filter :created_at
 
   controller do
