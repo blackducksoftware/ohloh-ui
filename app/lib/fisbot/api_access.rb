@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'resolv'
+
 class ApiAccess
   URL = ENV['FISBOT_API_URL']
   KEY = ENV['FISBOT_CLIENT_REGISTRATION_ID']
@@ -22,7 +24,28 @@ class ApiAccess
 
   private
 
+  def fisbot_resolved_url
+    return URL if Rails.env.development? || Rails.env.test?
+    return @@fis_ip_url if url_accessible?(@@fis_ip_url)
+
+    fis_ip_addr = resolve_hostname(URL)
+    @@fis_ip_url = "http://#{fis_ip_addr}"
+  end
+
+  def url_accessible?(url)
+    return unless url
+
+    uri = URI(url)
+    response = Net::HTTP.get_response(uri)
+    response.code == '200'
+  end
+
+  def resolve_hostname(url)
+    hostname = url.sub(%r{https?://}, '').sub(/\/$/, '')
+    Resolv.getaddress hostname
+  end
+
   def api_url
-    "#{URL}/api/v1"
+    "#{fisbot_resolved_url}/api/v1"
   end
 end
