@@ -5,6 +5,7 @@ require 'resolv'
 class ApiAccess
   URL = ENV['FISBOT_API_URL']
   KEY = ENV['FISBOT_CLIENT_REGISTRATION_ID']
+  @@fis_ip_url = nil
 
   def initialize(resource)
     @resource = resource
@@ -25,7 +26,7 @@ class ApiAccess
   private
 
   def fisbot_resolved_url
-    return URL if Rails.env.development? || Rails.env.test?
+    return URL if Rails.env.development?
     return @@fis_ip_url if url_accessible?(@@fis_ip_url)
 
     fis_ip_addr = resolve_hostname(URL)
