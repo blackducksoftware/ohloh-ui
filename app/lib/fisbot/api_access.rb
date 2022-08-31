@@ -31,16 +31,14 @@ class ApiAccess
 
     def fisbot_resolved_url
       return URL if Rails.env.development?
-      return fis_ip_url if url_accessible?(fis_ip_url)
+      return fis_ip_url if fis_ip_url && fis_ip_accessible?
 
       fis_ip_addr = resolve_hostname(URL)
       self.fis_ip_url = "http://#{fis_ip_addr}"
     end
 
-    def url_accessible?(url)
-      return unless url
-
-      uri = URI(url)
+    def fis_ip_accessible?
+      uri = URI(fis_ip_url)
       response = Net::HTTP.get_response(uri)
       response.code == '200'
     end
