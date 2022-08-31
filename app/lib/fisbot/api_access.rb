@@ -30,7 +30,7 @@ class ApiAccess
     private
 
     def fisbot_resolved_url
-      return URL if Rails.env.development?
+      return URL if Rails.env.development? || Rails.env.test?
       return fis_ip_url if fis_ip_url && fis_ip_accessible?
 
       fis_ip_addr = resolve_hostname(URL)
