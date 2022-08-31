@@ -15,7 +15,7 @@ class ApiAccess
   def resource_uri(path = nil, query = {})
     path = "/#{path}" if path
     query[:api_key] = KEY
-    URI("#{self.class.api_url}/#{@resource}#{path}.json?#{query.to_query}")
+    URI("#{ApiAccess.api_url}/#{@resource}#{path}.json?#{query.to_query}")
   end
 
   class << self
@@ -23,11 +23,11 @@ class ApiAccess
       "#{fisbot_resolved_url}/api/v1"
     end
 
-    private
-
     def fis_public_url
       ENV['FISBOT_PUBLIC_URL'].presence || ENV['FISBOT_API_URL']
     end
+
+    private
 
     def fisbot_resolved_url
       return URL if Rails.env.development?
