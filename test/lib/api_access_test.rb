@@ -5,7 +5,7 @@ require 'test_helper'
 class ApiAccessTest < ActiveSupport::TestCase
   describe 'resolve_hostname' do
     it 'must get the ip address for hostname' do
-      stub_constant ApiAccess, :URL, 'http://example.com/' do
+      stub_constant ApiAccess, :URL, 'https://openhub.net/' do
         Rails.env.stubs(:test?).returns(false)
         api_url = ApiAccess.api_url
         _(api_url).must_match %r{^http://\d+\.\d+\.\d+\.\d+/api/v1$}
