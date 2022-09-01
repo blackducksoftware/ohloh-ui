@@ -67,6 +67,16 @@ class ActiveSupport::TestCase
     Contribution.find_by(name_fact_id: name_fact.id)
   end
 
+  def stub_constant(klass, const, value)
+    old = klass.const_get(const)
+    klass.send(:remove_const, const)
+    klass.const_set(const, value)
+    yield
+  ensure
+    klass.send(:remove_const, const)
+    klass.const_set(const, old)
+  end
+
   private
 
   def controller_login_as(account)
