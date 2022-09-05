@@ -39,8 +39,12 @@ class ApiAccess
 
     def fis_ip_accessible?
       uri = URI(fis_ip_url)
-      response = Net::HTTP.get_response(uri)
-      response.code == '200'
+      Timeout.timeout(5) do
+        response = Net::HTTP.get_response(uri)
+        response.code == '200'
+      end
+    rescue Timeout::Error => _e
+      false
     end
 
     def resolve_hostname(url)
