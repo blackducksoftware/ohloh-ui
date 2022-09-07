@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class ProjectBuilder
+  attr_reader :project
+
   def initialize(account, param_hash = {})
     @project_params = param_hash
     @editor_account = account
