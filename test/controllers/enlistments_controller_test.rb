@@ -196,7 +196,7 @@ class EnlistmentsControllerTest < ActionController::TestCase
       _(EnlistmentWorker.jobs.size).must_equal 1
     end
 
-    it 'wont create enlistment if subscription creation fails' do
+    it 'must raise error if fisbot api fails' do
       CodeLocationSubscription.stubs(:code_location_exists?)
       Project.any_instance.stubs(:ensure_job)
       url = 'https://github.com/rails/rails'
@@ -229,11 +229,12 @@ class EnlistmentsControllerTest < ActionController::TestCase
       _(flash[:error]).must_be :present?
     end
 
-    it 'should create repository and enlistments' do
+    it 'must create repository subscription and enlistment' do
       CodeLocationSubscription.stubs(:code_location_exists?)
       Project.any_instance.stubs(:ensure_job)
       branch_name = 'main'
       url = 'https://github.com/rails/rails'
+      CodeLocationSubscription.expects(:create)
       assert_difference 'Enlistment.count' do
         WebMocker.create_code_location
         WebMocker.get_project_code_locations
@@ -259,6 +260,7 @@ class EnlistmentsControllerTest < ActionController::TestCase
 
     it 'should restore deleted enlistments within the same project' do
       CodeLocationSubscription.stubs(:code_location_exists?)
+      WebMocker.create_subscription
       branch_name = 'main'
       url = 'https://github.com/rails/rails'
       post :create,
@@ -269,10 +271,8 @@ class EnlistmentsControllerTest < ActionController::TestCase
 
       CodeLocationSubscription.stubs(:code_location_exists?).returns(true)
       CodeLocationApi.any_instance.stubs(:fetch).returns("{\"id\":#{enlistment.code_location_id}}")
-      VCR.use_cassette('create_code_location_subscription') do
-        post :create,
-             params: { project_id: project.to_param, code_location: { branch: branch_name, url: url, scm_type: 'git' } }
-      end
+      post :create,
+           params: { project_id: project.to_param, code_location: { branch: branch_name, url: url, scm_type: 'git' } }
 
       assert_response :redirect
       assert_redirected_to action: :index
@@ -287,6 +287,7 @@ class EnlistmentsControllerTest < ActionController::TestCase
 
       Enlistment.any_instance.stubs(:ensure_forge_and_job)
       WebMocker.create_code_location
+      WebMocker.create_subscription
       post :create, params: { project_id: project.to_param,
                               code_location: { branch: branch_name, url: url, scm_type: 'git' } }
 
@@ -313,6 +314,7 @@ class EnlistmentsControllerTest < ActionController::TestCase
           assert_difference 'Enlistment.count' do
             WebMocker.code_location_exists(false)
             WebMocker.create_code_location
+            WebMocker.create_subscription
             post :create, params: { project_id: project.to_param, code_location: code_location.scm_attributes }
           end
 
@@ -336,12 +338,14 @@ class EnlistmentsControllerTest < ActionController::TestCase
           assert_difference 'Enlistment.count' do
             WebMocker.code_location_exists(false)
             WebMocker.create_code_location
+            WebMocker.create_subscription
             post :create, params: { project_id: project.to_param, code_location: code_location.scm_attributes }
           end
 
           assert_difference 'Enlistment.count' do
             WebMocker.code_location_exists(false)
             WebMocker.create_code_location(409) # conflict
+            WebMocker.create_subscription
             post :create, params: { project_id: another_project.to_param, code_location: code_location.scm_attributes }
           end
 

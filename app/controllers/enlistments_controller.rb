@@ -29,6 +29,7 @@ class EnlistmentsController < SettingsController
   def create
     if @code_location.save
       create_enlistment
+      create_subscription
       set_flash_message
       redirect_to project_enlistments_path(@project)
     else
@@ -79,5 +80,10 @@ class EnlistmentsController < SettingsController
 
   def code_location_params
     params[:code_location].select { |k, _v| %w[url branch scm_type].include?(k) }
+  end
+
+  def create_subscription
+    CodeLocationSubscription.create(code_location_id: @code_location.id,
+                                    client_relation_id: @project.id)
   end
 end
