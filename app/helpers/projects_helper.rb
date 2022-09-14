@@ -99,11 +99,7 @@ module ProjectsHelper
     match = Forge::Match.first(url)
     Timeout.timeout(Forge::Match::MAX_FORGE_COMM_TIME) { match.project } if match
   rescue Timeout::Error, OpenURI::HTTPError, URI::InvalidURIError
-    if api == true
-      render json: t('.forge_time_out', name: match.forge.name)
-    else
-      flash.now[:notice] = t('.forge_time_out', name: match.forge.name)
-    end
+    flash.now[:notice] = t('.forge_time_out', name: match.forge.name) unless api
   end
 
   private

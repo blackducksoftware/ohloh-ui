@@ -11,9 +11,7 @@ class Forge::Github < Forge
   end
 
   def json_api_url(match)
-    uri = "https://api.github.com/repos/#{match.owner_at_forge}/#{match.name_at_forge}"
-    uri += "?access_token=#{ENV['GITHUB_AUTH_TOKEN']}" if ENV['GITHUB_AUTH_TOKEN']
-    uri
+    "https://api.github.com/repos/#{match.owner_at_forge}/#{match.name_at_forge}"
   end
 
   def get_project_attributes(match)

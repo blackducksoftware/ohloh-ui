@@ -155,4 +155,161 @@ http_interactions:
         Project Hosting</a></span>\n </div>\n\n \n \n\n\n \n </body>\n</html>\n\n"
     http_version: 
   recorded_at: Fri, 20 Mar 2015 14:00:39 GMT
+- request:
+    method: get
+    uri: http://code.google.com/p/cryptsetup/source/checkout
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+      Host:
+      - localhost:4000
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Fri, 20 Mar 2015 13:59:45 GMT
+      Pragma:
+      - no-cache
+      Expires:
+      - Fri, 01 Jan 1990 00:00:00 GMT
+      Cache-Control:
+      - no-cache, must-revalidate
+      Content-Type:
+      - text/html; charset=UTF-8
+      X-Content-Type-Options:
+      - nosniff
+      Set-Cookie:
+      - PREF=ID=c32d47b6f97d4bff:TM=1426859985:LM=1426859985:S=lgmwSct09HDVAjPR; expires=Sun,
+        19-Mar-2017 13:59:45 GMT; path=/; domain=.google.com
+      Server:
+      - codesite
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - SAMEORIGIN
+      Alternate-Protocol:
+      - 80:quic,p=0.5
+      Accept-Ranges:
+      - none
+      Vary:
+      - Accept-Encoding
+      Transfer-Encoding:
+      - chunked
+    body:
+      encoding: UTF-8
+      string: "\n\n\n<!DOCTYPE html>\n<html>\n<head>\n <meta http-equiv=\"Content-Type\"
+        content=\"text/html; charset=UTF-8\" >\n <meta http-equiv=\"X-UA-Compatible\"
+        content=\"IE=edge,chrome=1\" >\n \n <meta name=\"ROBOTS\" content=\"NOARCHIVE\">\n
+        \n <link rel=\"icon\" type=\"image/vnd.microsoft.icon\" href=\"http://www.gstatic.com/codesite/ph/images/phosting.ico\">\n
+        \n \n <script type=\"text/javascript\">\n \n \n \n \n var codesite_token =
+        null;\n \n \n var CS_env = {\"profileUrl\": null, \"token\": null, \"assetVersionPath\":
+        \"http://www.gstatic.com/codesite/ph/4119706131923068122\", \"domainName\":
+        null, \"projectName\": \"cryptsetup\", \"projectHomeUrl\": \"/p/cryptsetup\",
+        \"loggedInUserEmail\": null, \"assetHostPath\": \"http://www.gstatic.com/codesite/ph\",
+        \"relativeBaseUrl\": \"\"};\n var _gaq = _gaq || [];\n _gaq.push(\n ['siteTracker._setAccount',
+        'UA-18071-1'],\n ['siteTracker._trackPageview']);\n \n _gaq.push(\n ['projectTracker._setAccount',
+        'UA-30897829-2'],\n ['projectTracker._trackPageview']);\n \n (function() {\n
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async
+        = true;\n ga.src = ('https:' == document.location.protocol ? 'https://ssl'
+        : 'http://www') + '.google-analytics.com/ga.js';\n (document.getElementsByTagName('head')[0]
+        || document.getElementsByTagName('body')[0]).appendChild(ga);\n })();\n \n
+        </script>\n \n \n <title>Source Checkout - \n cryptsetup -\n \n \n Setup virtual
+        encryption devices under dm-crypt Linux - Google Project Hosting\n </title>\n
+        <link type=\"text/css\" rel=\"stylesheet\" href=\"http://www.gstatic.com/codesite/ph/4119706131923068122/css/core.css\">\n
+        \n <link type=\"text/css\" rel=\"stylesheet\" href=\"http://www.gstatic.com/codesite/ph/4119706131923068122/css/ph_detail.css\"
+        >\n \n \n \n \n<!--[if IE]>\n <link type=\"text/css\" rel=\"stylesheet\" href=\"http://www.gstatic.com/codesite/ph/4119706131923068122/css/d_ie.css\"
+        >\n<![endif]-->\n <style type=\"text/css\">\n .menuIcon.off { background:
+        no-repeat url(http://www.gstatic.com/codesite/ph/images/dropdown_sprite.gif)
+        0 -42px }\n .menuIcon.on { background: no-repeat url(http://www.gstatic.com/codesite/ph/images/dropdown_sprite.gif)
+        0 -28px }\n .menuIcon.down { background: no-repeat url(http://www.gstatic.com/codesite/ph/images/dropdown_sprite.gif)
+        0 0; }\n \n \nh4 {\n margin-top: 10px;\n margin-bottom: 10px;\n}\n.indent
+        {\n margin-left: 2.3em;\n margin-bottom: 2em;\n}\n.bubble_wrapper {\n display:
+        table;\n}\n.bubble {\n padding: 0.8em;\n}\n#quota {\n margin-top: 2.5em;\n}\n\n
+        \n </style>\n</head>\n<body class=\"t4\">\n<script type=\"text/javascript\">\n
+        window.___gcfg = {lang: 'en'};\n (function() \n {var po = document.createElement(\"script\");\n
+        po.type = \"text/javascript\"; po.async = true;po.src = \"https://apis.google.com/js/plusone.js\";\n
+        var s = document.getElementsByTagName(\"script\")[0];\n s.parentNode.insertBefore(po,
+        s);\n })();\n</script>\n<div class=\"headbg\">\n\n <div id=\"gaia\">\n \n\n
+        <span>\n \n \n <a href=\"#\" id=\"projects-dropdown\" onclick=\"return false;\"><u>My
+        favorites</u> <small>&#9660;</small></a>\n | <a href=\"https://www.google.com/accounts/ServiceLogin?service=code&amp;ltmpl=phosting&amp;continue=http%3A%2F%2Fcode.google.com%2Fp%2Fcryptsetup%2Fsource%2Fcheckout&amp;followup=http%3A%2F%2Fcode.google.com%2Fp%2Fcryptsetup%2Fsource%2Fcheckout\"
+        onclick=\"_CS_click('/gb/ph/signin');\"><u>Sign in</u></a>\n \n </span>\n\n
+        </div>\n\n <div class=\"gbh\" style=\"left: 0pt;\"></div>\n <div class=\"gbh\"
+        style=\"right: 0pt;\"></div>\n \n \n <div style=\"height: 1px\"></div>\n<!--[if
+        lte IE 7]>\n<div style=\"text-align:center;\">\nYour version of Internet Explorer
+        is not supported. Try a browser that\ncontributes to open source, such as
+        <a href=\"http://www.firefox.com\">Firefox</a>,\n<a href=\"http://www.google.com/chrome\">Google
+        Chrome</a>, or\n<a href=\"http://code.google.com/chrome/chromeframe/\">Google
+        Chrome Frame</a>.\n</div>\n<![endif]-->\n\n\n\n <table style=\"padding:0px;
+        margin: 0px 0px 10px 0px; width:100%\" cellpadding=\"0\" cellspacing=\"0\"\n
+        itemscope itemtype=\"http://schema.org/CreativeWork\">\n <tr style=\"height:
+        58px;\">\n \n \n \n <td id=\"plogo\">\n <link itemprop=\"url\" href=\"/p/cryptsetup\">\n
+        <a href=\"/p/cryptsetup/\">\n \n <img src=\"http://www.gstatic.com/codesite/ph/images/defaultlogo.png\"
+        alt=\"Logo\" itemprop=\"image\">\n \n </a>\n </td>\n \n <td style=\"padding-left:
+        0.5em\">\n \n <div id=\"pname\">\n <a href=\"/p/cryptsetup/\"><span itemprop=\"name\">cryptsetup</span></a>\n
+        </div>\n \n <div id=\"psum\">\n <a id=\"project_summary_link\"\n href=\"/p/cryptsetup/\"><span
+        itemprop=\"description\">Setup virtual encryption devices under dm-crypt Linux</span></a>\n
+        \n </div>\n \n \n </td>\n <td style=\"white-space:nowrap;text-align:right;
+        vertical-align:bottom;\">\n \n <form action=\"/hosting/search\">\n <input
+        size=\"30\" name=\"q\" value=\"\" type=\"text\">\n \n <input type=\"submit\"
+        name=\"projectsearch\" value=\"Search projects\" >\n </form>\n \n </tr>\n
+        </table>\n\n</div>\n\n \n<div id=\"mt\" class=\"gtb\"> \n <a href=\"/p/cryptsetup/\"
+        class=\"tab \">Project&nbsp;Home</a>\n \n \n \n \n <a href=\"/p/cryptsetup/wiki/Downloads?tm=2\"
+        class=\"tab \">Downloads</a>\n \n \n \n \n \n <a href=\"/p/cryptsetup/w/list\"
+        class=\"tab \">Wiki</a>\n \n \n \n \n \n <a href=\"/p/cryptsetup/issues/list\"\n
+        class=\"tab \">Issues</a>\n \n \n \n \n \n <a href=\"/p/cryptsetup/source/checkout\"\n
+        class=\"tab active\">Source</a>\n \n \n \n \n \n \n \n <a href=\"https://code.google.com/export-to-github/export?project=cryptsetup\">\n
+        <button>Export to GitHub</button>\n </a>\n \n \n \n \n \n <div class=gtbc></div>\n</div>\n<table
+        cellspacing=\"0\" cellpadding=\"0\" width=\"100%\" align=\"center\" border=\"0\"
+        class=\"st\">\n <tr>\n \n \n \n \n \n \n <td class=\"subt\">\n <div class=\"st1\">\n
+        <div class=\"isf\">\n \n <form action=\"/p/cryptsetup/source/checkout\" style=\"display:
+        inline\">\n \n Repository:\n <select name=\"repo\" id=\"repo\" style=\"font-size:
+        92%\" onchange=\"submit()\">\n <option value=\"default\">default</option><option
+        value=\"wiki\">wiki</option>\n </select>\n </form>\n \n \n\n\n <span class=\"inst1\"><a
+        href=\"/p/cryptsetup/source/checkout\">Checkout</a></span> &nbsp;\n <span
+        class=\"inst2\"><a href=\"/p/cryptsetup/source/browse/\">Browse</a></span>
+        &nbsp;\n <span class=\"inst3\"><a href=\"/p/cryptsetup/source/list\">Changes</a></span>
+        &nbsp;\n <span class=\"inst4\"><a href=\"/p/cryptsetup/source/clones\">Clones</a></span>
+        &nbsp; \n \n \n </form>\n <script type=\"text/javascript\">\n \n function
+        codesearchQuery(form) {\n var query = document.getElementById('q').value;\n
+        if (query) { form.action += '%20' + query; }\n }\n </script>\n </div>\n</div>\n\n
+        </td>\n \n \n \n <td align=\"right\" valign=\"top\" class=\"bevel-right\"></td>\n
+        </tr>\n</table>\n\n\n<script type=\"text/javascript\">\n var cancelBubble
+        = false;\n function _go(url) { document.location = url; }\n</script>\n<div
+        id=\"maincol\"\n \n \n style=\"padding:0 3px 3px 0; margin:0\"\n \n \n>\n\n\n<div
+        style=\"margin-bottom:.4em\">\n <table align=\"center\" border=\"0\" cellspacing=\"0\"
+        cellpadding=\"0\" id=\"cue\">\n <tr><td class=\"cuetip\">\n \n <div class=\"box-inner\"
+        style=\"white-space:nowrap; padding-top:2px; font-size: 92%;\">\n \n \n \n
+        \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n <b>How-to:</b>\n Explore this
+        project's source code by clicking the \"Browse\" and \"Changes\" links above.\n
+        \n \n \n \n \n \n \n \n </div>\n <div class=\"round1\"></div>\n <div class=\"round2\"></div>\n
+        <div class=\"round4\"></div>\n </td></tr>\n </table>\n</div>\n\n\n \n\n\n\n\n\n
+        \n \n \n <h4>Create your own clone</h4>\n <div class=\"indent\">\n <p><a href=\"https://www.google.com/accounts/ServiceLogin?service=code&amp;ltmpl=phosting&amp;continue=http%3A%2F%2Fcode.google.com%2Fp%2Fcryptsetup%2Fsource%2Fcheckout&amp;followup=http%3A%2F%2Fcode.google.com%2Fp%2Fcryptsetup%2Fsource%2Fcheckout\">Sign
+        in</a> to create a clone.</p>\n </div>\n \n \n\n\n\n<div style=\"padding:
+        10px\">\n<h4>Command-line access</h4>\n<div class=\"indent\">\n \n \n \n <p>Get
+        a local copy of the cryptsetup  repository with this command:</p>\n <div class=\"bubble_wrapper\">\n
+        <div class=\"pmeta_bubble_bg\">\n <div class=\"round4\"></div>\n <div class=\"round2\"></div>\n
+        <div class=\"round1\"></div>\n <div class=\"box-inner\">\n <tt id=\"checkoutcmd\">git
+        clone https://code.google.com/p/cryptsetup/</tt>\n \n </div>\n <div class=\"round1\"></div>\n
+        <div class=\"round2\"></div>\n <div class=\"round4\"></div>\n </div>\n \n
+        </div>\n \n</div>\n<h4>GUI and IDE access</h4>\n<div class=\"indent\">\n <p>This
+        project's Git repository may be accessed using many different\n <a href=\"http://git-scm.com/downloads\">client
+        programs and plug-ins</a>.\n See your client's documentation for more information.</p>\n</div>\n\n</div>\n\n\n\n\n\n
+        \n \n \n <script type=\"text/javascript\" src=\"http://www.gstatic.com/codesite/ph/4119706131923068122/js/ph_core.js\"></script>\n
+        \n \n \n \n</div> \n\n<div id=\"footer\" dir=\"ltr\">\n <div class=\"text\">\n
+        <a href=\"/projecthosting/terms.html\">Terms</a> -\n <a href=\"http://www.google.com/privacy.html\">Privacy</a>
+        -\n <a href=\"/p/support/\">Project Hosting Help</a>\n </div>\n</div>\n <div
+        class=\"hostedBy\" style=\"margin-top: -20px;\">\n <span style=\"vertical-align:
+        top;\">Powered by <a href=\"http://code.google.com/projecthosting/\">Google
+        Project Hosting</a></span>\n </div>\n\n \n \n\n\n \n </body>\n</html>\n\n"
+    http_version: 
+  recorded_at: Fri, 16 Sep 2022 15:20:39 GMT
 recorded_with: VCR 2.9.3

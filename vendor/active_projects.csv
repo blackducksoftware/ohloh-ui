@@ -1,0 +1,1337 @@
+id,name,repo_url,license_name,license_abbr,language,secondary_language,builds_count,homepage_url
+1032,libmwaw,git://git.code.sf.net/p/libmwaw/libmwaw,Mozilla Public License ,MPL,CXX,,36,https://sourceforge.net/projects/libmwaw/
+17537,evanwyatt/jers,https://github.com/evanwyatt/jers.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,83,https://github.com/evanwyatt/jers
+23074,acidanthera/UEFIGraphicsFB,https://github.com/acidanthera/UEFIGraphicsFB.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,15,https://github.com/acidanthera/UEFIGraphicsFB
+13088,radsecproxy,https://github.com/radsecproxy/radsecproxy.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,69,https://radsecproxy.github.io
+3020,ODP-DPDK,https://github.com/OpenDataPlane/odp-dpdk.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,405,https://www.opendataplane.org/
+1973,zfsonlinux/zfs,https://github.com/zfsonlinux/zfs.git,Common Development and Distribution License ,CDDL,CXX,,980,http://zfsonlinux.org
+23251,xmidt-org/curlws,https://github.com/xmidt-org/curlws.git,MIT license ,MIT,CXX,,5,https://github.com/xmidt-org/curlws
+10511,qt-project-lts,https://code.qt.io,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,316,https://www.qt.io
+2667,RIOT-OS/RIOT,https://github.com/RIOT_OS/RIOT.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,30,http://www.riot-os.org
+24482,openvino-contrib,https://github.com/openvinotoolkit/openvino_contrib.git,Apache License ,Apache,CXX,,22,""
+1160,etlegacy/etlegacy,https://github.com/etlegacy/etlegacy.git,GNU General Public License version ,GPL,CXX,,464,http://www.etlegacy.com
+12130,ipxe/ipxe,https://github.com/ipxe/ipxe.git,GNU General Public License version ,GPL,CXX,,268,http://ipxe.org
+25228,coverity-samples,https://github.com/RICSecLab/coverity-samples.git,Apache License ,Apache,CXX,,10,https://github.com/RICSecLab/coverity-samples
+20039,daos-stack/raft,https://github.com/daos-stack/raft.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,34,https://github.com/daos-stack/raft
+22232,coverity-scan-test,git@github.com:mnts26/coverity-scan-test.git,MIT license ,MIT,CXX,,8,https://github.com/mnts26/coverity-scan-test
+19996,user-mgmt-be,http://139.9.0.160/houp/user-mgmt-be.git,Apache License ,Apache,JAVA,,49,""
+14190,nginx unit,http://hg.nginx.org/unit,Apache License ,Apache,CXX,,1642,https://unit.nginx.org
+16447,acidanthera/MaciASL,https://github.com/acidanthera/MaciASL.git,GNU General Public License version ,GPL,CXX,,128,https://github.com/acidanthera/MaciASL
+23141,hiredis-cluster,https://github.com/Nordix/hiredis-cluster.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,73,https://github.com/Nordix/hiredis-cluster.git
+8687,aaronjwood/PortAuthority,https://github.com/aaronjwood/PortAuthority.git,GNU General Public License version ,GPL,JAVA,,37,https://github.com/aaronjwood/PortAuthority
+24274,hubTest,https://github.com/zhongzhouyao/testCode.git,GNU General Public License version ,GPL,CXX,,8,https://github.com/zhongzhouyao/testCode
+12598,snap-confine,https://github.com/snapcore/snapd,GNU General Public License version ,GPL,CXX,,42,http://www.snapcraft.io
+4301,GilesBathgate/RapCAD,https://github.com/GilesBathgate/RapCAD.git,GNU General Public License version ,GPL,CXX,,87,https://github.com/GilesBathgate/RapCAD
+3015,pmem/pmdk,https://github.com/pmem/pmdk,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,1850,http://pmem.io
+13105,01org/tpm2.0-tools,https://github.com/intel/tpm2.0-tools.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,43,https://github.com/tpm2-software/tpm2-tools
+248,Kodi,git://github.com/xbmc/xbmc.git,GNU General Public License version ,GPL,CXX,,638,http://kodi.tv
+23024,librtree,git@gitlab.com:jjg/librtree.git,MIT license ,MIT,CXX,,23,http://soliton.vm.bytemark.co.uk/pub/jjg/en/code/librtree/
+12955,gnome-flashback,https://gitlab.gnome.org/GNOME/gnome-flashback.git,GNU General Public License version ,GPL,CXX,,31,https://gitlab.gnome.org/GNOME/gnome-flashback
+11955,Mudlet/Mudlet,https://github.com/Mudlet/Mudlet.git,GNU General Public License version ,GPL,CXX,,790,https://github.com/Mudlet/Mudlet
+2708,KDAB/KDSoap,https://github.com/KDAB/KDSoap.git,GNU General Public License version ,GPL,CXX,,136,https://github.com/KDAB/KDSoap
+24149,LedgerHQ/app-symbol,https://github.com/LedgerHQ/app-symbol.git,Apache License ,Apache,CXX,,15,https://github.com/LedgerHQ/app-symbol
+1086,ircd-hybrid/ircd-hybrid,git://github.com/ircd-hybrid/ircd-hybrid,GNU General Public License version ,GPL,CXX,,829,https://www.ircd-hybrid.org
+1885,krita,https://invent.kde.org/kde/krita,GNU General Public License version ,GPL,CXX,OTHER,13,http://www.krita.org
+22642,Wrapland,https://gitlab.com/kwinft/wrapland.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,548,https://gitlab.com/kwinft/wrapland
+22695,dakanji/RefindPlus,https://github.com/dakanji/RefindPlus.git,GNU General Public License version ,GPL,CXX,,88,https://github.com/dakanji/RefindPlus
+24513,rlp_03,https://github.com/teragrep/rlp_03.git,Affero GNU Public License,AGPL,JAVA,,3,https://teragrep.com
+24143,zhh-test,https://github.com/zhaohuiweixiao/zhh.git,MIT license ,MIT,JAVASCRIPT,,6,""
+23194,michaelrsweet/pdfio,https://github.com/michaelrsweet/pdfio.git,Apache License ,Apache,CXX,,18,https://www.msweet.org/pdfio
+11936,iLCSoft/Overlay,https://github.com/iLCSoft/Overlay.git,GNU General Public License version ,GPL,CXX,,271,https://github.com/iLCSoft/Overlay
+14647,nih-at/ckmame,https://github.com/nih-at/ckmame.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,78,https://nih.att/ckmame
+10388,WohlSoft/PGE-Project,https://github.com/WohlSoft/PGE-Project.git,GNU General Public License version ,GPL,CXX,,505,https://github.com/WohlSoft/PGE-Project
+13473,devsim/devsim,https://github.com/devsim/devsim.git,Apache License ,Apache,CXX,,9,https://github.com/devsim/devsim
+25136,dbus-broker,https://github.com/bus1/dbus-broker,Apache License ,Apache,CXX,,3,https://github.com/bus1/dbus-broker
+22484,Edit Permission Inheritance Cloud,https://bitbucket.org/apurde/edit-inherit-cloud/src/master/,Apache License ,Apache,JAVA,,4,https://bitbucket.org/apurde/edit-inherit-cloud
+20749,sramsay/nowa,https://github.com/sramsay/nowa.git,GNU General Public License version ,GPL,CXX,,35,https://github.com/sramsay/nowa
+11387,pali/udftools,https://github.com/pali/udftools.git,GNU General Public License version ,GPL,CXX,,337,https://github.com/pali/udftools
+23166,cvc5/cvc5,https://github.com/cvc5/cvc5.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,22,https://github.com/cvc5/cvc5
+16166,acidanthera/AppleALC,https://github.com/acidanthera/AppleALC.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,436,https://github.com/acidanthera/AppleALC
+12369,iLCSoft/GEAR,https://github.com/iLCSoft/GEAR.git,GNU General Public License version ,GPL,CXX,,179,https://github.com/iLCSoft/GEAR
+24755,passt,https://passt.top/passt,Affero GNU Public License,AGPL,CXX,,11,https://passt.top/
+9853,qt-creator,git://code.qt.io/qt-creator/qt-creator.git,GNU General Public License version ,GPL,CXX,,262,https://www.qt.io/ide/
+5727,mamedev/mame,https://github.com/mamedev/mame,GNU General Public License version ,GPL,CXX,,510,http://www.mamedev.org/
+15378,batman-adv-maint,https://git.open-mesh.org/batman-adv.git/shortlog/refs/heads/maint,GNU General Public License version ,GPL,CXX,,97,https://www.open-mesh.org/projects/batman-adv/wiki
+24306,yugr/SymbolHider,https://github.com/yugr/SymbolHider.git,MIT license ,MIT,CXX,,30,https://github.com/yugr/SymbolHider
+639,libgit2,https://github.com/libgit2/libgit2,GNU General Public License version ,GPL,CXX,,2258,http://libgit2.github.com/
+3079,Datovka,https://gitlab.labs.nic.cz/datovka/datovka.git,GNU General Public License version ,GPL,CXX,,128,https://www.datovka.cz/
+2286,islog/liblogicalaccess,https://github.com/islog/liblogicalaccess.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,315,https://github.com/islog/liblogicalaccess
+20153,DLTcollab/tangle-accelerator,https://github.com/DLTcollab/tangle-accelerator.git,MIT license ,MIT,CXX,,113,https://github.com/DLTcollab/tangle-accelerator
+7575,tbeu/matio,https://github.com/tbeu/matio.git,"BSD 2-Clause ""Simplified"" or ""FreeBSD"" License ",BSD2Clause,CXX,,622,https://github.com/tbeu/matio
+22425,Wodan58/DUPLO,https://github.com/Wodan58/DUPLO.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,4,https://github.com/Wodan58/DUPLO
+23295,inotifytools,https://github.com/inotify-tools/inotify-tools.git,GNU General Public License version ,GPL,CXX,,186,https://github.com/inotify-tools/inotify-tools
+21044,LibKet,https://gitlab.com/mmoelle1/LibKet,Mozilla Public License ,MPL,CXX,,8,""
+23198,JesusKrists/JEngine,https://github.com/JesusKrists/JEngine.git,Apache License ,Apache,CXX,,8,https://github.com/JesusKrists/JEngine
+18852,gost-engine,https://github.com/gost-engine/engine.git,"BSD 2-Clause ""Simplified"" or ""FreeBSD"" License ",BSD2Clause,CXX,,553,""
+15522,S2OPC,https://gitlab.com/systerel/S2OPC.git,Apache License ,Apache,CXX,,1076,http://www.s2opc.com/
+3695,libressl-portable/portable,https://github.com/libressl-portable/portable.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,317,https://github.com/libressl-portable/portable
+2205,gsjaardema/seacas,https://github.com/gsjaardema/seacas,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,199,https://github.com/gsjaardema/seacas
+9940,Helioviewer-Project/JHelioviewer-SWHV,https://github.com/Helioviewer-Project/JHelioviewer-SWHV.git,Mozilla Public License ,MPL,JAVA,,127,https://github.com/Helioviewer-Project/JHelioviewer-SWHV
+4583,ARMmbed/mbedtls,git@github.com:Mbed-TLS/mbedtls.git,GNU General Public License version ,GPL,CXX,,187,https://tls.mbed.org
+889,Terminology,git://git.enlightenment.org/apps/terminology.git,"BSD 2-Clause ""Simplified"" or ""FreeBSD"" License ",BSD2Clause,CXX,,1194,http://www.enlightenment.org/about-terminology
+1409,mapserver/mapserver,https://github.com/mapserver/mapserver.git,MIT license ,MIT,CXX,,107,https://github.com/mapserver/mapserver
+20985,n7space-canopen-lely-core,https://gitlab.com/n7space/canopen/lely-core.git,Apache License ,Apache,CXX,,432,https://gitlab.com/n7space/canopen/lely-core
+23472,folkertvanheusden/MyIP,https://github.com/folkertvanheusden/MyIP.git,GNU General Public License version ,GPL,CXX,,18,https://github.com/folkertvanheusden/MyIP
+23344,gdepeyrot/shadowsocks-libev,https://github.com/gdepeyrot/shadowsocks-libev.git,GNU General Public License version ,GPL,CXX,,4,https://github.com/gdepeyrot/shadowsocks-libev
+25133,cytesys/toycrypto,https://github.com/cytesys/toycrypto.git,MIT license ,MIT,CXX,,10,https://github.com/cytesys/toycrypto
+24889,dfuzzer,https://github.com/matusmarhefka/dfuzzer,GNU General Public License version ,GPL,CXX,,139,https://github.com/matusmarhefka/dfuzzer
+21930,Lnossa/inHouse,https://github.com/Lnossa/inHouse.git,Academic Free License,AFL,CXX,,4,https://github.com/Lnossa/inHouse
+18536,nickrobison-usds/jmacaroons,https://github.com/nickrobison-usds/jmacaroons.git,Apache License ,Apache,JAVA,,20,https://github.com/nickrobison-usds/jmacaroons
+12337,AIDASoft/aidaTT,https://github.com/AIDASoft/aidaTT.git,GNU General Public License version ,GPL,CXX,,213,https://github.com/AIDASoft/aidaTT
+23515,SSG_Cloud1,https://kserver1.ccms.talonusa.com/usfalcon/ssgcloud,Apache License ,Apache,JAVASCRIPT,,9,""
+278,OpenSMTPD/OpenSMTPD,https://github.com/poolpOrg/OpenSMTPD.git,ISC License ,ISC,CXX,,465,http://www.OpenSMTPD.org
+24377,popovec/OpenSC,https://github.com/popovec/OpenSC.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,8,https://github.com/popovec/OpenSC
+18187,onap-so,https://git.onap.org/so/,Apache License ,Apache,JAVA,JAVA,912,https://www.onap.org
+22749,masterthesis_insecure,https://github.com/martingratt/masterthesis_insecure,GNU General Public License version ,GPL,JAVASCRIPT,,5,""
+22146,gumbyhedman/testrepo2,https://github.com/gumbyhedman/testrepo2.git,GNU General Public License version ,GPL,CXX,,4,https://github.com/gumbyhedman/testrepo2
+24663,hharte/fluxengine,https://github.com/hharte/fluxengine.git,MIT license ,MIT,CXX,,3,https://github.com/hharte/fluxengine
+3212,Privoxy,https://www.privoxy.org/gitweb/?p=privoxy.git,GNU General Public License version ,GPL,CXX,,25,https://www.privoxy.org/
+25226,retrage/ebcvm,https://github.com/retrage/ebcvm.git,MIT license ,MIT,CXX,,5,https://github.com/retrage/ebcvm
+15911,pmem/libpmemobj-cpp,https://github.com/pmem/libpmemobj-cpp.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,783,https://github.com/pmem/libpmemobj-cpp
+22859,GregThain/htcondor,https://github.com/GregThain/htcondor.git,Apache License ,Apache,CXX,,61,https://github.com/GregThain/htcondor
+9108,troglobit/mcjoin,https://github.com/troglobit/mcjoin.git,ISC License ,ISC,CXX,,15,https://github.com/troglobit/mcjoin
+3968,Tirasa/ConnId,https://github.com/Tirasa/ConnId.git,Common Development and Distribution License ,CDDL,JAVA,,87,http://connid.tirasa.net
+12348,iLCSoft/ConformalTracking,https://github.com/iLCSoft/ConformalTracking.git,GNU General Public License version ,GPL,CXX,,258,https://github.com/iLCSoft/ConformalTracking
+7837,guillemj/debsig-verify,https://github.com/guillemj/debsig-verify.git,GNU General Public License version ,GPL,CXX,,13,https://wiki.debian.org/Teams/Dpkg
+12349,iLCSoft/DDKalTest,https://github.com/iLCSoft/DDKalTest.git,GNU General Public License version ,GPL,CXX,,268,https://github.com/iLCSoft/DDKalTest
+15713,Zialus/SD-DistributedFileSystem,https://github.com/Zialus/SD-DistributedFileSystem.git,GNU General Public License version ,GPL,JAVA,,33,https://github.com/Zialus/SD-DistributedFileSystem
+13604,libyal/libbde,https://github.com/libyal/libbde.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,82,https://github.com/libyal/libbde
+23516,baresip/re,https://github.com/baresip/re.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,57,https://github.com/baresip/re
+16641,strukturag/libheif,https://github.com/strukturag/libheif.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,32,https://github.com/strukturag/libheif
+24470,ViTE,https://gitlab.inria.fr/solverstack/vite/,CeCILL License  ,CECILL,CXX,,13,https://solverstack.gitlabpages.inria.fr/vite/
+21763,Nomade040/nmd,https://github.com/Nomade040/nmd.git,Please specify,OTHER,CXX,,164,https://github.com/Nomade040/nmd
+23353,pbatard/ntfs-3g,https://github.com/pbatard/ntfs-3g.git,GNU General Public License version ,GPL,CXX,,29,https://github.com/pbatard/ntfs-3g
+13436,OpenVPN/openvpn3,https://github.com/OpenVPN/openvpn3,GNU General Public License version ,GPL,CXX,,105,https://community.openvpn.net
+25360,rtk_hci_uart,https://github.com/rtkbt-max/hci_uart.git,GNU General Public License version ,GPL,CXX,,4,""
+4450,open-mpi/pmix,http://github.com/pmix/master,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,849,http://github.com/pmix/master/wiki
+7176,mferland/libzc,https://github.com/mferland/libzc.git,GNU General Public License version ,GPL,CXX,,26,https://github.com/mferland/libzc
+22327,lordrasmus/p-net,https://github.com/lordrasmus/p-net.git,GNU General Public License version ,GPL,CXX,,3,https://github.com/lordrasmus/p-net
+12357,iLCSoft/LCCD,https://github.com/iLCSoft/LCCD.git,GNU General Public License version ,GPL,CXX,,148,https://github.com/iLCSoft/LCCD
+581,cryptlib,http://www.cs.auckland.ac.nz/~pgut001/pubs/beta.zip,Sleepycat License ,Sleepycat,CXX,,8,http://www.cs.auckland.ac.nz/~pgut001/cryptlib/index.html
+4114,siemens/jailhouse,https://github.com/siemens/jailhouse.git,GNU General Public License version ,GPL,CXX,,252,https://github.com/siemens/jailhouse
+25376,ennorehling/csmapfx,https://github.com/ennorehling/csmapfx.git,GNU General Public License version ,GPL,CXX,,3,https://github.com/ennorehling/csmapfx
+24040,r3,https://github.com/c9s/r3.git,MIT license ,MIT,CXX,,11,https://github.com/c9s/r3
+24145,LedgerHQ/app-avalanche,https://github.com/LedgerHQ/app-avalanche.git,MIT license ,MIT,CXX,,5,https://github.com/LedgerHQ/app-avalanche
+6834,burghardt/arptools,https://github.com/burghardt/arptools.git,GNU General Public License version ,GPL,CXX,,8,https://github.com/burghardt/arptools
+56,Firefox,https://hg.mozilla.org/mozilla-central,Mozilla Public License ,MPL,CXX,,992,https://www.mozilla.org
+10872,exult/exult,https://github.com/exult/exult.git,GNU General Public License version ,GPL,CXX,,217,https://github.com/exult/exult
+22416,michaelrsweet/zipc,https://github.com/michaelrsweet/zipc.git,"BSD 2-Clause ""Simplified"" or ""FreeBSD"" License ",BSD2Clause,CXX,,4,https://www.msweet.org/zipc
+3035,mythes,http://hunspell.cvs.sourceforge.net/viewvc/hunspell/mythes/,MIT license ,MIT,CXX,,14,https://sourceforge.net/projects/hunspell/
+24076,libHX,https://github.com/jengelh/libhx,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,8,https://inai.de/projects/libhx/
+7523,Osmocom,git://git.osmocom.org,Affero GNU Public License,AGPL,CXX,,1803,http://openbsc.osmocom.org
+20184,gpsd-gitlab,https://gitlab.com/gpsd/gpsd.git,"BSD 2-Clause ""Simplified"" or ""FreeBSD"" License ",BSD2Clause,CXX,,1217,https://gpsd.io/
+24550,ThomasDickey/vttest-snapshots,https://github.com/ThomasDickey/vttest-snapshots.git,MIT license ,MIT,CXX,,5,https://github.com/ThomasDickey/vttest-snapshots
+17606,fcambus/telize,https://github.com/fcambus/telize.git,"BSD 2-Clause ""Simplified"" or ""FreeBSD"" License ",BSD2Clause,CXX,,18,https://github.com/fcambus/telize
+23599,edsantiago/xlbiff,https://github.com/edsantiago/xlbiff.git,MIT license ,MIT,CXX,,6,https://github.com/edsantiago/xlbiff
+5975,0intro/libregexp,https://github.com/0intro/libregexp.git,MIT license ,MIT,CXX,,15,https://github.com/0intro/libregexp
+3202,jstedfast/MailKit,https://github.com/jstedfast/MailKit.git,MIT license ,MIT,CSHARP,,24,https://github.com/jstedfast/MailKit
+498,pstoedit,http://sourceforge.net/projects/pstoedit/files/pstoedit/3.62/pstoedit-3.62.tar.gz/download,GNU General Public License version ,GPL,CXX,,20,http://pstoedit.sourceforge.net/
+10314,Objeck,https://github.com/objeck/objeck-lang.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,107,https://github.com/objeck/objeck-lang
+3606,kicad,https://gitlab.com/kicad/code/kicad,GNU General Public License version ,GPL,CXX,,1013,http://www.kicad.org/
+3075,mdds,https://gitlab.com/mdds/mdds.git,MIT license ,MIT,CXX,,32,https://gitlab.com/mdds/mdds
+21942,monero-project/monero,https://github.com/monero-project/monero.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,6,https://github.com/monero-project/monero
+20770,JoshuaGreen/popeye,https://github.com/JoshuaGreen/popeye.git,Please specify,OTHER,CXX,,3,https://github.com/JoshuaGreen/popeye
+4298,libinput,git://git.freedesktop.org/git/wayland/libinput.git,MIT license ,MIT,CXX,,171,http://freedesktop.org/wiki/Software/libinput/
+22867,awm/loglib,https://github.com/awm/loglib.git,"BSD 2-Clause ""Simplified"" or ""FreeBSD"" License ",BSD2Clause,CXX,,5,https://github.com/awm/loglib
+18083,oknenavin/cxon,https://github.com/oknenavin/cxon.git,MIT license ,MIT,CXX,,300,https://github.com/oknenavin/cxon
+21232,tiran/python-ldap,https://github.com/tiran/python-ldap.git,Python License ,Python ,CXX,,216,https://github.com/tiran/python-ldap
+13714,flamewing/s2ssedit,https://github.com/flamewing/s2ssedit.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,48,https://github.com/flamewing/s2ssedit
+13599,libyal/libvhdi,https://github.com/libyal/libvhdi.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,57,https://github.com/libyal/libvhdi
+13238,libyal/libcnotify,https://github.com/libyal/libcnotify.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,50,https://github.com/libyal/libcnotify
+14508,SRombauts/SQLiteCpp,https://github.com/SRombauts/SQLiteCpp.git,MIT license ,MIT,CXX,,55,https://github.com/SRombauts/SQLiteCpp
+16074,Sphereserver/Source,https://github.com/Sphereserver/Source.git,Apache License ,Apache,CXX,,366,https://www.spherecommunity.net
+23233,astrorama/Alexandria,https://github.com/astrorama/Alexandria.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,6,https://github.com/astrorama/Alexandria
+13304,libyal/libcaes,https://github.com/libyal/libcaes.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,67,https://github.com/libyal/libcaes
+22696,atheme/atheme-contrib-modules,https://github.com/atheme/atheme-contrib-modules.git,ISC License ,ISC,CXX,,13,https://atheme.github.io/atheme.html
+24559,JS TEST,https://github.com/arul1317/nodejs-test,MIT license ,MIT,JAVASCRIPT,,30,""
+7836,guillemj/libbsd,https://github.com/guillemj/libbsd.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,14,http://libbsd.freedesktop.org
+23838,akva2/IFEM-HM,https://github.com/akva2/IFEM-HM.git,GNU General Public License version ,GPL,CXX,,3,https://github.com/akva2/IFEM-HM
+739,nghttp2/nghttp2,https://github.com/nghttp2/nghttp2,MIT license ,MIT,CXX,,111,https://nghttp2.org
+23812,zhyrohaad/evemu_Crucible,https://github.com/zhyrohaad/evemu_Crucible.git,Open Software License,OSL,CXX,,11,https://github.com/zhyrohaad/evemu_Crucible
+24907,jonasblixt/punchboot-tools,https://github.com/jonasblixt/punchboot-tools.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,6,https://github.com/jonasblixt/punchboot-tools
+13216,libyal/libcerror,https://github.com/libyal/libcerror.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,141,https://github.com/libyal/libcerror
+20602,troglobit/libite,https://github.com/troglobit/libite.git,MIT license ,MIT,CXX,,7,https://github.com/troglobit/libite
+552,Enlightenment Foundation Libraries,https://git.enlightenment.org/core/efl.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,1466,http://www.enlightenment.org/
+20374,yandex/odyssey,https://github.com/yandex/odyssey.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,81,https://github.com/yandex/odyssey
+11089,iLCSoft/Marlin,https://github.com/iLCSoft/Marlin.git,GNU General Public License version ,GPL,CXX,,183,https://github.com/iLCSoft/Marlin
+9389,lnslbrty/naskpass,https://github.com/lnslbrty/naskpass,GNU General Public License version ,GPL,CXX,,43,""
+7276,Tarsnap/libcperciva,https://github.com/Tarsnap/libcperciva.git,"BSD 2-Clause ""Simplified"" or ""FreeBSD"" License ",BSD2Clause,CXX,,112,https://github.com/Tarsnap/libcperciva
+6905,Tarsnap/kivaloo,https://github.com/Tarsnap/kivaloo.git,"BSD 2-Clause ""Simplified"" or ""FreeBSD"" License ",BSD2Clause,CXX,,39,https://github.com/Tarsnap/kivaloo
+2161,cmouse/yahttp,https://github.com/cmouse/yahttp.git,MIT license ,MIT,CXX,,63,https://github.com/cmouse/yahttp
+22249,cip-isar,https://gitlab.com/cip-project/cip-core/isar-cip-core.git,MIT license ,MIT,CXX,,4,https://gitlab.com/cip-project
+16800,severalnines/s9s-tools,https://github.com/severalnines/s9s-tools.git,GNU General Public License version ,GPL,CXX,,5,https://github.com/severalnines/s9s-tools
+2576,eID middleware,https://github.com/Fedict/eid-mw/,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,CSHARP,593,https://eid.belgium.be/
+24127,fangxy2000/test_hub,https://github.com/fangxy2000/test_hub.git,Affero GNU Public License,AGPL,CXX,,6,https://github.com/fangxy2000/test_hub
+11933,iLCSoft/DDMarlinPandora,https://github.com/iLCSoft/DDMarlinPandora.git,GNU General Public License version ,GPL,CXX,,324,https://github.com/iLCSoft/DDMarlinPandora
+22476,jibeee/app-celo-spender,https://github.com/jibeee/app-celo-spender.git,Apache License ,Apache,CXX,,7,https://github.com/jibeee/app-celo-spender
+11934,iLCSoft/MarlinDD4hep,https://github.com/iLCSoft/MarlinDD4hep.git,GNU General Public License version ,GPL,CXX,,184,https://github.com/iLCSoft/MarlinDD4hep
+4381,mupen64plus-core,https://github.com/mupen64plus/mupen64plus-core.git,GNU General Public License version ,GPL,CXX,,282,https://code.google.com/p/mupen64plus/
+12296,dtc,git://git.kernel.org/pub/scm/utils/dtc/dtc.git,GNU General Public License version ,GPL,CXX,,33,""
+143,MonetDB,https://dev.monetdb.org/hg/MonetDB/,Mozilla Public License ,MPL,CXX,,83,https://www.monetdb.org/
+21361,cgzones/goaccess,https://github.com/cgzones/goaccess.git,MIT license ,MIT,CXX,,12,https://github.com/cgzones/goaccess
+10778,OP-TEE/optee_os,https://github.com/OP-TEE/optee_os.git,"BSD 2-Clause ""Simplified"" or ""FreeBSD"" License ",BSD2Clause,CXX,,9,https://github.com/OP-TEE/optee_os
+5640,SSSD/sssd,https://github.com/SSSD/sssd.git,GNU General Public License version ,GPL,CXX,,213,https://github.com/SSSD/sssd
+23271,ircd-hybrid/hopm,https://github.com/ircd-hybrid/hopm.git,GNU General Public License version ,GPL,CXX,,109,https://github.com/ircd-hybrid/hopm
+20759,underhood/netdata,https://github.com/underhood/netdata.git,GNU General Public License version ,GPL,CXX,,8,https://github.com/underhood/netdata
+21195,radareorg/r2ghidra-dec,https://github.com/radareorg/r2ghidra-dec.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,23,https://github.com/radareorg/r2ghidra
+24937,foros,https://github.com/42dot/foros,Apache License ,Apache,CXX,,6,https://42dot.ai/
+24593,SrinivasKashi/appId-appComponent-cicd,https://github.com/SrinivasKashi/appId-appComponent-cicd.git,Apache License ,Apache,JAVA,,3,https://github.com/SrinivasKashi/appId-appComponent-cicd
+20521,ZanoProjectDev,https://github.com/hyle-team/zano/tree/develop,MIT license ,MIT,CXX,,24,https://zano.org/
+24461,justin-stephenson/sssd,https://github.com/justin-stephenson/sssd.git,GNU General Public License version ,GPL,CXX,,633,https://github.com/justin-stephenson/sssd
+24734,arcaneframework/framework,https://github.com/arcaneframework/framework.git,Apache License ,Apache,CXX,CSHARP,167,https://github.com/arcaneframework/framework
+20530,sangshuduo/TDengine,https://github.com/sangshuduo/TDengine.git,Affero GNU Public License,AGPL,CXX,JAVA,102,https://github.com/sangshuduo/TDengine
+2297,batctl,git://git.open-mesh.org/batctl.git,GNU General Public License version ,GPL,CXX,,150,http://www.open-mesh.org/projects/batman-adv/wiki
+1195,munin-monitoring/munin-c,https://github.com/munin-monitoring/munin-c.git,GNU General Public License version ,GPL,CXX,,22,https://github.com/munin-monitoring/munin-c
+13569,libyal/libcreg,https://github.com/libyal/libcreg.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,48,https://github.com/libyal/libcreg
+8386,mysecureshell/mysecureshell,https://github.com/mysecureshell/mysecureshell.git,GNU General Public License version ,GPL,CXX,JAVA,28,https://github.com/mysecureshell/mysecureshell
+193,piglit,git://anongit.freedesktop.org/piglit,MIT license ,MIT,CXX,,1063,https://piglit.freedesktop.org
+15677,Zlika/theodore,https://github.com/Zlika/theodore.git,GNU General Public License version ,GPL,CXX,,108,https://github.com/Zlika/theodore
+22254,Nanosdr,https://gitlab.com/csete/nanosdr.git,"BSD 2-Clause ""Simplified"" or ""FreeBSD"" License ",BSD2Clause,CXX,,12,https://nanosdr.com/
+17055,hughsie/libxmlb,https://github.com/hughsie/libxmlb.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,15,https://github.com/hughsie/libxmlb
+5375,kdudka/cswrap,https://github.com/kdudka/cswrap.git,GNU General Public License version ,GPL,CXX,,100,https://github.com/kdudka/cswrap
+22423,Wodan58/BTREE,https://github.com/Wodan58/BTREE.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,6,https://github.com/Wodan58/BTREE
+4940,rcr/rirc,https://github.com/rcr/rirc,MIT license ,MIT,CXX,,76,https://rcr.io/rirc
+12613,ipxe/wimboot,https://github.com/ipxe/wimboot.git,GNU General Public License version ,GPL,CXX,,54,http://ipxe.org/wimboot
+21392,f-squirrel_thread_pool,https://github.com/f-squirrel/thread_pool.git,MIT license ,MIT,CXX,,37,https://github.com/f-squirrel/thread_pool
+22068,bwipp/postscriptbarcode,https://github.com/bwipp/postscriptbarcode.git,MIT license ,MIT,CXX,,3,https://github.com/bwipp/postscriptbarcode
+4656,TrinityCore335,git://github.com/TrinityCore/TrinityCore.git,GNU General Public License version ,GPL,CXX,,174,http://www.trinitycore.org/
+21336,prob-optimized,https://tools.netsa.cert.org/yaf/docs.html,GNU General Public License version ,GPL,CXX,,16,""
+22969,jibeee/app-avalanche,https://github.com/jibeee/app-avalanche.git,MIT license ,MIT,CXX,,5,https://github.com/jibeee/app-avalanche
+13580,libyal/libregf,https://github.com/libyal/libregf.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,81,https://github.com/libyal/libregf
+3130,pali/0xFFFF,https://github.com/pali/0xFFFF.git,GNU General Public License version ,GPL,CXX,,81,https://github.com/pali/0xFFFF
+22422,Wodan58/HET,https://github.com/Wodan58/HET.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,4,https://github.com/Wodan58/HET
+23395,fair-acc/opencmw-java,https://github.com/fair-acc/opencmw-java.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,JAVA,,9,https://github.com/fair-acc/opencmw-java
+18471,homewsn/whsniff,https://github.com/homewsn/whsniff.git,GNU General Public License version ,GPL,CXX,,16,https://github.com/homewsn/whsniff
+15168,cbdevnet/midimonster,https://github.com/cbdevnet/midimonster.git,"BSD 2-Clause ""Simplified"" or ""FreeBSD"" License ",BSD2Clause,CXX,,57,https://github.com/cbdevnet/midimonster
+22105,libvirt-python,https://gitlab.com/libvirt/libvirt-python,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,6,https://libvirt.org/python.html
+14032,craigbarnes/dte,https://github.com/craigbarnes/dte.git,GNU General Public License version ,GPL,CXX,,47,https://craigbarnes.gitlab.io/dte/
+1452,Pike-master,Pike-master,GNU General Public License version ,GPL,CXX,,847,http://pike.lysator.liu.se/
+25468,gsasl,https://gitlab.com/gsasl/gsasl.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,7,https://www.gnu.org/software/gsasl/
+21989,picosocks5,https://gitlab.com/oldnomad/picosocks5.git,GNU General Public License version ,GPL,CXX,,7,""
+21464,Xilinx/xoclv2,https://github.com/Xilinx/xoclv2.git,GNU General Public License version ,GPL,CXX,,115,https://github.com/Xilinx/xoclv2
+14634,Wodan58/Coy,https://github.com/Wodan58/Coy.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,8,https://github.com/Wodan58/Coy
+8431,ja2-stracciatella/ja2-stracciatella,https://github.com/ja2-stracciatella/ja2-stracciatella.git,Please specify,OTHER,CXX,,230,https://github.com/ja2-stracciatella/ja2-stracciatella
+24403,jraman-qemu,https://github.com/jraman567/qemu,GNU General Public License version ,GPL,CXX,,6,""
+20058,daos-stack/cart,https://github.com/daos-stack/cart.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,163,https://github.com/daos-stack/cart
+12127,jerryscript-project/jerryscript,https://github.com/jerryscript-project/jerryscript,Apache License ,Apache,CXX,,964,http://jerryscript.net
+9213,gentoo/pax-utils,https://github.com/gentoo/pax-utils.git,GNU General Public License version ,GPL,CXX,,40,https://wiki.gentoo.org/wiki/Hardened/PaX_Utilities
+19998,mec-app-developers-backend,http://139.9.0.160/MEC-APP/developers.git,Apache License ,Apache,JAVA,,26,""
+20281,pmatos/rattle,https://github.com/pmatos/rattle.git,Apache License ,Apache,CXX,,41,https://github.com/pmatos/rattle
+22925,FSFW,https://egit.irs.uni-stuttgart.de/fsfw/fsfw,Apache License ,Apache,CXX,,3,https://egit.irs.uni-stuttgart.de/fsfw/fsfw
+8544,agievich/bee2,https://github.com/agievich/bee2.git,GNU General Public License version ,GPL,CXX,,161,https://github.com/agievich/bee2
+3034,hyphen,http://hunspell.cvs.sourceforge.net/viewvc/hunspell/hyphen,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,6,https://sourceforge.net/projects/hunspell/
+12355,iLCSoft/KiTrack,https://github.com/iLCSoft/KiTrack.git,GNU General Public License version ,GPL,CXX,,198,https://github.com/iLCSoft/KiTrack
+25028,OpenMPDK/libvfn,https://github.com/OpenMPDK/libvfn.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,4,https://github.com/OpenMPDK/libvfn
+13596,libyal/libsigscan,https://github.com/libyal/libsigscan.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,40,https://github.com/libyal/libsigscan
+22581,Lnossa/testCI,https://github.com/Lnossa/testCI.git,Academic Free License,AFL,CXX,,8,https://github.com/Lnossa/testCI
+22119,twose/php-src,https://github.com/twose/php-src.git,PHP License,PHP,CXX,,7,https://github.com/twose/php-src
+15147,PvPGN-PRO,https://github.com/pvpgn/pvpgn-server,GNU General Public License version ,GPL,CXX,,7,https://pvpgn.pro/
+21603,dlebansais/SquareRootDemo,https://github.com/dlebansais/SquareRootDemo.git,Please specify,OTHER,CXX,,17,https://github.com/dlebansais/SquareRootDemo
+13983,OpenKJ/OpenKJ,https://github.com/OpenKJ/OpenKJ.git,GNU General Public License version ,GPL,CXX,,42,https://openkj.org
+21851,hieplpvip/LGWMI,https://github.com/hieplpvip/LGWMI.git,MIT license ,MIT,CXX,,4,https://github.com/hieplpvip/LGWMI
+1030,libtpms,git@github.com:stefanberger/libtpms.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,85,""
+12352,iLCSoft/KalDet,https://github.com/iLCSoft/KalDet.git,GNU General Public License version ,GPL,CXX,,190,https://github.com/iLCSoft/KalDet
+20966,vkgeo/vkgeo-web,https://github.com/vkgeo/vkgeo-web.git,GNU Affero General Public License,AGPL,JAVASCRIPT,,34,https://github.com/vkgeo/vkgeo-web
+12338,iLCSoft/CED,https://github.com/iLCSoft/CED.git,GNU General Public License version ,GPL,CXX,,196,https://github.com/iLCSoft/CED
+2098,Stellarium/stellarium,https://github.com/Stellarium/stellarium.git,GNU General Public License version ,GPL,CXX,,281,http://stellarium.org
+13592,libyal/libfshfs,https://github.com/libyal/libfshfs.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,75,https://github.com/libyal/libfshfs
+21759,RespiraWorks/printf,https://github.com/RespiraWorks/printf.git,MIT license ,MIT,CXX,,3,https://github.com/RespiraWorks/printf
+13396,libyal/libfwnt,https://github.com/libyal/libfwnt.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,66,https://github.com/libyal/libfwnt
+6778,znc/coverity,https://github.com/znc/coverity,Apache License ,Apache,CXX,,143,http://znc.in
+12354,iLCSoft/KalTest,https://github.com/iLCSoft/KalTest.git,GNU General Public License version ,GPL,CXX,,193,https://github.com/iLCSoft/KalTest
+12347,iLCSoft/CondDBMySQL,https://github.com/iLCSoft/CondDBMySQL.git,GNU General Public License version ,GPL,CXX,,182,https://github.com/iLCSoft/CondDBMySQL
+15306,mptre/mdsort,https://github.com/mptre/mdsort.git,MIT license ,MIT,CXX,,57,https://github.com/mptre/mdsort
+24004,WallysWorld,https://github.com/dainglis/WallysWorld-CodeAnalysis.git,"Educational Community License, Version ",ECL,CSHARP,,4,""
+3211,roytam1/dash,https://github.com/roytam1/dash.git,"BSD 2-Clause ""Simplified"" or ""FreeBSD"" License ",BSD2Clause,CXX,,5,https://github.com/roytam1/dash
+77,GnuTLS,https://github.com/gnutls/gnutls,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,69,http://www.gnutls.org
+22449,jibeee/app-stellar,https://github.com/jibeee/app-stellar.git,Apache License ,Apache,CXX,,9,https://github.com/jibeee/app-stellar
+22406,bittor7x0/VDR-M7x0,https://github.com/bittor7x0/VDR-M7x0.git,GNU General Public License version ,GPL,CXX,,10,https://github.com/bittor7x0/VDR-M7x0
+14274,cisco-libSRTP,git@github.com:cisco/libsrtp.git,Please specify,OTHER,CXX,,121,https://github.com/cisco/libsrtp
+12339,iLCSoft/CEDViewer,https://github.com/iLCSoft/CEDViewer.git,GNU General Public License version ,GPL,CXX,,199,https://github.com/iLCSoft/CEDViewer
+23439,sr-ota/DVWA,https://github.com/sr-ota/DVWA.git,GNU General Public License version ,GPL,OTHER,,3,https://github.com/sr-ota/DVWA
+444,S-nail,git.sdaoden.eu/scm/s-nail.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,41,http://www.sdaoden.eu/code.html#s-mailx
+23839,akva2/SIMRA-PostProc,https://github.com/akva2/SIMRA-PostProc.git,GNU General Public License version ,GPL,CXX,,3,https://github.com/akva2/SIMRA-PostProc
+22478,fduchene/bugs,https://github.com/fduchene/bugs.git,Academic Free License,AFL,CXX,,7,https://github.com/fduchene/bugs
+23513,SSG_Cloud,https://kserver1.ccms.talonusa.com/,Apache License ,Apache,JAVASCRIPT,,11,""
+23570,DimitriPapadopoulos/json-parser,https://github.com/DimitriPapadopoulos/json-parser.git,"BSD 2-Clause ""Simplified"" or ""FreeBSD"" License ",BSD2Clause,CXX,,9,https://github.com/DimitriPapadopoulos/json-parser
+2771,petrs/JCAlgTest,https://github.com/petrs/JCAlgTest.git,"BSD 2-Clause ""Simplified"" or ""FreeBSD"" License ",BSD2Clause,JAVA,,31,https://github.com/petrs/JCAlgTest
+24696,igraph/igraph,https://github.com/igraph/igraph.git,GNU General Public License version ,GPL,CXX,,7,https://github.com/igraph/igraph
+21819,keymanapp/keyman,https://github.com/keymanapp/keyman.git,MIT license ,MIT,CXX,,3,https://github.com/keymanapp/keyman
+11124,wildfly-security/elytron-web,https://github.com/wildfly-security/elytron-web.git,Apache License ,Apache,JAVA,,74,https://github.com/wildfly-security/elytron-web
+17151,boostorg/interval,https://github.com/boostorg/interval.git,Boost Software License ,BSL,CXX,,12,https://github.com/boostorg/interval
+19540,troglobit/sysklogd,https://github.com/troglobit/sysklogd.git,GNU General Public License version ,GPL,CXX,,35,https://github.com/troglobit/sysklogd
+21026,incentive.design,https://gitlab.com/incentive.design/openconnect,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,JAVA,13,""
+13321,dimkr/b6b,https://github.com/dimkr/b6b.git,Apache License ,Apache,CXX,,147,https://github.com/dimkr/b6b
+21717,flok99/MyIP,https://github.com/flok99/MyIP.git,Affero GNU Public License,AGPL,CXX,,4,https://github.com/flok99/MyIP
+22501,nnstreamer-nnstreamer,https://github.com/nnstreamer/nnstreamer.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,53,https://github.com/nnstreamer/nnstreamer.git
+23000,vtorri/entice,https://github.com/vtorri/entice.git,"BSD 2-Clause ""Simplified"" or ""FreeBSD"" License ",BSD2Clause,CXX,,3,https://github.com/vtorri/entice
+22424,Wodan58/Ahoy,https://github.com/Wodan58/Ahoy.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,5,https://github.com/Wodan58/Ahoy
+7594,Chromium EC,https://chromium.googlesource.com/chromiumos/platform/ec,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,2705,http://www.chromium.org/chromium-os/ec-development
+13239,libyal/libclocale,https://github.com/libyal/libclocale.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,53,https://github.com/libyal/libclocale
+1270,tesseract-ocr,https://github.com/tesseract-ocr/tesseract.git,Apache License ,Apache,CXX,JAVA,98,https://github.com/tesseract-ocr
+21791,EmbedOps-Harmony-Blinky,https://embedops.com/microchip1/xc32/harmonyblinky,MIT license ,MIT,CXX,,6,https://embedops.com/microchip1/xc32/harmonyblinky
+21915,adrianreber/criu,https://github.com/adrianreber/criu.git,GNU General Public License version ,GPL,CXX,,6,https://github.com/adrianreber/criu
+22559,PIVX Core,https://github.com/PIVX-Project/PIVX.git,MIT license ,MIT,CXX,,4,""
+23860,cambridgehackers/bsvtokami,https://github.com/cambridgehackers/bsvtokami.git,MIT license ,MIT,CXX,,3,https://github.com/cambridgehackers/bsvtokami
+3407,sylvainlaurent/JDBC-Performance-Logger,https://github.com/sylvainlaurent/JDBC-Performance-Logger.git,Apache License ,Apache,JAVA,,30,https://github.com/sylvainlaurent/JDBC-Performance-Logger
+7153,GMT,svn://gmtserver.soest.hawaii.edu/gmt5/trunk,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,144,http://gmt.soest.hawaii.edu/projects/gmt
+23800,google/minijail,https://github.com/google/minijail.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,7,https://google.github.io/minijail/
+4094,fhunleth/fwup,https://github.com/fhunleth/fwup.git,Apache License ,Apache,CXX,,66,https://github.com/fhunleth/fwup
+16034,ElectronicsSimulation,https://lz-git.ua.edu/sim/ElectronicsSimulation,Apache License ,Apache,CXX,,119,""
+4511,bmybbs/bmybbs,https://github.com/bmybbs/bmybbs.git,GNU General Public License version ,GPL,CXX,,44,https://github.com/bmybbs/bmybbs
+9503,guusdk/libidn-java,https://github.com/guusdk/libidn-java.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,JAVA,,10,https://github.com/guusdk/libidn-java
+22671,mkasenberg/mynewt-core,https://github.com/mkasenberg/mynewt-core.git,Apache License ,Apache,CXX,,5,https://github.com/mkasenberg/mynewt-core
+21649,cgzones/htop,https://github.com/cgzones/htop.git,GNU General Public License version ,GPL,CXX,,29,https://github.com/cgzones/htop
+21803,EmbedOps-HarmonyBlinky,https://embedops.com/microchip1/xc32/harmonyblinky,MIT license ,MIT,CXX,,4,https://embedops.com/microchip1/xc32/harmonyblinky
+20889,qgymib/EAF,https://github.com/qgymib/EAF.git,MIT license ,MIT,CXX,,42,https://github.com/qgymib/EAF
+16403,acidanthera/BT4LEContiunityFixup,https://github.com/acidanthera/BT4LEContiunityFixup.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,34,https://github.com/acidanthera/BT4LEContiunityFixup
+21742,eProsima/Fast-DDS,https://github.com/eProsima/Fast-DDS.git,Apache License ,Apache,CXX,,3,https://github.com/eProsima/Fast-DDS
+17225,wultra/powerauth-restful-integration,https://github.com/wultra/powerauth-restful-integration.git,Affero GNU Public License,AGPL,JAVA,,14,https://github.com/wultra/powerauth-restful-integration
+15372,kronosnet/kronosnet,https://github.com/kronosnet/kronosnet.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,153,https://github.com/kronosnet/kronosnet
+12251,sipwise/mediator,https://github.com/sipwise/mediator.git,GNU General Public License version ,GPL,CXX,,81,https://github.com/sipwise/mediator
+22386,michaelrsweet/codedoc,https://github.com/michaelrsweet/codedoc.git,Apache License ,Apache,CXX,,5,https://www.msweet.org/codedoc
+9456,Verilog to Routing,https://github.com/verilog-to-routing/vtr-verilog-to-routing.git,MIT license ,MIT,CXX,,116,verilogtorouting.org
+19433,OpenConnect VPN server,https://gitlab.com/openconnect/ocserv,GNU General Public License version ,GPL,CXX,,170,https://ocserv.gitlab.io/www/
+16165,ansilove/libansilove,https://github.com/ansilove/libansilove.git,"BSD 2-Clause ""Simplified"" or ""FreeBSD"" License ",BSD2Clause,CXX,,66,https://github.com/ansilove/libansilove
+20691,pds-technology/devkit-c,https://github.com/pds-technology/devkit-c.git,Apache License ,Apache,CSHARP,,4,https://github.com/pds-technology/devkit-c
+17958,fcambus/gbaconv,https://github.com/fcambus/gbaconv.git,"BSD 2-Clause ""Simplified"" or ""FreeBSD"" License ",BSD2Clause,CXX,,23,https://github.com/fcambus/gbaconv
+19344,zabbix_34x_next,https://github.com/CHERTS/zabbix_34x_next.git,GNU General Public License version ,GPL,CXX,JAVA,323,""
+22556,1g0rb0hm/drawterm,https://github.com/1g0rb0hm/drawterm.git,Lucent Public License Version,LPL,CXX,,6,https://github.com/1g0rb0hm/drawterm
+13613,libyal/libewf,https://github.com/libyal/libewf.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,110,https://github.com/libyal/libewf
+18802,k44,https://github.com/cttlee/k44,GNU General Public License version ,GPL,CXX,,22,https://github.com/cttlee/k44
+13572,libyal/libevtx,https://github.com/libyal/libevtx.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,50,https://github.com/libyal/libevtx
+21663,the-tcpdump-group/tcpslice,https://github.com/the-tcpdump-group/tcpslice.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,26,https://github.com/the-tcpdump-group/tcpslice
+23673,input-solver,git@gitlab.com:fwojcik/input-solver.git,Affero GNU Public License,AGPL,CXX,,5,https://gitlab.com/fwojcik/input-solver
+22917,nickrobison-usds/vaccine-scheduler,https://github.com/nickrobison-usds/vaccine-scheduler.git,Please specify,OTHER,JAVA,,92,https://github.com/nickrobison-usds/vaccine-scheduler
+21839,hieplpvip/AppleBacklightSmoother,https://github.com/hieplpvip/AppleBacklightSmoother.git,MIT license ,MIT,CXX,,17,https://github.com/hieplpvip/AppleBacklightSmoother
+10944,fcambus/logswan,https://github.com/fcambus/logswan.git,"BSD 2-Clause ""Simplified"" or ""FreeBSD"" License ",BSD2Clause,CXX,,69,https://github.com/fcambus/logswan
+18304,hieplpvip/AsusSMC,https://github.com/hieplpvip/AsusSMC.git,MIT license ,MIT,CXX,,83,https://github.com/hieplpvip/AsusSMC
+21730,philj56/gbcc,https://github.com/philj56/gbcc.git,MIT license ,MIT,CXX,,5,https://gbcc.github.io
+12370,iLCSoft/iLCUtil,https://github.com/iLCSoft/iLCUtil.git,GNU General Public License version ,GPL,CXX,,182,https://github.com/iLCSoft/iLCUtil
+22220,MyCoverityScanTestProject,git@github.com:mnts26/coverity-scan-test.git,MIT license ,MIT,CXX,,6,""
+20832,modelrockettier/uhub,https://github.com/modelrockettier/uhub.git,GNU General Public License version ,GPL,CXX,OTHER,43,https://github.com/modelrockettier/uhub
+232,Thunderbird,http://hg.mozilla.org/comm-central/,Mozilla Public License ,MPL,CXX,,916,https://www.mozilla.org/thunderbird/
+22485,fduchene/binsearch,https://github.com/fduchene/binsearch.git,Academic Free License,AFL,CXX,,4,https://github.com/fduchene/binsearch
+14382,open-eid/DigiDoc4-Client,https://github.com/open-eid/DigiDoc4-Client.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,27,https://github.com/open-eid/DigiDoc4-Client
+14445,linuxwacom/xf86-input-wacom,https://github.com/linuxwacom/xf86-input-wacom.git,GNU General Public License version ,GPL,CXX,,189,https://github.com/linuxwacom/xf86-input-wacom
+12548,openSUSE/xinetd,https://github.com/openSUSE/xinetd.git,Please specify,OTHER,CXX,,14,https://github.com/openSUSE/xinetd
+13866,sardylan/qfm1000,https://github.com/sardylan/qfm1000.git,GNU General Public License version ,GPL,CXX,,21,https://github.com/sardylan/qfm1000
+11399,Pitubedirect,https://github.com/hoglet67/PiTubeDirect.git,GNU General Public License version ,GPL,CXX,,15,""
+2197,hroptatyr/dateutils,https://github.com/hroptatyr/dateutils.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,57,https://github.com/hroptatyr/dateutils
+13659,salesforce/grammaticus,https://github.com/salesforce/grammaticus.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,JAVA,,25,https://github.com/salesforce/grammaticus
+3554,RTEMS-Newlib,git://sourceware.org/git/newlib.git,"BSD 2-Clause ""Simplified"" or ""FreeBSD"" License ",BSD2Clause,CXX,,248,https://sourceware.org/newlib/
+23322,Ultima Offline eXperiment 3,https://github.com/UOX3DevTeam/UOX3.git,GNU General Public License version ,GPL,CXX,,10,https://www.uox3.org
+23045,srsRAN,https://github.com/srsran/srsRAN,Affero GNU Public License,AGPL,CXX,,9,www.srsran.com
+23565,qgis/libdxfrw,https://github.com/qgis/libdxfrw.git,GNU General Public License version ,GPL,CXX,,14,https://github.com/qgis/libdxfrw
+3022,byacc,ftp://invisible-island.net/byacc/,Please specify,OTHER,CXX,,18,http://invisible-island.net/byacc/byacc.html
+21168,BoubacarDiene/NetworkService,https://github.com/BoubacarDiene/NetworkService.git,MIT license ,MIT,CXX,,19,https://github.com/BoubacarDiene/NetworkService
+11714,Kopano files,https://stash.kopano.io/scm/kwa/files.git,GNU Affero General Public License,AGPL,JAVASCRIPT,,192,https://kopano.io/
+14767,linuxwacom/libwacom,https://github.com/linuxwacom/libwacom.git,MIT license ,MIT,CXX,,164,https://github.com/linuxwacom/libwacom
+7758,Dridi/cashpack,https://github.com/Dridi/cashpack.git,"BSD 2-Clause ""Simplified"" or ""FreeBSD"" License ",BSD2Clause,CXX,,31,https://github.com/Dridi/cashpack
+19515,litespeedtech/openlitespeed,https://github.com/litespeedtech/openlitespeed.git,GNU General Public License version ,GPL,CXX,,35,https://github.com/litespeedtech/openlitespeed
+29,coreutils,git://git.sv.gnu.org/coreutils.git,GNU General Public License version ,GPL,CXX,,16,http://www.gnu.org/software/coreutils/
+20327,9EOR9/mariadb-connector-c,https://github.com/9EOR9/mariadb-connector-c.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,15,https://github.com/9EOR9/mariadb-connector-c
+21396,probe-yaf,https://tools.netsa.cert.org/yaf/docs.html,GNU General Public License version ,GPL,CXX,,33,""
+2844,SimonKagstrom/kcov,https://github.com/SimonKagstrom/kcov.git,GNU General Public License version ,GPL,CXX,,200,https://github.com/SimonKagstrom/kcov
+19338,merijn/sync_history,https://github.com/merijn/sync_history.git,GNU General Public License version ,GPL,CXX,,60,https://github.com/merijn/sync_history
+13593,libyal/libfsntfs,https://github.com/libyal/libfsntfs.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,167,https://github.com/libyal/libfsntfs
+11093,ansilove/ansilove,https://github.com/ansilove/ansilove.git,"BSD 2-Clause ""Simplified"" or ""FreeBSD"" License ",BSD2Clause,CXX,,113,https://github.com/ansilove/ansilove
+13366,libyal/libfplist,https://github.com/libyal/libfplist.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,52,https://github.com/libyal/libfplist
+4389,mupen64plus-video-arachnoid,https://github.com/mupen64plus/mupen64plus-video-arachnoid.git,GNU General Public License version ,GPL,CXX,,23,https://code.google.com/p/mupen64plus/
+6317,ClamAV,https://github.com/Cisco-Talos/clamav-devel,GNU General Public License version ,GPL,CXX,,223,https://www.clamav.net
+10144,cunctator/traceshark,https://github.com/cunctator/traceshark.git,GNU General Public License version ,GPL,CXX,,33,https://github.com/cunctator/traceshark
+20964,ipxe/cx,https://github.com/ipxe/cx.git,GNU General Public License version ,GPL,CXX,,192,https://github.com/ipxe/cx
+24094,osbuild/koji-osbuild,https://github.com/osbuild/koji-osbuild.git,Apache License ,Apache,OTHER,,290,https://github.com/osbuild/koji-osbuild
+727,open-eid/libdigidocpp,https://github.com/open-eid/libdigidocpp,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,83,http://www.id.ee
+4390,mupen64plus-video-glide64,https://github.com/mupen64plus/mupen64plus-video-glide64.git,GNU General Public License version ,GPL,CXX,,25,https://code.google.com/p/mupen64plus/
+22179,virtual-shop,https://github.com/tatojukranthi/StaticAnalysis.git,Open Software License,OSL,CSHARP,,10,""
+20693,agent-ovs,https://github.com/noironetworks/opflex/tree/master/agent-ovs,Eclipse Public License ,EPL,CXX,,35,https://github.com/noironetworks/opflex/tree/master/agent-ovs
+20656,cgzones/selint,https://github.com/cgzones/selint.git,Apache License ,Apache,CXX,,11,https://github.com/cgzones/selint
+6294,em100,http://review.coreboot.org/em100,GNU General Public License version ,GPL,CXX,,80,http://www.coreboot.org/
+13591,libyal/libfsext,https://github.com/libyal/libfsext.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,72,https://github.com/libyal/libfsext
+13982,boostorg/uuid,https://github.com/boostorg/uuid.git,Please specify,OTHER,CXX,,161,https://github.com/boostorg/uuid
+21740,etds,https://github.com/daksheshvyas/MyHelloWorld/commit/master,Please specify,OTHER,CXX,,13,""
+14522,melexis/mlx90632-library,https://github.com/melexis/mlx90632-library.git,Apache License ,Apache,CXX,,41,https://github.com/melexis/mlx90632-library
+13406,libyal/libhmac,https://github.com/libyal/libhmac.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,40,https://github.com/libyal/libhmac
+12399,iLCSoft/Physsim,https://github.com/iLCSoft/Physsim.git,GNU General Public License version ,GPL,CXX,,151,https://github.com/iLCSoft/Physsim
+2510,openscad/openscad,https://github.com/openscad/openscad.git,GNU General Public License version ,GPL,CXX,,43,http://openscad.org
+19966,lrpt,http://www.5b4az.org/pkg/lrpt/,GNU General Public License version ,GPL,CXX,,12,http://www.5b4az.org/
+21665,htop.dev,https://github.com/htop-dev/htop,GNU General Public License version ,GPL,CXX,,7,https://htop.dev
+4383,mupen64plus-audio-sdl,https://github.com/mupen64plus/mupen64plus-audio-sdl.git,GNU General Public License version ,GPL,CXX,,45,https://code.google.com/p/mupen64plus/
+14737,lnslbrty/ptunnel-ng,https://github.com/lnslbrty/ptunnel-ng.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,74,https://github.com/lnslbrty/ptunnel-ng
+22024,dhinakg/Lilu,https://github.com/dhinakg/Lilu.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,33,https://github.com/dhinakg/Lilu
+21889,StartUP4gud/StartWeb,https://github.com/StartUP4gud/StartWeb.git,Academic Free License,AFL,JAVA,,27,https://github.com/StartUP4gud/StartWeb
+22037,cifp-2.0.0,https://tools.netsa.cert.org/yaf/docs.html,GNU General Public License version ,GPL,CXX,,6,""
+8841,sippy/rtpproxy,https://github.com/sippy/rtpproxy.git,"BSD 2-Clause ""Simplified"" or ""FreeBSD"" License ",BSD2Clause,CXX,,71,https://github.com/sippy/rtpproxy
+21153,AMS21/CppBase,https://github.com/AMS21/CppBase.git,MIT license ,MIT,CXX,,191,https://github.com/AMS21/CppBase
+4384,mupen64plus-input-sdl,https://github.com/mupen64plus/mupen64plus-input-sdl.git,GNU General Public License version ,GPL,CXX,,78,https://code.google.com/p/mupen64plus/
+22811,tpm2-totp,https://github.com/tpm2-software/tpm2-totp,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,3,""
+13743,xiph/ezstream,https://github.com/xiph/ezstream.git,GNU General Public License version ,GPL,CXX,,35,https://github.com/xiph/ezstream
+19607,sobomax/libelperiodic,https://github.com/sobomax/libelperiodic.git,"BSD 2-Clause ""Simplified"" or ""FreeBSD"" License ",BSD2Clause,CXX,,59,https://github.com/sobomax/libelperiodic
+4385,mupen64plus-rsp-hle,https://github.com/mupen64plus/mupen64plus-rsp-hle.git,GNU General Public License version ,GPL,CXX,,65,https://code.google.com/p/mupen64plus/
+1461,bareos/bareos,https://github.com/bareos/bareos.git,Affero GNU Public License,AGPL,CXX,,726,http://www.bareos.org
+22448,jibeee/nem-ledger-app,https://github.com/jibeee/nem-ledger-app.git,Apache License ,Apache,CXX,,8,https://github.com/jibeee/nem-ledger-app
+22147,dhinakg/OpenCorePkg,https://github.com/dhinakg/OpenCorePkg.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,27,https://github.com/dhinakg/OpenCorePkg
+14635,Wodan58/Moy,https://github.com/Wodan58/Moy.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,9,https://github.com/Wodan58/Moy
+17390,HExSA-Lab/nautilus,https://github.com/HExSA-Lab/nautilus.git,MIT license ,MIT,CXX,,36,https://github.com/HExSA-Lab/nautilus
+18659,iLCSoft/SIO,https://github.com/iLCSoft/SIO.git,GNU General Public License version ,GPL,CXX,,149,https://github.com/iLCSoft/SIO
+4386,mupen64plus-rsp-cxd4,https://github.com/mupen64plus/mupen64plus-rsp-cxd4.git,GNU General Public License version ,GPL,CXX,,53,https://code.google.com/p/mupen64plus/
+16509,zchunk/zchunk,https://github.com/zchunk/zchunk.git,"BSD 2-Clause ""Simplified"" or ""FreeBSD"" License ",BSD2Clause,CXX,,21,https://github.com/zchunk/zchunk
+22736,eProsima/Micro-CDR,https://github.com/eProsima/Micro-CDR.git,Apache License ,Apache,CXX,,3,https://github.com/eProsima/Micro-CDR
+21635,xNVMe,https://github.com/OpenMPDK/xNVMe.git,Apache License ,Apache,CXX,,227,https://xnvme.io
+6518,innovimax/QuiXDM,https://github.com/innovimax/QuiXDM.git,GNU General Public License version ,GPL,JAVA,,106,https://github.com/innovimax/QuiXDM
+14955,kovacsv/VisualScriptEngine,https://github.com/kovacsv/VisualScriptEngine.git,Affero GNU Public License,AGPL,CXX,,19,https://github.com/kovacsv/VisualScriptEngine
+23620,apache/qpid-protonj2,https://github.com/apache/qpid-protonj2.git,Apache License ,Apache,JAVA,,3,https://github.com/apache/qpid-protonj2
+15921,kiwitcms/Kiwi,https://github.com/kiwitcms/Kiwi.git,GNU General Public License version ,GPL,OTHER,JAVASCRIPT,606,http://kiwitcms.org
+4387,mupen64plus-rsp-z64,https://github.com/mupen64plus/mupen64plus-rsp-z64.git,GNU General Public License version ,GPL,CXX,,25,https://code.google.com/p/mupen64plus/
+21963,mir3x/freeciv21,https://github.com/mir3x/freeciv21.git,GNU General Public License version ,GPL,CXX,,25,https://github.com/mir3x/freeciv21
+617,kdave/btrfs-progs,https://github.com/kdave/btrfs-progs,GNU General Public License version ,GPL,CXX,,283,https://btrfs.wiki.kernel.org
+19287,Shymaxtic/CANIFModule,https://github.com/Shymaxtic/CANIFModule.git,GNU General Public License version ,GPL,CXX,,13,https://github.com/Shymaxtic/CANIFModule
+4388,mupen64plus-ui-console,https://github.com/mupen64plus/mupen64plus-ui-console.git,GNU General Public License version ,GPL,CXX,,62,https://code.google.com/p/mupen64plus/
+23806,OpenPrinting/cups,https://github.com/OpenPrinting/cups.git,Apache License ,Apache,CXX,,3,https://openprinting.github.io/cups
+3319,troglobit/pimd,https://github.com/troglobit/pimd.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,36,https://github.com/troglobit/pimd
+3992,Unidata/UDUNITS-2,https://github.com/Unidata/UDUNITS-2.git,Please specify,OTHER,CXX,,30,https://github.com/Unidata/UDUNITS-2
+21422,intel/vaapi-fits,https://github.com/intel/vaapi-fits.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,OTHER,,48,https://github.com/intel/vaapi-fits
+13996,boostorg/units,https://github.com/boostorg/units.git,Boost Software License ,BSL,CXX,,175,https://github.com/boostorg/units
+22397,Linux-next-daily,https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git,GNU General Public License version ,GPL,CXX,,5,https://github.com/cosunny
+14159,libvmi/libvmi,https://github.com/libvmi/libvmi.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,345,https://github.com/libvmi/libvmi
+4808,wengxt/xcb-imdkit,https://github.com/wengxt/xcb-imdkit.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,67,https://github.com/wengxt/xcb-imdkit
+19171,Komet/MediaElch,https://github.com/Komet/MediaElch.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,10,https://github.com/Komet/MediaElch
+16139,did-g/XyGrib,https://github.com/did-g/XyGrib.git,GNU General Public License version ,GPL,CXX,,124,https://github.com/did-g/XyGrib
+17599,fcambus/statzone,https://github.com/fcambus/statzone.git,"BSD 2-Clause ""Simplified"" or ""FreeBSD"" License ",BSD2Clause,CXX,,27,https://github.com/fcambus/statzone
+17224,wultra/powerauth-push-server,https://github.com/wultra/powerauth-push-server.git,Apache License ,Apache,JAVA,,18,https://github.com/wultra/powerauth-push-server
+23155,acidanthera/SidecarFixup,https://github.com/acidanthera/SidecarFixup.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,20,https://github.com/acidanthera/SidecarFixup
+15740,rswinkle/sdl_img,https://github.com/rswinkle/sdl_img.git,MIT license ,MIT,CXX,,118,https://github.com/rswinkle/sdl_img
+16308,libjsongit2,https://warmcat.com/git/sai,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,145,https://warmcat.com/git/sai
+20225,Sphereserver/Source-X,https://github.com/Sphereserver/Source-X.git,Apache License ,Apache,CXX,,24,https://github.com/Sphereserver/Source-X
+14640,mirabilos/jupp,https://github.com/mirabilos/jupp.git,GNU General Public License version ,GPL,CXX,,39,http://www.mirbsd.org/jupp.htm
+22067,ovpn-dco-linux,git@gitlab.com:openvpn/ovpn-dco-linux.git,GNU General Public License version ,GPL,CXX,,7,https://gitlab.com/openvpn/ovpn-dco/-/blob/master/README
+16372,airship-deckhand,https://github.com/openstack/airship-deckhand.git,Apache License ,Apache,OTHER,,470,https://github.com/openstack/airship-deckhand
+21282,nih-at/nihtest,https://github.com/nih-at/nihtest.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,11,https://github.com/nih-at/nihtest
+23307,flamewing/asl-releases,https://github.com/flamewing/asl-releases.git,GNU General Public License version ,GPL,CXX,,9,https://github.com/flamewing/asl-releases
+22387,michaelrsweet/mmd,https://github.com/michaelrsweet/mmd.git,Apache License ,Apache,CXX,,10,https://github.com/michaelrsweet/mmd
+16276,airship-armada,https://github.com/openstack/airship-armada.git,Apache License ,Apache,OTHER,,501,https://github.com/openstack/airship-armada/blob/master/README.rst
+14336,lcfiplus/LCFIPlus,https://github.com/lcfiplus/LCFIPlus.git,GNU General Public License version ,GPL,CXX,,159,https://github.com/lcfiplus/LCFIPlus
+14641,Wodan58/Joy,https://github.com/Wodan58/Joy.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,7,https://github.com/Wodan58/Joy
+16634,jens-maus/yam,https://github.com/jens-maus/yam.git,GNU General Public License version ,GPL,CXX,,1779,https://github.com/jens-maus/yam
+23014,Manon Supermetrics,https://github.com/manonworld/supermetrics,MIT license ,MIT,OTHER,,3,https://manonworld.de
+22804,congma/lru_ng,https://github.com/congma/lru_ng.git,GNU General Public License version ,GPL,CXX,,8,https://github.com/congma/lru_ng
+18696,onap-portal,https://git.onap.org/portal/,Apache License ,Apache,JAVA,JAVA,212,https://onap.org/
+23600,bad-linux-imx6,git://github.com/samnazarko/linux-imx6.git,GNU General Public License version ,GPL,CXX,,8,""
+21306,smoked-herring/sail,https://github.com/smoked-herring/sail.git,MIT license ,MIT,CXX,,19,https://github.com/smoked-herring/sail
+21818,mplabx-harmony,https://embedops.com/dojofive/templates/mplabx-harmony,MIT license ,MIT,CXX,,59,https://embedops.com/dojofive/templates/mplabx-harmony
+22300,oleksandrkozlov/touch_typing,https://github.com/oleksandrkozlov/touch_typing.git,MIT license ,MIT,CXX,,19,https://github.com/oleksandrkozlov/touch_typing
+18259,Enhanced DUC,git://github.com/uhlin/enhanced-duc.git,ISC License ,ISC,CXX,,5,http://uhlin.github.io/enhanced-duc/
+18725,benlye/flash-multi,https://github.com/benlye/flash-multi.git,GNU General Public License version ,GPL,CSHARP,CSHARP,14,https://github.com/benlye/flash-multi
+7799,wolfSSL/wolfssl,https://github.com/wolfSSL/wolfssl.git,GNU General Public License version ,GPL,CXX,,68,https://github.com/wolfSSL/wolfssl
+15414,disaykin/drakvuf,https://github.com/disaykin/drakvuf.git,GNU General Public License version ,GPL,CXX,,71,https://github.com/disaykin/drakvuf
+22737,jibeee/app-cryptocom,https://github.com/jibeee/app-cryptocom.git,Apache License ,Apache,CXX,,9,https://github.com/jibeee/app-cryptocom
+20525,opflex,https://github.com/noironetworks/opflex,Eclipse Public License ,EPL,CXX,,25,https://wiki-archive.opendaylight.org/view/OpFlex:Main
+17788,shintaro-iwasaki/argobots,https://github.com/shintaro-iwasaki/argobots.git,Open Software License,OSL,CXX,,9,https://github.com/shintaro-iwasaki/argobots
+18773,t6/portfmt,https://github.com/t6/portfmt.git,"BSD 2-Clause ""Simplified"" or ""FreeBSD"" License ",BSD2Clause,CXX,,59,https://github.com/t6/portfmt
+16750,nfotex/json-schema,https://github.com/nfotex/json-schema.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,26,https://github.com/nfotex/json-schema
+16370,airship-drydock,https://github.com/openstack/airship-drydock.git,Apache License ,Apache,OTHER,,473,https://github.com/openstack/airship-drydock
+6483,BlockoS/Etripator,https://github.com/BlockoS/Etripator.git,GNU General Public License version ,GPL,CXX,,74,https://github.com/BlockoS/Etripator
+22799,libuv_fork,https://github.com/rpulid2/libuv,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,6,https://github.com/rpulid2/libuv
+22552,jibeee/app-ethereum,https://github.com/jibeee/app-ethereum.git,Apache License ,Apache,CXX,,3,https://github.com/jibeee/app-ethereum
+4393,mupen64plus-video-z64,https://github.com/mupen64plus/mupen64plus-video-z64.git,GNU General Public License version ,GPL,CXX,,30,https://code.google.com/p/mupen64plus/
+23688,FTL - core,https://github.com/pi-hole/FTL.git,"European Union Public License, Version  ",EUPL ,CXX,,5,""
+15512,rapyuta-robotics/alica,https://github.com/rapyuta-robotics/alica.git,MIT license ,MIT,CXX,,561,https://rapyuta-robotics.github.io/alica/
+23293,Mtext,git://github.com/issakomi/Mtext.git,GNU General Public License version ,GPL,CXX,,3,""
+23398,LedgerHQ/app-ethereum,https://github.com/LedgerHQ/app-ethereum.git,Apache License ,Apache,CXX,,5,https://github.com/LedgerHQ/app-ethereum
+15884,boostorg/signals2,https://github.com/boostorg/signals2.git,Boost Software License ,BSL,CXX,,69,https://github.com/boostorg/signals2
+16649,ipxe/ProxyLoaderPkg,https://github.com/ipxe/ProxyLoaderPkg.git,"BSD 2-Clause ""Simplified"" or ""FreeBSD"" License ",BSD2Clause,CXX,,14,https://github.com/ipxe/ProxyLoaderPkg
+16369,airship-promenade,https://github.com/openstack/airship-promenade.git,Apache License ,Apache,OTHER,,481,https://github.com/openstack/airship-promenade
+5312,KBibTeX,git://anongit.kde.org/kbibtex,GNU General Public License version ,GPL,CXX,,157,https://userbase.kde.org/KBibTeX
+22547,gotthardp/tpm2-openssl,https://github.com/gotthardp/tpm2-openssl.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,7,https://github.com/gotthardp/tpm2-openssl
+16463,boostorg/iostreams,https://github.com/boostorg/iostreams.git,Boost Software License ,BSL,CXX,,44,https://github.com/boostorg/iostreams
+8662,iem-projects/pd-iemguts,https://github.com/iem-projects/pd-iemguts.git,GNU General Public License version ,GPL,CXX,,51,https://github.com/iem-projects/pd-iemguts
+17820,Argobots,https://github.com/pmodels/argobots,Open Software License,OSL,CXX,,43,https://www.argobots.org/
+22557,1g0rb0hm/plan9labs,https://github.com/1g0rb0hm/plan9labs.git,Lucent Public License Version,LPL,CXX,,5,https://github.com/1g0rb0hm/plan9labs
+16368,airship-shipyard,https://github.com/openstack/airship-shipyard.git,Apache License ,Apache,OTHER,,469,https://github.com/openstack/airship-shipyard
+22420,teshiba/LibAoe2AISharp,https://github.com/teshiba/LibAoe2AISharp.git,GNU General Public License version ,GPL,CSHARP,,5,https://github.com/teshiba/LibAoe2AISharp
+13150,optimad/mimmo,https://github.com/optimad/mimmo.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,22,https://github.com/optimad/mimmo
+22836,k0ekk0ek/continuous-integration,https://github.com/k0ekk0ek/continuous-integration.git,MIT license ,MIT,CXX,,9,https://github.com/k0ekk0ek/continuous-integration
+959,9fans/plan9port,https://github.com/9fans/plan9port,MIT license ,MIT,CXX,,131,http://swtch.com/plan9port/
+22600,jibeee/app-near,https://github.com/jibeee/app-near.git,Apache License ,Apache,CXX,,7,https://github.com/jibeee/app-near
+13460,ammarnajjar/ammarnajjar.github.io,https://github.com/ammarnajjar/ammarnajjar.github.io.git,MIT license ,MIT,OTHER,,41,https://github.com/ammarnajjar/ammarnajjar.github.io
+22815,airshipctl,git@github.com:airshipit/airshipctl.git,Apache License ,Apache,OTHER,,7,https://github.com/airshipit/airshipctl
+21543,librestack/librecast,https://github.com/librestack/librecast.git,GNU General Public License version ,GPL,CXX,,14,https://github.com/librestack/librecast
+24659,hharte/nsdos,https://github.com/hharte/nsdos.git,MIT license ,MIT,CXX,,10,https://github.com/hharte/nsdos
+22807,thread_manager,https://github.com/ysan/thread_manager,MIT license ,MIT,CXX,,3,""
+7487,ACPICA,https://github.com/acpica/acpica,Please specify,OTHER,CXX,,670,https://www.acpica.org
+21966,msk_stock_advisor,https://github.com/msk999/stock_advisor.git,Academic Free License,AFL,OTHER,,7,https://github.com/msk999/stock_advisor
+23941,rodan/cwiticald,https://github.com/rodan/cwiticald.git,GNU General Public License version ,GPL,CXX,,9,https://github.com/rodan/cwiticald
+20546,nickrobison/trestle,https://github.com/nickrobison/trestle.git,MIT license ,MIT,JAVA,JAVA,13,https://github.com/nickrobison/trestle
+12277,sipwise/libtcap,https://github.com/sipwise/libtcap.git,GNU General Public License version ,GPL,CXX,,16,https://github.com/sipwise/libtcap
+22946,Vinotron,https://gitlab.com/Vinotron.git,Please specify,OTHER,CXX,,3,https://gitlab.com/Vinotron
+20242,bind-v9_11,https://gitlab.isc.org/isc-projects/bind9.git,Mozilla Public License ,MPL,CXX,OTHER,205,https://www.isc.org/
+14936,itsallcode/openfasttrace,https://github.com/itsallcode/openfasttrace.git,GNU General Public License version ,GPL,JAVA,,66,https://github.com/itsallcode/openfasttrace
+13024,01org/TPM2.0-TSS,https://github.com/intel/tpm2-tss,"BSD 2-Clause ""Simplified"" or ""FreeBSD"" License ",BSD2Clause,CXX,,76,https://github.com/tpm2-software/tpm2-tss
+15509,Monit,https://bitbucket.org/tildeslash/monit.git,GNU Affero General Public License,AGPL,CXX,,26,https://mmonit.com/monit
+10037,Serg-Norseman/GEDKeeper,https://github.com/Serg-Norseman/GEDKeeper.git,GNU General Public License version ,GPL,CSHARP,,47,https://github.com/Serg-Norseman/GEDKeeper
+2367,libical/libical,https://github.com/libical/libical.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,70,https://github.com/libical/libical
+1105,XhmikosR/perfmonbar,https://github.com/XhmikosR/perfmonbar.git,GNU General Public License version ,GPL,CXX,,24,https://github.com/XhmikosR/perfmonbar
+213,ruby,https://githun.com/ruby/ruby.git,"BSD 2-Clause ""Simplified"" or ""FreeBSD"" License ",BSD2Clause,CXX,OTHER,1086,https://www.ruby-lang.org/
+23189,graahnul-grom/lepton-conf,https://github.com/graahnul-grom/lepton-conf.git,GNU General Public License version ,GPL,CXX,,5,https://graahnul-grom.github.io/lepton-conf
+12734,petricm/LCFIPlus,https://github.com/petricm/LCFIPlus.git,GNU General Public License version ,GPL,CXX,,174,https://github.com/petricm/LCFIPlus
+10848,vergoh/vnstat,https://github.com/vergoh/vnstat.git,GNU General Public License version ,GPL,CXX,,15,https://github.com/vergoh/vnstat
+22634,AIDASoft/podio,https://github.com/AIDASoft/podio.git,GNU General Public License version ,GPL,CXX,,549,https://github.com/AIDASoft/podio
+1689,isync,git://git.code.sf.net/p/isync/isync,GNU General Public License version ,GPL,CXX,,17,http://isync.sourceforge.net/
+23413,Rockbox,git://git.rockbox.org/rockbox.git,GNU General Public License version ,GPL,CXX,,33,https://www.rockbox.org/
+23466,IPA-DN-Cores-210728,https://github.com/IPA-CyberLab/IPA-DN-Cores.git,Apache License ,Apache,CSHARP,,105,""
+21944,awarnke/crystal_facet_uml,https://github.com/awarnke/crystal_facet_uml.git,Apache License ,Apache,CXX,,23,https://github.com/awarnke/crystal-facet-uml
+17226,wultra/powerauth-webflow,https://github.com/wultra/powerauth-webflow.git,Apache License ,Apache,JAVA,,26,https://github.com/wultra/powerauth-webflow
+12444,NVIDIA/libnvidia-container,https://github.com/NVIDIA/libnvidia-container.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,169,https://github.com/NVIDIA/libnvidia-container
+22661,AgentD/imagetool,https://github.com/AgentD/imagetool.git,GNU General Public License version ,GPL,CXX,,12,https://github.com/AgentD/imagetool
+16632,wultra/powerauth-server,https://github.com/wultra/powerauth-server.git,Affero GNU Public License,AGPL,JAVA,,21,https://github.com/wultra/powerauth-server
+16901,openv/vcontrold,https://github.com/openv/vcontrold.git,GNU General Public License version ,GPL,CXX,,11,https://github.com/openv/vcontrold
+1871,ImageMagick Legacy,https://github.com/ImageMagick/ImageMagick,Apache License ,Apache,CXX,,50,https://www.imagemagick.org
+12956,gnome-panel,https://gitlab.gnome.org/GNOME/gnome-panel.git,GNU General Public License version ,GPL,CXX,,29,https://gitlab.gnome.org/GNOME/gnome-panel
+5085,jluebbe/rauc,https://github.com/jluebbe/rauc.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,408,https://github.com/jluebbe/rauc
+11434,hydrator/wrangler-transform,https://github.com/hydrator/wrangler-transform.git,Apache License ,Apache,JAVA,,357,https://github.com/hydrator/wrangler-transform
+7268,admb-project/admb,https://github.com/admb-project/admb,"BSD 2-Clause ""Simplified"" or ""FreeBSD"" License ",BSD2Clause,CXX,,55,""
+8019,vrogier/ocilib,https://github.com/vrogier/ocilib.git,Apache License ,Apache,CXX,,135,https://github.com/vrogier/ocilib
+10210,FCALSW/FCalClusterer,https://github.com/FCALSW/FCalClusterer.git,GNU General Public License version ,GPL,CXX,,240,https://github.com/FCALSW/FCalClusterer
+13533,nrz/ylikuutio,https://github.com/nrz/ylikuutio.git,GNU General Public License version ,GPL,CXX,,189,https://github.com/nrz/ylikuutio
+23215,Kea-1.8.2,https://gitlab.isc.org/isc-projects/kea.git,Mozilla Public License ,MPL,CXX,,4,https://kea.isc.org
+16646,RigsOfRods/rigs-of-rods,https://github.com/RigsOfRods/rigs-of-rods.git,GNU General Public License version ,GPL,CXX,,64,https://github.com/RigsOfRods/rigs-of-rods
+11770,CASA,https://open-bitbucket.nrao.edu/projects/CASA/repos/casa/browse - note license file: https://open-bitbucket.nrao.edu/projects/CASA/repos/casa/browse/code/install/COPYING included with installation stuff. Includes reference to casacore (https://github.com/casacore/casacore) which is also distributed under the GPLv2,GNU General Public License version ,GPL,CXX,OTHER,25,https://casa.nrao.edu
+23555,NoobWebEngine,https://github.com/CODESOLE/NWE,GNU General Public License version ,GPL,CXX,,42,https://github.com/CODESOLE/NWE
+17673,hreinecke/nvme-cli,https://github.com/hreinecke/nvme-cli.git,GNU General Public License version ,GPL,CXX,,18,https://github.com/hreinecke/nvme-cli
+20910,nickrobison/fasttuple,https://github.com/nickrobison/fasttuple.git,Apache License ,Apache,JAVA,,6,https://github.com/nickrobison/fasttuple
+25016,static_code_examples,https://github.com/abhishekismdhn/static_code_examples,Apache License ,Apache,CXX,,8,""
+13555,MINISATIP,https://github.com/catalinii/minisatip,GNU General Public License version ,GPL,CXX,,31,https://minisatip.org
+10231,os search engine,https://github.com/privacore/open-source-search-engine.git,Apache License ,Apache,CXX,,1048,""
+13184,practicalswift/bitcoin,https://github.com/practicalswift/bitcoin.git,MIT license ,MIT,CXX,,1126,https://github.com/practicalswift/bitcoin
+20003,houp-portal,http://139.9.0.160/houp/houp_portal.git,Apache License ,Apache,JAVA,,32,""
+19434,OpenConnect,https://gitlab.com/openconnect/openconnect.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,JAVA,6,http://www.infradead.org/openconnect/
+1832,umlaeute/Gem,https://github.com/umlaeute/Gem.git,GNU General Public License version ,GPL,CXX,,128,https://github.com/umlaeute/Gem
+22883,NYASHTECH/Benchmark,https://github.com/NYASHTECH/Benchmark.git,GNU General Public License version ,GPL,JAVA,,3,https://github.com/NYASHTECH/Benchmark
+4375,CoolProp/CoolProp,https://github.com/CoolProp/CoolProp,MIT license ,MIT,CXX,OTHER,128,http://www.coolprop.org
+10045,srsLTE,https://github.com/srsLTE/srsLTE.git,Affero GNU Public License,AGPL,CXX,,787,https://github.com/srsLTE/srsLTE
+22948,impost0r/xnu-7195.81.3,https://github.com/impost0r/xnu-7195.81.3.git,Apple Public Source License ,APSL,CXX,,3,https://github.com/impost0r/xnu-7195.81.3
+367,fwts,git://kernel.ubuntu.com/hwe/fwts,GNU General Public License version ,GPL,CXX,,905,""
+4723,Mandelbulber v2,https://github.com/buddhi1980/mandelbulber2.git,GNU General Public License version ,GPL,CXX,,158,www.mandelbulber.com
+22860,9fans/vx32,https://github.com/9fans/vx32.git,MIT license ,MIT,CXX,,4,https://pdos.csail.mit.edu/~baford/vm
+23207,jibeee/app-iotex,https://github.com/jibeee/app-iotex.git,Apache License ,Apache,CXX,,6,https://github.com/jibeee/app-iotex
+1401,CVC4/CVC4,https://github.com/CVC4/CVC4.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,196,https://github.com/CVC4/CVC4
+18356,airsonic/airsonic,https://github.com/airsonic/airsonic.git,GNU General Public License version ,GPL,JAVA,,207,https://github.com/airsonic/airsonic
+23253,xmidt-org/trower-base64,https://github.com/xmidt-org/trower-base64.git,Apache License ,Apache,CXX,,7,https://github.com/xmidt-org/trower-base64
+16374,airship-divingbell,https://github.com/openstack/airship-divingbell.git,Apache License ,Apache,OTHER,,488,https://github.com/openstack/airship-divingbell
+6468,Algorithmes,https://gitlab.com/lbartoletti/Algorithmes.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,14,https://gitlab.com/lbartoletti/Algorithmes.git
+22771,ScintillaOrg/lexilla,https://github.com/ScintillaOrg/lexilla.git,Historical Permission Notice and Disclaimer ,HPND,CXX,,18,https://github.com/ScintillaOrg/lexilla
+2449,open-eid/chrome-token-signing,https://github.com/open-eid/chrome-token-signing.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,23,https://github.com/open-eid/chrome-token-signing
+13057,PandoraPFA/LArContent,https://github.com/PandoraPFA/LArContent.git,GNU General Public License version ,GPL,CXX,,255,https://github.com/PandoraPFA/LArContent
+20359,requizm/cs2d_vscode,https://github.com/requizm/cs2d_vscode.git,MIT license ,MIT,CXX,,13,https://github.com/requizm/cs2d_vscode
+16607,theimpossibleastronaut/rmw,https://github.com/theimpossibleastronaut/rmw.git,GNU General Public License version ,GPL,CXX,,66,https://remove-to-waste.info
+19444,nickrobison-usds/libmacaroons,https://github.com/nickrobison-usds/libmacaroons.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,8,https://github.com/nickrobison-usds/libmacaroons
+16367,airship-pegleg,https://github.com/openstack/airship-pegleg.git,Apache License ,Apache,OTHER,,484,https://github.com/openstack/airship-pegleg
+12422,pjasicek/CaptainClaw,https://github.com/pjasicek/CaptainClaw.git,GNU General Public License version ,GPL,CXX,,639,https://github.com/pjasicek/CaptainClaw
+22934,SOURCE OBSW AT91,https://git.ksat-stuttgart.de/source/sourceobsw,Apache License ,Apache,CXX,,8,https://git.ksat-stuttgart.de/source/sourceobsw
+13357,circonus-labs/fq,https://github.com/circonus-labs/fq.git,MIT license ,MIT,CXX,JAVA,65,https://github.com/circonus-labs/fq
+7822,lepton-eda/lepton-eda,https://github.com/lepton-eda/lepton-eda,GNU General Public License version ,GPL,CXX,,27,https://github.com/lepton-eda/lepton-eda
+22935,SOURCE OBSW IOBC,https://git.ksat-stuttgart.de/source/sourceobsw,Apache License ,Apache,CXX,,3,https://git.ksat-stuttgart.de/source/sourceobsw
+18049,catalinii/minisatip,https://github.com/catalinii/minisatip.git,GNU General Public License version ,GPL,CXX,,169,https://github.com/catalinii/minisatip
+13082,Governikus/AusweisApp2,https://github.com/Governikus/AusweisApp2.git,"European Union Public License, Version  ",EUPL ,CXX,,77,https://github.com/Governikus/AusweisApp2
+24517,folkertvanheusden/ipfixer,https://github.com/folkertvanheusden/ipfixer.git,Apache License ,Apache,CXX,,3,https://github.com/folkertvanheusden/ipfixer
+21827,seedhartha/reone,https://github.com/seedhartha/reone.git,GNU General Public License version ,GPL,CXX,,13,https://github.com/seedhartha/reone
+23004,hvidberrrg/d-wave,https://github.com/hvidberrrg/d-wave.git,GNU General Public License version ,GPL,OTHER,,8,https://github.com/hvidberrrg/d-wave
+23048,srsRAN_agpl,https://github.com/srsran/srsRAN,Affero GNU Public License,AGPL,CXX,,3,www.srsran.com
+20462,KibaAmor/knet,https://github.com/KibaAmor/knet.git,MIT license ,MIT,CXX,,34,https://github.com/KibaAmor/knet
+23681,pi-hole/FTL,https://github.com/pi-hole/FTL.git,"European Union Public License, Version  ",EUPL ,CXX,,5,https://github.com/pi-hole/FTL
+15841,boostorg/property_map,https://github.com/boostorg/property_map.git,Boost Software License ,BSL,CXX,,34,https://github.com/boostorg/property_map
+13055,PandoraPFA/ExampleContent,https://github.com/PandoraPFA/ExampleContent.git,GNU General Public License version ,GPL,CXX,,177,https://github.com/PandoraPFA/ExampleContent
+10139,DarkHobbit/doublecontact,https://github.com/DarkHobbit/doublecontact.git,GNU General Public License version ,GPL,CXX,,310,https://github.com/DarkHobbit/doublecontact
+11042,darktorres/wiRedPanda,https://github.com/darktorres/wiRedPanda.git,GNU General Public License version ,GPL,CXX,,4,https://github.com/darktorres/wiRedPanda
+14007,boostorg/format,https://github.com/boostorg/format.git,Please specify,OTHER,CXX,,173,https://github.com/boostorg/format
+13054,PandoraPFA/PandoraMonitoring,https://github.com/PandoraPFA/PandoraMonitoring.git,GNU General Public License version ,GPL,CXX,,204,https://github.com/PandoraPFA/PandoraMonitoring
+18591,k0ekk0ek/nsd,https://github.com/k0ekk0ek/nsd.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,97,https://github.com/k0ekk0ek/nsd
+22944,darthcloud/BlueRetro,https://github.com/darthcloud/BlueRetro.git,Apache License ,Apache,CXX,,4,https://github.com/darthcloud/BlueRetro
+20341,hharte/mm_manager,https://github.com/hharte/mm_manager.git,MIT license ,MIT,CXX,,79,https://github.com/hharte/mm_manager
+23849,Ciremun/password-manager,https://github.com/Ciremun/password-manager.git,MIT license ,MIT,CXX,,284,https://github.com/Ciremun/password-manager
+13053,PandoraPFA/PandoraSDK,https://github.com/PandoraPFA/PandoraSDK.git,GNU General Public License version ,GPL,CXX,,203,https://github.com/PandoraPFA/PandoraSDK
+22193,acidanthera/BrightnessKeys,https://github.com/acidanthera/BrightnessKeys.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,15,https://github.com/acidanthera/BrightnessKeys
+18282,lovasko/m_trie,https://github.com/lovasko/m_trie.git,"BSD 2-Clause ""Simplified"" or ""FreeBSD"" License ",BSD2Clause,CXX,,814,https://github.com/lovasko/m_trie
+16167,boostorg/dynamic_bitset,https://github.com/boostorg/dynamic_bitset.git,Boost Software License ,BSL,CXX,,47,https://github.com/boostorg/dynamic_bitset
+16212,ssbssa/heob,https://github.com/ssbssa/heob.git,Boost Software License ,BSL,CXX,,75,https://github.com/ssbssa/heob
+23914,Bijiabo/HugeList,https://github.com/Bijiabo/HugeList.git,MIT license ,MIT,JAVASCRIPT,,5,https://github.com/Bijiabo/HugeList
+22575,ShenChen1/Freak,https://github.com/ShenChen1/Freak.git,MIT license ,MIT,CXX,JAVASCRIPT,22,https://github.com/ShenChen1/Freak
+23385,dp111/Pi1MHz,https://github.com/dp111/Pi1MHz.git,GNU General Public License version ,GPL,CXX,,3,https://github.com/dp111/Pi1MHz
+2347,s3d,git://git.code.sf.net/p/s3d/code,GNU General Public License version ,GPL,CXX,,31,http://s3d.sourceforge.net/
+313,liburcu,git://git.lttng.org/userspace-rcu.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,788,https://liburcu.org/
+23244,finikorg/zephyr,https://github.com/finikorg/zephyr.git,Apache License ,Apache,CXX,,15,https://github.com/finikorg/zephyr
+19997,mec-app-appsotre-backend,http://139.9.0.160/MEC-APP/appstore.git,Apache License ,Apache,JAVA,,42,""
+16173,boostorg/logic,https://github.com/boostorg/logic.git,Boost Software License ,BSL,CXX,,28,https://github.com/boostorg/logic
+15328,AndreasFuchsSIT/tpm2-tss,https://github.com/AndreasFuchsSIT/tpm2-tss.git,"BSD 2-Clause ""Simplified"" or ""FreeBSD"" License ",BSD2Clause,CXX,,25,https://github.com/AndreasFuchsSIT/tpm2-tss
+7148,lordrasmus/libcwebui,https://github.com/lordrasmus/libcwebui.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,98,https://github.com/lordrasmus/libcwebui
+13767,andrewbird/dosemu2,https://github.com/andrewbird/dosemu2.git,GNU General Public License version ,GPL,CXX,,16,https://github.com/andrewbird/dosemu2
+8402,jadler-mocking/jadler,https://github.com/jadler-mocking/jadler.git,MIT license ,MIT,JAVA,,17,https://github.com/jadler-mocking/jadler
+11687,gebn/members,https://github.com/gebn/members.git,GNU General Public License version ,GPL,CXX,,81,https://github.com/gebn/members
+16373,airship-berth,https://github.com/openstack/airship-berth.git,Apache License ,Apache,OTHER,,478,https://github.com/openstack/airship-berth
+16555,openstack-helm,https://github.com/openstack/openstack-helm.git,Apache License ,Apache,OTHER,,405,https://wiki.openstack.org/wiki/Openstack-helm
+22215,calcitem/Sanmill,https://github.com/calcitem/Sanmill.git,GNU General Public License version ,GPL,CXX,,5,https://github.com/calcitem/Sanmill
+23576,PostgreSQL_REL_14_STABLE,git://git.postgresql.org/postgresql.git,The PostgreSQL License,PostgreSQL,CXX,,60,https://www.postgresql.org
+22852,gustavonihei/incubator-nuttx,https://github.com/gustavonihei/incubator-nuttx.git,Apache License ,Apache,CXX,,4,https://github.com/gustavonihei/incubator-nuttx
+7871,guillemj/xfstt,https://github.com/guillemj/xfstt.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,14,https://github.com/guillemj/xfstt
+23280,linux-staging,git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/staging.git,GNU General Public License version ,GPL,CXX,,12,kernel.org
+16618,openstack-helm-addons,https://github.com/openstack/openstack-helm-addons.git,Apache License ,Apache,OTHER,,442,https://storyboard.openstack.org/#!/project/openstack/openstack-helm-addons
+23017,libudfread,https://code.videolan.org/videolan/libudfread.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,3,https://code.videolan.org/videolan/libudfread.git
+2114,tvheadend/tvheadend,https://github.com/tvheadend/tvheadend.git,GNU General Public License version ,GPL,CXX,,45,https://github.com/tvheadend/tvheadend
+17227,wultra/powerauth-webflow-customization,https://github.com/wultra/powerauth-webflow-customization.git,Apache License ,Apache,JAVA,,16,https://github.com/wultra/powerauth-webflow-customization
+14194,naver/rye,https://github.com/naver/rye.git,GNU General Public License version ,GPL,CXX,JAVA,1210,https://github.com/naver/rye
+7930,guillemj/libmd,https://github.com/guillemj/libmd.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,7,http
+5361,GhostPDL,git://ghostscript.com:/home/git/ghostpdl.git,Affero GNU Public License,AGPL,CXX,,927,www.ghostscript.com
+12364,iLCSoft/MarlinTrk,https://github.com/iLCSoft/MarlinTrk.git,GNU General Public License version ,GPL,CXX,,238,https://github.com/iLCSoft/MarlinTrk
+8592,nalexandru/NekoEngine,https://github.com/nalexandru/NekoEngine,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,25,https://github.com/nalexandru/NekoEngine
+22833,airship-treasuremap,https://github.com/airshipit/treasuremap.git,Apache License ,Apache,OTHER,,4,https://github.com/airshipit/Treasuremap
+6663,intel-cmt-cat,https://github.com/01org/intel-cmt-cat.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,346,https://github.com/01org/intel-cmt-cat
+13716,flamewing/mdtools,https://github.com/flamewing/mdtools.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,57,https://github.com/flamewing/mdtools
+12919,leo-yuriev/libfptu,https://github.com/leo-yuriev/libfptu.git,Apache License ,Apache,CXX,,68,https://github.com/erthink/libfptu
+24483,bjosv/f-stack,https://github.com/bjosv/f-stack.git,"BSD 2-Clause ""Simplified"" or ""FreeBSD"" License ",BSD2Clause,CXX,,3,https://github.com/bjosv/f-stack
+19343,kravietz/pam_tacplus,https://github.com/kravietz/pam_tacplus.git,GNU General Public License version ,GPL,CXX,,39,https://github.com/kravietz/pam_tacplus
+20891,bracketttc/ncpty,https://github.com/bracketttc/ncpty.git,MIT license ,MIT,CXX,,51,https://gitlab.com/bracketttc/ncpty
+6236,PostgreSQL_REL9_5_STABLE,git.postgresql.org,The PostgreSQL License,PostgreSQL,CXX,,318,http://www.postgresql.org
+16048,boostorg/move,https://github.com/boostorg/move.git,Boost Software License ,BSL,CXX,,43,https://github.com/boostorg/move
+14455,benini/scid,https://github.com/benini/scid.git,GNU General Public License version ,GPL,CXX,,430,https://github.com/benini/scid
+9461,Levak/warfacebot,https://github.com/Levak/warfacebot.git,Affero GNU Public License,AGPL,CXX,,531,https://github.com/Levak/warfacebot
+16371,airship-maas,https://github.com/openstack/airship-maas.git,Apache License ,Apache,OTHER,,483,https://github.com/openstack/airship-maas
+1986,SnapRAID,https://github.com/amadvance/snapraid.git,GNU General Public License version ,GPL,CXX,,47,http://www.snapraid.it/
+10493,PostgreSQL_REL9_6_STABLE,git://git.postgresql.org/git/postgresql.git,The PostgreSQL License,PostgreSQL,CXX,,272,http://www.postgresql.org
+12953,metacity,https://gitlab.gnome.org/GNOME/metacity.git,GNU General Public License version ,GPL,CXX,,28,https://gitlab.gnome.org/GNOME/metacity
+23702,notjosh/AdvancedMap,https://github.com/notjosh/AdvancedMap.git,MIT license ,MIT,CXX,,13,https://github.com/notjosh/AdvancedMap
+16577,chipitsine/haproxy,https://github.com/chipitsine/haproxy.git,GNU General Public License version ,GPL,CXX,,23,https://github.com/chipitsine/haproxy
+4543,MPICH,https://github.com/pmodels/mpich,Please specify,OTHER,CXX,,1133,www.mpich.org
+22626,czietz/emutos,https://github.com/czietz/emutos.git,GNU General Public License version ,GPL,CXX,,7,https://github.com/czietz/emutos
+309,lttng-tools,git://git.lttng.org/lttng-tools.git,GNU General Public License version ,GPL,CXX,,1172,http://lttng.org/
+22647,ZBar,https://github.com/mchehab/zbar,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,JAVA,460,https://github.com/mchehab/zbar
+24724,niclasr/crosswrench,https://github.com/niclasr/crosswrench.git,MIT license ,MIT,CXX,,6,https://github.com/niclasr/crosswrench
+22973,marklion/progress_assitant,https://github.com/marklion/progress_assitant.git,MIT license ,MIT,CXX,JAVASCRIPT,15,https://github.com/marklion/progress_assitant
+5166,sydbox,git.exherbo.org/sydbox-1.git,GNU General Public License version ,GPL,CXX,,19,http://git.exherbo.org/sydbox-1.git
+21369,vlvkobal_netdata,git://github.com/vlvkobal/netdata.git,GNU General Public License version ,GPL,CXX,,8,https://github.com/vlvkobal/netdata
+23296,hurchalla/factoring,https://github.com/hurchalla/factoring.git,MIT license ,MIT,CXX,,4,https://github.com/hurchalla/factoring
+107,libccid,https://anonscm.debian.org/git/collab-maint/ccid.git/,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,38,https://ccid.apdu.fr/
+25245,traffic-feature-extraction,https://github.com/ywjfmc/traffic-feature-extraction,GNU General Public License version ,GPL,OTHER,,7,https://github.com/ywjfmc/traffic-feature-extraction
+7744,Illumina/interop,https://github.com/Illumina/interop,GNU General Public License version ,GPL,CXX,,188,http://illumina.github.io/interop/index.html
+24139,zhaohuiweixiao/zhh,https://github.com/zhaohuiweixiao/zhh.git,MIT license ,MIT,JAVASCRIPT,,4,https://github.com/zhaohuiweixiao/zhh
+23236,xmidt-org/cjwt,https://github.com/xmidt-org/cjwt.git,Apache License ,Apache,CXX,,9,https://github.com/xmidt-org/cjwt
+12421,namhyung/uftrace,https://github.com/namhyung/uftrace.git,GNU General Public License version ,GPL,CXX,,553,https://github.com/namhyung/uftrace
+22822,airship-vino,https://github.com/airshipit/vino,Apache License ,Apache,OTHER,,8,https://github.com/airshipit/vino
+21424,pmem/ndctl,https://github.com/pmem/ndctl.git,GNU General Public License version ,GPL,CXX,,42,https://github.com/pmem/ndctl
+23405,mOS v0.9_2,https://github.com/intel/mOS.git,GNU General Public License version ,GPL,CXX,,18,""
+1417,lighttpd/lighttpd1.4,https://github.com/lighttpd/lighttpd1.4.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,149,https://github.com/lighttpd/lighttpd1.4
+21945,mdkinney/edk2,https://github.com/mdkinney/edk2.git,Please specify,OTHER,CXX,,23,https://github.com/mdkinney/edk2
+5450,behdad/harfbuzz,https://github.com/behdad/harfbuzz.git,MIT license ,MIT,CXX,,563,https://github.com/harfbuzz/harfbuzz
+23942,rodan/iotcpd,https://github.com/rodan/iotcpd.git,"BSD 2-Clause ""Simplified"" or ""FreeBSD"" License ",BSD2Clause,CXX,,5,https://github.com/rodan/iotcpd
+19003,Unidata/rosetta,https://github.com/Unidata/rosetta.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,JAVA,,38,https://github.com/Unidata/rosetta
+17073,besser82/libxcrypt,https://github.com/besser82/libxcrypt.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,130,https://github.com/besser82/libxcrypt
+23361,pbatard/uefi-ntfs,https://github.com/pbatard/uefi-ntfs.git,GNU General Public License version ,GPL,CXX,,16,https://github.com/pbatard/uefi-ntfs
+23449,HoloStriker/TimePlanner,https://github.com/HoloStriker/TimePlanner.git,GNU General Public License version ,GPL,JAVA,,3,https://github.com/HoloStriker/TimePlanner
+16909,tpm2-pkcs11,https://github.com/tpm2-software/tpm2-pkcs11.git,"BSD 2-Clause ""Simplified"" or ""FreeBSD"" License ",BSD2Clause,CXX,,18,https://github.com/tpm2-software/tpm2-pkcs11
+15842,boostorg/ptr_container,https://github.com/boostorg/ptr_container.git,Boost Software License ,BSL,CXX,,21,https://github.com/boostorg/ptr_container
+25460,CERT-C benchmark,https://github.com/jakub-zwolakowski/tis-compelysis.git,Please specify,OTHER,CXX,,5,""
+4285,martanne/abduco,https://github.com/martanne/abduco.git,ISC License ,ISC,CXX,,130,http://www.brain-dump.org/projects/abduco/
+21784,MBSE BBS,https://sourceforge.net/p/mbsebbs/code/ci/master/tree/,GNU General Public License version ,GPL,CXX,,5,https://sourceforge.net/projects/mbsebbs/
+23450,vld375/bee2,https://github.com/vld375/bee2.git,GNU General Public License version ,GPL,CXX,OTHER,32,https://github.com/vld375/bee2
+511,guacamole-client,git://github.com/apache/guacamole-client.git,Apache License ,Apache,JAVA,JAVASCRIPT,686,http://guacamole.apache.org/
+8303,MuPDF,http://git.ghostscript.com/?p=mupdf.git;a=summary,Affero GNU Public License,AGPL,CXX,,913,mupdf.com
+6585,jamesodhunt/procenv,https://github.com/jamesodhunt/procenv.git,GNU General Public License version ,GPL,CXX,,154,https://github.com/jamesodhunt/procenv
+23384,folkertvanheusden/constatus,https://github.com/folkertvanheusden/constatus.git,GNU General Public License version ,GPL,CXX,,3,https://github.com/folkertvanheusden/constatus
+23939,CRoaring,https://github.com/RoaringBitmap/CRoaring,Apache License ,Apache,CXX,,4,http://roaringbitmap.org/
+23407,sheavner/lde,https://github.com/sheavner/lde.git,GNU General Public License version ,GPL,CXX,,6,https://github.com/sheavner/lde
+23377,LedgerHQ/app-handshake,https://github.com/LedgerHQ/app-handshake.git,MIT license ,MIT,CXX,,7,https://github.com/LedgerHQ/app-handshake
+10143,tanzislam/cryptopals,https://github.com/tanzislam/cryptopals.git,GNU General Public License version ,GPL,CXX,,364,https://github.com/tanzislam/cryptopals
+16318,boostorg/assign,https://github.com/boostorg/assign.git,Boost Software License ,BSL,CXX,,30,https://github.com/boostorg/assign
+21872,Samahu/OceanWATERS,https://github.com/Samahu/OceanWATERS.git,NASA Open Source Agreement,NASA,CXX,,259,https://github.com/Samahu/OceanWATERS
+16052,lxc/lxcfs,https://github.com/lxc/lxcfs.git,GNU General Public License version ,GPL,CXX,,47,https://github.com/lxc/lxcfs
+24173,davea42/tsearch-code,https://github.com/davea42/tsearch-code.git,"BSD 2-Clause ""Simplified"" or ""FreeBSD"" License ",BSD2Clause,CXX,,4,https://github.com/davea42/tsearch-code
+2195,OpenSSL-1.0.2,https://github.com/openssl/openssl.git,Apache License ,Apache,CXX,,272,https://www.openssl.org/
+5392,ARM-software/arm-trusted-firmware,https://github.com/ARM-software/arm-trusted-firmware.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,1394,https://www.trustedfirmware.org
+15,BIND,https://gitlab.isc.org/isc-projects/bind9.git,Mozilla Public License ,MPL,CXX,OTHER,411,https://www.isc.org
+7557,vboot,https://chromium.googlesource.com/chromiumos/platform/vboot_reference,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,447,https://www.chromium.org/chromium-os/chromiumos-design-docs/verified-boot
+18496,pqarmitage/keepalived,https://github.com/pqarmitage/keepalived.git,GNU General Public License version ,GPL,CXX,,42,https://github.com/pqarmitage/keepalived
+20444,SPM,git@gitlab.inria.fr:solverstack/spm.git,CeCILL License  ,CECILL,CXX,,113,https://gitlab.inria.fr/solverstack/spm
+1830,umlaeute/pd-iemnet,https://github.com/umlaeute/pd-iemnet.git,GNU General Public License version ,GPL,CXX,,46,https://github.com/umlaeute/pd-iemnet
+22923,camorama,https://github.com/alessio/camorama,GNU General Public License version ,GPL,CXX,,13,https://github.com/alessio/camorama
+10772,circonus-labs/libmtev,https://github.com/circonus-labs/libmtev.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,769,https://github.com/circonus-labs/libmtev
+23437,mateoconlechuga/convbin,https://github.com/mateoconlechuga/convbin.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,6,https://github.com/mateoconlechuga/convbin
+21579,eclipse-cyclonedds/cyclonedds-cxx,https://github.com/eclipse-cyclonedds/cyclonedds-cxx.git,Eclipse Public License ,EPL,CXX,,65,https://github.com/eclipse-cyclonedds/cyclonedds-cxx
+23468,IPA-DN-ThinController-Private-210729,https://github.com/IPA-CyberLab/IPA-DN-ThinController-Private.git,Apache License ,Apache,CSHARP,,39,""
+15800,boostorg/pool,https://github.com/boostorg/pool.git,Boost Software License ,BSL,CXX,,298,https://github.com/boostorg/pool
+18132,virtio-win/kvm-guest-drivers-windows,https://github.com/virtio-win/kvm-guest-drivers-windows.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,CSHARP,37,https://github.com/virtio-win/kvm-guest-drivers-windows
+2180,libusb/libusb,https://github.com/libusb/libusb.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,25,http://libusb.info/
+5282,TheAnswer/Core3,https://github.com/TheAnswer/Core3.git,Affero GNU Public License,AGPL,CXX,,28,https://github.com/TheAnswer/Core3
+18238,stellar core,https://github.com/stellar/stellar-core.git,Apache License ,Apache,CXX,,23,https://www.stellar.org/
+173,Open MPI,https://github.com/open-mpi/ompi.git,"BSD 2-Clause ""Simplified"" or ""FreeBSD"" License ",BSD2Clause,CXX,,1184,http://www.open-mpi.org/
+24154,davea42/readelfobj-code,https://github.com/davea42/readelfobj-code.git,"BSD 2-Clause ""Simplified"" or ""FreeBSD"" License ",BSD2Clause,CXX,,10,https://github.com/davea42/readelfobj-code
+21972,tedd-an/test-bluez,https://github.com/tedd-an/test-bluez.git,GNU General Public License version ,GPL,CXX,,14,https://github.com/tedd-an/test-bluez
+13836,jeanguyomarch/eovim,https://github.com/jeanguyomarch/eovim.git,MIT license ,MIT,CXX,,25,https://phab.enlightenment.org/w/projects/eovim/
+23595,Latency-GG - Probe,https://gitlab.com/latency.gg/lgg-probe-cpp.git,Please specify,OTHER,CXX,,13,latency.gg
+982,testdisk,https://git.cgsecurity.org/testdisk.git,GNU General Public License version ,GPL,CXX,,201,https://www.cgsecurity.org/wiki/TestDisk
+16339,deborphan,https://salsa.debian.org/debian/deborphan.git,MIT license ,MIT,CXX,,27,https://salsa.debian.org/debian/deborphan
+20491,JFreegman/SpicyPass,https://github.com/JFreegman/SpicyPass.git,GNU General Public License version ,GPL,CXX,,12,https://github.com/JFreegman/SpicyPass
+23960,darrenkenny/grub2,https://github.com/darrenkenny/grub2.git,GNU General Public License version ,GPL,CXX,,35,https://github.com/darrenkenny/grub2
+13745,node.gl,https://github.com/gopro/gopro-lib-node.gl,Apache License ,Apache,CXX,,99,https://github.com/gopro/gopro-lib-node.gl
+13030,hoene/libmysofa,https://github.com/hoene/libmysofa.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,179,https://github.com/hoene/libmysofa
+23087,ECN,https://github.com/ecn.git,Please specify,OTHER,CXX,,6,""
+23254,xmidt-org/wrp-c,https://github.com/xmidt-org/wrp-c.git,Apache License ,Apache,CXX,,5,https://github.com/xmidt-org/wrp-c
+23487,folkertvanheusden/rtpmidid,https://github.com/folkertvanheusden/rtpmidid.git,GNU General Public License version ,GPL,CXX,,3,https://github.com/folkertvanheusden/rtpmidid
+4391,mupen64plus-video-glide64mk2,https://github.com/mupen64plus/mupen64plus-video-glide64mk2.git,GNU General Public License version ,GPL,CXX,,65,https://code.google.com/p/mupen64plus/
+3756,kamailio/kamailio,https://github.com/kamailio/kamailio.git,GNU General Public License version ,GPL,CXX,,122,http://www.kamailio.org
+3061,troglobit/smcroute,https://github.com/troglobit/smcroute.git,GNU General Public License version ,GPL,CXX,,63,https://github.com/troglobit/smcroute
+24030,arcaneframework/alien,https://github.com/arcaneframework/alien.git,Apache License ,Apache,CXX,,205,https://github.com/arcaneframework/alien
+24860,windowsair/bilibili_danmaku,https://github.com/windowsair/bilibili_danmaku.git,GNU General Public License version ,GPL,CXX,,25,https://github.com/windowsair/bilibili_danmaku
+2511,libxlsxwriter,https://github.com/jmcnamara/libxlsxwriter.git,"BSD 2-Clause ""Simplified"" or ""FreeBSD"" License ",BSD2Clause,CXX,,68,""
+3921,OpenCover/opencover,https://github.com/OpenCover/opencover.git,MIT license ,MIT,CXX,CSHARP,221,https://github.com/OpenCover/opencover
+24382,vincenzodistasio97/websocket-chat,https://github.com/vincenzodistasio97/websocket-chat.git,GNU General Public License version ,GPL,JAVASCRIPT,OTHER,5,https://github.com/vincenzodistasio97/websocket-chat
+23624,auc,https://github.com/openwrt/packages.git,GNU General Public License version ,GPL,CXX,,4,https://github.com/openwrt/packages/tree/master/utils/auc
+23108,wultra/lime-java-core,https://github.com/wultra/lime-java-core.git,Apache License ,Apache,JAVA,,5,https://github.com/wultra/lime-java-core
+21953,zowe/sample-spring-boot-api-service,https://github.com/zowe/sample-spring-boot-api-service.git,Apache License ,Apache,JAVA,JAVASCRIPT,337,https://github.com/zowe/sample-spring-boot-api-service
+23259,xmidt-org/xmidt-agent,https://github.com/xmidt-org/xmidt-agent.git,Apache License ,Apache,CXX,,26,https://github.com/xmidt-org/xmidt-agent
+9321,Zephyr,https://github.com/zephyrproject-rtos/zephyr,Apache License ,Apache,CXX,,234,https://www.zephyrproject.org/
+16072,Unidata/LDM,https://github.com/Unidata/LDM.git,Please specify,OTHER,CXX,,270,https://www.unidata.ucar.edu/software/ldm
+24352,libzmq-mirror,https://github.com/liwg06/libzmq.git,GNU General Public License version ,GPL,CXX,,3,""
+24323,justin-stephenson/tlog,https://github.com/justin-stephenson/tlog.git,GNU General Public License version ,GPL,CXX,,7,https://github.com/justin-stephenson/tlog
+317,FreeBSD,https://git.FreeBSD.org/src.git,Please specify,OTHER,CXX,,382,https://www.FreeBSD.org
+6507,Node.js,https://github.com/nodejs/node.git,MIT license ,MIT,CXX,OTHER,862,https://nodejs.org
+15611,andreasdr/tdme2,https://github.com/andreasdr/tdme2.git,MIT license ,MIT,CXX,,32,https://github.com/andreasdr/tdme2
+23813,toyota-connected/ivi-homescreen,https://github.com/toyota-connected/ivi-homescreen.git,Apache License ,Apache,CXX,,6,https://github.com/toyota-connected/ivi-homescreen
+17515,pmix/prrte,https://github.com/pmix/prrte.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,6,https://github.com/pmix/prrte
+13702,Monetra/mstdlib,https://github.com/Monetra/mstdlib.git,MIT license ,MIT,CXX,,28,https://github.com/Monetra/mstdlib
+24305,valgrind-preload,https://github.com/yugr/valgrind-preload,MIT license ,MIT,CXX,,5,""
+24043,BOINC/boinc-apps,https://github.com/BOINC/boinc-apps.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,OTHER,49,https://github.com/BOINC/boinc-apps
+3320,troglobit/mrouted,https://github.com/troglobit/mrouted.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,53,https://github.com/troglobit/mrouted
+12978,etternagame/etterna,https://github.com/etternagame/etterna.git,MIT license ,MIT,CXX,,53,https://github.com/etternagame/etterna
+4975,JFreegman/toxic,https://github.com/JFreegman/toxic,GNU General Public License version ,GPL,CXX,,62,https://github.com/JFreegman/toxic
+13265,meetecho/janus-gateway,https://github.com/meetecho/janus-gateway.git,GNU General Public License version ,GPL,CXX,,55,https://github.com/meetecho/janus-gateway
+13944,packetdrill@nplab,https://github.com/nplab/packetdrill,GNU General Public License version ,GPL,CXX,,43,https://github.com/nplab/packetdrill
+696,rspamd,git://github.com/rspamd/rspamd.git,Apache License ,Apache,CXX,,29,http://rspamd.com
+24700,folkertvanheusden/kek,https://github.com/folkertvanheusden/kek.git,Apache License ,Apache,CXX,,7,https://github.com/folkertvanheusden/kek
+4090,VeraCrypt,git://git.code.sf.net/p/veracrypt/code,Please specify,OTHER,CXX,,27,https://www.veracrypt.fr
+17057,certmonger,https://pagure.io/certmonger/tree/master,GNU General Public License version ,GPL,CXX,,19,https://pagure.io/certmonger
+22350,homewsn/bsniffhub,https://github.com/homewsn/bsniffhub.git,GNU General Public License version ,GPL,CXX,,19,https://github.com/homewsn/bsniffhub
+2083,guillemj/dpkg,https://github.com/guillemj/dpkg.git,GNU General Public License version ,GPL,CXX,,42,https://wiki.debian.org/Teams/Dpkg
+13943,oyranos-cms/oyranos,https://github.com/oyranos-cms/oyranos.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,85,http://www.oyranos.org/about
+7422,pure-data/pure-data,https://github.com/pure-data/pure-data.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,561,https://github.com/pure-data/pure-data
+23709,LeSpocky/rauc,https://github.com/LeSpocky/rauc.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,62,https://github.com/LeSpocky/rauc
+12360,iLCSoft/LCTuple,https://github.com/iLCSoft/LCTuple.git,GNU General Public License version ,GPL,CXX,,244,https://github.com/iLCSoft/LCTuple
+12020,rcornwell/sims,https://github.com/rcornwell/sims.git,"BSD 2-Clause ""Simplified"" or ""FreeBSD"" License ",BSD2Clause,CXX,,186,https://github.com/rcornwell/sims
+222,strongSwan,https://github.com/strongswan/strongswan.git,GNU General Public License version ,GPL,CXX,,81,https://www.strongswan.org
+9989,PTLib GnuGk Fork,https://www.github.com/willamowius/ptlib,Mozilla Public License ,MPL,CXX,,104,https://www.gnugk.org/
+314,GNUGatekeeper,https://github.com/willamowius/gnugk,GNU General Public License version ,GPL,CXX,OTHER,309,https://www.gnugk.org/
+24195,nci-ui,https://github.com/ashishdotme/nci-ui.git,MIT license ,MIT,JAVASCRIPT,,6,""
+1307,GNU Mach,git://git.sv.gnu.org/hurd/gnumach.git,GNU General Public License version ,GPL,CXX,,10,https://www.gnu.org/software/hurd/
+23948,reviewboard/reviewboard,https://github.com/reviewboard/reviewboard.git,MIT license ,MIT,OTHER,JAVASCRIPT,6,https://github.com/reviewboard/reviewboard
+4515,residuum/PuRestJson,https://github.com/residuum/PuRestJson.git,MIT license ,MIT,CXX,,18,http://ix.residuum.org/pd/purest_json.html
+24190,daeyeon/lwnode-forked,https://github.com/daeyeon/lwnode-forked.git,Apache License ,Apache,CXX,,4,https://github.com/daeyeon/lwnode-forked
+2860,doxygen/doxygen,https://github.com/doxygen/doxygen.git,GNU General Public License version ,GPL,CXX,,443,http://www.doxygen.nl/
+16546,wfjm/w11,https://github.com/wfjm/w11.git,GNU General Public License version ,GPL,CXX,,30,https://github.com/wfjm/w11
+3201,jstedfast/MimeKit,https://github.com/jstedfast/MimeKit.git,MIT license ,MIT,CSHARP,,40,https://github.com/jstedfast/MimeKit
+4325,Checktestdata,https://github.com/DOMjudge/checktestdata.git,"BSD 2-Clause ""Simplified"" or ""FreeBSD"" License ",BSD2Clause,CXX,,38,https://github.com/DOMjudge/checktestdata
+719,H323Plus,https://github.com/willamowius/h323plus,Mozilla Public License ,MPL,CXX,,74,https://www.h323plus.org/
+8093,tumic0/GPXSee,https://github.com/tumic0/GPXSee.git,GNU General Public License version ,GPL,CXX,,32,http://www.gpxsee.org
+23326,LedgerHQ/app-sia-x,https://github.com/LedgerHQ/app-sia-x.git,MIT license ,MIT,CXX,,10,https://github.com/LedgerHQ/app-sia-x
+23706,openatv/enigma2,https://github.com/openatv/enigma2.git,GNU General Public License version ,GPL,CXX,OTHER,15,https://github.com/openatv/enigma2
+9436,drons/nbody,https://github.com/drons/nbody.git,GNU General Public License version ,GPL,CXX,,20,https://github.com/drons/nbody
+16527,zerebubuth/openstreetmap-cgimap,https://github.com/zerebubuth/openstreetmap-cgimap.git,GNU General Public License version ,GPL,CXX,,17,https://github.com/zerebubuth/openstreetmap-cgimap
+23935,rodan/sigdup,https://github.com/rodan/sigdup.git,GNU General Public License version ,GPL,CXX,,7,https://github.com/rodan/sigdup
+22678,acassen/keepalived,https://github.com/acassen/keepalived.git,GNU General Public License version ,GPL,CXX,,18,https://keepalived.org
+14740,jnidzwetzki/bitfinex-v2-wss-api-java,https://github.com/jnidzwetzki/bitfinex-v2-wss-api-java.git,Apache License ,Apache,JAVA,,13,https://github.com/jnidzwetzki/bitfinex-v2-wss-api-java
+15167,janisozaur/OpenLoco,https://github.com/janisozaur/OpenLoco.git,MIT license ,MIT,CXX,,6,https://github.com/janisozaur/OpenLoco
+21704,mslusarz/csv-nix-tools,https://github.com/mslusarz/csv-nix-tools.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,61,https://github.com/mslusarz/csv-nix-tools
+24848,jorisgeer/morelia,https://github.com/jorisgeer/morelia.git,Affero GNU Public License,AGPL,CXX,,4,https://github.com/jorisgeer/morelia
+18787,suculent/thinx-device-api,https://github.com/suculent/thinx-device-api.git,ISC License ,ISC,JAVASCRIPT,,11,https://github.com/suculent/thinx-device-api
+17201,Speech Dispatcher,https://github.com/brailcom/speechd.git,GNU General Public License version ,GPL,CXX,,14,https://github.com/brailcom/speechd
+22390,michaelrsweet/htmlcss,https://github.com/michaelrsweet/htmlcss.git,Apache License ,Apache,CXX,,4,https://github.com/michaelrsweet/htmlcss
+22411,gromox,https://github.com/grammm-dev/gromox,Affero GNU Public License,AGPL,CXX,OTHER,208,https://gromox.com/
+19379,GIMP 2.99 test,https://gitlab.gnome.org/GNOME/gimp/tree/master,GNU General Public License version ,GPL,CXX,OTHER,8,https://www.gimp.org
+11935,iLCSoft/MarlinFastJet,https://github.com/iLCSoft/MarlinFastJet.git,GNU General Public License version ,GPL,CXX,,243,https://github.com/iLCSoft/MarlinFastJet
+2836,libbluray,git://git.videolan.org/libbluray.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,JAVA,139,http://www.videolan.org/developers/libbluray.html
+3678,Common Desktop Environment,git://git.code.sf.net/p/cdesktopenv/code,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,49,https://sourceforge.net/projects/cdesktopenv/
+24192,acidanthera/CpuTopologySync,https://github.com/acidanthera/CpuTopologySync.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,4,https://github.com/acidanthera/CpuTopologySync
+7203,LabPlot,git://anongit.kde.org/labplot,GNU General Public License version ,GPL,CXX,,36,http://labplot.sourceforge.net/
+8025,libvma,git://github.com/Mellanox/libvma.git,GNU General Public License version ,GPL,CXX,,28,https://github.com/Mellanox/libvma
+24835,michaelrsweet/stringsutil,https://github.com/michaelrsweet/stringsutil.git,Apache License ,Apache,CXX,,3,https://github.com/michaelrsweet/stringsutil
+1695,poppler,git://git.freedesktop.org/git/poppler/poppler,GNU General Public License version ,GPL,CXX,,78,http://poppler.freedesktop.org/
+4274,ofiwg/libfabric,git@github.com:ofiwg/libfabric.git,"BSD 2-Clause ""Simplified"" or ""FreeBSD"" License ",BSD2Clause,CXX,,1496,http://ofiwg.github.io/libfabric/
+13715,flamewing/mdcomp,https://github.com/flamewing/mdcomp.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,73,https://github.com/flamewing/mdcomp
+5784,bel2125/civetweb,https://github.com/bel2125/civetweb.git,MIT license ,MIT,CXX,,78,https://github.com/bel2125/civetweb
+23416,xmidt-org/cutils,https://github.com/xmidt-org/cutils.git,Apache License ,Apache,CXX,,16,https://github.com/xmidt-org/cutils
+12363,iLCSoft/MarlinReco,https://github.com/iLCSoft/MarlinReco.git,GNU General Public License version ,GPL,CXX,,313,https://github.com/iLCSoft/MarlinReco
+19312,precice/precice,https://github.com/precice/precice.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,OTHER,126,https://github.com/precice/precice
+23477,IPA-DN-ThinApps-Private-210730,https://github.com/IPA-CyberLab/IPA-DN-ThinApps-Private.git,Apache License ,Apache,CXX,,53,""
+399,eclipse/mosquitto,https://github.com/eclipse/mosquitto,Eclipse Public License ,EPL,CXX,,197,https://mosquitto.org/
+22894,rizinorg/rz-ghidra,https://github.com/rizinorg/rz-ghidra.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,110,https://github.com/rizinorg/rz-ghidra
+24277,MCPPPP,https://github.com/supsm/MCPPPP.git,Mozilla Public License ,MPL,CXX,,79,https://github.com/supsm/MCPPPP
+24342,Lexxie9952/fcw.org-server,https://github.com/Lexxie9952/fcw.org-server.git,GNU General Public License version ,GPL,CXX,,6,https://github.com/Lexxie9952/fcw.org-server
+18711,truschival/DigitalRoosterGui,https://github.com/truschival/DigitalRoosterGui.git,GNU General Public License version ,GPL,CXX,,84,https://github.com/truschival/DigitalRoosterGui
+24359,owntone/owntone-server,https://github.com/owntone/owntone-server.git,GNU General Public License version ,GPL,CXX,,13,https://github.com/owntone/owntone-server
+24292,redis-mirror,https://github.com/liwg06/redis.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,35,""
+24161,pmem/miniasync,https://github.com/pmem/miniasync.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,280,https://github.com/pmem/miniasync
+2935,liborcus,https://gitlab.com/orcus/orcus.git,Mozilla Public License ,MPL,CXX,,16,https://gitlab.com/orcus/orcus
+7614,GNU Taler,git://git.taler.net/,Affero GNU Public License,AGPL,CXX,,43,https://taler.net/
+20069,foxbow/mixplay,https://github.com/foxbow/mixplay.git,MIT license ,MIT,CXX,JAVASCRIPT,35,https://github.com/foxbow/mixplay
+22320,open-eid/MOPP-Android,https://github.com/open-eid/MOPP-Android.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,JAVA,,34,https://github.com/open-eid/MOPP-Android
+24456,vapier/ncompress,https://github.com/vapier/ncompress.git,Please specify,OTHER,CXX,,3,https://vapier.github.io/ncompress/
+12629,antonyantony/libreswan,https://github.com/antonyantony/libreswan.git,GNU General Public License version ,GPL,CXX,,1468,https://github.com/antonyantony/libreswan
+23318,bind-mnowak-v9_16,https://gitlab.isc.org/mnowak/bind9.git,Mozilla Public License ,MPL,CXX,OTHER,7,""
+17780,lip6/pnml2nupn,https://github.com/lip6/pnml2nupn.git,Eclipse Public License ,EPL,JAVA,,9,https://github.com/lip6/pnml2nupn
+23199,jla_05,https://github.com/teragrep/jla_05.git,Apache License ,Apache,JAVA,,12,https://teragrep.com
+17222,wultra/powerauth-admin,https://github.com/wultra/powerauth-admin.git,Apache License ,Apache,JAVA,,19,https://github.com/wultra/powerauth-admin
+24345,Flole998/DAWN,https://github.com/Flole998/DAWN.git,GNU General Public License version ,GPL,CXX,,3,https://github.com/Flole998/DAWN
+24126,CLASS fuel cycle simulator,https://gitlab.in2p3.fr/sens/CLASS.git,CeCILL License  ,CECILL,CXX,,8,https://gitlab.in2p3.fr/sens/CLASS
+2319,wpa_supplicant,http://w1.fi/hostap.git,"BSD 2-Clause ""Simplified"" or ""FreeBSD"" License ",BSD2Clause,CXX,,208,http://w1.fi/wpa_supplicant/
+5846,sasobadovinac/FreeCAD,https://github.com/sasobadovinac/FreeCAD.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,OTHER,68,http://www.freecadweb.org/
+11976,eXsio/nestedj,https://github.com/eXsio/nestedj.git,Apache License ,Apache,JAVA,,60,https://github.com/eXsio/nestedj
+4398,exactimage,https://svn.exactcode.de/exact-image/trunk/,GNU General Public License version ,GPL,CXX,,57,https://exactcode.com/opensource/exactimage/
+190,pcsc-lite,https://anonscm.debian.org/git/collab-maint/pcsc-lite.git/,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,43,https://pcsclite.apdu.fr/
+20307,tcsh-org/tcsh,https://github.com/tcsh-org/tcsh.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,12,https://tcsh.org/
+22709,jla_01,https://github.com/teragrep/jla_01.git,Apache License ,Apache,JAVA,,18,https://teragrep.com
+20226,samcmill/wassail,https://github.com/samcmill/wassail.git,Mozilla Public License ,MPL,CXX,,63,https://github.com/samcmill/wassail
+23156,jla_04,https://github.com/teragrep/jla_04.git,Apache License ,Apache,JAVA,,27,https://teragrep.com
+13206,AVSystem/Anjay,https://github.com/AVSystem/Anjay.git,Apache License ,Apache,CXX,,92,https://github.com/AVSystem/Anjay
+12957,gnome-applets,https://gitlab.gnome.org/GNOME/gnome-applets.git,GNU General Public License version ,GPL,CXX,,31,https://gitlab.gnome.org/GNOME/gnome-applets
+20855,CERT-Polska/ursadb,https://github.com/CERT-Polska/ursadb.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,58,https://github.com/CERT-Polska/ursadb
+7867,apache/mynewt-core,https://github.com/apache/mynewt-core,Apache License ,Apache,CXX,,100,https://mynewt.apache.org/
+11982,simh/simh,https://github.com/simh/simh,"BSD 2-Clause ""Simplified"" or ""FreeBSD"" License ",BSD2Clause,CXX,,154,http://simh.trailing-edge.com/
+13865,rhboot/efivar,https://github.com/rhboot/efivar.git,GNU General Public License version ,GPL,CXX,,30,https://github.com/rhboot/efivar
+13094,OSTree,https://github.com/ostreedev/ostree/,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,65,https://github.com/ostreedev/ostree/
+7023,aerospike/aerospike-server,https://github.com/aerospike/aerospike-server,Affero GNU Public License,AGPL,CXX,,40,https://www.aerospike.com/
+24291,openssl-mirror,https://github.com/liwg06/openssl.git,Apache License ,Apache,CXX,,38,""
+23346,jla_06,https://github.com/teragrep/jla_06.git,Apache License ,Apache,JAVA,,14,https://teragrep.com/
+21716,daal4py,https://github.com/IntelPython/daal4py,Apache License ,Apache,OTHER,CXX,197,https://github.com/IntelPython/daal4py
+23461,marcinlos/iga-ads,https://github.com/marcinlos/iga-ads.git,MIT license ,MIT,CXX,,25,https://github.com/marcinlos/iga-ads
+24098,WillyPillow/miku,https://github.com/WillyPillow/miku.git,MIT license ,MIT,CXX,,8,https://github.com/WillyPillow/miku
+20170,bind-mnowak,https://gitlab.isc.org/mnowak/bind9.git,Mozilla Public License ,MPL,CXX,OTHER,52,https://www.isc.org/
+15555,Kaffeine,git://anongit.kde.org/kaffeine,GNU General Public License version ,GPL,CXX,,28,https://www.kde.org/applications/multimedia/kaffeine/
+634,Scintilla,http://hg.code.sf.net/p/scintilla/code,Historical Permission Notice and Disclaimer ,HPND,CXX,,160,scintilla.org
+4775,experiments,https://github.com/orbitcowboy/experiments.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,326,https://github.com/orbitcowboy/experiments.git
+240,varnish,https://github.com/varnishcache/varnish-cache,"BSD 2-Clause ""Simplified"" or ""FreeBSD"" License ",BSD2Clause,CXX,OTHER,595,https://www.varnish-cache.org/
+19620,alfredh/baresip,https://github.com/alfredh/baresip.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,31,https://github.com/alfredh/baresip
+17663,squinky86/STIGQter,https://github.com/squinky86/STIGQter.git,GNU General Public License version ,GPL,CXX,,6,https://www.stigqter.com/
+15754,rockowitz/ddcui,https://github.com/rockowitz/ddcui.git,GNU General Public License version ,GPL,CXX,,44,https://github.com/rockowitz/ddcutil
+3364,xine-ui,http://hg.debian.org/hg/xine-lib/xine-ui/,GNU General Public License version ,GPL,CXX,,37,https://www.xine-project.org/
+716,SciTE,http://hg.code.sf.net/p/scintilla/scite,Historical Permission Notice and Disclaimer ,HPND,CXX,,121,http://www.scintilla.org/SciTE.html
+4226,BOINC/boinc,https://github.com/BOINC/boinc.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,JAVA,69,https://boinc.berkeley.edu
+5134,net-snmp,git://git.code.sf.net/p/net-snmp/code,"BSD 2-Clause ""Simplified"" or ""FreeBSD"" License ",BSD2Clause,CXX,,133,http://www.net-snmp.org/
+24211,jla_02,https://github.com/teragrep/jla_02.git,Apache License ,Apache,JAVA,,11,https://teragrep.com
+24547,folkertvanheusden/termcamng,https://github.com/folkertvanheusden/termcamng.git,Apache License ,Apache,CXX,,4,https://github.com/folkertvanheusden/termcamng
+22460,Simple Cite Cloud II,https://bitbucket.org/apurde/simple-cite-cloud/src/master/,Apache License ,Apache,JAVA,,5,https://bitbucket.org/apurde/simple-cite-cloud
+2174,pbatard/libwdi,https://github.com/pbatard/libwdi.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,31,https://github.com/pbatard/libwdi
+7170,xbmc/xbmc,https://github.com/xbmc/xbmc,GNU General Public License version ,GPL,CXX,,308,http://kodi.tv
+24373,test232341321432,https://github.com/bisegni/chaosframework.git,"European Union Public License, Version  ",EUPL ,CXX,,10,http://chaos.infn.it
+16631,wultra/powerauth-crypto,https://github.com/wultra/powerauth-crypto.git,Apache License ,Apache,JAVA,,27,https://github.com/wultra/powerauth-crypto
+15751,ganltc/nfs-ganesha,https://github.com/ganltc/nfs-ganesha.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,25,https://github.com/ganltc/nfs-ganesha
+7479,sysrepo/sysrepo,https://github.com/sysrepo/sysrepo.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,373,https://github.com/sysrepo/sysrepo
+15940,versat/cntlm,https://github.com/versat/cntlm.git,GNU General Public License version ,GPL,CXX,,123,https://github.com/versat/cntlm
+24687,bind-mnowak-v9_18,https://gitlab.isc.org/mnowak/bind9.git,Mozilla Public License ,MPL,CXX,OTHER,3,""
+2530,qt-project,https://code.qt.io,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,349,http://www.qt.io
+22882,bbvch/Coronan,https://github.com/bbvch/Coronan.git,MIT license ,MIT,CXX,,18,https://github.com/bbvch/Coronan
+9014,Qt Brynhildr,https://github.com/funfun-dc5/qtbrynhildr.git,GNU General Public License version ,GPL,CXX,,200,https://mcz-xoxo.cocolog-nifty.com/blog/
+15170,SNSystems/pstore,https://github.com/SNSystems/pstore.git,Apache License ,Apache,CXX,,66,https://github.com/SNSystems/pstore
+24311,starseeker/osmesa,https://github.com/starseeker/osmesa.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,4,https://github.com/starseeker/osmesa
+22514,cea-hpc/phobos,https://github.com/cea-hpc/phobos.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,5,https://github.com/cea-hpc/phobos
+24295,frr-mirror,https://github.com/liwg06/frr.git,GNU General Public License version ,GPL,CXX,,39,""
+23888,shawnanastasio/libkvmchan,https://github.com/shawnanastasio/libkvmchan.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,5,https://github.com/shawnanastasio/libkvmchan
+17209,LongSoft/UEFITool,https://github.com/LongSoft/UEFITool.git,"BSD 2-Clause ""Simplified"" or ""FreeBSD"" License ",BSD2Clause,CXX,,93,https://github.com/LongSoft/UEFITool
+22389,michaelrsweet/htmldoc,https://github.com/michaelrsweet/htmldoc.git,GNU General Public License version ,GPL,CXX,,10,https://www.msweet.org/htmldoc
+15866,boostorg/mpl,https://github.com/boostorg/mpl.git,Boost Software License ,BSL,CXX,,69,https://github.com/boostorg/mpl
+11712,sqlitebrowser/sqlitebrowser,https://github.com/sqlitebrowser/sqlitebrowser.git,GNU General Public License version ,GPL,CXX,,19,https://github.com/sqlitebrowser/sqlitebrowser
+1020,flashrom,svn://flashrom.org/flashrom/trunk,GNU General Public License version ,GPL,CXX,,291,http://flashrom.org
+5103,carlesfernandez/gnss-sdr,https://github.com/carlesfernandez/gnss-sdr.git,GNU General Public License version ,GPL,CXX,,113,https://gnss-sdr.org
+13133,atmoswing/atmoswing,https://github.com/atmoswing/atmoswing.git,Common Development and Distribution License ,CDDL,CXX,,11,https://github.com/atmoswing/atmoswing
+2532,strongSwan Windows,https://github.com/strongswan/strongswan.git,GNU General Public License version ,GPL,CXX,,36,https://www.strongswan.org
+16137,acidanthera/Lilu,https://github.com/acidanthera/Lilu.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,315,https://github.com/acidanthera/Lilu
+22164,Trusted Firmware-M,https://git.trustedfirmware.org/TF-M/trusted-firmware-m.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,240,https://www.trustedfirmware.org/
+310,lttng-ust,git://git.lttng.org/lttng-ust.git,GNU General Public License version ,GPL,CXX,JAVA,945,https://lttng.org/
+14171,mbroz/cryptsetup,https://github.com/mbroz/cryptsetup,GNU General Public License version ,GPL,CXX,,77,https://gitlab.com/cryptsetup/cryptsetup
+5242,gnss-sdr/gnss-sdr,https://github.com/gnss-sdr/gnss-sdr.git,GNU General Public License version ,GPL,CXX,,301,https://gnss-sdr.org
+369,lxc/lxc,https://github.com/lxc/lxc,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,1027,https://linuxcontainers.org/lxc
+24005,CODESOLE/opengl_learn,https://github.com/CODESOLE/opengl_learn.git,GNU General Public License version ,GPL,CXX,,19,https://github.com/CODESOLE/opengl_learn
+22195,acidanthera/RTCMemoryFixup,https://github.com/acidanthera/RTCMemoryFixup.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,4,https://github.com/acidanthera/RTCMemoryFixup
+23036,omp87/vdms,https://github.com/omp87/vdms.git,MIT license ,MIT,CXX,JAVA,3,https://github.com/omp87/vdms
+23682,LedgerHQ/app-neo3,https://github.com/LedgerHQ/app-neo3.git,MIT license ,MIT,CXX,,24,https://github.com/LedgerHQ/app-neo3
+24436,teragrep/rad_01,https://github.com/teragrep/rad_01.git,Apache License ,Apache,JAVA,,3,https://github.com/teragrep/rad_01
+12101,fcitx/libime,https://github.com/fcitx/libime.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,969,https://github.com/fcitx/libime
+12365,iLCSoft/MarlinTrkProcessors,https://github.com/iLCSoft/MarlinTrkProcessors.git,GNU General Public License version ,GPL,CXX,,285,https://github.com/iLCSoft/MarlinTrkProcessors
+24616,leosac/leosac,https://github.com/leosac/leosac.git,Affero GNU Public License,AGPL,CXX,,36,https://github.com/leosac/leosac
+699,vifm/vifm,https://github.com/vifm/vifm,GNU General Public License version ,GPL,CXX,,44,https://vifm.info/
+12366,iLCSoft/MarlinUtil,https://github.com/iLCSoft/MarlinUtil.git,GNU General Public License version ,GPL,CXX,,277,https://github.com/iLCSoft/MarlinUtil
+14908,boostorg/date_time,https://github.com/boostorg/date_time.git,Please specify,OTHER,CXX,,191,https://github.com/boostorg/date_time
+24310,stepcode/stepcode,https://github.com/stepcode/stepcode.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,4,https://github.com/stepcode/stepcode
+8656,chan-sccp/chan-sccp,https://github.com/chan-sccp/chan-sccp,GNU General Public License version ,GPL,CXX,,490,https://github.com/chan-sccp/chan-sccp
+18867,NLnetLabs/nsd,https://github.com/NLnetLabs/nsd.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,71,https://github.com/NLnetLabs/nsd
+15216,cgzones/logrotate,https://github.com/cgzones/logrotate.git,GNU General Public License version ,GPL,CXX,,36,https://github.com/cgzones/logrotate
+24863,csutils/csdiff,https://github.com/csutils/csdiff.git,GNU General Public License version ,GPL,CXX,,32,https://github.com/csutils/csdiff
+24236,teragrep/rlp_02,https://github.com/teragrep/rlp_02.git,Affero GNU Public License,AGPL,JAVASCRIPT,JAVA,33,https://github.com/teragrep/rlp_02
+11673,xine-lib,https://anonscm.debian.org/hg/xine-lib/xine-lib-1.2,GNU General Public License version ,GPL,CXX,,105,https://www.xine-project.org/
+22153,Waffle/waffle,https://github.com/Waffle/waffle.git,MIT license ,MIT,JAVA,,4,https://github.com/Waffle/waffle
+23354,acidanthera/FeatureUnlock,https://github.com/acidanthera/FeatureUnlock.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,44,https://github.com/acidanthera/FeatureUnlock
+9934,OpenBSD kernel,anoncvs@anoncvs.ca.openbsd.org:/cvs,ISC License ,ISC,CXX,,136,https://www.openbsd.org
+16795,netdata/netdata,https://github.com/netdata/netdata.git,GNU General Public License version ,GPL,CXX,OTHER,1041,https://github.com/netdata/netdata
+20802,libcamera,git://linuxtv.org/libcamera.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,407,https://www.libcamera.org
+12222,sipwise/rtpengine,https://github.com/sipwise/rtpengine.git,GNU General Public License version ,GPL,CXX,,262,https://github.com/sipwise/rtpengine
+12890,syscall_intercept,https://github.com/pmem/syscall_intercept.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,259,https://github.com/pmem/syscall_intercept
+14246,willamowius/callgen323,https://github.com/willamowius/callgen323.git,Mozilla Public License ,MPL,CXX,,22,https://github.com/willamowius/callgen323
+2846,seccomp/libseccomp,https://github.com/seccomp/libseccomp,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,50,https://github.com/seccomp/libseccomp/wiki
+9375,Sandia-OpenSHMEM/SOS,https://github.com/Sandia-OpenSHMEM/SOS.git,"BSD 2-Clause ""Simplified"" or ""FreeBSD"" License ",BSD2Clause,CXX,,45,https://github.com/Sandia-OpenSHMEM/SOS
+16177,acidanthera/WhateverGreen,https://github.com/acidanthera/WhateverGreen.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,466,https://github.com/acidanthera/WhateverGreen
+24294,ovs-mirror,https://github.com/liwg06/ovs.git,Apache License ,Apache,CXX,,29,""
+21678,MDCM,https://github.com/AlizaMedicalImaging/MDCM.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,78,""
+10813,ivmai/bdwgc,https://github.com/ivmai/bdwgc.git,MIT license ,MIT,CXX,,461,https://github.com/ivmai/bdwgc
+10970,obgm/libcoap,https://github.com/obgm/libcoap.git,"BSD 2-Clause ""Simplified"" or ""FreeBSD"" License ",BSD2Clause,CXX,,61,https://libcoap.net
+24515,cfe_16,https://github.com/teragrep/cfe_16.git,Affero GNU Public License,AGPL,JAVA,,4,https://teragrep.com
+22710,rlp_01,https://github.com/teragrep/rlp_01.git,GNU Affero General Public License,AGPL,JAVA,,22,https://teragrep.com/
+16571,acidanthera/VirtualSMC,https://github.com/acidanthera/VirtualSMC.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,314,https://github.com/acidanthera/VirtualSMC
+6508,gansm/finalcut,https://github.com/gansm/finalcut.git,GNU General Public License version ,GPL,CXX,,1008,https://github.com/gansm/finalcut
+22196,acidanthera/VoodooInput,https://github.com/acidanthera/VoodooInput.git,GNU General Public License version ,GPL,CXX,,26,https://github.com/acidanthera/VoodooInput
+8057,0intro/mitchell_reeds,https://github.com/0intro/mitchell_reeds.git,MIT license ,MIT,CXX,,6,https://github.com/0intro/mitchell_reeds
+23542,mateoconlechuga/convimg,https://github.com/mateoconlechuga/convimg.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,6,https://github.com/mateoconlechuga/convimg
+3365,avagin/criu,https://github.com/xemul/criu.git,GNU General Public License version ,GPL,CXX,,134,criu.org
+25018,folkertvanheusden/libHappy,https://github.com/folkertvanheusden/libHappy.git,Apache License ,Apache,CXX,,5,https://github.com/folkertvanheusden/libHappy
+3987,frankmorgner/vsmartcard,https://github.com/frankmorgner/vsmartcard.git,GNU General Public License version ,GPL,CXX,,144,https://github.com/frankmorgner/vsmartcard
+23248,LedgerHQ/app-tron,https://github.com/LedgerHQ/app-tron.git,MIT license ,MIT,CXX,,17,https://github.com/LedgerHQ/app-tron
+25458,folkertvanheusden/lora-aprs-gw,https://github.com/folkertvanheusden/lora-aprs-gw.git,Please specify,OTHER,CXX,,11,https://github.com/folkertvanheusden/lora-aprs-gw
+1148,libaacs,https://code.videolan.org/videolan/libaacs.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,15,http://www.videolan.org/developers/libaacs.html
+1773,Konsole,git://anongit.kde.org/konsole.git,GNU General Public License version ,GPL,CXX,,76,http://konsole.kde.org/
+18,BRL-CAD,https://github.com/BRL-CAD/brlcad.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,35,http://brlcad.org
+1992,tstack/lnav,https://github.com/tstack/lnav.git,"BSD 2-Clause ""Simplified"" or ""FreeBSD"" License ",BSD2Clause,CXX,,21,https://github.com/tstack/lnav
+25124,kdudka/predator,https://github.com/kdudka/predator.git,GNU General Public License version ,GPL,CXX,,16,https://github.com/kdudka/predator
+20858,canonical/raft,https://github.com/canonical/raft.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,117,https://github.com/canonical/raft
+3406,GRUB,git://git.savannah.gnu.org/grub.git,GNU General Public License version ,GPL,CXX,,103,http://www.gnu.org/software/grub/
+7642,CESNET/libnetconf2,https://github.com/CESNET/libnetconf2.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,135,https://github.com/CESNET/libnetconf2
+3545,troglobit/finit,https://github.com/troglobit/finit.git,MIT license ,MIT,CXX,,122,https://github.com/troglobit/finit
+5467,0intro/libtask,https://github.com/0intro/libtask,MIT license ,MIT,CXX,,13,https://swtch.com/libtask/
+20243,bind-v9_16,https://gitlab.isc.org/isc-projects/bind9.git,Mozilla Public License ,MPL,CXX,OTHER,253,https://www.isc.org/
+13885,siemens/efibootguard,https://github.com/siemens/efibootguard.git,GNU General Public License version ,GPL,CXX,,85,https://github.com/siemens/efibootguard
+1115,HPCC-Platform,https://github.com/hpcc-systems/HPCC-Platform.git,Apache License ,Apache,CXX,JAVA,289,https://github.com/hpcc-systems/HPCC-Platform
+356,xfsprogs,git://git.kernel.org/pub/scm/fs/xfs/xfsprogs-dev.git,GNU General Public License version ,GPL,CXX,,370,https://xfs.wiki.kernel.org/
+12988,AppleWin,https://github.com/AppleWin/AppleWin.git,GNU General Public License version ,GPL,CXX,,25,https://github.com/AppleWin/AppleWin
+21964,longturn/freeciv21,https://github.com/longturn/freeciv21.git,GNU General Public License version ,GPL,CXX,,74,https://github.com/longturn/freeciv21
+24562,jraman-grub,https://github.com/jraman567/grub.git,GNU General Public License version ,GPL,CXX,,12,""
+233,tiff,https://gitlab.com/libtiff/libtiff,Please specify,OTHER,CXX,,171,http://www.simplesystems.org/libtiff/
+19944,yugr/sortcheck,https://github.com/yugr/sortcheck.git,MIT license ,MIT,CXX,,51,https://github.com/yugr/sortcheck
+25336,helloworld-coverity,git@github.com:156911632/test-coverity.git,"BSD 2-Clause ""Simplified"" or ""FreeBSD"" License ",BSD2Clause,CXX,,3,github.com/156911632
+16401,acidanthera/AirportBrcmFixup,https://github.com/acidanthera/AirportBrcmFixup.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,123,https://github.com/acidanthera/AirportBrcmFixup
+13132,optimad/bitpit,https://github.com/optimad/bitpit.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,62,http://optimad.github.io/bitpit/
+2260,gssdp,https://gitlab.gnome.org/GNOME/gssdp,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,104,http://gupnp.org
+11653,RTEMS-Tools,git://git.rtems.org/rtems-tools.git,"BSD 2-Clause ""Simplified"" or ""FreeBSD"" License ",BSD2Clause,CXX,,82,https://www.rtems.org
+23098,daos-1.2,https://github.com/daos-stack/daos.git,"BSD 2-Clause ""Simplified"" or ""FreeBSD"" License ",BSD2Clause,CXX,CXX,57,https://github.com/daos-stack/daos
+23184,cado-nfs,https://gitlab.inria.fr/cado-nfs/cado-nfs,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,96,https://cado-nfs.gitlabpages.inria.fr/
+6201,MOAB,git@bitbucket.org:fathomteam/moab.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,70,http://sigma.mcs.anl.gov/moab-library/
+24419,bind-v9_18,https://gitlab.isc.org/isc-projects/bind9.git,Mozilla Public License ,MPL,CXX,OTHER,65,https://www.isc.org
+25280,teragrep/rlo_08,https://github.com/teragrep/rlo_08.git,Apache License ,Apache,JAVASCRIPT,,21,https://github.com/teragrep/rlo_08
+13205,phpredis/phpredis,https://github.com/phpredis/phpredis.git,PHP License,PHP,CXX,,46,https://github.com/phpredis/phpredis
+6195,CESNET/Nemea-Detectors,https://github.com/CESNET/Nemea-Detectors.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,32,https://github.com/CESNET/Nemea-Detectors
+18535,chart-fx,https://github.com/GSI-CS-CO/chart-fx/tree/JDK8,Apache License ,Apache,JAVA,,102,https://github.com/GSI-CS-CO/chart-fx/tree/JDK8
+22252,acidanthera/RestrictEvents,https://github.com/acidanthera/RestrictEvents.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,74,https://github.com/acidanthera/RestrictEvents
+17256,Suricata-Update,https://github.com/OISF/suricata-update,GNU General Public License version ,GPL,OTHER,,28,https://suricata-ids.org
+25054,henricj/dunelegacy,https://github.com/henricj/dunelegacy.git,GNU General Public License version ,GPL,CXX,,39,https://github.com/henricj/dunelegacy
+19945,yugr/libdebugme,https://github.com/yugr/libdebugme.git,MIT license ,MIT,CXX,,41,https://github.com/yugr/libdebugme
+20178,bind-mnowak-v9_14,https://gitlab.isc.org/mnowak/bind9.git,Mozilla Public License ,MPL,CXX,OTHER,6,""
+14627,ap51-flash/ap51-flash,https://github.com/ap51-flash/ap51-flash.git,GNU General Public License version ,GPL,CXX,,53,https://github.com/ap51-flash/ap51-flash
+25037,linux-perf,git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git,GNU General Public License version ,GPL,CXX,,4,""
+21451,horseshoe,https://github.com/horseshoe/horseshoe.git,MIT license ,MIT,JAVA,,104,https://github.com/horseshoe/horseshoe
+24457,vapier/coverity-scan-action,https://github.com/vapier/coverity-scan-action.git,MIT license ,MIT,CXX,,30,https://github.com/vapier/coverity-scan-action
+311,babeltrace,git://git.efficios.com/babeltrace.git,MIT license ,MIT,CXX,,976,https://www.efficios.com/babeltrace
+1861,dajobe/raptor,https://github.com/dajobe/raptor.git,Apache License ,Apache,CXX,,25,https://github.com/dajobe/raptor
+11479,jnidzwetzki/bboxdb,https://github.com/jnidzwetzki/bboxdb.git,Apache License ,Apache,JAVA,,34,https://github.com/jnidzwetzki/bboxdb
+11383,vuurmuur,https://github.com/inliniac/vuurmuur,GNU General Public License version ,GPL,CXX,,32,https://www.vuurmuur.org
+12784,HiOA-ABI/nikita-noark5-core,https://github.com/HiOA-ABI/nikita-noark5-core.git,Affero GNU Public License,AGPL,JAVA,JAVASCRIPT,248,https://gitlab.com/OsloMet-ABI/nikita-noark5-core
+15560,libnslog,git://git.netsurf-browser.org/libnslog.git,MIT license ,MIT,CXX,,1281,http://www.netsurf-browser.org/
+22194,acidanthera/CpuTscSync,https://github.com/acidanthera/CpuTscSync.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,47,https://github.com/acidanthera/CpuTscSync
+20932,LZElectricfield,https://gitlab.com/luxzeplin/sim/LZElectricField,Academic Free License,AFL,CXX,,76,""
+22205,acidanthera/DebugEnhancer,https://github.com/acidanthera/DebugEnhancer.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,30,https://github.com/acidanthera/DebugEnhancer
+25104,isochron,https://github.com/vladimiroltean/isochron.git,GNU General Public License version ,GPL,CXX,,4,https://github.com/vladimiroltean/isochron.git
+16841,acidanthera/CPUFriend,https://github.com/acidanthera/CPUFriend.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,88,https://github.com/acidanthera/CPUFriend
+20892,nickrobison/tdtree,https://github.com/nickrobison/tdtree.git,MIT license ,MIT,JAVA,,13,https://github.com/nickrobison/tdtree
+2069,DerDakon/Qsmtp,https://github.com/DerDakon/Qsmtp,GNU General Public License version ,GPL,CXX,,138,http://opensource.sf-tec.de/Qsmtp/
+6285,janisozaur/OpenRCT2,https://github.com/janisozaur/OpenRCT2.git,GNU General Public License version ,GPL,CXX,,180,https://github.com/janisozaur/OpenRCT2
+22494,LBCrion/sfwbar,https://github.com/LBCrion/sfwbar.git,GNU General Public License version ,GPL,CXX,,255,https://github.com/LBCrion/sfwbar
+24726,HappySeaFox/sail,https://github.com/HappySeaFox/sail.git,MIT license ,MIT,CXX,,3,https://github.com/HappySeaFox/sail
+6237,mmd-osm/Overpass-API,https://github.com/mmd-osm/Overpass-API.git,Affero GNU Public License,AGPL,CXX,,13,https://github.com/mmd-osm/Overpass-API
+24657,hharte/oasis-utils,https://github.com/hharte/oasis-utils.git,MIT license ,MIT,CXX,,17,https://github.com/hharte/oasis-utils
+16788,hvdijk/dash,https://github.com/hvdijk/dash.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,45,https://github.com/hvdijk/gwsh
+22191,acidanthera/BrcmPatchRAM,https://github.com/acidanthera/BrcmPatchRAM.git,GNU General Public License version ,GPL,CXX,,60,https://github.com/acidanthera/BrcmPatchRAM
+19332,NVIDIA/pyxis,https://github.com/NVIDIA/pyxis.git,Apache License ,Apache,CXX,,84,https://github.com/NVIDIA/pyxis
+1789,frankmorgner/openpace,git://github.com/frankmorgner/openpace.git,GNU General Public License version ,GPL,CXX,JAVA,94,http://openpace.sourceforge.net/
+19942,smithproxy,git://github.com/astibal/smithproxy.git,GNU General Public License version ,GPL,CXX,OTHER,82,smithproxy.org
+23290,freeDiameter,http://www.freediameter.net/hg/freeDiameter,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,11,http://www.freediameter.net/trac/
+169,OpenCV,https://github.com/opencv/opencv,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,432,opencv.org
+19614,daos-stack/daos,https://github.com/daos-stack/daos.git,"BSD 2-Clause ""Simplified"" or ""FreeBSD"" License ",BSD2Clause,CXX,,456,https://github.com/daos-stack/daos
+24658,hharte/mzos,https://github.com/hharte/mzos.git,MIT license ,MIT,CXX,,12,https://github.com/hharte/mzos
+19965,lhpsdr,http://www.5b4az.org/pkg/lhpsdr/,GNU General Public License version ,GPL,CXX,,86,http://www.5b4az.org/
+19358,dwmw2/openconnect,https://github.com/dwmw2/openconnect.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,JAVA,278,https://github.com/dwmw2/openconnect
+22674,NceBoy/NceAlg,https://github.com/NceBoy/NceAlg.git,GNU General Public License version ,GPL,CXX,,58,https://github.com/NceBoy/NceAlg
+16402,acidanthera/HibernationFixup,https://github.com/acidanthera/HibernationFixup.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,114,https://github.com/acidanthera/HibernationFixup
+13528,CT800,https://www.ct800.net/download.htm,GNU General Public License version ,GPL,CXX,,97,https://www.ct800.net
+4973,a2o/snoopy,https://github.com/a2o/snoopy.git,GNU General Public License version ,GPL,CXX,,73,https://github.com/a2o/snoopy
+13430,usrsctp,git://github.com/sctplab/usrsctp.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,70,https://github.com/sctplab/usrsctp
+6190,CESNET/Nemea-Supervisor,https://github.com/CESNET/Nemea-Supervisor.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,17,https://github.com/CESNET/Nemea-Supervisor
+12070,sgallagher/sscg,https://github.com/sgallagher/sscg,GNU General Public License version ,GPL,CXX,,197,github.com/sgallagher/sscg
+15377,batman-adv,https://git.open-mesh.org/batman-adv.git,GNU General Public License version ,GPL,CXX,,117,https://www.open-mesh.org/projects/batman-adv/wiki
+1912,MidnightCommander/mc,git://github.com/MidnightCommander/mc.git,GNU General Public License version ,GPL,CXX,,42,http://www.midnight-commander.org/
+22858,9fans/drawterm,https://github.com/9fans/drawterm.git,MIT license ,MIT,CXX,,5,https://swtch.com/drawterm
+20884,void-linux/xbps,https://github.com/void-linux/xbps.git,"BSD 2-Clause ""Simplified"" or ""FreeBSD"" License ",BSD2Clause,CXX,,760,https://github.com/void-linux/xbps
+23857,ea4k/klog,https://github.com/ea4k/klog.git,GNU General Public License version ,GPL,CXX,,8,https://github.com/ea4k/klog
+3740,OpenMW/openmw,git://github.com/openmw/openmw.git,GNU General Public License version ,GPL,CXX,,485,https://openmw.org
+12359,iLCSoft/lcgeo,https://github.com/iLCSoft/lcgeo.git,GNU General Public License version ,GPL,CXX,,839,https://github.com/iLCSoft/lcgeo
+21946,The-OpenROAD-Project/OpenROAD,https://github.com/The-OpenROAD-Project/OpenROAD.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,342,https://github.com/The-OpenROAD-Project/OpenROAD
+22417,pit-ray/win-vind,https://github.com/pit-ray/win-vind.git,MIT license ,MIT,CXX,,125,https://pit-ray.github.io/win-vind/
+22192,acidanthera/NVMeFix,https://github.com/acidanthera/NVMeFix.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,31,https://github.com/acidanthera/NVMeFix
+10336,Leptonica,https://github.com/DanBloomberg/leptonica.git,Please specify,OTHER,CXX,,80,http://www.leptonica.org/
+3238,tklengyel/drakvuf,https://github.com/tklengyel/drakvuf.git,GNU General Public License version ,GPL,CXX,,1086,https://tklengyel.github.io/drakvuf
+706,Hubbub,http://git.netsurf-browser.org/libhubbub.git/,MIT license ,MIT,CXX,,1921,http://www.netsurf-browser.org/projects/hubbub/
+230,the-tcpdump-group/tcpdump,https://github.com/the-tcpdump-group/tcpdump.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,345,www.tcpdump.org
+20348,zlib-ng/zlib-ng,https://github.com/zlib-ng/zlib-ng.git,zlib/libpng license ,Zlib,CXX,,34,https://github.com/zlib-ng/zlib-ng
+15504,trader,git://git.zap.org.au/data/git/trader.git,GNU General Public License version ,GPL,CXX,,13,https://www.zap.org.au/projects/trader/
+24784,KristianMika/PA193-Bech32m,https://github.com/KristianMika/PA193-Bech32m.git,MIT license ,MIT,CXX,,83,https://github.com/KristianMika/PA193-Bech32m
+7978,MPICH-CH4,https://github.com/pmodels/mpich,Please specify,OTHER,CXX,,822,www.mpich.org
+12920,leo-yuriev/libfpta,https://github.com/leo-yuriev/libfpta.git,Apache License ,Apache,CXX,,132,https://github.com/erthink/libfpta
+869,llvm,https://github.com/llvm/llvm-project,Apache License ,Apache,CXX,,1164,https://llvm.org/
+641,Bro,https://github.com/zeek/zeek,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,728,zeek.org
+3952,Apache Qpid dispatch-router,https://github.com/apache/qpid-dispatch.git,Apache License ,Apache,CXX,OTHER,469,http://qpid.apache.org/components/dispatch-router/index.html
+285,digiKam,https://invent.kde.org/kde/digikam.git,GNU General Public License version ,GPL,CXX,,258,https://www.digikam.org
+16859,flanglet/kanzi-cpp,https://github.com/flanglet/kanzi-cpp.git,Apache License ,Apache,CXX,,37,https://github.com/flanglet/kanzi-cpp
+3961,ImageMagick,https://github.com/ImageMagick/ImageMagick,Apache License ,Apache,CXX,,38,https://www.imagemagick.org
+4040,sysstat/sysstat,https://github.com/sysstat/sysstat.git,GNU General Public License version ,GPL,CXX,,59,https://github.com/sysstat/sysstat
+14405,Subsurface-divelog/subsurface,https://github.com/Subsurface-divelog/subsurface.git,GNU General Public License version ,GPL,CXX,,1028,https://subsurface-divelog.org/
+20419,jonasblixt/bpak,https://github.com/jonasblixt/bpak.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,13,https://github.com/jonasblixt/bpak
+20710,TDengine,https://github.com/taosdata/TDengine.git,Affero GNU Public License,AGPL,CXX,JAVA,216,""
+20240,bind-master,https://gitlab.isc.org/isc-projects/bind9.git,Mozilla Public License ,MPL,CXX,OTHER,259,https://www.isc.org/
+8416,CESNET/Netopeer2,https://github.com/CESNET/Netopeer2.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,177,https://github.com/CESNET/Netopeer2
+2296,alfred,git://git.open-mesh.org/alfred.git,GNU General Public License version ,GPL,CXX,,129,http://www.open-mesh.org/projects/batman-adv/wiki
+13857,adrienverge/openfortivpn,https://github.com/adrienverge/openfortivpn,GNU General Public License version ,GPL,CXX,,149,https://github.com/adrienverge/openfortivpn
+296,JOSM,http://josm.openstreetmap.de/svn/trunk/,GNU General Public License version ,GPL,JAVA,,272,https://josm.openstreetmap.de
+24825,hari88pycode,https://github.com/harisud88/pycode.git,Python License ,Python ,OTHER,,5,""
+18989,Unidata/netcdf-java,https://github.com/Unidata/netcdf-java.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,JAVA,,230,https://github.com/Unidata/netcdf-java
+24093,osbuild/weldr-client,https://github.com/osbuild/weldr-client.git,Apache License ,Apache,CXX,,287,https://github.com/osbuild/weldr-client
+1818,perl5,git://perl5.git.perl.org/perl.git,Artistic license ,Artistic,CXX,,240,http://perl5.git.perl.org/perl.git
+101,Kea,https://gitlab.isc.org/isc-projects/kea.git,Mozilla Public License ,MPL,CXX,,110,https://kea.isc.org
+13143,grisbi,https://github.com/grisbi/grisbi.git,GNU General Public License version ,GPL,CXX,,98,http://grisbi.org/
+1316,srz-zumix/iutest,https://github.com/srz-zumix/iutest.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,336,https://github.com/srz-zumix/iutest
+13881,rhboot/shim,https://github.com/rhboot/shim.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,45,https://github.com/rhboot/shim
+1654,jeremylong/DependencyCheck,https://github.com/jeremylong/DependencyCheck,Apache License ,Apache,JAVA,,206,http://jeremylong.github.io/DependencyCheck/
+15854,boostorg/tokenizer,https://github.com/boostorg/tokenizer.git,Boost Software License ,BSL,CXX,,58,https://github.com/boostorg/tokenizer
+5259,CESNET/libyang,https://github.com/CESNET/libyang.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,872,https://github.com/CESNET/libyang
+6414,phvogt/Oe1Downloader,https://github.com/phvogt/Oe1Downloader.git,Apache License ,Apache,JAVA,,20,https://github.com/phvogt/Oe1Downloader
+24518,skupper-router,https://github.com/skupperproject/skupper-router.git,Apache License ,Apache,CXX,,13,https://skupper.io/
+21227,rmartin16/qbittorrent-api,https://github.com/rmartin16/qbittorrent-api.git,GNU General Public License version ,GPL,OTHER,,76,https://github.com/rmartin16/qbittorrent-api
+10992,wazuh/wazuh,https://github.com/wazuh/wazuh.git,GNU General Public License version ,GPL,CXX,,259,https://github.com/wazuh/wazuh
+1167,libparserutils,git://git.netsurf-browser.org/libparserutils.git,MIT license ,MIT,CXX,,1884,http://www.netsurf-browser.org/projects/libparserutils/
+16317,boostorg/concept_check,https://github.com/boostorg/concept_check.git,Boost Software License ,BSL,CXX,,33,https://github.com/boostorg/concept_check
+705,libwapcaplet,http://git.netsurf-browser.org/libwapcaplet.git/,MIT license ,MIT,CXX,,1791,http://www.netsurf-browser.org/projects/libwapcaplet/
+12891,PalMA,git@github.com:UB-Mannheim/PalMA.git,GNU General Public License version ,GPL,OTHER,JAVASCRIPT,9,https://github.com/UB-Mannheim/PalMA/
+11609,tarantool/tarantool,https://github.com/tarantool/tarantool.git,"BSD 2-Clause ""Simplified"" or ""FreeBSD"" License ",BSD2Clause,CXX,,95,https://github.com/tarantool/tarantool
+81,guacamole-server,git://github.com/apache/guacamole-server.git,Apache License ,Apache,CXX,,432,http://guacamole.apache.org/
+9214,gentoo/portage-utils,https://github.com/gentoo/portage-utils.git,GNU General Public License version ,GPL,CXX,,134,https://gitweb.gentoo.org/proj/portage-utils.git/
+19002,Unidata/tds,https://github.com/Unidata/tds.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,JAVA,,108,https://github.com/Unidata/tds
+2925,ODP,https://github.com/OpenDataPlane/odp.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,846,https://www.opendataplane.org/
+10809,ivmai/libatomic_ops,https://github.com/ivmai/libatomic_ops.git,Please specify,OTHER,CXX,,147,https://github.com/ivmai/libatomic_ops
+23136,libspdm,https://github.com/DMTF/libspdm,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,5,https://www.dmtf.org/standards/pmci
+18215,uhlin/swirc,https://github.com/uhlin/swirc.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,100,https://www.nifty-networks.net/swirc/
+3939,martanne/vis,https://github.com/martanne/vis.git,"BSD 2-Clause ""Simplified"" or ""FreeBSD"" License ",BSD2Clause,CXX,,184,https://github.com/martanne/vis
+24298,accelbyte-java-sdk,https://github.com/AccelByte/accelbyte-java-sdk.git,MIT license ,MIT,JAVA,,69,https://github.com/AccelByte/accelbyte-java-sdk
+24587,drwootton/QT_Projects,https://github.com/drwootton/QT_Projects.git,Eclipse Public License ,EPL,CXX,,9,https://github.com/drwootton/QT_Projects
+97,Kdenlive,https://invent.kde.org/multimedia/kdenlive.git,GNU General Public License version ,GPL,CXX,,9,http://kdenlive.org/
+12405,xmlsec,https://github.com/lsh123/xmlsec.git,MIT license ,MIT,CXX,,22,http://www.aleksey.com/xmlsec
+23910,web-eid/web-eid-app,https://github.com/web-eid/web-eid-app.git,MIT license ,MIT,CXX,,7,https://github.com/web-eid/web-eid-app
+18456,autotrace/autotrace,https://github.com/autotrace/autotrace.git,GNU General Public License version ,GPL,CXX,,6,https://github.com/autotrace/autotrace
+18406,acidanthera/IntelMausi,https://github.com/acidanthera/IntelMausi.git,GNU General Public License version ,GPL,CXX,,60,https://github.com/acidanthera/IntelMausi
+24180,michaelrsweet/libcups,https://github.com/michaelrsweet/libcups.git,Apache License ,Apache,CXX,,13,https://github.com/michaelrsweet/libcups
+25013,kaihsin/Cytnx,https://github.com/kaihsin/Cytnx.git,Apache License ,Apache,CXX,,105,https://github.com/kaihsin/Cytnx
+140,mirabilos/mksh,https://github.com/mirabilos/mksh,MirOS Licence ,MirOS,CXX,,76,https://www.mirbsd.org/mksh.htm
+24785,argparse,https://github.com/rue-ryuzaki/argparse.git,MIT license ,MIT,CXX,,17,https://github.com/rue-ryuzaki/argparse
+593,PuTTY,git://git.tartarus.org/simon/putty.git,MIT license ,MIT,CXX,,34,http://www.chiark.greenend.org.uk/~sgtatham/putty/
+22384,istopwg/ippsample,https://github.com/istopwg/ippsample.git,Apache License ,Apache,CXX,,6,https://github.com/istopwg/ippsample
+6742,eressea/server,https://github.com/eressea/server,"BSD 2-Clause ""Simplified"" or ""FreeBSD"" License ",BSD2Clause,CXX,,179,http://www.eressea.de/
+23684,LedgerHQ/app-plugin-1inch,https://github.com/LedgerHQ/app-plugin-1inch.git,Apache License ,Apache,CXX,,19,https://github.com/LedgerHQ/app-plugin-1inch
+13739,sgallagher/libmodulemd,https://github.com/fedora-modularity/libmodulemd.git,MIT license ,MIT,CXX,,486,https://github.com/fedora-modularity/libmodulemd
+25022,kamalesh-babulal/libcgroup,https://github.com/kamalesh-babulal/libcgroup.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,15,https://github.com/kamalesh-babulal/libcgroup
+12342,git-for-windows,https://github.com/git-for-windows/git,GNU General Public License version ,GPL,CXX,,397,https://git-for-windows.github.io/
+21647,Samsung/escargot,https://github.com/Samsung/escargot.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,359,https://github.com/Samsung/escargot
+17917,timber,https://github.com/timberwm/timber,GNU General Public License version ,GPL,CXX,,175,""
+16427,synfig/synfig,https://github.com/synfig/synfig.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,34,https://github.com/synfig/synfig
+24999,drizzle-nginx-module,https://github.com/openresty/drizzle-nginx-module.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,85,https://github.com/openresty/drizzle-nginx-module
+767,Aircrack-ng,https://github.com/aircrack-ng/aircrack-ng,GNU General Public License version ,GPL,CXX,,532,https://aircrack-ng.org
+22777,pipewire,https://gitlab.freedesktop.org/pipewire/pipewire.git,MIT license ,MIT,CXX,,520,pipewire.org
+6189,CESNET/Nemea-Framework,https://github.com/CESNET/Nemea-Framework.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,58,https://github.com/CESNET/Nemea-Framework
+10189,kos-lang/kos,https://github.com/kos-lang/kos,MIT license ,MIT,CXX,,145,http://github.com/kos-lang/kos
+19078,eclipse-cyclonedds/cyclonedds,https://github.com/eclipse-cyclonedds/cyclonedds.git,Eclipse Public License ,EPL,CXX,JAVA,556,https://github.com/eclipse-cyclonedds/cyclonedds
+9107,wazuh/ossec-wazuh,https://github.com/wazuh/wazuh.git,GNU General Public License version ,GPL,CXX,,443,https://github.com/wazuh/wazuh
+5486,Fluent Bit,https://github.com/fluent/fluent-bit/,Apache License ,Apache,CXX,,916,http://fluentbit.io
+25176,jolopezl/carta-backend,https://github.com/jolopezl/carta-backend.git,GNU General Public License version ,GPL,CXX,,4,https://github.com/jolopezl/carta-backend
+17945,OSGeo/proj.4,https://github.com/OSGeo/proj.4.git,MIT license ,MIT,CXX,,81,https://proj4.org/
+3073,KPhotoAlbum,https://invent.kde.org/graphics/kphotoalbum.git,GNU General Public License version ,GPL,CXX,,10,https://www.kphotoalbum.org
+10744,hughsie/fwupd,https://github.com/hughsie/fwupd.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,129,https://github.com/hughsie/fwupd
+4971,SCST,https://github.com/bvanassche/scst.git,GNU General Public License version ,GPL,CXX,,106,https://github.com/bvanassche/scst
+3937,GraphicsMagick,http://hg.code.sf.net/p/graphicsmagick/code,MIT license ,MIT,CXX,,143,http://www.graphicsmagick.org/
+3521,bfabiszewski/libmobi,https://github.com/bfabiszewski/libmobi.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,98,https://github.com/bfabiszewski/libmobi
+2560,hunspell,https://github.com/hunspell/hunspell,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,77,https://hunspell.github.io/
+23460,neheb/npupnp,https://github.com/neheb/npupnp.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,7,https://github.com/neheb/npupnp
+20055,Postgres Windows,https://github.com/raniervf/postgres,"BSD 2-Clause ""Simplified"" or ""FreeBSD"" License ",BSD2Clause,CXX,,38,""
+11454,pcre2,https://github.com/PCRE2Project/pcre2,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,421,http://pcre.org/
+1428,otland/forgottenserver,https://github.com/otland/forgottenserver.git,GNU General Public License version ,GPL,CXX,,141,https://github.com/otland/forgottenserver
+23837,akva2/IFEM-CoSTA,https://github.com/akva2/IFEM-CoSTA.git,GNU General Public License version ,GPL,CXX,,10,https://github.com/akva2/IFEM-CoSTA
+22234,nutanix/libvfio-user,https://github.com/nutanix/libvfio-user.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,72,https://github.com/nutanix/libvfio-user
+12080,libidn2,https://gitlab.com/libidn/libidn2.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,5,https://www.gnu.org/software/libidn/#libidn2
+21174,xdp-project/xdp-tools,https://github.com/xdp-project/xdp-tools.git,GNU General Public License version ,GPL,CXX,,102,https://github.com/xdp-project/xdp-tools
+16449,intel-ipsec-mb,https://github.com/intel/intel-ipsec-mb,"BSD 2-Clause ""Simplified"" or ""FreeBSD"" License ",BSD2Clause,CXX,,257,https://github.com/intel/intel-ipsec-mb
+104,Knot-DNS,https://gitlab.labs.nic.cz/knot/knot-dns.git,GNU General Public License version ,GPL,CXX,,1107,https://www.knot-dns.cz/
+707,libcss,http://www.netsurf-browser.org/projects/libcss.git,MIT license ,MIT,CXX,,2236,http://www.netsurf-browser.org/projects/libcss/
+20880,oleg-derevenetz/bwping,https://github.com/oleg-derevenetz/bwping.git,"BSD 2-Clause ""Simplified"" or ""FreeBSD"" License ",BSD2Clause,CXX,,193,https://github.com/oleg-derevenetz/bwping
+120,the-tcpdump-group/libpcap,https://github.com/the-tcpdump-group/libpcap.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,231,www.tcpdump.org
+25020,rds-json-nginx-module,https://github.com/openresty/rds-json-nginx-module.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,62,""
+7292,Eagle,https://eagle.to/cgi-bin/eagle,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CSHARP,CXX,323,https://eagle.to/
+25301,PKCS#11 Provider,https://github.com/latchset/pkcs11-provider.git,Apache License ,Apache,CXX,,62,""
+11654,swoole/swoole-src,https://github.com/swoole/swoole-src.git,Apache License ,Apache,CXX,OTHER,132,https://github.com/swoole/swoole-src
+13521,n0kturnal/amidilib,https://github.com/n0kturnal/amidilib.git,MIT license ,MIT,CXX,,48,https://github.com/n0kturnal/amidilib
+22739,tpm2-openssl,https://github.com/tpm2-software/tpm2-openssl,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,64,https://github.com/tpm2-software/tpm2-openssl
+1037,vincentbernat/lldpd,https://github.com/vincentbernat/lldpd.git,MIT license ,MIT,CXX,,120,https://lldpd.github.io
+209,PostgreSQL,git.postgresql.org,The PostgreSQL License,PostgreSQL,CXX,,498,https://www.postgresql.org
+14725,fcitx/fcitx5-hangul,https://github.com/fcitx/fcitx5-hangul.git,GNU General Public License version ,GPL,CXX,,760,https://github.com/fcitx/fcitx5-hangul
+9978,rockowitz/ddcutil,https://github.com/rockowitz/ddcutil,GNU General Public License version ,GPL,CXX,,196,https://github.com/rockowitz/ddctool
+25291,StarPU MR,https://gitlab.inria.fr/starpu/starpu,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,13,https://starpu.gitlabpages.inria.fr/
+20337,stelfrag/netdata,https://github.com/stelfrag/netdata.git,GNU General Public License version ,GPL,CXX,,98,https://github.com/stelfrag/netdata
+447,UnrealIRCd,https://github.com/unrealircd/unrealircd.git,GNU General Public License version ,GPL,CXX,,651,http://www.unrealircd.org/
+23875,LedgerHQ/app-stellar,https://github.com/LedgerHQ/app-stellar.git,Apache License ,Apache,CXX,,19,https://github.com/LedgerHQ/app-stellar
+25482,libgssglue,https://gitlab.com/gsasl/libgssglue.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,11,https://gitlab.com/gsasl/libgssglue
+12915,ReOpen/libmdbx,https://github.com/ReOpen/libmdbx.git,Please specify,OTHER,CXX,,180,https://github.com/erthink/libmdbx
+967,pgpool-II,git://git.scandbuserql.org/git/pgpool2.git,"BSD 2-Clause ""Simplified"" or ""FreeBSD"" License ",BSD2Clause,CXX,,122,http://www.pgpool.net
+14324,Ohloh UI,https://github.com/blackducksoftware/ohloh-ui,Apache License ,Apache,OTHER,,11,https://www.openhub.net
+153,MythTV,https://code.mythtv.org/,GNU General Public License version ,GPL,CXX,,163,https://www.mythtv.org
+2851,UltraGrid,https://github.com/CESNET/UltraGrid,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,231,http://www.ultragrid.cz/
+18261,KDDockWidgets,https://github.com/KDAB/KDDockWidgets.git,GNU General Public License version ,GPL,CXX,,144,""
+11809,ApacheActiveMQArtemis,git://git.apache.org/activemq-artemis.git,Apache License ,Apache,JAVA,CXX,1201,https://activemq.apache.org/artemis/
+1041,glib,https://gitlab.gnome.org/GNOME/glib.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,202,https://gitlab.gnome.org/GNOME/glib
+8747,sudo,https://www.sudo.ws/repos/sudo,ISC License ,ISC,CXX,,229,https://www.sudo.ws
+5494,qbittorrent/qBittorrent,https://github.com/qbittorrent/qBittorrent.git,GNU General Public License version ,GPL,CXX,,48,https://github.com/qbittorrent/qBittorrent
+18408,pmem/pmemkv,https://github.com/pmem/pmemkv.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,758,https://github.com/pmem/pmemkv
+23476,IPA-DN-Ultra-210730,https://github.com/IPA-CyberLab/IPA-DN-Ultra.git,Apache License ,Apache,CXX,CXX,93,""
+25036,jfayot/Dynamic-State-Machine,https://github.com/jfayot/Dynamic-State-Machine.git,MIT license ,MIT,CXX,,17,https://github.com/jfayot/dynamic-state-machine
+21970,tyabus/xash3d,https://github.com/tyabus/xash3d.git,GNU General Public License version ,GPL,CXX,,187,https://github.com/tyabus/xash3d
+2264,Das U-Boot,git://git.denx.de/u-boot.git,GNU General Public License version ,GPL,CXX,,233,http://www.denx.de/wiki/U-Boot/WebHome
+24440,boostorg/boost-ci,https://github.com/boostorg/boost-ci.git,Boost Software License ,BSL,CXX,,40,https://github.com/boostorg/boost-ci
+23905,authselect/authselect,https://github.com/authselect/authselect.git,GNU General Public License version ,GPL,CXX,,24,https://github.com/authselect/authselect
+2261,gupnp,git://git.gnome.org/gupnp,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,89,http://gupnp.org
+6685,Apache Celix,https://git-wip-us.apache.org/repos/asf/celix.git,Apache License ,Apache,CXX,,257,https://celix.apache.org/
+25158,ohtorii/hidemaru_lsp_client,https://github.com/ohtorii/hidemaru_lsp_client.git,MIT license ,MIT,CSHARP,CXX,6,https://github.com/ohtorii/hidemaru_lsp_client
+37,curl,https://github.com/curl/curl,MIT license ,MIT,CXX,,404,https://curl.se/
+61,gcc,http:/gcc.gnu.org/svn.html,GNU General Public License version ,GPL,CXX,,506,http:/gcc.gnu.org/
+224,Suricata,https://github.com/OISF/suricata.git,GNU General Public License version ,GPL,CXX,,500,suricata.io
+23241,LedgerHQ/app-algorand,https://github.com/LedgerHQ/app-algorand.git,MIT license ,MIT,CXX,,19,https://github.com/LedgerHQ/app-algorand
+21974,BluezTestBot/bluez,https://github.com/BluezTestBot/bluez.git,GNU General Public License version ,GPL,CXX,,125,https://github.com/BluezTestBot/bluez
+17781,Xilinx/XRT,https://github.com/Xilinx/XRT.git,Apache License ,Apache,CXX,,1371,https://github.com/Xilinx/XRT
+18195,libbpf,https://github.com/libbpf/libbpf,Please specify,OTHER,CXX,,1071,https://github.com/libbpf/libbpf
+8263,Memtest86+,https://review.coreboot.org/memtest86plus.git,GNU General Public License version ,GPL,CXX,,46,http://memtest.org/
+483,fluffos/fluffos,https://github.com/fluffos/fluffos,MIT license ,MIT,CXX,,243,https://www.fluffos.info
+17384,LAMMPS,https://github.com/lammps/lammps.git,GNU General Public License version ,GPL,CXX,,152,https://lammps.sandia.gov
+22190,acidanthera/VoodooPS2,https://github.com/acidanthera/VoodooPS2.git,Apple Public Source License ,APSL,CXX,,70,https://github.com/acidanthera/VoodooPS2
+2172,pbatard/rufus,https://github.com/pbatard/rufus.git,GNU General Public License version ,GPL,CXX,,360,https://github.com/pbatard/rufus
+20523,jvoisin/snuffleupagus,https://github.com/jvoisin/snuffleupagus.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,132,https://github.com/jvoisin/snuffleupagus
+20753,sbabic/swupdate,https://github.com/sbabic/swupdate.git,GNU General Public License version ,GPL,CXX,,217,https://github.com/sbabic/swupdate
+220,Squid,https://github.com/squid-cache/squid.git,GNU General Public License version ,GPL,CXX,,393,www.squid-cache.org
+23090,minisatip2,https://github.com/catalinii/minisatip,GNU General Public License version ,GPL,CXX,,216,https://minisatip.org
+22385,michaelrsweet/pappl,https://github.com/michaelrsweet/pappl.git,Apache License ,Apache,CXX,,23,https://www.msweet.org/pappl
+22988,restraint,https://github.com/beaker-project/restraint.git,GNU General Public License version ,GPL,CXX,,4,https://beaker-project.org
+16614,gssproxy,https://github.com/gssapi/gssproxy.git,ISC License ,ISC,CXX,,7,https://github.com/gssapi/gssproxy
+3531,libass/libass,https://github.com/libass/libass.git,ISC License ,ISC,CXX,,303,https://github.com/libass/libass
+14050,pgbackrest/pgbackrest,https://github.com/pgbackrest/pgbackrest.git,MIT license ,MIT,CXX,,77,https://pgbackrest.org
+993,tin,ftp://ftp.tin.org/pub/news/clients/tin/,"BSD 2-Clause ""Simplified"" or ""FreeBSD"" License ",BSD2Clause,CXX,,311,http://www.tin.org/
+23415,appcrash/media,https://github.com/appcrash/media.git,Apache License ,Apache,CXX,,339,https://github.com/appcrash/media
+13834,ELL,git://git.kernel.org/pub/scm/libs/ell/ell.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,101,https://01.org/ell
+749,GDAL,http://github.com/OSGeo/gdal,MIT license ,MIT,CXX,,517,gdal.org
+25472,libidn,https://git.savannah.gnu.org/git/libidn.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,4,https://www.gnu.org/software/libidn/
+671,DOMjudge,https://github.com/DOMjudge/domjudge.git,GNU General Public License version ,GPL,CXX,,313,http://www.domjudge.org
+24329,Scribery/tlog,https://github.com/Scribery/tlog.git,GNU General Public License version ,GPL,CXX,,238,https://github.com/Scribery/tlog
+15336,randy408/libspng,https://github.com/randy408/libspng.git,"BSD 2-Clause ""Simplified"" or ""FreeBSD"" License ",BSD2Clause,CXX,,438,https://github.com/randy408/libspng
+25249,coti-io/coti-ledger,https://github.com/coti-io/coti-ledger.git,Apache License ,Apache,CXX,,6,https://github.com/coti-io/coti-ledger
+13939,IWD,https://git.kernel.org/pub/scm/network/wireless/iwd.git/,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,94,""
+19629,ohtorii/unity,https://github.com/ohtorii/unity.git,MIT license ,MIT,CXX,,12,https://github.com/ohtorii/unity
+606,XenProject, git://xenbits.xen.org/xen.git,GNU General Public License version ,GPL,CXX,,600,http://xenproject.org/
+21387,sbabic/libubootenv,https://github.com/sbabic/libubootenv.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,23,https://github.com/sbabic/libubootenv
+2467,KDAB/GammaRay,https://github.com/KDAB/GammaRay.git,GNU General Public License version ,GPL,CXX,,316,https://github.com/KDAB/GammaRay
+6194,CESNET/Nemea-Modules,https://github.com/CESNET/Nemea-Modules.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,40,https://github.com/CESNET/Nemea-Modules
+9332,dblock/oshi,https://github.com/oshi/oshi.git,MIT license ,MIT,JAVA,,529,https://github.com/oshi/oshi
+24675,Zero3K/hpsx64,https://github.com/Zero3K/hpsx64.git,GNU General Public License version ,GPL,CXX,,3,https://github.com/Zero3K/hpsx64
+25184,funnytestabc/coverity_test,https://github.com/funnytestabc/coverity_test.git,Please specify,OTHER,CXX,,4,https://github.com/funnytestabc/coverity_test
+19334,Proxmark3 RRG Iceman repo,https://github.com/RfidResearchGroup/proxmark3.git,GNU General Public License version ,GPL,CXX,,357,https://github.com/RfidResearchGroup/proxmark3
+21343,kwinft,https://gitlab.com/kwinft/kwinft.git,GNU General Public License version ,GPL,CXX,JAVASCRIPT,734,https://gitlab.com/kwinft/kwinft
+25261,lcrq,https://codeberg.org/librecast/lcrq.git,GNU General Public License version ,GPL,CXX,,5,https://librecast.net/
+139,Mesa,git://anongit.freedesktop.org/mesa/mesa,MIT license ,MIT,CXX,,665,http://www.mesa3d.org
+21448,PostgreSQL_REL_12_STABLE,git://git.postgresql.org/postgresql.git,The PostgreSQL License,PostgreSQL,CXX,,117,https://www.postgresql.org
+21449,PostgreSQL_REL_13_STABLE,git://git.postgresql.org/postgresql.git,The PostgreSQL License,PostgreSQL,CXX,,117,https://www.postgresql.org
+15472,OpenSC/libp11,https://github.com/OpenSC/libp11.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,71,https://github.com/OpenSC/libp11
+24408,KernelTestFramework/ktf,https://github.com/KernelTestFramework/ktf.git,"BSD 2-Clause ""Simplified"" or ""FreeBSD"" License ",BSD2Clause,CXX,,4,https://github.com/KernelTestFramework/ktf
+19872,alfredh/re,https://github.com/alfredh/re.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,18,https://github.com/alfredh/re
+4486,Apache Qpid Proton,https://git-wip-us.apache.org/repos/asf/qpid-proton.git,Apache License ,Apache,CXX,JAVA,994,http://qpid.apache.org/proton/index.html
+25247,dsm,https://github.com/jfayot/dynamic-state-machine,MIT license ,MIT,CXX,,10,https://github.com/jfayot/dynamic-state-machine
+16438,libwmf,git://github.com/caolanm/libwmf.git,GNU General Public License version ,GPL,CXX,,24,https://github.com/caolanm/libwmf
+6693,SFML/SFML,https://github.com/SFML/SFML,zlib/libpng license ,Zlib,CXX,,98,http://www.sfml-dev.org
+25455,teragrep/rlo_06,https://github.com/teragrep/rlo_06.git,Affero GNU Public License,AGPL,JAVA,,3,https://github.com/teragrep/rlo_06
+14240,timescale/timescaledb,https://github.com/timescale/timescaledb.git,Apache License ,Apache,CXX,,343,http://www.timescale.com
+2187,nfs-ganesha,git://github.com/nfs-ganesha/nfs-ganesha.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,196,http://nfs-ganesha.github.com
+1456,PostgreSQL_REL_10_STABLE,git.postgresql.org,The PostgreSQL License,PostgreSQL,CXX,,211,http://www.postgresql.org
+16652,PostgreSQL_REL_11_STABLE,git://git.postgresql.org/git/postgresql.git,The PostgreSQL License,PostgreSQL,CXX,,210,http://www.postgresql.org
+5068,swtpm,git@github.com:stefanberger/swtpm.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,129,""
+20464,boostorg/nowide,https://github.com/boostorg/nowide.git,Boost Software License ,BSL,CXX,,130,https://github.com/boostorg/nowide
+12701,fcitx/fcitx5-qt,https://github.com/fcitx/fcitx5-qt.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,948,https://github.com/fcitx/fcitx5-qt
+577,trinity,https://github.com/kernelslacker/trinity.git,GNU General Public License version ,GPL,CXX,,274,http://codemonkey.org.uk/projects/trinity/
+7591,fcode-utils,https://github.com/openbios/fcode-utils.git,GNU General Public License version ,GPL,CXX,,15,http://www.openfirmware.info/FCODE_suite
+8955,mne-tools/mne-cpp,https://github.com/mne-tools/mne-cpp.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,341,http://www.mne-cpp.org
+9057,plusvic/yara,https://github.com/VirusTotal/yara.git,Apache License ,Apache,CXX,,864,http://virustotal.github.io/yara/
+19955,alfredh/retest,https://github.com/alfredh/retest.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,9,https://github.com/alfredh/retest
+211,LibreOffice,http://cgit.freedesktop.org/libreoffice/core,Mozilla Public License ,MPL,CXX,JAVA,767,www.libreoffice.org
+22112,CESNET/ipfixprobe,https://github.com/CESNET/ipfixprobe.git,GNU General Public License version ,GPL,CXX,,91,https://github.com/CESNET/ipfixprobe
+20282,PaStiX,https://gitlab.inria.fr/solverstack/pastix,CeCILL License  ,CECILL,CXX,,137,https://solverstack.gitlabpages.inria.fr/pastix/
+20856,canonical/dqlite,https://github.com/canonical/dqlite.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,164,https://github.com/canonical/dqlite
+24535,GrumpyOldTroll/libmcrx,https://github.com/GrumpyOldTroll/libmcrx.git,"BSD 2-Clause ""Simplified"" or ""FreeBSD"" License ",BSD2Clause,CXX,,173,https://github.com/GrumpyOldTroll/libmcrx
+350,systemd/systemd,https://github.com/systemd/systemd,GNU General Public License version ,GPL,CXX,,1839,""
+19083,Open-CAS/ocf,https://github.com/Open-CAS/ocf.git,Please specify,OTHER,CXX,,888,https://github.com/Open-CAS/ocf
+711,Mesos,https://git-wip-us.apache.org/repos/asf/mesos.git,Apache License ,Apache,CXX,,871,http://mesos.apache.org
+4026,OpenSC/OpenSC,https://github.com/OpenSC/OpenSC.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,920,https://github.com/OpenSC/OpenSC
+1920,GNUnet/gnunet,https://github.com/GNUnet/gnunet.git,GNU General Public License version ,GPL,CXX,,56,https://github.com/GNUnet/gnunet
+21604,fcitx/fcitx5-zhuyin,https://github.com/fcitx/fcitx5-zhuyin.git,GNU General Public License version ,GPL,CXX,,512,https://github.com/fcitx/fcitx5-zhuyin
+16908,radareorg/cutter,https://github.com/radareorg/cutter.git,GNU General Public License version ,GPL,CXX,,239,https://github.com/radareorg/cutter
+1775,axboe/fio,https://github.com/axboe/fio.git,GNU General Public License version ,GPL,CXX,,700,https://github.com/axboe/fio
+21520,Allpix Squared,https://gitlab.cern.ch/allpix-squared/allpix-squared.git,MIT license ,MIT,CXX,,861,https://cern.ch/allpix-squared
+19701,jgeudens/ModbusScope,https://github.com/jgeudens/ModbusScope.git,GNU General Public License version ,GPL,CXX,,74,https://github.com/jgeudens/ModbusScope
+20442,libvirt,https://gitlab.com/libvirt/libvirt,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,650,https://libvirt.org/
+25403,mOS v1.0,https://github.com/intel/mOS.git,GNU General Public License version ,GPL,CXX,,5,""
+20747,fcitx/fcitx5-libthai,https://github.com/fcitx/fcitx5-libthai.git,GNU General Public License version ,GPL,CXX,,679,https://github.com/fcitx/fcitx5-libthai
+14558,fcitx/fcitx5-chewing,https://github.com/fcitx/fcitx5-chewing.git,GNU General Public License version ,GPL,CXX,,815,https://github.com/fcitx/fcitx5-chewing
+212,RTEMS,https://git.rtems.org,"BSD 2-Clause ""Simplified"" or ""FreeBSD"" License ",BSD2Clause,CXX,,325,https://www.rtems.org
+512,cppcheck,git://github.com/danmar/cppcheck.git,GNU General Public License version ,GPL,CXX,,1323,http://cppcheck.sourceforge.net
+24074,image-builder-frontend,https://github.com/RedHatInsights/image-builder-frontend,Apache License ,Apache,JAVASCRIPT,,302,https://github.com/RedHatInsights/image-builder-frontend
+15174,SyncTERM,:pserver:anonymous@cvs.synchro.net:/cvsroot/sbbs syncterm,GNU General Public License version ,GPL,CXX,,1430,http://syncterm.net
+8058,libmodbus,git://github.com/stephane/libmodbus,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,113,http://libmodbus.org
+24290,yugr/FlakyIterators,https://github.com/yugr/FlakyIterators.git,MIT license ,MIT,CXX,,58,https://github.com/yugr/FlakyIterators
+13955,JavaDogs/cws,https://github.com/JavaDogs/cws.git,Apache License ,Apache,JAVA,,1627,https://haugr.net
+987,gluster/glusterfs,https://github.com/gluster/glusterfs.git,GNU General Public License version ,GPL,CXX,,1405,http://www.gluster.org
+23821,netconsd,https://github.com/facebook/netconsd,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,3,https://github.com/facebook/netconsd
+1405,x86info,git@github.com:kernelslacker/x86info.git,GNU General Public License version ,GPL,CXX,,44,http://codemonkey.org.uk/projects/x86info/
+2238,watchdogd,https://github.com/clockley/watchdogd.git,Apache License ,Apache,CXX,,61,https://github.com/clockley/watchdogd
+14631,fcitx/fcitx5-kkc,https://github.com/fcitx/fcitx5-kkc.git,GNU General Public License version ,GPL,CXX,,1119,https://github.com/fcitx/fcitx5-kkc
+21921,openvino,git@github.com:openvinotoolkit/openvino.git,Apache License ,Apache,CXX,,222,https://github.com/openvinotoolkit/openvino
+10654,h2o/h2o,https://github.com/h2o/h2o.git,MIT license ,MIT,CXX,,800,https://github.com/h2o/h2o
+23419,prplOS,https://gitlab.com/prpl-foundation/prplOS/prplos,GNU General Public License version ,GPL,CXX,,72,""
+24433,yugr/sortcheckxx,https://github.com/yugr/sortcheckxx.git,MIT license ,MIT,CXX,,33,https://github.com/yugr/sortcheckxx
+25367,mtrojnar/osslsigncode,https://github.com/mtrojnar/osslsigncode.git,GNU General Public License version ,GPL,CXX,,10,https://github.com/mtrojnar/osslsigncode
+18718,squashfs-tools-ng,https://github.com/AgentD/squashfs-tools-ng.git,GNU General Public License version ,GPL,CXX,,104,""
+12452,GNU gnulib,http://git.savannah.gnu.org/gitweb/?p=gnulib.git;a=tree,GNU General Public License version ,GPL,CXX,,245,https://www.gnu.org/software/gnulib/
+25131,SCST-project,https://github.com/SCST-project/scst.git,GNU General Public License version ,GPL,CXX,,14,http://scst.sourceforge.net
+294,openssl/openssl,https://github.com/openssl/openssl,Apache License ,Apache,CXX,,582,https://www.openssl.org/
+312,lttng-modules,git://git.lttng.org/lttng-modules.git,GNU General Public License version ,GPL,CXX,,327,https://lttng.org/
+23659,SChernykh/p2pool,https://github.com/SChernykh/p2pool.git,GNU General Public License version ,GPL,CXX,,58,https://github.com/SChernykh/p2pool
+10590,Chameleon,https://gitlab.inria.fr/solverstack/chameleon.git,CeCILL License  ,CECILL,CXX,,189,https://project.inria.fr/chameleon/
+1,ACE+TAO,https://github.com/DOCGroup/ACE_TAO,Please specify,OTHER,CXX,,244,http://www.dre.vanderbilt.edu/~schmidt/
+9063,fcitx/fcitx5,https://github.com/fcitx/fcitx5.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,888,https://github.com/fcitx/fcitx5
+4721,srsLTE/srsLTE,https://github.com/srslte/srslte.git,GNU Affero General Public License,AGPL,CXX,,229,https://github.com/srsLTE/srsLTE
+7405,hfp/libxsmm,https://github.com/hfp/libxsmm.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,592,https://github.com/libxsmm/libxsmm
+21616,libslirp,https://gitlab.freedesktop.org/slirp/libslirp.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,98,https://gitlab.freedesktop.org/slirp/libslirp
+19891,dosbox-staging,https://github.com/dreamer/dosbox-staging.git,GNU General Public License version ,GPL,CXX,,1138,https://github.com/dreamer/dosbox-staging
+24706,csutils/cswrap,https://github.com/csutils/cswrap.git,GNU General Public License version ,GPL,CXX,,24,https://github.com/csutils/cswrap
+23473,laudrup/boost-wintls,https://github.com/laudrup/boost-wintls.git,Boost Software License ,BSL,CXX,,47,https://github.com/laudrup/boost-wintls
+17423,abrt/abrt,https://github.com/abrt/abrt.git,GNU General Public License version ,GPL,CXX,,122,https://github.com/abrt/abrt
+24289,yugr/ShlibVisibilityChecker,https://github.com/yugr/ShlibVisibilityChecker.git,MIT license ,MIT,CXX,,105,https://github.com/yugr/ShlibVisibilityChecker
+25214,siakhooi/ts-number-to-chinese-words,https://github.com/siakhooi/ts-number-to-chinese-words.git,MIT license ,MIT,JAVASCRIPT,,12,https://github.com/siakhooi/ts-number-to-chinese-words
+48,e2fsprogs,git://git.kernel.org/pub/scm/fs/ext2/e2fsprogs.git,GNU General Public License version ,GPL,CXX,,321,http://e2fsprogs.sourceforge.net/
+3786,KDAB/KDReports,https://github.com/KDAB/KDReports.git,GNU General Public License version ,GPL,CXX,,140,https://github.com/KDAB/KDReports
+244,Wireshark,https://gitlab.com/wireshark/wireshark/,GNU General Public License version ,GPL,CXX,,1653,https://www.wireshark.org/
+2504,KDAB/KDStateMachineEditor,https://github.com/KDAB/KDStateMachineEditor.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,145,https://github.com/KDAB/KDStateMachineEditor
+9324,fd.io VPP,https://git.fd.io/vpp.git,Apache License ,Apache,CXX,JAVA,2925,https://wiki.fd.io/view/VPP
+23212,acidanthera/MacHyperVSupport,https://github.com/acidanthera/MacHyperVSupport.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,99,https://github.com/acidanthera/MacHyperVSupport
+6359,legatoproject/legato-af,https://github.com/legatoproject/legato-af,Mozilla Public License ,MPL,CXX,JAVA,1707,www.legato.io
+25160,accelbyte-csharp-sdk,https://github.com/AccelByte/accelbyte-csharp-sdk.git,MIT license ,MIT,CSHARP,,6,https://github.com/AccelByte/accelbyte-csharp-sdk
+10888,OpenDDS,https://github.com/objectcomputing/OpenDDS,Please specify,OTHER,CXX,JAVA,311,www.opendds.org
+18169,acidanthera/OpenCorePkg,https://github.com/acidanthera/OpenCorePkg.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,1428,https://github.com/acidanthera/OpenCorePkg
+704,NetSurf Browser,http://git.netsurf-browser.org/netsurf.git,GNU General Public License version ,GPL,CXX,,1633,http://www.netsurf-browser.org/
+4005,DPDK Data Plane Development Kit,git://dpdk.org/dpdk,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,423,http://dpdk.org/
+25288,Jastacry,https://gitlab.kretschmann.software/stackedcrypto/JaStaCry.git,MIT license ,MIT,JAVA,,67,https://blog.jastacry.org/
+20988,CuteHMI,https://invent.kde.org/sdk/cutehmi,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,742,https://cutehmi.kde.org/
+2647,open-watcom/open-watcom-v2,https://github.com/open-watcom/open-watcom-v2.git,Sybase Open Watcom Public License ,Watcom,CXX,,1294,https://github.com/open-watcom/open-watcom-v2
+21371,cockpit-composer-coverity,https://github.com/osbuild/cockpit-composer.git,MIT license ,MIT,JAVASCRIPT,,785,""
+23969,SentryPeer/SentryPeer,https://github.com/SentryPeer/SentryPeer.git,GNU General Public License version ,GPL,CXX,,301,https://github.com/SentryPeer/SentryPeer
+708,libdom,http://git.netsurf-browser.org/libdom.git/,MIT license ,MIT,CXX,,1991,http://www.netsurf-browser.org/projects/libdom/
+21314,espressif/esp-idf,https://github.com/espressif/esp-idf.git,Apache License ,Apache,CXX,,189,https://github.com/espressif/esp-idf
+17938,intel/cve-bin-tool,https://github.com/intel/cve-bin-tool.git,GNU General Public License version ,GPL,OTHER,,50,https://github.com/intel/cve-bin-tool
+5533,ntpsec,https://gitlab.com/NTPsec/ntpsec.git,NTP License ,NTP,CXX,OTHER,307,http://www.ntpsec.org/
+20484,demo-findings,https://github.com/adityabyreddy/demo-findings.git,Academic Free License,AFL,JAVA,,33,""
+158,nginx,http://hg.nginx.org/nginx,"BSD 2-Clause ""Simplified"" or ""FreeBSD"" License ",BSD2Clause,CXX,,2551,http://nginx.org
+25,ceph,https://github.com/ceph/ceph/,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,OTHER,414,https://ceph.io/
+21349,osbuild,https://github.com/osbuild/osbuild.git,Apache License ,Apache,OTHER,,830,https://www.osbuild.org
+18761,Lely core libraries,https://gitlab.com/lely_industries/lely-core.git,Apache License ,Apache,CXX,,142,https://opensource.lely.com/canopen/
+24939,csutils/cscppc,https://github.com/csutils/cscppc.git,GNU General Public License version ,GPL,CXX,,19,https://github.com/csutils/cscppc
+20887,argrath/NetHack,https://github.com/argrath/NetHack.git,Nethack General Public License ,NGPL,CXX,,129,https://github.com/argrath/NetHack
+1196,peff/git,https://github.com/peff/git.git,GNU General Public License version ,GPL,CXX,,110,https://github.com/peff/git
+1367,atheme/atheme,https://github.com/atheme/atheme.git,ISC License ,ISC,CXX,,95,https://atheme.github.io/atheme.html
+1016,coreboot,http://review.coreboot.org/coreboot.git,GNU General Public License version ,GPL,CXX,,560,http://www.coreboot.org/
+24061,osbuild/osbuild-composer,https://github.com/osbuild/osbuild-composer.git,Apache License ,Apache,JAVA,,247,https://github.com/osbuild/osbuild-composer
+4164,LyX,git://git.lyx.org/lyx.git,GNU General Public License version ,GPL,CXX,OTHER,159,http://www.lyx.org/
+23388,GNOME Shell,https://gitlab.gnome.org/GNOME/gnome-shell.git,GNU General Public License version ,GPL,JAVASCRIPT,CXX,355,https://www.gnome.org/
+921,stress-ng,git://kernel.ubuntu.com/cking/stress-ng.git,GNU General Public License version ,GPL,CXX,,1095,http://kernel.ubuntu.com/~cking/stress-ng/
+340,Haproxy,http://git.haproxy.org/git/haproxy.git/,GNU General Public License version ,GPL,CXX,,1129,http://www.haproxy.org/
+5595,Zabbix,svn://svn.zabbix.com/trunk,GNU General Public License version ,GPL,CXX,JAVA,1528,http://www.zabbix.com
+237,Transmission,https://github.com/transmission/transmission,GNU General Public License version ,GPL,CXX,,508,https://transmissionbt.com/
+1870,libnice,https://gitlab.freedesktop.org/libnice/libnice/,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,282,http://libnice.freedesktop.org/
+2365,grobian/carbon-c-relay,https://github.com/grobian/carbon-c-relay,Apache License ,Apache,CXX,,326,https://github.com/grobian/carbon-c-relay/
+4796,analogdevicesinc/libiio,https://github.com/analogdevicesinc/libiio.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,1160,https://github.com/analogdevicesinc/libiio
+24459,OpenRC/openrc,https://github.com/OpenRC/openrc.git,"BSD 2-Clause ""Simplified"" or ""FreeBSD"" License ",BSD2Clause,CXX,,42,https://github.com/OpenRC/openrc
+10096,linux-next weekly scan,git://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next,GNU General Public License version ,GPL,CXX,,1063,https://git.kernel.org/cgit/linux/kernel/git/next/linux-next.git/
+288,GemRB,https://github.com/gemrb/gemrb.git,GNU General Public License version ,GPL,CXX,OTHER,255,http://www.gemrb.org
+24120,pmem/pmemstream,https://github.com/pmem/pmemstream.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,250,https://github.com/pmem/pmemstream
+13688,bfabiszewski/ulogger-server,https://github.com/bfabiszewski/ulogger-server.git,GNU General Public License version ,GPL,OTHER,JAVASCRIPT,135,https://github.com/bfabiszewski/ulogger-server
+11631,freerangerouting/frr,https://github.com/freerangerouting/frr.git,GNU General Public License version ,GPL,CXX,,1310,https://github.com/freerangerouting/frr
+416,radare2,git://github.com/radare/radare2,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,1214,http://www.radare.org
+15119,mwilck/multipath-tools,https://github.com/mwilck/multipath-tools.git,GNU General Public License version ,GPL,CXX,,31,https://github.com/mwilck/multipath-tools
+335,mantidproject/mantid,git://github.com/mantidproject/mantid.git,GNU General Public License version ,GPL,CXX,,1085,www.mantidproject.org
+20936,Yaksa,https://github.com/pmodels/yaksa,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,300,https://www.yaksa.org
+16304,SoftEtherVPN/SoftEtherVPN,https://github.com/SoftEtherVPN/SoftEtherVPN.git,GNU General Public License version ,GPL,CXX,,693,https://github.com/SoftEtherVPN/SoftEtherVPN
+19852,libvirt-dbus,https://gitlab.com/libvirt/libvirt-dbus,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,660,https://libvirt.org/dbus.html
+58,FreeRADIUS/freeradius-server,https://github.com/FreeRADIUS/freeradius-server/,GNU General Public License version ,GPL,CXX,,1124,http://freeradius.org
+25294,DemoData,https://gitlab.kretschmann.software/kgroup/demodata.git,MIT license ,MIT,JAVASCRIPT,,39,https://demodata.eu/
+25355,vfplot,git@gitlab.com:jjg/vfplot.git,GNU General Public License version ,GPL,CXX,,7,http://soliton.vm.bytemark.co.uk/pub/jjg/en/code/vfplot/
+22893,rizinorg/rizin,https://github.com/rizinorg/rizin.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,156,https://github.com/rizinorg/rizin
+378,QEMU,git://git.qemu.org/qemu.git,GNU General Public License version ,GPL,CXX,,791,http://www.qemu.org/
+15166,HarfBuzz,https://github.com/harfbuzz/harfbuzz.git,MIT license ,MIT,CXX,,142,https://harfbuzz.github.io
+21553,AlizaMS,https://github.com/AlizaMedicalImaging/AlizaMS.git,GNU General Public License version ,GPL,CXX,,89,""
+6924,Tarsnap/scrypt,https://github.com/Tarsnap/scrypt.git,"BSD 2-Clause ""Simplified"" or ""FreeBSD"" License ",BSD2Clause,CXX,,75,https://github.com/Tarsnap/scrypt
+3912,CZ-NIC/knot-resolver,https://github.com/CZ-NIC/knot-resolver.git,GNU General Public License version ,GPL,CXX,,234,https://github.com/CZ-NIC/knot-resolver.git
+21433,ClickHouse/ClickHouse,https://github.com/ClickHouse/ClickHouse.git,Apache License ,Apache,CXX,,89,https://github.com/ClickHouse/ClickHouse
+7107,StarPU,git@gitlab.inria.fr:starpu/starpu.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,1183,https://starpu.gitlabpages.inria.fr/
+11365,TokTok/c-toxcore,https://github.com/TokTok/c-toxcore.git,GNU General Public License version ,GPL,CXX,,334,https://github.com/TokTok/c-toxcore
+146,Mono,https://github.com/mono/mono,MIT license ,MIT,CXX,,1167,https://www.mono-project.com
+11146,Tracker,https://git.gnome.org/browse/tracker/,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,464,https://wiki.gnome.org/Projects/Tracker
+7233,Slurm,git://github.com/SchedMD/slurm.git,GNU General Public License version ,GPL,CXX,,1712,https://slurm.schedmd.com
+15853,performancecopilot/pcp,https://github.com/performancecopilot/pcp.git,GNU General Public License version ,GPL,CXX,OTHER,1103,https://pcp.io
+21555,AMS21/Phi,https://github.com/AMS21/Phi.git,MIT license ,MIT,CXX,,95,https://github.com/AMS21/Phi
+13383,tracker-miners,https://git.gnome.org/browse/tracker-miners/,GNU General Public License version ,GPL,CXX,,280,https://wiki.gnome.org/Projects/Tracker
+24183,evverx/elfutils,https://github.com/evverx/elfutils.git,GNU General Public License version ,GPL,CXX,,260,https://github.com/evverx/elfutils
+23587,osbuild/image-builder,https://github.com/osbuild/image-builder.git,Apache License ,Apache,JAVA,,333,https://github.com/osbuild/image-builder
+14384,gicmo/bolt,https://github.com/gicmo/bolt,GNU General Public License version ,GPL,CXX,,564,""
+20755,fcitx/fcitx5-sayura,https://github.com/fcitx/fcitx5-sayura.git,GNU General Public License version ,GPL,CXX,,668,https://github.com/fcitx/fcitx5-sayura
+10713,AIDASoft/DD4hep,https://github.com/AIDASoft/DD4hep,GNU General Public License version ,GPL,CXX,,1484,""
+24297,accelbyte-python-sdk,https://github.com/AccelByte/accelbyte-python-sdk.git,MIT license ,MIT,OTHER,,43,https://github.com/AccelByte/accelbyte-python-sdk
+5126,dnsdist,https://github.com/PowerDNS/pdns.git,GNU General Public License version ,GPL,CXX,,2032,http://dnsdist.org/
+2227,neovim/neovim,https://github.com/neovim/neovim.git,Please specify,OTHER,CXX,,844,https://github.com/neovim/neovim
+19084,Open-CAS/open-cas-linux,https://github.com/Open-CAS/open-cas-linux.git,Please specify,OTHER,CXX,OTHER,876,https://github.com/Open-CAS/open-cas-linux
+21488,WirePlumber,https://gitlab.freedesktop.org/pipewire/wireplumber.git,MIT license ,MIT,CXX,,440,https://gitlab.freedesktop.org/pipewire/wireplumber
+25276,bintra,https://gitlab.kretschmann.software/kgroup/bintra.git,MIT license ,MIT,JAVASCRIPT,,71,https://bintra.directory/
+1921,Synchronet,https://gitlab.synchro.net/main/sbbs.git,GNU General Public License version ,GPL,CXX,JAVASCRIPT,559,http://www.synchro.net/
+21528,laoshanxi/app-mesh,https://github.com/laoshanxi/app-mesh.git,MIT license ,MIT,CXX,,125,https://github.com/laoshanxi/app-mesh
+11149,mutter,https://git.gnome.org/browse/mutter/,GNU General Public License version ,GPL,CXX,,414,https://en.wikipedia.org/wiki/Mutter_(software)
+19206,chipitsine/lua-nginx-module,https://github.com/chipitsine/lua-nginx-module.git,"BSD 3-Clause ""New"" or ""Revised"" License ",BSD3Clause,CXX,,125,https://github.com/chipitsine/lua-nginx-module
+12702,fcitx/fcitx5-gtk,https://github.com/fcitx/fcitx5-gtk.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,876,https://github.com/fcitx/fcitx5-gtk
+8495,neomutt/neomutt,https://github.com/neomutt/neomutt,GNU General Public License version ,GPL,CXX,,371,https://www.neomutt.org/
+14703,fcitx/fcitx5-anthy,https://github.com/fcitx/fcitx5-anthy.git,GNU General Public License version ,GPL,CXX,,777,https://github.com/fcitx/fcitx5-anthy
+17584,cminyard/gensio,https://github.com/cminyard/gensio.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,OTHER,51,https://github.com/cminyard/gensio
+14675,fcitx/fcitx5-m17n,https://github.com/fcitx/fcitx5-m17n.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,753,https://github.com/fcitx/fcitx5-m17n
+24304,kklouzal/KNet,https://github.com/kklouzal/KNet.git,MIT license ,MIT,CXX,,26,https://github.com/kklouzal/KNet
+20746,fcitx/fcitx5-lua,https://github.com/fcitx/fcitx5-lua.git,GNU General Public License version ,GPL,CXX,,675,https://github.com/fcitx/fcitx5-lua
+21548,fcitx/fcitx5-configtool,https://github.com/fcitx/fcitx5-configtool.git,GNU General Public License version ,GPL,CXX,,867,https://github.com/fcitx/fcitx5-configtool
+21200,fcitx/fcitx5-skk,https://github.com/fcitx/fcitx5-skk.git,GNU General Public License version ,GPL,CXX,,887,https://github.com/fcitx/fcitx5-skk
+22299,rauc/rauc,https://github.com/rauc/rauc.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,305,https://github.com/rauc/rauc
+15983,fcitx-fcitx5-unikey,https://gitlab.com/fcitx/fcitx5-unikey,GNU General Public License version ,GPL,CXX,,1030,""
+11995,fcitx/fcitx5-chinese-addons,https://github.com/fcitx/fcitx5-chinese-addons.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,1511,https://github.com/fcitx/fcitx5-chinese-addons
+14888,fcitx/libime-jyutping,https://github.com/fcitx/libime-jyutping.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,1470,https://github.com/fcitx/libime-jyutping
+3576,warmcat/libwebsockets,https://github.com/warmcat/libwebsockets.git,"GNU Library or ""Lesser"" General Public License version  ",LGPL,CXX,,1399,https://github.com/warmcat/libwebsockets

@@ -57,7 +57,7 @@ class Forge::SourceForgeTest < ActiveSupport::TestCase
 
   describe 'json_api_url' do
     it 'should return correct json metadata url' do
-      correct_url = 'http://sourceforge.net/rest/p/name_at_forge/'
+      correct_url = 'https://sourceforge.net/rest/p/name_at_forge/'
       mock_match = mock
       mock_match.expects(:name_at_forge).returns('name_at_forge')
       _(Forge::SourceForge.new.json_api_url(mock_match)).must_equal correct_url

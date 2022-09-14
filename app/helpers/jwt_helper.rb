@@ -5,11 +5,11 @@ module JWTHelper
     exp = Time.now.to_i + (valid_for_hours * 60 * 60)
     payload = { expiration: exp,
                 user: user }
-    JWT.encode(payload, ENV['JWT_SECRET'], 'HS256')
+    JWT.encode(payload, ENV['JWT_SECRET_API_KEY'], 'HS256')
   end
 
   def decode_jwt(jwt)
-    decoded_token = JWT.decode(jwt, ENV['JWT_SECRET'], true)
+    decoded_token = JWT.decode(jwt, ENV['JWT_SECRET_API_KEY'], true)
     user = decoded_token[0]['user']
     expiration = decoded_token[0]['expiration']
 

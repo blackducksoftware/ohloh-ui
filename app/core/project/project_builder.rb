@@ -14,10 +14,6 @@ class ProjectBuilder
     @project
   end
 
-  def fetch_project
-    @project
-  end
-
   private
 
   def create_project_from_params

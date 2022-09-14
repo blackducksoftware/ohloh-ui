@@ -2,96 +2,242 @@
 http_interactions:
 - request:
     method: get
-    uri: http://sourceforge.net/rest/p/jotwiki/
+    uri: https://sourceforge.net/rest/p/jotwiki/
     body:
       encoding: US-ASCII
       string: ''
     headers:
-      User-Agent:
-      - Ohloh.net client
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
       Accept:
       - "*/*"
+      User-Agent:
+      - Ohloh.net client
+      Host:
+      - sourceforge.net
+      Content-Type:
+      - application/json
   response:
     status:
       code: 200
       message: OK
     headers:
-      Server:
-      - nginx
       Date:
-      - Fri, 20 Mar 2015 13:59:50 GMT
+      - Fri, 16 Sep 2022 12:35:58 GMT
       Content-Type:
       - application/json; charset=utf-8
+      Transfer-Encoding:
+      - chunked
       Connection:
-      - close
-      Pragma:
-      - no-cache
+      - keep-alive
       Cache-Control:
       - no-cache
-      Content-Length:
-      - '1882'
+      Pragma:
+      - no-cache
+      X-Content-Type-Options:
+      - nosniff
       X-Frame-Options:
       - SAMEORIGIN
-      Vary:
-      - Accept-Encoding, User-Agent
+      Content-Security-Policy:
+      - frame-ancestors 'self'
+      Strict-Transport-Security:
+      - max-age=31536000
+      Cf-Cache-Status:
+      - DYNAMIC
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 74b9a51eacaf396b-MAA
+      Alt-Svc:
+      - h3=":443"; ma=86400, h3-29=":443"; ma=86400
     body:
-      encoding: UTF-8
-      string: '{"status": "moved", "preferred_support_tool": "", "preferred_support_url":
-        "", "labels": [], "private": false, "creation_date": "2007-06-08", "socialnetworks":
-        [], "tools": [{"sourceforge_group_id": 198228, "mount_point": "summary", "name":
-        "summary", "label": "Summary"}, {"mount_point": "support", "name": "support",
-        "label": "Support"}, {"mount_point": "reviews", "name": "reviews", "label":
-        "Reviews"}, {"mount_point": "files", "name": "files", "label": "Files"}, {"mount_point":
-        "wiki", "name": "wiki", "label": "Wiki"}, {"mount_point": "news", "name":
-        "blog", "label": "News"}, {"mount_point": "discussion", "name": "discussion",
-        "label": "Discussion"}, {"mount_point": "code", "name": "svn", "label": "Code"},
-        {"mount_point": "mailman", "name": "mailman", "label": "Mailing Lists"}, {"mount_point":
-        "activity", "name": "activity", "label": "Activity"}], "categories": {"developmentstatus":
-        [{"fullpath": "Development Status :: 4 - Beta", "fullname": "4 - Beta", "shortname":
-        "beta", "id": 10}], "environment": [{"fullpath": "User Interface :: Web-based",
-        "fullname": "Web-based", "shortname": "web", "id": 237}], "language": [{"fullpath":
-        "Programming Language :: Java", "fullname": "Java", "shortname": "java", "id":
-        198}], "license": [{"fullpath": "License :: Other License", "fullname": "Other
-        License", "shortname": "other", "id": 196}, {"fullpath": "License :: OSI-Approved
-        Open Source :: GNU General Public License version 2.0 (GPLv2)", "fullname":
-        "GNU General Public License version 2.0 (GPLv2)", "shortname": "gpl", "id":
-        15}], "database": [{"fullpath": "Database Environment :: File-based DBMS ::
-        Proprietary file format", "fullname": "Proprietary file format", "shortname":
-        "db_file_proprietary", "id": 522}], "topic": [{"fullpath": "Topic :: Internet
-        :: WWW/HTTP", "fullname": "WWW/HTTP", "shortname": "www", "id": 90}], "audience":
-        [{"fullpath": "Intended Audience :: by Industry or Sector :: Information Technology",
-        "fullname": "Information Technology", "shortname": "informationtechnology",
-        "id": 363}, {"fullpath": "Intended Audience :: by End-User Class :: Advanced
-        End Users", "fullname": "Advanced End Users", "shortname": "enduser_advanced",
-        "id": 536}, {"fullpath": "Intended Audience :: by End-User Class :: System
-        Administrators", "fullname": "System Administrators", "shortname": "sysadmins",
-        "id": 4}, {"fullpath": "Intended Audience :: by End-User Class :: End Users/Desktop",
-        "fullname": "End Users/Desktop", "shortname": "endusers", "id": 2}], "translation":
-        [{"fullpath": "Translations :: English", "fullname": "English", "shortname":
-        "english", "id": 275}], "os": [{"fullpath": "Operating System :: Grouping
-        and Descriptive Categories :: OS Independent (Written in an interpreted language)",
-        "fullname": "OS Independent (Written in an interpreted language)", "shortname":
-        "independent", "id": 235}, {"fullpath": "Operating System :: Grouping and
-        Descriptive Categories :: All POSIX (Linux/BSD/UNIX-like OSes)", "fullname":
-        "All POSIX (Linux/BSD/UNIX-like OSes)", "shortname": "posix", "id": 200},
-        {"fullpath": "Operating System :: Grouping and Descriptive Categories :: All
-        32-bit MS Windows (95/98/NT/2000/XP)", "fullname": "All 32-bit MS Windows
-        (95/98/NT/2000/XP)", "shortname": "mswin_all32bit", "id": 435}]}, "_id": "517197a12718467ad6a06a29",
-        "name": "jotwiki", "url": "http://sourceforge.net/p/jotwiki/", "icon_url":
-        null, "video_url": "", "screenshots": [{"url": "http://sourceforge.net/p/jotwiki/screenshot/161800.jpg",
-        "caption": "Home", "thumbnail_url": "http://sourceforge.net/p/jotwiki/screenshot/161800.jpg/thumb"},
-        {"url": "http://sourceforge.net/p/jotwiki/screenshot/161804.jpg", "caption":
-        "Setup", "thumbnail_url": "http://sourceforge.net/p/jotwiki/screenshot/161804.jpg/thumb"},
-        {"url": "http://sourceforge.net/p/jotwiki/screenshot/161802.jpg", "caption":
-        "Edit", "thumbnail_url": "http://sourceforge.net/p/jotwiki/screenshot/161802.jpg/thumb"}],
-        "summary": "", "short_description": "JOTWiki, is a simple but powerful java
-        based WIKI software. It has a lot of features It is very simple to install/setup,
-        since it has no dependencies (just needs a java Application server). See http://www.jotwiki.net
-        for more informations.", "moved_to_url": "http://bitbucket.org/tcolar/jotwiki",
-        "shortname": "jotwiki", "developers": [{"url": "http://sourceforge.net/u/tcolar/",
-        "username": "tcolar", "name": "Thibaut Colar"}], "external_homepage": "http://www.jotwiki.net"}'
-    http_version: 
-  recorded_at: Fri, 20 Mar 2015 14:00:43 GMT
-recorded_with: VCR 2.9.3
+      encoding: ASCII-8BIT
+      string: '{"shortname": "jotwiki", "name": "jotwiki", "_id": "517197a12718467ad6a06a29",
+        "url": "https://sourceforge.net/p/jotwiki/", "private": false, "short_description":
+        "JOTWiki, is a simple but powerful java based WIKI software. It has a lot
+        of features It is very simple to install/setup, since it has no dependencies
+        (just needs a java Application server). See http://www.jotwiki.net for more
+        informations.", "creation_date": "2007-06-08", "summary": "", "external_homepage":
+        "http://www.jotwiki.net", "video_url": "", "socialnetworks": [], "status":
+        "moved", "moved_to_url": "http://bitbucket.org/tcolar/jotwiki", "preferred_support_tool":
+        "", "preferred_support_url": "", "developers": [{"username": "tcolar", "name":
+        "Thibaut Colar", "url": "https://sourceforge.net/u/tcolar/"}], "tools": [{"name":
+        "files-sf", "mount_point": "files", "url": "https://sourceforge.net/p/jotwiki/files/",
+        "mount_label": "Files"}, {"name": "reviews", "mount_point": "reviews", "url":
+        "https://sourceforge.net/p/jotwiki/reviews/", "mount_label": "Reviews"}, {"name":
+        "support", "mount_point": "support", "url": "https://sourceforge.net/p/jotwiki/support/",
+        "mount_label": "Support"}, {"name": "summary", "mount_point": "summary", "url":
+        "https://sourceforge.net/p/jotwiki/summary/", "mount_label": "Summary", "sourceforge_group_id":
+        198228}, {"name": "wiki", "mount_point": "wiki", "url": "https://sourceforge.net/p/jotwiki/wiki/",
+        "mount_label": "Wiki", "api_url": "https://sourceforge.net/rest/p/jotwiki/wiki/"},
+        {"name": "blog", "mount_point": "news", "url": "https://sourceforge.net/p/jotwiki/news/",
+        "mount_label": "News", "api_url": "https://sourceforge.net/rest/p/jotwiki/news/"},
+        {"name": "svn", "mount_point": "code", "url": "https://sourceforge.net/p/jotwiki/code/",
+        "mount_label": "Code", "api_url": "https://sourceforge.net/rest/p/jotwiki/code/",
+        "clone_url_https_anon": "https://svn.code.sf.net/p/jotwiki/code/", "clone_url_ro":
+        "svn://svn.code.sf.net/p/jotwiki/code/"}, {"name": "discussion", "mount_point":
+        "discussion", "url": "https://sourceforge.net/p/jotwiki/discussion/", "mount_label":
+        "Discussion", "api_url": "https://sourceforge.net/rest/p/jotwiki/discussion/"},
+        {"name": "activity", "mount_point": "activity", "url": "https://sourceforge.net/p/jotwiki/activity/",
+        "mount_label": "Activity", "api_url": "https://sourceforge.net/rest/p/jotwiki/activity/"},
+        {"name": "mailman", "mount_point": "mailman", "url": "https://sourceforge.net/p/jotwiki/mailman/",
+        "mount_label": "Mailing Lists"}], "labels": [], "categories": {"audience":
+        [{"id": 363, "shortname": "informationtechnology", "fullname": "Information
+        Technology", "fullpath": "Intended Audience :: by Industry or Sector :: Information
+        Technology"}, {"id": 536, "shortname": "enduser_advanced", "fullname": "Advanced
+        End Users", "fullpath": "Intended Audience :: by End-User Class :: Advanced
+        End Users"}, {"id": 4, "shortname": "sysadmins", "fullname": "System Administrators",
+        "fullpath": "Intended Audience :: by End-User Class :: System Administrators"},
+        {"id": 2, "shortname": "endusers", "fullname": "End Users/Desktop", "fullpath":
+        "Intended Audience :: by End-User Class :: End Users/Desktop"}], "developmentstatus":
+        [{"id": 10, "shortname": "beta", "fullname": "4 - Beta", "fullpath": "Development
+        Status :: 4 - Beta"}], "environment": [{"id": 237, "shortname": "web", "fullname":
+        "Web-based", "fullpath": "User Interface :: Web-based"}], "language": [{"id":
+        198, "shortname": "java", "fullname": "Java", "fullpath": "Programming Language
+        :: Java"}], "license": [{"id": 196, "shortname": "other", "fullname": "Other
+        License", "fullpath": "License :: Other License"}, {"id": 15, "shortname":
+        "gpl", "fullname": "GNU General Public License version 2.0 (GPLv2)", "fullpath":
+        "License :: OSI-Approved Open Source :: GNU General Public License version
+        2.0 (GPLv2)"}], "translation": [{"id": 275, "shortname": "english", "fullname":
+        "English", "fullpath": "Translations :: English"}], "os": [{"id": 235, "shortname":
+        "independent", "fullname": "OS Independent (Written in an interpreted language)",
+        "fullpath": "Operating System :: Grouping and Descriptive Categories :: OS
+        Independent (Written in an interpreted language)"}, {"id": 200, "shortname":
+        "posix", "fullname": "All POSIX (Linux/BSD/UNIX-like OSes)", "fullpath": "Operating
+        System :: Grouping and Descriptive Categories :: All POSIX (Linux/BSD/UNIX-like
+        OSes)"}, {"id": 435, "shortname": "mswin_all32bit", "fullname": "All 32-bit
+        MS Windows (95/98/NT/2000/XP)", "fullpath": "Operating System :: Grouping
+        and Descriptive Categories :: All 32-bit MS Windows (95/98/NT/2000/XP)"}],
+        "database": [{"id": 522, "shortname": "db_file_proprietary", "fullname": "Proprietary
+        file format", "fullpath": "Database Environment :: File-based DBMS :: Proprietary
+        file format"}], "topic": [{"id": 90, "shortname": "www", "fullname": "WWW/HTTP",
+        "fullpath": "Topic :: Internet :: WWW/HTTP"}]}, "icon_url": null, "screenshots":
+        [{"url": "https://sourceforge.net/p/jotwiki/screenshot/161800.jpg", "thumbnail_url":
+        "https://sourceforge.net/p/jotwiki/screenshot/161800.jpg/thumb", "caption":
+        "Home"}, {"url": "https://sourceforge.net/p/jotwiki/screenshot/161804.jpg",
+        "thumbnail_url": "https://sourceforge.net/p/jotwiki/screenshot/161804.jpg/thumb",
+        "caption": "Setup"}, {"url": "https://sourceforge.net/p/jotwiki/screenshot/161802.jpg",
+        "thumbnail_url": "https://sourceforge.net/p/jotwiki/screenshot/161802.jpg/thumb",
+        "caption": "Edit"}]}'
+  recorded_at: Fri, 16 Sep 2022 12:35:58 GMT
+- request:
+    method: get
+    uri: https://sourceforge.net/rest/p/jotwiki/
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ohloh.net client
+      Host:
+      - sourceforge.net
+      Content-Type:
+      - application/json
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Fri, 16 Sep 2022 12:35:58 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Cache-Control:
+      - no-cache
+      Pragma:
+      - no-cache
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      Content-Security-Policy:
+      - frame-ancestors 'self'
+      Strict-Transport-Security:
+      - max-age=31536000
+      Cf-Cache-Status:
+      - DYNAMIC
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 74b9a5211d74a905-MAA
+      Alt-Svc:
+      - h3=":443"; ma=86400, h3-29=":443"; ma=86400
+    body:
+      encoding: ASCII-8BIT
+      string: '{"shortname": "jotwiki", "name": "jotwiki", "_id": "517197a12718467ad6a06a29",
+        "url": "https://sourceforge.net/p/jotwiki/", "private": false, "short_description":
+        "JOTWiki, is a simple but powerful java based WIKI software. It has a lot
+        of features It is very simple to install/setup, since it has no dependencies
+        (just needs a java Application server). See http://www.jotwiki.net for more
+        informations.", "creation_date": "2007-06-08", "summary": "", "external_homepage":
+        "http://www.jotwiki.net", "video_url": "", "socialnetworks": [], "status":
+        "moved", "moved_to_url": "http://bitbucket.org/tcolar/jotwiki", "preferred_support_tool":
+        "", "preferred_support_url": "", "developers": [{"username": "tcolar", "name":
+        "Thibaut Colar", "url": "https://sourceforge.net/u/tcolar/"}], "tools": [{"name":
+        "files-sf", "mount_point": "files", "url": "https://sourceforge.net/p/jotwiki/files/",
+        "mount_label": "Files"}, {"name": "reviews", "mount_point": "reviews", "url":
+        "https://sourceforge.net/p/jotwiki/reviews/", "mount_label": "Reviews"}, {"name":
+        "support", "mount_point": "support", "url": "https://sourceforge.net/p/jotwiki/support/",
+        "mount_label": "Support"}, {"name": "summary", "mount_point": "summary", "url":
+        "https://sourceforge.net/p/jotwiki/summary/", "mount_label": "Summary", "sourceforge_group_id":
+        198228}, {"name": "wiki", "mount_point": "wiki", "url": "https://sourceforge.net/p/jotwiki/wiki/",
+        "mount_label": "Wiki", "api_url": "https://sourceforge.net/rest/p/jotwiki/wiki/"},
+        {"name": "blog", "mount_point": "news", "url": "https://sourceforge.net/p/jotwiki/news/",
+        "mount_label": "News", "api_url": "https://sourceforge.net/rest/p/jotwiki/news/"},
+        {"name": "svn", "mount_point": "code", "url": "https://sourceforge.net/p/jotwiki/code/",
+        "mount_label": "Code", "api_url": "https://sourceforge.net/rest/p/jotwiki/code/",
+        "clone_url_https_anon": "https://svn.code.sf.net/p/jotwiki/code/", "clone_url_ro":
+        "svn://svn.code.sf.net/p/jotwiki/code/"}, {"name": "discussion", "mount_point":
+        "discussion", "url": "https://sourceforge.net/p/jotwiki/discussion/", "mount_label":
+        "Discussion", "api_url": "https://sourceforge.net/rest/p/jotwiki/discussion/"},
+        {"name": "activity", "mount_point": "activity", "url": "https://sourceforge.net/p/jotwiki/activity/",
+        "mount_label": "Activity", "api_url": "https://sourceforge.net/rest/p/jotwiki/activity/"},
+        {"name": "mailman", "mount_point": "mailman", "url": "https://sourceforge.net/p/jotwiki/mailman/",
+        "mount_label": "Mailing Lists"}], "labels": [], "categories": {"audience":
+        [{"id": 363, "shortname": "informationtechnology", "fullname": "Information
+        Technology", "fullpath": "Intended Audience :: by Industry or Sector :: Information
+        Technology"}, {"id": 536, "shortname": "enduser_advanced", "fullname": "Advanced
+        End Users", "fullpath": "Intended Audience :: by End-User Class :: Advanced
+        End Users"}, {"id": 4, "shortname": "sysadmins", "fullname": "System Administrators",
+        "fullpath": "Intended Audience :: by End-User Class :: System Administrators"},
+        {"id": 2, "shortname": "endusers", "fullname": "End Users/Desktop", "fullpath":
+        "Intended Audience :: by End-User Class :: End Users/Desktop"}], "developmentstatus":
+        [{"id": 10, "shortname": "beta", "fullname": "4 - Beta", "fullpath": "Development
+        Status :: 4 - Beta"}], "environment": [{"id": 237, "shortname": "web", "fullname":
+        "Web-based", "fullpath": "User Interface :: Web-based"}], "language": [{"id":
+        198, "shortname": "java", "fullname": "Java", "fullpath": "Programming Language
+        :: Java"}], "license": [{"id": 196, "shortname": "other", "fullname": "Other
+        License", "fullpath": "License :: Other License"}, {"id": 15, "shortname":
+        "gpl", "fullname": "GNU General Public License version 2.0 (GPLv2)", "fullpath":
+        "License :: OSI-Approved Open Source :: GNU General Public License version
+        2.0 (GPLv2)"}], "translation": [{"id": 275, "shortname": "english", "fullname":
+        "English", "fullpath": "Translations :: English"}], "os": [{"id": 235, "shortname":
+        "independent", "fullname": "OS Independent (Written in an interpreted language)",
+        "fullpath": "Operating System :: Grouping and Descriptive Categories :: OS
+        Independent (Written in an interpreted language)"}, {"id": 200, "shortname":
+        "posix", "fullname": "All POSIX (Linux/BSD/UNIX-like OSes)", "fullpath": "Operating
+        System :: Grouping and Descriptive Categories :: All POSIX (Linux/BSD/UNIX-like
+        OSes)"}, {"id": 435, "shortname": "mswin_all32bit", "fullname": "All 32-bit
+        MS Windows (95/98/NT/2000/XP)", "fullpath": "Operating System :: Grouping
+        and Descriptive Categories :: All 32-bit MS Windows (95/98/NT/2000/XP)"}],
+        "database": [{"id": 522, "shortname": "db_file_proprietary", "fullname": "Proprietary
+        file format", "fullpath": "Database Environment :: File-based DBMS :: Proprietary
+        file format"}], "topic": [{"id": 90, "shortname": "www", "fullname": "WWW/HTTP",
+        "fullpath": "Topic :: Internet :: WWW/HTTP"}]}, "icon_url": null, "screenshots":
+        [{"url": "https://sourceforge.net/p/jotwiki/screenshot/161800.jpg", "thumbnail_url":
+        "https://sourceforge.net/p/jotwiki/screenshot/161800.jpg/thumb", "caption":
+        "Home"}, {"url": "https://sourceforge.net/p/jotwiki/screenshot/161804.jpg",
+        "thumbnail_url": "https://sourceforge.net/p/jotwiki/screenshot/161804.jpg/thumb",
+        "caption": "Setup"}, {"url": "https://sourceforge.net/p/jotwiki/screenshot/161802.jpg",
+        "thumbnail_url": "https://sourceforge.net/p/jotwiki/screenshot/161802.jpg/thumb",
+        "caption": "Edit"}]}'
+  recorded_at: Fri, 16 Sep 2022 12:35:58 GMT
+recorded_with: VCR 6.0.0
