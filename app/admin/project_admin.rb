@@ -4,10 +4,16 @@ ActiveAdmin.register Project do
   actions :index, :show
 
   filter :name
+  filter :last_analyzed, as: :date_range, label: 'Last Analyzed Range'
+  filter :has_active_enlistments, as: :radio, label: 'Show only Active Enlisted'
   filter :created_at
 
   controller do
     defaults finder: :find_by_vanity_url!
+
+    def scoped_collection
+      super.includes(:best_analysis).references(:best_analysis).select('*, analyses.created_at as last_analyzed')
+    end
   end
 
   index do
@@ -20,6 +26,9 @@ ActiveAdmin.register Project do
     end
     column :managers do |project|
       project.active_managers.map { |m| link_to(m.name, account_path(m)) }
+    end
+    column :last_analyzed, sortable: true do |project|
+      project.best_analysis.try :created_at
     end
     column :created_at
     actions

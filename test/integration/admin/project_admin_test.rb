@@ -10,11 +10,51 @@ class ProjectAdminTest < ActionDispatch::IntegrationTest
     login_as admin
   end
 
-  it 'should render index page' do
-    create(:project)
+  describe 'index' do
+    it 'should render index page' do
+      create(:project)
 
-    get admin_projects_path
-    assert_response :success
+      get admin_projects_path
+      assert_response :success
+    end
+
+    it 'must render index with projects having active enlistments' do
+      project_with_enlistment = create(:enlistment).project
+      plain_project = create(:project)
+
+      get admin_projects_path, params: { q: { has_active_enlistments: true } }
+
+      _(response.body).must_match project_with_enlistment.name
+      _(response.body).wont_match plain_project.name
+    end
+
+    it 'must render index filtered by a range of best_analysis created time' do
+      project1 = create(:project)
+      project2 = create(:project)
+      project3 = create(:project)
+
+      project1.best_analysis.update! created_at: 4.days.ago
+      project2.best_analysis.update! created_at: 3.days.ago
+
+      date_range = { last_analyzed_gteq_datetime: 5.days.ago.to_date.to_s,
+                     last_analyzed_lteq_datetime: 3.days.ago.to_date.to_s }
+      get admin_projects_path, params: { q: date_range }
+
+      _(response.body).must_match project1.name
+      _(response.body).must_match project2.name
+      _(response.body).wont_match project3.name
+    end
+
+    it 'must render index page ordered by last_analyzed' do
+      project1 = create(:project)
+      project2 = create(:project)
+
+      project1.best_analysis.update! created_at: 1.day.since
+
+      get admin_projects_path, params: { order: :last_analyzed_desc }
+
+      _(assigns(@projects)['projects'].map(&:id)).must_equal [project1.id, project2.id]
+    end
   end
 
   it 'should render show page' do
