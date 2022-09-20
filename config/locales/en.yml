@@ -153,6 +153,7 @@ en:
   up: 'Up'
   down: 'Down'
   from_prev_12_mo: 'from previous 12 months'
+  sbom: 'SBOM'
   api_keys:
     api_key:
       none: 'None'

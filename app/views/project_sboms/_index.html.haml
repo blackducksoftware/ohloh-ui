@@ -1,0 +1,9 @@
+.modal-header
+  %button.close{ data: { dismiss: 'modal' }, aria: { label: 'Close' } }
+    &times;
+  %h3.modal-title= "SBOM Details"
+.modal-body#sbom_details
+  .row
+    - project_sbom.sbom_data.each do |key, value|
+      .col-md-3.list-title.strong= key
+      .col-md-9.list-separator.strong= value

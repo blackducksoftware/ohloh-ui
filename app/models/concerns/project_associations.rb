@@ -41,6 +41,7 @@ module ProjectAssociations
     has_many :commit_flags, -> { order(time: :desc) }, through: :analysis_sloc_sets
     has_one :project_vulnerability_report
     has_many :commit_contributors
+    has_many :project_sboms # this might get changed
     accepts_nested_attributes_for :enlistments
     accepts_nested_attributes_for :project_licenses
 

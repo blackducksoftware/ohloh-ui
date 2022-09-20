@@ -17,4 +17,11 @@
         - links.each do |link|
           - link_class, link_name, link_url = link
           %li.footer-nav{ class: ('nav-active' if link_class == page_context[:select_footer_nav]) }
-            %a{ href: link_url }= link_name
+            - if link_name == 'SBOM'
+              = link_to link_name, link_url, remote: true,
+                    data: { toggle: 'modal', target: '#sbom_details.modal', keyboard: true }
+            - else
+              %a{ href: link_url }= link_name
+.modal.fade#sbom_details{ role: 'dialog', tabindex: -1 }
+  .modal-dialog{ role: 'document' }
+    .modal-content

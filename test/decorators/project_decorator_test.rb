@@ -22,7 +22,8 @@ class ProjectDecoratorTest < ActiveSupport::TestCase
       [
         [:scm_data, 'SCM Data'],
         [:commits, 'Commits', "/p/#{linux.vanity_url}/commits/summary"],
-        [:contributors, 'Contributors', "/p/#{linux.vanity_url}/contributors/summary"]
+        [:contributors, 'Contributors', "/p/#{linux.vanity_url}/contributors/summary"],
+        [:sbom, linux.project_sboms.count.positive? ? 'SBOM' : nil, "/p/#{linux.vanity_url}/project_sboms"]
       ],
       [
         [:user_data, 'Community Data'],
