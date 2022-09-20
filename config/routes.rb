@@ -310,6 +310,7 @@ Rails.application.routes.draw do
         post :redo
       end
     end
+    resources :project_sboms, only: :index
   end
 
   get 'p/_compare', to: 'compares#projects', as: :compare_projects
