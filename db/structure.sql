@@ -84,9 +84,9 @@ COMMENT ON EXTENSION "uuid-ossp" IS 'generate universally unique identifiers (UU
 --
 
 CREATE TYPE fis.statinfo AS (
-	word text,
-	ndoc integer,
-	nentry integer
+  word text,
+  ndoc integer,
+  nentry integer
 );
 
 
@@ -95,8 +95,8 @@ CREATE TYPE fis.statinfo AS (
 --
 
 CREATE TYPE fis.tokenout AS (
-	tokid integer,
-	token text
+  tokid integer,
+  token text
 );
 
 
@@ -105,9 +105,9 @@ CREATE TYPE fis.tokenout AS (
 --
 
 CREATE TYPE fis.tokentype AS (
-	tokid integer,
-	alias text,
-	descr text
+  tokid integer,
+  alias text,
+  descr text
 );
 
 
@@ -116,12 +116,12 @@ CREATE TYPE fis.tokentype AS (
 --
 
 CREATE TYPE fis.tsdebug AS (
-	ts_name text,
-	tok_type text,
-	description text,
-	token text,
-	dict_name text[],
-	tsvector tsvector
+  ts_name text,
+  tok_type text,
+  description text,
+  token text,
+  dict_name text[],
+  tsvector tsvector
 );
 
 
@@ -130,9 +130,9 @@ CREATE TYPE fis.tsdebug AS (
 --
 
 CREATE TYPE oh.statinfo AS (
-	word text,
-	ndoc integer,
-	nentry integer
+  word text,
+  ndoc integer,
+  nentry integer
 );
 
 
@@ -141,8 +141,8 @@ CREATE TYPE oh.statinfo AS (
 --
 
 CREATE TYPE oh.tokenout AS (
-	tokid integer,
-	token text
+  tokid integer,
+  token text
 );
 
 
@@ -151,9 +151,9 @@ CREATE TYPE oh.tokenout AS (
 --
 
 CREATE TYPE oh.tokentype AS (
-	tokid integer,
-	alias text,
-	descr text
+  tokid integer,
+  alias text,
+  descr text
 );
 
 
@@ -162,12 +162,12 @@ CREATE TYPE oh.tokentype AS (
 --
 
 CREATE TYPE oh.tsdebug AS (
-	ts_name text,
-	tok_type text,
-	description text,
-	token text,
-	dict_name text[],
-	tsvector tsvector
+  ts_name text,
+  tok_type text,
+  description text,
+  token text,
+  dict_name text[],
+  tsvector tsvector
 );
 
 
@@ -687,8 +687,8 @@ DECLARE
   result jsonb;
 BEGIN
   SELECT admin_select_cl_visited_stats() ||
-  		 admin_select_cl_visited_stats('3 days') ||
-  		 admin_select_cl_visited_stats('1 month') ||
+       admin_select_cl_visited_stats('3 days') ||
+       admin_select_cl_visited_stats('1 month') ||
          admin_select_kb_cl_visited_stats() ||
          admin_select_kb_cl_visited_stats('3 days') ||
          admin_select_kb_cl_visited_stats('1 month') INTO result;
@@ -1037,10 +1037,10 @@ CREATE FUNCTION fis.delete_old_code_sets(smallint, boolean) RETURNS jsonb
            WHERE code_sets.id <> cl.best_code_set_id
              AND COALESCE(code_sets.logged_at, code_sets.updated_on)
                  < COALESCE(cs_best.logged_at, cs_best.updated_on)
-			 AND code_sets.id NOT IN
-			 	(SELECT distinct j.code_set_id FROM jobs j
-				 WHERE j.status <> 5 AND j.code_set_id IS NOT NULL)
-		   Limit num_limit ;
+       AND code_sets.id NOT IN
+        (SELECT distinct j.code_set_id FROM jobs j
+         WHERE j.status <> 5 AND j.code_set_id IS NOT NULL)
+       Limit num_limit ;
 
          GET DIAGNOSTICS num_selected = row_count;
          RAISE NOTICE 'Selected %s code_sets', num_selected ;
@@ -14761,13 +14761,6 @@ CREATE INDEX index_project_licenses_project_id ON oh.project_licenses USING btre
 
 
 --
--- Name: index_project_sboms_on_sbom_data; Type: INDEX; Schema: oh; Owner: -
---
-
-CREATE INDEX index_project_sboms_on_sbom_data ON oh.project_sboms USING gin (sbom_data);
-
-
---
 -- Name: index_project_security_sets_on_project_id; Type: INDEX; Schema: oh; Owner: -
 --
 
@@ -19398,4 +19391,3 @@ INSERT INTO oh.schema_migrations (version) VALUES ('97');
 INSERT INTO oh.schema_migrations (version) VALUES ('98');
 
 INSERT INTO oh.schema_migrations (version) VALUES ('99');
-
