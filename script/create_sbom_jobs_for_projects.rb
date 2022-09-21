@@ -13,7 +13,7 @@ module CreateSbomJobs
     projects = projects_without_sboms(limit)
 
     projects.each do |project|
-      project.enlistments.not_deleted.each do |enlistment|
+      active_enlistments(project).each do |enlistment|
         code_location_id = enlistment.code_location_id
         code_set = find_or_create_recent_code_set(code_location_id)
 
@@ -27,17 +27,23 @@ module CreateSbomJobs
 
   def projects_without_sboms(limit)
     Project.active.joins(:enlistments)
-           .joins('JOIN code_locations cl ON cl.id = enlistments.code_location_id
-                   JOIN repositories ON repositories.id = cl.repository_id')
+           .joins('JOIN code_locations ON code_locations.id = enlistments.code_location_id
+                   JOIN repositories ON repositories.id = code_locations.repository_id')
            .where("repositories.type = 'GitRepository' AND
                    NOT EXISTS(SELECT 1 FROM project_sboms WHERE project_id = projects.id) AND
-                   NOT EXISTS(SELECT 1 FROM jobs WHERE type = 'SbomJob' and project_id = projects.id)")
+                   NOT EXISTS(SELECT 1 FROM fis.jobs WHERE type = 'SbomJob' and project_id = projects.id)")
            .limit(limit)
   end
 
   def find_or_create_recent_code_set(code_location_id)
     CodeSet.where(code_location_id: code_location_id).last ||
       CodeSet.create!(code_location_id: code_location_id)
+  end
+
+  def active_enlistments(project)
+    project.enlistments.not_deleted
+           .joins('join code_locations on code_locations.id = enlistments.code_location_id')
+           .where('code_locations.do_not_fetch IS FALSE')
   end
 end
 
