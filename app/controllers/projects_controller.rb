@@ -7,6 +7,7 @@ class ProjectsController < ApplicationController
   layout 'responsive_project_layout', only: %i[show badges]
 
   include ProjectFilters
+  include ProjectsHelper
 
   def index
     render template: @account ? 'projects/index_managed' : 'projects/index' if request_format == 'html'
@@ -45,7 +46,8 @@ class ProjectsController < ApplicationController
 
   def check_forge
     if @projects.blank? || params[:bypass]
-      populate_project_from_forge
+      @project = populate_project_from_forge(params[:codelocation], false)
+      @project = @project.is_a?(ActiveRecord::Base) ? @project : nil
     else
       flash.now[:notice] = @projects.length == 1 ? t('.code_location_single') : t('.code_location_multiple')
       render template: 'projects/check_forge_duplicate'
@@ -77,13 +79,6 @@ class ProjectsController < ApplicationController
 
   def create_project_from_params
     @project = ProjectBuilder.new(current_user, project_params).create
-  end
-
-  def populate_project_from_forge
-    match = Forge::Match.first(params[:codelocation])
-    Timeout.timeout(Forge::Match::MAX_FORGE_COMM_TIME) { @project = match.project } if match
-  rescue Timeout::Error, OpenURI::HTTPError, URI::InvalidURIError
-    flash.now[:notice] = t('.forge_time_out', name: match.forge.name)
   end
 
   def create_code_location_subscription

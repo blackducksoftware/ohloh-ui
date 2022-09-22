@@ -484,6 +484,7 @@ Rails.application.routes.draw do
         post 'enlist'
       end
       resources :jwt, only: [:create]
+      resources :projects, only: [:create]
     end
   end
 

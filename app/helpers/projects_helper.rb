@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# rubocop: disable Metrics/ModuleLength
 module ProjectsHelper
   include ProjectVulnerabilityReportsHelper
   include SiteFeaturesHelper
@@ -94,6 +95,17 @@ module ProjectsHelper
     end
   end
 
+  def populate_project_from_forge(url, api)
+    match = Forge::Match.first(url)
+    Timeout.timeout(Forge::Match::MAX_FORGE_COMM_TIME) { match.project } if match
+  rescue Timeout::Error, OpenURI::HTTPError, URI::InvalidURIError
+    if api == true
+      render json: t('.forge_time_out', name: match.forge.name)
+    else
+      flash.now[:notice] = t('.forge_time_out', name: match.forge.name)
+    end
+  end
+
   private
 
   def project_twitter_description_analysis(project, analysis)
@@ -120,3 +132,4 @@ module ProjectsHelper
     project.description && project.description.size > 800
   end
 end
+# rubocop: enable Metrics/ModuleLength
