@@ -45,7 +45,7 @@ class Forge::GithubTest < ActiveSupport::TestCase
     it 'should return public json key if ENV["GITHUB_AUTH_TOKEN"] is undefined' do
       old_github_auth_token = ENV.delete('GITHUB_AUTH_TOKEN')
       ENV['GITHUB_AUTH_TOKEN'] = 'DEADBEEF'
-      correct_url = 'https://api.github.com/repos/UserName/project_name?access_token=DEADBEEF'
+      correct_url = 'https://api.github.com/repos/UserName/project_name'
       mock_match = mock
       mock_match.expects(:owner_at_forge).returns('UserName')
       mock_match.expects(:name_at_forge).returns('project_name')

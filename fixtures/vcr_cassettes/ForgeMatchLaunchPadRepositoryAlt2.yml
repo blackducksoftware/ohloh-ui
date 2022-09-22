@@ -345,4 +345,351 @@ http_interactions:
         None}\n\n    r17413\n\n    -->\n\n</html>\n\n"
     http_version: 
   recorded_at: Wed, 25 Mar 2015 21:02:17 GMT
+- request:
+    method: get
+    uri: https://launchpad.net/ampoule
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+      Host:
+      - localhost:4000
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Wed, 25 Mar 2015 21:01:12 GMT
+      Server:
+      - zope.server.http (HTTP)
+      X-Powered-By:
+      - Zope (www.zope.org), Python (www.python.org)
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Content-Type-Options:
+      - nosniff
+      Strict-Transport-Security:
+      - max-age=15552000
+      Vary:
+      - Cookie,Authorization,Accept-Encoding
+      X-Frame-Options:
+      - SAMEORIGIN
+      Content-Type:
+      - text/html;charset=utf-8
+      X-Cache:
+      - MISS from banana.canonical.com
+      X-Cache-Lookup:
+      - MISS from banana.canonical.com:3128
+      Via:
+      - 1.0 banana.canonical.com:3128 (squid/2.7.STABLE7)
+      Transfer-Encoding:
+      - chunked
+    body:
+      encoding: UTF-8
+      string: "<!DOCTYPE html>\n<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\"\n
+        \     lang=\"en\" dir=\"ltr\">\n  <head>\n<base href=\"https://launchpad.net/ampoule/+index\"
+        />\n\n    <meta charset=\"UTF-8\" />\n    <title>Ampoule in Launchpad</title>\n
+        \   <link rel=\"shortcut icon\" href=\"/@@/launchpad.png\" />\n    \n    \n
+        \     <link rel=\"alternate\" type=\"application/atom+xml\"\n            href=\"http://feeds.launchpad.net/ampoule/announcements.atom\"\n
+        \           title=\"Announcements for Ampoule\" />\n      <link rel=\"alternate\"
+        type=\"application/atom+xml\"\n            href=\"http://feeds.launchpad.net/ampoule/latest-bugs.atom\"\n
+        \           title=\"Latest Bugs for Ampoule\" />\n      <link rel=\"alternate\"
+        type=\"application/atom+xml\"\n            href=\"http://feeds.launchpad.net/ampoule/branches.atom\"\n
+        \           title=\"Latest Branches for Ampoule\" />\n      <link rel=\"alternate\"
+        type=\"application/atom+xml\"\n            href=\"http://feeds.launchpad.net/ampoule/revisions.atom\"\n
+        \           title=\"Latest Revisions for Ampoule\" />\n    \n\n    \n  \n
+        \ <link type=\"text/css\" rel=\"stylesheet\"\n        media=\"screen, print\"\n
+        \       href=\"/+icing/rev17413/combo.css\" />\n\n\n    \n\n    \n      \n
+        \   \n\n    \n  \n\n  \n  \n  <script type=\"text/javascript\">\n    var LP
+        = {\n        cache: {},\n        links: {}\n    };\n  </script>\n\n  \n\n
+        \ <script type=\"text/javascript\">var cookie_scope = '; Path=/; Secure; Domain=.launchpad.net';</script>\n\n
+        \  <script type=\"text/javascript\"\n           src=\"/+combo/rev17413/?yui/yui/yui-min.js&amp;lp/meta.js&amp;yui/loader/loader-min.js\"></script>\n
+        \  <script type=\"text/javascript\">\n        var raw = null;\n        if
+        (LP.devmode) {\n           raw = 'raw';\n        }\n        YUI.GlobalConfig
+        = {\n            combine: true,\n            comboBase: '/+combo/rev17413/?',\n
+        \           root: 'yui/',\n            filter: raw,\n            debug: false,\n
+        \           fetchCSS: false,\n            maxURLLength: 2000,\n            groups:
+        {\n                lp: {\n                    combine: true,\n                    base:
+        '/+combo/rev17413/?lp/',\n                    comboBase: '/+combo/rev17413/?',\n
+        \                   root: 'lp/',\n                    // comes from including
+        lp/meta.js\n                    modules: LP_MODULES,\n                    fetchCSS:
+        false\n                }\n            }\n        }</script>\n\n  <script type=\"text/javascript\">\n
+        \     // we need this to create a single YUI instance all events and code\n
+        \     // talks across. All instances of YUI().use should be based off of\n
+        \     // LPJS instead.\n      LPJS = new YUI();\n  </script>\n\n\n\n    <script
+        id=\"base-layout-load-scripts\" type=\"text/javascript\">\n        //<![CDATA[\n
+        \       LPJS.use('base', 'node', 'console', 'event',\n            'oop', 'lp',
+        'lp.app.foldables','lp.app.sorttable',\n            'lp.app.inlinehelp', 'lp.app.links',
+        'lp.app.longpoll',\n            'lp.bugs.bugtask_index', 'lp.bugs.subscribers',\n
+        \           'lp.app.ellipsis', 'lp.code.branchmergeproposal.diff',\n            'lp.views.global',\n
+        \            function(Y) {\n\n            Y.on(\"domready\", function () {\n
+        \               var global_view = new Y.lp.views.Global();\n                global_view.render();\n\n
+        \               Y.lp.app.sorttable.SortTable.init();\n                Y.lp.app.inlinehelp.init_help();\n
+        \               Y.lp.activate_collapsibles();\n                Y.lp.app.foldables.activate();\n
+        \               Y.lp.app.links.check_valid_lp_links();\n                //
+        Longpolling will only start if\n                // LP.cache.longpoll is populated.\n
+        \               // We use Y.later to work around a Safari/Chrome 'feature':\n
+        \               // The mouse cursor stays 'busy' until all the requests started
+        during\n                // page load are finished.  Hence we want the long
+        poll request to start\n                // right *after* the page has loaded.\n
+        \               Y.later(0, Y.lp.app.longpoll, Y.lp.app.longpoll.setupLongPollManager);\n\n
+        \           });\n\n            Y.on('lp:context:web_link:changed', function(e)
+        {\n                  window.location = e.new_value;\n            });\n        });\n
+        \       //]]>\n    </script>\n    <script id=\"base-helper-functions\" type=\"text/javascript\">\n
+        \        //<![CDATA[\n        // This code is pulled from lp.js that needs
+        to be available on every\n        // request. Pulling here to get it outside
+        the scope of the YUI block.\n        function setFocusByName(name) {\n            //
+        Focus the first element matching the given name which can be focused.\n            var
+        nodes = document.getElementsByName(name);\n            var i, node;\n            for
+        (i = 0; i < nodes.length; i++) {\n                node = nodes[i];\n                if
+        (node.focus) {\n                    try {\n                        // Trying
+        to focus a hidden element throws an error in IE8.\n                        if
+        (node.offsetHeight !== 0) {\n                            node.focus();\n                        }\n
+        \                   } catch (e) {\n                        LPJS.use('console',
+        function(Y) {\n                            Y.log('In setFocusByName(<' +\n
+        \                               node.tagName + ' type=' + node.type + '>):
+        ' + e);\n                        });\n                    }\n                    break;\n
+        \               }\n            }\n        }\n\n        function selectWidget(widget_name,
+        event) {\n          if (event && (event.keyCode === 9 || event.keyCode ===
+        13)) {\n              // Avoid firing if user is tabbing through or simply
+        pressing\n              // enter to submit the form.\n              return;\n
+        \         }\n          document.getElementById(widget_name).checked = true;\n
+        \       }\n        //]]>\n    </script>\n\n    \n      \n    \n      <script
+        type=\"text/javascript\">\n          LPJS.use('lp.registry.structural_subscription',
+        function(Y) {\n              var module = Y.lp.registry.structural_subscription;\n
+        \             Y.on('domready', function() {\n                module.setup({content_box:
+        \"#structural-subscription-content-box\"});\n              });\n          });\n
+        \     </script>\n    \n  \n    \n  </head>\n\n  <body id=\"document\" itemscope=\"\"\n
+        \       itemtype=\"http://schema.org/WebPage\"\n        class=\"tab-overview\n
+        \     main_side\n      public\n      yui3-skin-sam\">\n          \n          \n
+        \       <script type=\"text/javascript\">\n          var _gaq = _gaq || [];\n
+        \         _gaq.push(['_setAccount', 'UA-12833497-1']);\n          _gaq.push(['_setDomainName',
+        '.launchpad.net']);\n          _gaq.push(['_setAllowHash', false]);\n          _gaq.push(['_trackPageview']);\n
+        \       </script>\n        <script type=\"text/javascript\"\n                src=\"https://launchpad.net/+icing/rev17413/google-analytics/ga.js\"></script>\n
+        \   <div class=\"yui-d0\">\n      <div id=\"locationbar\" class=\"login-logout\">\n
+        \       \n\n<div id=\"logincontrol\"><a href=\"https://launchpad.net/ampoule/+login\">Log
+        in / Register</a></div>\n\n\n\n      </div><!--id=\"locationbar\"-->\n\n      <div
+        id=\"watermark\" class=\"watermark-apps-portlet\">\n        <div>\n          <a
+        href=\"https://launchpad.net/ampoule\"><img alt=\"\" width=\"64\" height=\"64\"
+        src=\"/@@/product-logo\" /></a>\n        </div>\n        <div class=\"wide\">\n
+        \         <h2 id=\"watermark-heading\"><a href=\"https://launchpad.net/ampoule\">Twisted
+        Matrix process pool</a></h2>\n        </div>\n        \n  <!-- Application
+        Menu -->\n  <ul class=\"facetmenu\">\n    \n      <li class=\"overview active\"><span>Overview</span></li>\n
+        \     \n      \n    \n    \n      \n      <li class=\"branches\"><a\n    href=\"https://code.launchpad.net/ampoule\">Code</a></li>\n
+        \     \n    \n    \n      \n      <li class=\"bugs\"><a href=\"https://bugs.launchpad.net/ampoule\">Bugs</a></li>\n
+        \     \n    \n    \n      \n      <li class=\"specifications\"><a\n    href=\"https://blueprints.launchpad.net/ampoule\">Blueprints</a></li>\n
+        \     \n    \n    \n      \n      <li class=\"translations\"><a\n    href=\"https://translations.launchpad.net/ampoule\">Translations</a></li>\n
+        \     \n    \n    \n      \n      <li class=\"answers\"><a href=\"https://answers.launchpad.net/ampoule\">Answers</a></li>\n
+        \     \n    \n  </ul>\n\n      </div>\n\n      <div class=\"yui-t4\">\n        <div
+        id=\"maincontent\" class=\"yui-main\">\n          <div class=\"yui-b\" dir=\"ltr\">\n
+        \           <div class=\"context-publication\">\n              \n              \n\n
+        \             <div id=\"registration\" class=\"registering\">\n                \n
+        \   Registered\n    2008-05-01\n    by\n    <a href=\"/~dialtone\" class=\"sprite
+        person\">dialtone</a>\n  \n              </div>\n            </div>\n\n            \n
+        \           <div id=\"request-notifications\">\n              \n            </div>\n\n
+        \           \n              \n      <div class=\"top-portlet\">\n        \n\n
+        \   \n\n\t<div class=\"summary\"><p>ampoule is a process pool implementation
+        written on top of Twisted Matrix. Its name comes from the use of AMP as the
+        default communication protocol between the pool and all its children.</p>\n<p>It&#x27;s
+        different from other alternative solutions because it provides an API that
+        is very close to the ThreadPool built into Twisted itself. It also provides
+        the helper function deferToAMPProcess that is also conceptually similar to
+        deferToThread.</p></div>\n\n        \n\n        \n        \n      </div>\n\n
+        \     <div class=\"yui-g\">\n        <div class=\"yui-u first\">\n          <div
+        id=\"project-info\" class=\"portlet\">\n            <h2>Project information</h2>\n\n
+        \           <div class=\"two-column-list\">\n              <dl id=\"partof\">\n
+        \               <dt>Part of:</dt>\n                <dd><a href=\"/tx\" class=\"sprite
+        project\">tx</a></dd>\n              </dl>\n\n              <dl id=\"owner\">\n
+        \               <dt>Maintainer:</dt>\n                <dd>\n  <span id=\"edit-owner\">\n
+        \   <span class=\"yui3-activator-data-box\">\n      <a href=\"/~dialtone\"
+        class=\"sprite person\">dialtone</a>\n    </span>\n    \n  </span>\n\n  \n\n</dd>\n
+        \             </dl>\n\n              \n\n              <dl id=\"driver\">\n
+        \               <dt>Driver:</dt>\n                <dd>\n  <span id=\"edit-driver\">\n
+        \   <span class=\"yui3-activator-data-box\">\n      <a href=\"/~dialtone\"
+        class=\"sprite person\">dialtone</a>\n    </span>\n    \n  </span>\n\n  \n\n</dd>\n
+        \             </dl>\n\n              <dl id=\"dev-focus\">\n                <dt>Development
+        focus:</dt>\n                <dd>\n                  <p>\n                  <a
+        href=\"/ampoule/trunk\">trunk series</a>&nbsp;\n                  </p>\n                  <p>\n
+        \                   <a href=\"https://code.launchpad.net/~dialtone/ampoule/main\"
+        class=\"sprite branch\">lp:ampoule</a>&nbsp;\n                    \n                    <br
+        />\n                    <a href=\"http://bazaar.launchpad.net/~dialtone/ampoule/main/files\"\n
+        \       class=\"menu-link-source sprite info\">Browse the code</a>\n                  </p>\n
+        \               </dd>\n              </dl>\n\n              <dl id=\"product-languages\">\n
+        \               <dt>Programming Languages:</dt>\n                <dd><span
+        id=\"edit-programminglang\" class=\"nowrap\">\n<span style=\"\" class=\"yui3-editable_text-text\">\n
+        \   python\n</span>\n  \n</span>\n\n\n</dd>\n              </dl>\n\n              <dl
+        id=\"licences\">\n                <dt>Licences:</dt>\n                <dd>\n
+        \                 \n                    MIT / X / Expat Licence\n                  \n
+        \                 \n                  \n                </dd>\n                \n
+        \               \n              </dl>\n            </div>\n\n            <p>\n
+        \             <a href=\"https://launchpad.net/ampoule/+rdf\"\n        class=\"menu-link-rdf
+        sprite download\"><abbr title=\"Resource Description Framework\">RDF</abbr>
+        metadata</a>\n            </p>\n\n            \n          </div>\n        </div>\n\n
+        \       <div class=\"yui-u\">\n          <div class=\"portlet\">\n            <h2>\n
+        \             <span class=\"see-all\"><a href=\"https://launchpad.net/ampoule/+series\"\n
+        \       class=\"menu-link-series sprite info\">View full history</a></span>\n
+        \             Series and milestones\n            </h2>\n\n            \n  \n
+        \ <div id=\"timeline-loading\" class=\"hidden\">\n    <img src=\"/@@/spinner\"
+        /> Loading graph...\n  </div>\n\n  <!-- Opera ignores overflow:hidden for
+        iframe, so use scrolling=no. -->\n  <iframe id=\"timeline-iframe\" name=\"timeline-iframe\"
+        class=\"timeline-iframe hidden\" style=\"border: 0\" scrolling=\"no\" width=\"100%\"
+        height=\"216px\"></iframe>\n  <script>\n  //<![CDATA[\n  function timeline_iframe(auto_resize,
+        include_inactive, start, size) {\n      var timeline_url = \"+timeline-graph?\";\n
+        \     if (include_inactive == 'true') {\n          timeline_url += \"include_inactive=true&\";\n
+        \     }\n\n      if (auto_resize == 'true') {\n          timeline_url += 'resize_frame=timeline-iframe&';\n
+        \     }\n\n      start = parseInt(start);\n      size = parseInt(size);\n
+        \     if (start != NaN && start >= 0) {\n          timeline_url += \"start=\"
+        + start + \"&\";\n      }\n      if (size != NaN && size >= 1) {\n          timeline_url
+        += \"size=\" + size + \"&\";\n      }\n      LPJS.use('node', 'lp.registry.timeline',
+        function(Y) {\n          if (!Y.lp.registry.timeline.isCanvasSupported())
+        {\n              return;\n          }\n          var loading_el = Y.one('#timeline-loading');\n
+        \         loading_el.setStyle('display', 'block');\n          var iframe =
+        Y.one('#timeline-iframe');\n          iframe.set('src', timeline_url);\n          Y.on('load',
+        function(e) {\n              loading_el.setStyle('display', 'none');\n              iframe.setStyle('display',
+        'block');\n          }, iframe);\n      });\n  }\n  //]]>\n  </script>\n  <script>\n
+        \     timeline_iframe(\n        'None',\n        'None',\n        'None',\n
+        \       'None'\n        );\n      </script>\n\n\n            <p id=\"development-focus\">\n
+        \             <a href=\"/ampoule/trunk\">Ampoule trunk series</a>\n              is
+        the current focus of development\n            </p>\n\n            <ul class=\"horizontal\">\n
+        \             \n              <li>\n                <a href=\"https://launchpad.net/ampoule/+milestones\"\n
+        \       class=\"menu-link-milestones sprite info\">View milestones</a>\n              </li>\n
+        \             \n            </ul>\n          </div>\n        </div>\n      </div>\n\n
+        \     <div class=\"yui-g\">\n        <div class=\"yui-u first\">\n          <div>\n</div>\n\n
+        \         <div><div class=\"portlet\" id=\"portlet-latest-bugs\">\n  <h2><span
+        class=\"see-all\"><a\n    href=\"https://bugs.launchpad.net/ampoule\">All
+        bugs</a></span>\n    Latest bugs reported</h2>\n\n  <ul>\n    <li>\n      <a
+        href=\"https://bugs.launchpad.net/ampoule/+bug/710597\" class=\"sprite bug-undecided\"
+        title=\"Undecided - New\">Bug #710597: Twisted warning after ampoule installation</a>\n
+        \     <br /><span class=\"registered\">\n        Reported on 2011-01-31\n
+        \     </span>\n    </li>\n    <li>\n      <a href=\"https://bugs.launchpad.net/ampoule/+bug/672863\"
+        class=\"sprite bug-undecided\" title=\"Undecided - New\">Bug #672863: test_changeChildReactor
+        fails without installed ampoule</a>\n      <br /><span class=\"registered\">\n
+        \       Reported on 2010-11-09\n      </span>\n    </li>\n    <li>\n      <a
+        href=\"https://bugs.launchpad.net/ampoule/+bug/579600\" class=\"sprite bug-undecided\"
+        title=\"Undecided - New\">Bug #579600: ProcessPool spawns more and more processes</a>\n
+        \     <br /><span class=\"registered\">\n        Reported on 2010-05-12\n
+        \     </span>\n    </li>\n    <li>\n      <a href=\"https://bugs.launchpad.net/ampoule/+bug/579536\"
+        class=\"sprite bug-undecided\" title=\"Undecided - New\">Bug #579536: KeyError
+        on worker shutdown sometimes</a>\n      <br /><span class=\"registered\">\n
+        \       Reported on 2010-05-12\n      </span>\n    </li>\n    <li>\n      <a
+        href=\"https://bugs.launchpad.net/ampoule/+bug/571540\" class=\"sprite bug-undecided\"
+        title=\"Undecided - New\">Bug #571540: ampoule test suite is unreliable, has
+        intermittent failures</a>\n      <br /><span class=\"registered\">\n        Reported
+        on 2010-04-29\n      </span>\n    </li>\n  </ul>\n</div>\n</div>\n\n          <div>\n
+        \ \n\n</div>\n\n          <div>\n</div>\n        </div>\n\n        <div class=\"yui-u\">\n
+        \         <div>\n</div>\n\n          \n\n          <div>\n</div>\n        </div>\n
+        \       <div class=\"yui-u\">\n          <div id=\"structural-subscription-content-box\"></div>\n
+        \       </div>\n\n      </div>\n    \n            \n            \n          </div><!--
+        yui-b -->\n        </div><!-- yui-main -->\n\n        \n          <div id=\"side-portlets\"
+        class=\"yui-b side\">\n            \n      \n\n      <div id=\"involvement\"
+        class=\"portlet\">\n  <h2>Get Involved</h2>\n\n  <ul class=\"involvement\">\n
+        \   <li>\n      <a href=\"https://bugs.launchpad.net/ampoule/+filebug\"\n
+        \       class=\"menu-link-report_bug sprite bugs\">Report a bug</a>\n    </li>\n
+        \   <li>\n      <a href=\"https://answers.launchpad.net/ampoule/+addquestion\"\n
+        \       class=\"menu-link-ask_question sprite answers\">Ask a question</a>\n
+        \   </li>\n    \n      <li class=\"disabled\"\n          title=\"Launchpad
+        needs to know where the user can help translate\">\n        <div style=\"padding:
+        0.3em 0 0.3em 0.3em\">\n          <div style=\"display: inline-block\" class=\"sprite
+        warning-icon action-icon\">warning</div>\n\n          <div style=\"height:
+        1.2em; float: right\">\n            <img src=\"/@@/gray-arrow-right.png\"
+        style=\"top: 50%; bottom: 50%; margin-top: -5px;\n                       position:
+        relative;\n                       height: 9px; width: 14px; padding: 0\" />\n
+        \         </div>\n\n          <span>Help translate</span>\n        </div>\n
+        \     </li>\n    \n  </ul>\n\n  \n    \n    \n  \n\n  \n</div>\n\n\n      <div
+        id=\"downloads\" class=\"top-portlet downloads\">\n        <h2>Downloads</h2>\n\n
+        \       \n          \n  <div class=\"version\">\n    Latest version is ampoule-0.2\n
+        \ </div>\n\n  <ul>\n    <li>\n      <a href=\"https://launchpad.net/ampoule/ampoule/ampoule-0.2/+download/ampoule-0.2.0.tar.gz\"\n
+        \        title=\"Ampoule 0.2.0\">ampoule-0.2.0.tar.gz</a>\n    </li>\n  </ul>\n\n
+        \ <div class=\"released\">\n    released on 2010-02-02\n  </div>\n\n\n        \n\n
+        \       <p class=\"alternate\">\n          <a class=\"sprite info\"\n             href=\"https://launchpad.net/ampoule/+download\">All
+        downloads</a>\n           \n        </p>\n      </div>\n\n      \n\n\n\n\n\n
+        \   \n          </div><!-- yui-b side -->\n        \n      </div><!-- yui-t4
+        -->\n\n      \n  <div id=\"footer\" class=\"footer\">\n    <div class=\"lp-arcana\">\n
+        \       <div class=\"lp-branding\">\n          <a href=\"https://launchpad.net/\"><img
+        src=\"/@@/launchpad-logo-and-name-hierarchy.png\" alt=\"Launchpad\" /></a>\n
+        \         &nbsp;&bull;&nbsp;\n          <a href=\"https://launchpad.net/+tour\">Take
+        the tour</a>\n          &nbsp;&bull;&nbsp;\n          <a href=\"https://help.launchpad.net/\">Read
+        the guide</a>\n          &nbsp;\n          <form id=\"globalsearch\" method=\"get\"\n
+        \               accept-charset=\"UTF-8\"\n                action=\"https://launchpad.net/+search\">\n
+        \           <input type=\"search\" id=\"search-text\" name=\"field.text\"
+        />\n            <input type=\"image\" src=\"/@@/search\" style=\"vertical-align:5%\"
+        alt=\"Search Launchpad\" />\n          </form>\n        </div>\n        \n
+        \ \n\n    </div>\n\n    <div class=\"colophon\">\n      &copy; 2004-2015\n
+        \     <a href=\"http://canonical.com/\">Canonical&nbsp;Ltd.</a>\n      &nbsp;&bull;&nbsp;\n
+        \     <a href=\"https://launchpad.net/legal\">Terms of use</a>\n      &nbsp;&bull;&nbsp;\n
+        \     <a href=\"/feedback\">Contact Launchpad Support</a>\n      \n      &nbsp;&bull;&nbsp;\n
+        \     <a href=\"http://blog.launchpad.net/\">Blog</a>\n      \n\t&nbsp;&bull;&nbsp;\n\t<a
+        href=\"http://www.canonical.com/about-canonical/careers\">Careers</a>\n      \n
+        \     &nbsp;&bull;&nbsp;\n      <a href=\"http://identi.ca/launchpadstatus\">System
+        status</a>\n      <span id=\"lp-version\">\n      &nbsp;&bull;&nbsp;\n        r17413\n
+        \       \n        \n        (<a href=\"https://dev.launchpad.net/\">Get the
+        code!</a>)\n      </span>\n    </div>\n  </div>\n\n    </div><!-- yui-d0-->\n\n
+        \   \n  \n  \n  <script id=\"json-cache-script\">LP.cache = {\"target_info\":
+        {\"url\": \"https://launchpad.net/ampoule\", \"title\": \"Twisted Matrix process
+        pool\"}, \"related_features\": {}, \"administratedTeams\": [], \"importances\":
+        [\"Unknown\", \"Undecided\", \"Critical\", \"High\", \"Medium\", \"Low\",
+        \"Wishlist\"], \"context\": {\"license_info\": null, \"remote_product\": null,
+        \"recipes_collection_link\": \"https://launchpad.net/api/devel/ampoule/recipes\",
+        \"development_focus_link\": \"https://launchpad.net/api/devel/ampoule/trunk\",
+        \"bug_supervisor_link\": \"https://launchpad.net/api/devel/~dialtone\", \"private\":
+        false, \"registrant_link\": \"https://launchpad.net/api/devel/~dialtone\",
+        \"official_bug_tags\": [], \"active_milestones_collection_link\": \"https://launchpad.net/api/devel/ampoule/active_milestones\",
+        \"commercial_subscription_is_due\": false, \"all_specifications_collection_link\":
+        \"https://launchpad.net/api/devel/ampoule/all_specifications\", \"translation_focus_link\":
+        null, \"licenses\": [\"MIT / X / Expat Licence\"], \"all_milestones_collection_link\":
+        \"https://launchpad.net/api/devel/ampoule/all_milestones\", \"bug_reported_acknowledgement\":
+        null, \"display_name\": \"Ampoule\", \"wiki_url\": null, \"title\": \"Twisted
+        Matrix process pool\", \"homepage_url\": null, \"download_url\": null, \"is_permitted\":
+        \"tag:launchpad.net:2008:redacted\", \"reviewer_whiteboard\": \"tag:launchpad.net:2008:redacted\",
+        \"branch_sharing_policy\": \"Public\", \"self_link\": \"https://launchpad.net/api/devel/ampoule\",
+        \"information_type\": \"Public\", \"specification_sharing_policy\": \"Public\",
+        \"resource_type_link\": \"https://launchpad.net/api/devel/#project\", \"programming_language\":
+        \"python\", \"translations_usage\": \"Unknown\", \"description\": null, \"translationpermission\":
+        \"Open\", \"valid_specifications_collection_link\": \"https://launchpad.net/api/devel/ampoule/valid_specifications\",
+        \"project_reviewed\": \"tag:launchpad.net:2008:redacted\", \"brand_link\":
+        \"https://launchpad.net/api/devel/ampoule/brand\", \"sourceforge_project\":
+        null, \"http_etag\": \"\\\"c41a60141e7035cd6b2359f9d42fc19ccd430aa9-bfe4140d6821f9d43ca66bebda5d256ea9c127a9\\\"\",
+        \"project_group_link\": \"https://launchpad.net/api/devel/tx\", \"bug_reporting_guidelines\":
+        null, \"active\": true, \"bug_tracker_link\": null, \"name\": \"ampoule\",
+        \"license_approved\": \"tag:launchpad.net:2008:redacted\", \"driver_link\":
+        \"https://launchpad.net/api/devel/~dialtone\", \"freshmeat_project\": null,
+        \"screenshots_url\": null, \"web_link\": \"https://launchpad.net/ampoule\",
+        \"summary\": \"ampoule is a process pool implementation written on top of
+        Twisted Matrix. Its name comes from the use of AMP as the default communication
+        protocol between the pool and all its children.\\n\\nIt's different from other
+        alternative solutions because it provides an API that is very close to the
+        ThreadPool built into Twisted itself. It also provides the helper function
+        deferToAMPProcess that is also conceptually similar to deferToThread.\\n\\n\",
+        \"logo_link\": \"https://launchpad.net/api/devel/ampoule/logo\", \"owner_link\":
+        \"https://launchpad.net/api/devel/~dialtone\", \"qualifies_for_free_hosting\":
+        true, \"translationgroup_link\": null, \"bug_sharing_policy\": \"Public\",
+        \"releases_collection_link\": \"https://launchpad.net/api/devel/ampoule/releases\",
+        \"date_created\": \"2008-05-01T19:08:33.329485+00:00\", \"series_collection_link\":
+        \"https://launchpad.net/api/devel/ampoule/series\", \"commercial_subscription_link\":
+        null, \"icon_link\": \"https://launchpad.net/api/devel/ampoule/icon\"}, \"information_types\":
+        [\"Public\", \"Public Security\", \"Private Security\", \"Private\", \"Proprietary\",
+        \"Embargoed\"], \"team_membership_policy_data\": [{\"style\": \"\", \"help\":
+        \"\", \"value\": \"RESTRICTED\", \"name\": \"Restricted Team\", \"disabled\":
+        false, \"description_css_class\": \"choice-description\", \"description\":
+        \"\"}, {\"style\": \"\", \"help\": \"\", \"value\": \"MODERATED\", \"name\":
+        \"Moderated Team\", \"disabled\": false, \"description_css_class\": \"choice-description\",
+        \"description\": \"\"}], \"statuses\": [\"New\", \"Incomplete\", \"Opinion\",
+        \"Invalid\", \"Won't Fix\", \"Expired\", \"Confirmed\", \"Triaged\", \"In
+        Progress\", \"Fix Committed\", \"Fix Released\", \"Unknown\"]};</script>\n\n
+        \   \n  \n\n    \n  </body>\n\n\n  <!--\n    Facet name: overview\n    Page
+        type: main_side\n    Has global search: True\n    Has application tabs: True\n
+        \   Has side portlets: True\n\n    At least 34 queries/external actions issued
+        in 0.37 seconds\n\n    Features: {'app.mainsite_only.canonical_url': None,
+        'markdown.enabled': None, 'baselayout.careers_link.disabled': None, 'hard_timeout':
+        u'5000', 'profiling.enabled': None, 'js.yui_version': None, 'visible_render_time':
+        None}\n\n    r17413\n\n    -->\n\n</html>\n\n"
+    http_version: 
+  recorded_at: Fri, 16 Sep 2022 21:02:17 GMT
 recorded_with: VCR 2.9.3

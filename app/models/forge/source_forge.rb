@@ -21,7 +21,7 @@ class Forge::SourceForge < Forge
   # rubocop:enable Lint/DuplicateBranch
 
   def json_api_url(match)
-    "http://sourceforge.net/rest/p/#{match.name_at_forge}/"
+    "https://sourceforge.net/rest/p/#{match.name_at_forge}/"
   end
 
   def get_project_attributes(match)
@@ -33,7 +33,7 @@ class Forge::SourceForge < Forge
   # Returns an array of hashes of repository attributes, one per repository.
   def get_code_location_attributes(match)
     json = match.get_json_api
-    mount_point = get_mount_point(json)
+    mount_point = json ? get_mount_point(json) : {}
     return [] if mount_point.empty?
 
     repo_type = mount_point.first['name']

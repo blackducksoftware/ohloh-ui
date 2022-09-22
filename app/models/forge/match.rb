@@ -19,12 +19,14 @@ class Forge::Match
   end
 
   def get_json_api
-    json_api_url = forge.json_api_url(self)
-    return {} unless json_api_url
+    json_api_uri = URI(forge.json_api_url(self))
+    return {} unless json_api_uri
 
-    # rubocop:disable Naming/MemoizedInstanceVariableName
-    @json ||= JSON.parse(URI.parse(json_api_url).open('User-Agent' => 'Ohloh.net client').read)
-    # rubocop:enable Naming/MemoizedInstanceVariableName
+    request = Net::HTTP::Get.new(json_api_uri)
+    if ENV['GITHUB_AUTH_TOKEN'] && json_api_uri.host == 'api.github.com'
+      request['Authorization'] = "token #{ENV['GITHUB_AUTH_TOKEN']}"
+    end
+    get_result(json_api_uri, request)
   end
 
   def project
@@ -41,6 +43,15 @@ class Forge::Match
 
   def to_s
     owner_at_forge ? "#{forge.name}:#{owner_at_forge}/#{name_at_forge}" : "#{forge.name}:#{name_at_forge}"
+  end
+
+  def get_result(uri, request)
+    http = Net::HTTP.new(uri.host, uri.port)
+    http.use_ssl = true
+    request['Content-Type'] = 'application/json'
+    request['User-Agent'] = 'openhub.net client'
+    response = http.request(request)
+    JSON.parse(response.body)
   end
 
   class << self

@@ -11,6 +11,7 @@ class Api::V1::ProjectsController < ApplicationController
     @project = build_project
     if @project.save
       create_code_location_subscription if @project.enlistments.exists?
+      render json: @project.id, status: :created
     else
       render json: @project.errors.messages.to_json, status: :bad_request
     end
@@ -24,7 +25,11 @@ class Api::V1::ProjectsController < ApplicationController
 
   def build_project
     project = populate_project_from_forge(project_params[:repo_url], true)
-    create_params(project) if project
+    if project
+      project.name = params[:name] if params[:name]
+      project.coverity_project_id = params[:coverity_project_id]
+      create_params(project)
+    end
     ProjectBuilder.new(current_user, @project_params || {}).project
   end
 
