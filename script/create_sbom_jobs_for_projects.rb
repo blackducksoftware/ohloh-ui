@@ -13,7 +13,7 @@ module CreateSbomJobs
     projects = projects_without_sboms(limit)
 
     projects.each do |project|
-      active_enlistments(project).each do |enlistment|
+      active_git_enlistments(project).each do |enlistment|
         code_location_id = enlistment.code_location_id
         code_set = find_or_create_recent_code_set(code_location_id)
 
@@ -30,6 +30,7 @@ module CreateSbomJobs
            .joins('JOIN code_locations ON code_locations.id = enlistments.code_location_id
                    JOIN repositories ON repositories.id = code_locations.repository_id')
            .where("repositories.type = 'GitRepository' AND
+                   repositories.best_repository_directory_id IS NOT NULL AND
                    NOT EXISTS(SELECT 1 FROM project_sboms WHERE project_id = projects.id) AND
                    NOT EXISTS(SELECT 1 FROM fis.jobs WHERE type = 'SbomJob' and project_id = projects.id)")
            .limit(limit)
@@ -40,10 +41,13 @@ module CreateSbomJobs
       CodeSet.create!(code_location_id: code_location_id)
   end
 
-  def active_enlistments(project)
+  def active_git_enlistments(project)
     project.enlistments.not_deleted
-           .joins('join code_locations on code_locations.id = enlistments.code_location_id')
-           .where('code_locations.do_not_fetch IS FALSE')
+           .joins('JOIN code_locations ON code_locations.id = enlistments.code_location_id
+                   JOIN repositories ON repositories.id = code_locations.repository_id')
+           .where("code_locations.do_not_fetch IS FALSE AND
+                   repositories.type = 'GitRepository' AND
+                   repositories.best_repository_directory_id IS NOT NULL")
   end
 end
 
