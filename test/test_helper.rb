@@ -5,8 +5,10 @@ require 'simplecov'
 require 'simplecov-rcov'
 
 SimpleCov.formatter = SimpleCov::Formatter::HTMLFormatter
-SimpleCov.start 'rails'
-SimpleCov.minimum_coverage 99.44
+SimpleCov.start('rails') do
+  add_filter %r{^script/}
+end
+SimpleCov.minimum_coverage 99.45
 
 require 'dotenv'
 Dotenv.load '.env.test'
