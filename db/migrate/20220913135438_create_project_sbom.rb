@@ -5,6 +5,7 @@ class CreateProjectSbom < ActiveRecord::Migration[5.2]
     create_table :project_sboms do |t|
       t.integer :project_id
       t.integer :code_location_id
+      t.string :agent, null: false
       t.json :sbom_data
     end
   end

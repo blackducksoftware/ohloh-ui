@@ -7470,6 +7470,7 @@ CREATE TABLE oh.project_sboms (
     id bigint NOT NULL,
     project_id integer,
     code_location_id integer,
+    agent character varying NOT NULL,
     sbom_data json
 );
 
