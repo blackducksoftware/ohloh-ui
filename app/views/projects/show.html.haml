@@ -78,3 +78,7 @@
           = image_tag('sample_ohloh_analysis.jpg', class: 'col-md-12')
 - else
   = render partial: 'projects/show/analysis_summary'
+.row.mezzo
+- if @scan_data.present?
+  = render partial: 'projects/show/scan_analytics_summary'
+

@@ -28,4 +28,10 @@ class NilAccounAnalysisTest < ActiveSupport::TestCase
       _(nil_account_analysis.blank?).must_equal true
     end
   end
+
+  describe 'id' do
+    it 'should be 0' do
+      _(nil_account_analysis.id).must_equal 0
+    end
+  end
 end

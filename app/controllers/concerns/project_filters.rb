@@ -16,6 +16,7 @@ module ProjectFilters
     before_action :show_permissions_alert, only: %i[settings edit]
     before_action :set_session_projects, only: :index
     before_action :set_rating_and_score, only: :show
+    before_action :scan_analytics_data, only: :show
     before_action :set_uuid, only: :show
     before_action :avoid_global_search_if_parent_is_account, only: :index
     before_action :avoid_global_search, only: :users
@@ -67,4 +68,14 @@ module ProjectFilters
     uuid = OpenhubSecurity.get_uuid(@project.name)
     @project.update_column('uuid', uuid) if uuid
   end
+
+  # rubocop:disable Style/OpenStructUse
+  def scan_analytics_data
+    return if @project.coverity_project_id.nil?
+
+    scan_record = @project.best_analysis.scan_analytics&.first if @project.best_analysis
+    @scan_data = JSON.parse(scan_record.data.to_json, object_class: OpenStruct) if scan_record
+    @cwes = @scan_data.cwe if @scan_data
+  end
+  # rubocop:enable Style/OpenStructUse
 end

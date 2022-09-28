@@ -20,6 +20,7 @@ class Analysis < ApplicationRecord
   has_many :sloc_sets, through: :analysis_sloc_sets
   has_many :factoids, -> { order('severity DESC') }, dependent: :delete_all
   has_many :activity_facts, dependent: :delete_all
+  has_many :scan_analytics
 
   belongs_to :project, optional: true
   belongs_to :main_language, class_name: 'Language', optional: true
