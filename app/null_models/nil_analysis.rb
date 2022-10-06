@@ -48,4 +48,8 @@ class NilAnalysis < NullObject
   def commit_count
     nil
   end
+
+  def scan_analytics
+    nil
+  end
 end

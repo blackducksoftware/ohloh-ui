@@ -35,7 +35,9 @@ class Api::V1::ProjectsControllerTest < ActionController::TestCase
         @controller = Api::V1::ProjectsController.new
         stubs(:current_user).returns(@account)
         url = 'git://github.com/rails/rails.git'
-        post :create, params: { JWT: @jwt, repo_url: url, coverity_project_id: 1 }, format: :json
+        license = create(:license, vanity_url: 'rails')
+        post :create, params: { JWT: @jwt, repo_url: url, coverity_project_id: 1,
+                                license_name: license.name }, format: :json
         @controller.instance_eval { project_params }
         @controller.instance_eval { populate_project_from_forge('https://github.com/rails/rails', true) }
         login_as @account

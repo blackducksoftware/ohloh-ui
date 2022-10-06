@@ -47,6 +47,12 @@ ActiveAdmin.register Account do
       ip.blank? ? '' : link_to(ip, admin_accounts_path('q[last_seen_ip_contains]' => ip, 'commit' => 'Filter'))
     end
     column :created_at
+    column 'Markup' do |acc|
+      markup = acc.markup.try :raw
+      div(title: markup) do
+        truncate(markup, length: 10)
+      end
+    end
     actions
   end
 

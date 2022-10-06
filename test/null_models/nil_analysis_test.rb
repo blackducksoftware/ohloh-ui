@@ -101,4 +101,16 @@ class NilAnalysisTest < ActiveSupport::TestCase
       assert_in_delta nil_analysis.updated_on, Time.zone.now, 1.second
     end
   end
+
+  describe 'contributor_facts' do
+    it 'should return empty' do
+      _(nil_analysis.contributor_facts).must_equal []
+    end
+  end
+
+  describe 'scan_analytics' do
+    it 'should return nil' do
+      _(nil_analysis.scan_analytics).must_equal nil
+    end
+  end
 end
