@@ -6,6 +6,7 @@ class ProjectSbomsController < ApplicationController
   before_action :set_project_or_fail
 
   def index
-    @project_sbom = @project.sboms.first
+    @agent = @project.sboms.pluck(:agent)
+    @project_sbom = params[:agent].present? ? @project.sboms.where(agent: params[:agent]).first.sbom_data : {}
   end
 end
