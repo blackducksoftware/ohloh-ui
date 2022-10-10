@@ -1,5 +1,5 @@
 :ruby
-  sbom_data = project_sbom.sbom_data ?  project_sbom.sbom_data : {}
+  sbom_data = project_sbom.present? ? JSON.parse(project_sbom) : {}
 
 .modal-header
   %button.close{ data: { dismiss: 'modal' }, aria: { label: 'Close' } }
@@ -7,6 +7,13 @@
   %h3.modal-title= I18n.t(:sbom_details)
 .modal-body#sbom-details
   .row
-    - sbom_data.each do |key, value|
-      .col-md-3.list-title.strong= key
-      .col-md-9.list-separator.strong= value
+    %form.pull-left#sbom_dropdown{ action: projects_path }
+      = select_tag :agent, options_for_select(agent, params[:agent]), include_blank: 'Select format', class: 'chzn-select pull-left', data: { remote: true, url: project_project_sboms_path(@project), method: 'get' }
+  .clearfix
+  .row
+    - if sbom_data
+      - sbom_data.each do |key, value|
+        .col-md-3.list-title.strong= key
+        .col-md-9.list-separator.strong= value
+    - else
+      "No data found"

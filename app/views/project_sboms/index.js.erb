@@ -1,2 +1,2 @@
-$("#sbom-details").find(".modal-content").html("<%= escape_javascript(render partial: 'index', locals: {project_sbom: @project_sbom}) %>");
+$("#sbom-details").find(".modal-content").html("<%= escape_javascript(render partial: 'index', locals: {project_sbom: @project_sbom, agent: @agent}) %>");
 $('#sbom-details').modal('show');
