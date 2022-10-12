@@ -7,6 +7,7 @@ class ProjectSbomsController < ApplicationController
 
   def index
     @agent = @project.sboms.pluck(:agent)
-    @project_sbom = params[:agent].present? ? @project.sboms.where(agent: params[:agent]).first.sbom_data : {}
+    params[:agent] = 'syft' if params[:agent].blank?
+    @project_sbom = @project.sboms.where(agent: params[:agent]).first&.sbom_data
   end
 end
