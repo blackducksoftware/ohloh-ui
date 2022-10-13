@@ -7463,6 +7463,38 @@ ALTER SEQUENCE oh.project_reports_id_seq OWNED BY oh.project_reports.id;
 
 
 --
+-- Name: project_sboms; Type: TABLE; Schema: oh; Owner: -
+--
+
+CREATE TABLE oh.project_sboms (
+    id bigint NOT NULL,
+    project_id integer,
+    code_location_id integer,
+    agent character varying NOT NULL,
+    sbom_data json
+);
+
+
+--
+-- Name: project_sboms_id_seq; Type: SEQUENCE; Schema: oh; Owner: -
+--
+
+CREATE SEQUENCE oh.project_sboms_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: project_sboms_id_seq; Type: SEQUENCE OWNED BY; Schema: oh; Owner: -
+--
+
+ALTER SEQUENCE oh.project_sboms_id_seq OWNED BY oh.project_sboms.id;
+
+
+--
 -- Name: project_security_sets; Type: TABLE; Schema: oh; Owner: -
 --
 
@@ -9673,6 +9705,13 @@ ALTER TABLE ONLY oh.project_reports ALTER COLUMN id SET DEFAULT nextval('oh.proj
 
 
 --
+-- Name: project_sboms id; Type: DEFAULT; Schema: oh; Owner: -
+--
+
+ALTER TABLE ONLY oh.project_sboms ALTER COLUMN id SET DEFAULT nextval('oh.project_sboms_id_seq'::regclass);
+
+
+--
 -- Name: project_security_sets id; Type: DEFAULT; Schema: oh; Owner: -
 --
 
@@ -10699,6 +10738,14 @@ ALTER TABLE ONLY oh.project_reports
 
 ALTER TABLE ONLY oh.project_reports
     ADD CONSTRAINT project_reports_project_id_key UNIQUE (project_id, report_id);
+
+
+--
+-- Name: project_sboms project_sboms_pkey; Type: CONSTRAINT; Schema: oh; Owner: -
+--
+
+ALTER TABLE ONLY oh.project_sboms
+    ADD CONSTRAINT project_sboms_pkey PRIMARY KEY (id);
 
 
 --
@@ -19172,6 +19219,8 @@ INSERT INTO oh.schema_migrations (version) VALUES ('20220822144901');
 
 INSERT INTO oh.schema_migrations (version) VALUES ('20220822144949');
 
+INSERT INTO oh.schema_migrations (version) VALUES ('20220913135438');
+
 INSERT INTO oh.schema_migrations (version) VALUES ('21');
 
 INSERT INTO oh.schema_migrations (version) VALUES ('22');
@@ -19343,3 +19392,4 @@ INSERT INTO oh.schema_migrations (version) VALUES ('97');
 INSERT INTO oh.schema_migrations (version) VALUES ('98');
 
 INSERT INTO oh.schema_migrations (version) VALUES ('99');
+
