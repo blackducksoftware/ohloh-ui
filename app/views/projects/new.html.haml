@@ -1,25 +1,29 @@
 - content_for(:html_title) { t('.page_title') }
 - page_context[:select_top_menu_nav] = 'select_projects'
 
-%h1.margin_bottom_20= t('.call_to_action')
-.row
-  .col-md-12
-    = form_tag check_forge_projects_path, class: 'styled new_project' do
-      .clear &nbsp;
-      .col-md-9
-        %p= t('.help1')
-        %p= t('.help2')
-      .col-md-9
-        %label= t('.codelocation_label')
-      .col-md-9
-        %input.span9.field{ name: 'codelocation', type: 'text' }
-      .col-md-9
-        = t('.examples')
-        .inset
-          %p
-            %code!= t('.example1')
-          %p
-            %code!= t('.example2')
-      .col-md-9
-        .pull-right
-          %input.span2.btn.btn-primary{ type: 'submit', value: t('.next') }
+- if ApiAccess.available?
+  %h1.margin_bottom_20= t('.call_to_action')
+  .row
+    .col-md-12
+      = form_tag check_forge_projects_path, class: 'styled new_project' do
+        .clear &nbsp;
+        .col-md-9
+          %p= t('.help1')
+          %p= t('.help2')
+        .col-md-9
+          %label= t('.codelocation_label')
+        .col-md-9
+          %input.span9.field{ name: 'codelocation', type: 'text' }
+        .col-md-9
+          = t('.examples')
+          .inset
+            %p
+              %code!= t('.example1')
+            %p
+              %code!= t('.example2')
+        .col-md-9
+          .pull-right
+            %input.span2.btn.btn-primary{ type: 'submit', value: t('.next') }
+- else
+  .padding_one_top
+  = render 'shared/api_outage'

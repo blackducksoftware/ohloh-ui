@@ -20,4 +20,12 @@ class ApiAccessTest < ActiveSupport::TestCase
       end
     end
   end
+
+  describe 'available?' do
+    it 'must be falsy when fisbot api is not accessible' do
+      Net::HTTP.stubs(:get_response).raises(Errno::ECONNREFUSED) # prevent VCR takeover.
+
+      refute ApiAccess.available?
+    end
+  end
 end

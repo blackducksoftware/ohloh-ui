@@ -520,6 +520,13 @@ class ProjectsControllerTest < ActionController::TestCase
     assert_response :ok
   end
 
+  it 'must handle fisbot api being unavailable' do
+    login_as create(:account)
+    ApiAccess.stubs(:available?).returns(false)
+    get :new
+    _(response.body).must_match I18n.t('shared.api_outage.heading')
+  end
+
   # check_forge
   it 'check_forge should require a current user' do
     login_as nil
