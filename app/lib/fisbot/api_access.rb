@@ -32,7 +32,7 @@ class ApiAccess
       response = Net::HTTP.get_response(uri)
       response.code == '200'
     rescue Errno::ECONNREFUSED
-      DataDogReport.error("Fisbot API outage: #{Time.now.utc} UTC")
+      DataDogReport.error("Fisbot API outage: #{Time.now.utc}")
       false
     end
 
