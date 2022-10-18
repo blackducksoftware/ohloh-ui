@@ -239,7 +239,9 @@ class ApplicationControllerTest < ActionController::TestCase
       let(:time_now) { Time.current }
       let(:account) { create(:account, last_seen_at: time_now) }
       let(:ip) { '1.1.1.1' }
+
       it 'should update last seen at and ip address when user logged in' do
+        ApiAccess.stubs(:available?).returns(true)
         login_as account
         _(account.last_seen_ip).must_be_nil
         _(account.last_seen_at).must_equal time_now

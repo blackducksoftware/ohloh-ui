@@ -278,6 +278,8 @@ class ProjectsControllerTest < ActionController::TestCase
   end
 
   describe 'show' do
+    before { ApiAccess.stubs(:available?) }
+
     it 'show should render for unlogged users' do
       project = create(:project)
       login_as nil
@@ -516,6 +518,7 @@ class ProjectsControllerTest < ActionController::TestCase
 
   it 'new should render for logged users' do
     login_as create(:account)
+    ApiAccess.stubs(:available?).returns(true)
     get :new
     assert_response :ok
   end

@@ -10,6 +10,8 @@ class EnlistmentsControllerTest < ActionController::TestCase
   end
 
   describe 'index' do
+    before { ApiAccess.stubs(:available?).returns(true) }
+
     it 'should return enlistment record' do
       mock_and_get :index, params: { project_id: @project_id }
       assert_response :ok
