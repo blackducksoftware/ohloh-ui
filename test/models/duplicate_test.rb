@@ -101,6 +101,7 @@ class DuplicateTest < ActiveSupport::TestCase
 
     it 'properly cleans up enlistments' do
       VCR.use_cassette('multiple_enlistment_calls_with_code_location') do
+        ApiAccess.stubs(:available?).returns(true)
         Enlistment.any_instance.stubs(:ensure_forge_and_job)
         Enlistment.any_instance.stubs(:update_subscription)
         unmocked_create_enlistment_with_code_location(good_project)

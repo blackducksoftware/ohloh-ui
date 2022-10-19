@@ -23,4 +23,20 @@ class NullObjectTest < ActiveSupport::TestCase
       _(NullObject.new.test).must_equal 0
     end
   end
+
+  describe 'blank_methods' do
+    it 'must create methods that return blank value' do
+      NullObject.blank_methods :test
+
+      _(NullObject.new.test).must_be :blank?
+    end
+  end
+
+  describe 'nil_methods' do
+    it 'must create methods that return nil' do
+      NullObject.nil_methods :test
+
+      _(NullObject.new.test).must_be :nil?
+    end
+  end
 end

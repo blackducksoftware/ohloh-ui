@@ -43,6 +43,8 @@ class Enlistment < ApplicationRecord
   attr_writer :code_location
 
   def code_location
+    return NilCodeLocation.new unless ApiAccess.available?
+
     @code_location ||= CodeLocation.find(code_location_id)
   end
 

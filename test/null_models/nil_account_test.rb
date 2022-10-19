@@ -11,6 +11,12 @@ class NilAccountTest < ActiveSupport::TestCase
     end
   end
 
+  describe 'admin' do
+    it 'must return nil' do
+      _(nil_account.admin?).must_be_nil
+    end
+  end
+
   describe 'level' do
     it 'should return nil' do
       _(nil_account.level).must_be_nil
