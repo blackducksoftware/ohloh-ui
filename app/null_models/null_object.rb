@@ -19,5 +19,23 @@ class NullObject
         define_method method_name, -> { 0 }
       end
     end
+
+    def blank_methods(*args)
+      args.each do |method_name|
+        define_method method_name, -> { '' }
+      end
+    end
+
+    def nil_methods(*args)
+      args.each do |method_name|
+        define_method method_name, -> {}
+      end
+    end
+
+    def empty_methods(*args)
+      args.each do |method_name|
+        define_method method_name, -> { [] }
+      end
+    end
   end
 end

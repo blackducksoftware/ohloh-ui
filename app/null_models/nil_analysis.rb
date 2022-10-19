@@ -3,6 +3,8 @@
 class NilAnalysis < NullObject
   attr_reader :main_language, :oldest_code_set_time
 
+  nil_methods :last_commit_time, :commit_count, :scan_analytics
+  empty_methods :contributor_facts
   nought_methods :logic_total, :markup_total, :build_total, :code_total, :headcount
 
   def twelve_month_summary
@@ -33,23 +35,7 @@ class NilAnalysis < NullObject
     true
   end
 
-  def last_commit_time
-    nil
-  end
-
-  def contributor_facts
-    []
-  end
-
   def updated_on
     Time.zone.now
-  end
-
-  def commit_count
-    nil
-  end
-
-  def scan_analytics
-    nil
   end
 end
