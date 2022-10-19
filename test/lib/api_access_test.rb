@@ -22,6 +22,12 @@ class ApiAccessTest < ActiveSupport::TestCase
   end
 
   describe 'available?' do
+    it 'must be truthy when fisbot api is accessible' do
+      stub_request(:get, "#{ApiAccess::URL}/health").to_return(status: 200)
+
+      assert ApiAccess.available?
+    end
+
     it 'must be falsy when fisbot api is not accessible' do
       Net::HTTP.stubs(:get_response).raises(Errno::ECONNREFUSED) # prevent VCR takeover.
 
