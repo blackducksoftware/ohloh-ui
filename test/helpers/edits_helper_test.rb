@@ -42,6 +42,7 @@ class EditsHelperTest < ActionView::TestCase
   describe 'edit_show_subject' do
     describe 'Enlistment' do
       it 'should display branch name if there is branch_name' do
+        ApiAccess.stubs(:available?).returns(true)
         WebMocker.get_code_location
         enlistment = create_enlistment_with_code_location
         @parent = enlistment.project
@@ -50,6 +51,7 @@ class EditsHelperTest < ActionView::TestCase
       end
 
       it 'should not display neither branch nor module name if both are empty' do
+        ApiAccess.stubs(:available?).returns(true)
         enlistment = create(:enlistment)
         enlistment.code_location = CodeLocation.new
         @parent = enlistment.project

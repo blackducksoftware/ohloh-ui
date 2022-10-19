@@ -735,6 +735,7 @@ class ProjectsControllerTest < ActionController::TestCase
   end
 
   it 'create should not lose repo params on validation errors' do
+    ApiAccess.stubs(:available?).returns(true)
     CodeLocation.any_instance.stubs(:valid?).returns(true)
     login_as create(:account)
     post :create, params: { project: { name: '', vanity_url: 'cool-beans', description: 'cool beans app',

@@ -5,6 +5,7 @@ require 'test_helper'
 class JobDecoratorTest < ActiveSupport::TestCase
   describe 'tool_tip' do
     it 'must print the correct value' do
+      ApiAccess.stubs(:available?).returns(true)
       WebMocker.get_code_location
       project = create(:project)
       enlistment = create_enlistment_with_code_location
