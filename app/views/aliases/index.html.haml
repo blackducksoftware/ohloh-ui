@@ -28,6 +28,7 @@
           - best_analysis_aliases = @best_analysis_aliases.pluck(:commit_name_id, :preferred_name_id)
           - unless best_analysis_aliases.include?([a.commit_name_id, a.preferred_name_id])
             %span.pending= t('.pending')
+          .clearfix
 
       - @best_analysis_aliases.where.not(commit_name_id: @aliases.pluck(:commit_name_id)).each do |baa|
         %li{ style: 'margin-bottom:0.5em;' }
@@ -39,10 +40,11 @@
           |
           - if has_permission
             = icon_button(redo_project_alias_path(project_id: @project.to_param, id: baa.id), text: t('.remove'),
-              icon: 'trash', method: :post, data: { confirm: t('.confirm_message_redo') }, type: 'danger', size: 'mini')
+              icon: 'trash', method: :post, data: { confirm: t('.confirm_message_redo') }, type: 'danger', size: 'mini pull-right')
           - else
-            = disabled_button bootstrap_icon('icon-trash', t('.remove')), class: 'btn-mini btn-danger'
+            = disabled_button bootstrap_icon('icon-trash', t('.remove')), class: 'btn-mini btn-danger pull-right'
           %span.pending= t('.pending')
+          .clearfix
 
   - else
     = render partial: 'shared/alert', locals: { message: t('.no_contributions') }
