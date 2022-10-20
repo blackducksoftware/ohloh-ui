@@ -67,6 +67,7 @@ class EnlistmentTest < ActiveSupport::TestCase
 
   describe 'ensure_forge_and_job' do
     it 'should create a new job for project' do
+      ApiAccess.stubs(:available?).returns(true)
       WebMocker.get_code_location
       CodeLocation.any_instance.stubs(:ensure_job).returns(false)
       Project.any_instance.stubs(:guess_forge)

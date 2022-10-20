@@ -1,6 +1,7 @@
 - content_for(:html_title) { t('.title', name: @project.name) }
 - page_context[:select_footer_nav] = nil
 - has_permission = logged_in? && @project.edit_authorized?
+- api_access_available = ApiAccess.available?
 
 .project_content_title
   %h2.pull-left
@@ -37,7 +38,7 @@
           - key = "enlistments.index.failure.#{failure_group_name}"
           %li.font-1em= t(key) if I18n.exists?(key)
 
-- if @project.enlistments.any?
+- if @project.enlistments.exists? && api_access_available
   %table.table.table-striped
     %thead
       %tr{ id: 'dingus-row' }
@@ -77,15 +78,17 @@
         %th= t('.actions')
     %tbody
       = render partial: 'enlistment', collection: @enlistments, locals: { has_permission: has_permission }
-- else
+- elsif api_access_available
   = render '/enlistments/no_enlistment'
+- else
+  = render partial: 'shared/api_outage'
 
 = will_paginate @enlistments
 
 - if @enlistments.empty? && params[:query].present?
   = render partial: 'shared/alert', locals: { message: t('.no_match') }
 
-- unless @project.enlistments.empty?
+- if @project.enlistments.exists? && api_access_available
   - if logged_in? && @project.edit_authorized?
     = link_to t('.new_code_location'), new_project_enlistment_path(@project), class: 'btn btn-primary'
   - else

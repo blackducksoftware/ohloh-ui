@@ -93,6 +93,7 @@ class CodeLocationTest < ActiveSupport::TestCase
     end
 
     it 'should set the code_location.do_not_fetch to false' do
+      ApiAccess.stubs(:available?).returns(true)
       Enlistment.any_instance.stubs(:ensure_forge_and_job)
       enlistment = create_enlistment_with_code_location
       WebMocker.get_code_location

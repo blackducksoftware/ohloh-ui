@@ -3,11 +3,11 @@
 class NilAccount < NullObject
   attr_reader :id, :level, :activated_at
 
+  nil_methods :admin?
+
   def actions
     Action.none
   end
-
-  def admin?; end
 
   def access
     @access ||= Account::Access.new(self)

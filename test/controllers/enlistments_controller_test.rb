@@ -10,6 +10,8 @@ class EnlistmentsControllerTest < ActionController::TestCase
   end
 
   describe 'index' do
+    before { ApiAccess.stubs(:available?).returns(true) }
+
     it 'should return enlistment record' do
       mock_and_get :index, params: { project_id: @project_id }
       assert_response :ok
@@ -230,6 +232,7 @@ class EnlistmentsControllerTest < ActionController::TestCase
     end
 
     it 'must create repository subscription and enlistment' do
+      ApiAccess.stubs(:available?).returns(true)
       CodeLocationSubscription.stubs(:code_location_exists?)
       Project.any_instance.stubs(:ensure_job)
       branch_name = 'main'
@@ -380,6 +383,7 @@ def mock_and_get(action, dnf = false, params)
     yield if block_given?
   end
 
+  ApiAccess.stubs(:available?).returns(true)
   WebMocker.get_code_location(@enlistment.code_location_id)
   get action, params
 end

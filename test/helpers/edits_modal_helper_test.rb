@@ -30,6 +30,7 @@ describe EditsModalHelper do
     end
 
     it 'should return value for enlistment' do
+      ApiAccess.stubs(:available?).returns(true)
       WebMocker.get_code_location
       enlistment = create_enlistment_with_code_location
       _(enlistment.edits.first.target.code_location.nice_url).must_equal enlistment.code_location.nice_url

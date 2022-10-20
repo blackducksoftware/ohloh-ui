@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
 class NilName < NullObject
-  def name
-    ''
-  end
+  blank_methods :name
 end

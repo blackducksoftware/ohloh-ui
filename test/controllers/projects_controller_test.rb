@@ -278,6 +278,8 @@ class ProjectsControllerTest < ActionController::TestCase
   end
 
   describe 'show' do
+    before { ApiAccess.stubs(:available?) }
+
     it 'show should render for unlogged users' do
       project = create(:project)
       login_as nil
@@ -516,8 +518,16 @@ class ProjectsControllerTest < ActionController::TestCase
 
   it 'new should render for logged users' do
     login_as create(:account)
+    ApiAccess.stubs(:available?).returns(true)
     get :new
     assert_response :ok
+  end
+
+  it 'must handle fisbot api being unavailable' do
+    login_as create(:account)
+    ApiAccess.stubs(:available?).returns(false)
+    get :new
+    _(response.body).must_match I18n.t('shared.api_outage.heading')
   end
 
   # check_forge
@@ -725,6 +735,7 @@ class ProjectsControllerTest < ActionController::TestCase
   end
 
   it 'create should not lose repo params on validation errors' do
+    ApiAccess.stubs(:available?).returns(true)
     CodeLocation.any_instance.stubs(:valid?).returns(true)
     login_as create(:account)
     post :create, params: { project: { name: '', vanity_url: 'cool-beans', description: 'cool beans app',

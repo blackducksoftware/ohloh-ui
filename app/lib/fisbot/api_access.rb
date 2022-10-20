@@ -27,6 +27,15 @@ class ApiAccess
       ENV['FISBOT_PUBLIC_URL'].presence || ENV['FISBOT_API_URL']
     end
 
+    def available?
+      uri = URI("#{fisbot_resolved_url}/health")
+      response = Net::HTTP.get_response(uri)
+      response.code == '200'
+    rescue Errno::ECONNREFUSED
+      DataDogReport.error("Fisbot API outage: #{Time.now.utc}")
+      false
+    end
+
     private
 
     def fisbot_resolved_url

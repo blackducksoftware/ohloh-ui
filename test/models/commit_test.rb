@@ -70,6 +70,8 @@ class CommitTest < ActiveSupport::TestCase
   end
 
   describe 'nice_id' do
+    before { ApiAccess.stubs(:available?).returns(true) }
+
     it 'should return nil if not a git, svn or hg' do
       commit.code_set.code_location = CodeLocation.new(scm_type: :cvs)
       _(commit.nice_id).must_be_nil

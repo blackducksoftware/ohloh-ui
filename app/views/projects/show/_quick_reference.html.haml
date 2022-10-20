@@ -27,7 +27,7 @@
     = link_to t('.code_locations'), project_enlistments_path(@project)
   .col-xs-7{ style: 'margin-bottom: .5em;' }
     - enlistments = @project.enlistments
-    - if enlistments.present?
+    - if enlistments.present? && ApiAccess.available?
       - if enlistments.size > 1
         %i= link_to t('.n_locations', n: enlistments.size), project_enlistments_path(@project)
       - else

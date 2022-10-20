@@ -3,17 +3,6 @@
 class NilAccountAnalysisFact < NullObject
   attr_reader :first_checkin, :last_checkin
 
+  empty_methods :commits_by_language, :commits_by_project, :name_language_facts
   nought_methods :commits
-
-  def commits_by_language
-    []
-  end
-
-  def commits_by_project
-    []
-  end
-
-  def name_language_facts
-    []
-  end
 end
