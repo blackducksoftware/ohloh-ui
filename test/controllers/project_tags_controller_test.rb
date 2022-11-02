@@ -55,12 +55,13 @@ class ProjectTagsControllerTest < ActionController::TestCase
       _(project.reload.tag_list).must_equal 'tasty'
     end
 
+    # This is give 200 because we are taking uniq list it will element duplicate
     it 'should gracefully handle attempting to add the same tag twice' do
       project = create(:project)
       project.tag_list = 'zesty'
       login_as create(:account)
       post :create, params: { project_id: project.to_param, tag_name: 'zesty' }
-      assert_response :unprocessable_entity
+      assert_response :ok
       _(project.reload.tag_list).must_equal 'zesty'
     end
 
