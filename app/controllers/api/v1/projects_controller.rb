@@ -25,27 +25,32 @@ class Api::V1::ProjectsController < ApplicationController
 
   def build_project
     project = populate_project_from_forge(project_params[:repo_url], true)
-    if project
-      project.name = params[:name] if params[:name]
-      project.vanity_url = params[:vanity_url] if params[:vanity_url]
-      project.coverity_project_id = params[:coverity_project_id]
-      create_params(project)
-    end
+    create_params(project) if project
     ProjectBuilder.new(current_user, @project_params || {}).project
   end
 
   def create_params(project)
-    enlistments_attributes = [{ 'code_location_attributes' => { 'scm_type' => project.code_location_object.scm_type \
-                                                                              || 'git',
-                                                                'url' => project.code_location_object.url,
-                                                                'branch' => project.code_location_object.branch \
-                                                                          || 'main' } }]
+    project.name = params[:name] if params[:name]
+    project.vanity_url = params[:vanity_url] if params[:vanity_url]
+    project.coverity_project_id = params[:coverity_project_id]
+    assign_enlistments_attributes(project)
+    assign_license_attributes
+  end
+
+  def assign_enlistments_attributes(project)
+    code_location = project.code_location_object
+    enlistments_attributes = [{ 'code_location_attributes' => { 'scm_type' => code_location.scm_type || 'git',
+                                                                'url' => code_location.url,
+                                                                'branch' => code_location.branch || 'main' } }]
     @project_params = project.as_json.deep_merge(enlistments_attributes: enlistments_attributes)
+  end
+
+  def assign_license_attributes
     project_license = License.find_by_name(params[:license_name])&.id
     return unless project_license
 
-    @project_params = @project_params.as_json.deep_merge(project_licenses_attributes: [{ 'license_id' =>
-                                                                                            project_license }])
+    @project_params = @project_params.as_json.deep_merge(project_licenses_attributes:
+                                                           [{ 'license_id' => project_license }])
   end
 
   def create_code_location_subscription

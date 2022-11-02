@@ -14,25 +14,31 @@ class CreateScanProjectInUi
 
   def execute
     CSV.foreach(ARGV[0], headers: true) do |row|
-      next if row['repo_url'].nil?
+      next if CodeLocationScan.exists?(scan_project_id: row['scan_project_id']) || row['repo_url'].nil?
+
       code_location_ids(fix_url(row['repo_url']))
 
-      project_id = row['project_id']
-      project_id ||= find_existing_project_id if @code_location_ids.present?
-      project_id ||= create_scan_project(project_params(row))
+      project_id = get_project(row)
 
       next if project_id.nil?
 
-      project_id.instance_of?(Hash) ? insert_failed_url_data(project_id, row) : create_code_location_scan(project_id, row)
+      handle_response(project_id, row)
     end
   end
 
   private
 
+  def get_project(row)
+    project_id = row['project_id']
+    project_id ||= find_existing_project_id if @code_location_ids.present?
+    project_id ||= create_scan_project(project_params(row))
+    project_id
+  end
+
   def create_scan_project(params)
     uri = URI("#{ENV['URL_HOST']}/api/v1/projects.json")
     response = Net::HTTP.post_form(uri, params)
-    code_location_ids(params[:repo_url]) if ['200', '201'].include?(response.code)
+    code_location_ids(params[:repo_url]) if %w[200 201].include?(response.code)
     JSON.parse(response.body)
   rescue StandardError => e
     puts e.message
@@ -45,11 +51,21 @@ class CreateScanProjectInUi
     new_url.sub(/\.git$/, '').sub(%r{^git://}, 'https://').sub(%r{^git@github.com:}, 'https://github.com/')
   end
 
+  def handle_response(project_id, row)
+    if project_id.instance_of?(Hash)
+      insert_failed_url_data(project_id, row)
+    else
+      create_code_location_scan(project_id, row)
+    end
+  end
+
   def create_code_location_scan(project_id, row)
     puts "Project Value #{project_id} row value #{row['name']}"
 
-    code_location_id = Enlistment.where(project_id: project_id, code_location_id: @code_location_ids).first&.code_location_id
+    code_location_id = Enlistment.where(project_id: project_id,
+                                        code_location_id: @code_location_ids).first&.code_location_id
     return unless code_location_id
+
     CodeLocationScan.where(code_location_id: code_location_id,
                            scan_project_id: row['scan_project_id']).first_or_create
   end
@@ -62,7 +78,7 @@ class CreateScanProjectInUi
 
   def find_existing_project_id
     Project.not_deleted.joins(:enlistments)
-      .where(enlistments: { code_location_id: @code_location_ids}).order(updated_at: :desc).first&.id
+           .where(enlistments: { code_location_id: @code_location_ids }).order(updated_at: :desc).first&.id
   end
 
   def code_location_ids(url)
