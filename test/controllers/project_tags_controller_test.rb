@@ -60,7 +60,7 @@ class ProjectTagsControllerTest < ActionController::TestCase
       project.tag_list = 'zesty'
       login_as create(:account)
       post :create, params: { project_id: project.to_param, tag_name: 'zesty' }
-      assert_response :ok
+      assert_response :unprocessable_entity
       _(project.reload.tag_list).must_equal 'zesty'
     end
 
