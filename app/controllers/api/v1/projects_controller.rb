@@ -27,6 +27,7 @@ class Api::V1::ProjectsController < ApplicationController
     project = populate_project_from_forge(project_params[:repo_url], true)
     if project
       project.name = params[:name] if params[:name]
+      project.vanity_url = params[:vanity_url] if params[:vanity_url]
       project.coverity_project_id = params[:coverity_project_id]
       create_params(project)
     end
