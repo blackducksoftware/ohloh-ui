@@ -37,16 +37,14 @@ class CreateScanProjectInUi
 
   def create_scan_project(params)
     uri = URI("#{ENV['URL_HOST']}/api/v1/projects.json")
-    response = Net::HTTP.post_form(uri, params)
-    code_location_ids(params[:repo_url]) if %w[200 201].include?(response.code)
-    JSON.parse(response.body)
-  rescue StandardError => e
-    puts e.message
+    response, status = get_result(uri, params)
+    code_location_ids(params[:repo_url]) if %w[200 201].include?(status)
+    response
   end
 
   def fix_url(url)
     new_url = url.strip.chomp('/')
-    return new_url unless url.match('github.com')
+    return new_url unless url.match('github.com') || url.match('.git')
 
     new_url.sub(/\.git$/, '').sub(%r{^git://}, 'https://').sub(%r{^git@github.com:}, 'https://github.com/')
   end
@@ -62,8 +60,11 @@ class CreateScanProjectInUi
   def create_code_location_scan(project_id, row)
     puts "Project Value #{project_id} row value #{row['name']}"
 
-    code_location_id = Enlistment.where(project_id: project_id,
-                                        code_location_id: @code_location_ids).first&.code_location_id
+    code_location_id = Enlistment.not_deleted.where(project_id: project_id,
+                                                    code_location_id: @code_location_ids).first&.code_location_id
+
+    code_location_id ||= create_enlistment(row, project_id)
+
     return unless code_location_id
 
     CodeLocationScan.where(code_location_id: code_location_id,
@@ -82,13 +83,40 @@ class CreateScanProjectInUi
   end
 
   def code_location_ids(url)
-    @code_location_ids = CodeLocation.all(url: url).map(&:id)
+    @code_location_ids = ApplicationRecord.connection
+                                          .execute("select c.id from code_locations c inner join repositories r
+                           on r.id = c.repository_id where r.url like '#{url}'").values.flatten
   end
 
   def project_params(row)
     { JWT: @jwt, name: row['name'].sub('/', '-'), vanity_url: row['name'].sub('/', '-'),
       repo_url: fix_url(row['repo_url']), license_name: row['license_name'],
       coverity_project_id: row['scan_project_id'] }
+  end
+
+  def git_branch(url)
+    out, _err, _status = Open3.capture3("git ls-remote --symref #{url} HEAD | head -1 | awk '{print $2}'")
+    out.strip.sub(/refs\/heads\//, '')
+  end
+
+  def create_enlistment(row, project_id)
+    params = { url: fix_url(row['repo_url']), scm_type: 'git', branch: git_branch(fix_url(row['repo_url'])),
+               project: project_id, JWT: @jwt }
+    uri = URI("#{ENV['URL_HOST']}/api/v1/enlistment/enlist.json")
+
+    response, _status = get_result(uri, params)
+    return unless response && response['attributes']
+
+    CodeLocationSubscription.create(code_location_id: response['attributes']['id'], client_relation_id: project_id)
+    response['attributes']['id']
+  end
+
+  def get_result(uri, params)
+    response = Net::HTTP.post_form(uri, params)
+    [JSON.parse(response.body), response.code]
+  rescue StandardError => e
+    puts e.message
+    nil
   end
 end
 
