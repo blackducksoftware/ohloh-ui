@@ -44,7 +44,8 @@ class Duplicate < ApplicationRecord
   end
 
   def resolve_tags!
-    good_project.update(editor_account: @editor_account, tag_list: "#{good_project.tag_list} #{bad_project.tag_list}")
+    tag_list = "#{good_project.tag_list} #{bad_project.tag_list}".split.uniq.join(' ')
+    good_project.update(editor_account: @editor_account, tag_list: tag_list)
   end
 
   def resolve_ratings!
