@@ -31,7 +31,7 @@ class ApiAccess
       uri = URI("#{fisbot_resolved_url}/health")
       response = Net::HTTP.get_response(uri)
       response.code == '200'
-    rescue Errno::ECONNREFUSED
+    rescue Errno::ECONNREFUSED, Resolv::ResolvError
       DataDogReport.error("Fisbot API outage: #{Time.now.utc}")
       false
     end
