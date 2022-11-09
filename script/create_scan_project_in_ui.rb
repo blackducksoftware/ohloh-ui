@@ -8,7 +8,6 @@ class CreateScanProjectInUi
 
   def initialize
     @jwt = build_jwt(Account.hamster.login)
-    @headers = %w[name repo_url error]
     @code_location_ids = nil
   end
 
@@ -72,7 +71,7 @@ class CreateScanProjectInUi
   end
 
   def insert_failed_url_data(error, row)
-    CSV.open('vendor/scan_failed_url.csv', 'a+', write_headers: true, headers: @headers) do |writer|
+    CSV.open('vendor/scan_failed_url.csv', 'a') do |writer|
       writer << [row['name'], row['repo_url'], error]
     end
   end
@@ -85,7 +84,7 @@ class CreateScanProjectInUi
   def code_location_ids(url)
     @code_location_ids = ApplicationRecord.connection
                                           .execute("select c.id from code_locations c inner join repositories r
-                           on r.id = c.repository_id where r.url like '#{url}'").values.flatten
+                           on r.id = c.repository_id where r.url like '%#{url}%'").values.flatten
   end
 
   def project_params(row)
