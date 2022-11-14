@@ -23,7 +23,7 @@ class ScanAnalyticsController < ApplicationController
   private
 
   def analytics_data
-    @analytics = @project.best_analysis&.scan_analytics&.order(id: :asc)
+    @analytics = @project.best_analysis&.scan_analytics&.analytics&.order(id: :asc)
   end
 
   def api_response(scan_project_id)

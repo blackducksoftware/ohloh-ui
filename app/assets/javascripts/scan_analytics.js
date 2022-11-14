@@ -85,7 +85,8 @@ function setDefaultChartOptions() {
 }
 
 function outstandingFixedChart(options, data){
-  var chart1Options = {
+  if (data && data['fixed_defects']){
+    var chart1Options = {
     chart: {
       renderTo: 'chart1',
       type: 'line',
@@ -118,12 +119,13 @@ function outstandingFixedChart(options, data){
       color: '#FF5733'
     }]
   };
-  chart1Options = jQuery.extend(true, {}, options, chart1Options);
-  new Highcharts.Chart(chart1Options);
+    chart1Options = jQuery.extend(true, {}, options, chart1Options);
+    new Highcharts.Chart(chart1Options);
+  }
 }
 
 function defectDensityChart(options, data) {
-  if (data['defect_density']){
+  if (data && data['defect_density']){
     var chart2Options = {
       chart: {
         renderTo: 'chart2',
@@ -159,7 +161,8 @@ function defectDensityChart(options, data) {
 }
 
 function highImpactChart(options, data) {
-  var chart3Options = {
+  if (data && data['high_impact_defects']){
+    var chart3Options = {
     chart: {
       renderTo: 'chart3',
       type: 'bar',
@@ -187,12 +190,14 @@ function highImpactChart(options, data) {
       }
     }
   };
-  chart3Options = jQuery.extend(true, {}, options, chart3Options);
-  new Highcharts.Chart(chart3Options);
+    chart3Options = jQuery.extend(true, {}, options, chart3Options);
+    new Highcharts.Chart(chart3Options);
+  }
 }
 
 function mediumImpactChart(options, data) {
-  var chart4Options = {
+  if (data && data['medium_impact_defects']){
+    var chart4Options = {
     chart: {
       renderTo: 'chart4',
         type: 'bar',
@@ -220,6 +225,7 @@ function mediumImpactChart(options, data) {
       }
     },
   };
-  chart4Options = jQuery.extend(true, {}, options, chart4Options);
-  new Highcharts.Chart(chart4Options);
+    chart4Options = jQuery.extend(true, {}, options, chart4Options);
+    new Highcharts.Chart(chart4Options);
+  }
 }
