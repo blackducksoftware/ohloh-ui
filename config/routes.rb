@@ -310,6 +310,9 @@ Rails.application.routes.draw do
         post :redo
       end
     end
+    resources :scan_analytics, only: :index do
+      collection { get :charts }
+    end
   end
 
   get 'p/_compare', to: 'compares#projects', as: :compare_projects

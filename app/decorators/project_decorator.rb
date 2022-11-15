@@ -44,7 +44,9 @@ class ProjectDecorator < Cherry::Decorator
       [
         [:scm_data,         I18n.t(:scm_data)],
         [:commits,          I18n.t(:commits_menu),       h.summary_project_commits_path(project)],
-        [:contributors,     I18n.t(:contributors),       h.summary_project_contributors_path(project)]
+        [:contributors,     I18n.t(:contributors),       h.summary_project_contributors_path(project)],
+        [:scan_analytics, project.best_analysis&.scan_analytics.present? ? I18n.t(:scan_analytic) : nil,
+         h.project_scan_analytics_path(project)]
       ],
       [
         [:user_data,        I18n.t(:community_data)],

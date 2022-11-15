@@ -1,0 +1,17 @@
+%h4= t('.cwe_title')
+- if cwes.blank?
+  %p= t('.cwe_no_data')
+- else
+  %table.table.table-bordered.table-hover.well
+    %thead
+      %tr
+        %th.text-right= t('.table_id')
+        %th= t('.cwe_Name')
+        %th.text-right= t('.no_of_defects')
+    %tbody
+      - cwes.each do |cwe|
+        %tr
+          %td.text-right= link_to cwe.id, cwe.uri, target: '_blank'
+          %td= cwe.name
+          %td.text-right= cwe.defect_count
+    %tbody

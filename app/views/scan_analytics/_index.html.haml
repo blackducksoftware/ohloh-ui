@@ -1,0 +1,61 @@
+:ruby
+  scan_data = JSON.parse(@scan_data.data.to_json, object_class: OpenStruct)
+  metrics = scan_data.analysis_metrics
+#scan_data
+  .row.row-eq-height.project_row
+    %h4#scan_analytic.text-left= t('.page_title')
+  - if @analytics.size > 1
+    .row.row-eq-height.project_row
+      .pull-left#scan_analytic#scan_dropdown
+        = select_tag :code_set_id, options_for_select(@analytics.collect{ |u| [u.code_set.code_location.url, 
+          u.code_set_id] }, params[:code_set_id]), class: 'chzn-select value-select', 
+          data: { remote: true, url: project_scan_analytics_path(@project), method: 'get' }
+      %h5.title 1 of #{@analytics.size} enlistments
+    .overlay-loader
+      %img.loader{ src: image_path('ui/loadingAnimation.gif') }
+  .row.row-eq-height.project_row#scan_display
+    %h5#scan_analytic.text-left Coverity Scan Analysis (<a class='meta' href="#{scan_data.project_url}" target='_blank'>view project here</a>)
+  .row.project_row
+    .col-md-12#scan_analytic
+      %h5.title Version: #{metrics.version}
+      .col-md-12
+        .box
+          %dl.kpi
+            %dd.snapshot-date
+              %em= metrics.build_date
+            %dt= t('.last_analyzed')
+        .box
+          %dl.kpi
+            %dd
+              %em= number_with_delimiter(metrics.loc)  || 'N/A'
+            %dt= t('.loc')
+        .box
+          %dl.kpi
+            %dd
+              %em= metrics.defect_density&.score.to_f || 'N/A'
+            %dt= t('.defect')
+  .row.project_row
+    %h5#scan_analytic.title Defects by status for current build
+    .col-md-6#scan_analytic
+      .box
+        %dl.kpi
+          %dd
+            %em= number_with_delimiter(metrics.total_count) || '0'
+          %dt= t('.total_defects')
+      .box
+        %dl.kpi
+          %dd
+            %em= number_with_delimiter(metrics.outstanding_count) || '0'
+          %dt= t('.outstanding')
+      .box
+        %dl.kpi
+          %dd
+            %em= number_with_delimiter(metrics.fixed_count) || '-'
+          %dt= t('.fixed')
+    .col-md-6#scan_analytic_table
+      = render partial: 'scan_analytics/cwe', locals: { cwes: scan_data.cwe }
+  .row.project_row#chart_data{"data-project-id" => "#{@project.vanity_url}", 'data-scan-project-id' => "#{scan_data.project_id}"}
+    #chart1
+    #chart2
+    #chart3
+    #chart4
