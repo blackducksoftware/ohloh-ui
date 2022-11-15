@@ -2,10 +2,10 @@
 
 require 'test_helper'
 
-class ComparesControllerTest < ActionController::TestCase
+class ComparesControllerTest < ActionDispatch::IntegrationTest
   # projects
   test 'should render with no projects passed in' do
-    get :projects
+    get compare_projects_url
     assert_response :success
     assert_select 'input#project_0', 1
     assert_select 'input#project_1', 1
@@ -15,7 +15,7 @@ class ComparesControllerTest < ActionController::TestCase
   test 'should render projects when names are supplied in a case insensitive manner' do
     create(:project, name: 'Ruby')
     create(:project, name: 'Java')
-    get :projects, params: { project_0: 'java', project_1: 'rUby' }
+    get compare_projects_url, params: { project_0: 'java', project_1: 'rUby' }
     assert_response :success
     _(response.body).must_match 'Java'
     _(response.body).must_match 'Ruby'
@@ -25,7 +25,7 @@ class ComparesControllerTest < ActionController::TestCase
     project1 = create(:project, name: 'Phil')
     project2 = create(:project, name: 'Jerry')
     project3 = create(:project, name: 'Bob')
-    get :projects, params: { project_0: project1.name, project_1: project2.name, project_2: project3.name }
+    get compare_projects_url, params: { project_0: project1.name, project_1: project2.name, project_2: project3.name }
     assert_response :success
     assert_select 'input#project_0', 0
     assert_select 'input#project_1', 0
@@ -38,7 +38,7 @@ class ComparesControllerTest < ActionController::TestCase
   test 'should handle some nil projects' do
     project1 = create(:project, name: 'Phil')
     project3 = create(:project, name: 'Bob')
-    get :projects, params: { project_0: project1.name, project_2: project3.name }
+    get compare_projects_url, params: { project_0: project1.name, project_2: project3.name }
     assert_response :success
     assert_select 'input#project_0', 0
     assert_select 'input#project_1', 1
@@ -50,7 +50,8 @@ class ComparesControllerTest < ActionController::TestCase
   test 'should not fail if project doesnot have analysis' do
     project1 = create(:project, name: 'The Avenger Initiative')
     project1.update!(best_analysis_id: nil)
-    get :projects_graph, params: { metric: 'commit', project_0: project1.name, project_1: 'invalid' }, xhr: true
+    get compare_graph_projects_url, params: { metric: 'commit', project_0: project1.name, project_1: 'invalid' },
+                                    xhr: true
     assert_response :ok
   end
 
@@ -58,7 +59,7 @@ class ComparesControllerTest < ActionController::TestCase
     project1 = create(:project, name: 'The Avenger Initiative')
     project2 = create(:project, name: 'X-MEN')
     project3 = create(:project, name: 'Suicide Squad')
-    get :projects_graph,
+    get compare_graph_projects_url,
         params: { metric: 'contributor', project_0: project1.name, project_1: project2.name,
                   project_2: project3.name },
         xhr: true
@@ -69,7 +70,7 @@ class ComparesControllerTest < ActionController::TestCase
     project1 = create(:project, name: 'The Avenger Initiative')
     project2 = create(:project, name: 'X-MEN')
     project3 = create(:project, name: 'Suicide Squad')
-    get :projects_graph,
+    get compare_graph_projects_url,
         params: { metric: 'commit', project_0: project1.name, project_1: project2.name, project_2: project3.name },
         xhr: true
     assert_response :ok
@@ -80,7 +81,7 @@ class ComparesControllerTest < ActionController::TestCase
     project2 = create(:project, name: 'X-MEN')
     project3 = create(:project, name: 'Suicide Squad')
     Analysis.any_instance.stubs(:code_total_history).returns([{ 'code_total' => 5 }])
-    get :projects_graph,
+    get compare_graph_projects_url,
         params: { metric: 'code_total', project_0: project1.name, project_1: project2.name, project_2: project3.name },
         xhr: true
     assert_response :ok
@@ -88,7 +89,7 @@ class ComparesControllerTest < ActionController::TestCase
 
   # projects - csv format
   test 'csv format should render with no projects passed in' do
-    get :projects, params: { format: :csv }
+    get compare_projects_url, params: { format: :csv }
     assert_response :success
   end
 
@@ -96,8 +97,9 @@ class ComparesControllerTest < ActionController::TestCase
     project1 = create(:project, name: 'Phil')
     project2 = create(:project, name: 'Jerry')
     project3 = create(:project, name: 'Bob')
-    get :projects, params: { project_0: project1.name, project_1: project2.name, project_2: project3.name },
-                   format: :csv
+    get compare_projects_url,
+        params: { project_0: project1.name, project_1: project2.name, project_2: project3.name, format: :csv }
+
     assert_response :success
     _(response.body).must_match 'Phil'
     _(response.body).must_match 'Jerry'
@@ -108,7 +110,7 @@ class ComparesControllerTest < ActionController::TestCase
     project1 = create(:project, name: 'Phil')
     project3 = create(:project, name: 'Bob')
     project3.best_analysis.update(last_commit_time: nil)
-    get :projects, params: { project_0: project1.name, project_2: project3.name }, format: :csv
+    get compare_projects_url, params: { project_0: project1.name, project_2: project3.name, format: :csv }
     assert_response :success
     _(response.body).must_match 'Phil'
     _(response.body).must_match 'Bob'
@@ -128,8 +130,8 @@ class ComparesControllerTest < ActionController::TestCase
     create(:factoid, analysis: project3.best_analysis, type: 'FactoidCommentsHigh')
     create(:factoid, analysis: project3.best_analysis, type: 'FactoidTeamSizeZero')
     project3.best_analysis.update(relative_comments: 7.2)
-    get :projects, params: { project_0: project1.name, project_1: project2.name, project_2: project3.name },
-                   format: :csv
+    get compare_projects_url,
+        params: { project_0: project1.name, project_1: project2.name, project_2: project3.name, format: :csv }
     assert_response :success
     _(response.body).must_match 'Phil'
     _(response.body).must_match 'Larry'
@@ -148,11 +150,11 @@ class ComparesControllerTest < ActionController::TestCase
     project3.best_analysis.thirty_day_summary.update(outside_committers_count: commiters_count)
     project1.reload
 
-    tds1 = CompareProjectCsvDecorator.new(project1, request.host).contributors_last_thirty_days
+    tds1 = CompareProjectCsvDecorator.new(project1, host).contributors_last_thirty_days
     _(tds1).must_match I18n.t('compares.no_data')
-    tds2 = CompareProjectCsvDecorator.new(project2, request.host).contributors_last_thirty_days
+    tds2 = CompareProjectCsvDecorator.new(project2, host).contributors_last_thirty_days
     _(tds2).must_match I18n.t('compares.no_activity')
-    tds3 = CompareProjectCsvDecorator.new(project3, request.host).contributors_last_thirty_days
+    tds3 = CompareProjectCsvDecorator.new(project3, host).contributors_last_thirty_days
     _(tds3).must_match "#{commiters_count} developers"
   end
 end
