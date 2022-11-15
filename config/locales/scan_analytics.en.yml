@@ -1,0 +1,19 @@
+en:
+  scan_analytics:
+    index: 
+      page_title: "Static Analysis"
+      last_analyzed: "Last Analyzed"
+      loc: "Lines of Code Analyze"
+      defect: "Defect Density"
+      total_defects: "Total defects"
+      outstanding: "Outstanding"
+      fixed: "Fixed"
+    no_scan_analytics:
+      page_title: "Static Analysis"
+      no_data: "No Data Found"
+    cwe:
+      cwe_title: "CWE Top 25 defects"
+      cwe_no_data: "No top 25 CWE defects were found."
+      table_id: "ID"
+      cwe_Name: "CWE-Name"
+      no_of_defects: "Number of Defects"

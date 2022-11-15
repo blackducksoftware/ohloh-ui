@@ -1,6 +1,8 @@
 !!!
 %html
   %head
+    - if Rails.env.production?
+      = render partial: 'layouts/tracking_scripts/google_analytics'
     - page_title = content_for?(:html_title) ? yield(:html_title).to_s : t('.openhub')
     %title= sanitize(page_title)
     %meta{ name: 'viewport', content: 'width=device-width, initial-scale=1.0' }

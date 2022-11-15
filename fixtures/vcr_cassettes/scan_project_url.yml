@@ -1,0 +1,73 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://scan.coverity.com/api/projects/1/charts?format=json
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - Ohloh.net client
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - GitHub.com
+      Date:
+      - Fri, 31 Oct 2022 19:59:45 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Status:
+      - 200 OK
+      X-Ratelimit-Limit:
+      - '60'
+      X-Ratelimit-Remaining:
+      - '53'
+      X-Ratelimit-Reset:
+      - '1426860390'
+      Cache-Control:
+      - public, max-age=60, s-maxage=60
+      Last-Modified:
+      - Fri, 20 Mar 2015 13:30:42 GMT
+      Etag:
+      - W/"185d0548946f6e2b65fc19dcbb72a107"
+      Vary:
+      - Accept
+      - Accept-Encoding
+      X-Github-Media-Type:
+      - github.v3
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Frame-Options:
+      - deny
+      Content-Security-Policy:
+      - default-src 'none'
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Expose-Headers:
+      - ETag, Link, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset,
+        X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval
+      Access-Control-Allow-Origin:
+      - "*"
+      X-Github-Request-Id:
+      - D0B1FE7E:6370:B2CA84:550C27D1
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubdomains; preload
+      X-Content-Type-Options:
+      - nosniff
+      X-Served-By:
+      - 065b43cd9674091fec48a221b420fbb3
+    body:
+      encoding: UTF-8
+      string: '{"fixed_defects":{"Nov 01, 2017":0,"Dec 01, 2017":null,"Jan 01, 2018":null,"Feb 01, 2018":null,"Mar 01, 2018":null,"Apr 01, 2018":null,"May 01, 2018":null,"Jun 01, 2018":null,"Jul 01, 2018":null,"Aug 01, 2018":null,"Sep 01, 2018":null,"Oct 01, 2018":null,"Dec 01, 2018":null,"Jan 01, 2019":null,"Feb 01, 2019":null,"Mar 01, 2019":null,"Apr 01, 2019":null,"May 01, 2019":null,"Jun 01, 2019":null,"Jul 01, 2019":null,"Aug 01, 2019":null,"Sep 01, 2019":null,"Oct 01, 2019":null,"Nov 01, 2019":null,"Dec 01, 2019":null,"Jan 01, 2020":null,"Feb 01, 2020":null,"Mar 01, 2020":null,"Apr 01, 2020":null,"May 01, 2020":null,"Jun 01, 2020":null,"Jul 01, 2020":null,"Aug 01, 2020":null,"Sep 01, 2020":5,"Oct 01, 2020":null,"Nov 01, 2020":null,"Dec 01, 2020":null,"Jan 01, 2021":11,"Feb 01, 2021":null,"Mar 01, 2021":null,"Apr 01, 2021":null,"May 01, 2021":null,"Jun 01, 2021":null,"Jul 01, 2021":null,"Aug 01, 2021":null,"Sep 01, 2021":null,"Oct 01, 2021":null,"Nov 01, 2021":null,"Dec 01, 2021":null,"Jan 01, 2022":null,"Feb 01, 2022":null,"Mar 01, 2022":null,"Apr 01, 2022":null,"May 01, 2022":null,"Jun 01, 2022":null,"Jul 01, 2022":33,"Aug 01, 2022":33,"Sep 01, 2022":33,"Oct 01, 2022":34},"outstanding_defects":{"Nov 01, 2017":9,"Dec 01, 2017":null,"Jan 01, 2018":null,"Feb 01, 2018":null,"Mar 01, 2018":null,"Apr 01, 2018":null,"May 01, 2018":null,"Jun 01, 2018":null,"Jul 01, 2018":null,"Aug 01, 2018":null,"Sep 01, 2018":null,"Oct 01, 2018":null,"Dec 01, 2018":null,"Jan 01, 2019":null,"Feb 01, 2019":null,"Mar 01, 2019":null,"Apr 01, 2019":null,"May 01, 2019":null,"Jun 01, 2019":null,"Jul 01, 2019":null,"Aug 01, 2019":null,"Sep 01, 2019":null,"Oct 01, 2019":null,"Nov 01, 2019":null,"Dec 01, 2019":null,"Jan 01, 2020":null,"Feb 01, 2020":null,"Mar 01, 2020":null,"Apr 01, 2020":null,"May 01, 2020":null,"Jun 01, 2020":null,"Jul 01, 2020":null,"Aug 01, 2020":null,"Sep 01, 2020":43,"Oct 01, 2020":null,"Nov 01, 2020":null,"Dec 01, 2020":null,"Jan 01, 2021":76,"Feb 01, 2021":null,"Mar 01, 2021":null,"Apr 01, 2021":null,"May 01, 2021":null,"Jun 01, 2021":null,"Jul 01, 2021":null,"Aug 01, 2021":null,"Sep 01, 2021":null,"Oct 01, 2021":null,"Nov 01, 2021":null,"Dec 01, 2021":null,"Jan 01, 2022":null,"Feb 01, 2022":null,"Mar 01, 2022":null,"Apr 01, 2022":null,"May 01, 2022":null,"Jun 01, 2022":null,"Jul 01, 2022":86,"Aug 01, 2022":88,"Sep 01, 2022":88,"Oct 01, 2022":89},"defect_density":[{"name":"Defect Density of Ohloh UI","data":{"Jan 01, 2021":null,"Feb 01, 2021":null,"Mar 01, 2021":null,"Apr 01, 2021":null,"May 01, 2021":null,"Jun 01, 2021":null,"Jul 01, 2021":null,"Aug 01, 2021":null,"Sep 01, 2021":null,"Oct 01, 2021":null,"Nov 01, 2021":null,"Dec 01, 2021":null,"Jan 01, 2022":null,"Feb 01, 2022":null,"Mar 01, 2022":null,"Apr 01, 2022":null,"May 01, 2022":null,"Jun 01, 2022":null,"Jul 01, 2022":null,"Aug 01, 2022":null,"Sep 01, 2022":null,"Oct 01, 2022":null}}],"defect_density_title":null,"high_impact_defects":{"High impact security":4,"Sigma":2},"medium_impact_defects":{"Medium impact security":14,"Control flow issues":2,"Incorrect expression":2,"Null pointer dereferences":1}}'
+    http_version:
+  recorded_at: Fri, 31 Oct 2022 18:00:38 GMT
