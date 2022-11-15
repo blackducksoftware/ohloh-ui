@@ -35,7 +35,7 @@ http_interactions:
       Cache-Control:
       - max-age=0, private, must-revalidate
       X-Request-Id:
-      - 069c3f8e-9687-4bd5-a320-9c58705e55c6
+      - '069c3f8e-9687-4bd5-a320-9c58705e55c6'
       X-Runtime:
       - '11.769537'
       Server:
@@ -49,7 +49,6 @@ http_interactions:
     body:
       encoding: UTF-8
       string: '{"id":11,"scm_type":"git","url":"git://github.com/rails/rails.git","branch":"main","best_code_set_id":null,"do_not_fetch":false,"status":"active"}'
-    http_version:
   recorded_at: Mon, 09 Apr 2018 23:38:15 GMT
 - request:
     method: get
@@ -104,7 +103,6 @@ http_interactions:
     body:
       encoding: UTF-8
       string: '[{"id":11,"scm_type":"git","url":"git://github.com/rails/rails.git","branch":"main","best_code_set_id":null,"do_not_fetch":false,"status":"active"}]'
-    http_version:
   recorded_at: Mon, 09 Apr 2018 23:38:15 GMT
 - request:
     method: get
@@ -159,6 +157,61 @@ http_interactions:
     body:
       encoding: UTF-8
       string: '[{"id":11,"scm_type":"git","url":"git://github.com/rails/rails.git","branch":"main","best_code_set_id":null,"do_not_fetch":false,"status":"active"}]'
-    http_version:
   recorded_at: Mon, 09 Apr 2018 23:38:15 GMT
-recorded_with: VCR 3.0.3
+- request:
+    method: post
+    uri: http://vcrlocalhost.org:4004/api/v1/code_locations/valid.json?api_key=0f9bf020-32dd-4846-a7d7-8a48b55c5a5d
+    body:
+      encoding: US-ASCII
+      string: url&scm_type=git&username&password&branch=&forge_match&best_code_set_id&do_not_fetch
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+      Host:
+      - vcrlocalhost.org:4004
+      Content-Type:
+      - application/x-www-form-urlencoded
+  response:
+    status:
+      code: 401
+      message: 'Unauthorized '
+    headers:
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Www-Authenticate:
+      - Token realm="eFISbot"
+      Content-Type:
+      - application/json; charset=utf-8
+      Cache-Control:
+      - no-cache
+      X-Request-Id:
+      - 712706ed-2269-4b5f-b65d-642ab58734c3
+      X-Runtime:
+      - '6.985973'
+      Server:
+      - WEBrick/1.4.4 (Ruby/2.6.9/2021-11-24)
+      Date:
+      - Thu, 10 Nov 2022 12:39:51 GMT
+      Content-Length:
+      - '19'
+      Connection:
+      - Keep-Alive
+    body:
+      encoding: UTF-8
+      string: Invalid credentials
+  recorded_at: Thu, 10 Nov 2022 12:39:51 GMT
+recorded_with: VCR 6.0.0
