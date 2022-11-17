@@ -188,6 +188,9 @@ Rails.application.routes.draw do
     end
   end
 
+  get 'p/_compare', to: 'compares#projects', as: :compare_projects
+  get 'p/_project_graph', to: 'compares#projects_graph', as: :compare_graph_projects, defaults: { format: 'js' }
+
   resources :projects, path: :p, except: [:destroy] do
     member do
       get :users
@@ -315,8 +318,6 @@ Rails.application.routes.draw do
     end
   end
 
-  get 'p/_compare', to: 'compares#projects', as: :compare_projects
-  get 'p/_project_graph', to: 'compares#projects_graph', as: :compare_graph_projects, defaults: { format: 'js' }
   get 'projects/:id/stacks', to: 'stacks#project_stacks', constraints: { format: /xml/ }
   get 'p/:id/stacks', to: 'stacks#project_stacks', as: :project_stacks, constraints: { format: /xml/ }
   get 'p/:id/stacks', to: redirect('/p/%{id}/users'), constraints: { format: /html/ }
