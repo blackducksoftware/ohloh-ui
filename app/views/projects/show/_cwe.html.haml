@@ -1,5 +1,5 @@
 %h4 CWE Top 25 defects
-- if @cwes.blank?
+- if cwes.blank?
   %p No top 25 CWE defects were found.
 - else
   %table.table.table-bordered.table-hover.well
@@ -9,7 +9,7 @@
         %th CWE-Name
         %th.text-right Number of Defects
     %tbody
-      - @cwes.each do |cwe|
+      - cwes.each do |cwe|
         %tr
           %td.text-right= link_to cwe.id, cwe.uri, target: '_blank'
           %td= cwe.name

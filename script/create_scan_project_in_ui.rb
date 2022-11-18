@@ -89,8 +89,7 @@ class CreateScanProjectInUi
 
   def project_params(row)
     { JWT: @jwt, name: row['name'].sub('/', '-'), vanity_url: row['name'].sub('/', '-'),
-      repo_url: fix_url(row['repo_url']), license_name: row['license_name'],
-      coverity_project_id: row['scan_project_id'] }
+      repo_url: fix_url(row['repo_url']), license_name: row['license_name'] }
   end
 
   def git_branch(url)

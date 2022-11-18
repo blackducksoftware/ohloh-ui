@@ -35,12 +35,6 @@
       %br
     - else
       = link_to t('.add_code_location'), project_enlistments_path(@project)
-  - if @project.coverity_project_id
-    .clearfix
-    .col-xs-5.text-right
-      = link_to 'Coverity Scan', ENV['COVERITY_SCAN_URL']
-    .col-xs-7{ style: 'margin-bottom: .5em;' }
-      = link_to @project.name, @project.coverity_scan_url
   .clearfix
   .col-xs-5.text-right
     = link_to t('.similar_projects'), similar_project_path(@project)

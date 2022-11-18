@@ -13,6 +13,6 @@ App.ProjectLicenses =
 
     $('.license_details span').tipso(background: '#333333')
     $('.license_details i.fa').tipso(background: '#333333')
-    
+
 $(document).ready ->
   App.ProjectLicenses.init()

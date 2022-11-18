@@ -21,7 +21,7 @@ class Api::V1::ProjectsController < ApplicationController
   private
 
   def project_params
-    params.permit(:name, :vanity_url, :homepage_url, :repo_url, :coverity_project_id, :license_name)
+    params.permit(:name, :vanity_url, :homepage_url, :repo_url, :license_name)
   end
 
   def build_project
@@ -33,7 +33,6 @@ class Api::V1::ProjectsController < ApplicationController
   def create_params(project)
     project.name = params[:name] if params[:name]
     project.vanity_url = params[:vanity_url] if params[:vanity_url]
-    project.coverity_project_id = params[:coverity_project_id]
     assign_enlistments_attributes(project)
     assign_license_attributes
   end

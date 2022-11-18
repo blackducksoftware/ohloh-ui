@@ -106,10 +106,6 @@ class Project < ApplicationRecord
     remove_enlistments(current_user)
   end
 
-  def coverity_scan_url
-    ENV['COVERITY_SCAN_URL'] + "/projects/#{coverity_project_id}"
-  end
-
   class << self
     def search_and_sort(query, sort, page)
       sort_by = sort == 'relevance' ? nil : "by_#{sort}"
