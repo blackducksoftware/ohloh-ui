@@ -28,6 +28,7 @@ class TopicsController < ApplicationController
 
   def create
     @topic = Topic.new(topic_params)
+    @topic.account = @account
     if verify_captcha_for_non_admin && @topic.save
       redirect_to forum_path(@forum)
     else
@@ -89,7 +90,7 @@ class TopicsController < ApplicationController
   end
 
   def topic_params
-    params.require(:topic).permit(:forum_id, :account_id, :title, :sticky,
+    params.require(:topic).permit(:forum_id, :title, :sticky,
                                   :hits, :closed, posts_attributes: %i[body account_id])
   end
 
@@ -104,11 +105,11 @@ class TopicsController < ApplicationController
   end
 
   def set_account
-    account_id = topic_params[:account_id] if topic_and_post_account_id_match?
+    account_id = params[:account_id] if topic_and_post_account_id_match?
     @account = Account.from_param(account_id).take
   end
 
   def topic_and_post_account_id_match?
-    topic_params[:account_id] == topic_params[:posts_attributes]['0'][:account_id]
+    params[:account_id] == topic_params[:posts_attributes]['0'][:account_id]
   end
 end

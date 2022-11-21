@@ -12,6 +12,7 @@ class HelpfulsControllerTest < ActionController::TestCase
     account = @controller.send(:current_user).id
     post :create,
          params: { helpful: { account_id: account, review_id: linux_review }, review_id: linux_review.id, yes: true }
+    @controller.send(:model_params)
     assert_response :redirect
     assert_redirected_to new_session_path
   end
