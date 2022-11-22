@@ -12,6 +12,10 @@ App.ScanAnalytics =
       adaptiveHeight: true
     if $('#scan_data').length > 0
       scanDataFetch()
+      $('#scan_data').on 'ajax:before', ->
+        $('.overlay-loader').show()
+        return
+
 
 scanDataFetch = ->
   $.ajax
@@ -75,6 +79,8 @@ outstandingFixedChart = (options, data) ->
         layout: 'vertical'
         x: 0
         y: 100
+        width: 100
+        itemStyle : '{ "word-wrap": "break-word"}'
       yAxis: title: text: null
       series: [
         {
@@ -94,7 +100,7 @@ outstandingFixedChart = (options, data) ->
 
 defectDensityChart = (options, data) ->
   if data and data['defect_density']
-    chart2Options = 
+    chart2Options =
       chart:
         renderTo: 'chart2'
         type: 'line'
@@ -105,21 +111,35 @@ defectDensityChart = (options, data) ->
         layout: 'vertical'
         x: 0
         y: 100
+        width: 100
+        itemStyle : '{ "word-wrap": "break-word"}'
+      plotOptions: series: connectNulls: true
       yAxis: title: text: null
-      xAxis: categories: Object.entries(data['defect_density'][0].data).map((m) ->
-        m[0]
-      )
-      series: [ {
-        name: if data['defect_density'] then data['defect_density'][0].name else null
-        data: if data['defect_density'] then Object.entries(data['defect_density'][0].data) else []
-        color: '#7CB5EC'
-      } ]
+      xAxis:
+        categories: Object.entries(data['defect_density'][0].data).map((m) ->
+          m[0]
+        )
+        title: text: if data['defect_density_title'] then data['defect_density_title'] else null
+      series: [
+        {
+          name: if data['defect_density'][0] then data['defect_density'][0].name else null
+          data: if data['defect_density'][0] then Object.entries(data['defect_density'][0].data).map( (a) -> if a[1] == null then a[1] else a[1] = +a[1]
+          ) else []
+          color: '#7CB5EC'
+        }
+        {
+          name: if data['defect_density'][1] then data['defect_density'][1].name else null
+          data: if data['defect_density'][1] then Object.entries(data['defect_density'][1].data).map( (a) -> if a[1] == null then a[1] else a[1] = +a[1]
+          ) else []
+          color: '#FF5733'
+        }
+      ]
     chart2Options = jQuery.extend(true, {}, options, chart2Options)
     new (Highcharts.Chart)(chart2Options)
   return
 
 highImpactChart = (options, data) ->
-  if data and data['high_impact_defects']
+  if data and Object.keys(data["high_impact_defects"]).length > 0
     chart3Options = 
       chart:
         renderTo: 'chart3'
@@ -140,7 +160,7 @@ highImpactChart = (options, data) ->
   return
 
 mediumImpactChart = (options, data) ->
-  if data and data['medium_impact_defects']
+  if data and Object.keys(data["medium_impact_defects"]).length > 0
     chart4Options = 
       chart:
         renderTo: 'chart4'
