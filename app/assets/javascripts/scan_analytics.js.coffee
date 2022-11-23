@@ -14,8 +14,6 @@ App.ScanAnalytics =
       scanDataFetch()
       $('#scan_data').on 'ajax:before', ->
         $('.overlay-loader').show()
-        return
-
 
 scanDataFetch = ->
   $.ajax
@@ -28,8 +26,6 @@ scanDataFetch = ->
       defectDensityChart options, data
       highImpactChart options, data
       mediumImpactChart options, data
-      return
-  return
 
 setDefaultChartOptions = ->
   Highcharts.setOptions
@@ -61,7 +57,6 @@ setDefaultChartOptions = ->
       itemHiddenStyle: color: 'gray'
     credits: style: right: '10px'
     labels: style: color: '#99b'
-  return
 
 outstandingFixedChart = (options, data) ->
   if data and data['fixed_defects']
@@ -96,7 +91,6 @@ outstandingFixedChart = (options, data) ->
       ]
     chart1Options = jQuery.extend(true, {}, options, chart1Options)
     new (Highcharts.Chart)(chart1Options)
-  return
 
 defectDensityChart = (options, data) ->
   if data and data['defect_density']
@@ -136,7 +130,6 @@ defectDensityChart = (options, data) ->
       ]
     chart2Options = jQuery.extend(true, {}, options, chart2Options)
     new (Highcharts.Chart)(chart2Options)
-  return
 
 highImpactChart = (options, data) ->
   if data and Object.keys(data["high_impact_defects"]).length > 0
@@ -157,7 +150,6 @@ highImpactChart = (options, data) ->
       yAxis: title: text: 'Outstanding defects'
     chart3Options = jQuery.extend(true, {}, options, chart3Options)
     new (Highcharts.Chart)(chart3Options)
-  return
 
 mediumImpactChart = (options, data) ->
   if data and Object.keys(data["medium_impact_defects"]).length > 0
@@ -178,7 +170,6 @@ mediumImpactChart = (options, data) ->
       yAxis: title: text: 'Outstanding defects'
     chart4Options = jQuery.extend(true, {}, options, chart4Options)
     new (Highcharts.Chart)(chart4Options)
-  return
 
 $(document).ready ->
   App.ScanAnalytics.init()

@@ -1,12 +1,6 @@
 :ruby
   scan_data = JSON.parse(scan_analytics.data, object_class: OpenStruct)
-  version = scan_data.analysis_metrics.version.presence
-  last_analysed = scan_data.analysis_metrics.build_date
-  loc = scan_data.analysis_metrics.loc
-  defect_density = scan_data.analysis_metrics.defect_density&.score
-  total_defects = scan_data.analysis_metrics.total_count
-  outstanding_count = scan_data.analysis_metrics.outstanding_count
-  fixed_count = scan_data.analysis_metrics.fixed_count
+  metrics = scan_data.analysis_metrics
 .scan_data_wrapper
   .row.project_row
     .col-md-12.scan_data_title
@@ -18,38 +12,38 @@
     .clearfix
   .row.project_row
     .col-md-6
-      %h4.title Version: #{version}
+      %h4.title Version: #{metrics.version.presence}
       .box
         %dl.kpi
           %dd.snapshot-date
-            %em= last_analysed
+            %em= metrics.build_date
           %dt Last Analyzed
       .box
         %dl.kpi
           %dd
-            %em= number_with_delimiter(loc)  || 'N/A'
+            %em= number_with_delimiter(metrics.loc)  || 'N/A'
           %dt Lines of Code Analyze
       .box
         %dl.kpi
           %dd
-            %em= defect_density.to_f || 'N/A'
+            %em= metrics.defect_density&.score.to_f || 'N/A'
           %dt Defect Density
       .clearfix
       %h4.title Defects by status for current build
       .box
         %dl.kpi
           %dd
-            %em= number_with_delimiter(total_defects) || '0'
+            %em= number_with_delimiter(metrics.total_count) || '0'
           %dt Total defects
       .box
         %dl.kpi
           %dd
-            %em= number_with_delimiter(outstanding_count) || '0'
+            %em= number_with_delimiter(metrics.outstanding_count) || '0'
           %dt Outstanding
       .box
         %dl.kpi
           %dd
-            %em= number_with_delimiter(fixed_count) || '-'
+            %em= number_with_delimiter(metrics.fixed_count) || '-'
           %dt Fixed
     .col-md-6
       .clearfix
