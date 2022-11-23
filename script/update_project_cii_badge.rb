@@ -85,7 +85,7 @@ class UpdateProjectCiiBadge
   def get_enlistment_ids_by_repo_url(url)
     return [] unless url =~ /git/
 
-    repositories = Repository.where("trim(trailing '/' from url) in (#{url_probabilities(url)})")
+    repositories = Repository.where('trim(trailing ' / ' from url) in (?)', url_probabilities(url).to_s)
 
     get_enlistment_ids_by_repositories(repositories)
   end

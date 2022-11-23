@@ -86,7 +86,7 @@ class Person < ApplicationRecord
     def find_by_name_or_email(opts)
       return tsearch(opts[:q]) unless opts[:find_by].eql?('email')
 
-      where("name_facts.email_address_ids && (#{EmailAddress.search_sql(opts[:q])})")
+      where("name_facts.email_address_ids && (#{sanitize_sql(EmailAddress.search_sql(opts[:q]))})")
         .joins(:contributor_fact)
     end
 

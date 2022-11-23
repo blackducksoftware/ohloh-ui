@@ -11,7 +11,8 @@ module Tsearch
     # it was treated as a string instead of function
     after_save do |record|
       record.class.where(id: record)
-            .update_all("vector = #{set_vector(record)}, popularity_factor = #{record.searchable_factor}")
+            .update_all("vector = #{ActiveRecord::Base.sanitize_sql set_vector(record)}, popularity_factor =
+                         #{ActiveRecord::Base.sanitize_sql record.searchable_factor}")
     end
 
     class << self
@@ -21,8 +22,8 @@ module Tsearch
 
       def tsearch_sort_by(query, sort_by)
         if sort_by.blank? && query.present?
-          order(Arel.sql("greatest(#{tsearch_rank('simple', query)},
-                #{tsearch_rank('default', query)})*(1+popularity_factor) desc"))
+          order(Arel.sql(ActiveRecord::Base.send(:sanitize_sql_array, "greatest(#{tsearch_rank('simple', query)},
+                #{tsearch_rank('default', query)})*(1+popularity_factor) desc")))
         elsif sort_by.blank?
           order(popularity_factor: :desc)
         else
