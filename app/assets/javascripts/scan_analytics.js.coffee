@@ -2,12 +2,12 @@ App.ScanAnalytics =
   init: ->
     $('#scan_data_row > .project_row').slick
       arrows: false
-      speed: 700
+      speed: 900
       infinite: true
       slidesToShow: 1
       slidesToScroll: 1
       autoplay: true
-      autoplaySpeed: 20000
+      autoplaySpeed: 10000
       dots: true
       adaptiveHeight: true
     if $('#scan_data').length > 0
