@@ -1,26 +1,26 @@
 :ruby
-  project_chart_url = charts_oh_admin_projects_url.to_s
+  project_chart_path = charts_oh_admin_projects_path.to_s
 
 #three_months_project.project
   %h1 3 Months Projects Creation Trend
-  .chart{ 'datasrc' => project_chart_url + '?period=3' + '&filter_by=weekly' }
+  .chart{ 'datasrc' => project_chart_path + '?period=3' + '&filter_by=weekly' }
 
 #six_months_project.project
   %h1 6 Months Projects Creation Trend
-  .chart{ 'datasrc' => project_chart_url + '?period=6' + '&filter_by=weekly'}
+  .chart{ 'datasrc' => project_chart_path + '?period=6' + '&filter_by=weekly'}
 
 #one_year_project.project
   %h1 1 Year Projects Creation Trend
-  .chart{ 'datasrc' => project_chart_url + '?period=12' + '&filter_by=weekly'}
+  .chart{ 'datasrc' => project_chart_path + '?period=12' + '&filter_by=weekly'}
 
 #three_months_monthly_project.project
   %h1 3 Months Projects Creation Trend
-  .chart{ 'datasrc' => project_chart_url + '?period=3' + '&filter_by=monthly'}
+  .chart{ 'datasrc' => project_chart_path + '?period=3' + '&filter_by=monthly'}
 
 #six_months_monthly_project.project
   %h1 6 Months Projects Creation Trend
-  .chart{ 'datasrc' => project_chart_url + '?period=6' + '&filter_by=monthly'}
+  .chart{ 'datasrc' => project_chart_path + '?period=6' + '&filter_by=monthly'}
 
 #one_year_monthly_project.project
   %h1 1 Year Projects Creation Trend
-  .chart{ 'datasrc' => project_chart_url + '?period=12' + '&filter_by=monthly'}
+  .chart{ 'datasrc' => project_chart_path + '?period=12' + '&filter_by=monthly'}
