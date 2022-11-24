@@ -1,5 +1,5 @@
 :ruby
-  sbom_data = project_sbom.sbom_data ?  project_sbom.sbom_data : {}
+  sbom_data = project_sbom.present? ? JSON.parse(project_sbom) : {}
 
 .modal-header
   %button.close{ data: { dismiss: 'modal' }, aria: { label: 'Close' } }
