@@ -78,7 +78,9 @@
           = image_tag('sample_ohloh_analysis.jpg', class: 'col-md-12')
 - else
   = render partial: 'projects/show/analysis_summary'
-.row.mezzo
-- if @scan_data.present?
-  = render partial: 'projects/show/scan_analytics_summary'
+
+- if @scan_analytics.present?
+  .row.mezzo
+    #scan_data_row
+      .project_row= render partial: 'projects/show/scan_analytics_summary', collection: @scan_analytics, as: :scan_analytics
 

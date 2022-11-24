@@ -1,6 +1,3 @@
-$("#scan_data").on("ajax:before", function() {
-  $('.overlay-loader').show();
-});
 $("#scan_data").html("<%= escape_javascript(render partial: 'index') %>");
 $('.chzn-select').chosen();
-scanDataFetch();
+App.ScanAnalytics.init();

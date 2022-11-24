@@ -69,13 +69,7 @@ module ProjectFilters
     @project.update_column('uuid', uuid) if uuid
   end
 
-  # rubocop:disable Style/OpenStructUse
   def scan_analytics_data
-    return if @project.coverity_project_id.nil?
-
-    scan_record = @project.best_analysis.scan_analytics&.first if @project.best_analysis
-    @scan_data = JSON.parse(scan_record.data.to_json, object_class: OpenStruct) if scan_record
-    @cwes = @scan_data.cwe if @scan_data
+    @scan_analytics = @project.best_analysis&.scan_analytics&.analytics
   end
-  # rubocop:enable Style/OpenStructUse
 end

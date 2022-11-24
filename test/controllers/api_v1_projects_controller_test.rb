@@ -22,7 +22,7 @@ class Api::V1::ProjectsControllerTest < ActionController::TestCase
     it 'it should not create a project without editor account' do
       VCR.use_cassette('code_location_find_by_url') do
         url = 'git://github.com/rails/rails.git'
-        post :create, params: { project: { JWT: @jwt, repo_url: url, coverity_project_id: 1 } }, format: :json
+        post :create, params: { project: { JWT: @jwt, repo_url: url } }, format: :json
         WebMocker.github_api('https://api.github.com/repos/rails/rails', url)
         unmocked_create_enlistment_with_code_location(project, {}, url)
         expect(@response.content_type).must_equal 'application/json'
@@ -36,7 +36,7 @@ class Api::V1::ProjectsControllerTest < ActionController::TestCase
         stubs(:current_user).returns(@account)
         url = 'git://github.com/rails/rails.git'
         license = create(:license, vanity_url: 'rails')
-        post :create, params: { JWT: @jwt, repo_url: url, coverity_project_id: 1,
+        post :create, params: { JWT: @jwt, repo_url: url,
                                 license_name: license.name }, format: :json
         @controller.instance_eval { project_params }
         @controller.instance_eval { populate_project_from_forge('https://github.com/rails/rails', true) }
@@ -50,7 +50,7 @@ class Api::V1::ProjectsControllerTest < ActionController::TestCase
 
     it 'wont be successful when given a bad JWT' do
       jwt = 'eyJhbGciOiJIUzI1.eyJleHBpcmF0aW9uIjoxNjMzMDI1NTcyLCJYWxleCJ9.whiDvp2KfeblCcMRnyskt7nehEcYKP5kEejkugIa0ko'
-      post :create, params: { project: { JWT: jwt, url: @url, coverity_project_id: 1 } }, format: :json
+      post :create, params: { project: { JWT: jwt, url: @url } }, format: :json
       _(response).wont_be :successful?
     end
   end
@@ -60,7 +60,7 @@ class Api::V1::ProjectsControllerTest < ActionController::TestCase
       VCR.use_cassette('CreateProjectFromMatchURL') do
         create(:project, name: 'rails', description: 'Ruby on Rails', vanity_url: 'rails')
         url = 'git://github.com/rails/rails.git'
-        post :create, params: { JWT: @jwt, repo_url: url, coverity_project_id: 1 }, format: :json
+        post :create, params: { JWT: @jwt, repo_url: url }, format: :json
         expect(@response.content_type).must_equal 'application/json'
         _(response).wont_be :successful?
       end

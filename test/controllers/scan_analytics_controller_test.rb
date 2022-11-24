@@ -6,7 +6,7 @@ class ScanAnalyticsControllerTest < ActionController::TestCase
   before do
     Project.any_instance.stubs(:code_locations).returns([])
     Enlistment.any_instance.stubs(:code_location).returns(code_location_stub)
-    @project = create(:project, coverity_project_id: 1)
+    @project = create(:project)
     enlistment = create_enlistment_with_code_location
     code_set = create(:code_set, code_location_id: enlistment.code_location_id)
     code_location = CodeLocation.new(id: enlistment.code_location_id, url: 'url')
@@ -22,7 +22,7 @@ class ScanAnalyticsControllerTest < ActionController::TestCase
                                      'total_count' => 35, 'components_loc' => 'N/A',
                                      'defect_density' => { 'score' => 0.04, 'over_time' => [{ '2022-1-1' => 0 }] },
                                      'dismissed_count' => 0, 'outstanding_count' => 35 } }
-    @scan_analytics = create(:scan_analytic, analysis_id: @analysis.id, code_set_id: code_set.id, data: data)
+    @scan_analytics = create(:scan_analytic, analysis_id: @analysis.id, code_set_id: code_set.id, data: data.to_json)
   end
 
   it 'must return valid scan analytics data' do
