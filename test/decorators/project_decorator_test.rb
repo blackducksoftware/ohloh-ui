@@ -22,9 +22,7 @@ class ProjectDecoratorTest < ActiveSupport::TestCase
       [
         [:scm_data, 'SCM Data'],
         [:commits, 'Commits', "/p/#{linux.vanity_url}/commits/summary"],
-        [:contributors, 'Contributors', "/p/#{linux.vanity_url}/contributors/summary"],
-        [:scan_analytics, linux.best_analysis.scan_analytics.present? ? 'Scan Analytics' : nil,
-         "/p/#{linux.vanity_url}/scan_analytics"]
+        [:contributors, 'Contributors', "/p/#{linux.vanity_url}/contributors/summary"]
       ],
       [
         [:user_data, 'Community Data'],
