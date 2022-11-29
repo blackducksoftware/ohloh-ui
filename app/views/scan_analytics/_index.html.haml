@@ -54,7 +54,7 @@
           %dt= t('.fixed')
     .col-md-6#scan_analytic_table
       = render partial: 'scan_analytics/cwe', locals: { cwes: scan_data.cwe }
-  .row.project_row#chart_data{"data-project-id" => "#{@project.vanity_url}", 'data-code-set-id' => "#{params[:code_set_id] || @analytics.first.code_set_id}"}
+  .row.project_row#chart_data{"data-project-id" => "#{@project.vanity_url}", 'data-code-set-id' => "#{params[:code_set_id] || @scan_data.code_set_id}"}
     #chart1
     #chart2
     #chart3
