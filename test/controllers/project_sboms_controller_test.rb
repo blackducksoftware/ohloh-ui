@@ -14,7 +14,7 @@ class ProjectSbomsControllerTest < ActionController::TestCase
   describe 'index' do
     it 'should return project nil for invalid project id' do
       @controller = ProjectSbomsController.new
-      get :index, params: { project_id: 'dummmyyyyyyyyyy' }
+      get :index, params: { project_id: Faker::Number.number(digits: 3) }
       _(assigns(:project)).must_be_nil
     end
 
