@@ -22,8 +22,7 @@ class ProjectDecoratorTest < ActiveSupport::TestCase
       [
         [:scm_data, 'SCM Data'],
         [:commits, 'Commits', "/p/#{linux.vanity_url}/commits/summary"],
-        [:contributors, 'Contributors', "/p/#{linux.vanity_url}/contributors/summary"],
-        [:sbom, linux.sboms.exists? ? 'SBOM' : nil, "/p/#{linux.vanity_url}/project_sboms"]
+        [:contributors, 'Contributors', "/p/#{linux.vanity_url}/contributors/summary"]
       ],
       [
         [:user_data, 'Community Data'],
@@ -80,6 +79,11 @@ class ProjectDecoratorTest < ActiveSupport::TestCase
       _(sorted_links.keys).must_equal %w[Community Download]
       _(sorted_links['Community'].map(&:id).sort).must_equal [link1.id, link2.id].sort
       _(sorted_links['Download']).must_equal [link3]
+    end
+  end
+  describe 'append_sbom_menu' do
+    it 'append menu if sboms present' do
+      linux.decorate.append_sbom_menu(sidebar).include?([:sbom, 'SBOM', "/p/#{linux.vanity_url}/project_sboms"])
     end
   end
 end

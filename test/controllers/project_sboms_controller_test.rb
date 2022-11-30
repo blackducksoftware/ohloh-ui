@@ -23,4 +23,11 @@ class ProjectSbomsControllerTest < ActionController::TestCase
       assert_response :ok
     end
   end
+
+  describe 'download data file' do
+    it 'should give success with valid project id' do
+      get :download_json, params: { project_id: @project.vanity_url, agent: 'syft' }
+      assert_response :ok
+    end
+  end
 end

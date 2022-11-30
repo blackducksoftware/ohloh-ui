@@ -1,2 +1,5 @@
-$("#sbom-details").find(".modal-content").html("<%= escape_javascript(render partial: 'index', locals: {project_sbom: @project_sbom, agent: @agent}) %>");
+$("#sbom-details").find(".modal-content").html("<%= escape_javascript(render partial: 'index', locals: {agent: @agent}) %>");
 $('#sbom-details').modal('show');
+$('#download_file').on('click', function (e) {
+  setTimeout("$('#sbom-details').modal('hide');",1000);
+});

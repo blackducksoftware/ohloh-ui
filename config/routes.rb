@@ -316,7 +316,9 @@ Rails.application.routes.draw do
     resources :scan_analytics, only: :index do
       collection { get :charts }
     end
-    resources :project_sboms, only: :index
+    resources :project_sboms, only: :index do
+      collection { get :download_json }
+    end
   end
 
   get 'projects/:id/stacks', to: 'stacks#project_stacks', constraints: { format: /xml/ }
