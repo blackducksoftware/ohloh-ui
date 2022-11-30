@@ -8,7 +8,7 @@ class ProjectSbomsControllerTest < ActionController::TestCase
     @enlistments = create(:enlistment, project: @project, code_location_id: 1)
     @project_sboms = create(:project_sbom, agent: 'syft', project_id: @project.id,
                                            code_location_id: @enlistments.code_location_id,
-                                           sbom_data: '{\"SPDXID\":\"SPDXRef-DOCUMENT\"}')
+                                           sbom_data: { SPDXID: 'SPDXRef-DOCUMENT' }.to_json)
   end
 
   describe 'index' do
