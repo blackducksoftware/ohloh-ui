@@ -54,7 +54,6 @@ class Api::V1::EnlistmentsController < ApplicationController
   end
 
   def delete_all_subscriptions(code_location_id)
-    Enlistment.connection.execute("DELETE FROM fis.subscriptions WHERE code_location_id =
-                                  #{ActiveRecord::Base.sanitize_sql(code_location_id)};")
+    Enlistment.connection.execute("DELETE FROM fis.subscriptions WHERE code_location_id =#{code_location_id};")
   end
 end

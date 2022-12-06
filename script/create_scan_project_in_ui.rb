@@ -84,8 +84,7 @@ class CreateScanProjectInUi
   def code_location_ids(url)
     @code_location_ids = ApplicationRecord.connection
                                           .execute("select c.id from code_locations c inner join repositories r
-                           on r.id = c.repository_id where r.url like '%#{ActiveRecord::Base.sanitize_sql(url)}%'")
-                                          .values.flatten
+                           on r.id = c.repository_id where r.url like '%#{url}%'").values.flatten
   end
 
   def project_params(row)

@@ -153,7 +153,7 @@ class KnowledgeBaseStatus < ApplicationRecord
     return unless code_location_id
 
     ApplicationRecord.connection
-                     .execute("select repository_id from code_locations where id= #{sanitize_sql(code_location_id)}")
+                     .execute("select repository_id from code_locations where id= #{code_location_id}")
                      .values[0].try(:first).to_i
   end
 

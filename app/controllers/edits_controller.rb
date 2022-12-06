@@ -84,9 +84,7 @@ class EditsController < SettingsController
     target_where = '(edits.target_id = ? AND edits.target_type = ?)'
     extra_where = add_where_extra_clause
     if extra_where
-      edits.where(ActiveRecord::Base.send(:sanitize_sql_array, ["#{target_where}#{extra_where}",
-                                                                @parent.id, @parent.class.name.tableize,
-                                                                @parent.id]))
+      edits.where(["#{target_where}#{extra_where}", @parent.id, @parent.class.name.tableize, @parent.id])
     else
       edits.where([target_where, @parent.id, @parent.class.name])
     end

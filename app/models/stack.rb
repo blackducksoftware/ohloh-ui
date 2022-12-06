@@ -36,10 +36,8 @@ class Stack < ApplicationRecord
   end
 
   def suggest_projects(limit = 8)
-    sql = self.class.send(:sanitize_sql_array, [proj_suggest_select, proj_suggest_join_stack_entries,
-                                                proj_suggest_join_stack_ignores,
-                                                proj_suggest_wheres,
-                                                proj_suggest_suffix(limit)].join(' '))
+    sql = [proj_suggest_select, proj_suggest_join_stack_entries, proj_suggest_join_stack_ignores,
+           proj_suggest_wheres, proj_suggest_suffix(limit)].join(' ')
     pad_project_suggestions(Project.find_by_sql(sql), limit)
   end
 

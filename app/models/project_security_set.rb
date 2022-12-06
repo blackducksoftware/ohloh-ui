@@ -18,7 +18,7 @@ class ProjectSecuritySet < ApplicationRecord
   end
 
   def matching_releases(version_number)
-    releases.where("version ~ '^#{ActiveRecord::Base.sanitize_sql(version_number)}\\.'")
+    releases.where("version ~ '^#{version_number}\\.'")
   end
 
   def oldest_vulnerability

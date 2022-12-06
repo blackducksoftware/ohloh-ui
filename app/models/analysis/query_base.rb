@@ -71,9 +71,7 @@ class Analysis::QueryBase
   end
 
   def truncate_date(value)
-    Arel::Nodes::NamedFunction.new('date_trunc', [Arel.sql("'month'"),
-                                                  Arel.sql("TIMESTAMP
-                                                  '#{ActiveRecord::Base.sanitize_sql(value)}'")])
+    Arel::Nodes::NamedFunction.new('date_trunc', [Arel.sql("'month'"), Arel.sql("TIMESTAMP '#{value}'")])
   end
 
   def differential_sum(column_names)
@@ -95,7 +93,7 @@ class Analysis::QueryBase
       FROM  commits C INNER JOIN code_sets CS ON C.code_set_id = CS.id
       INNER JOIN sloc_sets SS ON SS.code_set_id = CS.id INNER JOIN analysis_sloc_sets ASS ON ASS.sloc_set_id = SS.id
       INNER JOIN analysis_aliases K on K.commit_name_id = C.name_id
-      WHERE ASS.analysis_id = #{@analysis.id} AND K.analysis_id = #{@analysis.id} AND C.position <= ASS.as_of AND K.preferred_name_id = #{ActiveRecord::Base.sanitize_sql(@name_id)}
+      WHERE ASS.analysis_id = #{@analysis.id} AND K.analysis_id = #{@analysis.id} AND C.position <= ASS.as_of AND K.preferred_name_id = #{@name_id}
       group by month
     SQL
     JSON.parse(ApplicationRecord.connection.execute(sql).try(:to_json))
