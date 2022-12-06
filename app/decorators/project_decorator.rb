@@ -26,7 +26,7 @@ class ProjectDecorator < Cherry::Decorator
   end
 
   # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
-  def sidebar
+  def sidebar(account)
     [
       [
         [:project_summary,  I18n.t(:project_summary),    h.project_path(project)],
@@ -53,12 +53,14 @@ class ProjectDecorator < Cherry::Decorator
         [:map,              I18n.t(:user_contributors),  h.map_project_path(project)]
       ]
     ].tap do |menus|
-      append_sbom_menu(menus) if project.sboms.exists?
+      append_sbom_menu(menus, account)
     end
   end
   # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
 
-  def append_sbom_menu(menus)
+  def append_sbom_menu(menus, account)
+    return unless account.access.admin? && project.sboms.exists?
+
     menus.third << [:sbom, I18n.t(:sbom), h.project_project_sboms_path(project)]
   end
 end
