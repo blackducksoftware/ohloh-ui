@@ -21,7 +21,8 @@ end
 
 def write_most_active_cache
   Rails.logger.info('caching most active projects')
-  ids = Project.most_active.includes(:logo, best_analysis: %i[main_language thirty_day_summary]).pluck(:id)
+  ids = Project.most_active.where('analyses.updated_on >= ?', 6.months.ago)
+               .includes(:logo, best_analysis: %i[main_language thirty_day_summary]).pluck(:id)
   Rails.cache.write('HomeDecorator-most_active_projects-cache', ids)
 end
 
