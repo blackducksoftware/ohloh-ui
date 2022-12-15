@@ -64,6 +64,8 @@ class PageContextHelperTest < ActionView::TestCase
   end
 
   it 'should return project page context' do
+    @account = create(:admin)
+    stubs(:current_user).returns(@account)
     @project = linux
     project_context
     page_context.delete(:footer_menu_list)

@@ -1,0 +1,12 @@
+.modal-header
+  %button.close{ data: { dismiss: 'modal' }, aria: { label: 'Close' } }
+    &times;
+  %h3.modal-title= I18n.t(:sbom_details)
+= form_tag(download_json_project_project_sboms_path(@project), method: :get) do
+  .modal-body#sbom-details
+    - agent.each do |value|
+      %label.radio-inline
+        %input{checked:(value==agent.first), name: "agent", type: "radio", value: value}
+        = value.capitalize
+  .modal-footer.text-right.pmd-modal-border
+    = submit_tag 'Download', class: 'btn btn-small btn-primary pull-right', id: 'download_file'
