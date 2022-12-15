@@ -22,6 +22,6 @@
                     data: { toggle: 'modal', target: '#sbom-details.modal', keyboard: true }
             - else
               %a{ href: link_url }= link_name
-.modal.fade#sbom-details{ role: 'dialog', tabindex: -1 }
-  .modal-dialog{ role: 'document' }
+#avatar-dialog.modal.pmd-modal.fade#sbom-details{"aria-hidden" => "true", :style => "display: none;", :tabindex => "-1"}
+  .modal-dialog.modal-md
     .modal-content

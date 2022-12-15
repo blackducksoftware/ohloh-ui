@@ -4,6 +4,13 @@ require 'test_helper'
 
 class ProjectDecoratorTest < ActiveSupport::TestCase
   let(:linux) { create(:project) }
+  before do
+    @admin = create(:admin)
+    @enlistments = create(:enlistment, project: linux, code_location_id: 1)
+    @project_sboms = create(:project_sbom, agent: 'syft', project_id: linux.id,
+                                           code_location_id: @enlistments.code_location_id,
+                                           sbom_data: { SPDXID: 'SPDXRef-DOCUMENT' }.to_json)
+  end
   let(:sidebar) do
     [
       [
@@ -22,8 +29,7 @@ class ProjectDecoratorTest < ActiveSupport::TestCase
       [
         [:scm_data, 'SCM Data'],
         [:commits, 'Commits', "/p/#{linux.vanity_url}/commits/summary"],
-        [:contributors, 'Contributors', "/p/#{linux.vanity_url}/contributors/summary"],
-        [:sbom, linux.sboms.exists? ? 'SBOM' : nil, "/p/#{linux.vanity_url}/project_sboms"]
+        [:contributors, 'Contributors', "/p/#{linux.vanity_url}/contributors/summary"]
       ],
       [
         [:user_data, 'Community Data'],
@@ -31,16 +37,18 @@ class ProjectDecoratorTest < ActiveSupport::TestCase
         [:reviews, 'Ratings & Reviews', "/p/#{linux.vanity_url}/reviews/summary"],
         [:map, 'User & Contributor Locations', "/p/#{linux.vanity_url}/map"]
       ]
-    ]
+    ].tap do |menus|
+      linux.decorate.append_sbom_menu(menus, @admin)
+    end
   end
 
   describe 'sidebar' do
     it 'should contain 4 sections' do
-      _(linux.decorate.sidebar.length).must_equal 4
+      _(linux.decorate.sidebar(@admin).length).must_equal 4
     end
 
     it 'should return projects menu list' do
-      _(linux.decorate.sidebar).must_equal sidebar
+      _(linux.decorate.sidebar(@admin)).must_equal sidebar
     end
   end
 
@@ -80,6 +88,12 @@ class ProjectDecoratorTest < ActiveSupport::TestCase
       _(sorted_links.keys).must_equal %w[Community Download]
       _(sorted_links['Community'].map(&:id).sort).must_equal [link1.id, link2.id].sort
       _(sorted_links['Download']).must_equal [link3]
+    end
+  end
+  describe 'append_sbom_menu' do
+    it 'append menu if sboms present' do
+      linux.decorate.append_sbom_menu(sidebar, @admin).include?([:sbom, 'SBOM',
+                                                                 "/p/#{linux.vanity_url}/project_sboms"])
     end
   end
 end
