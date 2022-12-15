@@ -138,7 +138,7 @@ class TopicsControllerTest < ActionController::TestCase
   it 'user create a topic and an accompanying post' do
     login_as(user)
     assert_difference(['Topic.count', 'Post.count']) do
-      post :create, params: { forum_id: forum.id, topic: topic_params }
+      post :create, params: { forum_id: forum.id, topic: topic_params, account_id: user.id }
     end
     assert_redirected_to forum_path(forum.id)
   end
@@ -147,7 +147,7 @@ class TopicsControllerTest < ActionController::TestCase
     login_as(user)
 
     assert_no_difference(['Topic.count', 'Post.count']) do
-      post :create, params: { forum_id: forum.id, topic: topic_params.merge(title: '') }
+      post :create, params: { forum_id: forum.id, topic: topic_params.merge(title: ''), account_id: user.id }
     end
 
     _(assigns(:topic).errors.messages[:title]).must_be :present?
@@ -158,7 +158,7 @@ class TopicsControllerTest < ActionController::TestCase
     login_as(user)
 
     assert_no_difference(['Topic.count', 'Post.count']) do
-      post :create, params: { forum_id: forum.id, topic: topic_params.deep_merge(
+      post :create, params: { forum_id: forum.id, account_id: user.id, topic: topic_params.deep_merge(
         posts_attributes: { '0' => { body: '', account_id: user.id } }
       ) }
     end
@@ -197,7 +197,7 @@ class TopicsControllerTest < ActionController::TestCase
     login_as(user)
     TopicsController.any_instance.expects(:verify_recaptcha).returns(true)
     assert_difference(['Topic.count', 'Post.count']) do
-      post :create, params: { forum_id: forum.id, topic: topic_params }
+      post :create, params: { forum_id: forum.id, topic: topic_params, account_id: user.id }
     end
     assert_redirected_to forum_path(forum.id)
   end
@@ -206,7 +206,7 @@ class TopicsControllerTest < ActionController::TestCase
     login_as(user)
     TopicsController.any_instance.expects(:verify_recaptcha).returns(false)
     assert_no_difference(['Topic.count', 'Post.count']) do
-      post :create, params: { forum_id: forum.id, topic: topic_params }
+      post :create, params: { forum_id: forum.id, topic: topic_params, account_id: user.id }
     end
   end
 
@@ -267,7 +267,7 @@ class TopicsControllerTest < ActionController::TestCase
   it 'admin create a topic and accompanying post' do
     login_as(admin)
     assert_difference(['Topic.count', 'Post.count']) do
-      post :create, params: { forum_id: forum.id, topic: topic_params }
+      post :create, params: { forum_id: forum.id, topic: topic_params, account_id: user.id }
     end
     assert_redirected_to forum_path(forum.id)
   end
@@ -285,7 +285,7 @@ class TopicsControllerTest < ActionController::TestCase
     TopicsController.any_instance.stubs(:verify_recaptcha).returns(false)
 
     assert_difference(['Topic.count', 'Post.count']) do
-      post :create, params: { forum_id: forum.id, topic: topic_params }
+      post :create, params: { forum_id: forum.id, topic: topic_params, account_id: user.id }
     end
     assert_redirected_to forum_path(forum.id)
   end
