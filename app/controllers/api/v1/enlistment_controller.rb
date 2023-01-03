@@ -23,6 +23,8 @@ class Api::V1::EnlistmentsController < ApplicationController
 
   def enlist
     @code_location.create_enlistment_for_project(current_user, @project)
+    CodeLocationSubscription.create(code_location_id: @code_location.id,
+                                    client_relation_id: @project.id)
     render json: @code_location
   end
 
@@ -33,8 +35,8 @@ class Api::V1::EnlistmentsController < ApplicationController
     branch = params[:branch]
     join_string = 'join code_locations on code_location_id = code_locations.id join repositories'\
                   ' on code_locations.repository_id = repositories.id'
-    @enlistments = Enlistment.joins(:project).joins(join_string).where('code_locations.module_branch_name' => branch,
-                                                                       'repositories.url' => url)
+    @enlistments = Enlistment.not_deleted.joins(:project).joins(join_string)
+                             .where('code_locations.module_branch_name' => branch, 'repositories.url' => url)
   end
 
   def build_code_location
