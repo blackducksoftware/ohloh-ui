@@ -49,9 +49,11 @@ class Api::V1::EnlistmentsControllerTest < ActionController::TestCase
 
   describe 'enlist' do
     it 'should create the enlistment' do
-      post :enlist, params: { JWT: @jwt, url: @url, branch: 'master', project: @project_id }, format: :json
-      _(response).must_be :successful?
-      @enlistment = Enlistment.where(project_id: @project_id, url: @url, branch: 'master')
+      VCR.use_cassette('create_code_location_subscription') do
+        post :enlist, params: { JWT: @jwt, url: @url, branch: 'master', project: @project_id }, format: :json
+        _(response).must_be :successful?
+        @enlistment = Enlistment.where(project_id: @project_id, url: @url, branch: 'master')
+      end
     end
 
     it 'must return errors when project is not valid' do
