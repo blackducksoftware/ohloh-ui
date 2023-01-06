@@ -7,6 +7,9 @@
   %h2.pull-left
     = link_to t('settings'), settings_project_path(@project)
     = t('.code_locations')
+    - if current_user_is_admin?
+      = link_to code_location_ids_admin_url(@enlistments.pluck(:code_location_id)), target: '_blank', title: 'fetch code location data per page', rel: 'tooltip' do
+        %span.glyphicon.glyphicon-link
   = project_analysis_timestamp(@project)
 .clearfix
 
@@ -67,9 +70,7 @@
                   %label= 'Sort by'
                   = select_tag :sort, options_for_select(SORT_OPTIONS['enlistments'][:options],
                     params[:sort] || SORT_OPTIONS['enlistments'][:default]),
-                    class: 'chzn-select', onchange: 'this.form.submit()', style: 'width: 100px;'
-              .form-group.pull-right.padding_right_10
-                = link_to 'fetch_code_locations', code_location_ids_admin_url(@enlistments.pluck(:id)), target: '_blank'
+                    class: 'chzn-select', onchange: 'this.form.submit()', style: 'width: 150px;'
 
       %tr
         %th= t('.repository_url')
