@@ -7,7 +7,7 @@ class CodeLocationJobProgress
              Job::STATUS_RUNNING => :running, Job::STATUS_FAILED => :failed,
              Job::STATUS_COMPLETED => :completed, Job::STATUS_RESTART => :waiting }.freeze
 
-  delegate :best_code_set, to: :@code_location
+  delegate :best_code_set, :cl_update_event_time, to: :@code_location
 
   def initialize(enlistment)
     @code_location = enlistment.code_location
@@ -16,10 +16,16 @@ class CodeLocationJobProgress
   end
 
   def message
+    return "Fetched at #{cl_update_event_time}" if code_location_is_updated?
+
     @job ? progress : no_job
   end
 
   private
+
+  def code_location_is_updated?
+    cl_update_event_time.to_i > @project.best_analysis.try(:updated_on).to_i
+  end
 
   def progress
     "#{@job.progress_message} (#{send(STATUS[@job.status])})"

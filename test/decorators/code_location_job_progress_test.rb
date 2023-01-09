@@ -18,12 +18,20 @@ class CodeLocationJobProgressTest < ActiveSupport::TestCase
     end
 
     it 'should return waiting message when its queued' do
+      # Code location has same updated time as best_analysis. Hence we should see job progress.
+      code_location.cl_update_event_time = 1.day.ago
+      enlistment.project.best_analysis.update! updated_on: code_location.cl_update_event_time
       @job.update_columns(status: 2)
+
       _(repo_progress.message).must_equal 'Step 1 of 3: Downloading source code history (Waiting in queue)'
     end
 
     it 'should return running message' do
+      # Code location is stale. Hence we should see job progress.
+      code_location.cl_update_event_time = 2.days.ago
+      enlistment.project.best_analysis.update! updated_on: 1.day.ago
       @job.update_columns(status: 1)
+
       _(repo_progress.message).must_equal 'Step 1 of 3: Downloading source code history (Running)'
     end
 
@@ -45,6 +53,14 @@ class CodeLocationJobProgressTest < ActiveSupport::TestCase
     it 'should return no job' do
       @job.update_columns(status: 5)
       _(repo_progress.message).must_equal 'No job is scheduled.'
+    end
+
+    it 'must return code_location fetched time if it has been updated since the last analysis' do
+      code_location_updated_time = 5.hours.ago
+      code_location.cl_update_event_time = code_location_updated_time
+      enlistment.project.best_analysis.update! updated_on: 1.day.ago
+
+      _(repo_progress.message).must_equal "Fetched at #{code_location_updated_time}"
     end
 
     it 'should return blocked job message' do
