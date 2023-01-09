@@ -27,7 +27,7 @@ module EnlistmentsHelper
     "#{ApiAccess.fis_public_url}/admin/code_locations/#{id}/jobs"
   end
 
-  def code_location_ids_admin_url(id)
-    "#{ApiAccess.fis_public_url}/admin/code_locations?ids=#{id.join(',')}"
+  def code_location_ids_admin_url(ids)
+    "#{ApiAccess.fis_public_url}/admin/code_locations?ids=#{ids.join(',')}"
   end
 end
