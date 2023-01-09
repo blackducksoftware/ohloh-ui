@@ -60,7 +60,7 @@ class CodeLocationJobProgressTest < ActiveSupport::TestCase
       code_location.cl_update_event_time = code_location_updated_time
       enlistment.project.best_analysis.update! updated_on: 1.day.ago
 
-      _(repo_progress.message).must_equal "Fetched at #{code_location_updated_time}"
+      _(repo_progress.message).must_equal 'Open Hub update completed about 5 hours ago.'
     end
 
     it 'should return blocked job message' do
