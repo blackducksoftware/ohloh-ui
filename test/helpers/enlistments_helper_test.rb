@@ -7,9 +7,9 @@ class EnlistmentsHelperTest < ActionView::TestCase
 
   describe 'must return endpoint of fisbot admin code locations' do
     it 'must return endpoint of fisbot admin code locations' do
-      id = [123,2345]
-      link = "#{ApiAccess.fis_public_url}/admin/code_locations?ids=#{id.join(',')}"
-      assert_equal link, code_location_ids_admin_url(id)
+      ids = [123, 2345]
+      link = "#{ApiAccess.fis_public_url}/admin/code_locations?ids=#{ids.join(',')}"
+      assert_equal link, code_location_ids_admin_url(ids)
     end
   end
 end
