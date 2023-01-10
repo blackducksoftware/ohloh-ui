@@ -23,7 +23,7 @@
           = render partial: 'accounts/show/header/kudo_button', locals: { css: 'btn-minier btn-info link_space' }
       - if @account.url.present?
         .pull-left.col-md-12.clearfix
-          = link_to @account.url, target: '_blank', title: @account.url, itemprop: 'url', rel: 'nofollow' do
+          = link_to @account.url, target: '_blank', title: @account.url, itemprop: 'url', rel: 'nofollow noopener noreferrer' do
             %i.icon-external-link
               = truncate(@account.url, length: 60)
       .clearfix
