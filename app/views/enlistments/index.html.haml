@@ -7,6 +7,9 @@
   %h2.pull-left
     = link_to t('settings'), settings_project_path(@project)
     = t('.code_locations')
+    - if current_user_is_admin?
+      = link_to code_location_ids_admin_url(@enlistments.pluck(:code_location_id)), target: '_blank', title: 'Code locations admin for current page', rel: 'tooltip' do
+        %span.glyphicon.glyphicon-link
   = project_analysis_timestamp(@project)
 .clearfix
 
