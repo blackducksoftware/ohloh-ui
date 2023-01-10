@@ -7,7 +7,7 @@ class CodeLocationJobProgress
              Job::STATUS_RUNNING => :running, Job::STATUS_FAILED => :failed,
              Job::STATUS_COMPLETED => :completed, Job::STATUS_RESTART => :waiting }.freeze
 
-  delegate :best_code_set, to: :@code_location
+  delegate :best_code_set, :cl_update_event_time, to: :@code_location
 
   def initialize(enlistment)
     @code_location = enlistment.code_location
@@ -16,10 +16,16 @@ class CodeLocationJobProgress
   end
 
   def message
+    return code_location_updated_message(cl_update_event_time) if code_location_is_updated?
+
     @job ? progress : no_job
   end
 
   private
+
+  def code_location_is_updated?
+    cl_update_event_time.to_i > @project.best_analysis.try(:updated_on).to_i
+  end
 
   def progress
     "#{@job.progress_message} (#{send(STATUS[@job.status])})"
@@ -51,7 +57,7 @@ class CodeLocationJobProgress
 
   def no_job
     if sloc_set_code_set_time
-      I18n.t 'repositories.job_progress.update_completed', at: time_ago_in_words(sloc_set_code_set_time)
+      code_location_updated_message(sloc_set_code_set_time)
     else
       code_location_id = @project.enlistments.pluck(:code_location_id)
       incomplete_job = FisJob.where(code_location_id: code_location_id).incomplete_fis_jobs.first
@@ -59,6 +65,10 @@ class CodeLocationJobProgress
 
       I18n.t('repositories.job_progress.blocked_by', status: STATUS[incomplete_job.status])
     end
+  end
+
+  def code_location_updated_message(time)
+    I18n.t 'repositories.job_progress.update_completed', at: time_ago_in_words(time)
   end
 
   def sloc_set_code_set_time

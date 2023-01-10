@@ -6,7 +6,8 @@ class CodeLocation < FisbotApi
   SCM_NAME_DICT = { git: :Git, hg: :Mercurial, cvs: :CVS, bzr: :Bazaar, git_svn: :Subversion,
                     svn: :Subversion, svn_sync: 'Subversion (via SvnSync)' }.freeze
 
-  TRAITS = %w[url scm_type username password branch forge_match best_code_set_id do_not_fetch].freeze
+  TRAITS = %w[url scm_type username password branch forge_match
+              best_code_set_id do_not_fetch cl_update_event_time].freeze
   attr_accessor(*TRAITS)
   attr_reader :to_key # to_key is used by form_for.
 
