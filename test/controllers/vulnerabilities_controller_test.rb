@@ -27,6 +27,14 @@ class VulnerabilitiesControllerTest < ActionController::TestCase
       get :recent_version_chart, params: { id: project.id }, xhr: true
       assert_response :success
       _(assigns(:releases)).must_equal(project.best_project_security_set.most_recent_releases)
+      _(response.body).wont_match 'BDSA'
+    end
+
+    it 'should return BDSA data for admin' do
+      login_as create(:admin)
+      get :recent_version_chart, params: { id: project.id }, xhr: true
+      assert_response :success
+      _(response.body).must_match 'BDSA'
     end
   end
 
@@ -47,7 +55,7 @@ class VulnerabilitiesControllerTest < ActionController::TestCase
       release = create(:release)
       create_list(:releases_vulnerability, 10, release: release)
       get :index, params: { id: release.project_security_set.project.to_param }
-      _(assigns(:vulnerabilities).count).must_equal 10
+      _(assigns(:vulnerabilities).length).must_equal 10
     end
   end
 
@@ -130,14 +138,14 @@ class VulnerabilitiesControllerTest < ActionController::TestCase
       it 'should return the vulnerabilities of the chosen severity' do
         get :filter, params: { id: security_set.project.to_param,
                                filter: { version: r1_3.id, severity: 'medium' } }, xhr: true
-        _(assigns(:vulnerabilities).count).must_equal 1
+        _(assigns(:vulnerabilities).length).must_equal 1
         _(assigns(:vulnerabilities).to_a).must_equal r1_3.vulnerabilities.medium.order_by
       end
 
       it 'should return the vulnerabilities of all severity types when severity param is blank' do
         get :filter, params: { id: security_set.project.to_param,
                                filter: { version: r1_3.id, severity: '' } }, xhr: true
-        _(assigns(:vulnerabilities).count).must_equal 3
+        _(assigns(:vulnerabilities).length).must_equal 3
         _(assigns(:vulnerabilities).to_a).must_equal r1_3.vulnerabilities.order_by
       end
     end

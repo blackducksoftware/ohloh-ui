@@ -22,14 +22,14 @@
     &nbsp;
   .col-md-10
     - if @best_security_set && @releases.present?
-      - chart_data = Vulnerability::AllVersionChart.new(@release_history).data
+      - chart_data = Vulnerability::AllVersionChart.new(@release_history, @bdsa_visible).data
       .row
         %h4.pull-left= t('.major_versions')
         .pull-left
           - select_opts = options_for_select(major_releases(@releases, @project), filter_major_version_param)
           - html_release_opts = { include_blank: 'All',
                           style: 'max-width: 30%; margin-left: 10px',
-                          data: { releases: @release_history.to_json }, class: 'vulnerability_main_filter' }
+                          data: { releases: @release_history.to_json, bdsa_visible: @bdsa_visible }, class: 'vulnerability_main_filter' }
           = select_tag 'vulnerability_filter_major_version', select_opts, html_release_opts
         .pull-right.btn-toolbar{ 'aria-label' => '...', :role => 'group', style: 'margin-top: 17px' }
           = release_timespan_widget
