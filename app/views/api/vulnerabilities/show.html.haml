@@ -1,0 +1,78 @@
+%header.row
+  .bd-logo.col-lg-2.col-xs-2
+    %img{ itemprop: 'image', src: image_path('logo/BD_logo.png'), alt: 'Black Duck' }
+  .header-info.col-lg-10.col-xs-10
+    .header-title
+      %small Black Duck Security Advisory
+      %span BDSA
+      %h4= @response['title'] 
+    .header-details
+      %span.right-border.date= params[:id]
+      %span.right-border= bdsa_cve_id(@response)
+      %span.bold Published:
+      %span.right-border.date= humanize_datetime(@response['publishedDate'])
+      %span.bold Last Modified:
+      %span.date= humanize_datetime(@response['lastModifiedDate'])
+
+.row.details
+  .col-lg-6.col-xs-12
+    .row.vuln-summary
+      .col-lg-3.col-xs-6.summary-info
+        .row.overflow-hidden
+          .col-lg-9.col-xs-10
+            - if @response['vendorFixDate']
+              %span= bdsa_cvss_severity(@response['cvss3'])
+              %br
+              %span BDSA
+            - else
+              %span No Fix Available
+          .col-lg-3.col-xs-2
+            %i.fa.fa-3x.fa-light.fa-thermometer-full
+      .col-lg-3.col-xs-6.summary-info
+        .row.overflow-hidden
+          .col-lg-9.col-xs-10
+            - if @response['vendorFixDate']
+              %span Fix Available
+              %br
+              %span= humanize_datetime(@response['vendorFixDate'])
+            - else
+              %span No Fix Available
+          .col-lg-3.col-xs-2
+            %i.fa.fa-3x.fa-light.fa-gift
+      .col-lg-3.col-xs-6.summary-info
+        .row.overflow-hidden
+          .col-lg-9.col-xs-10
+            - if @response['exploitAvailableDate']
+              %span Exploit Available
+              %br
+              %span= humanize_datetime(@response['exploitAvailableDate'])
+            - else
+              %span No Exploit
+          .col-lg-3.col-xs-2
+            %i.fa.fa-3x.fa-light.fa-exclamation-circle
+      .col-lg-3.col-xs-6.summary-info
+        .row.overflow-hidden
+          .col-lg-9.col-xs-10
+            - if @response['disclosureDate']
+              %span= bdsa_vulnerability_age(@response['disclosureDate'])
+              %br
+              %span Vulnerability Age
+            - else
+              %span No Exploit
+          .col-lg-3.col-xs-2
+            %i.fa.fa-3x.fa-light.fa-calendar
+    %p= find_and_preserve(markdown_format(@response['description']))
+    %span.bold.date Severity: 
+    %span.bordered{class: "#{@response['cvss3']['severity'].downcase}"}= @response['cvss3']['severity'].titleize
+    -if @cwe
+      %br
+      %br
+      %span.bold.date Common Weakness Enumeration (CWE) 
+      %p= @cwe[0]
+      %p= find_and_preserve(markdown_format(@cwe[1]))
+  .col-lg-3.col-xs-12.text-center 
+    #cvss2{ 'data-cvss' => "#{bdsa_cvss(@response['cvss2'])}", 'data-severity' => "#{@response['cvss2']['severity']}" }
+    = render partial: 'severity', locals: { cvss: @response['cvss2'] }
+  .col-lg-3.col-xs-12.text-center 
+    #cvss3{ 'data-cvss' => "#{bdsa_cvss(@response['cvss3'])}", 'data-severity' => "#{@response['cvss3']['severity']}" }
+    = render partial: 'severity', locals: { cvss: @response['cvss3'] }
