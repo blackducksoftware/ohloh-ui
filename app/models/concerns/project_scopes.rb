@@ -49,5 +49,11 @@ module ProjectScopes
     }
     scope :with_analysis, -> { active.where.not(best_analysis_id: nil) }
     scope :active_enlistments, -> { active.joins(:enlistments) }
+    scope :with_important_code_locations, lambda {
+      active.joins(enlistments: :fis_code_location).where('code_locations.is_important is true')
+    }
+    scope :with_dnf_code_locations, lambda {
+      active.joins(enlistments: :fis_code_location).where('code_locations.do_not_fetch is true')
+    }
   end
 end

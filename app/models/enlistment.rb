@@ -7,6 +7,7 @@ class Enlistment < ApplicationRecord
   has_many :project_badges
   has_many :travis_badges
   has_many :cii_badges
+  belongs_to :fis_code_location, foreign_key: 'code_location_id', optional: true
   belongs_to :project, optional: true
 
   before_save :save_code_location, if: -> { @nested_code_location }

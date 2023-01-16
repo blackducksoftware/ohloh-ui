@@ -2018,7 +2018,8 @@ CREATE TABLE fis.code_locations (
     best_repository_directory_id integer,
     do_not_fetch boolean DEFAULT false,
     last_job_id integer,
-    cl_update_event_time timestamp without time zone
+    cl_update_event_time timestamp without time zone,
+    is_important boolean DEFAULT false
 );
 
 

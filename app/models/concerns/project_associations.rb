@@ -11,6 +11,7 @@ module ProjectAssociations
     has_many :taggings, as: :taggable
     has_many :tags, through: :taggings
     has_many :enlistments, -> { where(deleted: false) }
+    has_many :fis_code_locations, through: :enlistments
     has_many :project_badges, through: :enlistments
     has_many :travis_badges, through: :enlistments
     has_many :cii_badges, through: :enlistments
