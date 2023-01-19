@@ -59,7 +59,7 @@ class ProjectDecorator < Cherry::Decorator
   # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
 
   def append_sbom_menu(menus, account)
-    return unless account.access.admin? && project.sboms.exists?
+    return unless (Rails.env.staging? || account.access.admin?) && project.sboms.exists?
 
     menus.third << [:sbom, I18n.t(:sbom), h.project_project_sboms_path(project)]
   end
