@@ -87,11 +87,11 @@ class OhAdmin::ProjectChart
 
   def no_analysis_project
     if @filter == 'monthly'
-      Project.left_joins(:best_analysis).group("DATE_TRUNC('month', projects.created_at)")
+      Project.active.left_joins(:best_analysis).group("DATE_TRUNC('month', projects.created_at)")
              .where('projects.created_at >= ? AND projects.created_at <= ? AND projects.best_analysis_id is NULL',
                     @from.beginning_of_month, @to.end_of_month).references(:best_analysis).count
     else
-      Project.left_joins(:best_analysis).group('date(projects.created_at)')
+      Project.active.left_joins(:best_analysis).group('date(projects.created_at)')
              .where('projects.created_at >= ? AND projects.created_at <= ? AND projects.best_analysis_id is NULL',
                     @from, @to).references(:best_analysis).count
     end

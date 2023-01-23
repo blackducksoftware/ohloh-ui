@@ -64,14 +64,14 @@ var Charts = {
             return '<a href="/admin/accounts?commit=Filter&q[created_at_gteq_datetime]=' + first_day + '&q[created_at_lteq_datetime]=' + last_day + '" target="_blank">' +
                     this.value + '</a>';
           else 
-            return '<a href="/admin/projects?active=true&&commit=Filter&q[created_at_gteq_datetime]=' + first_day + '&q[created_at_lteq_datetime]=' + last_day + '" target="_blank">' +
+            return '<a href="/admin/projects?active=true&commit=Filter&q[created_at_gteq_datetime]=' + first_day + '&q[created_at_lteq_datetime]=' + last_day + '" target="_blank">' +
                     this.value + '</a>';
         else
           if (data.series[0].name == "SPAM")
             return '<a href="/admin/accounts?commit=Filter&q[created_at_gteq_datetime]=' + this.value + '&q[created_at_lteq_datetime]=' + this.value + '" target="_blank">' +
                     this.value + '</a>';
           else
-            return '<a href="/admin/projects?active=true&&commit=Filter&q[created_at_gteq_datetime]=' + this.value + '&q[created_at_lteq_datetime]=' + this.value + '" target="_blank">' +
+            return '<a href="/admin/projects?active=true&commit=Filter&q[created_at_gteq_datetime]=' + this.value + '&q[created_at_lteq_datetime]=' + this.value + '" target="_blank">' +
                     this.value + '</a>';
           end
       }});
