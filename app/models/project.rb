@@ -33,6 +33,12 @@ class Project < ApplicationRecord
   after_update :recalc_tags_weight!, if: ->(project) { project.saved_change_to_deleted? }
   after_save :update_organzation_project_count
 
+  ransacker :has_important_code_locations_eq, formatter: proc {
+    Project.joins(enlistments: :fis_code_location).where('code_locations.is_important is true').pluck(:id).presence
+  } do |parent|
+    parent.table[:id]
+  end
+
   attr_accessor :managed_by_creator
 
   def to_param
