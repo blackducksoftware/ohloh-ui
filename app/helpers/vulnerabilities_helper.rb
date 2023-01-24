@@ -55,7 +55,7 @@ module VulnerabilitiesHelper
   end
 
   def sort_releases_by_version_number(releases)
-    return nil if releases.nil?
+    return if releases.blank?
 
     vanity_url = releases.first.project_security_set.project.vanity_url
     if vanity_url == 'android'
