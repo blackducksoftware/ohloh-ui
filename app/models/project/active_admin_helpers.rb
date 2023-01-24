@@ -13,7 +13,7 @@ module Project::ActiveAdminHelpers
       joins(:best_analysis).where('analyses.created_at <= ?', next_day_date_string)
     }
 
-    scope :has_active_enlistments, -> { active_enlistments }
+    scope :has_active_enlistments, -> { active_enlistments.distinct }
 
     scope :is_important, -> { with_important_code_locations }
 
