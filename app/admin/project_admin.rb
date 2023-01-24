@@ -5,14 +5,20 @@ ActiveAdmin.register Project do
 
   filter :name
   filter :last_analyzed, as: :date_range, label: 'Last Analyzed Range'
-  filter :has_active_enlistments, as: :radio, label: 'Show only Active Enlisted'
+  filter :has_active_enlistments, as: :boolean, label: 'Show only Active Enlisted'
   filter :created_at
+  filter :is_important, as: :boolean, label: 'Show only Important Project'
 
   controller do
     defaults finder: :find_by_vanity_url!
 
+    before_action only: :index do
+      params[:q] = { has_active_enlistments: true, is_important: false } if params[:commit].blank?
+    end
+
     def scoped_collection
-      super.includes(:best_analysis).references(:best_analysis).select('*, analyses.created_at as last_analyzed')
+      projects = params[:active] == 'true' ? super.active : super
+      projects.includes(:best_analysis).references(:best_analysis).select('*, analyses.created_at as last_analyzed')
     end
   end
 

@@ -15,8 +15,10 @@ module Project::ActiveAdminHelpers
 
     scope :has_active_enlistments, -> { active_enlistments }
 
+    scope :is_important, -> { with_important_code_locations }
+
     def self.ransackable_scopes(_auth_object = nil)
-      %i[last_analyzed_gteq_datetime last_analyzed_lteq_datetime has_active_enlistments]
+      %i[last_analyzed_gteq_datetime last_analyzed_lteq_datetime has_active_enlistments is_important]
     end
   end
 end

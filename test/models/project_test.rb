@@ -543,4 +543,20 @@ class ProjectTest < ActiveSupport::TestCase
       _(project.searchable_vector[:d]).must_equal project.description
     end
   end
+
+  describe 'important projects' do
+    it 'should return important code locations project' do
+      enlistment = create(:enlistment, project: project)
+      enlistment.fis_code_location.update(is_important: true)
+      _(Project.with_important_code_locations.count).must_equal 1
+    end
+  end
+
+  describe 'dnf projects' do
+    it 'should return dnf code locations project' do
+      enlistment = create(:enlistment, project: project)
+      enlistment.fis_code_location.update(do_not_fetch: true)
+      _(Project.with_dnf_code_locations.count).must_equal 1
+    end
+  end
 end

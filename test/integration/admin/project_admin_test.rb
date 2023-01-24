@@ -30,7 +30,9 @@ class ProjectAdminTest < ActionDispatch::IntegrationTest
 
     it 'must render index filtered by a range of best_analysis created time' do
       project1 = create(:project)
+      create(:enlistment, project: project1)
       project2 = create(:project)
+      create(:enlistment, project: project2)
       project3 = create(:project)
 
       project1.best_analysis.update! created_at: 4.days.ago
@@ -47,7 +49,9 @@ class ProjectAdminTest < ActionDispatch::IntegrationTest
 
     it 'must render index page ordered by last_analyzed' do
       project1 = create(:project)
+      create(:enlistment, project: project1)
       project2 = create(:project)
+      create(:enlistment, project: project2)
 
       project1.best_analysis.update! created_at: 1.day.since
 
@@ -55,11 +59,32 @@ class ProjectAdminTest < ActionDispatch::IntegrationTest
 
       _(assigns(@projects)['projects'].map(&:id)).must_equal [project1.id, project2.id]
     end
+
+    it 'should render index page with active projects' do
+      create(:project)
+
+      get admin_projects_path, params: { active: true }
+      assert_response :success
+    end
   end
 
   it 'should render show page' do
     get admin_project_path(create(:project))
     assert_response :success
+  end
+
+  describe 'scope validation' do
+    it 'last_analyzed_gteq_datetime' do
+      project.best_analysis.update! created_at: 1.day.ago
+      date = 2.days.ago.to_date.to_s
+      Project.last_analyzed_gteq_datetime(date).first.name.must_match project.name
+    end
+
+    it 'last_analyzed_lteq_datetime' do
+      project.best_analysis.update! created_at: 3.days.ago
+      date = 2.days.ago.to_date.to_s
+      Project.last_analyzed_lteq_datetime(date).first.name.must_match project.name
+    end
   end
 
   describe 'create_analyze_job' do
