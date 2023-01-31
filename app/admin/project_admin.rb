@@ -13,12 +13,23 @@ ActiveAdmin.register Project do
     defaults finder: :find_by_vanity_url!
 
     before_action only: :index do
-      params[:q] = { has_active_enlistments: true, is_important: false } if params[:commit].blank?
+      if params['commit'].blank?
+        default_params = { has_active_enlistments: true }
+        params['q'] ||= {}
+        params['q'].merge! default_params
+
+        request.query_parameters.merge! default_params
+      end
     end
 
     def scoped_collection
       projects = params[:active] == 'true' ? super.active : super
-      projects.includes(:best_analysis).references(:best_analysis).select('*, analyses.created_at as last_analyzed')
+      projects.includes(:best_analysis).references(:best_analysis)
+    end
+
+    def apply_filtering(chain)
+      @search = chain.ransack(params[:q] || {})
+      @search.result(distinct: true)
     end
   end
 
@@ -33,7 +44,7 @@ ActiveAdmin.register Project do
     column :managers do |project|
       project.active_managers.map { |m| link_to(m.name, account_path(m)) }
     end
-    column :last_analyzed, sortable: true do |project|
+    column :last_analyzed, sortable: 'analyses.created_at' do |project|
       project.best_analysis.try :created_at
     end
     column :created_at

@@ -55,7 +55,7 @@ class ProjectAdminTest < ActionDispatch::IntegrationTest
 
       project1.best_analysis.update! created_at: 1.day.since
 
-      get admin_projects_path, params: { order: :last_analyzed_desc }
+      get admin_projects_path, params: { order: 'analyses.created_at_desc' }
 
       _(assigns(@projects)['projects'].map(&:id)).must_equal [project1.id, project2.id]
     end
