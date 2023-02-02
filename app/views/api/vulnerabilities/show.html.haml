@@ -62,15 +62,28 @@
           .col-lg-3.col-xs-2
             %i.fa.fa-3x.fa-light.fa-calendar
     %p= find_and_preserve(markdown_format(@response['description']))
-    %span.bold.date Severity: 
+    %span.bold.date Severity:
     %span.bordered{class: "#{@response['cvss3']['severity'].downcase}"}= @response['cvss3']['severity'].titleize
+    %hr
+    -if @response['workaround'] && @response['solution']
+      .row
+        .col-lg-3.col-xs-2.fix-image
+          %i.fa.fa-3x.fa-light.fa-gift
+        .col-lg-3.col-xs-10.fix-section
+          %span.bold.fix-text How to fix it
+          %br
+          %br
+          %span.bold.date Solution - Fix available
+          %p= find_and_preserve(markdown_format(@response['solution']))
+          %span.bold.date Workaround
+          %p= find_and_preserve(markdown_format(@response['workaround']))
     -if @cwe
       %br
       %br
       %span.bold.date Common Weakness Enumeration (CWE) 
       %p= @cwe[0]
       %p= find_and_preserve(markdown_format(@cwe[1]))
-  .col-lg-3.col-xs-12.text-center 
+  .col-lg-3.col-xs-12.text-center
     #cvss2{ 'data-cvss' => "#{bdsa_cvss(@response['cvss2'])}", 'data-severity' => "#{@response['cvss2']['severity']}" }
     = render partial: 'severity', locals: { cvss: @response['cvss2'] }
   .col-lg-3.col-xs-12.text-center 
