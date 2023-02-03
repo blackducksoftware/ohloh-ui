@@ -22,6 +22,17 @@ class ProjectSbomsControllerTest < ActionController::TestCase
       get :index, params: { project_id: @project.vanity_url }, format: :js, xhr: true
       assert_response :ok
     end
+
+    it 'should give success with valid package details dependency' do
+      sbom_data = { reportContent: [{ fileContent: { packages: [{ externalRefs: [{ referenceCategory: 'PACKAGE',
+                                                                                   referenceLocator: 'pkg:maven/org.b',
+                                                                                   referenceType: 'purl' }] }] } }] }
+      @project_sboms = create(:project_sbom, agent: 'detect_wizard', project_id: @project.id,
+                                             code_location_id: @enlistments.code_location_id,
+                                             sbom_data: sbom_data)
+      get :index, params: { project_id: @project.vanity_url }, format: :js, xhr: true
+      assert_response :ok
+    end
   end
 
   describe 'download data file' do

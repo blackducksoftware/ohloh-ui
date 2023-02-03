@@ -8,5 +8,14 @@
       %label.radio-inline
         %input{checked:(value==agent.first), name: "agent", type: "radio", value: value}
         = value.capitalize
+    = submit_tag 'Download', class: 'btn btn-small btn-primary pull-right download', id: 'download_file'
+    .package-details
+      %hr
+      %i.fa.fa-2x.fa-light.fa-gift.pull-left.icon
+      %span.h5= I18n.t(:sbom_dependency)
+      %br
+      %ul
+      -if @packages.present?
+        - @packages.each do |value|
+          %li=value
   .modal-footer.text-right.pmd-modal-border
-    = submit_tag 'Download', class: 'btn btn-small btn-primary pull-right', id: 'download_file'

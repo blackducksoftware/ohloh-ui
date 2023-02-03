@@ -3,3 +3,11 @@ $('#sbom-details').modal('show');
 $('#download_file').on('click', function (e) {
   setTimeout("$('#sbom-details').modal('hide');",1000);
 });
+$('.package-details').hide();
+$('input[name="agent"]').on('click', function (e) {
+  if (e.target.value === "detect_wizard") {
+    $('.package-details').show();
+  } else {
+    $('.package-details').hide();
+  }
+});
