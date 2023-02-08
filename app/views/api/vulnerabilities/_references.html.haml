@@ -1,0 +1,9 @@
+-if bdsa_references(@response['references'])
+  %br
+  %span.bold.date References and Related Links
+  %dl
+  - bdsa_references(@response['references']).each do |type, links|
+    %dt= type
+    - links.each do |link|
+      %dd= link_to link, link, target: '_blank'
+    %br

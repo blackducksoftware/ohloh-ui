@@ -1,2 +1,3 @@
-%span.bold.date Severity: 
-%span.bordered{class: "#{cvss['severity'].downcase}"}= bdsa_cvss_severity(cvss)
+%p.vector= link_to cvss['vector'], "https://nvd.nist.gov/vuln-metrics/cvss/v3-calculator?vector=#{cvss['vector']}", target:'_blank' if cvss['vector']
+%span.bold Overall: 
+%span.bordered{class: "#{cvss['severity'].downcase}"}= cvss3_severity(cvss, type)
