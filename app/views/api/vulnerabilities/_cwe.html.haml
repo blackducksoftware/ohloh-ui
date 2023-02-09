@@ -1,0 +1,5 @@
+-if @cwe
+  %hr
+  %span.bold.date Common Weakness Enumeration (CWE) 
+  %p= @cwe[0] + ' - ' + @cwe[1]
+  %p= find_and_preserve(markdown_format(@cwe[2]))

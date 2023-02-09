@@ -8,6 +8,8 @@ class Api::VulnerabilitiesControllerTest < ActionDispatch::IntegrationTest
       get '/vulnerabilities/bdsa/1'
       assert_response :success
       _(response.body).must_match 'Severity'
+      _(response.body).must_match 'CVE'
+      _(response.body).wont_match 'References'
     end
   end
 
@@ -30,6 +32,14 @@ class Api::VulnerabilitiesControllerTest < ActionDispatch::IntegrationTest
       get '/vulnerabilities/bdsa/2'
       assert_response :success
       _(response.body).wont_match 'CVE'
+    end
+  end
+
+  it 'must render page along with references' do
+    VCR.use_cassette('vulnerabilities') do
+      get '/vulnerabilities/bdsa/3'
+      assert_response :success
+      _(response.body).must_match 'References'
     end
   end
 end

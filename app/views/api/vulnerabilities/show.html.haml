@@ -78,13 +78,8 @@
           %p= find_and_preserve(markdown_format(@response['solution']))
           %span.bold.date Workaround
           %p= find_and_preserve(markdown_format(@response['workaround']))
-    -if @cwe
-      %br
-      %br
-      %span.bold.date Common Weakness Enumeration (CWE) 
-      %p= @cwe[0] + ' - ' + @cwe[1]
-      %p= find_and_preserve(markdown_format(@cwe[2]))
     = render partial: 'references'
+    = render partial: 'cwe'
   .text-center{class: "#{@cve ? 'col-lg-3 col-xs-6' : 'col-lg-6 col-xs-12'}"}
     #cvss3{ 'data-cvss' => "#{bdsa_cvss(@response['cvss3'])}", 'data-severity' => "#{@response['cvss3']['severity']}" }
     = render partial: 'severity', locals: { cvss: @response['cvss3'], type: 'BDSA' }
