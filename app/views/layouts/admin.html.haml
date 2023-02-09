@@ -14,24 +14,26 @@
         %a.logo{ href: "#{oh_admin_root_path}" }
           %span.logo-lg
             %b OpenHub Admin
-        %nav.navbar.navbar-static-top
-          .navbar-custom-menu
-            %ul.nav.navbar-nav
-              %li.dropdown.user.user-menu
-                %a.dropdown-toggle{ 'data-toggle': 'dropdown' }
-                  %img.user-image{ alt: 'User Image', src: avatar_img_path(current_user) }
-                  %span.hidden-xs= current_user.name
+        - if current_user.present?
+          %nav.navbar.navbar-static-top
+            .navbar-custom-menu
+              %ul.nav.navbar-nav
+                %li.dropdown.user.user-menu
+                  %a.dropdown-toggle{ 'data-toggle': 'dropdown' }
+                    %img.user-image{ alt: 'User Image', src: avatar_img_path(current_user) }
+                    %span.hidden-xs= current_user.name
       %aside.main-sidebar
         %section.sidebar
-          .user-panel
-            .pull-left.image
-              %img.img-circle{ alt: 'User Image', src: avatar_img_path(current_user, 160) }
-            .pull-left.info
-              %p
-                = current_user.name
-              %a{ href: '#' }
-                %i.fa.fa-circle.text-success
-                Online
+          - if current_user.present?
+            .user-panel
+              .pull-left.image
+                %img.img-circle{ alt: 'User Image', src: avatar_img_path(current_user, 160) }
+              .pull-left.info
+                %p
+                  = current_user.name
+                %a{ href: '#' }
+                  %i.fa.fa-circle.text-success
+                  Online
           %ul.sidebar-menu{ 'data-widget': 'tree' }
             %li.header MAIN NAVIGATION
             %li
