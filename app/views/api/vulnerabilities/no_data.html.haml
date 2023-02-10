@@ -1,5 +1,9 @@
 .search-container
   .search-result
     %span.fa.fa-2x.fa-light.fa-search
-    %h3 No matching results found
-    %p You can try again by changing the search term.
+    - if @response['error'].nil? && @response['publishedDate'] && @response['publishedDate'].to_datetime > 30.days.ago.to_datetime
+      %h3 The details of this vulnerability are not yet available.
+      %p Please come back soon to view the information.
+    - else
+      %h3 No matching results found
+      %p You can try again by changing the search term.

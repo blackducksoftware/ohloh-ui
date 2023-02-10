@@ -8,7 +8,8 @@
       %h4= @response['title'] 
     .header-details
       %span.right-border.date= params[:id]
-      %span.right-border= bdsa_cve_id(@response)
+      - if @cve_data
+        %span.right-border= bdsa_cve_id(@cve_data)
       %span.bold Published:
       %span.right-border.date= humanize_datetime(@response['publishedDate'])
       %span.bold Last Modified:
@@ -21,7 +22,7 @@
         .row.overflow-hidden
           .col-lg-9.col-xs-10
             - if @response['vendorFixDate']
-              %span= bdsa_cvss_severity(@response['cvss3'])
+              %span= cvss3_severity(@response['cvss3'])
               %br
               %span BDSA
             - else
@@ -77,15 +78,12 @@
           %p= find_and_preserve(markdown_format(@response['solution']))
           %span.bold.date Workaround
           %p= find_and_preserve(markdown_format(@response['workaround']))
-    -if @cwe
-      %br
-      %br
-      %span.bold.date Common Weakness Enumeration (CWE) 
-      %p= @cwe[0]
-      %p= find_and_preserve(markdown_format(@cwe[1]))
-  .col-lg-3.col-xs-12.text-center
-    #cvss2{ 'data-cvss' => "#{bdsa_cvss(@response['cvss2'])}", 'data-severity' => "#{@response['cvss2']['severity']}" }
-    = render partial: 'severity', locals: { cvss: @response['cvss2'] }
-  .col-lg-3.col-xs-12.text-center 
+    = render partial: 'references'
+    = render partial: 'cwe'
+  .text-center{class: "#{@cve ? 'col-lg-3 col-xs-6' : 'col-lg-6 col-xs-12'}"}
     #cvss3{ 'data-cvss' => "#{bdsa_cvss(@response['cvss3'])}", 'data-severity' => "#{@response['cvss3']['severity']}" }
-    = render partial: 'severity', locals: { cvss: @response['cvss3'] }
+    = render partial: 'severity', locals: { cvss: @response['cvss3'], type: 'BDSA' }
+  - if @cve
+    .col-lg-3.col-xs-6.text-center 
+      #cve-cvss3{ 'data-cvss' => "#{bdsa_cvss(@cve)}", 'data-severity' => "#{@cve['severity']}" }
+      = render partial: 'severity', locals: { cvss: @cve, type: 'CVE' }

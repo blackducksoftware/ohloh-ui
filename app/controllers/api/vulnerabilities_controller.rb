@@ -11,6 +11,8 @@ class Api::VulnerabilitiesController < ApplicationController
     return render 'no_data' if code != '200' || @response['publishedDate'].to_datetime > 30.days.ago.to_datetime
 
     @cwe = fetch_cwe
+
+    @cve = fetch_cve
   end
 
   def raise_not_found!
@@ -20,12 +22,21 @@ class Api::VulnerabilitiesController < ApplicationController
   private
 
   def fetch_cwe
-    url = ENV['KB_CWE_API'].gsub('CWE_ID', cwe_id)
-    code, response = Api.get_response(url)
-    [response['name'], response['description']] if code == '200'
+    cwe_data = @response['_meta']['links'].select { |link| link['rel'] == 'cwe' }[0]
+
+    return unless cwe_data
+
+    cwe_id = cwe_data['href'].split('/').last
+    code, response = Api.get_response(cwe_data['href'])
+    [cwe_id, response['name'], response['description']] if code == '200'
   end
 
-  def cwe_id
-    @response['_meta']['links'].select { |c| c['rel'] == 'cwe' }[0]['href'].split('/').last
+  def fetch_cve
+    @cve_data = @response['_meta']['links'].select { |link| link['rel'] == 'cve' }[0]
+
+    return unless @cve_data
+
+    code, response = Api.get_response(@cve_data['href'])
+    response['cvss3'] if code == '200'
   end
 end

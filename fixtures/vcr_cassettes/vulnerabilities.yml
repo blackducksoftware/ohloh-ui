@@ -38,7 +38,7 @@ http_interactions:
       - 123
     body:
       encoding: ASCII-8BIT
-      string: '{"title":"title","description":"description","publishedDate":"2017-08-24T16:24:21.310Z","lastModifiedDate":"2017-08-24T16:24:21.305Z","cvss2":{"baseScore":5.1,"impactSubscore":6.4,"exploitabilitySubscore":4.9,"temporalMetrics":{"score":3.8},"severity":"LOW","vector":"vector"},"cvss3":{"baseScore":6.0,"impactSubscore":3.7,"exploitabilitySubscore":1.8,"temporalMetrics":{"score":5.2},"severity":"MEDIUM","vector":"vector"},"_meta":{"href":"https://vcrlocalhost/bdsa/1","links":[{"rel":"cwe","href":"https://vcrlocalhost/cwe/1"},{"rel":"cve","href":"https://vcrlocalhost/cve/CVE-2016-0634"}]}}'
+      string: '{"title":"title","description":"description","publishedDate":"2017-08-24T16:24:21.310Z","lastModifiedDate":"2017-08-24T16:24:21.305Z","disclosureDate": "2016-09-20T00:00:00.000Z","cvss2":{"baseScore":5.1,"impactSubscore":6.4,"exploitabilitySubscore":4.9,"temporalMetrics":{"score":3.8},"severity":"LOW","vector":"vector"},"cvss3":{"baseScore":6.0,"impactSubscore":3.7,"exploitabilitySubscore":1.8,"temporalMetrics":{"score":5.2},"severity":"MEDIUM","vector":"vector"},"_meta":{"href":"https://vcrlocalhost/bdsa/1","links":[{"rel":"cwe","href":"https://vcrlocalhost/cwe/1"},{"rel":"cve","href":"https://vcrlocalhost/cve/CVE-1"}]}}'
   recorded_at: Fri, 28 Sep 2018 11:29:30 GMT
 - request:
     method: get
@@ -178,4 +178,128 @@ http_interactions:
       encoding: UTF-8
       string: '{"jsonWebToken":"eyt8aHQx8U","expiresInMillis":6000}'
   recorded_at: Fri, 13 Jan 2023 19:17:48 GMT
+- request:
+    method: get
+    uri: https://vcrlocalhost/bdsa/2
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+      Host:
+      - vcrlocalhost
+      Authorization:
+      - 123456789
+      Content-Type:
+      - application/json
+  response:
+    status:
+      code: 200
+      message: ''
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Mon, 01 Oct 2018 07:59:56 GMT
+      Content-Type:
+      - application/json;charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Etag:
+      - 123
+    body:
+      encoding: ASCII-8BIT
+      string: '{"title":"title","description":"description","publishedDate":"2017-08-24T16:24:21.310Z","lastModifiedDate":"2017-08-24T16:24:21.305Z","cvss2":{"baseScore":5.1,"impactSubscore":6.4,"exploitabilitySubscore":4.9,"temporalMetrics":{"score":3.8},"severity":"LOW","vector":"vector"},"cvss3":{"baseScore":6.0,"impactSubscore":3.7,"exploitabilitySubscore":1.8,"severity":"MEDIUM","vector":"vector"},"_meta":{"href":"https://vcrlocalhost/bdsa/1","links":[]}}'
+  recorded_at: Fri, 28 Sep 2018 11:29:30 GMT
+- request:
+    method: get
+    uri: https://vcrlocalhost/cve/CVE-1
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+      Host:
+      - vcrlocalhost
+      Authorization:
+      - 123456789
+      Content-Type:
+      - application/json
+  response:
+    status:
+      code: 200
+      message: ''
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Mon, 01 Oct 2018 07:59:56 GMT
+      Content-Type:
+      - application/json;charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Etag:
+      - 123
+    body:
+      encoding: ASCII-8BIT
+      string:  '{"name":"Improper Neutralization of Special Elements used in a Command
+        (''Command Injection'')","description":"The software constructs
+        all or part of a command using externally-influenced input from an upstream
+        component, but it does not neutralize or incorrectly neutralizes special elements
+        that could modify the intended command when it is sent to a downstream component."}'
+  recorded_at: Fri, 28 Sep 2018 11:29:30 GMT
+- request:
+    method: get
+    uri: https://vcrlocalhost/bdsa/3
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+      Host:
+      - vcrlocalhost
+      Authorization:
+      - 123456789
+      Content-Type:
+      - application/json
+  response:
+    status:
+      code: 200
+      message: ''
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Mon, 01 Oct 2018 07:59:56 GMT
+      Content-Type:
+      - application/json;charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      Etag:
+      - 123
+    body:
+      encoding: ASCII-8BIT
+      string: '{"title":"title","description":"description","publishedDate":"2017-08-24T16:24:21.310Z","lastModifiedDate":"2017-08-24T16:24:21.305Z","cvss2":{"baseScore":5.1,"impactSubscore":6.4,"exploitabilitySubscore":4.9,"temporalMetrics":{"score":3.8},"severity":"LOW","vector":"vector"},"cvss3":{"baseScore":6.0,"impactSubscore":3.7,"exploitabilitySubscore":1.8,"temporalMetrics":{"score":5.2},"severity":"MEDIUM","vector":"vector"},"_meta":{"href":"https://vcrlocalhost/bdsa/1","links":[{"rel":"cwe","href":"https://vcrlocalhost/cwe/1"},{"rel":"cve","href":"https://vcrlocalhost/cve/CVE-1"}]},"references":[{"href": "http://seclists.org/oss-sec/2016/q3/528","type": "ADVISORY"}]}'
+  recorded_at: Fri, 28 Sep 2018 11:29:30 GMT
 recorded_with: VCR 6.0.0
