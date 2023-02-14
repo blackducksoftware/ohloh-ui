@@ -127,6 +127,28 @@ class PositionTest < ActiveSupport::TestCase
       _(position.organization_name).must_be_nil
       _(position.affiliation.name).must_equal organization.name
     end
+
+    it 'must create a valid position object for non-ASCII project name' do
+      non_ascii_project = create(:project, name: 'Project in Ć')
+
+      name = create(:name)
+      create(:name_fact, analysis: non_ascii_project.best_analysis, name: name)
+
+      valid_params = {
+        account_id: account.id,
+        project_oss: non_ascii_project.name,
+        committer_name: name.name,
+        organization_name: :Microsoft,
+        affiliation_type: :other
+      }
+
+      p = Position.create!(valid_params)
+      position = Position.find(p.id)
+
+      assert_equal position.account, account
+      assert_equal position.project, non_ascii_project
+      assert_equal position.name, name
+    end
   end
 
   describe 'one_monther?' do
