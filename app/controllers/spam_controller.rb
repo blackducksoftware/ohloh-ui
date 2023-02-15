@@ -11,7 +11,7 @@ class SpamController < ApplicationController
       account = Account.find(result[0]['id'])
       redirect_to account_path(account)
     else
-      redirect_to admin_path
+      redirect_to oh_admin_root_path
     end
   end
 end
