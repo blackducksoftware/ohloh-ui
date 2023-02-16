@@ -10,8 +10,7 @@ Rails.application.routes.draw do
   end
 
   get 'admin/comments' => redirect('/404')
-  get 'admin', to: 'oh_admin/dashboard#index'
-  get 'admin/dashboard', to: 'oh_admin/dashboard#index'
+  get 'oh_admin/projects', to: 'admin/projects#index'
   get 'admin/spam', to: 'spam#redirect_to_first_potential_spammer'
 
   root to: 'home#index', defaults: { format: 'html' }
@@ -445,7 +444,7 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :projects do
+    resources :projects, except: :index do
       resources :jobs do
         collection do
           post :manually_schedule
@@ -469,16 +468,16 @@ Rails.application.routes.draw do
 
   namespace :oh_admin do
     root to: 'dashboard#index'
-    resources :accounts do
+    resources :accounts, only: [] do
       collection do
         get :charts
       end
     end
-    resources :projects do
+    resources :projects, only: [] do
       collection do
         get :charts
       end
-      resources :jobs
+      resources :jobs, only: :index
     end
     resources :broken_links, only: %i[index destroy]
     resources :license_permissions

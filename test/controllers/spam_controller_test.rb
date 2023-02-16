@@ -23,11 +23,11 @@ class SpamControllerTest < ActionController::TestCase
         assert_redirected_to account_path(account.login)
       else
         get :redirect_to_first_potential_spammer
-        assert_redirected_to admin_path
+        assert_redirected_to oh_admin_root_path
       end
     end
 
-    it 'should redirect to admin_path if there is nothing in oh.potential_spammers' do
+    it 'should redirect to admin path if there is nothing in oh.potential_spammers' do
       login_as admin
       sql = <<-SQL.squish
             DELETE FROM OH.MARKUPS;
@@ -35,7 +35,7 @@ class SpamControllerTest < ActionController::TestCase
       SQL
       ActiveRecord::Base.connection.execute(sql)
       get :redirect_to_first_potential_spammer
-      assert_redirected_to admin_path
+      assert_redirected_to oh_admin_root_path
     end
   end
 end
