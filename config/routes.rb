@@ -445,6 +445,9 @@ Rails.application.routes.draw do
     end
 
     resources :projects, except: :index do
+      collection do
+        get :important
+      end
       resources :jobs do
         collection do
           post :manually_schedule

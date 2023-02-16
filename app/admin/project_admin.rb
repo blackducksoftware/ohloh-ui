@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 ActiveAdmin.register Project do
-  actions :index, :show
+  actions :index, :show, :important
 
   filter :name
   filter :last_analyzed, as: :date_range, label: 'Last Analyzed Range'
@@ -50,6 +50,10 @@ ActiveAdmin.register Project do
     end
     column :created_at
     actions
+  end
+
+  collection_action :important do
+    redirect_to '/admin/projects?q[has_active_enlistments]=true&q[is_important]=true&commit=Filter&order=name_asc'
   end
 
   member_action :create_analyze_job do
