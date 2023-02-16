@@ -58,7 +58,7 @@ class Position < ApplicationRecord
 
   def project_oss=(oss)
     @project_oss = oss
-    self.project = Project.not_deleted.find_by('lower(name) = ?', oss.to_s.downcase)
+    self.project = Project.not_deleted.find_by('lower(name) = ? or name = ?', oss.to_s.downcase, oss)
   end
 
   def one_monther?
