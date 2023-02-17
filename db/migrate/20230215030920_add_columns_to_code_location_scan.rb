@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddColumnsToCodeLocationScan < ActiveRecord::Migration[5.2]
   def change
     add_column :code_location_scan, :language, :string
