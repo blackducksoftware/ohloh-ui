@@ -1,7 +1,7 @@
 %header.row
   .bd-logo.col-lg-2.col-xs-2
     %img{ itemprop: 'image', src: image_path('logo/BD_logo.png'), alt: 'Black Duck' }
-  .header-info.col-lg-10.col-xs-10
+  .header-info.col-lg-8.col-xs-7
     .header-title
       %small Black Duck Security Advisory
       %span BDSA
@@ -14,7 +14,10 @@
       %span.right-border.date= humanize_datetime(@response['publishedDate'])
       %span.bold Last Modified:
       %span.date= humanize_datetime(@response['lastModifiedDate'])
-
+  .col-lg-2.col-xs-3.cybersecurity-logo.pull-right
+    = link_to 'Learn more about BDSAs', 'https://www.synopsys.com/software-integrity/engage/bdsas', class: 'btn btn-primary learn-more', target: '_blank'
+    %a.cybersecurity-logo{ href: "https://www.synopsys.com/software-integrity/cybersecurity-research-center.html", target: '_blank' }
+      %img{ itemprop: 'image', src: image_path('logo/cyrc-500.png'), alt: 'Synopsys Cybersecurity' }
 .row.details
   .col-lg-6.col-xs-12
     .row.vuln-summary
