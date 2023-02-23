@@ -11,7 +11,6 @@ class Api::VulnerabilitiesController < ApplicationController
     return render 'no_data' if code != '200' || @response['publishedDate'].to_datetime > 30.days.ago.to_datetime
 
     @cwe = fetch_cwe
-
     @cve = fetch_cve
   end
 
