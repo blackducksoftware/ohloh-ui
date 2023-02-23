@@ -54,6 +54,12 @@ module VulnerabilitiesHelper
                        selected: filter_severity_param, disabled: disabled_severities)
   end
 
+  def options_for_cve_filter
+    options = ['CVE']
+    options << 'BDSA' if @bdsa_visible
+    options_for_select(options)
+  end
+
   def sort_releases_by_version_number(releases)
     return if releases.blank?
 

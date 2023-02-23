@@ -58,7 +58,6 @@
       $('.vulnerabilities-datatable').html(vulTable)
       $('.overlay-loader').hide()
 
-
 @updateSeverityFilter = (release) ->
   $('#vulnerability_filter_severity').prop('disabled', false)
   $.each ['low', 'medium', 'high', 'unknown_severity'], (index, severity) ->
@@ -71,6 +70,7 @@
       period: $('#vulnerability_filter_period').val()
       version: $('#vulnerability_filter_version').val()
       severity: $('#vulnerability_filter_severity').find(':selected').val()
+      type: $('#vulnerability_filter_cve_id').find(':selected').val()
   window.history.pushState('', document.title, getProjectUrl() + 'security?' + $.param(queryStr))
 
 filterReleases = () ->
