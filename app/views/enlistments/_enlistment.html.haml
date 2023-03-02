@@ -2,11 +2,20 @@
   %td.col-md-4
     - url = enlistment.code_location.url
     = url =~ /^http/ ? link_to(url, url, target: '_blank') : url
-    - if enlistment.code_location.do_not_fetch
-      %span.glyphicon.glyphicon-exclamation-sign{ style: 'color:red', title: t('.dnf').html_safe }
     - if current_user_is_admin?
       = link_to code_location_admin_url(enlistment.code_location_id), target: '_blank' do
         %span.glyphicon.glyphicon-link
+    - job_id = enlistment.fis_code_location.last_job_id
+    - fis_job = FisJob.find_by(id: job_id)
+    - description = job_id ? FailureGroupApi.failure_group_description(job_id) : ''
+    - if enlistment.code_location.do_not_fetch
+      - if description.present?
+        %p.text-danger Error: #{description}
+      - else
+        %p.text-danger= t('.dnf')
+    - elsif !enlistment.code_location.do_not_fetch && fis_job && fis_job.retry_count > 1 && fis_job.wait_until != nil
+      - if description.present?
+        %p.text-danger Error: #{description}
     %p= enlistment.code_location.branch
   %td.col-md-2
     = enlistment.code_location.scm_name_in_english
