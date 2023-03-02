@@ -5321,7 +5321,11 @@ ALTER SEQUENCE oh.clumps_id_seq OWNED BY oh.clumps.id;
 CREATE TABLE oh.code_location_scan (
     id bigint NOT NULL,
     code_location_id integer,
-    scan_project_id integer
+    scan_project_id integer,
+    language character varying,
+    command_line character varying,
+    project_token character varying,
+    user_managed boolean DEFAULT false
 );
 
 
@@ -19221,6 +19225,8 @@ INSERT INTO oh.schema_migrations (version) VALUES ('20220822144901');
 INSERT INTO oh.schema_migrations (version) VALUES ('20220822144949');
 
 INSERT INTO oh.schema_migrations (version) VALUES ('20220913135438');
+
+INSERT INTO oh.schema_migrations (version) VALUES ('20230215030920');
 
 INSERT INTO oh.schema_migrations (version) VALUES ('21');
 
