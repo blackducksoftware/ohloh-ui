@@ -1,0 +1,20 @@
+- if @response['workaround'] && @response['solution']
+  %hr
+  .row
+    .col-lg-3.col-xs-2.fix-image
+      %i.fa.fa-3x.fa-light.fa-gift
+    .col-lg-3.col-xs-10.fix-section
+      %span.bold.fix-text How to fix it
+      %br
+      %br
+      - if @response['solution'].present?
+        %span.bold Solution - Fix available
+        %p= find_and_preserve(markdown_format(@response['solution']))
+      - else
+        %span.bold No Solution
+        %br
+      - if @response['workaround'].present?
+        %span.bold Workaround
+        %p= find_and_preserve(markdown_format(@response['workaround']))
+      - else
+        %span.bold No Workaround

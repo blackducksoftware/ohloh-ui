@@ -6,7 +6,7 @@ module MarkdownHelper
                 hard_wrap: true,
                 link_attributes: { rel: 'nofollow', target: '_blank' } }
     renderer = Redcarpet::Render::HTML.new(options)
-    markdown = Redcarpet::Markdown.new(renderer, autolink: true, tables: true)
+    markdown = Redcarpet::Markdown.new(renderer, autolink: true, tables: true, fenced_code_blocks: true)
     markdown.render(text).html_safe
   rescue StandardError
     Rails.logger.error "Redcarpet failed to convert:\n#{text}."
