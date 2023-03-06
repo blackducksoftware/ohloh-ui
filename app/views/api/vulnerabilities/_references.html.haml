@@ -5,7 +5,7 @@
     - bdsa_references(@response['references']).each do |type, links|
       %dt
         - if bdsa_reference_icon(type)
-          %i.fa{class: "#{bdsa_reference_icon(type)}"}
+          %i.fa.fa-custom{class: "#{bdsa_reference_icon(type)}"}
         = "#{type} :"
       - links.each do |link|
         %dd= link_to link, link, target: '_blank'

@@ -15,6 +15,6 @@
         %br
       - if @response['workaround'].present?
         %span.bold Workaround
-        %p= find_and_preserve(markdown_format(@response['workaround']))
+        %p= find_and_preserve(markdown_format(@response['workaround'].gsub(/[\n]+/, "\n")))
       - else
         %span.bold No Workaround

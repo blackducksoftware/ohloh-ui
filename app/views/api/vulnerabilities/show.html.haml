@@ -17,7 +17,7 @@
   .col-lg-2.col-xs-3.cybersecurity-logo.pull-right
     %a{ href: "https://www.synopsys.com/software-integrity/cybersecurity-research-center.html", target: '_blank' }
       %img{ itemprop: 'image', src: image_path('logo/cyrc-500.png'), alt: 'Synopsys Cybersecurity' }
-    = link_to 'Learn more about BDSAs', 'https://www.synopsys.com/software-integrity/engage/bdsas', class: 'btn btn-primary learn-more', target: '_blank'
+    = link_to 'Learn more about BDSAs', 'https://www.synopsys.com/software-integrity/engage/bdsas', class: 'btn btn-primary learn-more btn-sm', target: '_blank'
 .row.details
   .col-lg-6.col-xs-12
     .row.vuln-summary
@@ -65,10 +65,11 @@
     %p= find_and_preserve(markdown_format(@response['description']))
     %span.bold.date Severity:
     %span.bordered{class: "#{@response['cvss3']['severity'].downcase}"}= @response['cvss3']['severity'].titleize
-    %br
-    %br
-    %span.bold.date Credit:
-    %span= @response['credit']
+    - if @response['credit'].present?
+      %br
+      %br
+      %span.bold.date Credit:
+      %span= @response['credit']
     = render partial: 'workaround'
     = render partial: 'references'
     = render partial: 'cwe'

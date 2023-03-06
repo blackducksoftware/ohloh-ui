@@ -46,9 +46,9 @@ module Api::VulnerabilitiesHelper
   end
 
   def bdsa_reference_icon(type)
-    case type
-    when 'ADVISORY' then 'fa-exclamation-circle'
-    when 'VENDOR_UPGRADE' then 'fa-gift'
-    end
+    icons = { 'ADVISORY' => 'fa-exclamation-circle',
+              'VENDOR_UPGRADE' => 'fa-gift',
+              'PATCH' => 'fa-connectdevelop' }
+    icons[type]
   end
 end
