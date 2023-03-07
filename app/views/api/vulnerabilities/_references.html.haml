@@ -4,8 +4,8 @@
   %dl
     - bdsa_references(@response['references']).each do |type, links|
       %dt
-        - if bdsa_reference_icon(type)
-          %i.fa.fa-custom{class: "#{bdsa_reference_icon(type)}"}
+        - if bdsa_reference_icons[type]
+          %i.fa.fa-custom{class: "#{bdsa_reference_icons[type]}"}
         = "#{type} :"
       - links.each do |link|
         %dd= link_to link, link, target: '_blank'
