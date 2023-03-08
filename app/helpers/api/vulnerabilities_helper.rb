@@ -49,8 +49,7 @@ module Api::VulnerabilitiesHelper
 
   def bdsa_reference_type(type)
     case type
-    when 'LINK' then 'PATCH'
-    when 'POC' then 'OTHER'
+    when 'LINK' then 'OTHER'
     else type
     end
   end
@@ -60,6 +59,7 @@ module Api::VulnerabilitiesHelper
       'VENDOR_UPGRADE' => 'fa-gift',
       'PATCH' => 'fa-road',
       'INTRODUCTORY_COMMIT' => 'fa-share-square',
+      'POC' => 'fa-arrow-circle-up',
       'OTHER' => 'fa-list' }
   end
 end
