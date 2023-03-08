@@ -37,6 +37,8 @@ module Api::VulnerabilitiesHelper
   end
 
   def bdsa_references(data)
+    return unless data
+
     references = bdsa_reference_icons.keys.each_with_object({}) { |link, memo| memo[link] = [] }
     data.each do |link|
       type = bdsa_reference_type(link['type'])
