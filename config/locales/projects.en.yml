@@ -352,8 +352,16 @@ en:
       licence: 'License:'
       unknown: 'Unknown'
     vulnerabilities:
-      unknown_severity: 'Unknown Severity' 
+      unknown_severity: 'Unknown Severity'
       severity:
         low: 'Low Severity'
         medium: 'Medium Severity'
         high: 'High Severity'
+
+  activerecord:
+    errors:
+      models:
+        project:
+          attributes:
+            enlistments:
+              blank: Repository url is missing or invalid.

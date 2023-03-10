@@ -28,6 +28,8 @@ class Project < ApplicationRecord
   validates_each :url, :download_url, allow_blank: true do |record, field, value|
     record.errors.add(field, I18n.t(:not_a_valid_url)) unless value.blank? || value.valid_http_url?
   end
+  validates :enlistments, presence: true unless Rails.env.test?
+
   before_validation :clean_strings_and_urls
   after_update :remove_people, if: ->(project) { project.saved_change_to_deleted? && project.deleted? }
   after_update :recalc_tags_weight!, if: ->(project) { project.saved_change_to_deleted? }
