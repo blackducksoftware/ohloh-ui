@@ -3,6 +3,10 @@
 require 'test_helper'
 
 class Api::VulnerabilitiesControllerTest < ActionDispatch::IntegrationTest
+  before do
+    cookies[:bdsa_cookie_disclaimer] = '1'
+  end
+
   it 'must render the BDSA page' do
     VCR.use_cassette('vulnerabilities') do
       get '/vulnerabilities/bdsa/1'
@@ -40,6 +44,16 @@ class Api::VulnerabilitiesControllerTest < ActionDispatch::IntegrationTest
       get '/vulnerabilities/bdsa/3'
       assert_response :success
       _(response.body).must_match 'References'
+    end
+  end
+
+  it 'must not render data if disclaimer is not accepted' do
+    cookies.delete('bdsa_cookie_disclaimer')
+    VCR.use_cassette('vulnerabilities') do
+      get '/vulnerabilities/bdsa/1'
+      assert_response :success
+      _(response.body).wont_match 'CVE'
+      _(response.body).must_match 'Agree'
     end
   end
 end
