@@ -65,6 +65,7 @@ end
 
 group :test do
   gem 'haml_lint', '~> 0.21'
+  gem 'm', '~> 1.5.0'
   gem 'minitest-rails'
   gem 'minitest-spec-rails'
   gem 'mocha'

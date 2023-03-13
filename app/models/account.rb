@@ -125,5 +125,9 @@ class Account < ApplicationRecord
     def find_or_create_anonymous_account
       find_by(login: AnonymousAccount::LOGIN) || AnonymousAccount.create!
     end
+
+    def maintenance
+      logged_in.find_each(&:reset_remember_token!)
+    end
   end
 end

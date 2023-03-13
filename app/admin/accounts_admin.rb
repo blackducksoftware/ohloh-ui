@@ -21,6 +21,10 @@ ActiveAdmin.register Account do
   filter :last_seen_ip
   filter :created_at
 
+  action_item :maintenance, only: :index do
+    link_to 'Set Maintenance Mode', maintenance_admin_accounts_path
+  end
+
   index do
     column :id
     column :name do |account|
@@ -69,5 +73,10 @@ ActiveAdmin.register Account do
                                     'Spammer' => Account::Access::SPAM }
     end
     f.actions
+  end
+
+  collection_action :maintenance do
+    Account.maintenance
+    redirect_to_saved_path(notice: 'Accounts successfully logged out')
   end
 end

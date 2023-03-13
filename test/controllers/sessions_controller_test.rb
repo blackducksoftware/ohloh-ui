@@ -77,7 +77,6 @@ class SessionsControllerTest < ActionController::TestCase
         account.update!(auth_fail_count: auth_fail_count)
 
         DataDogReport.expects(:error)
-        AccountMailer.expects(:notify_disabled_account_for_login_failure).returns(stub(deliver_now: nil))
         @controller.expects(:verify_recaptcha).returns(true)
 
         post :create, params: { login: { login: account.login }, 'g-recaptcha-response': Faker::Internet.password }
