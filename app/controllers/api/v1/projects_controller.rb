@@ -6,6 +6,7 @@ class Api::V1::ProjectsController < ApplicationController
 
   skip_before_action :verify_authenticity_token
   before_action :authenticate_jwt
+  before_action :set_project_or_fail, only: [:create_scan_project]
 
   def create
     @project = build_project
@@ -16,6 +17,14 @@ class Api::V1::ProjectsController < ApplicationController
     else
       render json: @project.errors.messages.to_json, status: :bad_request
     end
+  end
+
+  def create_scan_project
+    response = get_scan_api_data(params[:url], 'api/projects')
+    return unless response && response['scan_project_id']
+
+    CodeLocationScan.where(code_location_id: @project.enlistments.first.code_location_id,
+                           scan_project_id: response['scan_project_id']).first_or_create
   end
 
   private
@@ -62,5 +71,14 @@ class Api::V1::ProjectsController < ApplicationController
   def code_location_branch(url)
     out, _err, _status = Open3.capture3("git ls-remote --symref #{url} HEAD | head -1 | awk '{print $2}'")
     out.strip.sub(/refs\/heads\//, '')
+  end
+
+  def get_scan_api_data(url, path)
+    return unless @project
+
+    language = @project&.best_analysis&.main_language&.nice_name
+    data = { name: @project&.name, repo_url: url, user_id: params[:user_id],
+             language: scan_oh_language_mapping(language), vanity_url: @project.vanity_url }
+    ScanCoverityApi.save(path, data)
   end
 end

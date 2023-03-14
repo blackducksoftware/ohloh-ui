@@ -87,4 +87,17 @@ class Api::V1::ProjectsControllerTest < ActionController::TestCase
       end
     end
   end
+
+  describe 'create_scan_project' do
+    it 'it create a scan project if not found' do
+      VCR.use_cassette('CreateProjectFromMatchURL, :record => :none') do
+        url = 'https://github.com/rails/rails'
+        project = create(:project, name: 'rails', description: 'Ruby on Rails', vanity_url: 'rails')
+        create(:enlistment, project: project, code_location_id: 1)
+        params = { id: project.vanity_url, JWT: @jwt, url: url, user_id: 'e1dc08285095f4ff99199c3436532768' }
+        post :create_scan_project, params: params, format: :json
+        assert_response 204
+      end
+    end
+  end
 end

@@ -156,4 +156,20 @@ class ProjectsHelperTest < ActionView::TestCase
       _(project_description_size_breached?(@project)).must_equal false
     end
   end
+
+  describe 'scan_oh_language_mapping' do
+    it 'should return matching value' do
+      _(scan_oh_language_mapping('Java')).must_equal 'JAVA'
+      _(scan_oh_language_mapping('C/C++')).must_equal 'CXX'
+      _(scan_oh_language_mapping('C#')).must_equal 'CSHARP'
+      _(scan_oh_language_mapping('JavaScript')).must_equal 'JAVASCRIPT'
+      _(scan_oh_language_mapping('Ruby')).must_equal 'OTHER'
+    end
+  end
+
+  describe 'project_separator_text' do
+    it 'should return seperation text' do
+      _(project_separator_text).must_equal '&nbsp;|&nbsp;'
+    end
+  end
 end

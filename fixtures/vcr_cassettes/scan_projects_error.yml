@@ -1,0 +1,59 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: http://vcrlocalhost.org:5008/api/projects.json
+    body:
+      encoding: US-ASCII
+      string: name=&repo_url=https%3A%2F%2Fgithub.com%2Frails%2Frails&user_id=d1224324214
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+      Host:
+      - vcrlocalhost.org:5008
+      Content-Type:
+      - application/x-www-form-urlencoded
+  response:
+    status:
+      code: 400
+      message: bad_request
+    headers:
+      Date:
+      - Tue, 14 Mar 2023 11:09:01 GMT
+      Content-Type:
+      - text/plain
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      X-Request-Id:
+      - 83ba289fe76f4ed9a882a2a823be6d87
+      X-Runtime:
+      - '0.006584'
+      X-Powered-By:
+      - Phusion Passenger 5.0.30
+      Status:
+      - 400
+      Strict-Transport-Security:
+      - max-age=15724800; includeSubDomains
+      Set-Cookie:
+      - incap_ses_1559_941207=QCvHB5yXehqCVRkBiK6iFc1VEGQAAAAA7G/+9TvEcxaAWzmLbgQZBg==;
+        path=/; Domain=.coverity.com
+      - nlbi_941207=bJ7MAhEsdhG1ODi7vBlnAwAAAAA3GPUJcWfVnLBF6Cb2d22Z; path=/; Domain=.coverity.com
+      - visid_incap_941207=QJfhtfo9QgiltzVrch2GzcxVEGQAAAAAQUIPAAAAAAD7Vbp21tN9wMYyJIC789MH;
+        expires=Tue, 12 Mar 2024 15:15:25 GMT; HttpOnly; path=/; Domain=.coverity.com
+      X-Cdn:
+      - Imperva
+      X-Iinfo:
+      - 12-49168636-49168647 NNYN CT(229 230 0) RT(1678792140667 100) q(0 0 5 5) r(7
+        7) U24
+    body:
+      encoding: ASCII-8BIT
+      string: '{"message": "Language cant be blank"}'
+  recorded_at: Tue, 14 Mar 2023 11:09:02 GMT
+recorded_with: VCR 6.0.0
+
