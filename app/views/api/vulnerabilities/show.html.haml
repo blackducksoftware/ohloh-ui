@@ -73,20 +73,5 @@
     = render partial: 'workaround'
     = render partial: 'references'
     = render partial: 'cwe'
-  .text-center{class: "#{@cve ? 'col-lg-3 col-xs-6' : 'col-lg-6 col-xs-12'}"}
-    %span This record
-    %br
-    %span.bold= params[:id]
-    %br
-    %span CVSS v3.x
-    #cvss3{ 'data-cvss' => "#{bdsa_cvss(@response['cvss3'])}", 'data-severity' => "#{@response['cvss3']['severity']}" }
-    = render partial: 'severity', locals: { cvss: @response['cvss3'], type: 'BDSA' }
-  - if @cve
-    .col-lg-3.col-xs-6.text-center 
-      %span Related record
-      %br
-      %span.bold= bdsa_cve_id(@cve_data)
-      %br
-      %span CVSS v3.x
-      #cve-cvss3{ 'data-cvss' => "#{bdsa_cvss(@cve)}", 'data-severity' => "#{@cve['severity']}" }
-      = render partial: 'severity', locals: { cvss: @cve, type: 'CVE' }
+  = render partial: 'bdsa'
+  = render partial: 'cve'

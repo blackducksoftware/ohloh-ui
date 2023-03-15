@@ -1,0 +1,10 @@
+- if @cve
+  .col-lg-3.col-xs-6.text-center.no-left-padding
+    .highchart-header.border-right
+      %span Related record
+      %br
+      %span.bold= bdsa_cve_id(@cve_data)
+      %br
+      %span CVSS v3.x
+    #cve-cvss3{ 'data-cvss' => "#{bdsa_cvss(@cve)}", 'data-severity' => "#{@cve['severity']}" }
+    = render partial: 'severity', locals: { cvss: @cve, type: 'CVE' }
