@@ -504,7 +504,7 @@ Rails.application.routes.draw do
     get 'vulnerabilities/bdsa/:id', to: 'api/vulnerabilities#show'
     match 'vulnerabilities/*all', to: 'api/vulnerabilities#raise_not_found!', via: :all
   end
-  
+
   # the unmatched_route must be last as it matches everything
   match '*unmatched_route', to: 'application#raise_not_found!', via: :all
 end
