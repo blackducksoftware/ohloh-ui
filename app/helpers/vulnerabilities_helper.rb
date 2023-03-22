@@ -135,6 +135,22 @@ module VulnerabilitiesHelper
     asc_desc_icon
   end
 
+  def vulnerability_detail_page_url(cve_id)
+    if 'BDSA'.in?(cve_id)
+      "/vulnerabilities/bdsa/#{cve_id}"
+    else
+      ENV['NVD_LINK'] + cve_id
+    end
+  end
+
+  def vulnerability_related_record(cve_id)
+    if 'BDSA'.in?(cve_id)
+      CveBdsa.find_by(bdsa_id: cve_id).try(:cve_id)
+    else
+      CveBdsa.find_by(cve_id: cve_id).try(:bdsa_id)
+    end
+  end
+
   private
 
   def release_version_to_array(release)
