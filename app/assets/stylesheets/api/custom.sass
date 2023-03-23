@@ -92,8 +92,6 @@
         border: 1px solid #ddd
         min-height: 55px
         padding-top: 4px
-      .fa-light
-        color: #ddd
       .overflow-hidden
         overflow: hidden
     .vector, dd
@@ -105,6 +103,8 @@
       padding: 0 1em
     dd:not(:last-child)
      margin-bottom: 5px
+    dd
+     margin-left: 20px
   .search-result
     height: 100%
     border: 1px solid #f7f7f7
@@ -120,10 +120,19 @@
     display: flex
     justify-content: center
     margin: 5em 0
+  .cybersecurity-logo
+    text-align: center
+    a:first-child
+      display: block
   .cybersecurity-logo img
-    height: 80px
+    height: 65px
   .learn-more
     white-space: break-spaces
+  .fa-light
+    color: #ddd
+  .fa-custom
+    color: gray
+    font-size: 15px
   @media (min-width: 320px) and (max-width: 1024px)
     .fix-section
       width: 75%
@@ -135,3 +144,28 @@
     color: #ddd
   .fix-text
     color: #4d92c6
+  .cwe-title
+    font-weight: 500
+  .fix-section
+    pre
+      background-color: #d6f4ff
+  .highchart-header
+    background: #f7f7f7
+    padding: 8px
+    border-top: 1px solid #ddd
+    border-bottom: 1px solid #ddd
+    margin-bottom: 20px
+  .border-left
+    border-left: 1px solid #ddd
+  .border-right
+    border-right: 1px solid #ddd
+  .no-right-padding
+    padding-right: 0
+  .no-left-padding
+    padding-left: 0
+  #bdsa_disclaimer_cookies
+    display: block
+    background-color: rgba(0,0,0,0.8)
+
+    .modal-content
+      margin-top: 30%

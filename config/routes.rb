@@ -500,8 +500,10 @@ Rails.application.routes.draw do
   get 'sitemap_index.xml', controller: 'sitemap', action: 'index', format: 'xml'
   get 'sitemaps/:ctrl/:page.xml', controller: 'sitemap', action: 'show', format: 'xml'
 
-  get 'vulnerabilities/bdsa/:id', to: 'api/vulnerabilities#show' unless Rails.env.production?
-  match 'vulnerabilities/*all', to: 'api/vulnerabilities#raise_not_found!', via: :all
+  unless Rails.env.production?
+    get 'vulnerabilities/bdsa/:id', to: 'api/vulnerabilities#show'
+    match 'vulnerabilities/*all', to: 'api/vulnerabilities#raise_not_found!', via: :all
+  end
 
   # the unmatched_route must be last as it matches everything
   match '*unmatched_route', to: 'application#raise_not_found!', via: :all

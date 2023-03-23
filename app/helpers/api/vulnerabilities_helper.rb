@@ -39,9 +39,29 @@ module Api::VulnerabilitiesHelper
   def bdsa_references(data)
     return unless data
 
-    references = data.select { |link| %w[ADVISORY VENDOR_UPGRADE].include?(link['type']) }
-    references.each_with_object({}) do |link, memo|
-      memo[link['type']] = (memo[link['type']] || []).push(link['href'])
+    references = bdsa_reference_icons.keys.each_with_object({}) { |link, memo| memo[link] = [] }
+    data.each do |link|
+      type = bdsa_reference_type(link['type'])
+      next unless references[type]
+
+      references[type] << link['href']
     end
+    references.reject { |_type, links| links.empty? }
+  end
+
+  def bdsa_reference_type(type)
+    case type
+    when 'LINK' then 'OTHER'
+    else type
+    end
+  end
+
+  def bdsa_reference_icons
+    { 'ADVISORY' => 'fa-exclamation-circle',
+      'VENDOR_UPGRADE' => 'fa-gift',
+      'PATCH' => 'fa-road',
+      'INTRODUCTORY_COMMIT' => 'fa-share-square',
+      'POC' => 'fa-arrow-circle-up',
+      'OTHER' => 'fa-list' }
   end
 end

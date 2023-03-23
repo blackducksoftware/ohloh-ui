@@ -1,0 +1,9 @@
+.text-center.border-right.no-right-padding{class: "#{@cve ? 'col-lg-3 col-xs-6' : 'col-lg-6 col-xs-12'}"}
+  .highchart-header.border-left
+    %span This record
+    %br
+    %span.bold= params[:id]
+    %br
+    %span CVSS v3.x
+  #cvss3{ 'data-cvss' => "#{bdsa_cvss(@response['cvss3'])}", 'data-severity' => "#{@response['cvss3']['severity']}" }
+  = render partial: 'severity', locals: { cvss: @response['cvss3'], type: 'BDSA' }

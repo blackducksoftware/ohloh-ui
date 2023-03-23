@@ -15,78 +15,63 @@
       %span.bold Last Modified:
       %span.date= humanize_datetime(@response['lastModifiedDate'])
   .col-lg-2.col-xs-3.cybersecurity-logo.pull-right
-    = link_to 'Learn more about BDSAs', 'https://www.synopsys.com/software-integrity/engage/bdsas', class: 'btn btn-primary learn-more', target: '_blank'
-    %a.cybersecurity-logo{ href: "https://www.synopsys.com/software-integrity/cybersecurity-research-center.html", target: '_blank' }
+    %a{ href: "https://www.synopsys.com/software-integrity/cybersecurity-research-center.html", target: '_blank' }
       %img{ itemprop: 'image', src: image_path('logo/cyrc-500.png'), alt: 'Synopsys Cybersecurity' }
+    = link_to 'Learn more about BDSAs', 'https://www.synopsys.com/software-integrity/engage/bdsas', class: 'btn btn-primary learn-more btn-sm', target: '_blank'
 .row.details
   .col-lg-6.col-xs-12
     .row.vuln-summary
       .col-lg-3.col-xs-6.summary-info
         .row.overflow-hidden
-          .col-lg-9.col-xs-10
-            - if @response['vendorFixDate']
-              %span= cvss3_severity(@response['cvss3'])
-              %br
-              %span BDSA
-            - else
-              %span No Fix Available
-          .col-lg-3.col-xs-2
+          .col-lg-8.col-xs-10
+            %span= cvss3_severity(@response['cvss3'])
+            %br
+            %span BDSA
+          .col-lg-4.col-xs-2
             %i.fa.fa-3x.fa-light.fa-thermometer-full
       .col-lg-3.col-xs-6.summary-info
         .row.overflow-hidden
-          .col-lg-9.col-xs-10
+          .col-lg-8.col-xs-10
             - if @response['vendorFixDate']
               %span Fix Available
               %br
               %span= humanize_datetime(@response['vendorFixDate'])
             - else
               %span No Fix Available
-          .col-lg-3.col-xs-2
+          .col-lg-4.col-xs-2
             %i.fa.fa-3x.fa-light.fa-gift
       .col-lg-3.col-xs-6.summary-info
         .row.overflow-hidden
-          .col-lg-9.col-xs-10
+          .col-lg-8.col-xs-10
             - if @response['exploitAvailableDate']
               %span Exploit Available
               %br
               %span= humanize_datetime(@response['exploitAvailableDate'])
             - else
               %span No Exploit
-          .col-lg-3.col-xs-2
+          .col-lg-4.col-xs-2
             %i.fa.fa-3x.fa-light.fa-exclamation-circle
       .col-lg-3.col-xs-6.summary-info
         .row.overflow-hidden
-          .col-lg-9.col-xs-10
+          .col-lg-8.col-xs-10
             - if @response['disclosureDate']
               %span= bdsa_vulnerability_age(@response['disclosureDate'])
               %br
               %span Vulnerability Age
             - else
               %span No Exploit
-          .col-lg-3.col-xs-2
+          .col-lg-4.col-xs-2
             %i.fa.fa-3x.fa-light.fa-calendar
     %p= find_and_preserve(markdown_format(@response['description']))
     %span.bold.date Severity:
     %span.bordered{class: "#{@response['cvss3']['severity'].downcase}"}= @response['cvss3']['severity'].titleize
-    %hr
-    -if @response['workaround'] && @response['solution']
-      .row
-        .col-lg-3.col-xs-2.fix-image
-          %i.fa.fa-3x.fa-light.fa-gift
-        .col-lg-3.col-xs-10.fix-section
-          %span.bold.fix-text How to fix it
-          %br
-          %br
-          %span.bold.date Solution - Fix available
-          %p= find_and_preserve(markdown_format(@response['solution']))
-          %span.bold.date Workaround
-          %p= find_and_preserve(markdown_format(@response['workaround']))
+    - if @response['credit'].present?
+      %br
+      %br
+      %span.bold.date Credit:
+      %span= @response['credit']
+    = render partial: 'workaround'
     = render partial: 'references'
     = render partial: 'cwe'
-  .text-center{class: "#{@cve ? 'col-lg-3 col-xs-6' : 'col-lg-6 col-xs-12'}"}
-    #cvss3{ 'data-cvss' => "#{bdsa_cvss(@response['cvss3'])}", 'data-severity' => "#{@response['cvss3']['severity']}" }
-    = render partial: 'severity', locals: { cvss: @response['cvss3'], type: 'BDSA' }
-  - if @cve
-    .col-lg-3.col-xs-6.text-center 
-      #cve-cvss3{ 'data-cvss' => "#{bdsa_cvss(@cve)}", 'data-severity' => "#{@cve['severity']}" }
-      = render partial: 'severity', locals: { cvss: @cve, type: 'CVE' }
+  = render partial: 'bdsa'
+  = render partial: 'cve'

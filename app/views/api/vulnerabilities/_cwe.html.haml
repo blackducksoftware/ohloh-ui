@@ -1,5 +1,6 @@
--if @cwe
+-if @cwe_data
   %hr
   %span.bold.date Common Weakness Enumeration (CWE) 
-  %p= @cwe[0] + ' - ' + @cwe[1]
-  %p= find_and_preserve(markdown_format(@cwe[2]))
+  - @cwe_data.each do |cwe|
+    %p.cwe-title= cwe[0] + ' - ' + cwe[1]
+    %p= find_and_preserve(markdown_format(cwe[2]))
