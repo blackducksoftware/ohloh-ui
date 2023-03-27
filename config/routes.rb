@@ -494,6 +494,11 @@ Rails.application.routes.draw do
       end
       resources :jwt, only: [:create]
       resources :projects, only: [:create]
+      resources :knowledge_base_status, only: [] do
+        collection do
+          post :sync
+        end
+      end
     end
   end
 
