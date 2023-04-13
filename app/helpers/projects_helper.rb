@@ -127,5 +127,15 @@ module ProjectsHelper
   def project_description_size_breached?(project)
     project.description && project.description.size > 800
   end
+
+  def scan_oh_language_mapping(language)
+    case language
+    when 'C++', 'C/C++', 'C' then 'CXX'
+    when 'Java' then 'JAVA'
+    when 'C#' then 'CSHARP'
+    when 'JavaScript' then 'JAVASCRIPT'
+    when 'Ruby', 'Python', 'PHP' then 'OTHER'
+    end
+  end
 end
 # rubocop: enable Metrics/ModuleLength

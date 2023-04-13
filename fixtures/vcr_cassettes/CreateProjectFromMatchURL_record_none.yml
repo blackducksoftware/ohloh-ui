@@ -566,4 +566,59 @@ http_interactions:
         on Rails","fork":false,"url":"https://api.github.com/repos/rails/rails","forks_url":"https://api.github.com/repos/rails/rails/forks","keys_url":"https://api.github.com/repos/rails/rails/keys{/key_id}","collaborators_url":"https://api.github.com/repos/rails/rails/collaborators{/collaborator}","teams_url":"https://api.github.com/repos/rails/rails/teams","hooks_url":"https://api.github.com/repos/rails/rails/hooks","issue_events_url":"https://api.github.com/repos/rails/rails/issues/events{/number}","events_url":"https://api.github.com/repos/rails/rails/events","assignees_url":"https://api.github.com/repos/rails/rails/assignees{/user}","branches_url":"https://api.github.com/repos/rails/rails/branches{/branch}","tags_url":"https://api.github.com/repos/rails/rails/tags","blobs_url":"https://api.github.com/repos/rails/rails/git/blobs{/sha}","git_tags_url":"https://api.github.com/repos/rails/rails/git/tags{/sha}","git_refs_url":"https://api.github.com/repos/rails/rails/git/refs{/sha}","trees_url":"https://api.github.com/repos/rails/rails/git/trees{/sha}","statuses_url":"https://api.github.com/repos/rails/rails/statuses/{sha}","languages_url":"https://api.github.com/repos/rails/rails/languages","stargazers_url":"https://api.github.com/repos/rails/rails/stargazers","contributors_url":"https://api.github.com/repos/rails/rails/contributors","subscribers_url":"https://api.github.com/repos/rails/rails/subscribers","subscription_url":"https://api.github.com/repos/rails/rails/subscription","commits_url":"https://api.github.com/repos/rails/rails/commits{/sha}","git_commits_url":"https://api.github.com/repos/rails/rails/git/commits{/sha}","comments_url":"https://api.github.com/repos/rails/rails/comments{/number}","issue_comment_url":"https://api.github.com/repos/rails/rails/issues/comments{/number}","contents_url":"https://api.github.com/repos/rails/rails/contents/{+path}","compare_url":"https://api.github.com/repos/rails/rails/compare/{base}...{head}","merges_url":"https://api.github.com/repos/rails/rails/merges","archive_url":"https://api.github.com/repos/rails/rails/{archive_format}{/ref}","downloads_url":"https://api.github.com/repos/rails/rails/downloads","issues_url":"https://api.github.com/repos/rails/rails/issues{/number}","pulls_url":"https://api.github.com/repos/rails/rails/pulls{/number}","milestones_url":"https://api.github.com/repos/rails/rails/milestones{/number}","notifications_url":"https://api.github.com/repos/rails/rails/notifications{?since,all,participating}","labels_url":"https://api.github.com/repos/rails/rails/labels{/name}","releases_url":"https://api.github.com/repos/rails/rails/releases{/id}","deployments_url":"https://api.github.com/repos/rails/rails/deployments","created_at":"2008-04-11T02:19:47Z","updated_at":"2022-09-20T12:14:03Z","pushed_at":"2022-09-20T12:18:30Z","git_url":"git://github.com/rails/rails.git","ssh_url":"git@github.com:rails/rails.git","clone_url":"https://github.com/rails/rails.git","svn_url":"https://github.com/rails/rails","homepage":"https://rubyonrails.org","size":250233,"stargazers_count":51449,"watchers_count":51449,"language":"Ruby","has_issues":true,"has_projects":true,"has_downloads":true,"has_wiki":false,"has_pages":false,"forks_count":20618,"mirror_url":null,"archived":false,"disabled":false,"open_issues_count":654,"license":{"key":"mit","name":"MIT
         License","spdx_id":"MIT","url":"https://api.github.com/licenses/mit","node_id":"MDc6TGljZW5zZTEz"},"allow_forking":true,"is_template":false,"web_commit_signoff_required":false,"topics":["activejob","activerecord","framework","html","mvc","rails","ruby"],"visibility":"public","forks":20618,"open_issues":654,"watchers":51449,"default_branch":"main","temp_clone_token":null,"organization":{"login":"rails","id":4223,"node_id":"MDEyOk9yZ2FuaXphdGlvbjQyMjM=","avatar_url":"https://avatars.githubusercontent.com/u/4223?v=4","gravatar_id":"","url":"https://api.github.com/users/rails","html_url":"https://github.com/rails","followers_url":"https://api.github.com/users/rails/followers","following_url":"https://api.github.com/users/rails/following{/other_user}","gists_url":"https://api.github.com/users/rails/gists{/gist_id}","starred_url":"https://api.github.com/users/rails/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/rails/subscriptions","organizations_url":"https://api.github.com/users/rails/orgs","repos_url":"https://api.github.com/users/rails/repos","events_url":"https://api.github.com/users/rails/events{/privacy}","received_events_url":"https://api.github.com/users/rails/received_events","type":"Organization","site_admin":false},"network_count":20618,"subscribers_count":2387}'
   recorded_at: Tue, 21 Sep 2022 17:25:35 GMT
+- request:
+    method: post
+    uri: http://vcrlocalhost.org:5008/api/projects.json
+    body:
+      encoding: US-ASCII
+      string: name=Dummytestdata&repo_url=https%3A%2F%2Fgithub.com%2Frails%2Frails&user_id=e1dc08285095f4ff99199c3436532768&language=JAVA
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+      Host:
+      - vcrlocalhost.org:5008
+      Content-Type:
+      - application/x-www-form-urlencoded
+  response:
+    status:
+      code: 201
+      message: success
+    headers:
+      Date:
+      - Tue, 14 Mar 2023 11:09:01 GMT
+      Content-Type:
+      - text/plain
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      X-Request-Id:
+      - 83ba289fe76f4ed9a882a2a823be6d87
+      X-Runtime:
+      - '0.006584'
+      X-Powered-By:
+      - Phusion Passenger 5.0.30
+      Status:
+      - 201
+      Strict-Transport-Security:
+      - max-age=15724800; includeSubDomains
+      Set-Cookie:
+      - incap_ses_1559_941207=QCvHB5yXehqCVRkBiK6iFc1VEGQAAAAA7G/+9TvEcxaAWzmLbgQZBg==;
+        path=/; Domain=.coverity.com
+      - nlbi_941207=bJ7MAhEsdhG1ODi7vBlnAwAAAAA3GPUJcWfVnLBF6Cb2d22Z; path=/; Domain=.coverity.com
+      - visid_incap_941207=QJfhtfo9QgiltzVrch2GzcxVEGQAAAAAQUIPAAAAAAD7Vbp21tN9wMYyJIC789MH;
+        expires=Tue, 12 Mar 2024 15:15:25 GMT; HttpOnly; path=/; Domain=.coverity.com
+      X-Cdn:
+      - Imperva
+      X-Iinfo:
+      - 12-49168636-49168647 NNYN CT(229 230 0) RT(1678792140667 100) q(0 0 5 5) r(7
+        7) U24
+    body:
+      encoding: ASCII-8BIT
+      string: '{"scan_project_id": 1 }'
+  recorded_at: Tue, 14 Mar 2023 11:09:02 GMT
 recorded_with: VCR 6.0.0

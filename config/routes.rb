@@ -493,7 +493,11 @@ Rails.application.routes.draw do
         post 'enlist'
       end
       resources :jwt, only: [:create]
-      resources :projects, only: [:create]
+      resources :projects, only: [:create] do
+        member do
+          post :create_scan_project
+        end
+      end
     end
   end
 
