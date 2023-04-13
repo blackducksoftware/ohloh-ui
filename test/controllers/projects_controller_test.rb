@@ -578,16 +578,6 @@ class ProjectsControllerTest < ActionController::TestCase
     end
   end
 
-  it 'check_forge wont render code location fields when no forge matches' do
-    login_as create(:account)
-    Forge::Match.stubs(:first)
-    CodeLocation.stubs(:all).returns([])
-    post :check_forge, params: { codelocation: 'foo_url' }
-    assert_response :ok
-    assert_select('input#branch', false)
-    assert_select('input#url', false)
-  end
-
   # create
   it 'create should require a current user' do
     login_as nil

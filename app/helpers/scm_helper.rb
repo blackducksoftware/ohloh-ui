@@ -6,7 +6,7 @@ module ScmHelper
                      Mercurial: 'hg', Bazaar: 'bzr' }
 
     current_selection = 'svn_sync' if scm_type.to_s == 'svn'
-    current_selection ||= scm_type || 'svn_sync'
+    current_selection ||= scm_type || 'git'
     options_for_select(options_hash, current_selection.to_s)
   end
 end
