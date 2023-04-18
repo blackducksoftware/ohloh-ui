@@ -4,7 +4,7 @@
       .modal-body.bdsa_disclaimer
         = check_box_tag 'bdsa_disclaimer_check', 0, false
         Yes, I have read the&nbsp
-        = link_to "API & Data License Agreement", asset_url("docs/API_License_Agreement.docx"), download: 'API_License_Agreement.docx'
+        = link_to "API & Data License Agreement", asset_url("docs/API_License_Agreement.pdf"), download: 'API_License_Agreement.pdf'
         &nbspand accept it.
       .modal-footer
         = button_tag 'Continue', type: 'reset', disabled: true, class: 'btn btn-default bdsa_disclaimer_accept'
