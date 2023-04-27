@@ -159,8 +159,9 @@ GEM
       activerecord (>= 5.a)
       database_cleaner-core (~> 2.0.0)
     database_cleaner-core (2.0.1)
-    datadog_api_client (1.5.0)
-      typhoeus (~> 1.0, >= 1.0.1)
+    datadog_api_client (2.10.0)
+      httparty (~> 0.20, >= 0.20.0)
+      zeitwerk (~> 2.6, >= 2.6.0)
     ddtrace (0.54.2)
       debase-ruby_core_source (<= 0.10.14)
       msgpack
@@ -177,8 +178,6 @@ GEM
       activemodel
     erubi (1.10.0)
     erubis (2.7.0)
-    ethon (0.15.0)
-      ffi (>= 1.15.0)
     execjs (2.8.1)
     factory_bot (6.2.0)
       activesupport (>= 5.0.0)
@@ -190,7 +189,7 @@ GEM
     feedjira (3.2.0)
       loofah (>= 2.3.1)
       sax-machine (>= 1.0)
-    ffi (1.15.4)
+    ffi (1.15.5)
     ffi-compiler (1.0.1)
       ffi (>= 1.0.0)
       rake
@@ -225,6 +224,9 @@ GEM
       haml (>= 4.0, < 6)
       nokogiri (>= 1.6.0)
       ruby_parser (~> 3.5)
+    httparty (0.21.0)
+      mini_mime (>= 1.0.0)
+      multi_xml (>= 0.5.2)
     i18n (1.12.0)
       concurrent-ruby (~> 1.0)
     inherited_resources (1.13.1)
@@ -292,6 +294,7 @@ GEM
       railties (>= 4.1)
     mocha (1.13.0)
     msgpack (1.4.2)
+    multi_xml (0.6.0)
     net-scp (3.0.0)
       net-ssh (>= 2.6.5, < 7.0.0)
     net-ssh (6.1.0)
@@ -455,8 +458,6 @@ GEM
       execjs (>= 2.2.2, >= 2.2)
       less-rails (>= 2.5.0)
       railties (>= 3.1)
-    typhoeus (1.4.0)
-      ethon (>= 0.9.0)
     tzinfo (1.2.10)
       thread_safe (~> 0.1)
     uglifier (4.2.0)
@@ -475,6 +476,7 @@ GEM
     will_paginate (3.3.1)
     will_paginate-bootstrap (1.0.2)
       will_paginate (>= 3.0.3)
+    zeitwerk (2.6.7)
 
 PLATFORMS
   ruby
