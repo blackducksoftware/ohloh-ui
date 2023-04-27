@@ -2,6 +2,9 @@
   .modal-dialog.modal-dialog-centered{:role => "document"}
     .modal-content
       .modal-body.bdsa_disclaimer
-        BDSA Legal disclaimer.
+        = check_box_tag 'bdsa_disclaimer_check', 0, false
+        Yes, I have read the&nbsp
+        = link_to "API & Data License Agreement", asset_url("docs/API_License_Agreement.pdf"), download: 'API_License_Agreement.pdf'
+        &nbspand accept it.
       .modal-footer
-        = link_to 'Agree', 'javascript: void();', class: 'btn btn-default bdsa_disclaimer_accept'
+        = button_tag 'Continue', type: 'reset', disabled: true, class: 'btn btn-default bdsa_disclaimer_accept'
