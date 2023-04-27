@@ -77,6 +77,7 @@ group :test do
 end
 
 group :development, :test do
+  gem 'bunny-mock'
   gem 'byebug'
   gem 'database_cleaner'
   gem 'factory_bot_rails'

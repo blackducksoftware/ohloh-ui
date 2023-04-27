@@ -79,6 +79,12 @@ class ActiveSupport::TestCase
     klass.const_set(const, old)
   end
 
+  def mock_bunny
+    bunny_mock = BunnyMock.new
+    Bunny.stubs(:new).returns(bunny_mock)
+    bunny_mock.start
+  end
+
   private
 
   def controller_login_as(account)
