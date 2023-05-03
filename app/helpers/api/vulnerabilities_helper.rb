@@ -64,4 +64,10 @@ module Api::VulnerabilitiesHelper
       'POC' => 'fa-arrow-circle-up',
       'OTHER' => 'fa-list' }
   end
+
+  def cvss_calculator_link(vector)
+    version = vector.match(/\d.\d/)
+    _cvss_text, vector_info = vector.split("#{version[0]}/")
+    "https://nvd.nist.gov/vuln-metrics/cvss/v3-calculator?vector=#{vector_info}&version=#{version[0]}"
+  end
 end
