@@ -157,6 +157,17 @@ class EditsControllerTest < ActionController::TestCase
       assert_select "#edit_#{PropertyEdit.where(target: @project, value: 'Blah!').first.id}", true
       assert_select "#edit_#{PropertyEdit.where(target: @project, value: 'Wat?').first.id}", false
     end
+
+    it 'must handle null undoer record' do
+      login_as @account
+      @project.editor_account = @account
+      @project.update(name: 'Wat?')
+      @account.edits.last.undo!(@account)
+      @account.edits.last.update!(undone_by: nil) # occurs when undoer account is deleted.
+      get :index, params: { account_id: @account.to_param }
+      assert_response :ok
+      assert_select "#edit_#{PropertyEdit.where(target: @project, value: 'Wat?').first.id}", true
+    end
   end
 
   describe 'license edits pages' do
