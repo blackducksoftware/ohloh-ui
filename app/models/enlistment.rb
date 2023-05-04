@@ -30,7 +30,7 @@ class Enlistment < ApplicationRecord
   # scope :with_repo_url, ->(url) { joins(code_location: :repository).where(Repository.arel_table[:url].eq(url)) }
   scope :by_last_update, lambda {
     joins('left join code_sets on code_sets.id = code_locations.best_code_set_id')
-      .order('code_sets.updated_on DESC')
+      .order('code_sets.updated_on ASC')
   }
   scope :by_update_status, lambda {
     joins('left join fis.jobs on jobs.code_location_id = enlistments.code_location_id')
