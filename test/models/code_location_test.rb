@@ -42,7 +42,6 @@ class CodeLocationTest < ActiveSupport::TestCase
     end
 
     it 'must be false when there is a scheduled job' do
-      create(:complete_job, code_location_id: code_location.id)
       create(:fetch_job, code_location_id: code_location.id)
       _(code_location.failed?).must_equal false
     end
@@ -78,44 +77,6 @@ class CodeLocationTest < ActiveSupport::TestCase
 
       _(code_location.jobs.count).must_equal 0
       _(code_location.ensure_job.class).must_equal ImportJob
-    end
-  end
-
-  describe 'schedule_fetch' do
-    it 'should create complete job' do
-      code_set = create(:code_set)
-      code_location.best_code_set_id = code_set.id
-      clear_jobs
-      _(code_location.jobs.count).must_equal 0
-      code_location.schedule_fetch
-      _(code_location.jobs.count).must_equal 1
-      _(code_location.jobs.first.class).must_equal CompleteJob
-    end
-
-    it 'should set the code_location.do_not_fetch to false' do
-      ApiAccess.stubs(:available?).returns(true)
-      Enlistment.any_instance.stubs(:ensure_forge_and_job)
-      enlistment = create_enlistment_with_code_location
-      WebMocker.get_code_location
-      code_location = enlistment.code_location
-      code_location.stubs(:best_code_set).returns(CodeSet.new)
-      code_location.do_not_fetch = true
-      clear_jobs
-      _(code_location.jobs.count).must_equal 0
-      VCR.use_cassette('code_location_update_do_not_fetch', erb: { id: code_location.id }) do
-        code_location.schedule_fetch
-      end
-      _(code_location.do_not_fetch).must_equal false
-    end
-
-    it 'should schedule a complete job even if there is a failed TarballJob' do
-      code_set = create(:code_set)
-      code_location.best_code_set_id = code_set.id
-      clear_jobs
-      create(:failed_tarball_job, code_location_id: code_location.id, code_set: code_location.best_code_set)
-      _(code_location.jobs.count).must_equal 1
-      code_location.schedule_fetch
-      _(code_location.jobs.count).must_equal 2
     end
   end
 

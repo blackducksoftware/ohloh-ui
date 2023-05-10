@@ -20,20 +20,16 @@ FactoryBot.define do
     type { 'SlocJob' }
   end
 
-  factory :complete_job, parent: :fis_job, class: :CompleteJob do
-    type { 'CompleteJob' }
-  end
-
-  factory :organization_job, parent: :job, class: :OrganizationJob do
-    type { 'OrganizationJob' }
+  factory :organization_analysis_job, parent: :job, class: :OrganizationAnalysisJob do
+    type { 'OrganizationAnalysisJob' }
   end
 
   factory :account_analysis_job, parent: :job, class: :AccountAnalysisJob do
     type { 'AccountAnalysisJob' }
   end
 
-  factory :failed_job, parent: :fis_job, class: :CompleteJob do
-    type { 'CompleteJob' }
+  factory :failed_job, parent: :fis_job, class: :FetchJob do
+    type { 'FetchJob' }
     status { Job::STATUS_FAILED }
   end
 

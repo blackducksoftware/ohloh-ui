@@ -17,7 +17,7 @@ end
 
 if job.organization_id
   span "Organization: #{job.organization.vanity_url}"
-  span link_to '(Jobs)', admin_organization_jobs_path(organization_id: job.organization.vanity_url)
+  span link_to '(Jobs)', admin_organization_analysis_jobs_path(organization_id: job.organization.vanity_url)
 end
 
 para ''

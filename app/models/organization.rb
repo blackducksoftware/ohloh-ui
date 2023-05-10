@@ -18,7 +18,7 @@ class Organization < ApplicationRecord
   has_many :manages, -> { where(deleted_at: nil, deleted_by: nil) }, as: 'target'
   has_many :managers, through: :manages, source: :account
   has_many :jobs
-  has_many :organization_jobs
+  has_many :organization_analysis_jobs
 
   validates :name, presence: true, length: 3..85, allow_blank: true,
                    format: { without: Patterns::BAD_NAME }

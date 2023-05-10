@@ -526,8 +526,8 @@ class AccountTest < ActiveSupport::TestCase
     Job.delete_all
     account.destroy
 
-    _(OrganizationJob.count).must_equal 1
-    _(OrganizationJob.first.organization_id).must_equal organization.id
+    _(OrganizationAnalysisJob.count).must_equal 1
+    _(OrganizationAnalysisJob.first.organization_id).must_equal organization.id
   end
 
   it 'must create 2 organization jobs for a change in organization_id' do
@@ -537,7 +537,7 @@ class AccountTest < ActiveSupport::TestCase
     Job.delete_all
     account.update!(organization_id: create(:organization).id)
 
-    _(OrganizationJob.count).must_equal 2
+    _(OrganizationAnalysisJob.count).must_equal 2
   end
 
   describe 'kudo_rank' do
