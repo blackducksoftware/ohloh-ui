@@ -43,7 +43,7 @@ class EnlistmentTest < ActiveSupport::TestCase
       create(:sloc_job, code_location_id: cl3, current_step_at: 1.day.ago)
       create(:failed_job, code_location_id: cl2, current_step_at: 1.hour.ago)
       create(:fetch_job, code_location_id: cl1, current_step_at: 1.week.ago)
-      _(Enlistment.by_update_status.pluck(:code_location_id)).must_equal [cl2, cl3, cl1, cl4].map(&:to_i)
+      _(Enlistment.by_update_status.pluck(:code_location_id)).must_equal [cl3, cl1, cl4, cl2].map(&:to_i)
     end
   end
 

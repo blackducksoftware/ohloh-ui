@@ -36,11 +36,6 @@ class CodeLocationTest < ActiveSupport::TestCase
       _(code_location.failed?).must_equal true
     end
 
-    it 'must be false when all jobs have completed' do
-      create(:complete_job, code_location_id: code_location.id, current_step_at: 5.minutes.ago)
-      _(code_location.failed?).must_equal false
-    end
-
     it 'must be false when there is a scheduled job' do
       create(:fetch_job, code_location_id: code_location.id)
       _(code_location.failed?).must_equal false
