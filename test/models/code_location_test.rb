@@ -73,6 +73,19 @@ class CodeLocationTest < ActiveSupport::TestCase
       _(code_location.jobs.count).must_equal 0
       _(code_location.ensure_job.class).must_equal ImportJob
     end
+
+    it 'should set the code_location.do_not_fetch to false' do
+      code_set = create(:code_set)
+      code_location.best_code_set_id = code_set.id
+      code_location.do_not_fetch = true
+      _(code_location.jobs.count).must_equal 0
+      _(code_location.do_not_fetch).must_equal true
+
+      VCR.use_cassette('code_location_update_do_not_fetch', erb: { id: code_location.id }) do
+        _(code_location.ensure_job.class).must_equal ImportJob
+        _(code_location.do_not_fetch).must_equal false
+      end
+    end
   end
 
   private

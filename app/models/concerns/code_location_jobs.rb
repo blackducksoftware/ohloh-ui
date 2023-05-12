@@ -30,13 +30,6 @@ module CodeLocationJobs
 
     private
 
-    def any_incomplete_or_recent?
-      jobs = best_code_set.jobs.incomplete_or_since(Time.current - 5.minutes)
-      # Filter out TarballJobs
-      jobs = jobs.to_a.delete_if { |j| j.type == 'TarballJob' }
-      jobs.present?
-    end
-
     def create_fetch_job(priority)
       cs = CodeSet.create(code_location_id: @id)
       FetchJob.create(code_set: cs, priority: priority)
