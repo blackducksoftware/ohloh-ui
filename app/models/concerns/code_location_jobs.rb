@@ -11,18 +11,12 @@ module CodeLocationJobs
         return job if job
 
         # NOTE: PDP 2018-02-01 This method doesn't schedule a Fetch or Complete if the CL
-        # hasn't been updated recently.  It should create a CompleteJob if there isn't one scheduled
+        # hasn't been updated recently.  It should create a FetchJob if there isn't one scheduled
         # However, it creates a FetchJob only if there is no best_code_set. How does this ensure a CL is updated?
         job = create_fetch_job(priority) unless best_code_set_id
         job = create_import_or_sloc_jobs(priority) if best_code_set_id
       end
       job
-    end
-
-    def schedule_fetch
-      return ensure_job unless best_code_set
-
-      create_complete_job
     end
 
     def remove_pending_jobs
@@ -35,19 +29,6 @@ module CodeLocationJobs
     end
 
     private
-
-    def create_complete_job
-      return if any_incomplete_or_recent?
-
-      create_job(CompleteJob, code_location_id: @id, code_set_id: best_code_set_id)
-    end
-
-    def any_incomplete_or_recent?
-      jobs = best_code_set.jobs.incomplete_or_since(Time.current - 5.minutes)
-      # Filter out TarballJobs
-      jobs = jobs.to_a.delete_if { |j| j.type == 'TarballJob' }
-      jobs.present?
-    end
 
     def create_fetch_job(priority)
       cs = CodeSet.create(code_location_id: @id)

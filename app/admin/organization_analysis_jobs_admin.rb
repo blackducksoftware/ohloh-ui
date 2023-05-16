@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-ActiveAdmin.register OrganizationJob do
+ActiveAdmin.register OrganizationAnalysisJob do
   menu false
   belongs_to :organization, finder: :find_by_vanity_url!, optional: true
   config.sort_order = 'current_step_at_desc'

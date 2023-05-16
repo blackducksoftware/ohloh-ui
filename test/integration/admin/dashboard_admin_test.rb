@@ -18,7 +18,7 @@ class DashboardAdminTest < ActionDispatch::IntegrationTest
   end
 
   it 'renders the dashboard when a job is newly running but current_step_at has not been updated' do
-    create(:complete_job, status: Job::STATUS_RUNNING, current_step_at: nil)
+    create(:fetch_job, status: Job::STATUS_RUNNING, current_step_at: nil)
     get oh_admin_root_path
     assert_response :ok
   end

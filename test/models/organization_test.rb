@@ -126,36 +126,36 @@ class OrganizationTest < ActiveSupport::TestCase
   describe 'jobs' do
     it 'ensure_job should not schedule organization job if there is a job already scheduled' do
       Job.delete_all
-      assert_equal 0, OrganizationJob.count
-      OrganizationJob.create(organization: org, wait_until: Time.current.utc + 6.hours)
+      assert_equal 0, OrganizationAnalysisJob.count
+      OrganizationAnalysisJob.create(organization: org, wait_until: Time.current.utc + 6.hours)
       org.ensure_job
-      assert_equal 1, OrganizationJob.count
+      assert_equal 1, OrganizationAnalysisJob.count
     end
 
     it 'should create a job if job not exist?' do
-      assert_difference 'OrganizationJob.count', 1 do
+      assert_difference 'OrganizationAnalysisJob.count', 1 do
         org.ensure_job
       end
     end
 
     it 'schedule_analysis should schedule organization job successfully' do
       Job.delete_all
-      assert_equal 0, OrganizationJob.count
+      assert_equal 0, OrganizationAnalysisJob.count
       org.schedule_analysis
-      assert_equal 1, OrganizationJob.count
+      assert_equal 1, OrganizationAnalysisJob.count
     end
 
     it 'schedule_analysis should not schedule organization job if there is a job already scheduled' do
       Job.delete_all
-      OrganizationJob.create(organization: org, wait_until: Time.current.utc + 6.hours)
+      OrganizationAnalysisJob.create(organization: org, wait_until: Time.current.utc + 6.hours)
       org.schedule_analysis
-      assert_equal 1, OrganizationJob.count
+      assert_equal 1, OrganizationAnalysisJob.count
     end
 
     it 'changing org_type should schedule an organization job' do
       Job.delete_all
       org.update_attribute(:org_type, 3)
-      assert_equal 1, OrganizationJob.count
+      assert_equal 1, OrganizationAnalysisJob.count
     end
 
     it 'changing other org attrs like name, description should not schedule an organization job' do
@@ -163,14 +163,14 @@ class OrganizationTest < ActiveSupport::TestCase
       org_hash = { name: 'New name', vanity_url: 'url name', description: 'Desc1', homepage_url: '/org/new' }
       org_hash.each do |att, val|
         org.update_attribute(att, val)
-        assert_equal 0, OrganizationJob.count
+        assert_equal 0, OrganizationAnalysisJob.count
       end
     end
 
     it 'change in org deleted status should schedule an org job' do
       Job.delete_all
       org.update_attribute(:deleted, true)
-      assert_equal 1, OrganizationJob.count
+      assert_equal 1, OrganizationAnalysisJob.count
     end
   end
 

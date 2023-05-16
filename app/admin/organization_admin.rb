@@ -17,7 +17,7 @@ ActiveAdmin.register Organization do
   end
 
   action_item :jobs, only: :show do
-    link_to 'Jobs', admin_organization_jobs_path(organization)
+    link_to 'Jobs', admin_organization_analysis_jobs_path(organization)
   end
 
   index do
@@ -30,7 +30,7 @@ ActiveAdmin.register Organization do
     column :updated_at
     column :projects_count
     actions do |organization|
-      link_to 'Jobs', admin_organization_jobs_path(organization)
+      link_to 'Jobs', admin_organization_analysis_jobs_path(organization)
     end
   end
 end
