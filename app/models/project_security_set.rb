@@ -30,7 +30,8 @@ class ProjectSecuritySet < ApplicationRecord
     condition = "where R.project_security_set_id = #{id}"
     condition += " AND R.id IN(#{release_ids.join(',')})" if release_ids.present?
     non_bdsa_query = " AND (V.cve_id not like 'BDSA%' OR V.cve_id is null)"
-    bdsa_query = " AND V.cve_id like 'BDSA%' AND NOT (EXISTS (SELECT 1 FROM cve_bdsa where bdsa_id=V.cve_id))"
+    bdsa_query = " AND V.cve_id like 'BDSA%' AND NOT (EXISTS (SELECT 1
+    FROM cve_bdsa where bdsa_id=V.cve_id and cve_bdsa.cve_id IN ('#{vulnerabilities.pluck(:cve_id).join("','")}') ))"
     condition += non_bdsa_query unless bdsa_visible
     sql = <<-SQL.squish
       select R.id, R.version, R.released_on, sum (case when V.severity = 0 #{non_bdsa_query} then 1 else 0 end) low,
