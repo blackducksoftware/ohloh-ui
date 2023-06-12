@@ -3,5 +3,5 @@
 return unless Rails.env.production? || Rails.env.staging?
 
 Datadog.configure do |c|
-  c.use :rails
+  c.tracing.instrument :rails
 end
