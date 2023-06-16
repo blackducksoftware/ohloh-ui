@@ -104,15 +104,15 @@ class DuplicateTest < ActiveSupport::TestCase
         ApiAccess.stubs(:available?).returns(true)
         Enlistment.any_instance.stubs(:ensure_forge_and_job)
         Enlistment.any_instance.stubs(:update_subscription)
-        unmocked_create_enlistment_with_code_location(good_project)
+        good_enlistment = unmocked_create_enlistment_with_code_location(good_project)
         bad_enlistment1 = unmocked_create_enlistment_with_code_location(bad_project)
         bad_enlistment2 = unmocked_create_enlistment_with_code_location(bad_project)
-        code_location_id = bad_enlistment2.code_location_id
+        good_code_location = good_enlistment.code_location_id
         create(:duplicate, good_project: good_project, bad_project: bad_project).resolve!(create(:admin))
 
         _(bad_enlistment1.reload.deleted).must_equal true
         _(bad_enlistment2.reload.deleted).must_equal true
-        _(Enlistment.where(project: good_project, code_location_id: code_location_id).count).must_equal 1
+        _(Enlistment.where(project: good_project, code_location_id: good_code_location).count).must_equal 1
       end
     end
 
