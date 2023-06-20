@@ -19,7 +19,7 @@ class Project < ApplicationRecord
   acts_as_protected
   acts_as_taggable
   link_accessors accessors: { url: :Homepage, download_url: :Download }
-
+  # rubocop:disable Style/MultilineIfModifier
   validates :name, presence: true, length: 1..100, allow_nil: false, uniqueness: { case_sensitive: false },
                    format: { without: Patterns::BAD_NAME } unless ENV['NO_VALID']
   validates :vanity_url, presence: true, length: 1..60, allow_nil: false, uniqueness: { case_sensitive: false },
@@ -28,6 +28,7 @@ class Project < ApplicationRecord
   validates_each :url, :download_url, allow_blank: true do |record, field, value|
     record.errors.add(field, I18n.t(:not_a_valid_url)) unless ENV['NO_VALID'] || value.blank? || value.valid_http_url?
   end
+  # rubocop:enable Style/MultilineIfModifier
   validates :enlistments, presence: true unless ENV['NO_VALID'] || Rails.env.test?
 
   before_validation :clean_strings_and_urls
