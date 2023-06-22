@@ -12,7 +12,7 @@ class Enlistment < ApplicationRecord
 
   before_save :save_code_location, if: -> { @nested_code_location }
   after_update :update_subscription, if: :saved_change_to_deleted?
-  after_save :ensure_forge_and_job
+  after_save :ensure_forge_and_job, unless: :deleted?
 
   acts_as_editable editable_attributes: [:ignore]
   acts_as_protected parent: :project
