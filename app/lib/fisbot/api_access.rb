@@ -3,10 +3,11 @@
 require 'resolv'
 
 class ApiAccess
-  cattr_accessor :fis_ip_url
+  cattr_accessor :fis_ip_url, :uptime_verified_time
 
   URL = ENV['FISBOT_API_URL']
   KEY = ENV['FISBOT_CLIENT_REGISTRATION_ID']
+  CACHE_DURATION = ENV['FISBOT_API_VERIFY_CACHE_MINS'].to_i.minutes
 
   def initialize(resource)
     @resource = resource
@@ -28,6 +29,8 @@ class ApiAccess
     end
 
     def available?
+      return true unless uptime_check_expired?
+
       uri = URI("#{fisbot_resolved_url}/health")
       response = Net::HTTP.get_response(uri)
       response.code == '200'
@@ -40,20 +43,27 @@ class ApiAccess
 
     def fisbot_resolved_url
       return URL if Rails.env.development? || Rails.env.test?
-      return fis_ip_url if fis_ip_url && fis_ip_accessible?
+
+      reset_cache_data if uptime_check_expired?
+      fis_ip_url || set_fis_ip_url
+    end
+
+    def reset_cache_data
+      self.uptime_verified_time = nil
+      self.fis_ip_url = nil
+    end
+
+    def uptime_check_expired?
+      return true unless uptime_verified_time
+
+      Time.current - uptime_verified_time > CACHE_DURATION
+    end
+
+    def set_fis_ip_url
+      self.uptime_verified_time = Time.current
 
       fis_ip_addr = resolve_hostname(URL)
       self.fis_ip_url = "http://#{fis_ip_addr}"
-    end
-
-    def fis_ip_accessible?
-      uri = URI(fis_ip_url)
-      Timeout.timeout(5) do
-        response = Net::HTTP.get_response(uri)
-        response.code == '200'
-      end
-    rescue Timeout::Error => _e
-      false
     end
 
     def resolve_hostname(url)
