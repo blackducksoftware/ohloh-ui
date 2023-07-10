@@ -21,8 +21,9 @@ class Api::V1::KnowledgeBaseStatusController < ApplicationController
   private
 
   def display_kb_message(exchange)
-    kb = KnowledgeBaseStatus.where(project_id: params[:project_id]).first_or_initialize
+    kb = KnowledgeBaseStatus.find_by(project_id: params[:project_id])
     exchange.publish(kb.json_message, key: ENV['KB_EXCHANGE_KEY'])
+    kb.update_attributes(in_sync: true, updated_at: Time.now.utc)
     render json: { message: I18n.t(:kb_message, project_id: kb.project_id) }, status: :ok
   end
 end
