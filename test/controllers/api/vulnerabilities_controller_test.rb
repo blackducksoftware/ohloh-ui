@@ -9,7 +9,7 @@ class Api::VulnerabilitiesControllerTest < ActionDispatch::IntegrationTest
 
   it 'must render the BDSA page' do
     VCR.use_cassette('vulnerabilities') do
-      get '/vulnerabilities/bdsa/1'
+      get '/vulnerabilities/bdsa/BDSA-1900-0001'
       assert_response :success
       _(response.body).must_match 'Severity'
       _(response.body).must_match 'CVE'
@@ -19,7 +19,7 @@ class Api::VulnerabilitiesControllerTest < ActionDispatch::IntegrationTest
 
   it 'must not render if unsuccessful' do
     VCR.use_cassette('vulnerabilities') do
-      get '/vulnerabilities/bdsa/2'
+      get '/vulnerabilities/bdsa/BDSA-1900-0002'
       assert_response :success
       _(response.body).must_match 'No matching results found'
     end
@@ -33,7 +33,7 @@ class Api::VulnerabilitiesControllerTest < ActionDispatch::IntegrationTest
 
   it 'must render page without CVE' do
     VCR.use_cassette('vulnerabilities') do
-      get '/vulnerabilities/bdsa/2'
+      get '/vulnerabilities/bdsa/BDSA-1900-0002'
       assert_response :success
       _(response.body).wont_match 'CVE'
     end
@@ -41,7 +41,7 @@ class Api::VulnerabilitiesControllerTest < ActionDispatch::IntegrationTest
 
   it 'must render page along with references' do
     VCR.use_cassette('vulnerabilities') do
-      get '/vulnerabilities/bdsa/3'
+      get '/vulnerabilities/bdsa/BDSA-1900-0003'
       assert_response :success
       _(response.body).must_match 'References'
     end
@@ -50,7 +50,7 @@ class Api::VulnerabilitiesControllerTest < ActionDispatch::IntegrationTest
   it 'must not render data if disclaimer is not accepted' do
     cookies.delete('bdsa_cookie_disclaimer')
     VCR.use_cassette('vulnerabilities') do
-      get '/vulnerabilities/bdsa/1'
+      get '/vulnerabilities/bdsa/BDSA-1900-0001'
       assert_response :success
       _(response.body).wont_match 'CVE'
       _(response.body).must_match 'Agree'
