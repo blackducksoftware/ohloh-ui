@@ -87,7 +87,7 @@ end
 
 group :production, :staging do
   gem 'activerecord-nulldb-adapter', require: false
-  gem 'ddtrace', require: 'ddtrace/auto_instrument'
+  gem 'ddtrace'
 end
 
 group :development, :staging do
