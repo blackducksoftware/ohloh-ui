@@ -2,6 +2,7 @@
 
 class Api::VulnerabilitiesController < ApplicationController
   skip_before_action :verify_authenticity_token
+  before_action :valid_bdsa_id, only: :show
 
   layout 'vulnerability'
 
@@ -40,5 +41,9 @@ class Api::VulnerabilitiesController < ApplicationController
 
     code, response = Api.get_response(@cve_data['href'])
     response['cvss3'] if code == '200'
+  end
+
+  def valid_bdsa_id
+    return render 'no_data' unless params[:id].match(/^BDSA-(19|[2-9][0-9])\d{2}-\d{4}$/)
   end
 end

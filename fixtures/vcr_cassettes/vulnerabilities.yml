@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: https://vcrlocalhost/bdsa/1
+    uri: https://vcrlocalhost/bdsa/BDSA-1900-0001
     body:
       encoding: US-ASCII
       string: ''
@@ -86,7 +86,7 @@ http_interactions:
   recorded_at: Fri, 28 Sep 2018 11:29:30 GMT
 - request:
     method: get
-    uri: https://vcrlocalhost/bdsa/2
+    uri: https://vcrlocalhost/bdsa/BDSA-1900-0002
     body:
       encoding: US-ASCII
       string: ''
@@ -180,7 +180,7 @@ http_interactions:
   recorded_at: Fri, 13 Jan 2023 19:17:48 GMT
 - request:
     method: get
-    uri: https://vcrlocalhost/bdsa/2
+    uri: https://vcrlocalhost/bdsa/BDSA-1900-0002
     body:
       encoding: US-ASCII
       string: ''
@@ -264,7 +264,7 @@ http_interactions:
   recorded_at: Fri, 28 Sep 2018 11:29:30 GMT
 - request:
     method: get
-    uri: https://vcrlocalhost/bdsa/3
+    uri: https://vcrlocalhost/bdsa/BDSA-1900-0003
     body:
       encoding: US-ASCII
       string: ''
