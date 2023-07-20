@@ -55,6 +55,11 @@ module DashboardHelper
     Rails.cache.fetch('Admin-project-analyses-count-cache') || 0
   end
 
+  def without_analysis_projects_count
+    without_analysis_count = Project.active_enlistments.where(best_analysis_id: nil).distinct.size
+    number_to_percentage((without_analysis_count.to_f / active_projects_count) * 100, precision: 2)
+  end
+
   def project_count
     Rails.cache.fetch('Admin-project-count-cache') { Project.active.size }
   end

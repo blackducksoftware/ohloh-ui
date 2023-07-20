@@ -19,4 +19,5 @@ task admin_project_stats: :environment do
                                        .where(analyses: { updated_on: 2.weeks.ago..3.days.ago }).distinct.size
 
   Rails.cache.write('Admin-weeks-updated-project-count-cache', weeks_updated_project_count)
+  Rails.cache.write('Admin-active-project-count-cache') { Project.active_enlistments.distinct.size }
 end

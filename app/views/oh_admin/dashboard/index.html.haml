@@ -6,10 +6,11 @@
   project_titles  = ['Updated Analysis (in last hour)', 'Active Projects', 'Projects (with active Enlistment)',
                      'Projects with enlistments & Best Analysis (Updated within last 3 days)',
                      'Projects with enlistments & Best Analysis (Updated between last 2 weeks & 3 days ago)',
-                     'Projects with enlistments & Best Analysis (Not updated since 2 weeks)']
-  project_colors  = ['bg-aqua', 'bg-green', 'bg-light-blue-active', 'bg-green', 'bg-yellow', 'bg-red']
+                     'Projects with enlistments & Best Analysis (Not updated since 2 weeks)',
+                     'Project with enlistments & without Analysis']
+  project_colors  = ['bg-aqua', 'bg-green', 'bg-light-blue-active', 'bg-green', 'bg-yellow', 'bg-red', 'bg-gray-active']
   project_icons   = ['fa-area-chart', 'fa-bar-chart', 'fa-shield']
-  project_values  = [analyses_count, project_count, active_projects_count, days_projects_count,  weeks_projects_count, outdated_projects]
+  project_values  = [analyses_count, project_count, active_projects_count, days_projects_count,  weeks_projects_count, outdated_projects, without_analysis_projects_count]
 
   last_activity_icons = ['fa-calendar', 'fa-check-square', 'fa-server']
   last_activity_text  = ['Monthly Language Analysis', 'CII Projects', 'Deployment']
@@ -28,7 +29,7 @@
         .icon
           %i.fa{ class: project_icons[i] }
 .row
-  - 3.times do |i|
+  - 4.times do |i|
     - i += 3
     .col-lg-3.col-xs-6
       .small-box{ class: project_colors[i] }
