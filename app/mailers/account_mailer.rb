@@ -32,4 +32,9 @@ class AccountMailer < ApplicationMailer
     @account = account
     mail to: account.email, subject: t('.subject')
   end
+
+  def reset_password(account_id)
+    account = Account.find(account_id)
+    mail to: account.email, subject: 'OpenHub Password Change Notification'
+  end
 end

@@ -3,6 +3,9 @@
 require 'test_helper'
 
 describe AccountMailer do
+  let(:url_helpers) { Rails.application.routes.url_helpers }
+  let(:account)     { create(:account, activated_at: Time.current) }
+
   it '#signup_notification' do
     user = create(:account, activated_at: nil)
     before = ActionMailer::Base.deliveries.count
@@ -15,9 +18,7 @@ describe AccountMailer do
   end
 
   describe '#activation' do
-    let(:url_helpers)  { Rails.application.routes.url_helpers }
-    let(:account)      { create(:account, activated_at: Time.current) }
-    let(:mail)         { AccountMailer.activation(account) }
+    let(:mail) { AccountMailer.activation(account) }
 
     it 'should have the provided subject' do
       _(mail.subject).must_equal I18n.t('account_mailer.activation.subject')
@@ -39,6 +40,23 @@ describe AccountMailer do
       _(mail.body.encoded).must_match url_helpers.edit_account_url(account, host: ENV['URL_HOST'])
       _(mail.body.encoded).must_match url_helpers.new_account_position_url(account, host: ENV['URL_HOST'])
       _(mail.body.encoded).must_match url_helpers.root_url(host: ENV['URL_HOST'])
+    end
+  end
+
+  describe '#reset_password' do
+    let(:mail) { AccountMailer.reset_password(account.id) }
+
+    it 'should have the from address' do
+      _(mail.from).must_equal ['mailer@openhub.net']
+    end
+
+    it 'should have the receiver address' do
+      _(mail.to).must_equal [account.email]
+    end
+
+    it 'should have the content' do
+      _(mail.body.encoded).must_match url_helpers.root_url(host: ENV['URL_HOST'])
+      _(mail.body.encoded).must_match url_helpers.new_password_url(host: ENV['URL_HOST'])
     end
   end
 end

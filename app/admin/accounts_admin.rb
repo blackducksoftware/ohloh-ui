@@ -70,4 +70,18 @@ ActiveAdmin.register Account do
     end
     f.actions
   end
+
+  action_item :reset_password, only: :show do
+    link_to 'Reset Password',
+            reset_password_admin_account_path(params[:id])
+  end
+
+  member_action :reset_password do
+    account = Account.find_by(login: params[:id])
+    account.password = SecureRandom.hex(16)
+    account.save!
+    AccountMailer.reset_password(account.id).deliver
+    flash[:notice] = "Account #{account.email}'s password has been changed."
+    redirect_to admin_account_path(params[:id])
+  end
 end
