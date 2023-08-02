@@ -13,6 +13,6 @@ class Admin::AccountsControllerTest < ActionController::TestCase
   it 'should render index template' do
     get :reset_password, params: { id: account.login }
     assert_equal flash[:notice], "Account #{account.email}'s password has been changed."
-    must_redirect_to admin_account_path_path(account)
+    assert_redirected_to admin_account_path(account)
   end
 end
