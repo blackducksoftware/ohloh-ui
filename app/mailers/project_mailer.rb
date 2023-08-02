@@ -6,6 +6,6 @@ class ProjectMailer < ApplicationMailer
   def report_outdated(account, project)
     @account = account
     @project = project
-    mail to: 'info@openhub.net', from: account.email, subject: "#{@project.name} is outdated"
+    mail to: 'info@openhub.net', subject: "#{@project.name} is outdated"
   end
 end
