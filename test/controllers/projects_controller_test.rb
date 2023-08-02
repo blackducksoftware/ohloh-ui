@@ -1060,6 +1060,19 @@ class ProjectsControllerTest < ActionController::TestCase
       end
     end
   end
+
+  describe '#report_outdated' do
+    before do
+      login_as create(:account)
+    end
+
+    it 'must reported about outdated project' do
+      _(project.reported_at).must_equal nil
+      put :report_outdated, params: { id: project.id }
+      assert_equal flash[:notice], 'Thank you for reporting this issue. We will look into this matter at the earliest.'
+      _(project.reload.reported_at).wont_equal nil
+    end
+  end
 end
 
 # TODO: Remove dependence on code_locations and repositories when we remove Forge.
