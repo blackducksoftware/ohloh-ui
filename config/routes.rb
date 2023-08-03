@@ -205,6 +205,7 @@ Rails.application.routes.draw do
       put 'permissions'  => 'permissions#update', as: :update_permissions
       post 'rate'        => 'ratings#rate',       as: :rate
       delete 'unrate'    => 'ratings#unrate',     as: :unrate
+      put :report_outdated
     end
     collection do
       post :check_forge

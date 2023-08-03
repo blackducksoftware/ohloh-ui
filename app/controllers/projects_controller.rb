@@ -67,6 +67,15 @@ class ProjectsController < ApplicationController
     @similar_by_stacks = @project.related_by_stacks(10)
   end
 
+  def report_outdated
+    if @project.reported_at.blank?
+      @project.update!(reported_at: Time.current)
+      ProjectMailer.report_outdated(current_user, @project).deliver
+    end
+    flash[:notice] = t('.notification')
+    redirect_back(fallback_location: root_path)
+  end
+
   private
 
   def project_params

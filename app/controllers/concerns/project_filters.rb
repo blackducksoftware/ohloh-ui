@@ -9,7 +9,7 @@ module ProjectFilters
     before_action :find_projects, only: [:index]
     before_action :set_project_or_fail, :set_project_editor_account_to_current_user,
                   only: %i[show edit update estimated_cost users settings
-                           map similar_by_tags similar badges create_badge destroy_badge]
+                           map similar_by_tags similar badges create_badge destroy_badge report_outdated]
     before_action :redirect_new_landing_page, only: :index
     before_action :find_duplicate_projects, only: :check_forge
     before_action :project_context, only: %i[show users estimated_cost edit settings map similar update]

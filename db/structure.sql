@@ -2161,6 +2161,7 @@ CREATE TABLE oh.projects (
     uuid character varying,
     best_project_security_set_id integer,
     coverity_project_id integer,
+    reported_at timestamp without time zone,
     CONSTRAINT valid_missing_source CHECK (((missing_source IS NULL) OR (missing_source = 'not available'::text) OR (missing_source = 'not supported'::text)))
 );
 
@@ -19227,6 +19228,10 @@ INSERT INTO oh.schema_migrations (version) VALUES ('20220822144949');
 INSERT INTO oh.schema_migrations (version) VALUES ('20220913135438');
 
 INSERT INTO oh.schema_migrations (version) VALUES ('20230215030920');
+
+INSERT INTO oh.schema_migrations (version) VALUES ('20230320140846');
+
+INSERT INTO oh.schema_migrations (version) VALUES ('20230801115125');
 
 INSERT INTO oh.schema_migrations (version) VALUES ('21');
 
