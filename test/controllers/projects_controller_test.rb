@@ -1066,11 +1066,14 @@ class ProjectsControllerTest < ActionController::TestCase
       login_as create(:account)
     end
 
-    it 'must reported about outdated project' do
-      _(project.reported_at).must_equal nil
+    it 'must allow anyone to report outdated project' do
+      _(project.reported_at).must_be_nil
+      restrict_edits_to_managers(project)
+
       put :report_outdated, params: { id: project.id }
-      assert_equal flash[:notice], 'Thank you for reporting this issue. We will look into this matter at the earliest.'
-      _(project.reload.reported_at).wont_equal nil
+
+      _(flash[:notice]).must_equal I18n.t('projects.report_outdated.notification')
+      _(project.reload.reported_at).wont_be_nil
     end
   end
 end
