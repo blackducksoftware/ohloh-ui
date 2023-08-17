@@ -5467,6 +5467,34 @@ CREATE TABLE oh.countries (
     region text
 );
 
+--
+-- Name: cve_bdsa; Type: TABLE; Schema: oh; Owner: -
+--
+
+CREATE TABLE oh.cve_bdsa (
+    id bigint NOT NULL,
+    cve_id character varying,
+    bdsa_id character varying
+);
+
+
+--
+-- Name: cve_bdsa_id_seq; Type: SEQUENCE; Schema: oh; Owner: -
+--
+
+CREATE SEQUENCE oh.cve_bdsa_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: cve_bdsa_id_seq; Type: SEQUENCE OWNED BY; Schema: oh; Owner: -
+--
+
+ALTER SEQUENCE oh.cve_bdsa_id_seq OWNED BY oh.cve_bdsa.id;
 
 --
 -- Name: deleted_accounts; Type: TABLE; Schema: oh; Owner: -
@@ -9443,6 +9471,11 @@ ALTER TABLE ONLY oh.clumps ALTER COLUMN id SET DEFAULT nextval('oh.clumps_id_seq
 
 ALTER TABLE ONLY oh.code_location_scan ALTER COLUMN id SET DEFAULT nextval('oh.code_location_scan_id_seq'::regclass);
 
+--
+-- Name: cve_bdsa id; Type: DEFAULT; Schema: oh; Owner: -
+--
+
+ALTER TABLE ONLY oh.cve_bdsa ALTER COLUMN id SET DEFAULT nextval('oh.cve_bdsa_id_seq'::regclass);
 
 --
 -- Name: deleted_accounts id; Type: DEFAULT; Schema: oh; Owner: -
@@ -10281,6 +10314,12 @@ ALTER TABLE ONLY oh.clumps
 ALTER TABLE ONLY oh.code_location_scan
     ADD CONSTRAINT code_location_scan_pkey PRIMARY KEY (id);
 
+--
+-- Name: cve_bdsa cve_bdsa_pkey; Type: CONSTRAINT; Schema: oh; Owner: -
+--
+
+ALTER TABLE ONLY oh.cve_bdsa
+    ADD CONSTRAINT cve_bdsa_pkey PRIMARY KEY (id);
 
 --
 -- Name: deleted_accounts deleted_accounts_pkey; Type: CONSTRAINT; Schema: oh; Owner: -
@@ -19404,4 +19443,3 @@ INSERT INTO oh.schema_migrations (version) VALUES ('97');
 INSERT INTO oh.schema_migrations (version) VALUES ('98');
 
 INSERT INTO oh.schema_migrations (version) VALUES ('99');
-

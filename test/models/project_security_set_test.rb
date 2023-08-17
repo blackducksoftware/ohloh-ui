@@ -18,6 +18,7 @@ describe ProjectSecuritySet do
       release.vulnerabilities << create(:vulnerability, severity: 2)
       release.vulnerabilities << create(:vulnerability, severity: nil)
       release.vulnerabilities << create(:vulnerability, severity: nil)
+      release.vulnerabilities << create(:vulnerability, severity: 0, cve_id: 'BDSA-1')
     end
 
     it 'should return the count of vulnerabilities with low severity' do
@@ -34,6 +35,14 @@ describe ProjectSecuritySet do
 
     it 'should return the count of vulnerabilities with null severity' do
       _(release.project_security_set.release_history.last.unknown_severity).must_equal 2
+    end
+
+    it 'should not return the count of bdsa vulnerabilities if bdsa is not allowed' do
+      _(release.project_security_set.release_history.last.bdsa_low).must_equal 0
+    end
+
+    it 'should return the count of bdsa vulnerabilities if bdsa is allowed' do
+      _(release.project_security_set.release_history([], true).last.bdsa_low).must_equal 1
     end
   end
 end

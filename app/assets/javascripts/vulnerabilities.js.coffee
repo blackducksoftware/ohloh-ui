@@ -58,7 +58,6 @@
       $('.vulnerabilities-datatable').html(vulTable)
       $('.overlay-loader').hide()
 
-
 @updateSeverityFilter = (release) ->
   $('#vulnerability_filter_severity').prop('disabled', false)
   $.each ['low', 'medium', 'high', 'unknown_severity'], (index, severity) ->
@@ -71,6 +70,7 @@
       period: $('#vulnerability_filter_period').val()
       version: $('#vulnerability_filter_version').val()
       severity: $('#vulnerability_filter_severity').find(':selected').val()
+      type: $('#vulnerability_filter_cve_id').find(':selected').val()
   window.history.pushState('', document.title, getProjectUrl() + 'security?' + $.param(queryStr))
 
 filterReleases = () ->
@@ -126,6 +126,26 @@ calculateUnknownSeverityVulns = (releaseData) ->
     obj.unknown_severity
   )
 
+calculateBdsaHighVulns = (releases) ->  
+  highVulns = releases.map((obj) ->
+    obj.bdsa_high
+  )
+
+calculateBdsaMediumVulns = (releaseData) ->
+  mediumVulns = releaseData.map((obj) ->
+    obj.bdsa_medium
+  )
+
+calculateBdsaLowVulns = (releaseData) ->
+  lowVulns = releaseData.map((obj) ->
+    obj.bdsa_low
+  )
+
+calculateBdsaUnknownSeverityVulns = (releaseData) ->
+  unknownVulns = releaseData.map((obj) ->
+    obj.bdsa_unknown_severity
+  )
+
 renderNoData = (releases) ->
   chart = $('#vulnerability_all_version_chart').highcharts()
   renderer = new Highcharts.Renderer($('#vulnerability_all_version_chart')[0],10,10)
@@ -153,6 +173,19 @@ reRenderChart = (releases) ->
   chart.series[3].update {
     data: calculateUnknownSeverityVulns(releases)
   }, false
+  if $('select#vulnerability_filter_major_version').data('bdsa-visible') == true
+    chart.series[4].update {
+      data: calculateBdsaHighVulns(releases)
+    }, false
+    chart.series[5].update {
+      data: calculateBdsaMediumVulns(releases)
+    }, false
+    chart.series[6].update {
+      data: calculateBdsaLowVulns(releases)
+    }, false
+    chart.series[7].update {
+      data: calculateBdsaUnknownSeverityVulns(releases)
+    }, false
   chart.redraw()
 
 noReportedVulnerabilities = () ->

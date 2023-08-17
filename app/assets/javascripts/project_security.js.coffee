@@ -42,6 +42,7 @@ ProjectVulnerabilityFilter =
       queryStr = filter:
         version: $('#vulnerability_filter_version').val()
         severity: $('#vulnerability_filter_severity :selected').val()
+        type: $('#vulnerability_filter_cve_id :selected').val()
       currentRelease = find_release_by_id(queryStr.filter.version)
       updateBrowserHistory()
       updateSeverityFilter(currentRelease)
@@ -62,6 +63,7 @@ ProjectVulnerabilitySort =
                filter:
                  version: $('#vulnerability_filter_version').val()
                  severity: $('#vulnerability_filter_severity').find(':selected').val()
+                 type: $('#vulnerability_filter_cve_id').find(':selected').val()
                sort:
                  col: $(this).parents('.vulnerability_sort_btn').data('source')
                  direction: sortDirection
@@ -84,9 +86,6 @@ $(document).on 'page:change', ->
   ProjectVulnerabilityFilter.init()
   ProjectVulnerabilitySort.init()
   ProjectVulnerabilityPagination.init()
-
-  $('#vulnerabilities_index_page').on 'click', 'tr.nvd_link', ->
-    window.open($(this).data('nvd-link'), '_blank')
 
   $('#vulnerabilities_index_page').on 'click', 'span#read_more a, span#read_less a', (e) ->
     e.stopPropagation()

@@ -20,3 +20,5 @@ en:
       no_vulnerability: There are no reported vulnerabilities
       more: 'more...'
       less: 'less...'
+      related_record: 'Related Record'
+      identifier: 'Identifier'

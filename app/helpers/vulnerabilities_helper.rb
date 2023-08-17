@@ -54,6 +54,12 @@ module VulnerabilitiesHelper
                        selected: filter_severity_param, disabled: disabled_severities)
   end
 
+  def options_for_cve_filter
+    options = ['CVE']
+    options << 'BDSA' if @bdsa_visible
+    options_for_select(options)
+  end
+
   def sort_releases_by_version_number(releases)
     return if releases.blank?
 
@@ -127,6 +133,22 @@ module VulnerabilitiesHelper
       asc_desc_icon = current_direction == 'desc' ? ['hidden', ''] : ['', 'hidden']
     end
     asc_desc_icon
+  end
+
+  def vulnerability_detail_page_url(cve_id)
+    if 'BDSA'.in?(cve_id)
+      "/vulnerabilities/bdsa/#{cve_id}"
+    else
+      ENV['NVD_LINK'] + cve_id
+    end
+  end
+
+  def vulnerability_related_record(cve_id)
+    if 'BDSA'.in?(cve_id)
+      CveBdsa.find_by(bdsa_id: cve_id).try(:cve_id)
+    else
+      CveBdsa.find_by(cve_id: cve_id).try(:bdsa_id)
+    end
   end
 
   private

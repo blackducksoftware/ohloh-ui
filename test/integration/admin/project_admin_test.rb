@@ -77,13 +77,13 @@ class ProjectAdminTest < ActionDispatch::IntegrationTest
     it 'last_analyzed_gteq_datetime' do
       project.best_analysis.update! created_at: 1.day.ago
       date = 2.days.ago.to_date.to_s
-      Project.last_analyzed_gteq_datetime(date).first.name.must_match project.name
+      _(Project.last_analyzed_gteq_datetime(date).first.name).must_match project.name
     end
 
     it 'last_analyzed_lteq_datetime' do
       project.best_analysis.update! created_at: 3.days.ago
       date = 2.days.ago.to_date.to_s
-      Project.last_analyzed_lteq_datetime(date).first.name.must_match project.name
+      _(Project.last_analyzed_lteq_datetime(date).first.name).must_match project.name
     end
   end
 
