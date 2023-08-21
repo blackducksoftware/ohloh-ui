@@ -16,7 +16,7 @@ $(function () {
       <%- if @metric == 'code_total' -%>
             text: 'Total lines of project source code, excluding comments and blank lines.'
       <%- else %>
-            text: 'Number of <%= @metric.capitalize.pluralize %> who made changes to the project source code each month'
+            text: 'Number of <%= @metric&.capitalize&.pluralize %> who made changes to the project source code each month'
       <%- end %>
     },
     xAxis: {
@@ -40,7 +40,7 @@ $(function () {
         <%- if @metric == 'code_total' -%>
           text: 'Total Lines of Code'
         <%- else %>
-          text: '<%= @metric.capitalize.pluralize %>'
+          text: '<%= @metric&.capitalize&.pluralize %>'
         <% end %>
       },
       <%- if @metric == 'Code' -%>
