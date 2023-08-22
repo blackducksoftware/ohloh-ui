@@ -46,7 +46,7 @@ module VulnerabilitiesHelper
   def disabled_severities
     return [] unless @release
 
-    (severities + [EMPTY_SEVERITY]).select { |s| @vulnerabilities.send(s).empty? }
+    (severities + [EMPTY_SEVERITY]).select { |s| @release.vulnerabilities.send(s).empty? }
   end
 
   def options_for_severities_filter
