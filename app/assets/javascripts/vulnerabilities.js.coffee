@@ -61,7 +61,7 @@
 @updateSeverityFilter = (release) ->
   $('#vulnerability_filter_severity').prop('disabled', false)
   $.each ['low', 'medium', 'high', 'unknown_severity'], (index, severity) ->
-    $("#vulnerability_filter_severity option[value=#{severity}]").prop('disabled', release[severity] == 0)
+    $("#vulnerability_filter_severity option[value=#{severity}]").prop('disabled', release[severity] == 0 && release['bdsa_' + severity] == 0)
 
 @updateBrowserHistory = (queryStr) ->
   if queryStr == undefined
