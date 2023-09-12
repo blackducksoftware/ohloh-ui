@@ -58,8 +58,8 @@ var ProjectMap = {
         $('#map_status').html('No contributors located.');
       }
       $('#a_users').bind('change', ProjectMap.getStacks);
+      OH_Map.getMarkers();
     };
-    OH_Map.getMarkers();
     return false;
   }
 }
