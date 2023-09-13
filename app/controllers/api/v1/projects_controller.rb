@@ -5,7 +5,7 @@ class Api::V1::ProjectsController < ApplicationController
   include ProjectsHelper
 
   skip_before_action :verify_authenticity_token
-  before_action :authenticate_jwt
+  before_action :authenticate_jwt, except: %i[similar]
 
   def create
     @project = build_project
@@ -16,6 +16,16 @@ class Api::V1::ProjectsController < ApplicationController
     else
       render json: @project.errors.messages.to_json, status: :bad_request
     end
+  end
+
+  def similar
+    per_page = params[:per_page] || 10
+    page = params[:page] || 1
+    project = Project.find_by(uuid: params[:id])
+    return render json: { error: 'Project does not exist' }, status: :bad_request unless project
+
+    @similar_projects = project.related_by_tags.paginate(per_page: per_page, page: page)
+    render :similar, status: @similar_projects.present? ? :ok : :no_content
   end
 
   private

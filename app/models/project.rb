@@ -48,11 +48,11 @@ class Project < ApplicationRecord
            .not_deleted.where('shared_stacks > 2').order('value DESC, shared_stacks DESC').limit(limit)
   end
 
-  def related_by_tags(limit = 5)
+  def related_by_tags
     tag_weights = Tagging.tag_weight_sql(self.class, tags.map(&:id))
     Project.select('projects.*, tag_weights.weight')
            .joins(sanitize("INNER JOIN (#{tag_weights}) AS tag_weights ON tag_weights.project_id = projects.id"))
-           .not_deleted.where.not(id: id).order('tag_weights.weight DESC, projects.user_count DESC').limit(limit)
+           .not_deleted.where.not(id: id).order('tag_weights.weight DESC, projects.user_count DESC')
   end
 
   def active_managers

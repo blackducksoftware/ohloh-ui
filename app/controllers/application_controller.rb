@@ -28,7 +28,7 @@ class ApplicationController < ActionController::Base
   before_action :handle_me_account_paths
   before_action :strip_query_param
   before_action :clear_reminder
-  before_action :verify_api_access_for_xml_request, only: %i[show index]
+  before_action :verify_api_access_for_xml_request, only: %i[show index similar]
   before_action :update_last_seen_at_and_ip
 
   alias session_required require_login
@@ -156,6 +156,8 @@ class ApplicationController < ActionController::Base
     params[:format] = 'html' unless FORMATS_THAT_WE_RENDER_ERRORS_FOR.include?(request_format)
     @error = { message: message }
     @page_context = {}
+    return render json: { error: message }, status: status if params[:controller] == 'api/v1/projects'
+
     render_with_format 'error', status: status
   end
 
@@ -236,7 +238,7 @@ class ApplicationController < ActionController::Base
   private
 
   def verify_api_access_for_xml_request
-    return unless request_format == 'xml'
+    return unless request_format == 'xml' || (params[:format].to_sym == :json && params[:action] == 'similar')
     return render_missing_api_key if params[:api_key].blank?
 
     verify_api_key_standing

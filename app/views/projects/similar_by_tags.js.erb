@@ -1,1 +1,1 @@
-$('#similar_projects').html("<%= escape_javascript(render partial: 'projects/show/similar_by_tags', locals: { similar_by_tags: @project.related_by_tags(4) } ) %>");
+$('#similar_projects').html("<%= escape_javascript(render partial: 'projects/show/similar_by_tags', locals: { similar_by_tags: @project.related_by_tags.limit(4) } ) %>");

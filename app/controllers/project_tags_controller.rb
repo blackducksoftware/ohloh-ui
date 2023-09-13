@@ -46,7 +46,7 @@ class ProjectTagsController < SettingsController
   end
 
   def find_related_projects
-    @related_projects = @project.related_by_tags
+    @related_projects = @project.related_by_tags.limit(5)
   end
 
   def render_create_error
