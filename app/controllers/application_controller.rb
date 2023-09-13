@@ -238,7 +238,7 @@ class ApplicationController < ActionController::Base
   private
 
   def verify_api_access_for_xml_request
-    return unless request_format == 'xml' || (params[:format].to_sym == :json && params[:action] == 'similar')
+    return unless request_format == 'xml' || (params[:action] == 'similar' && request_format == 'json')
     return render_missing_api_key if params[:api_key].blank?
 
     verify_api_key_standing
