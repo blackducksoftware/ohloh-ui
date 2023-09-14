@@ -87,4 +87,39 @@ class Api::V1::ProjectsControllerTest < ActionController::TestCase
       end
     end
   end
+
+  describe '#similar' do
+    it 'should return bad request if api key is not provided' do
+      get :similar, params: { id: project.uuid, format: 'json' }
+      assert_response :bad_request
+      response = JSON.parse(@response.body)
+      assert_equal response['error'], I18n.t(:missing_api_key)
+    end
+
+    it 'should return error if project not found' do
+      get :similar, params: { id: project.id, format: 'json', api_key: client_id }
+      assert_response :bad_request
+      response = JSON.parse(@response.body)
+      assert_equal response['error'], 'Project does not exist'
+    end
+
+    it 'should return no content if similar projects not found' do
+      get :similar, params: { id: project.uuid, format: 'json', api_key: client_id }
+      assert_response :no_content
+      assert_empty JSON.parse(@response.body)['similar_projects']
+    end
+
+    it 'should return similar project' do
+      project2 = create(:project)
+      project3 = create(:project)
+      tag = create(:tag)
+      create(:tagging, tag: tag, taggable: project)
+      create(:tagging, tag: tag, taggable: project2)
+      create(:tagging, tag: tag, taggable: project3)
+
+      get :similar, params: { id: project.uuid, format: 'json', api_key: client_id }
+      assert_response :ok
+      assert_not_empty JSON.parse(@response.body)['similar_projects']
+    end
+  end
 end

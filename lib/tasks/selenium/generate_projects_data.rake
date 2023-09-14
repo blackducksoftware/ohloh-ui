@@ -70,7 +70,7 @@ namespace :selenium do
 
       project_data.merge!(
         'community' => { 'user_count' => project.ratings.count, 'rating_avg' => project.rating_average.to_f.round(1) },
-        'similar_projects_by_tag' => collect_license_and_languages(project.related_by_tags(10)),
+        'similar_projects_by_tag' => collect_license_and_languages(project.related_by_tags.limit(10)),
         'similar_projects_by_stack' => collect_license_and_languages(project.related_by_stacks(10))
       )
 

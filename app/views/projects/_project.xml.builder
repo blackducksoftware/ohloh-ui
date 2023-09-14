@@ -35,8 +35,8 @@ xml.project do
     xml << render(partial: 'analyses/analysis', locals: { analysis: project.best_analysis, builder: xml })
   end
   xml.similar_projects do
-    unless project.related_by_tags(4).empty?
-      project.related_by_tags(4).each do |project|
+    unless project.related_by_tags.empty?
+      project.related_by_tags.limit(4).each do |project|
         xml.project do
           xml.id project.id
           xml.name project.name

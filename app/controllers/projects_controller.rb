@@ -63,7 +63,7 @@ class ProjectsController < ApplicationController
   end
 
   def similar
-    @similar_by_tags = @project.related_by_tags(10)
+    @similar_by_tags = @project.related_by_tags.limit(10)
     @similar_by_stacks = @project.related_by_stacks(10)
   end
 

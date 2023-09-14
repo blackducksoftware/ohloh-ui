@@ -494,7 +494,11 @@ Rails.application.routes.draw do
         post 'enlist'
       end
       resources :jwt, only: [:create]
-      resources :projects, only: [:create]
+      resources :projects, only: [:create] do
+        member do
+          get :similar, format: :json
+        end
+      end
       resources :knowledge_base_status, only: [] do
         collection do
           post :sync
