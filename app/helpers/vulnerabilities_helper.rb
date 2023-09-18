@@ -143,12 +143,13 @@ module VulnerabilitiesHelper
     end
   end
 
-  def vulnerability_related_record(cve_id)
-    if 'BDSA'.in?(cve_id)
-      CveBdsa.find_by(bdsa_id: cve_id).try(:cve_id)
-    else
-      CveBdsa.find_by(cve_id: cve_id).try(:bdsa_id)
-    end
+  def vulnerability_related_record(cve_id, vulnerability_data)
+    related_record = if 'BDSA'.in?(cve_id)
+                       CveBdsa.find_by(bdsa_id: cve_id).try(:cve_id)
+                     else
+                       CveBdsa.find_by(cve_id: cve_id).try(:bdsa_id)
+                     end
+    related_record if vulnerability_data.include?(related_record)
   end
 
   private
