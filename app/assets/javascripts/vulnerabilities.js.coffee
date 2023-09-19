@@ -60,7 +60,7 @@
 
 @updateSeverityFilter = (release) ->
   $('#vulnerability_filter_severity').prop('disabled', false)
-  $.each ['low', 'medium', 'high', 'unknown_severity'], (index, severity) ->
+  $.each ['low', 'medium', 'high', 'critical', 'unknown_severity'], (index, severity) ->
     $("#vulnerability_filter_severity option[value=#{severity}]").prop('disabled', release[severity] == 0 && release['bdsa_' + severity] == 0)
 
 @updateBrowserHistory = (queryStr) ->
@@ -106,6 +106,11 @@ filterReleasesByMajorVersion = (releases, majorVersion) ->
     releases.filter (release) ->
       ///^#{majorVersion}+(?:\.\d+)+$///.test(release.version)
 
+calculateCriticalVulns = (releases) ->
+  criticalVulns = releases.map((obj) ->
+    obj.critical
+  )
+
 calculateHighVulns = (releases) ->
   highVulns = releases.map((obj) ->
     obj.high
@@ -124,6 +129,11 @@ calculateLowVulns = (releaseData) ->
 calculateUnknownSeverityVulns = (releaseData) ->
   unknownVulns = releaseData.map((obj) ->
     obj.unknown_severity
+  )
+
+calculateBdsaCriticalVulns = (releases) ->  
+  criticalVulns = releases.map((obj) ->
+    obj.bdsa_critical
   )
 
 calculateBdsaHighVulns = (releases) ->  
@@ -162,28 +172,34 @@ reRenderChart = (releases) ->
     categories: versions
   } , true, false
   chart.series[0].update {
-    data: calculateHighVulns(releases)
+    data: calculateCriticalVulns(releases)
   }, false
   chart.series[1].update {
-    data: calculateMediumVulns(releases)
+    data: calculateHighVulns(releases)
   }, false
   chart.series[2].update {
-    data: calculateLowVulns(releases)
+    data: calculateMediumVulns(releases)
   }, false
   chart.series[3].update {
+    data: calculateLowVulns(releases)
+  }, false
+  chart.series[4].update {
     data: calculateUnknownSeverityVulns(releases)
   }, false
   if $('select#vulnerability_filter_major_version').data('bdsa-visible') == true
-    chart.series[4].update {
-      data: calculateBdsaHighVulns(releases)
-    }, false
     chart.series[5].update {
-      data: calculateBdsaMediumVulns(releases)
+      data: calculateBdsaCriticalVulns(releases)
     }, false
     chart.series[6].update {
-      data: calculateBdsaLowVulns(releases)
+      data: calculateBdsaHighVulns(releases)
     }, false
     chart.series[7].update {
+      data: calculateBdsaMediumVulns(releases)
+    }, false
+    chart.series[8].update {
+      data: calculateBdsaLowVulns(releases)
+    }, false
+    chart.series[9].update {
       data: calculateBdsaUnknownSeverityVulns(releases)
     }, false
   chart.redraw()
