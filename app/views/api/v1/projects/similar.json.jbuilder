@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+json.project_name @project.name
 json.metadata do
   json.current_page_response_size @similar_projects.length
   json.total_count @similar_projects.total_entries
