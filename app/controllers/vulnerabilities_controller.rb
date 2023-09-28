@@ -19,6 +19,7 @@ class VulnerabilitiesController < ApplicationController
 
   def filter
     find_vulnerabilities
+    @release ||= Release.find_by(id: filter_version_param)
     render partial: 'vulnerability_table', layout: false
   end
 end
