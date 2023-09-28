@@ -358,6 +358,7 @@ en:
         low: 'Low Severity'
         medium: 'Medium Severity'
         high: 'High Severity'
+        critical: 'Critical Severity'
     report_outdated:
       notification: 'Thank you for reporting this issue. We will look into this matter at the earliest.'
  
