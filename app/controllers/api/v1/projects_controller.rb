@@ -21,10 +21,10 @@ class Api::V1::ProjectsController < ApplicationController
   def similar
     per_page = params[:per_page] || 10
     page = params[:page] || 1
-    project = Project.find_by(uuid: params[:id])
-    return render json: { error: 'Project does not exist' }, status: :bad_request unless project
+    @project = Project.find_by(uuid: params[:id], deleted: false)
+    return render json: { error: 'Project does not exist' }, status: :bad_request unless @project
 
-    @similar_projects = project.related_by_tags.paginate(per_page: per_page, page: page)
+    @similar_projects = @project.related_by_tags.paginate(per_page: per_page, page: page)
     render :similar, status: @similar_projects.present? ? :ok : :no_content
   end
 
