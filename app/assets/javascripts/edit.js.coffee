@@ -92,7 +92,7 @@ $(document).on 'page:change', ->
         data: enlistment: checked
         success: (result) ->
           _html = $.parseHTML(result)
-          $('#record').html _html
+          $('#page').html _html
           return
         error: (result, err) ->
           console.log err
