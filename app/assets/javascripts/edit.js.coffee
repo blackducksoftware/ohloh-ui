@@ -79,3 +79,22 @@ class Edit
 $(document).on 'page:change', ->
   $('.edit').find('.undo, .redo').each -> new Edit($(this))
   $('label#human_edits :checkbox').click(Edit.humanEdits)
+  $('#enlistment_checkbox').click ->
+      url = location.protocol + '//' + location.host + location.pathname
+      checked = undefined
+      if $(this).is(':checked')
+        checked = true
+      else
+        checked = false
+      $.ajax
+        type: 'GET'
+        url: '/p/project_2/edits'
+        data: enlistment: checked
+        success: (result) ->
+          _html = $.parseHTML(result)
+          $('#record').html _html
+          return
+        error: (result, err) ->
+          console.log err
+          return
+      return

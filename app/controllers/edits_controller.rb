@@ -76,14 +76,17 @@ class EditsController < SettingsController
   end
 
   def find_edits
-    edits = Edit.page(page_param).per_page(10).order('edits.created_at DESC, edits.id DESC')
+    params[:sort] = params[:sort] || 'updated_at'
+    edits = Edit.page(page_param).per_page(10).order("edits.#{params[:sort]} DESC, edits.id DESC")
     @edits = add_query_term(add_robotic_term(add_where_term(edits)))
   end
 
   def add_where_term(edits)
     target_where = '(edits.target_id = ? AND edits.target_type = ?)'
     extra_where = add_where_extra_clause
-    if extra_where
+    if params[:enlistment] == 'true'
+      edits.where([target_where, @parent.id, 'Enlistment'])
+    elsif extra_where
       edits.where(["#{target_where}#{extra_where}", @parent.id, @parent.class.name.tableize, @parent.id])
     else
       edits.where([target_where, @parent.id, @parent.class.name])

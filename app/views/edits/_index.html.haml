@@ -6,7 +6,8 @@
       %tr{ id: 'dingus-row' }
         %td
           = render 'shared/search_dingus', collection: @edits, filter_type: :checkbox, no_match_found_type: :flash
-      = render partial: 'edit', collection: @edits if @edits.present?
+      .div#record
+        = render partial: 'edit', collection: @edits if @edits.present?
 
 - if params[:query].present? && @edits.blank?
   = render 'shared/alert', message: t('shared.search_dingus.no_match_found.no_match')
