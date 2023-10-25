@@ -88,7 +88,7 @@ $(document).on 'page:change', ->
         checked = false
       $.ajax
         type: 'GET'
-        url: '/p/project_2/edits'
+        url: url
         data: enlistment: checked
         success: (result) ->
           _html = $.parseHTML(result)
