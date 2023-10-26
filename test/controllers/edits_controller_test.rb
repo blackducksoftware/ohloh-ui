@@ -8,7 +8,6 @@ class EditsControllerTest < ActionController::TestCase
       Project.any_instance.stubs(:code_locations).returns([])
       Enlistment.any_instance.stubs(:update_subscription)
       @project = create(:project)
-      create(:enlistment, project: @project, ignore: 'Ignored!')
       create(:link, project: @project)
       create(:permission, target: @project, remainder: false)
       create(:project_license, project: @project)
@@ -33,6 +32,14 @@ class EditsControllerTest < ActionController::TestCase
       assert_response :ok
       assert_select "#edit_#{PropertyEdit.where(target: @project, value: 'Blah!').first.id}", true
       assert_select "#edit_#{PropertyEdit.where(target: @project, value: 'Wat?').first.id}", false
+    end
+
+    it 'index should support query with enlistment param' do
+      login_as nil
+      VCR.use_cassette('health_url') do
+        get :index, params: { project_id: @project.to_param, enlistment: true }
+        assert_response :ok
+      end
     end
 
     # update action
