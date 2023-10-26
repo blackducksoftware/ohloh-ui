@@ -4,7 +4,7 @@
       %input{ type: 'checkbox', checked: params[:human] == 'true' }
       = t('.show_only_humans')
     %label.checkbox.pull-right.padding_right_15#enlistment_edits
-      %input{ type: 'checkbox', id: 'enlistment_checkbox'}
+      %input{ type: 'checkbox', id: 'enlistment_checkbox', checked: params[:enlistment] == 'true'}
       = t('.filter_only_enlistment')
     #sort_by
       %label= t('.sort_by')

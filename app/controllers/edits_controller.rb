@@ -85,8 +85,8 @@ class EditsController < SettingsController
     target_where = '(edits.target_id = ? AND edits.target_type = ?)'
     extra_where = add_where_extra_clause
     if params[:enlistment] == 'true'
-      query = "edits.target_type = ? AND edits.project_id = ? AND key = ?"
-      edits.where([query, 'Enlistment', @parent.id, nil])
+      enlist_filter = 'edits.target_type = ? AND edits.project_id = ? AND key is NULL'
+      edits.where([enlist_filter, 'Enlistment', @parent.id])
     elsif extra_where
       edits.where(["#{target_where}#{extra_where}", @parent.id, @parent.class.name.tableize, @parent.id])
     else
