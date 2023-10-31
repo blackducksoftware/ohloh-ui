@@ -511,6 +511,7 @@ Rails.application.routes.draw do
   get 'sitemaps/:ctrl/:page.xml', controller: 'sitemap', action: 'show', format: 'xml'
 
   get 'vulnerabilities/bdsa/:id', to: 'api/vulnerabilities#show'
+  get 'vulnerabilities/bdsa' => 'api/vulnerabilities#index', as: :bdsa_vulnerabilities
   match 'vulnerabilities/*all', to: 'api/vulnerabilities#raise_not_found!', via: :all
 
   # the unmatched_route must be last as it matches everything
