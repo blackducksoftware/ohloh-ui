@@ -26,7 +26,7 @@ class Api::VulnerabilitiesControllerTest < ActionDispatch::IntegrationTest
   end
 
   it 'must render error page for unmatched vulnerabilities routes' do
-    get '/vulnerabilities/bdsa'
+    get '/vulnerabilities/bdsa_data'
     assert_response :not_found
     assert_template 'error'
   end
@@ -55,5 +55,10 @@ class Api::VulnerabilitiesControllerTest < ActionDispatch::IntegrationTest
       _(response.body).wont_match 'CVE'
       _(response.body).must_match 'Agree'
     end
+  end
+
+  it 'must render BDSA landing page' do
+    get '/vulnerabilities/bdsa'
+    assert_response :success
   end
 end
