@@ -38,7 +38,8 @@ ActiveAdmin.register Organization do
       f.input :name, as: :text
       f.input :vanity_url, as: :text
       f.input :description, as: :text
-      f.input :org_type
+      f.input :org_type, as: :select, include_blank: false,
+                         collection: { 'Commercial' => 1, 'Education' => 2, 'Government' => 3, 'Non-Profit' => 4 }
       f.input :homepage_url, as: :text
     end
     f.actions
