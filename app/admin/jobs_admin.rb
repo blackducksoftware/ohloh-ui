@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 ActiveAdmin.register Job do
+  menu false
   config.sort_order = 'current_step_at_desc'
 
   belongs_to :project, finder: :find_by_vanity_url!, optional: true
