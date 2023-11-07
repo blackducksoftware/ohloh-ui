@@ -6,7 +6,7 @@ ActiveAdmin.register Enlistment do
   permit_params enlistment_params
   actions :index, :show, :edit, :update
 
-  filter :project, collection: Project.active_enlistments
+  filter :project, collection: -> { Project.active_enlistments }
   filter :repository
   filter :deleted
   filter :created_at
