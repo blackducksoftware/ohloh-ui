@@ -778,7 +778,6 @@ class ProjectsControllerTest < ActionController::TestCase
   end
 
   it 'edit should populate the form' do
-    account = create(:account, level: 10)
     login_as create(:admin)
     get :edit, params: { id: create(:project).id }
     assert_response :ok
