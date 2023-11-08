@@ -27,4 +27,12 @@ class Admin::OrganizationsControllerTest < ActionController::TestCase
     _(assigns(:organization).name).must_equal 'test2'
     _(assigns(:organization).valid?).must_equal true
   end
+
+  it 'edit should populate the form' do
+    account.update_column(:level, 10)
+    login_as account
+    org = create(:organization, name: 'test', vanity_url: 'test')
+    get :edit, params: { id: org.vanity_url }
+    assert_response :ok
+  end
 end
