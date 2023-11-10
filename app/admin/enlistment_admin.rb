@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 ActiveAdmin.register Enlistment do
+  menu false
   config.per_page = 10
   enlistment_params = 'ignore'
   permit_params enlistment_params
