@@ -46,7 +46,6 @@ gem 'thor'
 gem 'twitter-bootstrap-rails', '~> 3.2'
 gem 'tzinfo', '~> 1.2.10'
 gem 'uglifier', '>= 2.7.2'
-gem 'whenever', require: false
 gem 'will_paginate'
 gem 'will_paginate-bootstrap'
 
