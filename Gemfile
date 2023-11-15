@@ -53,13 +53,6 @@ gem 'will_paginate-bootstrap'
 group :development do
   gem 'better_errors'
   gem 'bootsnap', '~> 1.10.3', require: false
-  gem 'capistrano'
-  gem 'capistrano-faster-assets'
-  gem 'capistrano-passenger'
-  gem 'capistrano-rails'
-  gem 'capistrano-rbenv', '~> 2.0'
-  gem 'capistrano-sidekiq'
-  gem 'ed25519'
 end
 
 group :test do
