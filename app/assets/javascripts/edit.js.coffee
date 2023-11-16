@@ -23,6 +23,33 @@ class Edit
       strippedUrl = strippedUrl.replace('?&', '')
     window.location = strippedUrl
 
+  @enlistFilter: ->
+    $('#enlistment_checkbox').click ->
+      url = location.protocol + '//' + location.host + location.pathname
+      checked = undefined
+      if $(this).is(':checked')
+        checked = true
+        enlistParam = 'enlistment=true'
+        enlistParam = "?#{enlistParam}" unless location.search.match(/\?/)
+        enlistParam = "&#{enlistParam}" if location.search.match(/\?\w+/)
+        Edit.setupHumanParam(location.search.replace('&&', '&'), enlistParam)
+      else
+        checked = false
+        noEnlistParam = location.search.replace('enlistment=true', '')
+        Edit.setupHumanParam(noEnlistParam, '')
+      $.ajax
+        type: 'GET'
+        url: url
+        data: enlistment: checked
+        success: (result) ->
+          _html = $.parseHTML(result)
+          $('#page').html _html
+          return
+        error: (result, err) ->
+          console.log err
+          return
+      return
+
   constructor: ($editButton) ->
     @editButton = $editButton
     @undoOrRedoFlag = $editButton.hasClass('undo')
@@ -79,3 +106,4 @@ class Edit
 $(document).on 'page:change', ->
   $('.edit').find('.undo, .redo').each -> new Edit($(this))
   $('label#human_edits :checkbox').click(Edit.humanEdits)
+  Edit.enlistFilter()

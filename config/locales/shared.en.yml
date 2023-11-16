@@ -19,6 +19,7 @@ en:
         count_status: "Showing %{current_count} of %{total_count}"
       sort:
         show_only_humans: 'Show only edits by human'
+        filter_only_enlistment: 'Show only enlistment edits'
         by_email: 'By Email'
         by_name: 'By Name'
         sort_by: 'Sort by:'

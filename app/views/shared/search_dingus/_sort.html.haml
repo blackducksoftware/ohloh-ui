@@ -3,6 +3,14 @@
     %label.checkbox.pull-right.padding_right_20#human_edits
       %input{ type: 'checkbox', checked: params[:human] == 'true' }
       = t('.show_only_humans')
+    %label.checkbox.pull-right.padding_right_15#enlistment_edits
+      %input{ type: 'checkbox', id: 'enlistment_checkbox', checked: params[:enlistment] == 'true'}
+      = t('.filter_only_enlistment')
+    #sort_by
+      %label= t('.sort_by')
+      = select_tag :sort, options_for_select([["updated_at", "updated_at"], ["created_at", "created_at"]],
+        params[:sort]),
+        class: 'chzn-select', onchange: 'this.form.submit()'
 
   - elsif filter_type == :radiobutton
     %label.radio.inline.margin_left_40
