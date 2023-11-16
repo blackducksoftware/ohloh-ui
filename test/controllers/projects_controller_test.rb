@@ -777,6 +777,12 @@ class ProjectsControllerTest < ActionController::TestCase
     assert_select '.disabled.save', 0
   end
 
+  it 'edit should populate the form' do
+    login_as create(:admin)
+    get :edit, params: { id: create(:project).id }
+    assert_response :ok
+  end
+
   # update
   it 'update should refuse unauthorized attempts' do
     project = create(:project)

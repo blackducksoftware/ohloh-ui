@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
 ActiveAdmin.register Account do
-  account_params = %i[login email name country_code location url twitter_account
-                      affiliation_type organization_name level]
+  account_params = %i[login email name activation_code activated_at activation_resent_at confirmation_token
+                      remember_token remember_token_expires_at country_code location url twitter_account
+                      latitude longitude url last_seen_ip affiliation_type organization_name level]
   permit_params account_params
   actions :index, :show, :edit, :update
 
@@ -59,9 +60,12 @@ ActiveAdmin.register Account do
   form do |f|
     f.semantic_errors(*f.object.errors.keys)
     f.inputs 'Details' do
-      account_params.exclude(:level).each do |field|
+      account_params.exclude(:level, :activated_at, :activation_resent_at, :remember_token_expires_at).each do |field|
         f.input field, as: :string
       end
+      f.input :activated_at
+      f.input :activation_resent_at
+      f.input :remember_token_expires_at
       f.input :level, as: :select, include_blank: false,
                       collection: { 'Default' => Account::Access::DEFAULT,
                                     'Admin' => Account::Access::ADMIN,

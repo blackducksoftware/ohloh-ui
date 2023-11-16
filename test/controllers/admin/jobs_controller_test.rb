@@ -14,4 +14,9 @@ class Admin::JobsControllerTest < ActionController::TestCase
     get :index, params: { project_id: project.vanity_url }
     assert_response :redirect
   end
+
+  it 'should render index  with code_location template' do
+    get :index, params: { code_location_id: 1 }
+    assert_response :ok
+  end
 end

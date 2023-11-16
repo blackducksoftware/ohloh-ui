@@ -1,7 +1,10 @@
 # frozen_string_literal: true
 
 ActiveAdmin.register Project do
-  actions :index, :show, :important
+  project_params = %i[name vanity_url organization_id best_analysis_id
+                      description url download_url]
+  permit_params project_params
+  actions :index, :show, :important, :edit, :update
 
   filter :name
   filter :last_analyzed, as: :date_range, label: 'Last Analyzed Range'
@@ -34,6 +37,10 @@ ActiveAdmin.register Project do
     end
   end
 
+  before_update do |project|
+    project.editor_account = current_user
+  end
+
   index do
     column :id
     column :name do |project|
@@ -50,6 +57,20 @@ ActiveAdmin.register Project do
     end
     column :created_at
     actions
+  end
+
+  form do |f|
+    f.semantic_errors(*f.object.errors.keys)
+    f.inputs 'Details' do
+      f.input :name, as: :text
+      f.input :vanity_url, as: :text
+      f.input :organization_id
+      f.input :best_analysis_id
+      f.input :description, as: :text
+      f.input :url, as: :text
+      f.input :download_url, as: :text
+    end
+    f.actions
   end
 
   collection_action :important do
