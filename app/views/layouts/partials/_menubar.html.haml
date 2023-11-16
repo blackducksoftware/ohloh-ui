@@ -16,4 +16,6 @@
         = link_to t(:tools_menu), tools_path, class: tools_select
       %li.menu_item.blog
         %a{ href: 'https://community.synopsys.com/s/black-duck-open-hub?tabset-c30ff=d9d77', target: '_blank' }= t :blog
+      %li.menu_item.bdsa
+        %a{ href: bdsa_vulnerabilities_path, target: '_blank' }= t :bdsa
       = render 'shared/search.html.haml'

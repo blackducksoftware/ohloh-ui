@@ -7,7 +7,7 @@ class Api::VulnerabilitiesController < ApplicationController
   layout 'vulnerability'
 
   def show
-    url = ENV['BDSA_VULNERABILITY_API'].gsub('BDSA_ID', params[:id])
+    url = ENV['BDSA_VULNERABILITY_API'].gsub('BDSA_ID', params[:id].upcase)
     code, @response = Api.get_response(url)
     return render 'no_data' if code != '200' || @response['publishedDate'].to_datetime > 30.days.ago.to_datetime
 
@@ -44,6 +44,6 @@ class Api::VulnerabilitiesController < ApplicationController
   end
 
   def valid_bdsa_id
-    return render 'no_data' unless params[:id].match(/^BDSA-(19|[2-9][0-9])\d{2}-\d{4}$/)
+    return render 'no_data' unless params[:id].upcase.match(/^BDSA-(19|[2-9][0-9])\d{2}-\d{4}$/)
   end
 end
