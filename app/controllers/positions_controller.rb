@@ -22,7 +22,7 @@ class PositionsController < ApplicationController
   end
 
   def create
-    @position = @account.positions.new(position_params)
+    @position = @account.positions.where(position_params).first_or_initialize
     if @position.save
       flash_invite_success_if_needed
       redirect_to account_positions_path(@account)
