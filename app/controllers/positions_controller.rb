@@ -22,8 +22,8 @@ class PositionsController < ApplicationController
   end
 
   def create
-    project_id = Project.find_by_vanity_url(position_params['project_oss'])
-    @position = @account.positions.where(project_id: project_id).first_or_initialize
+    find_project
+    @position = @account.positions.where(project_id: @project).first_or_initialize
     @position.attributes = position_params
     if @position.save
       flash_invite_success_if_needed
@@ -90,5 +90,10 @@ class PositionsController < ApplicationController
           .permit(:project_oss, :committer_name, :title, :organization_id, :organization_name,
                   :affiliation_type, :description, :start_date, :stop_date, :ongoing, :invite,
                   language_exp: [], project_experiences_attributes: %i[project_name _destroy id])
+  end
+
+  def find_project
+    @project = Project.not_deleted.find_by('lower(name) = ? or name = ?', position_params['project_oss'].to_s.downcase,
+                                           position_params['project_oss'])
   end
 end
