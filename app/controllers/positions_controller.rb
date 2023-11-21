@@ -22,7 +22,9 @@ class PositionsController < ApplicationController
   end
 
   def create
-    @position = @account.positions.where(position_params).first_or_initialize
+    project_id = Project.find_by_vanity_url(position_params['project_oss'])
+    @position = @account.positions.where(project_id: project_id).first_or_initialize
+    @position.attributes = position_params
     if @position.save
       flash_invite_success_if_needed
       redirect_to account_positions_path(@account)
