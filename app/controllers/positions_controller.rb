@@ -93,7 +93,6 @@ class PositionsController < ApplicationController
   end
 
   def find_project_by_oss
-    Project.not_deleted.find_by('lower(name) = ? or name = ?', position_params['project_oss'].to_s.downcase,
-                                position_params['project_oss'])
+    Project.not_deleted.find_by('lower(name) = ?', position_params['project_oss'].to_s.downcase)
   end
 end
