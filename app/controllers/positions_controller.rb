@@ -22,8 +22,8 @@ class PositionsController < ApplicationController
   end
 
   def create
-    find_project
-    @position = @account.positions.where(project_id: @project).first_or_initialize
+    project = find_project_by_oss
+    @position = @account.positions.where(project_id: project).first_or_initialize
     @position.attributes = position_params
     if @position.save
       flash_invite_success_if_needed
@@ -92,8 +92,8 @@ class PositionsController < ApplicationController
                   language_exp: [], project_experiences_attributes: %i[project_name _destroy id])
   end
 
-  def find_project
-    @project = Project.not_deleted.find_by('lower(name) = ? or name = ?', position_params['project_oss'].to_s.downcase,
-                                           position_params['project_oss'])
+  def find_project_by_oss
+    Project.not_deleted.find_by('lower(name) = ? or name = ?', position_params['project_oss'].to_s.downcase,
+                                position_params['project_oss'])
   end
 end
