@@ -22,7 +22,9 @@ class PositionsController < ApplicationController
   end
 
   def create
-    @position = @account.positions.new(position_params)
+    project = find_project_by_oss
+    @position = @account.positions.where(project_id: project).first_or_initialize
+    @position.attributes = position_params
     if @position.save
       flash_invite_success_if_needed
       redirect_to account_positions_path(@account)
@@ -88,5 +90,9 @@ class PositionsController < ApplicationController
           .permit(:project_oss, :committer_name, :title, :organization_id, :organization_name,
                   :affiliation_type, :description, :start_date, :stop_date, :ongoing, :invite,
                   language_exp: [], project_experiences_attributes: %i[project_name _destroy id])
+  end
+
+  def find_project_by_oss
+    Project.not_deleted.find_by('lower(name) = ?', position_params['project_oss'].to_s.downcase)
   end
 end
