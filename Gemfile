@@ -46,20 +46,12 @@ gem 'thor'
 gem 'twitter-bootstrap-rails', '~> 3.2'
 gem 'tzinfo', '~> 1.2.10'
 gem 'uglifier', '>= 2.7.2'
-gem 'whenever', require: false
 gem 'will_paginate'
 gem 'will_paginate-bootstrap'
 
 group :development do
   gem 'better_errors'
   gem 'bootsnap', '~> 1.10.3', require: false
-  gem 'capistrano'
-  gem 'capistrano-faster-assets'
-  gem 'capistrano-passenger'
-  gem 'capistrano-rails'
-  gem 'capistrano-rbenv', '~> 2.0'
-  gem 'capistrano-sidekiq'
-  gem 'ed25519'
 end
 
 group :test do
