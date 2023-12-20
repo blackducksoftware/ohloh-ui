@@ -18,6 +18,18 @@ class VulnerabilitiesHelperTest < ActionView::TestCase
       _(major_releases(Release.all, project)).must_equal [1, 2, 3, 10, 21, 32]
     end
 
+    it 'should correctly include v?\.? version releases' do
+      project = FactoryBot.create(:project)
+      pss = FactoryBot.create(:project_security_set, project: project)
+      FactoryBot.create_list(:major_release_one, 10, project_security_set: pss)
+      FactoryBot.create_list(:major_release_two, 10, project_security_set: pss)
+      FactoryBot.create_list(:major_release_three, 10, project_security_set: pss)
+      FactoryBot.create(:release, version: 'v11.1.1')
+      FactoryBot.create(:release, version: 'v.22.1.1')
+      FactoryBot.create(:release, version: 'v32.1.2.2')
+      _(major_releases(Release.all, project)).must_equal [1, 2, 3, 11, 22, 32]
+    end
+
     it 'should correctly filter android version releases' do
       android = FactoryBot.create(:project, vanity_url: 'android')
       pss = FactoryBot.create(:project_security_set, project: android)
@@ -37,6 +49,16 @@ class VulnerabilitiesHelperTest < ActionView::TestCase
       rel3 = FactoryBot.create(:release, version: '10.1.3')
       rel4 = FactoryBot.create(:release, version: '10.1')
       _(sort_releases_by_version_number(Release.all)).must_equal [rel3, rel2, rel1, rel4]
+    end
+
+    it 'should correctly filter v include version releases' do
+      project = FactoryBot.create(:project)
+      FactoryBot.create(:project_security_set, project: project)
+      rel1 = FactoryBot.create(:release, version: 'v10.1.1')
+      rel2 = FactoryBot.create(:release, version: 'v.1.1.2')
+      rel3 = FactoryBot.create(:release, version: 'v10.1.3')
+      rel4 = FactoryBot.create(:release, version: 'v.10.1')
+      _(sort_releases_by_version_number(Release.all)).must_equal [rel3, rel1, rel4, rel2]
     end
 
     it 'should correctly filter version releases w/ alphabetic chars' do
