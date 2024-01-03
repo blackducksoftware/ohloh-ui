@@ -33,13 +33,17 @@ class ApiAccess
 
       uri = URI("#{fisbot_resolved_url}/health")
       response = Net::HTTP.get_response(uri)
-      response.code == '200' ? true : reset_cache_data
+      response.code == '200' && set_uptime_verified_time
     rescue Errno::ECONNREFUSED, Resolv::ResolvError
       DataDogReport.error("Fisbot API outage: #{Time.now.utc}")
       false
     end
 
     private
+
+    def set_uptime_verified_time
+      self.uptime_verified_time = Time.current
+    end
 
     def fisbot_resolved_url
       return URL if Rails.env.development? || Rails.env.test?
@@ -60,8 +64,6 @@ class ApiAccess
     end
 
     def set_fis_ip_url
-      self.uptime_verified_time = Time.current
-
       fis_ip_addr = resolve_hostname(URL)
       self.fis_ip_url = "http://#{fis_ip_addr}"
     end
