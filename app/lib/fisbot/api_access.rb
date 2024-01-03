@@ -33,15 +33,10 @@ class ApiAccess
 
       uri = URI("#{fisbot_resolved_url}/health")
       response = Net::HTTP.get_response(uri)
-      response.code == '200'
+      response.code == '200' ? true : reset_cache_data
     rescue Errno::ECONNREFUSED, Resolv::ResolvError
       DataDogReport.error("Fisbot API outage: #{Time.now.utc}")
       false
-    end
-
-    def reset_cache_data
-      self.uptime_verified_time = nil
-      self.fis_ip_url = nil
     end
 
     private
@@ -51,6 +46,11 @@ class ApiAccess
 
       reset_cache_data if uptime_check_expired?
       fis_ip_url || set_fis_ip_url
+    end
+
+    def reset_cache_data
+      self.uptime_verified_time = nil
+      self.fis_ip_url = nil
     end
 
     def uptime_check_expired?
