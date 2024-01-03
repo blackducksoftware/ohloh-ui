@@ -62,6 +62,8 @@ class FisbotApi
       uri = api_access.resource_uri(id)
       response = Net::HTTP.get_response(uri)
       handle_errors(response) { new(JSON.parse(response.body)) }
+    rescue Errno::ECONNREFUSED, Timeout::Error => e
+      Airbrake.notify(e)
     end
 
     def all(params)
