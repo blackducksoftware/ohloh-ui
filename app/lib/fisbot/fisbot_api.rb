@@ -63,6 +63,7 @@ class FisbotApi
       response = Net::HTTP.get_response(uri)
       handle_errors(response) { new(JSON.parse(response.body)) }
     rescue Errno::ECONNREFUSED, Timeout::Error => e
+      ApiAccess.reset_cache_data
       Airbrake.notify(e)
     end
 

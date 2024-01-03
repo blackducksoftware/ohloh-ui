@@ -39,6 +39,11 @@ class ApiAccess
       false
     end
 
+    def reset_cache_data
+      self.uptime_verified_time = nil
+      self.fis_ip_url = nil
+    end
+
     private
 
     def fisbot_resolved_url
@@ -46,11 +51,6 @@ class ApiAccess
 
       reset_cache_data if uptime_check_expired?
       fis_ip_url || set_fis_ip_url
-    end
-
-    def reset_cache_data
-      self.uptime_verified_time = nil
-      self.fis_ip_url = nil
     end
 
     def uptime_check_expired?
