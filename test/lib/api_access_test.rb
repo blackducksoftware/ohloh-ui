@@ -17,8 +17,8 @@ class ApiAccessTest < ActiveSupport::TestCase
         # Subsequent access to fisbot api
         Net::HTTP.stubs(:get_response).returns(stub(code: '200'))
         # Must use cached data.
+        ApiAccess.send :set_uptime_verified_time
         ApiAccess.expects(:resolve_hostname).never
-
         api_url = ApiAccess.api_url
         _(api_url).must_match %r{^http://\d+\.\d+\.\d+\.\d+/api/v1$}
       end
