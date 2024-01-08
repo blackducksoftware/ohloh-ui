@@ -8,6 +8,7 @@ class Api::V1::KnowledgeBaseStatusControllerTest < ActionController::TestCase
   let(:rmq_mock) { mock_bunny }
   before do
     @account = create(:account)
+    ENV['JWT_SECRET_API_KEY'] = Faker::Alphanumeric.alpha(number: 5)
     @jwt = build_jwt(@account.login, 24)
     @project = create(:project)
   end
