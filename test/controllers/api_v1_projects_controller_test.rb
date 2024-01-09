@@ -14,6 +14,7 @@ class Api::V1::ProjectsControllerTest < ActionController::TestCase
   let(:project) { create(:project) }
   before do
     @account = create(:account)
+    ENV['JWT_SECRET_API_KEY'] = Faker::Alphanumeric.alpha(number: 5)
     @jwt = build_jwt(@account.login, 24)
     @url = Faker::Internet.url
   end

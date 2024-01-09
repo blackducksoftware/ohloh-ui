@@ -7,6 +7,7 @@ class Api::V1::JwtControllerTest < ActionController::TestCase
   include JWTHelper
   before do
     @account = create(:account)
+    ENV['JWT_SECRET_API_KEY'] = Faker::Alphanumeric.alpha(number: 5)
   end
 
   describe 'create' do
