@@ -69,7 +69,7 @@ class SessionsController < Clearance::SessionsController
   def disable_account_and_notify_admin
     account.update!(level: Account::Access::DISABLED)
     AccountMailer.notify_disabled_account_for_login_failure(account).deliver_now
-    DataDogReport.error("#{account.login} deactivated for repeated failed login attempts.")
+    DataDogReport.info("#{account.login} deactivated for repeated failed login attempts.")
   end
 
   def increment_auth_fail_count
