@@ -11,7 +11,7 @@ module VulnerabilitiesHelper
       releases.pluck(:version)
     else
       releases.map do |r|
-        r[:version].to_i
+        r[:version].gsub(/^v?\.?/, '').to_i
       end.flatten.uniq.sort
     end
   end
