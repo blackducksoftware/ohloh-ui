@@ -2,6 +2,7 @@
 
 require_relative 'api_access'
 
+# rubocop:disable Metrics/ClassLength
 class FisbotApi
   attr_accessor :errors
   attr_reader :attributes
@@ -62,6 +63,10 @@ class FisbotApi
       uri = api_access.resource_uri(id)
       response = Net::HTTP.get_response(uri)
       handle_errors(response) { new(JSON.parse(response.body)) }
+    rescue Errno::ECONNREFUSED, Timeout::Error => e
+      Airbrake.notify(e)
+    rescue JSON::ParserError
+      handle_errors(response) { nil }
     end
 
     def all(params)
@@ -123,3 +128,4 @@ class FisbotApi
     Net::HTTP.new(uri.host, uri.port).tap { |http| http.use_ssl = (uri.scheme == 'https') }
   end
 end
+# rubocop:enable Metrics/ClassLength
