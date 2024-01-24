@@ -21,4 +21,29 @@ describe 'FisbotApi' do
       _(code_location).must_be :valid?
     end
   end
+
+  describe 'find' do
+    it 'must handle timeout errors' do
+      Net::HTTP.stubs(:get_response).raises(Timeout::Error)
+      code_location = CodeLocation.find(42)
+
+      _(code_location.scm_type).must_equal :git
+      _(code_location).must_be_kind_of NilCodeLocation
+    end
+
+    it 'must handle connection refused errors' do
+      Net::HTTP.stubs(:get_response).raises(Errno::ECONNREFUSED)
+      code_location = CodeLocation.find(42)
+
+      _(code_location.url).must_be :blank?
+      _(code_location).must_be_kind_of NilCodeLocation
+    end
+
+    it 'must handle JSON parser errors' do
+      Net::HTTP.stubs(:get_response).returns(stub(body: 'bad JSON response'))
+      code_location = CodeLocation.find(42)
+
+      _(code_location).must_be_kind_of NilCodeLocation
+    end
+  end
 end
