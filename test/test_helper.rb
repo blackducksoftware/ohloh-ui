@@ -41,6 +41,12 @@ class ActiveSupport::TestCase
   include FactoryBot::Syntax::Methods
 
   TEST_PASSWORD = :test_password
+  ENV['OHLOH_CIPHER_KEY'] = Faker::Alphanumeric.alpha(number: 43)
+  ENV['FIREBASE_API_KEY'] = Faker::Alphanumeric.alpha(number: 40)
+  ENV['GITHUB_CLIENT_ID'] = Faker::Alphanumeric.alpha(number: 40)
+  ENV['GITHUB_CLIENT_SECRET'] = Faker::Alphanumeric.alpha(number: 40)
+  ENV['FISBOT_CLIENT_REGISTRATION_ID'] = Faker::Alphanumeric.alpha(number: 40)
+  ENV['OHLOH_ANALYTICS_CLIENT_REGISTRATION_ID'] = Faker::Alphanumeric.alpha(number: 40)
 
   create_hamster_account
   create_forges
