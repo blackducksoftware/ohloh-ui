@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: delete
-    uri: http://vcrlocalhost.org:4004/api/v1/subscriptions/<%=code_location_id%>/<%=client_relation_id%>.json?api_key=0f9bf020-32dd-4846-a7d7-8a48b55c5a5d
+    uri: http://vcrlocalhost.org:4004/api/v1/subscriptions/<%=code_location_id%>/<%=client_relation_id%>.json?api_key=dummy_test_key
   response:
     status:
       code: 200
@@ -39,7 +39,7 @@ http_interactions:
   recorded_at: Tue, 23 Jan 2018 14:12:40 GMT
 - request:
     method: delete
-    uri: https://vcrlocalhost.org:4004/api/v1/subscriptions/264/101.json?api_key=0f9bf020-32dd-4846-a7d7-8a48b55c5a5d
+    uri: https://vcrlocalhost.org:4004/api/v1/subscriptions/264/101.json?api_key=dummy_test_key
   response:
     status:
       code: 200

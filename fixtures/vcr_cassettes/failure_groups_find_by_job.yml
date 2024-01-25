@@ -2,10 +2,10 @@
 http_interactions:
 - request:
     method: get
-    uri: http://vcrlocalhost.org:4004/api/v1/failure_groups.json?api_key=0f9bf020-32dd-4846-a7d7-8a48b55c5a5d
+    uri: http://vcrlocalhost.org:4004/api/v1/failure_groups.json?api_key=dummy_test_key
     body:
       encoding: US-ASCII
-      string: api_key=0f9bf020-32dd-4846-a7d7-8a48b55c5a5d
+      string: api_key=dummy_test_key
     headers:
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
@@ -53,10 +53,10 @@ http_interactions:
   recorded_at: Tue, 28 Feb 2023 14:11:24 GMT
 - request:
     method: get
-    uri: http://vcrlocalhost.org:4004/api/v1/failure_groups/find_by_job/1.json?api_key=0f9bf020-32dd-4846-a7d7-8a48b55c5a5d
+    uri: http://vcrlocalhost.org:4004/api/v1/failure_groups/find_by_job/1.json?api_key=dummy_test_key
     body:
       encoding: US-ASCII
-      string: api_key=0f9bf020-32dd-4846-a7d7-8a48b55c5a5d
+      string: api_key=dummy_test_key
     headers:
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3

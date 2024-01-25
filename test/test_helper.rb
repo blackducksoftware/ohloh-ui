@@ -45,8 +45,6 @@ class ActiveSupport::TestCase
   ENV['FIREBASE_API_KEY'] = Faker::Alphanumeric.alpha(number: 40)
   ENV['GITHUB_CLIENT_ID'] = Faker::Alphanumeric.alpha(number: 40)
   ENV['GITHUB_CLIENT_SECRET'] = Faker::Alphanumeric.alpha(number: 40)
-  ENV['FISBOT_CLIENT_REGISTRATION_ID'] = Faker::Alphanumeric.alpha(number: 40)
-  ENV['OHLOH_ANALYTICS_CLIENT_REGISTRATION_ID'] = Faker::Alphanumeric.alpha(number: 40)
 
   create_hamster_account
   create_forges

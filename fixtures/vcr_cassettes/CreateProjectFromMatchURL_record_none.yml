@@ -302,7 +302,7 @@ http_interactions:
   recorded_at: Tue, 20 Sep 2022 12:25:35 GMT
 - request:
     method: post
-    uri: http://vcrlocalhost.org:4004/api/v1/code_locations/valid.json?api_key=0f9bf020-32dd-4846-a7d7-8a48b55c5a5d
+    uri: http://vcrlocalhost.org:4004/api/v1/code_locations/valid.json?api_key=dummy_test_key
     body:
       encoding: US-ASCII
       string: url=https%3A%2F%2Fgithub.com%2Frails%2Frails&scm_type=git&username&password&branch=main&forge_match&best_code_set_id&do_not_fetch
@@ -358,7 +358,7 @@ http_interactions:
   recorded_at: Tue, 20 Sep 2022 12:25:39 GMT
 - request:
     method: post
-    uri: http://vcrlocalhost.org:4004/api/v1/subscriptions.json?api_key=0f9bf020-32dd-4846-a7d7-8a48b55c5a5d
+    uri: http://vcrlocalhost.org:4004/api/v1/subscriptions.json?api_key=dummy_test_key
     body:
       encoding: US-ASCII
       string: code_location_id&client_relation_id=12
