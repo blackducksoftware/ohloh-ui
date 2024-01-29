@@ -14,7 +14,7 @@ http_interactions:
       User-Agent:
       - Ruby
       X-Bds-Authtoken:
-      - Free_oh_vulnerability_job
+      - dummy_test_key
   response:
     status:
       code: 200
