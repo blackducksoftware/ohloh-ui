@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: post
-    uri: http://vcrlocalhost.org:4004/api/v1/subscriptions.json?api_key=0f9bf020-32dd-4846-a7d7-8a48b55c5a5d
+    uri: http://vcrlocalhost.org:4004/api/v1/subscriptions.json?api_key=dummy_test_key
     body:
       encoding: US-ASCII
       string: code_location_id=263

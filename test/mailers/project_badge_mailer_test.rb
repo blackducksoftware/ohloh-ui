@@ -15,7 +15,7 @@ describe ProjectBadgeMailer do
 
     it 'should send email the cii projects detail' do
       email = ProjectBadgeMailer.check_cii_projects(@cii_projects)
-      _(email.to).must_equal ['openhubteam@blackducksoftware.com']
+      _(email.to).must_equal ['ohteam@synopsys.com']
       _(email[:from].value).must_equal 'mailer@openhub.net'
       _(email.subject).must_equal "CII Best Practices Badge - Found #{@cii_projects.size} new projects"
       assert_difference('ActionMailer::Base.deliveries.count', 1) { email.deliver_now }
