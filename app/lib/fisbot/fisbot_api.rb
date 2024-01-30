@@ -63,10 +63,9 @@ class FisbotApi
       uri = api_access.resource_uri(id)
       response = Net::HTTP.get_response(uri)
       handle_errors(response) { new(JSON.parse(response.body)) }
-    rescue Errno::ECONNREFUSED, Timeout::Error => e
+    rescue Errno::ECONNREFUSED, Timeout::Error, JSON::ParserError => e
       Airbrake.notify(e)
-    rescue JSON::ParserError
-      handle_errors(response) { nil }
+      null_object
     end
 
     def all(params)
@@ -96,6 +95,10 @@ class FisbotApi
 
     def api_access
       ApiAccess.new(resource)
+    end
+
+    def null_object
+      "Nil#{name}".constantize.new
     end
 
     def build_objects(response)
