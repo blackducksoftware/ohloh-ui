@@ -117,7 +117,7 @@ class AuthenticationsController < ApplicationController
   end
 
   def redirect_invalid_github_account
-    return if github_api.created_at < 1.month.ago && github_api.repository_has_language?
+    return if github_api.created_at < ENV['GITHUB_REPO_AGE_LIMIT'].to_i.days.ago && github_api.repository_has_language?
 
     redirect_path = current_user.present? ? new_authentication_path : new_account_path
     redirect_to redirect_path, notice: t('.invalid_github_account')
