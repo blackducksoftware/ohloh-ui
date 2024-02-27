@@ -6,7 +6,7 @@ class AutocompletesController < ApplicationController
   before_action :set_projects_to_ignore, only: :projects_for_stack
 
   def account
-    accounts = params[:term].blank? ? [] : Account.simple_search(params[:term])
+    accounts = params[:term].blank? ? [] : Account.in_good_standing.simple_search(params[:term])
     render json: accounts.map { |a| { login: a.login, name: a.name, value: a.login, id: a.id } }
   end
 

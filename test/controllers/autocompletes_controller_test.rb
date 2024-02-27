@@ -5,11 +5,15 @@ require 'test_helper'
 class AutocompletesControllerTest < ActionController::TestCase
   describe 'account' do
     it 'should return account hash' do
-      account = create(:account)
-      get :account, params: { term: account.login }, xhr: true
+      account = create(:account, login: 'good-user')
+      create(:account, level: Account::Access::SPAM, login: 'bad-user-1')
+      create(:account, level: Account::Access::DISABLED, login: 'bad-user-2')
+
+      get :account, params: { term: '-user' }, xhr: true
       assert_response :ok
 
       result = JSON.parse(response.body)
+      _(result.count).must_equal 1
       _(result.first['login']).must_equal account.login
       _(result.first['value']).must_equal account.login
       _(result.first['name']).must_equal account.name
