@@ -46,6 +46,14 @@ class EnlistmentsControllerTest < ActionController::TestCase
       _(response.body).must_match I18n.t('enlistments.index.failure.dnf_present')
     end
 
+    it 'must render page when code_location is null' do
+      Enlistment.any_instance.stubs(:code_location).returns(NilCodeLocation.new)
+
+      mock_and_get :index, params: { project_id: @project_id }
+
+      assert_response :ok
+    end
+
     it 'must render projects/deleted when project is deleted' do
       login_as @account
       ApplicationController.any_instance.stubs(:current_user_can_manage?).returns(true)

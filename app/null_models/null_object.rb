@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 class NullObject
+  def id
+    rand(20_000)
+  end
+
   def nil?
     true
   end
