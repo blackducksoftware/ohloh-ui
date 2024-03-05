@@ -237,7 +237,11 @@ class ApplicationController < ActionController::Base
   end
 
   def check_maintenance_mode
-    render file: 'public/offline.html' if ENV['PATH_IN_MAINTENANCE_MODE']&.include?(controller_name)
+    maintenance_paths = ApplicationRecord.connection
+                                         .execute('select path from fis.maintenance_path;').to_a.collect do |data|
+      data['path']
+    end
+    render file: 'public/offline.html' if maintenance_paths.include?(controller_name)
   end
 
   private
