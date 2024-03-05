@@ -239,7 +239,7 @@ Rails.application.routes.draw do
         post :reject
       end
     end
-    resources :manages, only: [:new]
+    #resources :manages, only: [:new]
     resources :edits, only: %i[index show]
     get 'edits/refresh/:id', to: 'edits#refresh'
 
