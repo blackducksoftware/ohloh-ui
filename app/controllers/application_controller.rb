@@ -30,6 +30,7 @@ class ApplicationController < ActionController::Base
   before_action :clear_reminder
   before_action :verify_api_access_for_xml_request, only: %i[show index similar]
   before_action :update_last_seen_at_and_ip
+  before_action :check_maintenance_mode
 
   alias session_required require_login
 
@@ -233,6 +234,10 @@ class ApplicationController < ActionController::Base
     return if logged_in? && !current_project_or_org.protection_enabled?
 
     flash.now[:notice] = logged_in? ? t('permissions.not_manager') : t('permissions.must_log_in')
+  end
+
+  def check_maintenance_mode
+    render file: 'public/offline.html' if ENV['PATH_IN_MAINTENANCE_MODE']&.include?(controller_name)
   end
 
   private
