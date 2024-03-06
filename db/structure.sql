@@ -4431,7 +4431,7 @@ CREATE SEQUENCE fis.repository_tags_id_seq
 
 ALTER SEQUENCE fis.repository_tags_id_seq OWNED BY fis.repository_tags.id;
 
-CREATE TABLE fis.maintenance_routes(path text);
+
 --
 -- Name: schema_migrations; Type: TABLE; Schema: fis; Owner: -
 --
