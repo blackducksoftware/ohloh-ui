@@ -19279,6 +19279,8 @@ INSERT INTO oh.schema_migrations (version) VALUES ('20230320140846');
 
 INSERT INTO oh.schema_migrations (version) VALUES ('20230801115125');
 
+INSERT INTO oh.schema_migrations (version) VALUES ('20240305184511');
+
 INSERT INTO oh.schema_migrations (version) VALUES ('21');
 
 INSERT INTO oh.schema_migrations (version) VALUES ('22');
