@@ -105,7 +105,7 @@ class Project < ApplicationRecord
   end
 
   def after_undo(current_user)
-    remove_enlistments(current_user)
+    remove_enlistments(current_user) if deleted?
   end
 
   class << self
