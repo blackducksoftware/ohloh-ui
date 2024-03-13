@@ -2,7 +2,7 @@
 
 class AlterPasswordsController < ApplicationController
   before_action :session_required, :redirect_unverified_account
-  before_action :set_account
+  before_action :set_account, :must_own_account
   before_action :account_context
 
   def update
@@ -18,14 +18,15 @@ class AlterPasswordsController < ApplicationController
   private
 
   def set_account
-    @account = if params[:id] == 'me'
-                 return redirect_to new_session_path if current_user.nil?
+    @account = current_user
 
-                 current_user
-               else
-                 AccountFind.by_id_or_login(params[:id])
-               end
-    raise ParamRecordNotFound unless @account
+    redirect_to new_session_path unless @account
+  end
+
+  def must_own_account
+    return if [@account.login, 'me'].include?(params[:id])
+
+    access_denied
   end
 
   def account_params
