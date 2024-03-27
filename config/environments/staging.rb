@@ -92,6 +92,6 @@ Rails.application.configure do
   config.logger    = ActiveSupport::TaggedLogging.new(logger)
 
   SqlTracker::Config.enabled = ENV['SQL_TRACKER'].eql?('enabled')
-  SqlTracker::Config.tracked_sql_command = %w[sloc_metrics]
+  SqlTracker::Config.tracked_sql_command = %w[commits]
   SqlTracker::Config.output_path = File.join(ENV['SQL_TRACER_TEMP_PATH'] || '/tmp', 'sql_tracker')
 end
