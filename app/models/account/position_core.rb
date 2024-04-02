@@ -48,14 +48,12 @@ class Account::PositionCore < OhDelegator::Base
   end
 
   # claim a position if there is no existing position for the project or create an alias
-  # rubocop:disable Metrics/MethodLength
   def ensure_position_or_alias!(project, name, try_create: false, position_attributes: {})
     existing_position = project.positions.claimed_by(account).first
     return unless existing_position || try_create
 
     Account.transaction do
-      con_facts = project.best_analysis.contributor_facts
-      if existing_position && con_facts.present? && con_facts.find_by(name_id: existing_position.name_id)
+      if check_existing_contributions?(project, existing_position)
         create_or_update_alias(project, name, existing_position, position_attributes)
       else
         attributes = position_attributes.merge(account: account, project: project, committer_name: name.name)
@@ -63,7 +61,11 @@ class Account::PositionCore < OhDelegator::Base
       end
     end
   end
-  # rubocop:enable Metrics/MethodLength
+
+  def check_existing_contributions?(project, position)
+    contributor_facts = project.best_analysis.contributor_facts
+    position && contributor_facts.present? && contributor_facts.find_by(name_id: position.name_id)
+  end
 
   def logos
     logo_ids = preloaded_positions.map { |position| position.project.logo_id }.compact
