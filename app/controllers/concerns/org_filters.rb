@@ -11,7 +11,7 @@ module OrgFilters
     before_action :session_required, only: %i[new create]
     before_action :admin_session_required, only: %i[new create]
     before_action :handle_default_view, only: :show
-    before_action :set_editor, only: %i[list_managers new_manager claim_projects_list claim_project]
+    before_action :set_editor, only: %i[list_managers new_manager claim_projects_list claim_project remove_project]
     before_action :show_permissions_alert, only: %i[manage_projects new_manager edit
                                                     claim_projects_list list_managers settings]
     before_action :redirect_ro_explores_pages, only: :index
@@ -19,6 +19,7 @@ module OrgFilters
     before_action :can_claim_project, only: :claim_project
     after_action :schedule_analysis, only: %i[claim_project remove_project]
     before_action :avoid_global_search, only: %i[manage_projects claim_projects_list]
+    before_action :org_must_be_edit_authorized, only: %i[new_manager remove_project]
   end
 
   def schedule_analysis
@@ -74,6 +75,12 @@ module OrgFilters
 
   def can_claim_project
     render plain: t('.unauthorized') unless request.xhr? && @organization.edit_authorized?
+  end
+
+  def org_must_be_edit_authorized
+    return if logged_in? && @organization.edit_authorized?
+
+    redirect_back fallback_location: @organization, notice: t('.unauthorized')
   end
 
   def set_project
