@@ -55,14 +55,14 @@ class ApiAccessTest < ActiveSupport::TestCase
       duration = (ApiAccess::CACHE_DURATION + 1.minute).to_i / 60
       ApiAccess.uptime_verified_time = Time.current.advance(minutes: -duration)
 
-      ApiAccess.send(:uptime_check_expired?).must_equal true
+      assert ApiAccess.send(:uptime_check_expired?)
     end
 
     it 'must be false when cache has not expired' do
       duration = (ApiAccess::CACHE_DURATION - 2.minutes).to_i / 60
       ApiAccess.uptime_verified_time = Time.current.advance(minutes: -duration)
 
-      ApiAccess.send(:uptime_check_expired?).must_equal false
+      assert_not ApiAccess.send(:uptime_check_expired?)
     end
   end
 end
