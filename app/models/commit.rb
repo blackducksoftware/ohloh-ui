@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Commit < FisBase
+  self.primary_key = 'id'
+
   belongs_to :code_set, optional: true
   belongs_to :name, optional: true
   has_many :fyle, primary_key: :code_set_id, foreign_key: :code_set_id
