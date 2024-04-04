@@ -53,13 +53,18 @@ class Account::PositionCore < OhDelegator::Base
     return unless existing_position || try_create
 
     Account.transaction do
-      if existing_position && project.best_analysis.contributor_facts.find_by(name_id: existing_position.name_id)
+      if check_existing_contributions?(project, existing_position)
         create_or_update_alias(project, name, existing_position, position_attributes)
       else
         attributes = position_attributes.merge(account: account, project: project, committer_name: name.name)
         recreate_position(existing_position, attributes)
       end
     end
+  end
+
+  def check_existing_contributions?(project, position)
+    contributor_facts = project.best_analysis.contributor_facts
+    position && contributor_facts.present? && contributor_facts.find_by(name_id: position.name_id)
   end
 
   def logos
