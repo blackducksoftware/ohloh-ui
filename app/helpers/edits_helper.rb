@@ -17,7 +17,8 @@ module EditsHelper
   end
 
   def edit_show_subject(edit)
-    "#{edit_subject(edit)} #{edit_enlistment_branch_info(edit)}".html_safe
+    raw_string = "#{edit_subject(edit)} #{edit_enlistment_branch_info(edit)}"
+    edit.target.is_a?(Link) ? raw_string : raw_string.html_safe
   end
 
   def get_edit_summary(edit)
