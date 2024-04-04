@@ -1,5 +1,5 @@
 :ruby
-  main_lang = name_fact.primary_language.name
+  main_lang = name_fact&.primary_language.name
   bg_color = language_color(main_lang)
   txt_color = language_text_color(main_lang)
   emails = name_fact.email_address_ids.compact
