@@ -1,5 +1,6 @@
 en:
   organizations:
+    unauthorized: 'You are not authorized to perform this action.'
     active_remove_project_button:
       remove_from: 'Remove %{project} from %{org}?'
       remove: 'Remove'

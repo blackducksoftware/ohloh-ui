@@ -323,11 +323,12 @@ class OrganizationsControllerTest < ActionController::TestCase
   end
 
   describe 'remove_project' do
+    before { login_as account }
+
     it 'should remove project from org' do
-      login_as account
       pro1 = create(:project, name: 'test name1', organization_id: organization.id)
 
-      get :remove_project, params: { id: organization.to_param, project_id: pro1.id, source: 'manage_projects' }
+      put :remove_project, params: { id: organization.to_param, project_id: pro1.id, source: 'manage_projects' }
 
       assert_redirected_to manage_projects_organization_path(organization)
       _(flash[:success]).must_equal I18n.t('organizations.remove_project.success', name: pro1.name)
@@ -335,28 +336,52 @@ class OrganizationsControllerTest < ActionController::TestCase
     end
 
     it 'should remove project from org and redirect to claim_projects_list' do
-      login_as account
       pro1 = create(:project, name: 'test name1', organization_id: organization.id)
 
-      get :remove_project, params: { id: organization.to_param, project_id: pro1.id, source: 'claim_projects_list' }
+      put :remove_project, params: { id: organization.to_param, project_id: pro1.id, source: 'claim_projects_list' }
 
       assert_redirected_to claim_projects_list_organization_path(organization)
       _(flash[:success]).must_equal I18n.t('organizations.remove_project.success', name: pro1.name)
       _(pro1.reload.organization_id).must_be_nil
     end
+
+    it 'must prevent unauthorized project removal' do
+      restrict_edits_to_managers(organization)
+
+      project = create(:project, name: 'test name1', organization_id: organization.id)
+
+      put :remove_project, params: { id: organization.to_param, project_id: project.id, source: 'claim_projects_list' }
+
+      assert_redirected_to organization_path(organization)
+      _(flash[:notice]).must_equal I18n.t('organizations.unauthorized')
+      _(project.reload.organization_id).must_equal organization.id
+    end
   end
 
   describe 'new_manager' do
     it 'should show new manager form for get request' do
+      login_as account
       get :new_manager, params: { id: organization, account_id: account.id }
       assert_response :ok
     end
 
-    it 'should show new manager form for get request' do
+    it 'should show new manager form for post request' do
+      login_as account
+
       post :new_manager, params: { id: organization, account_id: account.id }
 
       assert_redirected_to list_managers_organization_path(organization)
       _(assigns(:manage).target).must_equal organization
+    end
+
+    it 'must prevent unauthorized manager creation' do
+      restrict_edits_to_managers(organization)
+
+      post :new_manager, params: { id: organization, account_id: account.id }
+
+      assert_redirected_to organization_path(organization)
+      _(flash[:notice]).must_equal I18n.t('organizations.unauthorized')
+      _(organization.managers.pluck(:id)).must_be :empty?
     end
   end
 
