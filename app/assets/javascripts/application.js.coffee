@@ -17,10 +17,10 @@
 #= require twitter/bootstrap
 #= require underscore-min
 #= require jquery/chosen.jquery.min
-#= require highcharts/highstock
-#= require highcharts/highcharts-more
-#= require highcharts/solid-gauge
-#= require highcharts/exporting
+#= require highcharts/highstock.min
+#= require highcharts/highcharts-more.min
+#= require highcharts/solid-gauge.min
+#= require highcharts/exporting.min
 #= require app
 #= require_tree .
 #= require d3.min
