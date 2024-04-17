@@ -34,6 +34,8 @@ Rails.application.routes.draw do
   post 'sessions' => 'sessions#create', as: :oh_sessions
   get 'health' => 'sessions#health'
 
+  post '/csp-violation-report' => 'csp_violation_reports#report'
+
   resources :stack_entries, only: :new
 
   resources :activation_resends, only: %i[new create]
