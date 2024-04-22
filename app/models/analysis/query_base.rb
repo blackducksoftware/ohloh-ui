@@ -49,8 +49,8 @@ class Analysis::QueryBase
   end
 
   def contributor_monthly_commits
-    code_set_ids = SlocSet.where(id: AnalysisSlocSet.where(analysis_id: @analysis.id).select(:sloc_set_id))
-                          .pluck(:code_set_id)
+    code_set_ids = AnalysisSlocSet.joins(:sloc_set).where(analysis_id: @analysis.id).pluck(:code_set_id)
+
     @contributor_monthly_commits ||= contributor_monthly_commits_query(code_set_ids).map do |c|
       MonthlyCommitHistory.new(month: DateTime.parse(c['month']).in_time_zone, commits: c['count'])
     end
