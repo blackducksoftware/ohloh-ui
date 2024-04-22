@@ -49,7 +49,9 @@ class Analysis::QueryBase
   end
 
   def contributor_monthly_commits
-    @contributor_monthly_commits ||= contributor_monthly_commits_query.map do |c|
+    code_set_ids = SlocSet.where(id: AnalysisSlocSet.where(analysis_id: @analysis.id).select(:sloc_set_id))
+                          .pluck(:code_set_id)
+    @contributor_monthly_commits ||= contributor_monthly_commits_query(code_set_ids).map do |c|
       MonthlyCommitHistory.new(month: DateTime.parse(c['month']).in_time_zone, commits: c['count'])
     end
   end
@@ -87,13 +89,13 @@ class Analysis::QueryBase
     activity_facts[:on_trunk].eq(true).and(activity_facts[:analysis_id].eq(@analysis.id))
   end
 
-  def contributor_monthly_commits_query
+  def contributor_monthly_commits_query(code_set_ids)
     commit_name_ids = AnalysisAlias.where(preferred_name_id: @name_id, analysis_id: @analysis.id).pluck(:commit_name_id)
     sql = <<-SQL.squish
       select to_char(date(C.time),'MON,YYYY') as month, count (*) as count
       FROM  commits C INNER JOIN code_sets CS ON C.code_set_id = CS.id
       INNER JOIN sloc_sets SS ON SS.code_set_id = CS.id INNER JOIN analysis_sloc_sets ASS ON ASS.sloc_set_id = SS.id
-      WHERE ASS.analysis_id = #{@analysis.id} AND C.position <= ASS.as_of AND C.name_id in (#{commit_name_ids.join(', ')})
+      WHERE ASS.analysis_id = #{@analysis.id} AND C.position <= ASS.as_of AND C.code_set_id in (#{code_set_ids.join(', ')}) AND C.name_id in (#{commit_name_ids.join(', ')})
       group by month
     SQL
     data = commit_name_ids.present? ? ApplicationRecord.connection.execute(sql).try(:to_json) : commit_name_ids.to_s
