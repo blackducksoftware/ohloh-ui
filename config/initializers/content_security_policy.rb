@@ -7,7 +7,7 @@ Rails.application.config.content_security_policy do |policy|
   policy.font_src :self, :https, :data
   policy.img_src :self, :https, :data
   policy.object_src :none
-  policy.script_src :self, :https, :unsafe_eval, *allowed_script_sources
+  policy.script_src :self, :https, :unsafe_inline, :unsafe_eval, *allowed_script_sources
   policy.style_src :self, :https, :unsafe_inline
   policy.report_uri '/csp-violation-report'
 end
