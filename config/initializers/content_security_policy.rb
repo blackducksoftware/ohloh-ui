@@ -11,5 +11,3 @@ Rails.application.config.content_security_policy do |policy|
   policy.style_src :self, :https, :unsafe_inline
   policy.report_uri '/csp-violation-report'
 end
-
-Rails.application.config.content_security_policy_report_only = true
