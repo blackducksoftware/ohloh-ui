@@ -18,7 +18,6 @@
               %a{ href: stack_path(similar_stack[:stack]) }= similar_stack[:stack].title
               %span.soft== updated #{time_ago_in_words(account.updated_at)} ago
             = avatar_small_laurels(account.kudo_rank)
-            - stack_country_flag(account.country_code)
           .a_right
             %p
               #{pluralize(similar_stack[:shared_projects].size, t('.shared_project'))} &nbsp;
