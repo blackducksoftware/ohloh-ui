@@ -1,26 +1,26 @@
 :ruby
   chart_path = charts_oh_admin_accounts_path.to_s
 
-#three_months.account
+#three_months.account_admin_view
   %h1 3 Months Accounts Creation Trend
   .chart{ 'datasrc' => chart_path + '?period=3' + '&filter_by=weekly' }
 
-#six_months.account
+#six_months.account_admin_view
   %h1 6 Months Accounts Creation Trend
   .chart{ 'datasrc' => chart_path + '?period=6' + '&filter_by=weekly'}
 
-#one_year.account
+#one_year.account_admin_view
   %h1 1 Year Accounts Creation Trend
   .chart{ 'datasrc' => chart_path + '?period=12' + '&filter_by=weekly'}
 
-#three_months_monthly.account
+#three_months_monthly.account_admin_view
   %h1 3 Months Accounts Creation Trend
   .chart{ 'datasrc' => chart_path + '?period=3' + '&filter_by=monthly'}
 
-#six_months_monthly.account
+#six_months_monthly.account_admin_view
   %h1 6 Months Accounts Creation Trend
   .chart{ 'datasrc' => chart_path + '?period=6' + '&filter_by=monthly'}
 
-#one_year_monthly.account
+#one_year_monthly.account_admin_view
   %h1 1 Year Accounts Creation Trend
   .chart{ 'datasrc' => chart_path + '?period=12' + '&filter_by=monthly'}
