@@ -24,19 +24,26 @@ module VulnerabilitiesHelper
   end
 
   def filter_version_param
-    params.fetch(:filter, {})[:version]
+    decoded_params.fetch(:filter, {})[:version]
   end
 
   def filter_major_version_param
-    params.fetch(:filter, {})[:major_version]
+    decoded_params.fetch(:filter, {})[:major_version]
   end
 
   def filter_period_param
-    params.fetch(:filter, {})[:period]
+    decoded_params.fetch(:filter, {})[:period]
   end
 
   def sort_col_param
     params.fetch(:sort, {})[:col]
+  end
+
+  def decoded_params
+    return params unless params.fetch(:filter, {})[:period].to_s.match(/filter/)
+
+    decoded_params = URI.decode_www_form(CGI.unescape(request.query_string))
+    decoded_params.to_h
   end
 
   def no_versions_available
