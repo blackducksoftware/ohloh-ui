@@ -110,7 +110,8 @@ class Position < ApplicationRecord
   private
 
   def find_name_fact_from_project_and_comitter_name
-    NameFact.joins(:name).find_by('analysis_id = ? AND names.name = ?', project.best_analysis_id, committer_name)
+    NameFact.joins(:name).find_by('analysis_id = ? AND lower(unaccent(names.name)) = ?', project.best_analysis_id,
+                                  ActiveSupport::Inflector.transliterate(committer_name).downcase)
   end
 
   def committer_name_and_project?
