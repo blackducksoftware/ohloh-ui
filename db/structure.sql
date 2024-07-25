@@ -66,6 +66,20 @@ COMMENT ON EXTENSION pg_stat_statements IS 'track execution statistics of all SQ
 
 
 --
+-- Name: unaccent; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS unaccent WITH SCHEMA oh;
+
+
+--
+-- Name: EXTENSION unaccent; Type: COMMENT; Schema: -; Owner: -
+--
+
+COMMENT ON EXTENSION unaccent IS 'text search dictionary that removes accents';
+
+
+--
 -- Name: uuid-ossp; Type: EXTENSION; Schema: -; Owner: -
 --
 
@@ -5467,6 +5481,7 @@ CREATE TABLE oh.countries (
     region text
 );
 
+
 --
 -- Name: cve_bdsa; Type: TABLE; Schema: oh; Owner: -
 --
@@ -5495,6 +5510,7 @@ CREATE SEQUENCE oh.cve_bdsa_id_seq
 --
 
 ALTER SEQUENCE oh.cve_bdsa_id_seq OWNED BY oh.cve_bdsa.id;
+
 
 --
 -- Name: deleted_accounts; Type: TABLE; Schema: oh; Owner: -
@@ -6568,6 +6584,7 @@ CREATE TABLE oh.links_truncated (
     url text
 );
 
+
 --
 -- Name: maintenance_routes; Type: TABLE; Schema: oh; Owner: -
 --
@@ -6575,6 +6592,7 @@ CREATE TABLE oh.links_truncated (
 CREATE TABLE oh.maintenance_routes (
     path character varying
 );
+
 
 --
 -- Name: manages; Type: TABLE; Schema: oh; Owner: -
@@ -9478,11 +9496,13 @@ ALTER TABLE ONLY oh.clumps ALTER COLUMN id SET DEFAULT nextval('oh.clumps_id_seq
 
 ALTER TABLE ONLY oh.code_location_scan ALTER COLUMN id SET DEFAULT nextval('oh.code_location_scan_id_seq'::regclass);
 
+
 --
 -- Name: cve_bdsa id; Type: DEFAULT; Schema: oh; Owner: -
 --
 
 ALTER TABLE ONLY oh.cve_bdsa ALTER COLUMN id SET DEFAULT nextval('oh.cve_bdsa_id_seq'::regclass);
+
 
 --
 -- Name: deleted_accounts id; Type: DEFAULT; Schema: oh; Owner: -
@@ -10321,12 +10341,14 @@ ALTER TABLE ONLY oh.clumps
 ALTER TABLE ONLY oh.code_location_scan
     ADD CONSTRAINT code_location_scan_pkey PRIMARY KEY (id);
 
+
 --
 -- Name: cve_bdsa cve_bdsa_pkey; Type: CONSTRAINT; Schema: oh; Owner: -
 --
 
 ALTER TABLE ONLY oh.cve_bdsa
     ADD CONSTRAINT cve_bdsa_pkey PRIMARY KEY (id);
+
 
 --
 -- Name: deleted_accounts deleted_accounts_pkey; Type: CONSTRAINT; Schema: oh; Owner: -
@@ -19281,6 +19303,8 @@ INSERT INTO oh.schema_migrations (version) VALUES ('20230801115125');
 
 INSERT INTO oh.schema_migrations (version) VALUES ('20240305184511');
 
+INSERT INTO oh.schema_migrations (version) VALUES ('20240724182111');
+
 INSERT INTO oh.schema_migrations (version) VALUES ('21');
 
 INSERT INTO oh.schema_migrations (version) VALUES ('22');
@@ -19452,3 +19476,4 @@ INSERT INTO oh.schema_migrations (version) VALUES ('97');
 INSERT INTO oh.schema_migrations (version) VALUES ('98');
 
 INSERT INTO oh.schema_migrations (version) VALUES ('99');
+
