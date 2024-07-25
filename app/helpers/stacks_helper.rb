@@ -16,6 +16,6 @@ module StacksHelper
   def stack_country_flag(code)
     return '' unless code && code.size == 2
 
-    haml_tag 'img', src: "/assets/flags/#{code.downcase}.gif"
+    haml_tag 'img', src: asset_url("flags/#{code.downcase}.gif")
   end
 end
