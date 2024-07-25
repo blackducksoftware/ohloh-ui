@@ -100,6 +100,14 @@ class VulnerabilitiesControllerTest < ActionController::TestCase
         _(assigns(:vulnerabilities).to_a).must_equal r1_3.vulnerabilities.order_by
       end
 
+      it 'should parse the filters correctly and return the vulnerabilities' do
+        get :index,
+            params: { id: security_set.project.to_param, filter: { major_version: '1', period: '&filter[version]=1' } }
+        _(assigns(:release)).must_equal r1_3
+        _(assigns(:minor_versions).to_a).must_equal [r1_3]
+        _(assigns(:vulnerabilities).to_a).must_equal r1_3.vulnerabilities.order_by
+      end
+
       it 'Release timespan should be disable if there are no releases availble within the timespan' do
         security_set = create(:project_security_set)
         create(:release, version: '1.0', released_on: 5.years.ago, project_security_set: security_set)
