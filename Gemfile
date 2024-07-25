@@ -79,7 +79,7 @@ end
 
 group :production, :staging do
   gem 'activerecord-nulldb-adapter', require: false
-  gem 'ddtrace'
+  gem 'datadog', '~> 2.2'
 end
 
 group :development, :staging do
