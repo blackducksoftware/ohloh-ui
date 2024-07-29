@@ -14,8 +14,17 @@ module StacksHelper
   end
 
   def stack_country_flag(code)
-    return '' unless code && code.size == 2
+    img_relative_path = "flags/#{code.to_s.downcase}.gif"
+    return '' unless asset_exists?(img_relative_path)
 
-    haml_tag 'img', src: asset_url("flags/#{code.downcase}.gif")
+    haml_tag 'img', src: asset_url(img_relative_path)
+  end
+
+  def asset_exists?(path)
+    if Rails.configuration.assets.compile
+      Rails.application.precompiled_assets.include? path
+    else
+      Rails.application.assets_manifest.assets[path].present?
+    end
   end
 end
