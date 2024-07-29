@@ -20,7 +20,7 @@
         - if current_user_is_admin?
           |
           = link_to bootstrap_icon('icon-legal', t('projects.header.job')), oh_admin_project_jobs_path(@project)
-        - if !current_user.nil? && !@project.best_analysis.nil? && @project.best_analysis.updated_on < 1.week.ago
+        - if !current_user.nil? && (@project.best_analysis.nil? || (!@project.best_analysis.nil? && @project.best_analysis.updated_on < 1.week.ago))
           |
           = link_to bootstrap_icon('icon-lock', t('projects.header.outdated')), report_outdated_project_path(@project), method: :put
     .pull-right.no_padding#widgets
