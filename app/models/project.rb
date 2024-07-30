@@ -108,6 +108,10 @@ class Project < ApplicationRecord
     remove_enlistments(current_user) if deleted?
   end
 
+  def analysis_updated_or_project_created_time
+    best_analysis.nil? ? created_at : best_analysis.updated_on
+  end
+
   class << self
     def search_and_sort(query, sort, page)
       sort_by = sort == 'relevance' ? nil : "by_#{sort}"
