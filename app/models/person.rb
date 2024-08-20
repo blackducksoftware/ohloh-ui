@@ -67,9 +67,10 @@ class Person < ApplicationRecord
     end
 
     def include_relations_and_order_by_kudo_position_and_name(name_id)
-      includes({ project: [{ best_analysis: :main_language }, :logo] }, :name, name_fact: :primary_language)
-        .where(name_id: name_id)
-        .order(Arel.sql('COALESCE(kudo_position, 999999999), lower(effective_name)'))
+      joins(project: :best_analysis).includes({ project: [{ best_analysis: :main_language }, :logo] }, :name,
+                                              name_fact: :primary_language)
+                                    .where(name_id: name_id)
+                                    .order(Arel.sql('COALESCE(kudo_position, 999999999), lower(effective_name)'))
     end
 
     def unclaimed_people(opts)
