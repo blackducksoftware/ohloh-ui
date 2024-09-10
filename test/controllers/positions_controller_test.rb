@@ -278,7 +278,7 @@ class PositionsControllerTest < ActionController::TestCase
       desc = 'Level 3 Describer: edits project descriptions'
       badges = [OpenStruct.new(level: 3, description: desc, levels?: true, level_bits: '0011')]
       Account.any_instance.expects(:badges).returns(badges)
-      badge_url = 'https://community.synopsys.com/s/article/Black-Duck-Open-Hub-About-Badges'
+      badge_url = 'https://community.blackduck.com/s/article/Black-Duck-Open-Hub-About-Badges'
       get :index, params: { account_id: account.to_param }
       assert_select 'div.mini-badges-section a.account-badge div.pips.pip-0011'
       assert_select 'div.mini-badges-section a.account-badge[title=?]', desc
@@ -288,7 +288,7 @@ class PositionsControllerTest < ActionController::TestCase
     it 'must not display the pips' do
       desc = 'Level 3 Describer: edits project descriptions'
       badges = [OpenStruct.new(level: 3, description: desc, levels?: false, level_bits: '0011')]
-      badge_url = 'https://community.synopsys.com/s/article/Black-Duck-Open-Hub-About-Badges'
+      badge_url = 'https://community.blackduck.com/s/article/Black-Duck-Open-Hub-About-Badges'
       Account.any_instance.expects(:badges).returns(badges)
 
       get :index, params: { account_id: account.to_param }

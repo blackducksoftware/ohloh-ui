@@ -42,6 +42,6 @@ location ~ ^/blog$ {
         rewrite ^.*$  http://feeds.feedburner.com/OhlohMeta permanent;
     }
     if ($args = '') {
-        rewrite ^.*$  https://community.synopsys.com/s/black-duck-open-hub permanent;
+        rewrite ^.*$  https://community.blackduck.com/s/black-duck-open-hub permanent;
     }
 }

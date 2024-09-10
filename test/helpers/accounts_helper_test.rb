@@ -24,7 +24,7 @@ class AccountsHelperTest < ActionView::TestCase
 
   describe '#privacy_policy_link' do
     it 'should return privacy policy link for existing account' do
-      url = 'https://community.synopsys.com/s/article/Black-Duck-Open-Hub-Open-Hub-Privacy-Policy'
+      url = 'https://community.blackduck.com/s/article/Black-Duck-Open-Hub-Open-Hub-Privacy-Policy'
       link = %(<a target="_blank" rel="noopener" href="#{url}">#{privacy_policy_link_text}</a>)
       _(privacy_policy_link).must_equal link
     end
