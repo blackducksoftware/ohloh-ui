@@ -18,8 +18,8 @@ module Api::VulnerabilitiesHelper
   end
 
   def cvss3_severity(data, type = nil)
-    score = type == 'CVE' ? data['baseScore'] : data['temporalMetrics']['score']
-    "#{score} #{data['severity'].titleize}"
+    score = type == 'CVE' ? data['baseScore'] : data['temporalMetrics'].try { |metrics| metrics['score'] }
+    "#{score} #{data['severity'].titleize}" if score
   end
 
   def bdsa_cvss(cvss_data)
