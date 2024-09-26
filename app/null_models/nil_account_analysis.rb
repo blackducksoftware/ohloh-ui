@@ -10,4 +10,8 @@ class NilAccountAnalysis < NullObject
   def account_analysis_language_facts
     AccountAnalysisLanguageFact.none
   end
+
+  def name_fact
+    NilNameFact.new
+  end
 end
