@@ -8,7 +8,8 @@ class BlogLinkHelperTest < ActionView::TestCase
   describe 'blog_link_to' do
     it 'should return proper blog link' do
       BLOG_LINKS.each do |k, v|
-        link = "<a class='meta' href='https://community.blackduck.com/s/article/#{v}' target='_blank'>rest</a>".html_safe
+        link = "<a class='meta' href='https://community.blackduck.com/s/article/#{v}' target='_blank'>rest</a>"
+               .html_safe
         _(blog_link_to(link: k, link_text: 'rest')).must_equal link
       end
     end

@@ -357,9 +357,9 @@ class PositionsControllerTest < ActionController::TestCase
       get :index, params: { account_id: position.account.to_param }
       assert_response :success
       assert_select 'span.contribution_role', 'Release Engineer'
-      # rubocop:disable Metrics/LineLength
+      # rubocop:disable Layout/LineLength
       assert_select 'div.one-project-contribution', "Release Engineer\n\nAffiliated with Free Software Foundation\n\nwrote the module for wireless card driver ralink rt5390"
-      # rubocop:enable Metrics/LineLength
+      # rubocop:enable Layout/LineLength
     end
 
     it 'must show edit link when current user is admin' do
