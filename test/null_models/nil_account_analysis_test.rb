@@ -34,4 +34,10 @@ class NilAccounAnalysisTest < ActiveSupport::TestCase
       _(nil_account_analysis.id).must_equal 0
     end
   end
+
+  describe 'name_fact' do
+    it 'should be nil_name_fact' do
+      _(nil_account_analysis.name_fact.class).must_equal NilNameFact
+    end
+  end
 end
