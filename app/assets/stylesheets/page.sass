@@ -1,7 +1,7 @@
 @import "base"
 
 body
-  background-color: #005272 !important
+  background-color: #211e1e !important
   font-family: Roboto
   font-size: 1.3rem !important
   margin: 0
@@ -61,6 +61,7 @@ header
         margin-right: 2px !important
         a
           font-size: 10px !important
+	  
 @media (min-width: 341px) and (max-width: 480px)
   #nav-top-bar
     margin: 11px 10px 0 11px !important
@@ -69,7 +70,9 @@ header
       margin-right: 6px !important
       a
         font-size: 10px !important
-
+#nav-top-bar .new_main_menu li a:hover
+	color: #fff
+	text-decoration: underline
 #page_contents
   .separator-div
     @include site-separator-color
@@ -115,8 +118,7 @@ header
   padding: 0 0 5px 0
   min-height: 30px
   .logo-div
-    height: 100%
-    width: 125px
+    height: 35px
     float: left
     .logo_link
       text-decoration: none
@@ -127,8 +129,6 @@ header
   .company-div
     @include top-navigation-colors
     float: left
-    padding-right: 10px !important
-    padding-bottom: 5px !important
     .navbar_small_text
       font-size: 10px !important
     .navbar_large_text
@@ -190,7 +190,8 @@ header
     li
       float: left
       padding: 0 0 0 8px
-
+  .twitter_follow
+    padding-top: 5px
 #top_nav_actions
   float: right
   margin-right: 5px

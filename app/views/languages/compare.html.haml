@@ -10,7 +10,7 @@
   = t('.measure_heading', measure: measures[@measure])
 %p
   = measure_description[@measure]
-  = link_to t('.more'), 'https://community.synopsys.com/s/article/Black-Duck-Open-Hub-Language-Comparison-Page', target: '_blank'
+  = link_to t('.more'), 'https://community.blackduck.com/s/article/Black-Duck-Open-Hub-Language-Comparison-Page', target: '_blank'
 
 = form_tag(compare_languages_path(measure: @measure), method: :get) do
   = hidden_field_tag :measure, @measure

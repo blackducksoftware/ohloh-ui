@@ -10,7 +10,7 @@ module AccountsHelper
   end
 
   def privacy_policy_link
-    url = 'https://community.synopsys.com/s/article/Black-Duck-Open-Hub-Open-Hub-Privacy-Policy'
+    url = 'https://community.blackduck.com/s/article/Black-Duck-Open-Hub-Open-Hub-Privacy-Policy'
     link_to(t('accounts.unsubscribe_emails.privacy_policy'), url, target: '_blank', rel: 'noopener')
   end
 

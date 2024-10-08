@@ -22,12 +22,12 @@ module BlogLinkHelper
   }.freeze
 
   def blog_link_to(link:, link_text:)
-    url = "https://community.synopsys.com/s/article/#{BLOG_LINKS[link]}"
+    url = "https://community.blackduck.com/s/article/#{BLOG_LINKS[link]}"
     "<a class='meta' href='#{url}' target='_blank'>#{link_text}</a>".html_safe
   end
 
   def blog_url_for(article_name)
     path = BLOG_LINKS[article_name] || article_name.to_s
-    "https://community.synopsys.com/s/article/#{path}"
+    "https://community.blackduck.com/s/article/#{path}"
   end
 end

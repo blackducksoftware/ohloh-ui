@@ -1,30 +1,30 @@
 - raw_email = '%69%6Efo%40O%70en%48u%62.%6E%65t'
 
 .footer-left
-  %a.logo_link{ href: 'https://www.synopsys.com' }
-    %img.logo_img{ itemprop: 'image', src: image_path('logo/synopsys_logo.png'), alt: 'Open Hub' }
+  %a.logo_link{ href: 'https://www.blackduck.com' }
+    %img.logo_img{ itemprop: 'image', src: image_path('logo/BlackDuckLogo.svg'), alt: 'Open Hub' }
 
 .footer-mid
-  = "ABOUT SYNOPSYS"
+  = "ABOUT BLACK DUCK"
   %p
   %p
-    %a{ href: 'https://www.synopsys.com/software-integrity/security-testing.html' }= 'Application Security Testing'
+    %a{ href: 'https://www.blackduck.com/solutions/application-security-testing.html' }= 'Application Security Testing'
   %p
-    %a{ href: 'https://www.synopsys.com/software-integrity/software-security-services.html' }= 'Software Security Services'
+    %a{ href: 'https://www.blackduck.com/services.html' }= 'Application Security Services'
   %p
-    %a{ href: 'https://www.synopsys.com/software-integrity/software-security-strategy.html' }= 'Program Development'
+    %a{ href: 'https://www.blackduck.com/services/security-program/strategy-planning.html' }= 'AppSec Program Development'
   %p
-    %a{ href: 'https://www.synopsys.com/software-integrity/training.html', target: '_blank' }= 'Training'
+    %a{ href: 'https://www.blackduck.com/training.html', target: '_blank' }= 'Training'
 
 .footer-right
   = "ABOUT OPEN HUB"
   %p
   %p
-    %a{ href: 'https://community.synopsys.com/s/black-duck-open-hub' }= t :forum
+    %a{ href: 'https://community.blackduck.com/s/black-duck-open-hub' }= t :forum
   %p
-    %a{ href: 'https://community.synopsys.com/s/article/Black-Duck-Open-Hub-Terms-of-Use' }= t :terms
+    %a{ href: 'https://community.blackduck.com/s/article/Black-Duck-Open-Hub-Terms-of-Use' }= t :terms
   %p
-    %a{ href: 'https://community.synopsys.com/s/article/Black-Duck-Open-Hub-Open-Hub-Privacy-Policy' }= t :privacy_blog
+    %a{ href: 'https://community.blackduck.com/s/article/Black-Duck-Open-Hub-Open-Hub-Privacy-Policy' }= t :privacy_blog
   %p
     %a{ href: 'https://github.com/blackducksoftware/ohloh-ui', target: '_blank' }= t('copyright.source_code')
   %p
@@ -36,5 +36,5 @@
   = Time.current.year
   %span{ itemscope: '', itemtype: 'http://schema.org/CreativeWork' }
     %span{ itemprop: 'publisher' }
-      %a{ href: 'http://www.synopsys.com', target: '_blank' }= "Synopsys, Inc."
+      %a{ href: 'http://www.blackduck.com', target: '_blank' }= "Black Duck Software, Inc."
       = t('copyright.rights_text')
