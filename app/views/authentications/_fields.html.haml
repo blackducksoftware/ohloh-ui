@@ -1,21 +1,6 @@
 .row-fluid
   .well.well-large.col-md-8.col-md-offset-2.margin_top_20
-    %p
-      = t('.mobile_verification_hint')
-
     .verification-buttons-container
-      %button.btn.btn-primary#digits-sign-up
-        %i.fa.fa-twitter
-          = t('.verify_using_phone_number')
-
-      &nbsp; (OR) &nbsp;
-
       = link_to 'javascript:', { class: 'btn btn-primary github-oauth' }.merge(github_data_attributes) do
         %i.fa.fa-github
           = t('.verify_using_github')
-#firebaseui-auth-container
-
-- html_options = { method: 'POST', class: 'phone-verification-form' }
-= form_for @account, url: firebase_callback_authentications_path, html: html_options do |f|
-  = f.fields_for :firebase_verification do |firebase_form|
-    = firebase_form.hidden_field :credentials, id: :credentials

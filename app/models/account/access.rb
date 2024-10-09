@@ -59,13 +59,13 @@ class Account::Access < OhDelegator::Base
     account.update!(level: BOT)
   end
 
-  def mobile_or_oauth_verified?
+  def manual_or_oauth_verified?
     return if account.nil?
 
     account.verifications.exists?
   end
 
   def verified?
-    mobile_or_oauth_verified? && email_verified?
+    manual_or_oauth_verified? && email_verified?
   end
 end

@@ -15,16 +15,11 @@ class SpamControllerTest < ActionController::TestCase
 
     it 'should redirect to an account if there is one in oh.potential_spammers' do
       login_as admin
-      sql = 'SELECT id FROM oh.potential_spammers LIMIT 1;'
-      result = ActiveRecord::Base.connection.execute(sql)
-      if result.num_tuples.positive?
-        account = Account.find(result[0]['id'])
-        get :redirect_to_first_potential_spammer
-        assert_redirected_to account_path(account.login)
-      else
-        get :redirect_to_first_potential_spammer
-        assert_redirected_to oh_admin_root_path
-      end
+      markup = create(:markup, raw: 'https://foobar')
+      account.update!(about_markup_id: markup.id)
+
+      get :redirect_to_first_potential_spammer
+      assert_redirected_to account_path(account.login)
     end
 
     it 'should redirect to admin path if there is nothing in oh.potential_spammers' do

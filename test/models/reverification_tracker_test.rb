@@ -283,8 +283,8 @@ class ReverificationTrackerTest < ActiveSupport::TestCase
     it 'should destroy all reverification trackers if account verified' do
       verified = create(:reverification_tracker)
       unverified = create(:initial_rev_tracker)
-      assert verified.account.access.mobile_or_oauth_verified?
-      assert_not unverified.account.access.mobile_or_oauth_verified?
+      assert verified.account.access.manual_or_oauth_verified?
+      assert_not unverified.account.access.manual_or_oauth_verified?
       ReverificationTracker.remove_reverification_trackers_for_verified_accounts
       assert_equal 1, ReverificationTracker.count
     end

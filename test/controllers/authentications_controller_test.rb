@@ -48,7 +48,6 @@ class AuthenticationsControllerTest < ActionController::TestCase
 
       assert_response :ok
       _(assigns(:account)).must_be :present?
-      _(assigns(:account).firebase_verification).must_be :present?
     end
 
     it 'wont allow access to verified users' do
@@ -201,18 +200,6 @@ class AuthenticationsControllerTest < ActionController::TestCase
         _(request.env[:clearance].current_user.id).must_equal account.id
       end
 
-      it 'wont sign in a non github verified user which fails github restrictions' do
-        github_account_stub.stubs(:created_at).returns(Time.current)
-        @controller.stubs(:github_api).returns(github_account_stub)
-        account.verifications.delete_all
-        FirebaseVerification.any_instance.stubs(:generate_token)
-        create(:firebase_verification, account: account)
-
-        get :github_callback, params: { code: Faker::Lorem.word }
-
-        _(request.env[:clearance].current_user).must_be_nil
-      end
-
       it 'must create a github verification record for a matching unverified account' do
         account.github_verification.destroy
         @controller.stubs(:github_api).returns(github_account_stub)
@@ -281,38 +268,6 @@ class AuthenticationsControllerTest < ActionController::TestCase
         _(flash[:notice]).must_equal I18n.t('authentications.github_callback.email_mismatch',
                                             settings_account_link: settings_account_path(account))
       end
-    end
-  end
-
-  describe 'firebase_callback' do
-    it 'must create verification record for existing account' do
-      account.verifications.destroy_all
-      login_as account
-      firebase_token = [{ 'user_id' => Faker::Internet.password }]
-      FirebaseService.any_instance.stubs(:decode).returns(firebase_token)
-
-      auth_params = { 'firebase_verification_attributes' => { 'credentials' => Faker::Lorem.word } }
-
-      get :firebase_callback, params: { account: auth_params }
-
-      account.reload
-      assert_redirected_to account
-      _(account.firebase_verification).must_be :present?
-    end
-
-    it 'must handle verification failure for existing record' do
-      account.verifications.destroy_all
-      login_as account
-      firebase_token = [{ 'user_id' => '' }]
-      FirebaseService.any_instance.stubs(:decode).returns(firebase_token)
-
-      auth_params = { 'firebase_verification_attributes' => { 'credentials' => Faker::Lorem.word } }
-
-      get :firebase_callback, params: { account: auth_params }
-
-      account.reload
-      assert_redirected_to new_authentication_path
-      _(flash[:notice]).must_be :present?
     end
   end
 end

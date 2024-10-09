@@ -63,23 +63,17 @@ class AccountsControllerTest < ActionController::TestCase
       _(assigns(:account).errors.messages[:email]).must_be :present?
     end
 
+    it 'must setup manual verification' do
+      post :create, params: account_params
+
+      account = Account.last
+      _(account.verifications.first).must_be_kind_of ManualVerification
+    end
+
     it 'must redirect to accounts page after create' do
       post :create, params: account_params
 
       assert_redirected_to Account.last
-    end
-
-    it 'must return error when phone number is a duplicate' do
-      existing_account = create(:account)
-      firebase_token = [{ 'user_id' => Faker::Internet.password }]
-      FirebaseService.any_instance.stubs(:decode).returns(firebase_token)
-      create(:firebase_verification, account: existing_account)
-
-      params = account_params[:account].merge(firebase_verification_attributes: { credentials: Faker::Lorem.word })
-      post :create, params: { account: params }
-
-      _(assigns(:account)).wont_be :valid?
-      _(assigns(:account).errors['firebase_verification.unique_id']).must_be :present?
     end
   end
 

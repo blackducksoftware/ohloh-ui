@@ -18,11 +18,11 @@ class AccountsController < ApplicationController
 
   def new
     @account = Account.new
-    @account.build_firebase_verification
   end
 
   def create
     @account = Account.new(account_params)
+    @account.build_manual_verification
 
     if @account.save
       clearance_session.sign_in @account
@@ -114,7 +114,7 @@ class AccountsController < ApplicationController
     params.require(:account).permit(
       :login, :email, :password, :name, :country_code, :location, :latitude, :longitude,
       :twitter_account, :organization_id, :organization_name, :affiliation_type, :invite_code,
-      :about_raw, :url, firebase_verification_attributes: [:credentials]
+      :about_raw, :url
     )
   end
 

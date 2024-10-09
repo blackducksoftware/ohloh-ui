@@ -157,22 +157,6 @@ class ActiveSupport::TestCase
                      match_requests_on: %i[host path method], &block)
   end
 
-  def stub_firebase_verification(sub = '123', alg = 'RS256', kid = '745c7128cba10e251b9fe712aed52613388a6699')
-    [{ 'iss' => 'https://securetoken.google.com/fir-sample-8bb3e',
-       'aud' => 'fir-sample-8bb3e',
-       'auth_time' => 1_505_737_344,
-       'user_id' => '123',
-       'sub' => sub,
-       'iat' => 1_505_737_344,
-       'exp' => 1_505_740_944,
-       'phone_number' => '+919999999999',
-       'firebase' => { 'identities' => { 'phone' => ['+919999999999'] },
-                       'sign_in_provider' => 'phone' } },
-     { 'alg' => alg,
-       'kid' => kid },
-     nil]
-  end
-
   def assert_response(code)
     assert_response(code)
   end
