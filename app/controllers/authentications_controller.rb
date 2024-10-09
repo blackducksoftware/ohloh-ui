@@ -3,7 +3,6 @@
 class AuthenticationsController < ApplicationController
   skip_before_action :store_location
   before_action :session_required, only: %i[new firebase_callback]
-  before_action :redirect_invalid_github_account, only: :github_callback, unless: :github_api_account_is_verified?
   before_action :redirect_matching_account, only: :github_callback, unless: -> { current_user.present? }
   before_action :redirect_if_current_user_verified
 
@@ -114,13 +113,6 @@ class AuthenticationsController < ApplicationController
     return if current_user.nil?
 
     redirect_to root_path if current_user.access.mobile_or_oauth_verified?
-  end
-
-  def redirect_invalid_github_account
-    return if github_api.created_at < ENV['GITHUB_REPO_AGE_LIMIT'].to_i.days.ago && github_api.repository_has_language?
-
-    redirect_path = current_user.present? ? new_authentication_path : new_account_path
-    redirect_to redirect_path, notice: t('.invalid_github_account')
   end
 
   def github_api_account_is_verified?

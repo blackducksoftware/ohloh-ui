@@ -424,7 +424,6 @@ en:
     create:
       error: There seems to be an issue with the mobile verification. Please try again later.
     github_callback:
-      invalid_github_account: This github account is insufficient for signing up at the Open Hub.
       email_mismatch: You have successfully logged in, however your Open Hub email address and GitHub email address do not match. You can update your Open Hub email address in your <a href=%{settings_account_link}>Settings page</a>
   copyright:
     start_year : Copyright 2014 -

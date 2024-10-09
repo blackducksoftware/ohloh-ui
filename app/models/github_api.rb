@@ -19,16 +19,6 @@ class GithubApi
     fetch_private_email
   end
 
-  def created_at
-    Time.zone.parse(user_response['created_at'])
-  end
-
-  def repository_has_language?
-    repositories_response.any? do |repository_hash|
-      repository_hash['language'].present?
-    end
-  end
-
   def access_token
     return @access_token if @access_token
 
@@ -61,12 +51,6 @@ class GithubApi
 
     user_uri = URI(GITHUB_USER_URI)
     @user_response = get_response_using_token(user_uri)
-  end
-
-  def repositories_response
-    params = { type: :owner, sort: :pushed, per_page: REPO_LIMIT }
-    repositories_uri = URI(GITHUB_USER_URI + "/repos?#{params.to_query}")
-    get_response_using_token(repositories_uri)
   end
 
   def config

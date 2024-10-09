@@ -101,36 +101,6 @@ class AuthenticationsControllerTest < ActionController::TestCase
       _(account.github_verification).must_be :present?
     end
 
-    it 'must only allow accounts that are atleast a month old' do
-      VCR.use_cassette('GithubVerificationSpammer') do
-        GithubApi.any_instance.stubs(:repository_has_language?).returns(true)
-
-        GithubApi.any_instance.stubs(:created_at).returns(20.days.ago)
-        assert_no_difference('Account.count', 1) do
-          get :github_callback, params: { code: Faker::Lorem.word }
-        end
-
-        _(request.env[:clearance].current_user).must_be_nil
-        assert_redirected_to new_account_path
-        _(flash[:notice]).must_equal I18n.t('authentications.github_callback.invalid_github_account')
-      end
-    end
-
-    it 'must stop accounts that have no repository with valid language' do
-      VCR.use_cassette('GithubVerificationSpammer') do
-        login_as account
-        account.verifications.delete_all
-        GithubApi.any_instance.stubs(:created_at).returns(2.months.ago)
-
-        assert_no_difference('Account.count', 1) do
-          get :github_callback, params: { code: Faker::Lorem.word }
-        end
-
-        assert_redirected_to new_authentication_path
-        _(flash[:notice]).must_equal I18n.t('authentications.github_callback.invalid_github_account')
-      end
-    end
-
     it 'must show errors when github verification fails for logged in user' do
       login_as account
       account.verifications.delete_all
