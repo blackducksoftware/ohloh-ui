@@ -307,7 +307,7 @@ class ApplicationController < ActionController::Base
   end
 
   def redirect_for_spammer_verification
-    return if current_user && !current_user.access.disabled? && current_user.access.mobile_or_oauth_verified?
+    return if current_user && !current_user.access.disabled? && current_user.access.manual_or_oauth_verified?
 
     redirect_to new_authentication_path
   end

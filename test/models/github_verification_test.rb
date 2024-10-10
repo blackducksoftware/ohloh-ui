@@ -22,4 +22,12 @@ class GithubVerificationTest < ActiveSupport::TestCase
     message = I18n.t('activerecord.errors.models.github_verification.attributes.unique_id.taken')
     _(new_verification.errors.messages[:unique_id].first).must_equal message
   end
+
+  it 'must scope unique_id uniqueness only for current type' do
+    account = create(:account)
+    verification = create(:manual_verification, account: account)
+    new_verification = build(:github_verification, account: account, unique_id: verification.unique_id)
+
+    _(new_verification).must_be :valid?
+  end
 end

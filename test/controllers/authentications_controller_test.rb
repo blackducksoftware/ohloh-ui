@@ -48,7 +48,6 @@ class AuthenticationsControllerTest < ActionController::TestCase
 
       assert_response :ok
       _(assigns(:account)).must_be :present?
-      _(assigns(:account).firebase_verification).must_be :present?
     end
 
     it 'wont allow access to verified users' do
@@ -99,36 +98,6 @@ class AuthenticationsControllerTest < ActionController::TestCase
       assert_redirected_to projects_path
       _(flash[:notice]).must_equal I18n.t('verification_completed')
       _(account.github_verification).must_be :present?
-    end
-
-    it 'must only allow accounts that are atleast a month old' do
-      VCR.use_cassette('GithubVerificationSpammer') do
-        GithubApi.any_instance.stubs(:repository_has_language?).returns(true)
-
-        GithubApi.any_instance.stubs(:created_at).returns(20.days.ago)
-        assert_no_difference('Account.count', 1) do
-          get :github_callback, params: { code: Faker::Lorem.word }
-        end
-
-        _(request.env[:clearance].current_user).must_be_nil
-        assert_redirected_to new_account_path
-        _(flash[:notice]).must_equal I18n.t('authentications.github_callback.invalid_github_account')
-      end
-    end
-
-    it 'must stop accounts that have no repository with valid language' do
-      VCR.use_cassette('GithubVerificationSpammer') do
-        login_as account
-        account.verifications.delete_all
-        GithubApi.any_instance.stubs(:created_at).returns(2.months.ago)
-
-        assert_no_difference('Account.count', 1) do
-          get :github_callback, params: { code: Faker::Lorem.word }
-        end
-
-        assert_redirected_to new_authentication_path
-        _(flash[:notice]).must_equal I18n.t('authentications.github_callback.invalid_github_account')
-      end
     end
 
     it 'must show errors when github verification fails for logged in user' do
@@ -231,18 +200,6 @@ class AuthenticationsControllerTest < ActionController::TestCase
         _(request.env[:clearance].current_user.id).must_equal account.id
       end
 
-      it 'wont sign in a non github verified user which fails github restrictions' do
-        github_account_stub.stubs(:created_at).returns(Time.current)
-        @controller.stubs(:github_api).returns(github_account_stub)
-        account.verifications.delete_all
-        FirebaseVerification.any_instance.stubs(:generate_token)
-        create(:firebase_verification, account: account)
-
-        get :github_callback, params: { code: Faker::Lorem.word }
-
-        _(request.env[:clearance].current_user).must_be_nil
-      end
-
       it 'must create a github verification record for a matching unverified account' do
         account.github_verification.destroy
         @controller.stubs(:github_api).returns(github_account_stub)
@@ -311,38 +268,6 @@ class AuthenticationsControllerTest < ActionController::TestCase
         _(flash[:notice]).must_equal I18n.t('authentications.github_callback.email_mismatch',
                                             settings_account_link: settings_account_path(account))
       end
-    end
-  end
-
-  describe 'firebase_callback' do
-    it 'must create verification record for existing account' do
-      account.verifications.destroy_all
-      login_as account
-      firebase_token = [{ 'user_id' => Faker::Internet.password }]
-      FirebaseService.any_instance.stubs(:decode).returns(firebase_token)
-
-      auth_params = { 'firebase_verification_attributes' => { 'credentials' => Faker::Lorem.word } }
-
-      get :firebase_callback, params: { account: auth_params }
-
-      account.reload
-      assert_redirected_to account
-      _(account.firebase_verification).must_be :present?
-    end
-
-    it 'must handle verification failure for existing record' do
-      account.verifications.destroy_all
-      login_as account
-      firebase_token = [{ 'user_id' => '' }]
-      FirebaseService.any_instance.stubs(:decode).returns(firebase_token)
-
-      auth_params = { 'firebase_verification_attributes' => { 'credentials' => Faker::Lorem.word } }
-
-      get :firebase_callback, params: { account: auth_params }
-
-      account.reload
-      assert_redirected_to new_authentication_path
-      _(flash[:notice]).must_be :present?
     end
   end
 end

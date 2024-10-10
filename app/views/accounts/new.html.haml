@@ -24,17 +24,17 @@
         = t('.github_disclaimer')
     -if only_device?
       .col-xs-3.pull-right#sign-up-email
-        = link_to 'javascript:', id: 'digits-sign-up', class: 'btn btn-primary' do
+        = link_to 'javascript:', id: 'email-sign-up', class: 'btn btn-primary' do
           = t('.sign_up_with')
           %br
-            %i.fa.fa-mobile
-              Phone & Email
+            %i.fa.fa-envelope-o
+              Email
     -else
-      = link_to 'javascript:', id: 'digits-sign-up', class: 'btn btn-primary btn-block' do
+      = link_to 'javascript:', id: 'email-sign-up', class: 'btn btn-primary btn-block' do
         = t('.sign_up_with')
         %br
-          %i.fa.fa-mobile
-            Phone & Email
+          %i.fa.fa-envelope-o
+            Email
 
 .col-xs-12.col-sm-5.no_right_padding{ id: ('sign-up-fields' if @account.errors.none?) }
   - if flash[:message]

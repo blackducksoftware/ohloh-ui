@@ -91,7 +91,7 @@ class ReverificationTracker < ApplicationRecord
         next unless rev_tracker.account
 
         rev_tracker.account.update!(level: 0) if rev_tracker.account.level == -10
-        rev_tracker.destroy if rev_tracker.account.access.mobile_or_oauth_verified?
+        rev_tracker.destroy if rev_tracker.account.access.manual_or_oauth_verified?
       end
     end
 

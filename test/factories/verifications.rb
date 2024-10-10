@@ -10,8 +10,7 @@ FactoryBot.define do
     type { 'GithubVerification' }
   end
 
-  factory :firebase_verification, parent: :verification, class: :FirebaseVerification do
-    type { 'FirebaseVerification' }
-    credentials { Faker::Internet.password }
+  factory :manual_verification, parent: :verification, class: :ManualVerification do
+    type { 'ManualVerification' }
   end
 end

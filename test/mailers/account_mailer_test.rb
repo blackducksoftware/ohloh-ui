@@ -43,6 +43,14 @@ describe AccountMailer do
     end
   end
 
+  describe 'notify_disabled_account_for_login_failure' do
+    let(:mail) { AccountMailer.notify_disabled_account_for_login_failure(account) }
+
+    it 'should notify disabled account' do
+      _(mail.to).must_equal [account.email]
+    end
+  end
+
   describe '#reset_password' do
     let(:mail) { AccountMailer.reset_password(account.id) }
 

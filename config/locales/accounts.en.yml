@@ -235,5 +235,3 @@ en:
       verify_password: 'Verify Password'
       password_help: 'Password must be at least 5 characters long'
       verify_password_help: 'Verify Password must be at least 5 characters long'
-      phone_disclaimer: OpenHub will not store your mobile number.
-      phone_number_verified: Your phone number has been verified

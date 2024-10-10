@@ -163,4 +163,15 @@ class Account::AccessTest < ActiveSupport::TestCase
       _(proc { nil_account_access.spam! }).must_raise NoMethodError
     end
   end
+
+  describe 'manual_or_oauth_verified' do
+    it 'must verify old Firebase records' do
+      account = create(:account)
+      account.verifications.destroy_all
+
+      _(account.access).wont_be :manual_or_oauth_verified?
+      FirebaseVerification.create! unique_id: Faker::Internet.password, account: account
+      _(account.access).must_be :manual_or_oauth_verified?
+    end
+  end
 end
