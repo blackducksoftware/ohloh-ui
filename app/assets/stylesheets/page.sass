@@ -124,7 +124,6 @@ header
       text-decoration: none
       margin-top: 3px
     .logo_img
-      width: 100%
       height: 100%
   .company-div
     @include top-navigation-colors
@@ -182,6 +181,7 @@ header
       line-height: 24px
       text-transform: none
       margin: 0
+      border-radius: 0 4px 4px 0
     img
       margin-right: -1px
   ul
@@ -190,11 +190,11 @@ header
     li
       float: left
       padding: 0 0 0 8px
-  .twitter_follow
-    padding-top: 5px
 #top_nav_actions
   float: right
   margin-right: 5px
+  li
+    padding-top: 5px
 
 @media (min-width: 320px) and (max-width: 340px)
   #top_nav_actions
@@ -205,8 +205,9 @@ header
     color: black !important
     text-transform: none
     text-decoration: none
-    margin: 8px 0px 15px
+    margin: 0 0px 15px
     padding-right: 10px
+    padding-top: 3px
   ul
     margin-top: 40px
     border-radius: 0
