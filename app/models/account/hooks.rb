@@ -138,9 +138,7 @@ class Account::Hooks
   end
 
   def deliver_links_added_notification(account)
-    return unless saved_change_to_url? || (markup.changed? && markup.formatted.match(/https?:\/\/[^\s]+/))
-
-    AccountMailer.links_added(account).deliver_now
+    AccountMailer.links_added(account).deliver_now if account.saved_change_to_url? && account.url.present?
   end
 end
 # rubocop:enable Metrics/ClassLength
