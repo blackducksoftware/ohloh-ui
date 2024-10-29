@@ -166,6 +166,14 @@ class AccountTest < ActiveSupport::TestCase
     _(account.errors.messages[:name]).must_equal ['is too long (maximum is 50 characters)']
   end
 
+  it 'should send an email if url is changed' do
+    ActionMailer::Base.deliveries.clear
+    account = create(:account)
+    account.update(url: Faker::Internet.url)
+    email = ActionMailer::Base.deliveries.last
+    _(email.subject).must_equal 'Links added in account details'
+  end
+
   it 'should update the markup(about me) when updating a record' do
     account = create(:account)
     about_me = Faker::Lorem.paragraph(sentence_count: 2)
@@ -179,6 +187,16 @@ class AccountTest < ActiveSupport::TestCase
     account.about_raw = about_me
     _(account).wont_be :valid?
     _(account.markup.errors).must_include(:raw)
+  end
+
+  it 'should send an email if markup has a link' do
+    ActionMailer::Base.deliveries.clear
+    account = create(:account)
+    about_me = Faker::Internet.url
+    account.about_raw = about_me
+    account.save
+    email = ActionMailer::Base.deliveries.last
+    _(email.subject).must_equal 'Links added in account details'
   end
 
   it 'should error out when affiliation_type is not specified' do
