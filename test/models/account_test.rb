@@ -171,7 +171,7 @@ class AccountTest < ActiveSupport::TestCase
     account = create(:account)
     account.update(url: Faker::Internet.url)
     email = ActionMailer::Base.deliveries.last
-    _(email.subject).must_equal 'Links added in account details'
+    _(email.subject).must_equal 'OpenHub: review account data for SPAM'
   end
 
   it 'should update the markup(about me) when updating a record' do
@@ -196,7 +196,7 @@ class AccountTest < ActiveSupport::TestCase
     account.about_raw = about_me
     account.save
     email = ActionMailer::Base.deliveries.last
-    _(email.subject).must_equal 'Links added in account details'
+    _(email.subject).must_equal 'OpenHub: review account data for SPAM'
   end
 
   it 'should error out when affiliation_type is not specified' do

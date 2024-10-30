@@ -39,7 +39,7 @@ class Account::Hooks
 
   def after_save(account)
     update_person_effective_name(account) if account.person.present? && !account.access.spam?
-    deliver_links_added_notification(account)
+    notify_about_added_links(account)
   end
 
   private
@@ -79,7 +79,7 @@ class Account::Hooks
     account.all_manages.each { |manage| manage.destroy_by!(account) }
     account.edits.not_undone.each { |edit| safe_undo(edit) }
     account.person.try(:destroy)
-    account.markup.try(:destroy)
+    account.markup.update(raw: '') if account.markup
     dependent_destroy(account)
   rescue StandardError
     raise ActiveRecord::Rollback
@@ -137,8 +137,8 @@ class Account::Hooks
     Edit.where(undone_by: account_id).update_all(undone_by: @anonymous_account)
   end
 
-  def deliver_links_added_notification(account)
-    AccountMailer.links_added(account).deliver_now if account.saved_change_to_url? && account.url.present?
+  def notify_about_added_links(account)
+    AccountMailer.review_account_data_for_spam(account).deliver_now if account.saved_change_to_url? && account.url.present?
   end
 end
 # rubocop:enable Metrics/ClassLength

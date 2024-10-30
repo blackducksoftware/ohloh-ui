@@ -2,7 +2,7 @@
 
 class Markup < ApplicationRecord
   before_save :sanitize_html
-  after_save :deliver_links_added_notification
+  after_save :notify_about_added_links
 
   validates :raw, length: { maximum: 500 }, allow_blank: true
 
@@ -24,8 +24,8 @@ class Markup < ApplicationRecord
     self.formatted = raw.strip_tags_preserve_line_breaks
   end
 
-  def deliver_links_added_notification
+  def notify_about_added_links
     account = Account.find_by(about_markup_id: id)
-    AccountMailer.links_added(account).deliver_now if account && saved_change_to_formatted? && link?
+    AccountMailer.review_account_data_for_spam(account).deliver_now if account && saved_change_to_formatted? && link?
   end
 end
