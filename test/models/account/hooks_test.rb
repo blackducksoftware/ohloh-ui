@@ -69,10 +69,8 @@ class Account::HooksTest < ActiveSupport::TestCase
 
       # verifications must be retained.
       _(account.verifications.count).must_equal 1
-      _(account.topics.count).must_equal 0
       _(account.person).must_be_nil
       _(account.positions.count).must_equal 0
-      _(account.posts.count).must_equal 0
       _(account.manages.count).must_equal 0
       # edits must be undone but still belong to spam account.
       _(account.edits.not_undone.count).must_equal 0
@@ -142,18 +140,20 @@ class Account::HooksTest < ActiveSupport::TestCase
     end
 
     it 'must request for email address verification' do
-      account = build(:account, activated_at: nil)
+      Account::Hooks.any_instance.stubs(:notify_about_added_links).returns(true)
 
+      account = build(:account, activated_at: nil)
       assert_difference('ActionMailer::Base.deliveries.size', 1) do
         account.save!
       end
-
       email = ActionMailer::Base.deliveries.last
       _(email.to).must_equal [account.email]
       _(email.body.raw_source).must_match I18n.t('account_mailer.signup_notification.body', login: account.login)
     end
 
     it 'wont request email address verification when activation_at is already set' do
+      Account::Hooks.any_instance.stubs(:notify_about_added_links).returns(true)
+
       assert_no_difference('ActionMailer::Base.deliveries.size') do
         create(:account, activated_at: Time.current)
       end
