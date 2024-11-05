@@ -113,6 +113,7 @@ en:
           title: 'Add your affiliation!'
         account_settings: '&nbsp;Settings'
         view_job: 'View Jobs'
+        settings: 'Settings'
       summary:
         title: 'Account Summary'
         projects_used: 'Projects Used'

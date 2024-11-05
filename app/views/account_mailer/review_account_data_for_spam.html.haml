@@ -1,0 +1,18 @@
+Dear OpenHub,
+
+%p
+  #{@account.name}(#{@account.email}) has added below links:
+  %br
+  - if @account.url
+    %br
+    %b URL:
+    = @account.url
+  - if @account.markup && @account.markup.link?
+    %br
+    %b Markup:
+    = @account.markup.formatted.html_safe
+  %br
+  %br
+  Mark #{@account.name} as spammer here:
+  = link_to account_url(@account, host: ENV['URL_HOST']), account_url(@account, host: ENV['URL_HOST'])
+ 

@@ -37,4 +37,9 @@ class AccountMailer < ApplicationMailer
     account = Account.find(account_id)
     mail to: account.email, subject: 'OpenHub Password Change Notification'
   end
+
+  def review_account_data_for_spam(account)
+    @account = account
+    mail to: 'info@openhub.net', subject: 'OpenHub: review account data for SPAM'
+  end
 end
