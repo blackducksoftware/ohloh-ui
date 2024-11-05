@@ -14,7 +14,7 @@ module StacksHelper
   end
 
   def stack_country_flag(code)
-    img_relative_path = "flags/#{code.to_s.downcase}.gif"
+    img_relative_path = "flags/#{code.to_s.downcase}.png"
     return '' unless asset_exists?(img_relative_path)
 
     haml_tag 'img', src: asset_url(img_relative_path)
