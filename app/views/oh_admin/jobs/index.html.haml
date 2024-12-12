@@ -16,6 +16,7 @@
           %tr
             %th Type
             %th Job Id
+            %th Project Id
             %th Priority
             %th Current Step At
             %th.text-left Progress
@@ -29,6 +30,7 @@
             %tr
               %td= entry.keys[0].titleize
               %td= link_to(job['id'], admin_job_path(id: job['id']))
+              %td= link_to(job['project_id'], project_url(@project))
               %td.text-left= job['priority']
               %td.text-left= current_step_at(job['current_step_at'])
               %td

@@ -4,6 +4,9 @@ para ''
 
 if job.project_id
   project = Project.find(job.project_id)
+  span 'Project Id: '
+  span link_to project.id, project_path(project)
+  para ''
   span 'Project: '
   span link_to project.name, project_path(project)
   span link_to '(Jobs)', admin_project_jobs_path(project)
