@@ -244,6 +244,10 @@ class ApplicationController < ActionController::Base
     render file: 'public/offline.html' if maintenance_routes.include?(controller_name)
   end
 
+  def validate_referrer
+    render_404 if request.referer.blank?
+  end
+
   private
 
   def verify_api_access_for_xml_request

@@ -15,6 +15,7 @@ class AccountsController < ApplicationController
   before_action :must_own_account, only: %i[edit update confirm_delete]
   before_action :find_claimed_people, only: :index
   before_action :redirect_if_logged_in, only: :new
+  before_action :validate_referrer, only: :create
 
   def new
     @account = Account.new
