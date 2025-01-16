@@ -38,7 +38,8 @@ class UnclaimedController < ApplicationController
   end
 
   def unclaimed_people(query, find_by, per_page = 10)
-    name_ids = Person.unclaimed_people(q: query, find_by: find_by).limit(per_page).pluck(:name_id)
+    name_ids = Person.joins(project: :best_analysis).unclaimed_people(q: query,
+                                                                      find_by: find_by).limit(per_page).pluck(:name_id)
     unclaimed_people_with_limit(name_ids)
   end
 
