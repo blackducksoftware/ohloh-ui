@@ -12,8 +12,8 @@ xml.response do
         xml.organization position.organization
         xml.html_url show_position_url(position)
         xml.created_at xml_date_to_time(position.created_at)
-        xml.created_at xml_date_to_time(position.start_date)
-        xml.created_at xml_date_to_time(position.stop_date)
+        xml.started_at xml_date_to_time(position.start_date)
+        xml.ended_at xml_date_to_time(position.stop_date)
         xml.sparkline_url commits_compound_spark_account_position_url(format: 'png', account_id: position.account_id,
                                                                       id: position.id)
         xml.commits position.name_fact.commits if position.name_fact
