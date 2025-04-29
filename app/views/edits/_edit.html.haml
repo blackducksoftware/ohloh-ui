@@ -20,5 +20,5 @@
           %span - #{edit_show_subject(edit)}
         %p
           by
-          = link_to edit.account.name, account_path(edit.account)
+          = link_to h(edit.account.name), account_path(edit.account)
           %span.date= edit_humanize_datetime(edit.created_at)

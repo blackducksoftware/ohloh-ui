@@ -59,12 +59,12 @@ module EditsModalHelper
 
   def edit_get_value_rsssubscription(edit)
     url = edit.target.rss_feed.url
-    link_to url, url
+    link_to h(url), h(url)
   end
 
   def edit_get_value_logo_id(edit)
     url = Logo.find(edit.value.to_i).attachment.url(:med)
-    link_to url, url
+    link_to h(url), h(url)
   end
 
   def edit_get_value_alias(edit)

@@ -11,7 +11,7 @@
           = surround '&ldquo;'.html_safe, '&rdquo;'.html_safe do
             = @pre_auth.client.name
         = t('.to_access_account')
-      %h6.nomargin= link_to_if api_key.url.presence, @pre_auth.client.name, api_key.url
+      %h6.nomargin= link_to_if api_key.url.presence, h(@pre_auth.client.name), h(api_key.url)
       %p= api_key.description
 
     .inset

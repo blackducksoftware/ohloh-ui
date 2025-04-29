@@ -1,8 +1,8 @@
 :ruby
   uri_args = { id: @manage.target.id, host: ENV['URL_HOST'] }
   uri = @manage.target_type == 'Project' ? project_url(uri_args) : organization_url(uri_args)
-  link1 = link_to(@manage.target.name, uri)
-  link2 = link_to(@manage.destroyer.name, account_url(id: @manage.destroyer.id, host: ENV['URL_HOST']))
+  link1 = link_to(h(@manage.target.name), uri)
+  link2 = link_to(h(@manage.destroyer.name), account_url(id: @manage.destroyer.id, host: ENV['URL_HOST']))
 %p= t('mailers.greeting')
 %h4!= t('.body', link1: link1, link2: link2)
 %p= t('mailers.signature')

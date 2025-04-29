@@ -3,7 +3,7 @@
   .row
     .col-md-3.no_padding
       .pull-right
-        = link_to truncate(account.name, length: 11), account_url(account), title: account.name
+        = link_to h(truncate(account.name, length: 11)), account_url(account), title: account.name
         says:
       .pull-right.padding_right_15
         = avatar_for(account, size: 58)

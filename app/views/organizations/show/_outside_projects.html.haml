@@ -22,13 +22,13 @@
         %tr
           %td{ style: 'padding: 10px;' }
             = project.decorate.icon(:small)
-            = link_to truncate(project.name, length: 23), project_path(project), title: project.name
+            = link_to h(truncate(project.name, length: 23)), project_path(project), title: project.name
           %td.left
             %div{ style: 'margin-top: -25px; position: relative' }
               - project_activity_level_class(project, :twenty)
           %td{ style: 'padding-top: 15px; text-align: center;' }
             - if project.organization
-              = link_to project.organization.name, organization_path(project.organization)
+              = link_to h(project.organization.name), organization_path(project.organization)
           %td{ style: 'padding-top: 15px; text-align: center;' }= project.user_count
           %td{ style: 'padding-top: 15px; text-align: center;' }
             %span.center!= rating_stars('average_rating_stars', project.rating_average || 0)

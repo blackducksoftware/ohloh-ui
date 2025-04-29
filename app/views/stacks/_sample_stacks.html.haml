@@ -1,4 +1,4 @@
 %ul
   - %w(lamp sash gnome).each do |name|
     %li
-      = link_to t("stacks.#{name}"), reset_stack_path(stack.id, init: name), title: t("stacks.#{name}_desc")
+      = link_to h(t("stacks.#{name}")), reset_stack_path(stack.id, init: name), title: t("stacks.#{name}_desc")

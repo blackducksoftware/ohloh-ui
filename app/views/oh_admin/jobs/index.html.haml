@@ -42,7 +42,7 @@
                 %span= worker_host(job['worker_id'])
               %td= job['exception'].to_s.truncate(250)
               %td
-                = link_to "Project #{project_name}", project_url(@project)
+                = link_to "Project #{h(project_name)}", project_url(@project)
 
     = api_pagination(@response)
   - else

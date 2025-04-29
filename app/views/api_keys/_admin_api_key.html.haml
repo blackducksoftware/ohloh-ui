@@ -10,7 +10,7 @@
               %a.btn.btn-mini.float_right.api_key_edit{ href: edit_account_api_key_url }
                 %i.icon-pencil= t :edit
               %h4.nomargin= oauth_application.name || t('api_keys.untitled_application')
-              %p!= link_to_if !api_key.url.blank?, api_key.url, api_key.url
+              %p!= link_to_if !api_key.url.blank?, h(api_key.url), h(api_key.url)
               %p.soft= api_key.description
 
               %p.nomargin= t('api_keys.api_key_label_html', key: oauth_application.uid)

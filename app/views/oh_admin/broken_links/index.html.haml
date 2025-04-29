@@ -8,7 +8,7 @@
       - errors = BrokenLink.distinct.pluck(:error).sort
       - errors.each do |error|
         %li.font-weight-light
-          = link_to error, oh_admin_broken_links_path(query: error)
+          = link_to h(error), oh_admin_broken_links_path(query: error)
 
 %section.content
   = render partial: 'layouts/partials/alert'
@@ -29,7 +29,7 @@
               %td= broken_link.link_id
               %td= broken_link.link.url
               %td= broken_link.error
-              %td= link_to(project.name, project_links_url(project.to_param))
+              %td= link_to(h(project.name), project_links_url(project.to_param))
               %td= broken_link.updated_at.strftime('%b %d, %Y')
               %td.text-center= button_to 'Delete', oh_admin_broken_link_path(broken_link), method: :delete, data: { confirm: t('.delete_confirmation') }, class: 'btn btn-danger btn-xs'
     = will_paginate @broken_links

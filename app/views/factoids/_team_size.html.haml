@@ -1,6 +1,6 @@
 - project_link = link_to(sanitize(@project.name), project_url(@project))
 - if @project.best_analysis.headcount == 0
-  %p!= t('.nobody_1', link: link_to(@project.name, project_url(@project)))
+  %p!= t('.nobody_1', link: link_to(h(@project.name), project_url(@project)))
 - elsif @project.best_analysis.headcount == 1
   %p= t('.single_1')
 - else

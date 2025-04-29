@@ -2,7 +2,7 @@
   = @organization.decorate.icon(:med)
 .col-md-11#project_header
   .pull-left
-    %h1.margin_top_10= link_to @organization.name, organization_path(@organization)
+    %h1.margin_top_10= link_to h(@organization.name), organization_path(@organization)
   .pull-left.margin_left_25.margin_top_15
     = link_to settings_organization_path(@organization) do
       %icon.icon-cogs

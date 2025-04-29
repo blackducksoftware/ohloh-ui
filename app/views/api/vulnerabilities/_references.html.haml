@@ -8,4 +8,4 @@
           %i.fa.fa-custom{class: "#{bdsa_reference_icons[type]}"}
         = "#{type} :"
       - links.each do |link|
-        %dd= link_to link, link, target: '_blank'
+        %dd= link_to h(link), h(link), target: '_blank'

@@ -1,6 +1,6 @@
 - project = project_index
 .well.searchable{ id: "project_#{project.id}" }
-  %h2.title.pull-left= link_to project.name.truncate(70), project_path(project), title: project.name
+  %h2.title.pull-left= link_to h(project.name.truncate(70)), project_path(project), title: project.name
   .pull-right
     .compare
       - project_compare_button(project, t('.compare')) if defined?(compare) && compare
@@ -17,7 +17,7 @@
       %p
         - if project.organization
           = t('.claimed_by')
-          = link_to truncate(project.organization.name, length: 30),
+          = link_to h(truncate(project.organization.name, length: 30)),
                     organization_path(project.organization), class: 'claimed-by-org', title: project.organization.name
         - else
           &nbsp;

@@ -18,7 +18,7 @@
           %td
             .pull-left
               - title = rss_article.title.to_s.strip_tags
-              = link_to title, rss_article.absolute_link, class: 'rss_article_title_link', target: '_blank'
+              = link_to h(title), h(rss_article.absolute_link), class: 'rss_article_title_link', target: '_blank'
             .pull-right.soft
               %i
                 = t('.posted')

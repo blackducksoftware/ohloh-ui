@@ -8,7 +8,7 @@
     .pull-left= link_to project.decorate.icon(:med), project_path(project), title: h(project.description)
   .col-md-9.no_padding
     %h4.nomargin.no_margin_top
-      = link_to project.name, project_path(project)
+      = link_to h(project.name), project_path(project)
       &nbsp;
       = link_to t('.compare'), compare_url, style: 'font-size: 12px', title: compare_title
     .nomargin{ style: 'position: relative' }
@@ -22,7 +22,7 @@
     %p.nomargin
       = t('.licence')
       - if project.licenses.any?
-        = project.licenses.map { |license| link_to license.short_name, license_path(license) }.join(', ').html_safe
+        = project.licenses.map { |license| link_to h(license.short_name), license_path(license) }.join(', ').html_safe
       - else
         = t('.unknown')
   .margin_top_10

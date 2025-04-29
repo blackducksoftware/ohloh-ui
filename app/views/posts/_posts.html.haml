@@ -1,9 +1,9 @@
 .well.posts
   .col-md-8{ style: 'width: 540px' }
     %h4.margin_top_0#post_body_link_size
-      = link_to posts.topic.forum.name, forum_path(posts.topic.forum)
+      = link_to h(posts.topic.forum.name), forum_path(posts.topic.forum)
       \:
-      = link_to posts.topic.title, topic_path(posts.topic)
+      = link_to h(posts.topic.title), topic_path(posts.topic)
       %p.margin_top_15#post_body_text_size= expander(strip_tags(markdown_format(posts.body)), 200, 250)
   .col-md-4
     .float_left{ style: 'margin-left: -20px' }
@@ -12,6 +12,6 @@
       %div{ style: 'margin-top: 12px' }= t('.posted')
     .float_right{ style: 'margin-top: -12px; margin-right: 70px; text-align: center;' }
       %div{ style: 'font-size: 23px; margin-left: 60px; margin-top: 5px' }= posts.topic.hits
-      %div{ style: 'margin-top: 5px' }= link_to posts.account.login, account_path(posts.account), style: 'float: right'
+      %div{ style: 'margin-top: 5px' }= link_to h(posts.account.login), account_path(posts.account), style: 'float: right'
       %div{ style: 'float: right; margin-top: 12px;' }= t('.posted_ago', date: time_ago_in_words(posts.created_at))
   .clear_both

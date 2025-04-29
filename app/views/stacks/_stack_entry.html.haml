@@ -4,7 +4,7 @@
   %td{ width: '13%', valign: 'middle' }
     - project_icon(stack_entry.project, :small)
   %td{ width: '70%', valign: 'top' }
-    = link_to stack_entry.project.name, project_url(stack_entry.project)
+    = link_to h(stack_entry.project.name), project_url(stack_entry.project)
     .line_two
       - if stack_entry.project.rating_average
         .compact_rating_and_review

@@ -1,5 +1,5 @@
 - if bbc
   = html_escape "[url=#{url}' target='_blank][img]#{image}[/img]][/url]"
 - else
-  = link_to url, target: '_blank' do
+  = link_to h(url), target: '_blank' do
     %img{ src: image, border: 0, height: widget.height, width: widget.width, alt: t('.alt', name: widget.account.name) }

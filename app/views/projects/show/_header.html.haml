@@ -6,7 +6,7 @@
   .col-md-11#project_header
     .pull-left.project_title
       %h1.float_left{ itemprop: 'name' }
-        = link_to @project.name, project_path(@project), style: 'color: black', itemprop: 'url'
+        = link_to h(@project.name), project_path(@project), style: 'color: black', itemprop: 'url'
       %small.pull-left.clear_both
         != link_to bootstrap_icon('icon-cogs', t('projects.header.settings')), settings_project_path(@project)
         - if @project.is_a_duplicate

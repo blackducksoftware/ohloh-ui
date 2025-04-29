@@ -1,6 +1,6 @@
 .well.hidden#admin_actions_opened
   %h6= t('.email')
-  %p= link_to @account.email, "mailto:#{@account.email}"
+  %p= link_to h(@account.email), "mailto:#{@account.email}"
   %h6= t('.activity')
   %p.ohloh_activity
     = render partial: 'accounts/show/action_link', locals: { action: 'edits', path: account_edits_url(@account) }

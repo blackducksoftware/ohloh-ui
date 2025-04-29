@@ -3,7 +3,7 @@
   - if @project.organization
     .col-xs-5.text-right= t('.organization')
     .col-xs-7{ style: 'margin-bottom: .5em;' }
-      = link_to @project.organization.name, organization_path(@project.organization)
+      = link_to h(@project.organization.name), organization_path(@project.organization)
   .clearfix
   .col-xs-5.text-right.text-right
     = link_to t('.proj_links'), project_links_path(@project)
@@ -12,13 +12,13 @@
       - @project.decorate.sorted_link_list.each do |link_category_name, links|
         - if links.size > 1
           = link_to project_links_path(@project) do
-            = link_category_name
+            = h(link_category_name)
             %i= t('.no_of_links', count: links.size)
         - elsif links.size == 1
           - link_opts = link_category_name == 'Homepage' ? { itemprop: 'url' } : {}
-          = link_to links.first.url, link_opts do
+          = link_to h(links.first.url), link_opts do
             %i.icon-external-link
-            = link_category_name
+            = h(link_category_name)
         %br
     - else
       = link_to t('.add_proj_links'), project_links_path(@project)
@@ -48,4 +48,4 @@
     - if @project.active_managers.present?
       != project_managers_list
     - else
-      = link_to t('.become_first', what: @project.name), new_project_manager_path(@project)
+      = link_to h(t('.become_first', what: @project.name)), new_project_manager_path(@project)

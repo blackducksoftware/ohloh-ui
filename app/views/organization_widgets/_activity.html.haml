@@ -4,7 +4,7 @@
   %div
     = link_to org.decorate.icon(:med), organization_url(org), target: '_blank', id: 'logo'
     %h3
-      = link_to truncate(org.name, length: 21), organization_url(org), title: org.name, target: '_blank', id: 'org-name'
+      = link_to h(truncate(org.name, length: 21)), organization_url(org), title: org.name, target: '_blank', id: 'org-name'
     %div
     %ul
       %li

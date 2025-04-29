@@ -9,7 +9,7 @@
   %td
     .lang_bg{ itemscope: '', itemtype: 'http://schema.org/Language', style: language_color }
       %span{ itemprop: 'name' }
-        = link_to language.nice_name.titleize, language_path(language),
+        = link_to h(language.nice_name.titleize), language_path(language),
         class: 'language_name', style: language_text_color
   %td.center= distance_of_time_in_words_to_now(language_fact.total_months.to_i.months.ago)
   %td.center= number_with_delimiter(language_fact.total_commits)
@@ -18,7 +18,7 @@
     - if most_committed_project
       = most_committed_project.decorate.icon(:small, width: 24)
       &nbsp;
-      = link_to truncate(most_committed_project.name, length: 16), project_path(most_committed_project)
+      = link_to h(truncate(most_committed_project.name, length: 16)), project_path(most_committed_project)
       &nbsp;
       - project_activity_level_class(most_committed_project, :fifteen)
   %td.center
@@ -31,7 +31,7 @@
     - if recent_project
       = recent_project.decorate.icon(:small, width: 24)
       &nbsp;
-      = link_to truncate(recent_project.name, length: 16), project_path(recent_project)
+      = link_to h(truncate(recent_project.name, length: 16)), project_path(recent_project)
       &nbsp;
       - project_activity_level_class(recent_project, :fifteen)
   %td.center

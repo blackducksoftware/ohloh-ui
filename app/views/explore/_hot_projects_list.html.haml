@@ -13,9 +13,9 @@
       %td
         = project.decorate.icon(:small)
       %td
-        = link_to project_name, project_path(project)
+        = link_to h(project_name), project_path(project)
       %td.center
-        = link_to org_name, organization_path(org), class: 'claimed-by-org', title: org.name if org
+        = link_to h(org_name), organization_path(org), class: 'claimed-by-org', title: org.name if org
       %td.pai
         - project_activity_level_class(project, :twentyfive)
       %td.center

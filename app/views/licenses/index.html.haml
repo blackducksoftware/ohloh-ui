@@ -27,7 +27,7 @@
               %td
             - @licenses.each do |license|
               %tr
-                %td= link_to license.name, license_url(license)
+                %td= link_to h(license.name), license_url(license)
 
 = render partial: 'shared/alert',
   locals: { message: t('shared.search_dingus.no_match_found.no_match') } if @licenses.blank? && params[:query].present?

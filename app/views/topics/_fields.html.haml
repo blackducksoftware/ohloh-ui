@@ -2,6 +2,6 @@
 %h1.margin_top_0
   %span= link_to t('.forums'), forums_url
   \:
-  = link_to @forum.name, forum_path(@forum)
+  = link_to h(@forum.name), forum_path(@forum)
 
 = render partial: '/forums/notice'

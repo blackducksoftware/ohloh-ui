@@ -1,6 +1,6 @@
 - if !project.best_analysis.nil? && project.best_analysis.last_commit_time
   - value = number_to_currency(project.best_analysis.cocomo_value.round, precision: 0)
-  = link_to(value, estimated_cost_project_path(project))
+  = link_to(h(value), estimated_cost_project_path(project))
 - elsif project.enlistments.count > 0
   %span.soft= t('.pending')
 - else
