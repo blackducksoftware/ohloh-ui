@@ -91,7 +91,7 @@ module VulnerabilitiesHelper
                           date: options[0])
     end
     html += hidden_field_tag('vulnerability_filter_period', filter_period_param, class: 'vulnerability_main_filter')
-    html.html_safe
+    sanitize(html).html_safe
   end
 
   def releaase_timespan_options
