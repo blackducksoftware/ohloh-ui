@@ -16,6 +16,8 @@ class AccountsController < ApplicationController
   before_action :find_claimed_people, only: :index
   before_action :redirect_if_logged_in, only: :new
 
+  rescue_from ActionController::ParameterMissing, with: :handle_parameter_missing
+
   def new
     @account = Account.new
   end
@@ -116,6 +118,11 @@ class AccountsController < ApplicationController
       :twitter_account, :organization_id, :organization_name, :affiliation_type, :invite_code,
       :about_raw, :url
     )
+  end
+
+  def handle_parameter_missing(exception)
+    flash[:error] = "Required parameter is missing: #{exception.param}"
+    redirect_to new_account_path
   end
 
   def redirect_if_logged_in

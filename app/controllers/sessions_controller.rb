@@ -82,7 +82,7 @@ class SessionsController < Clearance::SessionsController
   end
 
   def account_must_exist
-    @account = Account.fetch_by_login_or_email(params[:login][:login])
+    @account = Account.fetch_by_login_or_email(params[:login][:login]) if params[:login].is_a?(Hash)
     return if @account
 
     flash.now[:error] = t('flashes.failure_after_create')
