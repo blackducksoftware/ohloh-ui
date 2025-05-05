@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# rubocop:disable Metrics/ClassLength
+
 class AccountsController < ApplicationController
   include RedirectIfDisabled
 
@@ -121,7 +123,7 @@ class AccountsController < ApplicationController
   end
 
   def handle_parameter_missing(exception)
-    flash[:error] = "Required parameter is missing: #{exception.param}"
+    Airbrake.notify(exception)
     redirect_to new_account_path
   end
 
@@ -129,3 +131,4 @@ class AccountsController < ApplicationController
     redirect_to account_path(current_user), notice: t('password_resets.already_logged_in') if logged_in?
   end
 end
+# rubocop:enable Metrics/ClassLength
