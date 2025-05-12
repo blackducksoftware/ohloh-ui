@@ -1,7 +1,6 @@
 SET statement_timeout = 0;
 SET lock_timeout = 0;
 SET idle_in_transaction_session_timeout = 0;
-SET transaction_timeout = 0;
 SET client_encoding = 'SQL_ASCII';
 SET standard_conforming_strings = on;
 SELECT pg_catalog.set_config('search_path', '', false);
@@ -50,13 +49,6 @@ CREATE SCHEMA oh;
 --
 
 COMMENT ON SCHEMA oh IS 'standard public schema';
-
-
---
--- Name: public; Type: SCHEMA; Schema: -; Owner: -
---
-
--- *not* creating schema, since initdb creates it
 
 
 --
@@ -1818,8 +1810,6 @@ ALTER TEXT SEARCH CONFIGURATION oh.pg
 
 
 SET default_tablespace = '';
-
-SET default_table_access_method = heap;
 
 --
 -- Name: admin_dashboard_stats; Type: TABLE; Schema: fis; Owner: -
@@ -6790,7 +6780,7 @@ CREATE SEQUENCE oh.monitorships_id_seq
 CREATE TABLE oh.monthly_commit_histories (
     id integer NOT NULL,
     analysis_id integer,
-    "json" text
+    json text
 );
 
 
