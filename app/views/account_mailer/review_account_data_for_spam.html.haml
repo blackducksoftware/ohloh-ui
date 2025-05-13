@@ -10,7 +10,7 @@ Dear OpenHub,
   - if @account.markup && @account.markup.link?
     %br
     %b Markup:
-    = @account.markup.formatted.html_safe
+    = sanitize(@account.markup.formatted).html_safe
   %br
   %br
   Mark #{@account.name} as spammer here:

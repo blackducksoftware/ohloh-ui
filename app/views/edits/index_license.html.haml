@@ -5,7 +5,7 @@
   %h1.margin_bottom_20
     = link_to t('.licenses'), licenses_url
     &nbsp;:&nbsp;
-    = link_to truncate(@parent.name, length: 42), license_url(@parent), title: @parent.name
+    = link_to h(truncate(@parent.name, length: 42)), license_url(@parent), title: @parent.name
     &nbsp;:&nbsp;#{t('.openhub_edit_history')}
 
 = render partial: 'index'

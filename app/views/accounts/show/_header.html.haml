@@ -24,8 +24,8 @@
           = link_to bootstrap_icon('icon-legal', t('.view_job')), admin_account_account_analysis_jobs_path(@account)
       - if @account.url.present?
         .info
-          = link_to @account.url, target: '_blank', title: @account.url, itemprop: 'url', rel: 'nofollow' do
-            %i.icon-external-link= "&nbsp; #{truncate(@account.url, length: 60)}".html_safe
+          = link_to h(@account.url), target: '_blank', title: @account.url, itemprop: 'url', rel: 'nofollow' do
+            %i.icon-external-link= "&nbsp; #{h(truncate(@account.url, length: 60))}".html_safe
       .info#account_affiliation
         = render partial: 'accounts/show/header/affiliation', locals: { account: @account }
       #kudo_section
@@ -34,7 +34,7 @@
           - if my_account?(@account)
             %i.icon-twitter{ style: 'color: #ccc' }
           - elsif @account.twitter_account.present?
-            = link_to @twitter_detail.url(request.url), class: 'link_no_underline',
+            = link_to h(@twitter_detail.url(request.url)), class: 'link_no_underline',
             rel: 'popup', title: "Follow @#{@account.twitter_account}" do
               %i.icon-twitter
           = render partial: 'accounts/show/header/kudo_button', locals: { css: 'btn-mini btn-info' }

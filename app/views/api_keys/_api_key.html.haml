@@ -26,7 +26,7 @@
         %i.icon-external-link.inline &nbsp;
       .clearfix
       - if api_key.url.present?
-        = link_to api_key.url, api_key.url, target: '_blank'
+        = link_to h(api_key.url), h(api_key.url), target: '_blank'
         %i.icon-external-link.inline &nbsp;
     .col-md-4#api_key_request_info
       :ruby

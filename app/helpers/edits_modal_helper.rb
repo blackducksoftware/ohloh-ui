@@ -59,7 +59,7 @@ module EditsModalHelper
 
   def edit_get_value_rsssubscription(edit)
     url = edit.target.rss_feed.url
-    link_to url, url
+    link_to sanitize(url).html_safe, sanitize(url).html_safe
   end
 
   def edit_get_value_logo_id(edit)

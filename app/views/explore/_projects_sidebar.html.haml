@@ -13,7 +13,7 @@
       .row
         #tagcloud
           - @tags.each do |tag|
-            = link_to tag[0], tags_path(names: tag[0]), data: { weight: tag[1] }
+            = link_to h(tag[0]), tags_path(names: tag[0]), data: { weight: tag[1] }
     .margin_left_10
       %form.autocomplete-submit{ rel: 'tag_jump' }
         %input.explore_search.tag_autocomplete.autocompletable#input_tag{ type: :text, placeholder: t('.enter_tag'),

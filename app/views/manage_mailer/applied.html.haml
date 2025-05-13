@@ -7,8 +7,8 @@
     else
       organization_managers_url(organization_id: @manage.target.id, host: ENV['URL_HOST'])
     end
-  link1 = link_to(@manage.account.name, account_url(id: @manage.account.id, host: ENV['URL_HOST']))
-  link2 = link_to(@manage.target.name, uri1)
+  link1 = link_to(h(@manage.account.name), account_url(id: @manage.account.id, host: ENV['URL_HOST']))
+  link2 = link_to(h(@manage.target.name), uri1)
   link3 = link_to(t('.action'), uri2)
 %p= t('mailers.greeting')
 %h4!= t('.body', link1: link1, link2: link2, link3: link3, target_type: @manage.target_type.downcase)

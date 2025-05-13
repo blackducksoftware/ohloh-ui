@@ -4,7 +4,7 @@
   %h1
     = link_to t('.license'), licenses_path
     &nbsp;:
-    = link_to truncate(@license.name, length: 42), license_url(@license), title: @license.name
+    = link_to h(truncate(@license.name, length: 42)), license_url(@license), title: @license.name
   %h2= t('.edit_license')
 
 .col-md-10

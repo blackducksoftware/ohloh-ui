@@ -4,7 +4,7 @@
   %h1.col-md-9.no_padding_left
     = link_to t('.license'), licenses_path
     &nbsp;:
-    = link_to truncate(@license.name, length: 42), license_url(@license), title: @license.name
+    = link_to h(truncate(@license.name, length: 42)), license_url(@license), title: @license.name
 
   .pull-right.licenses_button_groups.margin_top_10
     - if current_user_is_admin? || !@license.locked
@@ -28,5 +28,5 @@
 - if @license.url.present?
   %p
     = t('.read_more')
-    = link_to @license.url, @license.url
+    = link_to h(@license.url), h(@license.url)
 = link_to t('.add_new_license'), new_license_path, class: 'btn btn-small btn-primary margin_bottom_20'

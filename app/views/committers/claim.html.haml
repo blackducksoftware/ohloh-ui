@@ -8,7 +8,7 @@
 %h3.margin_top_15.margin_bottom_25
   = link_to t('.unclaimed_committer_ids'), committers_path
   &nbsp;:&nbsp;
-  = link_to @name.name, committer_path(@name.id)
+  = link_to h(@name.name), committer_path(@name.id)
   = t('.claim')
 .clearfix
 

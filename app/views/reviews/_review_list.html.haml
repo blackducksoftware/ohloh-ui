@@ -5,7 +5,7 @@
         - account = review_list.account
         .padding_right_0
           .pull-right
-            = link_to account.name.reverse.truncate(11).reverse, account_url(account), title: account.name
+            = link_to h(account.name.reverse.truncate(11).reverse), account_url(account), title: account.name
             says:
           .avatar_margin_left.pull-right.margin_right_10
             = avatar_for(review_list.account, size: 58)
@@ -15,7 +15,7 @@
           - project_icon(project, :med)
         .clearfix
         .margin_left_20
-          = link_to truncate(project.name, length: 20), project_path(project), title: project.name
+          = link_to h(truncate(project.name, length: 20)), project_path(project), title: project.name
 
     .col-md-10.padding_left_30
       %strong.pull-left

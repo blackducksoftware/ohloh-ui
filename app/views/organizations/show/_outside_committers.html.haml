@@ -44,7 +44,7 @@
               = link_to h(account.organization.name), organization_path(account.organization)
           %td &nbsp;
           %td
-            - project_links = projects.map { |p| link_to truncate(p.name, length: 25), project_path(p), title: p.name }
+            - project_links = projects.map { |p| link_to h(truncate(p.name, length: 25)), project_path(p), title: p.name }
             = expander(project_links.join(', '), 130, 300, /<\/a>/, 4)
           %td.center= account.twelve_mo_commits
   - count = @outside_committers.total_entries

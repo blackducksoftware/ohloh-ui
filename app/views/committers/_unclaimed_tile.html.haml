@@ -18,4 +18,4 @@
 .clearfix
 
 .project_link
-  = link_to truncate(project.name, length: 14), project_path(project), title: project.name
+  = link_to h(truncate(project.name, length: 14)), project_path(project), title: project.name

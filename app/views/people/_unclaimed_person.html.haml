@@ -10,7 +10,7 @@
     .header_row{ style: 'padding-bottom: 0;' }
       .pull-left
         %h4.no_margin_bottom{ style: 'margin: 0;' }
-          = from_show_page ? name : link_to(truncate(name, length: 70), committer_path(name_id))
+          = from_show_page ? name : link_to(h(truncate(name, length: 70)), committer_path(name_id))
       .pull-right
         = submit_tag t('.claim_these_contributions'), class: 'btn btn-mini btn-primary'
     .clearfix

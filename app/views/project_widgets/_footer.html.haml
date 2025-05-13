@@ -10,6 +10,6 @@
       = t('.more')
       = image_tag(widget_ohloh_logo_url)
   = link_to project_url(project), target: '_blank', class: "project_link #{name_class}", title: project.name do
-    = truncate(project.name, lenth: 50) if show_name
+    = h(truncate(project.name, lenth: 50)) if show_name
     - if oldest_code_set_time
       = t('.updated', at: oldest_code_set_time.to_s(:mdy))

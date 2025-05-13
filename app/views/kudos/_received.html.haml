@@ -5,7 +5,7 @@
       %td{ width: '23', style: 'vertical-align: text-top !important;' }
         = avatar_tiny_laurels(kudo.sender.kudo_rank)
       %td{ id: "kudo_received_#{kudo.sender.login}" }
-        = link_to kudo.sender.name, account_url(kudo.sender), id: "kudo_received_link_#{kudo.sender.login}"
+        = link_to h(kudo.sender.name), account_url(kudo.sender), id: "kudo_received_link_#{kudo.sender.login}"
         - if kudo_is_new?(kudo.account_id, kudo.created_at)
           %span.signature_color{ style: 'margin-left: 20px;' }= t('kudos.new_link')
         %span{ style: 'margin-left: 50px;' }

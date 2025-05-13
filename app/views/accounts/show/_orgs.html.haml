@@ -2,4 +2,4 @@
 %span.right_sm
   = t('.including')
   %br
-  != orgs.first(3).map { |org| link_to org.name, organization_path(org) }.to_sentence
+  != orgs.first(3).map { |org| link_to h(org.name), organization_path(org) }.to_sentence

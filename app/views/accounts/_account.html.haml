@@ -56,7 +56,7 @@
           - next unless project
           .margin_bottom_10
             = project.decorate.icon(:small, width: 24)
-            = link_to truncate(project.name, length: 10), project_path(project), class: 'margin_left_5'
+            = link_to h(truncate(project.name, length: 10)), project_path(project), class: 'margin_left_5'
       .pull-left.other_language.other_projects
         - if more_pos_count > 0
           - pluaral_term1 = pluralize_without_count(other_langs_count, 'project')

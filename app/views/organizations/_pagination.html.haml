@@ -1,6 +1,6 @@
 - if request.xhr? || action_name == 'show'
   - if count.to_i > 10
-    = link_to(text, url, class: 'btn btn-mini btn-primary')
+    = link_to(h(text), h(url), class: 'btn btn-mini btn-primary')
   - else
     %p &nbsp;
 - else
