@@ -1,11 +1,4 @@
-footer
-  @include footer-colors
-
-  margin: 20px 0 0 0
-  min-height: 250px
-  padding-top: 10px
-  width: 100%
-
+footer1
   @media (min-width: 320px) and (max-width: 480px)
     width: auto
     min-height: 194px !important
@@ -27,70 +20,75 @@ footer
     .footer-bottom
       margin-left: 0px !important
       margin-top: 0px !important
-  @media (min-width: 540px) and (max-width: 1024px)
-    width: auto
 
-  .footer-left
-    float: left
-    margin-top: 20px
-    margin-left: 30px
-    width: 25%
-    a
-      .logo_img
-        width: 40%
-        height: 100%
+.footer-container
+  @include footer-colors
+  display: flex
+  flex-direction: column
+  min-height: 250px
+  padding: 2em 2em 1em 2em
+  margin-bottom: 1em
 
-  .footer-mid
-    float: left
-    margin-top: 20px
-    width: 25%
-    font-size: 14px
-    a
-      @include footer-colors
-      padding: 4px 4px
+  .footer-row
+    display: flex
+    flex-direction: row
+    width: 100%
 
-  .footer-right
-    float: left
-    margin-top: 20px
-    width: 25%
-    font-size: 14px
-    a
-      @include footer-colors
-      padding: 4px 6px
+    .footer-left, .footer-mid, .footer-right, .footer-rightmost
+      width: 25%
+      display: block
+      vertical-align: top
+      font-size: 14px
 
-  .footer-rightmost
-    float: left
-    margin-top: 20px
-  .footer-bottom
+    .footer-left
+      a
+        .logo_img
+          width: 45%
+
+    .footer-mid
+      a
+        @include footer-colors
+        padding: 4px 4px
+
+    .footer-right
+      a
+        @include footer-colors
+        padding: 4px 6px
+    .footer-rightmost
+      .follow_btn
+        @include follow-button-colors
+        padding: 0 0 0 4px
+        height: 25px
+        border: 0
+        border-radius: 4px
+        i, p, img
+          color: white
+          display: inline-block
+          vertical-align: top
+        i
+          color: #555
+          vertical-align: middle
+        p
+          line-height: 25px
+          margin: 0
+          border-radius: 0 4px 4px 0
+        .twitter-text
+          @include twitter-background-color
+          color: white
+          font-weight: bold
+          font-size: 0.80em
+
+  > .footer-bottom
     @include footer-copyright-colors
-
-    float: left
-    margin-top: 10px
-    margin-left: 30px
-    margin-bottom: 2em
-    bottom: 0
+    margin-top: auto
+    width: 100%
+    text-align: center
     a
       @include footer-copyright-colors
 
-footer.fluid_footer
-  width: auto
-  .footer-left
-    width: 12%
-    ul
-      li
-        a
-          padding: 1rem 2rem
-          font-weight: bold
-  .footer-mid
-    width: 25%
-    text-align: left
-    font-weight: bold
-    font-size: 13px
-  .footer-right
-    width: 40%
-    float: left
-    font-weight: bold
-    font-size: 13px
-  .footer-bottom
-    float: left
-    margin-botton: 2em !important
+  @media (min-width: 320px) and (max-width: 480px)
+    min-height: 194px
+    .footer-left, .footer-mid, .footer-right, .footer-rightmost
+      font-size: 8px !important
+
+  
