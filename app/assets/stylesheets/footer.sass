@@ -4,7 +4,7 @@ footer
   margin: 20px 0 0 0
   min-height: 250px
   padding-top: 10px
-  width: 960px
+  width: 100%
 
   @media (min-width: 320px) and (max-width: 480px)
     width: auto
@@ -34,19 +34,17 @@ footer
     float: left
     margin-top: 20px
     margin-left: 30px
-    width: 15%
+    width: 25%
     a
       .logo_img
-        width: 100%
+        width: 40%
         height: 100%
 
   .footer-mid
     float: left
     margin-top: 20px
-    margin-left: 120px
-    margin-right: 40px
-    width: 20%
-    font-size: 12px
+    width: 25%
+    font-size: 14px
     a
       @include footer-colors
       padding: 4px 4px
@@ -54,15 +52,15 @@ footer
   .footer-right
     float: left
     margin-top: 20px
-    margin-bottom: 20px
-    width: 30%
-    font-size: 12px
-    padding-right: 60px
-    text-align: left
+    width: 25%
+    font-size: 14px
     a
       @include footer-colors
       padding: 4px 6px
 
+  .footer-rightmost
+    float: left
+    margin-top: 20px
   .footer-bottom
     @include footer-copyright-colors
 
