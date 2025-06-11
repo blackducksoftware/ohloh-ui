@@ -117,17 +117,20 @@ header
   margin-left: 15px
   padding: 0 0 5px 0
   min-height: 30px
+  .header-logo
+    display: flex
+    align-items: center
   .logo-div
     height: 35px
-    float: left
+    width: 18em
     .logo_link
       text-decoration: none
       margin-top: 3px
     .logo_img
       height: 100%
+      width: 100%
   .company-div
     @include top-navigation-colors
-    float: left
     .navbar_small_text
       font-size: 10px !important
     .navbar_large_text
@@ -136,25 +139,18 @@ header
       @include top-navigation-colors
       text-decoration: none
   .spacing-div
-    float: left
     width: 2px
     height: 30px
     background-color: white
-    margin: 0 auto
   .separator-div
     @include site-separator-color
     @include site-separator-background-color
-    float: left
     width: 1px
     height: 30px
     margin: 0 2px 0 2px
   .actions-div
-    float: right
-  .twitter-text
-    @include twitter-background-color
-    color: white
-    font-weight: bold
-    font-size: 0.80em
+    margin-left: auto
+    margin-right: 0
   .btn
     border: 0
     display: inline-block
@@ -162,28 +158,6 @@ header
     line-height: 25px
     margin: 0
     padding: 1px 6px 0 7px
-  .follow_btn
-    @include follow-button-colors
-    display: inline-block
-    padding: 0 0 0 4px
-    height: 24px
-    i, p, img
-      color: white
-      display: inline-block
-      vertical-align: top
-    i
-      color: #555
-      vertical-align: middle
-      &:before
-        padding-right: 0
-    p
-      font-weight: normal
-      line-height: 24px
-      text-transform: none
-      margin: 0
-      border-radius: 0 4px 4px 0
-    img
-      margin-right: -1px
   ul
     list-style: none
     margin: 3px 0 0 0
@@ -279,11 +253,6 @@ header
   h2
     font-size: 12px !important
     margin-top: 5px !important
-  .navbar
-    .follow_btn
-      height: 20px !important
-      p
-        line-height: 20px !important
 
 .busy, a.busy
   background: transparent asset_url('ui/spinner.gif') no-repeat center
