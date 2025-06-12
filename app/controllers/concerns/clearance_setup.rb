@@ -9,7 +9,8 @@ module ClearanceSetup
     def authenticate(params)
       account = Account.fetch_by_login_or_email(params[:login][:login])
       return unless account
-      return account if account.authenticated?(params[:login][:password])
+
+      account if account.authenticated?(params[:login][:password])
     end
 
     def current_user

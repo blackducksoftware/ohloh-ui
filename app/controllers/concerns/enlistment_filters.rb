@@ -79,8 +79,8 @@ module EnlistmentFilters
   end
 
   def project_has_code_location?
-    return unless CodeLocationSubscription.code_location_exists?(@project.id, @code_location.url,
-                                                                 @code_location.branch, code_location_params[:scm_type])
+    return false unless CodeLocationSubscription.code_location_exists?(@project.id, @code_location.url,
+                                                                       @code_location.branch, code_location_params[:scm_type])
 
     manage_deleted_enlistment
     redirect_to project_enlistments_path(@project)

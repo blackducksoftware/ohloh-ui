@@ -47,11 +47,11 @@ class OhAdmin::LicensePermissionsControllerTest < ActionController::TestCase
 
   it 'creates a new permission' do
     lp = LicensePermission.first
-    right_id = "right_#{lp.license_right_id}".to_sym
+    right_id = :"right_#{lp.license_right_id}"
 
     license_right = create(:license_right, name: 'New Right')
     create(:license_permission, license_right: license_right)
-    new_right_id = "right_#{license_right.id}".to_sym
+    new_right_id = :"right_#{license_right.id}"
 
     assert_difference 'LicenseLicensePermission.count', 1 do
       post :create, params: { :license_id => license.id,
@@ -67,7 +67,7 @@ class OhAdmin::LicensePermissionsControllerTest < ActionController::TestCase
 
   it 'updates an existing license_license_permission with new status' do
     lp = LicensePermission.first
-    right_id = "right_#{lp.license_right_id}".to_sym
+    right_id = :"right_#{lp.license_right_id}"
 
     # // create another permission for forbidden permission
     new_lp = create(:license_permission, license_right_id: lp.license_right_id,

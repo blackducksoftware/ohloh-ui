@@ -37,7 +37,6 @@ end
 class ActiveSupport::TestCase
   extend SetupHamsterAccount
   extend CreateForges
-  extend MiniTest::Spec::DSL
   include FactoryBot::Syntax::Methods
 
   TEST_PASSWORD = :test_password
@@ -151,10 +150,10 @@ class ActiveSupport::TestCase
     end
   end
 
-  def stub_code_location_subscription_api_call(code_location_id, project_id, method = 'create', &block)
+  def stub_code_location_subscription_api_call(code_location_id, project_id, method = 'create', &)
     VCR.use_cassette("#{method}_code_location_subscription",
                      erb: { code_location_id: code_location_id, client_relation_id: project_id },
-                     match_requests_on: %i[host path method], &block)
+                     match_requests_on: %i[host path method], &)
   end
 
   def assert_response(code)

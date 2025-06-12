@@ -128,7 +128,7 @@ module ApplicationHelper
     return if actual_time.blank?
 
     base_time ||= @highlight_from || Time.current
-    return 'highlight' if actual_time >= base_time
+    'highlight' if actual_time >= base_time
   end
 
   def needs_login

@@ -21,7 +21,7 @@ class PostsControllerTest < ActionController::TestCase
 
     it 'index should handle search for unlogged users' do
       login_as nil
-      create(:post, body: 'oldest', created_at: Time.current - 2.hours)
+      create(:post, body: 'oldest', created_at: 2.hours.ago)
       create(:post, body: 'newest', created_at: Time.current)
       get :index, params: { sort: 'newest' }
       assert_response :ok
@@ -42,7 +42,7 @@ class PostsControllerTest < ActionController::TestCase
     end
 
     it 'sorts index posts by newest' do
-      create(:post, body: 'oldest', created_at: Time.current - 2.hours)
+      create(:post, body: 'oldest', created_at: 2.hours.ago)
       create(:post, body: 'newest', created_at: Time.current)
       get :index, params: { sort: 'newest' }
       assert_response :ok
@@ -50,7 +50,7 @@ class PostsControllerTest < ActionController::TestCase
     end
 
     it 'sorts index posts by most recent in default view' do
-      create(:post, body: 'oldest', created_at: Time.current - 2.hours)
+      create(:post, body: 'oldest', created_at: 2.hours.ago)
       create(:post, body: 'newest', created_at: Time.current)
       get :index
       assert_response :ok
@@ -98,10 +98,10 @@ class PostsControllerTest < ActionController::TestCase
     end
 
     it 'filters index by query parameter and sorts by newest' do
-      create(:post, body: 'first Mozilla', created_at: Time.current - 3.hours)
-      create(:post, body: 'second Mozilla', created_at: Time.current - 2.hours)
+      create(:post, body: 'first Mozilla', created_at: 3.hours.ago)
+      create(:post, body: 'second Mozilla', created_at: 2.hours.ago)
       create(:post, body: 'third Mozilla', created_at: Time.current)
-      create(:post, body: 'Dropbox', created_at: Time.current - 4.hours)
+      create(:post, body: 'Dropbox', created_at: 4.hours.ago)
       get :index, params: { query: 'Mozilla', sort: 'newest' }
       assert_response :ok
       _(response.body).must_match(/third\sMozilla.*second\sMozilla.*first\sMozilla/m)
@@ -148,7 +148,7 @@ class PostsControllerTest < ActionController::TestCase
 
       get :index, params: { account_id: account.id }
 
-      assert_response 302
+      assert_response :found
     end
 
     it 'sorts by unanswered' do
@@ -161,7 +161,7 @@ class PostsControllerTest < ActionController::TestCase
     end
 
     it 'sorts by newest' do
-      create(:post, account: user, body: 'oldest', created_at: Time.current - 2.hours)
+      create(:post, account: user, body: 'oldest', created_at: 2.hours.ago)
       create(:post, account: user, body: 'newest', created_at: Time.current)
       get :index, params: { account_id: user, sort: 'newest' }
       assert_response :ok
@@ -182,10 +182,10 @@ class PostsControllerTest < ActionController::TestCase
     end
 
     it 'filters index by query parameter and sorts by newest' do
-      create(:post, account: user, body: 'first Mozilla', created_at: Time.current - 3.hours)
-      create(:post, account: user, body: 'second Mozilla', created_at: Time.current - 2.hours)
+      create(:post, account: user, body: 'first Mozilla', created_at: 3.hours.ago)
+      create(:post, account: user, body: 'second Mozilla', created_at: 2.hours.ago)
       create(:post, account: user, body: 'third Mozilla', created_at: Time.current)
-      create(:post, account: user, body: 'Dropbox', created_at: Time.current - 4.hours)
+      create(:post, account: user, body: 'Dropbox', created_at: 4.hours.ago)
       get :index, params: { account_id: user, query: 'Mozilla', sort: 'newest' }
       assert_response :ok
       _(response.body).must_match(/third\sMozilla.*second\sMozilla.*first\sMozilla/m)

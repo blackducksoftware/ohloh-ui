@@ -8,15 +8,15 @@ module EditsModalHelper
   end
 
   def show_edit_path(edit)
-    path = "#{@parent.class.name.downcase}_edit_path".to_sym
+    path = :"#{@parent.class.name.downcase}_edit_path"
     send(path, @parent, edit) if respond_to?(path)
   end
 
   def get_edit_value(edit)
     if project_related_edit(edit)
-      send("edit_get_value_#{edit.target.class.name.downcase}".to_sym, edit)
+      send(:"edit_get_value_#{edit.target.class.name.downcase}", edit)
     elsif organization_or_logo_edit(edit)
-      send("edit_get_value_#{edit.key}".to_sym, edit)
+      send(:"edit_get_value_#{edit.key}", edit)
     elsif edit.create_edit?
       link_to_create_edit(edit)
     end

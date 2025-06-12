@@ -57,7 +57,7 @@ class SessionsController < Clearance::SessionsController
   end
 
   def auth_failure_timeout?
-    return unless account
+    return false unless account
 
     Time.current - account.updated_at > ENV['FAILED_LOGIN_TIMEOUT'].to_i.minutes.to_i
   end

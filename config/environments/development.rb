@@ -10,8 +10,8 @@ Rails.application.configure do
   config.cache_classes = false
   config.cache_store = :null_store
 
-  # Do not eager load code on boot.
-  config.eager_load = true
+  # In development, we want to load code on boot to catch any startup issues
+  config.eager_load = false
 
   # Show full error reports and disable caching.
   config.consider_all_requests_local       = true
@@ -32,7 +32,7 @@ Rails.application.configure do
   # Debug mode disables concatenation and preprocessing of assets.
   # This option may cause significant delays in view rendering with a large
   # number of complex assets.
-  config.assets.debug = false
+  config.assets.debug = true
 
   # Adds additional error checking when serving assets at runtime.
   # Checks for improperly declared sprockets dependencies.
@@ -42,6 +42,11 @@ Rails.application.configure do
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
+
+  # Raise exceptions for disallowed deprecations.
+  config.active_support.disallowed_deprecation = :raise
+
+  config.active_support.disallowed_deprecation_warnings = []
 
   config.action_mailer.default_url_options = { host: 'localhost:3000' }
 end

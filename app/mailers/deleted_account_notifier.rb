@@ -2,7 +2,7 @@
 
 class DeletedAccountNotifierMailer < ApplicationMailer
   def deletion(account)
-    recipient = ENV['DELETED_ACCOUNT_RECIPIENT']
+    recipient = ENV.fetch('DELETED_ACCOUNT_RECIPIENT', nil)
     @affiliation = organization_name(account)
     @claimed_projects = project_names(account)
     @account = account

@@ -12,7 +12,7 @@ class NilCodeLocation < NullObject
     :Git
   end
 
-  def do_not_fetch
+  def do_not_fetch?
     true
   end
 end

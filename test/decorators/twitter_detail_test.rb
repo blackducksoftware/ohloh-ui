@@ -10,7 +10,7 @@ class TwitterDetailTest < ActiveSupport::TestCase
 
   describe 'url' do
     it 'should return twitter url with given account' do
-      url = 'https://twitter.com/intent/follow?original_referer=http%3A%2F%2Ftwiiter.com%2Fmighty_joe'\
+      url = 'https://twitter.com/intent/follow?original_referer=http%3A%2F%2Ftwiiter.com%2Fmighty_joe' \
             '&region=follow_link&screen_name=mighty_joe&source=followbutton&variant=2.0'
 
       admin.stubs(:twitter_account).returns('mighty_joe')

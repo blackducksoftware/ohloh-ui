@@ -7,10 +7,10 @@ FactoryBot.define do
     markup_total { 100 }
     logic_total { 101 }
     build_total { 102 }
-    first_commit_time { Time.current - 1.year }
+    first_commit_time { 1.year.ago }
     min_month { Date.current - 1.month }
     max_month { Date.current - 1.day }
-    last_commit_time { Time.current - 1.day }
+    last_commit_time { 1.day.ago }
     after(:create) do |instance|
       instance.update(thirty_day_summary: create(:thirty_day_summary, analysis: instance))
       instance.update(twelve_month_summary: create(:twelve_month_summary, analysis: instance))

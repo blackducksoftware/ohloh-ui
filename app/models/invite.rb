@@ -25,7 +25,7 @@ class Invite < ApplicationRecord
   end
 
   def claim_url
-    "http://#{ENV['URL_HOST']}/p/#{project_id}/contributors/#{contribution_id}?invite=#{activation_code}"
+    "http://#{ENV.fetch('URL_HOST', nil)}/p/#{project_id}/contributors/#{contribution_id}?invite=#{activation_code}"
   end
 
   private

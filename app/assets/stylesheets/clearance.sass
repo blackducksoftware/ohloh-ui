@@ -1,14 +1,43 @@
+@import "oh-styles"
+@import "buttons"
+@import "page"
+@import "forms"
+@import "sidebar"
+@import "base"
+@import "grid"
+
 .password-reset
   h2
-    @extend .strong
+    font-weight: bold
   form
-    @extend .well
-    @extend .col-md-5
+    @include site-well-color
+    border: medium none
+    box-shadow: none
+    border-radius: 0px
+    width: 41.66666667%
+    position: relative
+    min-height: 1px
+    padding-right: 15px
+    padding-left: 15px
+    float: left
     label
-      @extend .strong
-      @extend .required
+      font-weight: bold
+      &:after
+        content: " *"
+        color: red
     .submit-field
-      @extend .actions
+      margin-bottom: 15px
       input
-        @extend .btn
-        @extend .btn-primary
+        font-family: 'Roboto' !important
+        font-weight: bold !important
+        display: inline-block
+        color: #FFF !important
+        background-image: none !important
+        border: 5px solid
+        border-radius: 0
+        box-shadow: none !important
+        cursor: pointer
+        vertical-align: middle
+        margin: 0
+        position: relative
+        @include primary-button-colors

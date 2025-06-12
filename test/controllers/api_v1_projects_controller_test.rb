@@ -3,7 +3,7 @@
 require 'test_helper'
 
 class Api::V1::ProjectsControllerTest < ActionController::TestCase
-  include JWTHelper
+  include JwtHelper
   let(:api_key) { create(:api_key, account: create(:account)) }
   let(:client_id) { api_key.oauth_application.uid }
   let(:forge) { Forge.find_by(name: 'Github') }

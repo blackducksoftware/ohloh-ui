@@ -386,7 +386,7 @@ class ProjectTest < ActiveSupport::TestCase
     it 'should not create a new job if project already has a job' do
       project = create(:project)
       project.stubs(:code_locations).returns([code_location_stub])
-      ProjectAnalysisJob.create(project: project, wait_until: Time.current + 5.hours)
+      ProjectAnalysisJob.create(project: project, wait_until: 5.hours.from_now)
 
       project.ensure_job
       _(project.jobs.count).must_equal 1
@@ -449,7 +449,7 @@ class ProjectTest < ActiveSupport::TestCase
     it 'should update existing job if present' do
       project = create(:project)
       project.stubs(:code_locations).returns([code_location_stub])
-      ProjectAnalysisJob.create(project: project, wait_until: Time.current + 5.hours)
+      ProjectAnalysisJob.create(project: project, wait_until: 5.hours.from_now)
 
       _(project.jobs.count).must_equal 1
       project.schedule_delayed_analysis(2.hours)

@@ -23,7 +23,7 @@ class Api::VulnerabilitiesController < ApplicationController
 
   def fetch_cwe
     cwe_urls = @response['_meta']['links'].select { |link| link['rel'] == 'cwe' }
-                                          .collect { |link| link['href'] }
+                                          .pluck('href')
 
     return unless cwe_urls
 
@@ -44,6 +44,6 @@ class Api::VulnerabilitiesController < ApplicationController
   end
 
   def valid_bdsa_id
-    return render 'no_data' unless params[:id].upcase.match(/^BDSA-(19|[2-9][0-9])\d{2}-\d{4}$/)
+    render 'no_data' unless params[:id].upcase.match(/^BDSA-(19|[2-9][0-9])\d{2}-\d{4}$/)
   end
 end

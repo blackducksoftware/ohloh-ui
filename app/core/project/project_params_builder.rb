@@ -59,7 +59,7 @@ class ProjectParamsBuilder
 
   def validate_row
     raise ProjectParamsError, "kb id:#{@kb_project_id} contains a blank description" if @row['description'].blank?
-    raise ProjectExistsError, "kb id:#{@kb_project_id} project already exists"  if @row['owner'].nil?
+    raise ProjectExistsError, "kb id:#{@kb_project_id} project already exists" if @row['owner'].nil?
   end
 
   # rubocop:disable Metrics/MethodLength

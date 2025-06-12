@@ -42,9 +42,7 @@ module ReverificationTask
     end
 
     desc 'disable_accounts', 'Disables all accounts with phase disable (2)'
-    def disable_accounts
-      ReverificationTracker.disable_accounts
-    end
+    delegate :disable_accounts, to: :ReverificationTracker
   end
 
   class Notifications < Thor

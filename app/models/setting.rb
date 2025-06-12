@@ -4,7 +4,7 @@ class Setting < ApplicationRecord
   serialize :value
   class << self
     def get_value(key)
-      where(key: key).pluck(:value).first
+      where(key: key).pick(:value)
     end
 
     def update_worker(project_id, worker_id, url)

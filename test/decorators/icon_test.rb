@@ -8,15 +8,15 @@ class IconTest < ActiveSupport::TestCase
       logo = create(:attachment)
       project = create(:project, logo_id: logo.id)
 
-      image = '<img style="width:32px; height:32px; border:0 none;" '\
+      image = '<img style="width:32px; height:32px; border:0 none;" ' \
               "itemprop=\"image\" alt=\"img avatar\" src=\"#{project.logo.attachment.url(:small)}\" />"
       _(Icon.new(project).image).must_equal image
     end
 
     it 'should return image like text when logo is not present' do
       org = create(:organization)
-      markup = '<p style="background-color:#EEE; color:#000; border:1px dashed #000;font-size:26px; '\
-               'line-height:32px; width:32px; height:32px;text-align:center; '\
+      markup = '<p style="background-color:#EEE; color:#000; border:1px dashed #000;font-size:26px; ' \
+               'line-height:32px; width:32px; height:32px;text-align:center; ' \
                "float:left; margin-bottom:0; margin-top:3px; margin-right:2px\">#{org.name[0].capitalize}</p>"
       _(Icon.new(org).image).must_equal markup
     end

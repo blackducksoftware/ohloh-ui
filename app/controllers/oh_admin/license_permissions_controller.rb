@@ -50,10 +50,10 @@ class OhAdmin::LicensePermissionsController < ApplicationController
   end
 
   def retrieve_licenses
-    @licenses = License.all
-                       .joins(:license_license_permissions)
-                       .order(:name).distinct
-                       .collect { |license| [license.name, license.id] }
+    @licenses = License
+                .joins(:license_license_permissions)
+                .order(:name).distinct
+                .collect { |license| [license.name, license.id] }
   end
 
   def retrieve_license_rights

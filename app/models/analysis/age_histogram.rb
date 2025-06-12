@@ -46,7 +46,7 @@ class Analysis::AgeHistogram
     end
 
     def in_last_two_months
-      analyses[:oldest_code_set_time].gt(Time.current - 63.days)
+      analyses[:oldest_code_set_time].gt(63.days.ago)
     end
   end
 end

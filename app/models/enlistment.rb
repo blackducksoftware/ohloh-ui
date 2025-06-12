@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class Enlistment < ApplicationRecord
+  extend FilterBy
   include KnowledgeBaseCallbacks
 
   has_one :create_edit, as: :target

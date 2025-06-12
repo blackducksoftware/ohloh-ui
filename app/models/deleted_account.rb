@@ -22,7 +22,7 @@ class DeletedAccount < ApplicationRecord
   end
 
   def feedback_time_elapsed?
-    created_at < Time.current - 1.hour
+    created_at < 1.hour.ago
   end
 
   private

@@ -35,7 +35,7 @@ class ClaimCoreTest < ActiveSupport::TestCase
       position = create_position(account: account, project: project2)
 
       position.name_fact.update!(email_address_ids: "{#{email2.id}}", name_id: position_name.id)
-      _((account.claim_core.email_ids - [email1.id, email2.id])).must_be_empty
+      _(account.claim_core.email_ids - [email1.id, email2.id]).must_be_empty
     end
 
     it 'should return email id when claimed position has a new name' do
@@ -69,7 +69,7 @@ class ClaimCoreTest < ActiveSupport::TestCase
     it 'should return multiple ids when present' do
       set_aliases(email1)
       position.name_fact.update_attribute(:email_address_ids, "{#{email2.id}}")
-      _(([email1.id, email2.id] - account.claim_core.email_ids)).must_be_empty
+      _([email1.id, email2.id] - account.claim_core.email_ids).must_be_empty
     end
 
     it 'should return single id when multiple emails present are the same' do

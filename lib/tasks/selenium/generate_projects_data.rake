@@ -196,8 +196,8 @@ namespace :selenium do
     thirty_day_summary = analysis.thirty_day_summary || NilAnalysisSummaryWithNa.new
 
     commits_summary = [all_time_summary, twelve_month_summary, thirty_day_summary]
-    %w[commits_count committer_count files_modified lines_added lines_removed].each_with_object({}) do |key, hsh|
-      hsh[key] = commits_summary.map(&key.to_sym)
+    %w[commits_count committer_count files_modified lines_added lines_removed].index_with do |key|
+      commits_summary.map(&key.to_sym)
     end
   end
 
@@ -227,14 +227,14 @@ namespace :selenium do
   end
 
   def get_reviews(project)
-    %w[helpful recently_added highest_rated lowest_rated].each_with_object({}) do |sort_by, hsh|
-      hsh[sort_by] = project.reviews.sort_by(sort_by).map(&:title).first(20)
+    %w[helpful recently_added highest_rated lowest_rated].index_with do |sort_by|
+      project.reviews.sort_by(sort_by).map(&:title).first(20)
     end.merge!('most_helpful' => project.reviews.top.map(&:title).first(20))
   end
 
   def get_enlistments(project)
-    %w[by_url by_project by_type].each_with_object({}) do |sort_by, hsh|
-      hsh[sort_by] = project.enlistments.includes(:project, :repository).send(sort_by).first(20).collect do |e|
+    %w[by_url by_project by_type].index_with do |sort_by|
+      project.enlistments.includes(:project, :repository).send(sort_by).first(20).collect do |e|
         [e.code_location.nice_url, e.repository.name_in_english, CodeLocationJobProgress.new(e).message]
       end
     end

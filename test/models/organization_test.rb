@@ -75,7 +75,7 @@ class OrganizationTest < ActiveSupport::TestCase
 
   describe 'sort_by_recent' do
     it 'org' do
-      org1 = create(:organization, name: 'test1', updated_at: Time.current + 5.days)
+      org1 = create(:organization, name: 'test1', updated_at: 5.days.from_now)
       org2 = create(:organization, name: 'test2')
 
       _(Organization.sort_by_recent).must_equal [org1, org2]

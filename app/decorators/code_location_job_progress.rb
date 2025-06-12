@@ -72,6 +72,6 @@ class CodeLocationJobProgress
   end
 
   def sloc_set_code_set_time
-    best_code_set&.best_sloc_set && best_code_set.best_sloc_set.code_set_time
+    best_code_set&.best_sloc_set&.code_set_time
   end
 end

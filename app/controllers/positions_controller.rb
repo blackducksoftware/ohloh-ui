@@ -6,19 +6,14 @@ class PositionsController < ApplicationController
   helper PositionsHelper
   include PositionFilters
 
-  def new
-    @position = Position.new
+  def index
+    @positions = @account.position_core.ordered.paginate(page: page_param, per_page: 10)
   end
 
-  def update
-    Position.transaction do
-      @position.language_experiences.delete_all
-      @position.update!(position_params)
-    end
-    redirect_to account_positions_path(@account)
-  rescue StandardError => e
-    flash.now[:error] = e.message unless e.is_a?(ActiveRecord::RecordInvalid)
-    render :edit
+  def show; end
+
+  def new
+    @position = Position.new
   end
 
   def create
@@ -33,7 +28,16 @@ class PositionsController < ApplicationController
     end
   end
 
-  def show; end
+  def update
+    Position.transaction do
+      @position.language_experiences.delete_all
+      @position.update!(position_params)
+    end
+    redirect_to account_positions_path(@account)
+  rescue StandardError => e
+    flash.now[:error] = e.message unless e.is_a?(ActiveRecord::RecordInvalid)
+    render :edit
+  end
 
   def destroy
     if @position.destroy
@@ -41,10 +45,6 @@ class PositionsController < ApplicationController
     else
       redirect_to_saved_path(flash: { error: t('destroy.failure') })
     end
-  end
-
-  def index
-    @positions = @account.position_core.ordered.paginate(page: page_param, per_page: 10)
   end
 
   def commits_compound_spark

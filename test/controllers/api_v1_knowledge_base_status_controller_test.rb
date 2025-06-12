@@ -3,7 +3,7 @@
 require 'test_helper'
 
 class Api::V1::KnowledgeBaseStatusControllerTest < ActionController::TestCase
-  include JWTHelper
+  include JwtHelper
 
   let(:rmq_mock) { mock_bunny }
   before do

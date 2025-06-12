@@ -5,7 +5,7 @@ class SettingsController < ApplicationController
   ACCEPTABLE_TIME_UNITS = %w[hours days weeks months years].freeze
 
   def oversized_project?(project)
-    return true if defined?(OVERSIZED_PROJECT_IDS) && OVERSIZED_PROJECT_IDS.include?(project.id)
+    true if defined?(OVERSIZED_PROJECT_IDS) && OVERSIZED_PROJECT_IDS.include?(project.id)
   end
 
   def set_sort_and_highlight

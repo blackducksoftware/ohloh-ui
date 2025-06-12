@@ -26,6 +26,10 @@ class EnlistmentsController < SettingsController
     @enlistment = Enlistment.new
   end
 
+  def edit
+    @examples = @enlistment.ignore_examples
+  end
+
   def create
     if @code_location.save
       create_enlistment
@@ -36,10 +40,6 @@ class EnlistmentsController < SettingsController
       flash[:error] = @code_location.errors['error']
       render :new
     end
-  end
-
-  def edit
-    @examples = @enlistment.ignore_examples
   end
 
   def edit_allowed_files
@@ -79,7 +79,7 @@ class EnlistmentsController < SettingsController
   end
 
   def code_location_params
-    params[:code_location].select { |k, _v| %w[url branch scm_type].include?(k) }
+    params[:code_location].slice('url', 'branch', 'scm_type')
   end
 
   def create_subscription

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Logo < Attachment
-  FILE_SIZE_LIMIT = (1..(500.kilobytes)).freeze
+  FILE_SIZE_LIMIT = (1..(500.kilobytes))
 
   DEFAULT_LOGOS = {
     15_216 => '.Net Library',
@@ -42,7 +42,7 @@ class Logo < Attachment
   end
 
   def destroy
-    default? ? true : super
+    default? || super
   end
 
   def default?

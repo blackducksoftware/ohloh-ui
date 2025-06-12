@@ -296,7 +296,7 @@ class LinksControllerTest < ActionController::TestCase
     link = create(:link, project: create(:project))
     Link.any_instance.stubs(:destroy).returns false
     delete :destroy, params: { id: link.id, project_id: link.project.vanity_url }
-    assert_response 302
+    assert_response :found
   end
 
   it 'should_not_create_if_link_was_soft_deleted_already_in_a_link_category' do

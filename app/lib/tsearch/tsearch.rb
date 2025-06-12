@@ -62,10 +62,8 @@ module Tsearch
     private
 
     def set_vector(record)
-      [].tap do |set_weight|
-        record.searchable_vector.each do |weight, attr_value|
-          set_weight << "setweight(to_tsvector(coalesce('#{clean_attr_value(attr_value)}')), '#{weight.upcase}')"
-        end
+      record.searchable_vector.map do |weight, attr_value|
+        "setweight(to_tsvector(coalesce('#{clean_attr_value(attr_value)}')), '#{weight.upcase}')"
       end.join(' ||')
     end
 

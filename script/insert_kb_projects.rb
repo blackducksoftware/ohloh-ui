@@ -25,7 +25,7 @@ class InsertKbProjects
   def show_progress(index)
     @log.info "Processing row #{index}"
     print '.' unless (index % 10).zero?
-    puts index.to_s if (index % 10).zero?
+    puts index if (index % 10).zero?
   end
 
   def create_project(row)

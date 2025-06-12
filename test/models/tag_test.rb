@@ -38,7 +38,7 @@ class TagTest < ActiveSupport::TestCase
       project1.tags = [tag1, tag2]
       assert_equal 1, tag1.taggings_count
       assert_equal 1, tag2.taggings_count
-      project1.taggings.where(tag: tag2).take.destroy
+      project1.taggings.find_by(tag: tag2).destroy
       assert_equal 1, tag1.reload.taggings_count
       assert_equal 0, tag2.reload.taggings_count
     end

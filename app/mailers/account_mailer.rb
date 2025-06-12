@@ -6,12 +6,12 @@ class AccountMailer < ApplicationMailer
   def signup_notification(account)
     @account = account
     @url = activate_account_accesses_url(account_id: account.to_param, code: account.activation_code,
-                                         host: ENV['URL_HOST'], protocol: 'https')
+                                         host: ENV.fetch('URL_HOST', nil), protocol: 'https')
     mail to: account.email, subject: t('.subject'), bcc: 'info@openhub.net'
   end
 
   def activation(account)
-    @url = root_url(host: ENV['URL_HOST'])
+    @url = root_url(host: ENV.fetch('URL_HOST', nil))
     @account = account
     mail to: account.email, subject: t('.subject')
   end

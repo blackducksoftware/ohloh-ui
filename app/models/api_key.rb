@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class ApiKey < ApplicationRecord
+  extend FilterBy
+
   DEFAULT_DAILY_LIMIT = 1000
   STATUS_OK = 0
   STATUS_LIMIT_EXCEEDED = 1
@@ -52,7 +54,7 @@ class ApiKey < ApplicationRecord
   private
 
   def daily_reset!
-    return unless day_began_at && day_began_at < (Time.current - 1.day)
+    return unless day_began_at && day_began_at < 1.day.ago
 
     assign_attributes(day_began_at: Time.current,
                       daily_count: 0,

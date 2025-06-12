@@ -60,7 +60,7 @@ class Account::Access < OhDelegator::Base
   end
 
   def manual_or_oauth_verified?
-    return if account.nil?
+    return false if account.nil?
 
     account.verifications.exists?
   end

@@ -1,7 +1,11 @@
 # frozen_string_literal: true
 
+# Load the oh_delegator patch as early as possible
+require_relative File.expand_path('initializers/oh_delegator_patch', __dir__)
+
 # Set up gems listed in the Gemfile.
 ENV['BUNDLE_GEMFILE'] ||= File.expand_path('../Gemfile', __dir__)
 
+require 'logger'
 require 'bundler/setup' if File.exist?(ENV['BUNDLE_GEMFILE'])
 require 'bootsnap/setup' if ENV['BOOTSNAP'] # speed up development. Can't rely on dotenv since it loads after this.

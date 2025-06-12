@@ -13,19 +13,19 @@ module Reverification
     end
 
     def success_queue
-      @success_queue ||= sqs.queues.named(ENV['AWS_SQS_SUCCESS_QUEUE'])
+      @success_queue ||= sqs.queues.named(ENV.fetch('AWS_SQS_SUCCESS_QUEUE', nil))
     end
 
     def bounce_queue
-      @bounce_queue ||= sqs.queues.named(ENV['AWS_SQS_BOUNCE_QUEUE'])
+      @bounce_queue ||= sqs.queues.named(ENV.fetch('AWS_SQS_BOUNCE_QUEUE', nil))
     end
 
     def complaints_queue
-      @complaints_queue ||= sqs.queues.named(ENV['AWS_SQS_COMPLAINT_QUEUE'])
+      @complaints_queue ||= sqs.queues.named(ENV.fetch('AWS_SQS_COMPLAINT_QUEUE', nil))
     end
 
     def bad_email_queue
-      @bad_email_queue ||= sqs.queues.named(ENV['AWS_SQS_BAD_EMAIL_QUEUE'])
+      @bad_email_queue ||= sqs.queues.named(ENV.fetch('AWS_SQS_BAD_EMAIL_QUEUE', nil))
     end
 
     def amazon_stat_settings

@@ -13,7 +13,7 @@ Rails.application.configure do
   # Do not eager load code on boot. This avoids loading your whole application
   # just for the purpose of running a single test. If you are using a tool that
   # preloads Rails for running tests, you may have to set it to true.
-  config.eager_load = true
+  config.eager_load = false
 
   # Configure static asset server for tests with Cache-Control for performance.
   config.public_file_server.enabled
@@ -45,6 +45,12 @@ Rails.application.configure do
   config.active_record.yaml_column_permitted_classes = [Symbol, Time]
 
   config.cache_store = :null_store
+
+  # Raise exceptions for disallowed deprecations.
+  config.active_support.disallowed_deprecation = :raise
+
+  # Tell Active Support which deprecation messages to disallow.
+  config.active_support.disallowed_deprecation_warnings = []
 
   config.middleware.use Clearance::BackDoor do |login|
     Clearance.configuration.user_model.find_by(login: login)

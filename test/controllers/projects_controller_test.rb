@@ -50,7 +50,7 @@ class ProjectsControllerTest < ActionController::TestCase
   end
 
   it 'index should handle query param sorting by new' do
-    create(:project, name: 'Foo_new', description: 'second', created_at: Time.current - 3.hours)
+    create(:project, name: 'Foo_new', description: 'second', created_at: 3.hours.ago)
     create(:project, name: 'FooBar_new', description: 'first')
     login_as nil
     get :index, params: { query: 'foo', sort: 'new' }
@@ -59,7 +59,7 @@ class ProjectsControllerTest < ActionController::TestCase
   end
 
   it 'index should handle q param sorting by new' do
-    create(:project, name: 'Foo_new', description: 'second', created_at: Time.current - 3.hours)
+    create(:project, name: 'Foo_new', description: 'second', created_at: 3.hours.ago)
     create(:project, name: 'FooBar_new', description: 'first')
     login_as nil
     get :index, params: { q: 'foo', sort: 'new' }
@@ -242,7 +242,7 @@ class ProjectsControllerTest < ActionController::TestCase
   end
 
   it 'index should handle account sorting by "new"' do
-    project1 = create(:project, name: 'Foo_accounts_new', description: 'second', created_at: Time.current - 3.hours)
+    project1 = create(:project, name: 'Foo_accounts_new', description: 'second', created_at: 3.hours.ago)
     project2 = create(:project, name: 'FooBar_accounts_new', description: 'first')
     login_as nil
     manager = create(:account)
@@ -592,7 +592,7 @@ class ProjectsControllerTest < ActionController::TestCase
     assert_difference 'Project.count' do
       post :create, params: { project: { name: 'Foo Bar', vanity_url: 'foo_bar' } }
     end
-    assert_response 302
+    assert_response :found
   end
 
   it 'create should persist a valid project to the database' do
@@ -608,7 +608,7 @@ class ProjectsControllerTest < ActionController::TestCase
                                          project_licenses_attributes: license_attributes,
                                          enlistments_attributes: enlistment_params } }
     end
-    assert_response 302
+    assert_response :found
     project = Project.where(vanity_url: 'cool-beans').last
     _(project).wont_equal nil
     _(project.name).must_equal 'Cool Beans'
@@ -669,7 +669,7 @@ class ProjectsControllerTest < ActionController::TestCase
                                          project_licenses_attributes: license_attributes,
                                          enlistments_attributes: enlistment_params } }
     end
-    assert_response 302
+    assert_response :found
     project = Project.where(vanity_url: 'cool-beans').last
     _(project).wont_equal nil
     _(project.name).must_equal 'Cool Beans'
@@ -690,7 +690,7 @@ class ProjectsControllerTest < ActionController::TestCase
                                          project_licenses_attributes: [],
                                          enlistments_attributes: enlistment_params } }
     end
-    assert_response 302
+    assert_response :found
     project = Project.where(vanity_url: 'cool-beans').last
     _(project).wont_equal nil
     _(project.name).must_equal 'Cool Beans'
@@ -713,7 +713,7 @@ class ProjectsControllerTest < ActionController::TestCase
                                          project_licenses_attributes: license_attributes,
                                          enlistments_attributes: enlistment_params } }
     end
-    assert_response 302
+    assert_response :found
     project = Project.where(vanity_url: 'cool-beans').last
     _(project).wont_equal nil
     _(project.name).must_equal 'Cool Beans'
@@ -798,7 +798,7 @@ class ProjectsControllerTest < ActionController::TestCase
     project = create(:project)
     login_as create(:admin)
     put :update, params: { id: project.id, project: { name: 'KoolOSSProject' } }
-    assert_response 302
+    assert_response :found
     _(project.reload.name).must_equal 'KoolOSSProject'
   end
 

@@ -46,7 +46,7 @@ class CodeLocationJobProgressTest < ActiveSupport::TestCase
     end
 
     it 'should return failed with step message' do
-      @job.update_columns(status: 3, current_step_at: Time.current - 2.days)
+      @job.update_columns(status: 3, current_step_at: 2.days.ago)
       _(repo_progress.message).must_equal 'Step 1 of 3: Downloading source code history (Failed 2 days ago.)'
     end
 
@@ -74,7 +74,7 @@ class CodeLocationJobProgressTest < ActiveSupport::TestCase
 
     it 'should return update complete message' do
       @job.update_columns(status: 5)
-      repo_progress.stubs(:sloc_set_code_set_time).returns(Time.current - 2.days)
+      repo_progress.stubs(:sloc_set_code_set_time).returns(2.days.ago)
       _(repo_progress.message).must_equal 'Open Hub update completed 2 days ago.'
     end
 

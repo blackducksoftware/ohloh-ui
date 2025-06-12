@@ -47,7 +47,7 @@ class RssFeedTest < ActiveSupport::TestCase
 
   it 'should update any associated projects whenever a successful sync occurs' do
     VCR.use_cassette('RssFeed') do
-      before = Time.current - 4.hours
+      before = 4.hours.ago
       rss_feed = create(:rss_feed)
       project = create(:project)
       project.update(updated_at: before)
@@ -61,7 +61,7 @@ class RssFeedTest < ActiveSupport::TestCase
 
   it 'should create new rss_articles when fetch happens' do
     VCR.use_cassette('RssFeed') do
-      before = Time.current - 4.hours
+      before = 4.hours.ago
       rss_feed = create(:rss_feed)
       project = create(:project)
       project.update(updated_at: before)
@@ -88,8 +88,8 @@ class RssFeedTest < ActiveSupport::TestCase
   describe '.sync' do
     it 'should sync only the feeds which next_fetch time is less than or equal to current time' do
       VCR.use_cassette('RssFeed') do
-        before = Time.current - 4.hours
-        rss_feed = create(:rss_feed, url: 'http://www.vcrlocalhost.org/feed.rss', next_fetch: Time.current + 1.day)
+        before = 4.hours.ago
+        rss_feed = create(:rss_feed, url: 'http://www.vcrlocalhost.org/feed.rss', next_fetch: 1.day.from_now)
         project = create(:project)
         project.update(updated_at: before)
         create(:rss_subscription, rss_feed: rss_feed, project: project)
@@ -113,8 +113,8 @@ class RssFeedTest < ActiveSupport::TestCase
 
     it 'should sync only subscribed feeds' do
       VCR.use_cassette('RssFeed') do
-        before = Time.current - 4.hours
-        rss_feed = create(:rss_feed, url: 'http://www.vcrlocalhost.org/feed.rss', next_fetch: Time.current - 1.day)
+        before = 4.hours.ago
+        rss_feed = create(:rss_feed, url: 'http://www.vcrlocalhost.org/feed.rss', next_fetch: 1.day.ago)
         project = create(:project)
         project.update(updated_at: before)
         create(:rss_subscription, rss_feed: rss_feed, project: project, deleted: true)
@@ -124,7 +124,7 @@ class RssFeedTest < ActiveSupport::TestCase
         _(rss_feed.reload.rss_articles).must_equal []
         _(project.reload.updated_at.to_i).must_equal before.to_i
 
-        rss_feed = create(:rss_feed, url: 'http://www.vcrlocalhost.org/feed.rss', next_fetch: Time.current - 1.day)
+        rss_feed = create(:rss_feed, url: 'http://www.vcrlocalhost.org/feed.rss', next_fetch: 1.day.ago)
         project = create(:project)
         project.update(updated_at: before)
         create(:rss_subscription, rss_feed: rss_feed, project: project, deleted: false)
