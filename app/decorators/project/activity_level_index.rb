@@ -29,11 +29,11 @@ class Project::ActivityLevelIndex
     (@count.fdiv(@total_count) * 100).round(1)
   end
 
-  def sliced
+  def sliced?
     @level_index == INACTIVE_INDEX
   end
 
-  def selected
+  def selected?
     name == ACTIVITY_LEVEL_INDEX[INACTIVE_INDEX]
   end
 end

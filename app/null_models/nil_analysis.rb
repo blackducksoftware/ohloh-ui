@@ -15,7 +15,7 @@ class NilAnalysis < NullObject
     NilAnalysisSummary.new
   end
 
-  def name_fact_for(_name_id)
+  def name_fact_for?(_name_id)
     false
   end
 

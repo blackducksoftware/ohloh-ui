@@ -114,13 +114,13 @@ class FisbotApi
     response.is_a?(Net::HTTPSuccess)
   end
 
-  def set_errors(hsh)
+  def set_errors?(hsh)
     @errors = hsh.key?('error') ? hsh['error'].with_indifferent_access : hsh
     false
   end
 
   def set_attributes_or_errors(response, hsh)
-    save_success?(response) ? set_attributes(hsh) : set_errors(hsh)
+    save_success?(response) ? set_attributes(hsh) : set_errors?(hsh)
   end
 
   def api_access

@@ -64,7 +64,7 @@ class Manage < ApplicationRecord
     self.approver = Account.hamster if !target || target.active_managers.empty?
   end
 
-  def deliver_emails
+  def deliver_emails?
     ManageMailer.deliver_emails(self)
     true
   end

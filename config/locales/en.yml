@@ -9,6 +9,22 @@ en:
   login: 'Login'
   name: Name
   bio: Bio
+  
+  # Admin notices
+  failure_group_deleted: 'FailureGroup was successfully deleted'
+  job_cannot_schedule_running: 'Cannot schedule a running job.'
+  job_rescheduled: 'Job has been rescheduled.'
+  job_priority_updated: 'Priority has been updated'
+  job_deleted: 'Job has been deleted'
+  
+  # Controller notices
+  code_location_restored: 'Deleted CodeLocation has been successfully restored.'
+  license_permission_changes_saved: 'Changes Saved'
+  
+  # Mailer subjects
+  password_change_notification: 'OpenHub Password Change Notification'
+  account_spam_review: 'OpenHub: review account data for SPAM'
+  account_deleted: 'Open Hub account deleted'
   basics: Basics
   email_address: Email Address
   save_changes: 'Save Changes'

@@ -7,9 +7,12 @@ module OrganizationScopes
     scope :from_param, lambda { |param|
       active.where(Organization.arel_table[:vanity_url].eq(param).or(Organization.arel_table[:id].eq(param)))
     }
-    scope :active, -> { where.not(deleted: true) }
+    scope :active, -> { where(deleted: false) }
     scope :managed_by, lambda { |account|
-      joins(:manages).where.not(deleted: true, manages: { approved_by: nil }).where(manages: { account_id: account.id })
+      joins(:manages)
+        .where(deleted: false)
+        .where.not(manages: { approved_by: nil })
+        .where(manages: { account_id: account.id })
     }
     scope :case_insensitive_vanity_url, ->(mixed_case) { where(['lower(vanity_url) = ?', mixed_case.downcase]) }
     scope :sort_by_newest, -> { order(created_at: :desc) }

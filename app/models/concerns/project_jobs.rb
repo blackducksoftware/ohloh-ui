@@ -19,10 +19,9 @@ module ProjectJobs
     def ensure_job(priority = 0)
       update_activity_level
       Job.transaction do
-        return if deleted? || code_locations.empty? || incomplete_job
-        return if code_locations.any?(&:ensure_job)
-
-        create_new_job? ? ProjectAnalysisJob.create(project: self, priority: priority) : update_logged_at
+        if !deleted? && !code_locations.empty? && !incomplete_job && code_locations.none?(&:ensure_job)
+          create_new_job? ? ProjectAnalysisJob.create(project: self, priority: priority) : update_logged_at
+        end
       end
     end
 
@@ -94,7 +93,10 @@ module ProjectJobs
   def update_analyis_sloc_sets
     sloc_sets_out_of_date = false
     best_analysis.analysis_sloc_sets.each do |ass|
-      sloc_sets_out_of_date = true && break if ass.as_of != ass.sloc_set.as_of
+      if ass.as_of != ass.sloc_set.as_of
+        sloc_sets_out_of_date = true
+        break
+      end
       ass.update(code_set_time: ass.sloc_set.code_set_time)
     end
     sloc_sets_out_of_date

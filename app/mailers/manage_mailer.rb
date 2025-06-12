@@ -75,14 +75,14 @@ class ManageMailer < ApplicationMailer
   end
 
   class << self
-    def check_automatic_approval(manage)
+    def check_automatic_approval?(manage)
       return false unless manage.approved_by == Account.hamster&.id && !manage.deleted_by
 
       automatic_approval(manage).deliver_now
       true
     end
 
-    def check_removed(manage)
+    def check_removed?(manage)
       return false unless manage.changed_attribute_names_to_save.include?('deleted_by')
 
       manage.target.active_managers.each { |manager| deliver_deletion(manager, manage) }
@@ -98,7 +98,7 @@ class ManageMailer < ApplicationMailer
       end
     end
 
-    def check_approved(manage)
+    def check_approved?(manage)
       return false unless manage.changed_attribute_names_to_save.include?('approved_by') && manage.approver
 
       manage.target.active_managers.each do |manager|
@@ -107,7 +107,7 @@ class ManageMailer < ApplicationMailer
       true
     end
 
-    def check_applied(manage)
+    def check_applied?(manage)
       return false unless manage.changed_attribute_names_to_save.include?('account_id') && manage.account
 
       manage.target.active_managers.each do |manager|

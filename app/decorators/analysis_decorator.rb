@@ -28,7 +28,7 @@ class AnalysisDecorator < Cherry::Decorator
     year_ago_summary_difference('outside_committers_count')
   end
 
-  def display_chart?
+  def display_chart
     return [false, :no_commits] if commit_count.nil? || commit_count <= 0
     return [false, :no_understood_lang] if logic_total <= 0 && markup_total <= 0
 

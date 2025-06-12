@@ -21,8 +21,9 @@ class Job < ApplicationRecord
   end
 
   scope :incomplete_fis_jobs, lambda {
-                                where.not(type: %w[TarballJob VulnerabilityJob TagJob RepostEventJob],
-                                          status: STATUS_COMPLETED)
+                                where('type NOT IN (?) AND status != ?',
+                                      %w[TarballJob VulnerabilityJob TagJob RepostEventJob],
+                                      STATUS_COMPLETED)
                               }
   scope :incomplete, -> { where.not(status: STATUS_COMPLETED) }
   scope :failed, -> { where(status: STATUS_FAILED) }

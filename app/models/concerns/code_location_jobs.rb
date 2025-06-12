@@ -8,15 +8,18 @@ module CodeLocationJobs
       job = nil
       Job.transaction do
         job = jobs.incomplete.first
-        return job if job
-
-        # NOTE: PDP 2018-02-01 This method doesn't schedule a Fetch or Complete if the CL
-        # hasn't been updated recently.  It should create a FetchJob if there isn't one scheduled
-        # However, it creates a FetchJob only if there is no best_code_set. How does this ensure a CL is updated?
-        job = create_fetch_job(priority) unless best_code_set_id
-        job = create_import_or_sloc_jobs(priority) if best_code_set_id
+        job || job = create_appropriate_job(priority)
       end
       job
+    end
+
+    def create_appropriate_job(priority)
+      # NOTE: PDP 2018-02-01 This method doesn't schedule a Fetch or Complete if the CL
+      # hasn't been updated recently.  It should create a FetchJob if there isn't one scheduled
+      # However, it creates a FetchJob only if there is no best_code_set. How does this ensure a CL is updated?
+      return create_fetch_job(priority) unless best_code_set_id
+
+      create_import_or_sloc_jobs(priority) if best_code_set_id
     end
 
     def remove_pending_jobs

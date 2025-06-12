@@ -54,8 +54,13 @@ class GithubApi
   end
 
   def config
-    CGI.unescape({ code: @code, client_id: ENV.fetch('GITHUB_CLIENT_ID', nil), client_secret: ENV.fetch('GITHUB_CLIENT_SECRET', nil),
-                   redirect_uri: ENV.fetch('GITHUB_REDIRECT_URI', nil) }.to_query)
+    params = {
+      code: @code,
+      client_id: ENV.fetch('GITHUB_CLIENT_ID', nil),
+      client_secret: ENV.fetch('GITHUB_CLIENT_SECRET', nil),
+      redirect_uri: ENV.fetch('GITHUB_REDIRECT_URI', nil)
+    }
+    CGI.unescape(params.to_query)
   end
 
   def token_uri

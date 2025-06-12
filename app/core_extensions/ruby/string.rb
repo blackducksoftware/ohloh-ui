@@ -40,7 +40,7 @@ class String
     dup.force_encoding('utf-8').scrub!
   end
 
-  def to_bool
+  def to_bool?
     self =~ /^(true|t|yes|y|1)$/i ? true : false
   end
 
