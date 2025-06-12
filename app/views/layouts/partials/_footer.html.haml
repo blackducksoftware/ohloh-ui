@@ -34,10 +34,12 @@
       twitter_url = 'https://twitter.com/intent/follow?original_referer='
       twitter_url += CGI.escape request.url
       twitter_url += '&region=follow_link&screen_name=bdopenhub&source=followbutton&variant=2.0'
-    %a.btn.follow_btn{ href: twitter_url, target: '_blank' }
-      %i.icon-twitter
-      %p.follow! #{t(:follow)}&nbsp;@
-      %p.twitter-text &nbsp;OH&nbsp;
+    %b Stay Connected
+    %p
+    %p
+      %a{ href: twitter_url, target: '_blank' }
+        %i.icon-twitter
+        %span Follow @ Black Duck Open Hub
 
 .footer-bottom
   %sup &copy;
