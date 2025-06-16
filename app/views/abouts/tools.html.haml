@@ -3,25 +3,24 @@
 
 .col-md-12
   %h1= t('.tools')
-  %br
   .row
     .col-md-4
       %h3= link_to t('.compare_projects'), compare_projects_path
       %p= t('.compare_stats')
       = link_to((image_tag 'tools/compare_projects_preview_graph.png', alt: t('.compare_projects')),
-        compare_projects_path)
+        compare_projects_path, class: 'tools-link')
 
     .col-md-4
       %h3= link_to t('.compare_languages'), compare_languages_path
       %p= t('.compare_languages_stats')
       = link_to((image_tag 'tools/compare_languages_preview_graph.png', alt: t('.compare_languages')),
-        compare_languages_path)
+        compare_languages_path, class: 'tools-link')
 
     .col-md-4
       %h3= link_to t('.compare_repositories'), compare_repositories_path
       %p= t('.compare_repositories_stats')
       = link_to((image_tag 'tools/compare_repositories_preview_graph.png', alt: t('.compare_repositories')),
-        compare_repositories_path)
+        compare_repositories_path, class: 'tools-link')
 
   .row
     %p &nbsp;
