@@ -1,51 +1,49 @@
 - show_lang_usage ||= false
 
 .well
-  %h4.pull-left
+  %h4
     = link_to language.nice_name, language_path(language)
 
   - if show_lang_usage
-    %p.pull-right
+    %p
       = t('.earliest_usage')
       - if @language_facts.present?
         = @language_facts.first.month.strftime('%B %Y')
       - else
         = t('.unknown')
+  .table-responsive
+    %table.table
+      %tbody
+        %tr.row
+          %td.col-12.col-md-3
+            %strong= t('.total_lines')
+            %p
+              = number_with_delimiter(language.code.to_i + language.comments.to_i + language.blanks.to_i)
 
-  %table.table.no_margin_bottom
-    %tbody
-      %tr
-        %td.col-md-2
-          %strong= t('.total_lines')
-          %p
-            = number_with_delimiter(language.code.to_i + language.comments.to_i + language.blanks.to_i)
+            %strong= t('.code')
+            %p= number_with_delimiter(language.code)
 
-          .clearfix
-          %strong= t('.code')
-          %p= number_with_delimiter(language.code)
+            %strong= t('.comments')
+            %p
+              = number_with_delimiter(language.comments)
+              = t('.precision_percentage',
+                precision: number_with_precision((language.avg_percent_comments || 0) * 100.0,
+                precision: 1))
 
-          .clearfix
-          %strong= t('.comments')
-          %p
-            = number_with_delimiter(language.comments)
-            = t('.precision_percentage',
-              precision: number_with_precision((language.avg_percent_comments || 0) * 100.0,
-              precision: 1))
+          %td.col-12.col-md-3
+            %strong= t('.projects')
+            %span.badge.badge-success.link-disabled.projects= number_with_delimiter(language.projects)
+            .margin_top_15
+              = render 'mini_chart', language: language, measure: 'projects'
 
-        %td
-          %strong= t('.projects')
-          %span.badge.badge-success.link-disabled.projects= number_with_delimiter(language.projects)
-          .margin_top_15
-            = render 'mini_chart', language: language, measure: 'projects'
+          %td.col-12.col-md-3
+            %strong= t('.contributors')
+            %span.badge.badge-info.link-disabled.contributors= number_with_delimiter(language.contributors)
+            .margin_top_15
+              = render 'mini_chart', language: language, measure: 'contributors'
 
-        %td
-          %strong= t('.contributors')
-          %span.badge.badge-info.link-disabled.contributors= number_with_delimiter(language.contributors)
-          .margin_top_15
-            = render 'mini_chart', language: language, measure: 'contributors'
-
-        %td
-          %strong= t('.commits')
-          %span.badge.badge-inf.link-disabled.commits= number_with_delimiter(language.commits)
-          .margin_top_15
-            = render 'mini_chart', language: language, measure: 'commits'
+          %td.col-12.col-md-3
+            %strong= t('.commits')
+            %span.badge.badge-inf.link-disabled.commits= number_with_delimiter(language.commits)
+            .margin_top_15
+              = render 'mini_chart', language: language, measure: 'commits'
