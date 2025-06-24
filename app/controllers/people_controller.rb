@@ -34,7 +34,8 @@ class PeopleController < UnclaimedController
   def find_rankings_people
     @people = Person.includes(:account).references(:all)
                     .filter_by(params[:query]).send(parse_sort_term)
-                    .paginate(page: page_param, per_page: 10)
+    @people = @people.where(id: params[:show]) if params[:show].present?
+    @people = @people.paginate(page: page_param, per_page: 10)
   end
 
   def parse_sort_term
