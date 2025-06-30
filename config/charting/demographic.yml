@@ -2,11 +2,10 @@ chart:
   type: 'pie'
   renderTo: 'demographics_chart'
   plotShadow: false
-  styledMode: true
+  backgroundColor: 'white'
 title:
   text:
   align: 'right'
-  y: 60
   floating: 'true'
   style:
     color: '#000'
@@ -15,12 +14,11 @@ tooltip:
   formatter: ''
   style:
     fontSize: '11pt'
-    padding: '8px'
 plotOptions:
   pie:
     allowPointSelect: true
     cursor: 'pointer'
-    innerSize: 80
+    innerSize: '40%'
     slicedOffset: 10
     borderColor: '#fff'
     borderWidth: 0

@@ -1,7 +1,7 @@
 #explore_projects_page
   #explore_sidebar
+    padding: 1px 10px 10px 10px
     box-shadow: none
-    width: 28%
     min-height: 650px
     border-radius: 0px
     border: none
@@ -26,23 +26,25 @@
       &::-webkit-input-placeholder
         @include explore-sidebar-placeholder-color
         font-style: italic
+  h2.hot-projects-header
+    margin-top: 0px
   .explore_search
-    width: 173px
+    width: 16em
     margin-top: 7px
     &.tag_autocomplete
-      width: 194px
+      width: 16em
   .explore_compare
-    width: 194px
+    width: 16em
+  #compare_btn
+    height: 34px
+    display: block
 
   #hot_projects td
     :padding 5px
     &.pai
       position: relative
     a[class^="twentyfive_project_activity_level_"]
-      margin-left: 12px
-      margin-top: -12px
-      position: absolute
-      top: 24px
+      margin-left: 0
 
   #project_demographics
     margin-top: 30px
@@ -59,7 +61,7 @@
     margin-left: 10px
 
   #tagcloud
-    :margin 5px
+    :margin 5px 10px 5px 5px
 
   span.tag.container
     background: none
@@ -71,16 +73,72 @@
 
   #value_selector_selected_tags
     width: 400px
+.d-flex
+  display: flex !important
 
-  .add_new_project_btn_bottom
-    margin-top: 25px
-    margin-left: -10px
+.align-items-center
+  align-items: center !important
 
-  .add_new_project_btn_top
-    float: right
-    top: -9px
-    left: 9px
-    height: 30px
-    &.btn-mini
-      padding: 3px 5px !important
+.justify-content-between
+  justify-content: space-between
 
+.mb-3
+  margin-bottom: 1rem !important /* 16px by default */
+
+.table-responsive
+  display: block
+  width: 100%
+  overflow-x: auto
+  -webkit-overflow-scrolling: touch
+
+.mb-2
+  margin-bottom: 0.5rem !important /* 8px by default */
+
+.mb-0
+  margin-bottom: 0 !important
+
+.me-2
+  margin-right: 0.5rem !important
+
+/* In RTL mode, Bootstrap would flip this to: */
+[dir="rtl"] .me-2
+  margin-left: 0.5rem !important
+  margin-right: 0 !important
+
+.flex-column
+  flex-direction: column !important
+
+#hot_projects thead, #hot_projects tr
+  width: 100%
+  display: table
+  table-layout: fixed
+
+@media (max-width: 768px)
+  .table-responsive
+    overflow-x: auto
+  
+  #hot_projects
+    min-width: 450px /* Minimum width to prevent squashing */
+  
+  #hot_projects th, #hot_projects td
+    white-space: normal
+    overflow: visible
+    text-overflow: clip
+    word-wrap: break-word
+    hyphens: auto
+
+@media (max-width: 480px)
+  #explore_projects_page
+    .explore_search
+      width: 18em
+      &.tag_autocomplete
+        width: 18em
+    .explore_compare
+      width: 18em
+    #demographics_chart
+      min-height: 120px
+
+@media (min-width: 768px)
+  .flex-md-row
+    flex-direction: row !important
+    
