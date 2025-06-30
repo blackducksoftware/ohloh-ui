@@ -1,5 +1,5 @@
 !!!5
-%html
+%html{lang: "en"}
   %head
     - page_title = content_for?(:html_title) ? yield(:html_title).to_s : t('layouts.application.openhub')
     %title= sanitize(page_title)

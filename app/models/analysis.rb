@@ -25,7 +25,7 @@ class Analysis < ApplicationRecord
   belongs_to :project, optional: true
   belongs_to :main_language, class_name: 'Language', optional: true
 
-  scope :fresh, -> { where(Analysis.arel_table[:created_at].gt(Time.current - 2.days)) }
+  scope :fresh, -> { where(created_at: (Time.current - 2.days)..Time.current) }
   scope :hot, -> { where.not(hotness_score: nil).order(hotness_score: :desc) }
   scope :for_lang, ->(lang_id) { where(main_language_id: lang_id) }
 
