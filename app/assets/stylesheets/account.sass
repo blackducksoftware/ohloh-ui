@@ -1,6 +1,6 @@
 #accounts_index_page, #people_index_page
   .account_details
-    width: 220px
+    width: 215px
     margin-left: 15px
     position: relative
     height: 128px
@@ -62,13 +62,19 @@
     bottom: 0px
     left: 0px
   .kudo_rank
-    margin-top: 0px
-    font-size: 30px
+    display: flex
+    flex-direction: column
+    justify-content: center
+    align-items: center
     text-align: center
-    padding: 42px 5px 0px 5px
+    font-size: 30px
+    padding-top: 8px
     font-weight: 100
-    width: 35px
     color: #183867
+    > :first-child
+      font-size: 24px
+      font-weight: bold
+      margin-bottom: 5px
   .commits_count
     font-size: 27px
     line-height: 30px
@@ -143,7 +149,7 @@
 .grecaptcha-badge
   display: none
 @media only all and (min-width: 768px) and (max-width: 1024px)
-  #accounts_index_page
+  #accounts_index_page, #people_index_page
     h1
       font-size: 24px
       margin-bottom: 0
@@ -170,10 +176,8 @@
       width: 85px !important
     .kudo_rank
       font-size: 18px
-      padding: 0
+      padding-top: 10px
       font-weight: 500
-      margin-top: 30px !important
-      width: auto
     .kudo_badge
       margin-top: 28px !important
       padding: 0
@@ -184,7 +188,7 @@
     #search-dingus button.btn
       font-size: 10px
 @media only all and (min-width: 320px) and (max-width: 480px)
-  #accounts_index_page
+  #accounts_index_page, #people_index_page
     h1
       font-size: 18px
       margin-bottom: 0
@@ -194,9 +198,9 @@
       margin-bottom: 0
       margin-top: 10px
     .account_details
-      width: auto
+      width: 40%
     .commits_summary
-      width: auto
+      width: 100%
     .commits_count
       width: auto
       font-size: 15px
@@ -205,9 +209,9 @@
     .kudo_rank
       font-size: 24px
       padding: 0
-      margin-top: 35px
+      margin-top: 10px
     .kudo_badge
-      margin-top: 28px !important
+      margin-top: 5px !important
       padding: 0
     .language_name
       width: 90px !important
@@ -215,6 +219,7 @@
       font-size: 12px
     .well
       min-height: 142px
+      width: 100%
     .unclaimed_committers_box .header_row .btn-mini
       font-size: 8px
     .language_summary
@@ -233,3 +238,16 @@
       width: auto
     #search-dingus select
       width: auto
+@media only all and (min-width: 768px)
+  #accounts_index_page, #people_index_page
+    .person-card
+      width: 49%
+    .well.no_padding.pull-left:nth-of-type(odd)
+      margin-right: 10px
+
+@media (min-width: 800px) and (max-width: 1366px)
+  #accounts_index_page, #people_index_page
+    .account_details
+      width: 50%;
+    .commits_summary
+      width: 100%
