@@ -10,7 +10,7 @@
     res
   end
   sorted_cbl = cbl.sort_by { |_, v| v[:commits] }.reverse
-.well.no_padding
+.well.no_padding.pull-left.person-card
   .pull-left.avatar_new
     = avatar_for account, size: 128
   .pull-left.account_details
@@ -25,10 +25,7 @@
           %a{ href: account_projects_path(account) }= t('.manages', what: what)
       %p= t('.open_hub_member_since', when: account.created_at.strftime('%B %Y'))
   -if only_device?
-    .pull-left.kudo_rank
-      = claimed_person.kudo_rank || '1'
-    .mini-badges-section.pull-left.kudo_badge
-      = render 'accounts/badges_row', badges: [BadgeDecorator.new(Badge::KudoRankBadge.new(account))]
+    = render partial: 'kudo_rank', locals: { claimed_person: claimed_person }
   .pull-left.commits_summary
     - if vf && vf.commits > 0 && @positions_map.any?
       .commits_count.pull-left
@@ -72,8 +69,4 @@
     - else
       %p.no_commits No commit data to display
   - unless only_device?
-    .pull-left.kudo_rank
-      = claimed_person.kudo_rank || '1'
-    .mini-badges-section.pull-left.kudo_badge
-      = render 'accounts/badges_row', badges: [BadgeDecorator.new(Badge::KudoRankBadge.new(account))]
-  .clear_both
+    = render partial: 'kudo_rank', locals: { claimed_person: claimed_person }
