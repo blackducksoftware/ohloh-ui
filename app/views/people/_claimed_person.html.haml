@@ -60,12 +60,12 @@
             %a{ href: project_path(project), title: project.name }
               - project_icon(project, :small, width: 24, class: 'logo')
             %a.margin_left_5{ href: project_path(project) }= truncate(project.name, length: 8)
-      .pull-left.other_language.other_projects
-        - if more_pos_count > 0
-          - pluaral_term = pluralize(more_pos_count, t('.other_project'))
-          %a.more_commits_padding{ href: account_positions_path(account) }= t('.and_thing', thing: pluaral_term)
-        - else
-          %a.more_commits_padding{ href: account_positions_path(account) }= t('.see_commits_by_project')
+        .pull-left.other_language.other_projects
+          - if more_pos_count > 0
+            - pluaral_term = pluralize(more_pos_count, t('.other_project'))
+            %a.more_commits_padding{ href: account_positions_path(account) }= t('.and_thing', thing: pluaral_term)
+          - else
+            %a.more_commits_padding{ href: account_positions_path(account) }= t('.see_commits_by_project')
     - else
       %p.no_commits No commit data to display
   - unless only_device?

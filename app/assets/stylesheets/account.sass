@@ -162,9 +162,9 @@
       width: 142px
       margin-left: 5px
     .commits_summary
-      width: 379px
+      width: 100%
     .commits_count
-      width: auto
+      width: 16%
       font-size: 15px
       padding: 31px 0px 12px
       line-height: 20px
@@ -202,7 +202,7 @@
     .commits_summary
       width: 100%
     .commits_count
-      width: auto
+      width: 16%
       font-size: 15px
       padding: 31px 0px 12px
       line-height: 20px
@@ -245,9 +245,15 @@
     .well.no_padding.pull-left:nth-of-type(odd)
       margin-right: 10px
 
-@media (min-width: 800px) and (max-width: 1366px)
+@media (min-width: 800px) and (max-width: 1720px)
   #accounts_index_page, #people_index_page
     .account_details
       width: 50%;
     .commits_summary
       width: 100%
+@media (min-width: 1720px) and (max-width: 1820px)
+  #accounts_index_page, #people_index_page
+    .account_details
+      width: 190px
+    .commits_summary
+      width: 455px
