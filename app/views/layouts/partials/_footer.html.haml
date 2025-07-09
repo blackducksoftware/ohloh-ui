@@ -40,11 +40,3 @@
       %a{ href: twitter_url, target: '_blank' }
         %i.icon-twitter
         %span Follow @ Black Duck Open Hub
-
-.footer-bottom
-  %sup &copy;
-  = Time.current.year
-  %span{ itemscope: '', itemtype: 'http://schema.org/CreativeWork' }
-    %span{ itemprop: 'publisher' }
-      %a{ href: 'http://www.blackduck.com', target: '_blank' }= "Black Duck Software, Inc."
-      = t('copyright.rights_text')

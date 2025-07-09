@@ -2,7 +2,7 @@
   @include footer-colors
   display: flex
   flex-direction: column
-  min-height: 250px
+  min-height: 220px
   padding: 2em 2em 1em 2em
   margin-bottom: 1em
   margin-top: 1em
@@ -28,14 +28,6 @@
       a
         @include footer-colors
 
-  > .footer-bottom
-    @include footer-copyright-colors
-    margin-top: auto
-    width: 100%
-    text-align: center
-    a
-      @include footer-copyright-colors
-
   @media (max-width: 768px)
     .footer-row
       flex-direction: column
@@ -57,3 +49,10 @@
         a
           .logo_img
             width: 60% !important
+.footer-bottom
+  @include footer-copyright-colors
+  width: 100%
+  text-align: center
+  margin-bottom: 10px
+  a
+    @include footer-copyright-colors
