@@ -57,7 +57,7 @@ class CreateScanProjectInUi
   end
 
   def create_code_location_scan(project_id, row)
-    puts "Project Value #{project_id} row value #{row['name']}"
+    DataDogReport.info "Project Value #{project_id} row value #{row['name']}"
 
     code_location_id = Enlistment.not_deleted.where(project_id: project_id,
                                                     code_location_id: @code_location_ids).first&.code_location_id
@@ -113,7 +113,7 @@ class CreateScanProjectInUi
     response = Net::HTTP.post_form(uri, params)
     [JSON.parse(response.body), response.code]
   rescue StandardError => e
-    puts e.message
+    DataDogReport.error e.message
     nil
   end
 end

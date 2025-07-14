@@ -49,7 +49,7 @@ class AddGithubCodeLocations
     hsh = JSON.parse(response.body)
     hsh['code_location_id']
   rescue StandardError => e
-    puts e.message
+    DataDogReport.error e.message
   end
 
   def git_branch(url)

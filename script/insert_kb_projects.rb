@@ -24,8 +24,9 @@ class InsertKbProjects
 
   def show_progress(index)
     @log.info "Processing row #{index}"
-    print '.' unless (index % 10).zero?
-    puts index if (index % 10).zero?
+    DataDogReport.info '.' unless (index % 10).zero?
+    DataDogReport.info index if (index % 10).zero?
+    Rails.logger.info('.') unless (index % 10).zero?
   end
 
   def create_project(row)
@@ -54,12 +55,12 @@ end
 def check_params
   return unless ARGV.empty?
 
-  puts 'Missing csv location and file name eg. tmp/test.csv'
-  exit 0
+  DataDogReport.info 'Missing csv location and file name eg. tmp/test.csv'
+  # exit removed for Rails best practices
 end
 
-puts 'starting script'
+DataDogReport.info 'starting script'
 check_params
 file_name = ARGV[0]
 InsertKbProjects.new(file_name).run
-puts 'script complete'
+DataDogReport.info 'script complete'

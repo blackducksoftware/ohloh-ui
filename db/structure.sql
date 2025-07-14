@@ -1818,8 +1818,6 @@ ALTER TEXT SEARCH CONFIGURATION oh.pg
 
 SET default_tablespace = '';
 
-SET default_table_access_method = heap;
-
 --
 -- Name: admin_dashboard_stats; Type: TABLE; Schema: fis; Owner: -
 --
