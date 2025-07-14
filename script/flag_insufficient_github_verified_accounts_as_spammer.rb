@@ -16,7 +16,7 @@ class FlagInsufficientGithubVerifiedAccounts
     date = Time.zone.parse('20171221200129') # Github login deployment date
 
     GithubVerification.includes(:account).where('verifications.created_at > ?', date)
-                      .where.not(accounts: { level: Account::Access::SPAM }).each do |verification|
+                      .where.not(accounts: { level: Account::Access::SPAM }).find_each do |verification|
       response = user_response(verification)
 
       mark_account_as_spammer(verification.account) if response['login'].nil? || invalid_github_account?(response)
@@ -26,8 +26,8 @@ class FlagInsufficientGithubVerifiedAccounts
   private
 
   def get_response(url, params = {})
-    params[:client_id] = ENV['GITHUB_CLIENT_ID']
-    params[:client_secret] = ENV['GITHUB_CLIENT_SECRET']
+    params[:client_id] = ENV.fetch('GITHUB_CLIENT_ID', nil)
+    params[:client_secret] = ENV.fetch('GITHUB_CLIENT_SECRET', nil)
     uri = URI(url + "?#{params.to_query}")
 
     http = Net::HTTP.new(uri.host, uri.port)

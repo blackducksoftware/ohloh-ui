@@ -75,29 +75,23 @@ class KnowledgeBaseStatus < ApplicationRecord
 
   def get_enlistments
     logger.info("Converting #{project.name} - getting enlistments")
-    enlistments = []
-    project.enlistments.each do |enlistment|
-      enlistments << enlistment_hash(enlistment)
+    project.enlistments.map do |enlistment|
+      enlistment_hash(enlistment)
     end
-    enlistments
   end
 
   def get_links
     logger.info("Converting #{project.name} - getting links")
-    llist = []
-    project.links.each do |link|
-      llist << { id: link.id, title: link.title, category: link.category, url: link.url }
+    project.links.map do |link|
+      { id: link.id, title: link.title, category: link.category, url: link.url }
     end
-    llist
   end
 
   def get_licenses
     logger.info("Converting #{project.name} - getting licenses")
-    llist = []
-    project.licenses.each do |license|
-      llist << { id: license.id, name: license.name, vanity_url: license.vanity_url }
+    project.licenses.map do |license|
+      { id: license.id, name: license.name, vanity_url: license.vanity_url }
     end
-    llist
   end
 
   # rubocop:disable Metrics/AbcSize

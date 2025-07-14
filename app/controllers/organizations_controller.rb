@@ -11,8 +11,17 @@ class OrganizationsController < ApplicationController
     @organizations = Organization.search_and_sort(params[:query], params[:sort], page_param)
   end
 
+  def show
+    @graphics = OrgInfoGraphics.new(@organization, context: { view: @view })
+    load_infographics_table
+  end
+
   def new
     @organization = Organization.new(editor_account: current_user)
+  end
+
+  def edit
+    @current_object = @organization
   end
 
   def create
@@ -24,10 +33,6 @@ class OrganizationsController < ApplicationController
     render :new
   end
 
-  def edit
-    @current_object = @organization
-  end
-
   def update
     return render_unauthorized unless @organization.edit_authorized?
 
@@ -37,11 +42,6 @@ class OrganizationsController < ApplicationController
     @current_object = @organization
     flash.now[:error] = t('.failure')
     render :edit, status: :unprocessable_entity
-  end
-
-  def show
-    @graphics = OrgInfoGraphics.new(@organization, context: { view: @view })
-    load_infographics_table
   end
 
   def list_managers

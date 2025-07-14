@@ -26,6 +26,12 @@ class ApiKeysController < ApplicationController
     render_with_format action_name
   end
 
+  def edit
+    return render_404 unless @account
+
+    render_with_format action_name
+  end
+
   def create
     return render_404 unless @account
 
@@ -36,12 +42,6 @@ class ApiKeysController < ApplicationController
     else
       render :new, status: :bad_request
     end
-  end
-
-  def edit
-    return render_404 unless @account
-
-    render_with_format action_name
   end
 
   def update

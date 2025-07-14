@@ -12,16 +12,18 @@
     = f.hidden_field :identifier, class: 'badge_url_field'
     - cii_badge_temp_class = 'hidden' unless @project_badge.type == 'CiiBadge'
     .cii_badge_url.badge_template{ class: cii_badge_temp_class }
-      = ENV['CII_API_BASE_URL'] + 'projects'
-      = text_field_tag('cii_url', @project_badge.identifier, class: 'badge_url_holder')
-      = '/badge'
+      - if ENV['CII_API_BASE_URL'].present? && @project_badge.identifier.present?
+        = ENV['CII_API_BASE_URL'] + 'projects' + @project_badge.identifier + '/badge'
+        = text_field_tag('cii_url', @project_badge.identifier, class: 'badge_url_holder')
+      - else
+        = "Badge URL not available"
     - travis_badge_temp_class = 'hidden' unless @project_badge.type == 'TravisBadge'
     .travis_badge_url.badge_template{ class: travis_badge_temp_class }
       = ENV['TRAVIS_API_BASE_URL']
       = text_field_tag('travis_url', @project_badge.identifier, class: 'badge_url_holder')
     - error_tag(@project_badge, :identifier) unless @project_badge.errors[:type].present?
   %td.col-xs-3.badge_image_container
-    = image_tag @project_badge.try(:badge_url) if @project_badge.identifier
+    = image_tag @project_badge.try(:badge_url) if @project_badge.identifier.present?
   %td.col-xs-2
     %btn.icon-edit.btn.btn-mini.btn-primary.col-xs-12#save_badge= t('project_badges.save_badge')
     %btn.icon-edit.btn.btn-mini.btn-refresh.col-xs-12#cancel_badge= t('project_badges.cancel')

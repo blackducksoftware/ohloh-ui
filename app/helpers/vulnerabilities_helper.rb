@@ -106,7 +106,7 @@ module VulnerabilitiesHelper
   end
 
   def disable_timespan(timespan)
-    timespan.each do |_label, values|
+    timespan.each_value do |values|
       next if values[0].blank?
 
       values.push(@best_security_set.releases.select_within_years(values[0]).blank? ? 'disabled' : '')
@@ -146,7 +146,10 @@ module VulnerabilitiesHelper
     if 'BDSA'.in?(cve_id)
       "/vulnerabilities/bdsa/#{cve_id}"
     else
-      ENV['NVD_LINK'] + cve_id
+      nvd_link = ENV.fetch('NVD_LINK', nil)
+      return nil unless nvd_link.present? && cve_id.present?
+
+      nvd_link + cve_id
     end
   end
 

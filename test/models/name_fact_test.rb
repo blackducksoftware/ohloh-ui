@@ -13,9 +13,9 @@ class NameFactTest < ActiveSupport::TestCase
   end
 
   it '#<=> operator' do
-    nf2 = create(:name_fact, last_checkin: Time.current - 2.days)
-    nf3 = create(:name_fact, last_checkin: Time.current - 3.days)
-    nf1 = create(:name_fact, last_checkin: Time.current - 1.day)
+    nf2 = create(:name_fact, last_checkin: 2.days.ago)
+    nf3 = create(:name_fact, last_checkin: 3.days.ago)
+    nf1 = create(:name_fact, last_checkin: 1.day.ago)
     nf4 = create(:name_fact, last_checkin: nil)
 
     _([nf4, nf2, nf1, nf3].sort.map(&:id)).must_equal [nf1.id, nf2.id, nf3.id, nf4.id]

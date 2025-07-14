@@ -98,12 +98,12 @@ module WebMocker
     'https://github.com/rails/rails'
   end
 
-  def code_location_params(id: 42, best_code_set_id: nil)
-    { id: id, scm_type: :git, url: rails_https_url, branch: :main,
-      best_code_set_id: best_code_set_id, do_not_fetch: false, status: :active }
+  def code_location_params(hsh = {})
+    { id: hsh[:id] || 42, scm_type: :git, url: rails_https_url, branch: :main,
+      best_code_set_id: hsh[:best_code_set_id], do_not_fetch: false, status: :active }
   end
 
-  def subscription_params(id: 1, code_location_id: 42)
-    { id: id, code_location_id: code_location_id, client_relation_id: 22 }
+  def subscription_params(hsh = {})
+    { id: 1, code_location_id: hsh[:code_location_id], client_relation_id: 22 }
   end
 end

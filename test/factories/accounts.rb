@@ -6,11 +6,9 @@ FactoryBot.define do
   end
 
   factory :account do
-    sequence :email do |n|
-      "someone#{n}@gmail.com"
-    end
+    sequence(:email) { |n| "someone#{n}@gmail.com" }
+    sequence(:login) { |n| "login-#{n}" }
     url { Faker::Internet.url }
-    login { generate(:account_login) }
     password { Faker::Internet.password }
     current_password { |account| account.send(:password) }
     twitter_account { 'openhub' }

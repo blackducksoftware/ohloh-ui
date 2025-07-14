@@ -25,9 +25,9 @@ module KudosHelper
   end
 
   def kudo_is_new?(account_id, created_at)
-    return (session[:last_active] && (created_at > session[:last_active])) if account_id == current_user.id
+    return session[:last_active] && (created_at > session[:last_active]) if account_id == current_user.id
 
-    created_at > Time.current - 24.hours
+    created_at > 24.hours.ago
   end
 
   def kudo_delete_link_confirm(kudo)
@@ -51,7 +51,7 @@ module KudosHelper
   end
 
   def kudos_grouped_sent(sent_kudos)
-    sent_kudos.group_by { |k| k.account_id || ((k.project_id << 32) + k.name_id) }.map { |a| a[1] }
+    sent_kudos.group_by { |k| k.account_id || ((k.project_id << 32) + k.name_id) }.pluck(1)
   end
 
   def kudo_person_link(kudo)

@@ -19,7 +19,7 @@ ActiveAdmin.register Enlistment do
   end
 
   form do |f|
-    f.semantic_errors(*f.object.errors.keys)
+    f.semantic_errors(*f.object.errors.attribute_names)
     f.inputs 'Details' do
       f.input :ignore, as: :text
     end

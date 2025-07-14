@@ -12,9 +12,13 @@ class TagsControllerTest < ActionController::TestCase
       create(:tagging, tag: create(:tag, name: 'c++', taggings_count: 100), taggable: project)
       get :index
       assert_response :success
-      assert_select 'a[href="/tags?names=c"]', 1
-      assert_select 'a[href="/tags?names=algol"]', 0
-      assert_select 'a[href="/tags?names=c%2B%2B"]', 1
+      assert_select 'a[href="/tags?names=c"]' do |elements|
+        assert_equal 1, elements.size
+      end
+      assert_select 'a[href="/tags?names=algol"]', false
+      assert_select 'a[href="/tags?names=c%2B%2B"]' do |elements|
+        assert_equal 1, elements.size
+      end
       _(response.body).must_match 'c'
       _(response.body).wont_match 'agol'
       _(response.body).must_match 'c++'

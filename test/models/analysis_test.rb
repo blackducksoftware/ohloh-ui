@@ -4,8 +4,8 @@ require 'test_helper'
 
 class AnalysisTest < ActiveSupport::TestCase
   let(:analysis) do
-    create(:analysis, updated_on: Time.current - 5.years, first_commit_time: Time.current - 10.years,
-                      last_commit_time: Time.current - 10.years, headcount: 10, min_month: Time.current - 10.years,
+    create(:analysis, updated_on: 5.years.ago, first_commit_time: 10.years.ago,
+                      last_commit_time: 10.years.ago, headcount: 10, min_month: 10.years.ago,
                       logic_total: 100, markup_total: 100, build_total: 100)
   end
 
@@ -19,25 +19,25 @@ class AnalysisTest < ActiveSupport::TestCase
     end
 
     it 'returns new for brand new new projects' do
-      analysis.update(updated_on: Time.current - 5.minutes, first_commit_time: Time.current - 10.minutes,
-                      last_commit_time: Time.current - 10.minutes, min_month: Time.current - 10.minutes)
+      analysis.update(updated_on: 5.minutes.ago, first_commit_time: 10.minutes.ago,
+                      last_commit_time: 10.minutes.ago, min_month: 10.minutes.ago)
       _(analysis.activity_level).must_equal :new
     end
 
     it 'returns inactive for abandonned projects' do
-      analysis.update(updated_on: Time.current - 5.minutes)
+      analysis.update(updated_on: 5.minutes.ago)
       _(analysis.activity_level).must_equal :inactive
     end
 
     it 'returns very low for projects with almost no committers' do
-      analysis.update(updated_on: Time.current - 5.minutes,
-                      last_commit_time: Time.current - 10.minutes, headcount: 1)
+      analysis.update(updated_on: 5.minutes.ago,
+                      last_commit_time: 10.minutes.ago, headcount: 1)
       _(analysis.activity_level).must_equal :very_low
     end
 
     it 'returns correct values for various activity scores' do
-      analysis.update(updated_on: Time.current - 5.minutes,
-                      last_commit_time: Time.current - 10.minutes,
+      analysis.update(updated_on: 5.minutes.ago,
+                      last_commit_time: 10.minutes.ago,
                       activity_score: 1)
       _(analysis.activity_level).must_equal :very_low
 
@@ -87,8 +87,8 @@ class AnalysisTest < ActiveSupport::TestCase
 
   describe 'fresh_and_hot' do
     it 'should return recent analysis' do
-      analysis.update(updated_on: Time.current - 5.minutes,
-                      last_commit_time: Time.current - 10.minutes,
+      analysis.update(updated_on: 5.minutes.ago,
+                      last_commit_time: 10.minutes.ago,
                       hotness_score: 100)
       _(Analysis.fresh_and_hot(analysis.main_language_id)).must_equal [analysis]
     end

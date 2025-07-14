@@ -10,7 +10,7 @@ module AnalysesHelper
   end
 
   def analysis_total_percent_detail(type, total_lines)
-    "#{number_with_precision((type.to_i.fdiv(total_lines) * 100), precision: 1)}%"
+    "#{number_with_precision(type.to_i.fdiv(total_lines) * 100, precision: 1)}%"
   end
 
   def comments_ratio_from_lanaguage_breakdown(language_breakdown)
@@ -20,7 +20,7 @@ module AnalysesHelper
   end
 
   def barfill_css(languages_breakdown, language_breakdown)
-    "width:#{total_percent(languages_breakdown, language_breakdown).to_i}%;"\
+    "width:#{total_percent(languages_breakdown, language_breakdown).to_i}%;" \
       "background-color: ##{language_color(language_breakdown.language_name)}"
   end
 

@@ -13,5 +13,5 @@ def compare_images(result_file_path, expected_image_path, allowed_diff = 0.0)
   system("#{comparision_command} 2> #{tempfile.path}")
   diff = /\((.+)\)/.match(tempfile.read)[1].to_f
   # Slight font rendering differences are acceptable.
-  _((diff < allowed_diff)).must_equal true, "Images differed by #{diff} while only #{allowed_diff} allowed"
+  _(diff < allowed_diff).must_equal true, "Images differed by #{diff} while only #{allowed_diff} allowed"
 end

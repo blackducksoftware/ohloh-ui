@@ -3,7 +3,8 @@
 class Analysis::CommitVolume < Analysis::QueryBase
   arel_tables :name, :analysis_sloc_set, :commit, :analysis_alias
 
-  # rubocop:disable Lint/MissingSuper # parent has differing args.
+  # rubocop:disable Lint/MissingSuper
+  # parent has differing args.
   def initialize(analysis, interval)
     @analysis = analysis
     @interval = interval

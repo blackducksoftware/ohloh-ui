@@ -20,6 +20,14 @@ class FailureGroup < ApplicationRecord
       end
     end
 
+    def ransackable_attributes(_auth_object = nil)
+      authorizable_ransackable_attributes
+    end
+
+    def ransackable_associations(_auth_object = nil)
+      authorizable_ransackable_associations
+    end
+
     private
 
     def categorized_failed_jobs

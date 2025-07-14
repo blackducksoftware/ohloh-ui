@@ -20,6 +20,8 @@ class DuplicatesController < ApplicationController
                                       .paginate(per_page: 10, page: page_param)
   end
 
+  def show; end
+
   def new
     previous_dupe = @project.duplicates.unresolved.first
     if previous_dupe
@@ -28,6 +30,8 @@ class DuplicatesController < ApplicationController
     end
     @duplicate = Duplicate.new(bad_project: @project)
   end
+
+  def edit; end
 
   def create
     @duplicate = Duplicate.new(good_project: @good_project, bad_project: @project,
@@ -67,10 +71,6 @@ class DuplicatesController < ApplicationController
     redirect_to admin_duplicates_path, flash: { success: t('.success') }
   end
 
-  def show; end
-
-  def edit; end
-
   private
 
   def find_duplicate_without_project_id
@@ -79,7 +79,7 @@ class DuplicatesController < ApplicationController
   end
 
   def find_duplicate
-    @duplicate = Duplicate.where(bad_project_id: @project.id).where(id: params[:id]).take
+    @duplicate = Duplicate.where(bad_project_id: @project.id).find_by(id: params[:id])
     raise ParamRecordNotFound if @duplicate.nil?
   end
 

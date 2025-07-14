@@ -13,7 +13,10 @@ module Api::VulnerabilitiesHelper
     return unless data
 
     cve_id = data['href'].split('/').last
-    cve_url = ENV['NVD_LINK'] + cve_id
+    nvd_link = ENV.fetch('NVD_LINK', nil)
+    return nil if nvd_link.nil? || cve_id.nil?
+
+    cve_url = nvd_link + cve_id
     link_to(cve_id, cve_url, target: '_blank', rel: 'noopener')
   end
 
@@ -39,7 +42,7 @@ module Api::VulnerabilitiesHelper
   def bdsa_references(data)
     return unless data
 
-    references = bdsa_reference_icons.keys.each_with_object({}) { |link, memo| memo[link] = [] }
+    references = bdsa_reference_icons.keys.index_with { |_link| [] }
     data.each do |link|
       type = bdsa_reference_type(link['type'])
       next unless references[type]

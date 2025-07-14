@@ -52,6 +52,13 @@ COMMENT ON SCHEMA oh IS 'standard public schema';
 
 
 --
+-- Name: public; Type: SCHEMA; Schema: -; Owner: -
+--
+
+-- *not* creating schema, since initdb creates it
+
+
+--
 -- Name: pg_stat_statements; Type: EXTENSION; Schema: -; Owner: -
 --
 
@@ -1810,6 +1817,8 @@ ALTER TEXT SEARCH CONFIGURATION oh.pg
 
 
 SET default_tablespace = '';
+
+SET default_table_access_method = heap;
 
 --
 -- Name: admin_dashboard_stats; Type: TABLE; Schema: fis; Owner: -
@@ -6780,7 +6789,7 @@ CREATE SEQUENCE oh.monitorships_id_seq
 CREATE TABLE oh.monthly_commit_histories (
     id integer NOT NULL,
     analysis_id integer,
-    json text
+    "json" text
 );
 
 
@@ -19306,6 +19315,10 @@ INSERT INTO oh.schema_migrations (version) VALUES ('20240305184511');
 INSERT INTO oh.schema_migrations (version) VALUES ('20240724182111');
 
 INSERT INTO oh.schema_migrations (version) VALUES ('20250511154848');
+
+INSERT INTO oh.schema_migrations (version) VALUES ('20250709184823');
+
+INSERT INTO oh.schema_migrations (version) VALUES ('20250709184824');
 
 INSERT INTO oh.schema_migrations (version) VALUES ('21');
 

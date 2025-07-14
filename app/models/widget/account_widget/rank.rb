@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class AccountWidget::Rank < AccountWidget
+class Widget::AccountWidget::Rank < Widget::AccountWidget
   def width
     32
   end

@@ -19,3 +19,19 @@ module BootstrapPagination
     end
   end
 end
+
+# frozen_string_literal: true
+
+# Add pagination capabilities to Array objects
+class Array
+  # Simple paginate method for Array to make it compatible with will_paginate
+  def paginate(options = {})
+    page = options[:page] || 1
+    per_page = options[:per_page] || WillPaginate.per_page
+    total = options.fetch(:total_entries) { size }
+
+    WillPaginate::Collection.create(page, per_page, total) do |pager|
+      pager.replace slice(pager.offset, pager.per_page)
+    end
+  end
+end

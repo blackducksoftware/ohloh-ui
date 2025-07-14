@@ -47,7 +47,8 @@ class Analysis::TopCommitVolumeChart
   def committer_names
     all_names = []
     @history.each do |intervals|
-      intervals.first(NAME_COUNT).each do |name, _count|
+      intervals.first(NAME_COUNT).each do |name_count_pair|
+        name = name_count_pair.first
         all_names << name unless all_names.include? name
       end
     end

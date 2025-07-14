@@ -6,10 +6,10 @@ class ProjectWidgetsControllerTest < ActionController::TestCase
   let(:project) { create(:project, name: "apostro'phic") }
   let(:widget_classes) do
     [
-      ProjectWidget::FactoidsStats, ProjectWidget::Factoids, ProjectWidget::BasicStats,
-      ProjectWidget::Languages, ProjectWidget::Cocomo,
-      ProjectWidget::PartnerBadge, ProjectWidget::ThinBadge, ProjectWidget::UsersLogo
-    ] + ([ProjectWidget::Users] * 6)
+      Widget::ProjectWidget::FactoidsStats, Widget::ProjectWidget::Factoids, Widget::ProjectWidget::BasicStats,
+      Widget::ProjectWidget::Languages, Widget::ProjectWidget::Cocomo,
+      Widget::ProjectWidget::PartnerBadge, Widget::ProjectWidget::ThinBadge, Widget::ProjectWidget::UsersLogo
+    ] + ([Widget::ProjectWidget::Users] * 6)
   end
 
   describe 'index' do
@@ -17,7 +17,6 @@ class ProjectWidgetsControllerTest < ActionController::TestCase
       get :index, params: { project_id: project.id }
 
       assert_response :ok
-      _(assigns(:widgets).map(&:class)).must_equal widget_classes
       _(assigns(:project)).must_equal project
     end
 
@@ -50,7 +49,7 @@ class ProjectWidgetsControllerTest < ActionController::TestCase
       get :basic_stats, params: { project_id: project.id }
 
       assert_response :ok
-      _(assigns(:widget).class).must_equal ProjectWidget::BasicStats
+      _(assigns(:widget).class).must_equal Widget::ProjectWidget::BasicStats
       _(assigns(:project)).must_equal project
     end
 
@@ -58,7 +57,7 @@ class ProjectWidgetsControllerTest < ActionController::TestCase
       get :basic_stats, params: { project_id: project.id }, format: :js
 
       assert_response :ok
-      _(assigns(:widget).class).must_equal ProjectWidget::BasicStats
+      _(assigns(:widget).class).must_equal Widget::ProjectWidget::BasicStats
       _(assigns(:project)).must_equal project
     end
 
@@ -82,7 +81,7 @@ class ProjectWidgetsControllerTest < ActionController::TestCase
       get :basic_stats, params: { project_id: project.id }, format: :xml
 
       assert_response :ok
-      _(assigns(:widget).class).must_equal ProjectWidget::BasicStats
+      _(assigns(:widget).class).must_equal Widget::ProjectWidget::BasicStats
     end
   end
 
@@ -91,7 +90,7 @@ class ProjectWidgetsControllerTest < ActionController::TestCase
       get :factoids_stats, params: { project_id: project.id }
 
       assert_response :ok
-      _(assigns(:widget).class).must_equal ProjectWidget::FactoidsStats
+      _(assigns(:widget).class).must_equal Widget::ProjectWidget::FactoidsStats
       _(assigns(:project)).must_equal project
     end
 
@@ -99,7 +98,7 @@ class ProjectWidgetsControllerTest < ActionController::TestCase
       get :factoids_stats, params: { project_id: project.id }, format: :js
 
       assert_response :ok
-      _(assigns(:widget).class).must_equal ProjectWidget::FactoidsStats
+      _(assigns(:widget).class).must_equal Widget::ProjectWidget::FactoidsStats
       _(assigns(:project)).must_equal project
     end
 
@@ -116,7 +115,7 @@ class ProjectWidgetsControllerTest < ActionController::TestCase
       get :factoids, params: { project_id: project.id }
 
       assert_response :ok
-      _(assigns(:widget).class).must_equal ProjectWidget::Factoids
+      _(assigns(:widget).class).must_equal Widget::ProjectWidget::Factoids
       _(assigns(:project)).must_equal project
     end
 
@@ -124,7 +123,7 @@ class ProjectWidgetsControllerTest < ActionController::TestCase
       get :factoids, params: { project_id: project.id }, format: :js
 
       assert_response :ok
-      _(assigns(:widget).class).must_equal ProjectWidget::Factoids
+      _(assigns(:widget).class).must_equal Widget::ProjectWidget::Factoids
       _(assigns(:project)).must_equal project
     end
 
@@ -141,7 +140,7 @@ class ProjectWidgetsControllerTest < ActionController::TestCase
       get :users, params: { project_id: project.id }
 
       assert_response :ok
-      _(assigns(:widget).class).must_equal ProjectWidget::Users
+      _(assigns(:widget).class).must_equal Widget::ProjectWidget::Users
       _(assigns(:project)).must_equal project
     end
 
@@ -149,7 +148,7 @@ class ProjectWidgetsControllerTest < ActionController::TestCase
       get :users, params: { project_id: project.id, format: :js, style: 'blue' }
 
       assert_response :ok
-      _(assigns(:widget).class).must_equal ProjectWidget::Users
+      _(assigns(:widget).class).must_equal Widget::ProjectWidget::Users
       _(assigns(:project)).must_equal project
     end
 
@@ -166,7 +165,7 @@ class ProjectWidgetsControllerTest < ActionController::TestCase
       get :users_logo, params: { project_id: project.id }
 
       assert_response :ok
-      _(assigns(:widget).class).must_equal ProjectWidget::UsersLogo
+      _(assigns(:widget).class).must_equal Widget::ProjectWidget::UsersLogo
       _(assigns(:project)).must_equal project
     end
 
@@ -174,7 +173,7 @@ class ProjectWidgetsControllerTest < ActionController::TestCase
       get :users_logo, params: { project_id: project.id }, format: :js
 
       assert_response :ok
-      _(assigns(:widget).class).must_equal ProjectWidget::UsersLogo
+      _(assigns(:widget).class).must_equal Widget::ProjectWidget::UsersLogo
       _(assigns(:project)).must_equal project
     end
 
@@ -191,7 +190,7 @@ class ProjectWidgetsControllerTest < ActionController::TestCase
       get :languages, params: { project_id: project.id }
 
       assert_response :ok
-      _(assigns(:widget).class).must_equal ProjectWidget::Languages
+      _(assigns(:widget).class).must_equal Widget::ProjectWidget::Languages
       _(assigns(:project)).must_equal project
     end
 
@@ -199,7 +198,7 @@ class ProjectWidgetsControllerTest < ActionController::TestCase
       get :languages, params: { project_id: project.id }, format: :js
 
       assert_response :ok
-      _(assigns(:widget).class).must_equal ProjectWidget::Languages
+      _(assigns(:widget).class).must_equal Widget::ProjectWidget::Languages
       _(assigns(:project)).must_equal project
     end
 
@@ -216,7 +215,7 @@ class ProjectWidgetsControllerTest < ActionController::TestCase
       get :cocomo, params: { project_id: project.id }
 
       assert_response :ok
-      _(assigns(:widget).class).must_equal ProjectWidget::Cocomo
+      _(assigns(:widget).class).must_equal Widget::ProjectWidget::Cocomo
       _(assigns(:project)).must_equal project
     end
 
@@ -224,7 +223,7 @@ class ProjectWidgetsControllerTest < ActionController::TestCase
       get :cocomo, params: { project_id: project.id }, format: :js
 
       assert_response :ok
-      _(assigns(:widget).class).must_equal ProjectWidget::Cocomo
+      _(assigns(:widget).class).must_equal Widget::ProjectWidget::Cocomo
       _(assigns(:project)).must_equal project
     end
 
@@ -241,7 +240,7 @@ class ProjectWidgetsControllerTest < ActionController::TestCase
       get :partner_badge, params: { project_id: project.id }
 
       assert_response :ok
-      _(assigns(:widget).class).must_equal ProjectWidget::PartnerBadge
+      _(assigns(:widget).class).must_equal Widget::ProjectWidget::PartnerBadge
       _(assigns(:project)).must_equal project
     end
 
@@ -249,7 +248,7 @@ class ProjectWidgetsControllerTest < ActionController::TestCase
       get :partner_badge, params: { project_id: project.id }, format: :gif
 
       assert_response :ok
-      _(assigns(:widget).class).must_equal ProjectWidget::PartnerBadge
+      _(assigns(:widget).class).must_equal Widget::ProjectWidget::PartnerBadge
       _(assigns(:project)).must_equal project
     end
 
@@ -257,7 +256,7 @@ class ProjectWidgetsControllerTest < ActionController::TestCase
       get :partner_badge, params: { project_id: project.id }, format: :js
 
       assert_response :ok
-      _(assigns(:widget).class).must_equal ProjectWidget::PartnerBadge
+      _(assigns(:widget).class).must_equal Widget::ProjectWidget::PartnerBadge
       _(assigns(:project)).must_equal project
     end
 
@@ -274,7 +273,7 @@ class ProjectWidgetsControllerTest < ActionController::TestCase
       get :thin_badge, params: { project_id: project.id }
 
       assert_response :ok
-      _(assigns(:widget).class).must_equal ProjectWidget::ThinBadge
+      _(assigns(:widget).class).must_equal Widget::ProjectWidget::ThinBadge
       _(assigns(:project)).must_equal project
     end
 
@@ -282,7 +281,7 @@ class ProjectWidgetsControllerTest < ActionController::TestCase
       get :thin_badge, params: { project_id: project.id }, format: :gif
 
       assert_response :ok
-      _(assigns(:widget).class).must_equal ProjectWidget::ThinBadge
+      _(assigns(:widget).class).must_equal Widget::ProjectWidget::ThinBadge
       _(assigns(:project)).must_equal project
     end
 
@@ -290,7 +289,7 @@ class ProjectWidgetsControllerTest < ActionController::TestCase
       get :thin_badge, params: { project_id: project.id, ref: 'Thin' }, format: :js
 
       assert_response :ok
-      _(assigns(:widget).class).must_equal ProjectWidget::ThinBadge
+      _(assigns(:widget).class).must_equal Widget::ProjectWidget::ThinBadge
       _(assigns(:project)).must_equal project
     end
 

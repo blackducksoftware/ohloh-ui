@@ -94,7 +94,7 @@ class ContributionsControllerTest < ActionController::TestCase
     let(:client_id) { api_key.oauth_application.uid }
 
     it 'should return contribution' do
-      ContributorFact.any_instance.stubs(:first_checkin).returns(Time.current - 2.days)
+      ContributorFact.any_instance.stubs(:first_checkin).returns(2.days.ago)
       ContributorFact.any_instance.stubs(:last_checkin).returns(Time.current)
 
       get :show, params: { project_id: @project.to_param, id: @contribution.id }
@@ -105,7 +105,7 @@ class ContributionsControllerTest < ActionController::TestCase
     end
 
     it 'should support being called via the api' do
-      ContributorFact.any_instance.stubs(:first_checkin).returns(Time.current - 2.days)
+      ContributorFact.any_instance.stubs(:first_checkin).returns(2.days.ago)
       ContributorFact.any_instance.stubs(:last_checkin).returns(Time.current)
 
       key = create(:api_key, account_id: create(:account).id)
@@ -135,7 +135,7 @@ class ContributionsControllerTest < ActionController::TestCase
     it 'must handle non existent projects via xml api' do
       get :show, params: { project_id: 'non-existent', id: @contribution.id, format: :xml, api_key: client_id }
 
-      assert_template 'error.xml'
+      assert_template 'error'
     end
   end
 

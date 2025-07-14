@@ -8,7 +8,7 @@ namespace :OH do
     @valid_response_codes = %w[200 301 308]
     @log = Logger.new('log/fixed_link_with_url_redirection.log')
 
-    BrokenLink.where(error: ['301: Net::HTTPMovedPermanently', '308: Net::HTTPRedirection']).each do |broken_link|
+    BrokenLink.where(error: ['301: Net::HTTPMovedPermanently', '308: Net::HTTPRedirection']).find_each do |broken_link|
       @link = broken_link.link
       @log.info("#{@link.id}, #{@link.url}")
       code, new_url = fetch_response(@link.url)

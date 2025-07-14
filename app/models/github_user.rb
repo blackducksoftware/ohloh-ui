@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class GithubUser
-  URL_FORMAT = /\A[^\/]+\Z/.freeze
+  URL_FORMAT = /\A[^\/]+\Z/
   GITHUB_API_URL = 'https://api.github.com/users/'
   include ActiveModel::Model
 
@@ -77,7 +77,7 @@ class GithubUser
   end
 
   def get_api_key
-    ENV['GITHUB_API_BASIC_AUTHENTICATION']
+    ENV.fetch('GITHUB_API_BASIC_AUTHENTICATION', nil)
   end
 
   def username_must_exist

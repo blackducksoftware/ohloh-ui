@@ -10,7 +10,7 @@ class AccountWidgetsControllerTest < ActionController::TestCase
       get :index, params: { account_id: account.id }
 
       assert_response :ok
-      widget_classes = [AccountWidget::Detailed, AccountWidget::Rank, AccountWidget::Tiny]
+      widget_classes = [Widget::AccountWidget::Detailed, Widget::AccountWidget::Rank, Widget::AccountWidget::Tiny]
       _(assigns(:widgets).map(&:class)).must_equal widget_classes
       _(assigns(:account)).must_equal account
     end
@@ -21,7 +21,7 @@ class AccountWidgetsControllerTest < ActionController::TestCase
       get :detailed, params: { account_id: account.id }
 
       assert_response :ok
-      _(assigns(:widget).class).must_equal AccountWidget::Detailed
+      _(assigns(:widget).class).must_equal Widget::AccountWidget::Detailed
       _(assigns(:account)).must_equal account
     end
 
@@ -37,7 +37,7 @@ class AccountWidgetsControllerTest < ActionController::TestCase
       get :detailed, params: { account_id: account.id }, format: :gif
 
       assert_response :ok
-      _(assigns(:widget).class).must_equal AccountWidget::Detailed
+      _(assigns(:widget).class).must_equal Widget::AccountWidget::Detailed
       _(assigns(:account)).must_equal account
     end
   end
@@ -47,7 +47,7 @@ class AccountWidgetsControllerTest < ActionController::TestCase
       get :rank, params: { account_id: account.id }
 
       assert_response :ok
-      _(assigns(:widget).class).must_equal AccountWidget::Rank
+      _(assigns(:widget).class).must_equal Widget::AccountWidget::Rank
       _(assigns(:account)).must_equal account
     end
 
@@ -62,7 +62,7 @@ class AccountWidgetsControllerTest < ActionController::TestCase
       get :rank, params: { account_id: account.id }, format: :gif
 
       assert_response :ok
-      _(assigns(:widget).class).must_equal AccountWidget::Rank
+      _(assigns(:widget).class).must_equal Widget::AccountWidget::Rank
       _(assigns(:account)).must_equal account
     end
   end
@@ -72,7 +72,7 @@ class AccountWidgetsControllerTest < ActionController::TestCase
       get :tiny, params: { account_id: account.id }
 
       assert_response :ok
-      _(assigns(:widget).class).must_equal AccountWidget::Tiny
+      _(assigns(:widget).class).must_equal Widget::AccountWidget::Tiny
       _(assigns(:account)).must_equal account
     end
 
@@ -87,7 +87,7 @@ class AccountWidgetsControllerTest < ActionController::TestCase
       get :tiny, params: { account_id: account.id }, format: :gif
 
       assert_response :ok
-      _(assigns(:widget).class).must_equal AccountWidget::Tiny
+      _(assigns(:widget).class).must_equal Widget::AccountWidget::Tiny
       _(assigns(:account)).must_equal account
     end
   end

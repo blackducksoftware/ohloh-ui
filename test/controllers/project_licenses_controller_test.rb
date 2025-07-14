@@ -112,7 +112,7 @@ class ProjectLicensesControllerTest < ActionController::TestCase
     license = create(:license)
     login_as nil
     post :create, params: { project_id: project.to_param, license_id: license.id }
-    assert_response 302
+    assert_response :found
     _(project.reload.licenses.pluck(:id)).must_equal []
     _(flash['notice']).must_match I18n.t(:not_authorized)
   end
@@ -123,7 +123,7 @@ class ProjectLicensesControllerTest < ActionController::TestCase
     license = create(:license)
     login_as create(:account)
     post :create, params: { project_id: project.to_param, license_id: license.id }
-    assert_response 302
+    assert_response :found
     _(project.reload.licenses.pluck(:id)).must_equal []
     _(flash['notice']).must_match I18n.t(:not_authorized)
   end
@@ -133,7 +133,7 @@ class ProjectLicensesControllerTest < ActionController::TestCase
     license = create(:license)
     login_as create(:account)
     post :create, params: { project_id: project.to_param, license_id: license.id }
-    assert_response 302
+    assert_response :found
     _(project.reload.licenses.pluck(:id)).must_equal [license.id]
     _(flash['success']).must_match I18n.t('project_licenses.create.success')
   end
@@ -165,7 +165,7 @@ class ProjectLicensesControllerTest < ActionController::TestCase
     project_license.destroy
     login_as create(:account)
     post :create, params: { project_id: project.to_param, license_id: license.id }
-    assert_response 302
+    assert_response :found
     _(project.reload.project_licenses.pluck(:id)).must_equal [project_license.id]
     _(flash['success']).must_match I18n.t('project_licenses.create.success')
   end
@@ -176,7 +176,7 @@ class ProjectLicensesControllerTest < ActionController::TestCase
     project_license = create(:project_license, project: project)
     login_as nil
     delete :destroy, params: { project_id: project.to_param, id: project_license.id }
-    assert_response 302
+    assert_response :found
     _(project.reload.project_licenses.pluck(:id)).must_equal [project_license.id]
     _(flash['notice']).must_match I18n.t(:not_authorized)
   end
@@ -187,7 +187,7 @@ class ProjectLicensesControllerTest < ActionController::TestCase
     create(:permission, target: project, remainder: true)
     login_as create(:account)
     delete :destroy, params: { project_id: project.to_param, id: project_license.id }
-    assert_response 302
+    assert_response :found
     _(project.reload.project_licenses.pluck(:id)).must_equal [project_license.id]
     _(flash['notice']).must_match I18n.t(:not_authorized)
   end
@@ -197,7 +197,7 @@ class ProjectLicensesControllerTest < ActionController::TestCase
     project_license = create(:project_license, project: project)
     login_as create(:account)
     delete :destroy, params: { project_id: project.to_param, id: project_license.id }
-    assert_response 302
+    assert_response :found
     _(project.reload.project_licenses.pluck(:id)).must_equal []
     _(flash['notice']).must_match I18n.t('project_licenses.destroy.success')
   end
@@ -208,7 +208,7 @@ class ProjectLicensesControllerTest < ActionController::TestCase
     login_as create(:account)
     ProjectLicense.any_instance.expects(:destroy).returns false
     delete :destroy, params: { project_id: project.to_param, id: project_license.id }
-    assert_response 302
+    assert_response :found
     _(project.reload.project_licenses.pluck(:id)).must_equal [project_license.id]
     _(flash['notice']).must_match I18n.t('project_licenses.destroy.error')
   end

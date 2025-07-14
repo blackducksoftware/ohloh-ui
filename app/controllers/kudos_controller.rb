@@ -53,17 +53,17 @@ class KudosController < ApplicationController
   def find_account_or_contribution
     p = params[:kudo] || params
     @account = Account.from_param(p[:account_id]).take
-    @contribution = Contribution.where(id: p[:contribution_id]).take
+    @contribution = Contribution.find_by(id: p[:contribution_id])
     raise ParamRecordNotFound unless @account || @contribution
   end
 
   def find_kudo
-    @kudo = Kudo.where(id: params[:id]).take
+    @kudo = Kudo.find_by(id: params[:id])
     raise ParamRecordNotFound if @kudo.nil?
   end
 
   def make_new_kudo
-    @kudo = Kudo.new(message: (params[:kudo] && params[:kudo][:message]), sender: current_user, account: @account)
+    @kudo = Kudo.new(message: params[:kudo] && params[:kudo][:message], sender: current_user, account: @account)
     @kudo.assign_attributes(project: @contribution.project, name: @contribution.name_fact.name) if @contribution
   end
 

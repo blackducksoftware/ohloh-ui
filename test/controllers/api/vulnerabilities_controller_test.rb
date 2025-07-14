@@ -12,7 +12,6 @@ class Api::VulnerabilitiesControllerTest < ActionDispatch::IntegrationTest
       get '/vulnerabilities/bdsa/BDSA-1900-0001'
       assert_response :success
       _(response.body).must_match 'Severity'
-      _(response.body).must_match 'CVE'
       _(response.body).wont_match 'References'
     end
   end

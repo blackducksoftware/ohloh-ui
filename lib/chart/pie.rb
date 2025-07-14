@@ -59,7 +59,7 @@ class Chart::Pie
     dx1 = x_value(rad1)
     dy0 = y_value(rad0)
     dy1 = y_value(rad1)
-    "path 'M#{@half_width},#{@half_width} l#{dx0},#{dy0} A#{@radius},#{@radius} "\
+    "path 'M#{@half_width},#{@half_width} l#{dx0},#{dy0} A#{@radius},#{@radius} " \
       "0 #{arc_scale(angle0, angle1)},#{SWEEP_POSITIVE} #{dx1 + @half_width},#{dy1 + @half_height} z'"
   end
 

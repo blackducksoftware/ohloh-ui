@@ -25,6 +25,6 @@ class CommitsByProjectData
   private
 
   def start_date_str(month)
-    (Time.current - 6.years + month.months).beginning_of_month.strftime('%Y-%m-01 00:00:00')
+    (6.years.ago + month.months).beginning_of_month.strftime('%Y-%m-01 00:00:00')
   end
 end

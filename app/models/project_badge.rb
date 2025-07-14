@@ -15,7 +15,7 @@ class ProjectBadge < ApplicationRecord
   class << self
     def check_cii_projects_last_run
       last_run = Setting.get_value('check_cii_projects')
-      return I18n.t('.no_data') if last_run.nil?
+      I18n.t('.no_data') if last_run.nil?
     end
   end
 end

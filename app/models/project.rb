@@ -2,6 +2,7 @@
 
 # rubocop:disable Metrics/ClassLength
 class Project < ApplicationRecord
+  include ActsAsEditable
   has_one :create_edit, as: :target
   acts_as_editable editable_attributes: %i[name vanity_url organization_id best_analysis_id
                                            description tag_list missing_source url download_url],
@@ -15,6 +16,8 @@ class Project < ApplicationRecord
   include ProjectJobs
   include KnowledgeBaseCallbacks
   include Project::ActiveAdminHelpers
+  include ActsAsProtected
+  include ActsAsTaggable
 
   acts_as_protected
   acts_as_taggable
@@ -118,6 +121,14 @@ class Project < ApplicationRecord
       tsearch(query, sort_by)
         .includes(:best_analysis)
         .paginate(page: page, per_page: 20)
+    end
+
+    def ransackable_attributes(_auth_object = nil)
+      authorizable_ransackable_attributes
+    end
+
+    def ransackable_associations(_auth_object = nil)
+      authorizable_ransackable_associations
     end
   end
 

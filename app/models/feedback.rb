@@ -22,6 +22,14 @@ class Feedback < ApplicationRecord
       end
       arr
     end
+
+    def ransackable_attributes(_auth_object = nil)
+      authorizable_ransackable_attributes
+    end
+
+    def ransackable_associations(_auth_object = nil)
+      authorizable_ransackable_associations
+    end
   end
 
   private

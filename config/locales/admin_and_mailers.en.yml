@@ -1,0 +1,20 @@
+en:
+  admin:
+    failure_group:
+      deleted: "FailureGroup was successfully deleted"
+    jobs:
+      cannot_schedule_running: "Cannot schedule a running job."
+      rescheduled: "Job has been rescheduled."
+      priority_updated: "Priority has been updated"
+      deleted: "Job has been deleted"
+    license_permissions:
+      changes_saved: "Changes Saved"
+  controllers:
+    enlistment_filters:
+      code_location_restored: "Deleted CodeLocation has been successfully restored."
+  mailers:
+    account_mailer:
+      password_change_notification: "OpenHub Password Change Notification"
+      review_account_spam: "OpenHub: review account data for SPAM"
+    deleted_account_notifier_mailer:
+      account_deleted: "Open Hub account deleted"

@@ -17,7 +17,7 @@ class String
 
     # Restore line-breaking tags
     text.gsub!(/\n(\s*\n)+/, '<br/><br/>')
-    text.gsub!(/\n/, '<br/>')
+    text.gsub!("\n", '<br/>')
 
     # Strip leading and trailing breaks
     text.gsub!(/^(<br\/>)+/, '')

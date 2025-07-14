@@ -6,12 +6,12 @@ class AccountMailer < ApplicationMailer
   def signup_notification(account)
     @account = account
     @url = activate_account_accesses_url(account_id: account.to_param, code: account.activation_code,
-                                         host: ENV['URL_HOST'], protocol: 'https')
+                                         host: ENV.fetch('URL_HOST', nil), protocol: 'https')
     mail to: account.email, subject: t('.subject'), bcc: 'info@openhub.net'
   end
 
   def activation(account)
-    @url = root_url(host: ENV['URL_HOST'])
+    @url = root_url(host: ENV.fetch('URL_HOST', nil))
     @account = account
     mail to: account.email, subject: t('.subject')
   end
@@ -35,11 +35,11 @@ class AccountMailer < ApplicationMailer
 
   def reset_password(account_id)
     account = Account.find(account_id)
-    mail to: account.email, subject: 'OpenHub Password Change Notification'
+    mail to: account.email, subject: I18n.t('mailers.account_mailer.password_change_notification')
   end
 
   def review_account_data_for_spam(account)
     @account = account
-    mail to: 'info@openhub.net', subject: 'OpenHub: review account data for SPAM'
+    mail to: 'info@openhub.net', subject: I18n.t('mailers.account_mailer.review_account_spam')
   end
 end

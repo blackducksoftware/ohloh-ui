@@ -36,7 +36,7 @@
           %td.center
             .mini-badges-section{ style: 'margin:0; position:relative;height: 0px' }
               = render 'accounts/badges_row',
-                badges: [FOSSerBadge.new(account, positions_count: account.positions.count)], hide_foss_logo: true
+                badges: [Badge::FosserBadge.new(account, positions_count: account.positions.count)], hide_foss_logo: true
           %td.affiliated_with.center
             - if account.organization_id.nil?
               = t('organizations.outside_committers.unaffiliated')

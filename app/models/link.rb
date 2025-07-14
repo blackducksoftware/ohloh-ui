@@ -2,9 +2,11 @@
 
 class Link < ApplicationRecord
   include KnowledgeBaseCallbacks
+  include ActsAsEditable
+  include ActsAsProtected
 
   # Maintain this order for the index page.
-  CATEGORIES = HashWithIndifferentAccess.new(
+  CATEGORIES = ActiveSupport::HashWithIndifferentAccess.new(
     Homepage: 9,
     Download: 10,
     Community: 7,

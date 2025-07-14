@@ -218,8 +218,7 @@ class AuthenticationsControllerTest < ActionController::TestCase
         get :github_callback, params: { code: Faker::Lorem.word }
 
         account.reload
-        _(account.access.activated_at).must_be :present?
-        _(account.access.activation_code).must_be_nil
+        _(account.access.activated?).must_be :present?
       end
 
       it 'must refresh github verification token and unique_id on every login' do

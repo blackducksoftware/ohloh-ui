@@ -5,7 +5,7 @@ require 'test_helpers/commits_by_project_data'
 require 'test_helpers/commits_by_language_data'
 
 class CommitsByProjectTest < ActiveSupport::TestCase
-  let(:start_date_val) { (Time.current - 6.years).beginning_of_month }
+  let(:start_date_val) { 6.years.ago.beginning_of_month }
   let(:account) { create_account_with_commits_by_project }
   let(:position1) { account.positions.first }
   let(:position2) { account.positions.last }
@@ -108,7 +108,7 @@ class CommitsByProjectTest < ActiveSupport::TestCase
   private
 
   def start_date_str(month = 0)
-    (Time.current - 6.years + month.months).beginning_of_month.strftime('%Y-%m-01 00:00:00')
+    (6.years.ago + month.months).beginning_of_month.strftime('%Y-%m-01 00:00:00')
   end
 
   def calculate_date_range(start_date, end_date)

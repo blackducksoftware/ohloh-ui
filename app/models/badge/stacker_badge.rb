@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class StackerBadge < Badge
+class Badge::StackerBadge < Badge
   def eligibility_count
     @eligibility_count ||= vars[:stacks_count]
     stacks = Stack.arel_table

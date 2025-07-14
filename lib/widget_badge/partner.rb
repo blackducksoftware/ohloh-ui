@@ -22,6 +22,8 @@ module WidgetBadge
     end
 
     def new_text_image(text, options)
+      # Escape single quotes for ImageMagick draw command
+      safe_text = text.to_s.gsub("'", "\\'")
       new_image do |convert|
         convert.size('150x26')
         convert << 'xc:white'
@@ -30,7 +32,7 @@ module WidgetBadge
         set_gravity(convert, options[:align])
 
         convert.motion_blur("0.0x#{options[:blur]}+90") if options[:blur] != 0
-        convert.draw "text 0,#{3 + options[:y_offset]} '#{text}'"
+        convert.draw "text 0,#{3 + options[:y_offset]} '#{safe_text}'"
       end
     end
 

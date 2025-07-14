@@ -6,7 +6,7 @@ module DashboardHelper
   end
 
   def last_deployment
-    File.exist?(Rails.root.join('REVISION')) ? get_last_deployment : 'N/A'
+    Rails.root.join('REVISION').exist? ? get_last_deployment : 'N/A'
   end
 
   def get_last_deployment
@@ -19,7 +19,7 @@ module DashboardHelper
   end
 
   def get_revision_details
-    revision_file = File.open(Rails.root.join('REVISION'))
+    revision_file = Rails.root.join('REVISION').open
     revision = revision_file.read.strip
     file_modified = revision_file.mtime
     revision_file.close

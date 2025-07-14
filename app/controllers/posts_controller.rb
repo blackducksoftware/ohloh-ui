@@ -19,6 +19,12 @@ class PostsController < ApplicationController
     end
   end
 
+  def edit
+    return unless (current_user.id != @post.account_id) && (current_user_is_admin? == false)
+
+    redirect_to topic_path(@topic)
+  end
+
   def create
     @post = build_new_post
     if verify_captcha_for_non_admin && @post.save
@@ -28,12 +34,6 @@ class PostsController < ApplicationController
       @posts = @topic.posts.paginate(page: page_param, per_page: TopicDecorator::PER_PAGE)
       render 'topics/show'
     end
-  end
-
-  def edit
-    return unless (current_user.id != @post.account_id) && (current_user_is_admin? == false)
-
-    redirect_to topic_path(@topic)
   end
 
   def update
@@ -57,14 +57,14 @@ class PostsController < ApplicationController
   private
 
   def find_relevant_records
-    @topic = Topic.where(id: params[:topic_id]).take
+    @topic = Topic.find_by(id: params[:topic_id])
     raise ParamRecordNotFound unless @topic
 
     @forum = @topic.forum
   end
 
   def find_post_record
-    @post = Post.where(id: params[:id]).take
+    @post = Post.find_by(id: params[:id])
     raise ParamRecordNotFound unless @post
   end
 

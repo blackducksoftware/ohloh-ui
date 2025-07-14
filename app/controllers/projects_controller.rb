@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative '../core/project/project_builder'
+
 class ProjectsController < ApplicationController
   [AnalysesHelper, FactoidsHelper, MapHelper, RatingsHelper,
    ScmHelper, TagsHelper].each { |help| helper help }
@@ -22,16 +24,6 @@ class ProjectsController < ApplicationController
     @accounts = @accounts.paginate(page: page_param, per_page: 10, total_entries: @accounts.length)
   end
 
-  def update
-    return render_unauthorized unless @project.edit_authorized?
-
-    if @project.update(project_params)
-      redirect_to project_path(@project), notice: t('.success')
-    else
-      render :edit, status: :unprocessable_entity
-    end
-  end
-
   def create
     create_project_from_params
     if @project.save
@@ -41,6 +33,16 @@ class ProjectsController < ApplicationController
       @project.code_location_object = @project.enlistments.last.try(:code_location)
       flash.now[:error] = t('.failure')
       render :check_forge, status: :unprocessable_entity
+    end
+  end
+
+  def update
+    return render_unauthorized unless @project.edit_authorized?
+
+    if @project.update(project_params)
+      redirect_to project_path(@project), notice: t('.success')
+    else
+      render :edit, status: :unprocessable_entity
     end
   end
 

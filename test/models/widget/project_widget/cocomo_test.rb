@@ -4,7 +4,7 @@ require 'test_helper'
 
 class CocomoTest < ActiveSupport::TestCase
   let(:project) { create(:project) }
-  let(:widget) { ProjectWidget::Cocomo.new(project_id: project.id) }
+  let(:widget) { Widget::ProjectWidget::Cocomo.new(project_id: project.id) }
 
   describe 'height' do
     it 'should return 205' do

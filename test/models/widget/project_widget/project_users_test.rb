@@ -4,7 +4,7 @@ require 'test_helper'
 
 class UsersTest < ActiveSupport::TestCase
   let(:project) { create(:project) }
-  let(:widget) { ProjectWidget::Users.new(project_id: project.id, style: 'blue') }
+  let(:widget) { Widget::ProjectWidget::Users.new(project_id: project.id, style: 'blue') }
 
   describe 'height' do
     it 'should return 115' do
@@ -45,7 +45,7 @@ class UsersTest < ActiveSupport::TestCase
 
   describe 'instantiate_styled_badges' do
     it 'should return badges of all possible colors' do
-      users_widgets = ProjectWidget::Users.instantiate_styled_badges(project_id: project.id)
+      users_widgets = Widget::ProjectWidget::Users.instantiate_styled_badges(project_id: project.id)
       _(users_widgets.map(&:position)).must_equal [13, 17, 14, 15, 16, 12]
       _(users_widgets.map(&:style)).must_equal ['gray', 'rainbow', 'green', 'red', 'blue', nil]
       _(users_widgets.map(&:background_color)).must_equal ['#525456', nil, '#197B30', '#E11717', '#036CB6', nil]

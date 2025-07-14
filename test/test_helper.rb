@@ -24,6 +24,7 @@ require 'sidekiq/testing'
 require 'webmock/minitest'
 require 'test_helpers/web_mocker'
 require 'clearance/test_unit'
+require 'database_cleaner/active_record'
 
 Sidekiq::Testing.fake!
 
@@ -32,13 +33,17 @@ ActiveRecord::Migration.maintain_test_schema!
 VCR.configure do |config|
   config.cassette_library_dir = 'fixtures/vcr_cassettes'
   config.hook_into :webmock
+  config.allow_http_connections_when_no_cassette = false
 end
 
 class ActiveSupport::TestCase
   extend SetupHamsterAccount
   extend CreateForges
-  extend MiniTest::Spec::DSL
+  extend Minitest::Spec::DSL
   include FactoryBot::Syntax::Methods
+
+  # Also add this to use Rails' built-in transactional tests
+  self.use_transactional_tests = true
 
   TEST_PASSWORD = :test_password
 
@@ -151,13 +156,20 @@ class ActiveSupport::TestCase
     end
   end
 
-  def stub_code_location_subscription_api_call(code_location_id, project_id, method = 'create', &block)
+  def stub_code_location_subscription_api_call(code_location_id, project_id, method = 'create', &)
     VCR.use_cassette("#{method}_code_location_subscription",
                      erb: { code_location_id: code_location_id, client_relation_id: project_id },
-                     match_requests_on: %i[host path method], &block)
+                     match_requests_on: %i[host path method], &)
+  end
+end
+
+DatabaseCleaner.strategy = :transaction
+class Minitest::Spec
+  before :each do
+    DatabaseCleaner.start
   end
 
-  def assert_response(code)
-    assert_response(code)
+  after :each do
+    DatabaseCleaner.clean
   end
 end

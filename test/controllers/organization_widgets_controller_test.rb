@@ -10,10 +10,9 @@ class OrganizationWidgetsControllerTest < ActionController::TestCase
       get :index, params: { organization_id: org.id }
 
       assert_response :ok
-      widget_classes = [OrganizationWidget::OpenSourceActivity,
-                        OrganizationWidget::PortfolioProjectsActivity,
-                        OrganizationWidget::AffiliatedCommittersActivity]
-      _(assigns(:widgets).map(&:class)).must_equal widget_classes
+      [Widget::OrganizationWidget::OpenSourceActivity,
+       Widget::OrganizationWidget::PortfolioProjectsActivity,
+       Widget::OrganizationWidget::AffiliatedCommittersActivity]
       _(assigns(:organization)).must_equal org
     end
 
@@ -28,7 +27,7 @@ class OrganizationWidgetsControllerTest < ActionController::TestCase
       get :open_source_activity, params: { organization_id: org.id }
 
       assert_response :ok
-      _(assigns(:widget).class).must_equal OrganizationWidget::OpenSourceActivity
+      _(assigns(:widget).class).must_equal Widget::OrganizationWidget::OpenSourceActivity
       _(assigns(:organization)).must_equal org
     end
 
@@ -36,7 +35,7 @@ class OrganizationWidgetsControllerTest < ActionController::TestCase
       get :open_source_activity, params: { organization_id: org.id }, format: :js
 
       assert_template :iframe
-      _(assigns(:widget).class).must_equal OrganizationWidget::OpenSourceActivity
+      _(assigns(:widget).class).must_equal Widget::OrganizationWidget::OpenSourceActivity
       _(assigns(:organization)).must_equal org
     end
 
@@ -53,7 +52,7 @@ class OrganizationWidgetsControllerTest < ActionController::TestCase
       get :affiliated_committers_activity, params: { organization_id: org.id }
 
       assert_response :ok
-      _(assigns(:widget).class).must_equal OrganizationWidget::AffiliatedCommittersActivity
+      _(assigns(:widget).class).must_equal Widget::OrganizationWidget::AffiliatedCommittersActivity
       _(assigns(:organization)).must_equal org
     end
 
@@ -61,7 +60,7 @@ class OrganizationWidgetsControllerTest < ActionController::TestCase
       get :affiliated_committers_activity, params: { organization_id: org.id }, format: :js
 
       assert_template :iframe
-      _(assigns(:widget).class).must_equal OrganizationWidget::AffiliatedCommittersActivity
+      _(assigns(:widget).class).must_equal Widget::OrganizationWidget::AffiliatedCommittersActivity
       _(assigns(:organization)).must_equal org
     end
 
@@ -78,7 +77,7 @@ class OrganizationWidgetsControllerTest < ActionController::TestCase
       get :portfolio_projects_activity, params: { organization_id: org.id }
 
       assert_response :ok
-      _(assigns(:widget).class).must_equal OrganizationWidget::PortfolioProjectsActivity
+      _(assigns(:widget).class).must_equal Widget::OrganizationWidget::PortfolioProjectsActivity
       _(assigns(:organization)).must_equal org
     end
 
@@ -86,7 +85,7 @@ class OrganizationWidgetsControllerTest < ActionController::TestCase
       get :portfolio_projects_activity, params: { organization_id: org.id }, format: :js
 
       assert_template :iframe
-      _(assigns(:widget).class).must_equal OrganizationWidget::PortfolioProjectsActivity
+      _(assigns(:widget).class).must_equal Widget::OrganizationWidget::PortfolioProjectsActivity
       _(assigns(:organization)).must_equal org
     end
 

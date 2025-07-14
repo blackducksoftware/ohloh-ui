@@ -59,12 +59,13 @@ module EditsHelper
   def edit_org_explanation_org_id(edit)
     return nil unless edit.key == 'organization_id' && edit.value
     return t('edits.org_explanation_claim', name: edit.project.name) if params[:organization_id]
-    return t('edits.org_explanation_claimed', name: Organization.find(edit.value).name) if params[:project_id]
+
+    t('edits.org_explanation_claimed', name: Organization.find(edit.value).name) if params[:project_id]
   end
 
   def edit_explanation(edit)
     if PROJECT_RELATED_CLASSES.include?(edit.target.class)
-      return send("edit_explanation_#{edit.target.class.name.downcase}".to_sym, edit)
+      return send(:"edit_explanation_#{edit.target.class.name.downcase}", edit)
     end
 
     edit_explanation_generic(edit)

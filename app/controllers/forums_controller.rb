@@ -14,6 +14,10 @@ class ForumsController < ApplicationController
     @forums = Forum.where("name != 'General Discussion'").order(id: :desc).limit(10)
   end
 
+  def show
+    @topics = @forum.topics.includes(:account, posts: :account).paginate(page: page_param, per_page: 15)
+  end
+
   def new
     @forum = Forum.new
   end
@@ -26,10 +30,6 @@ class ForumsController < ApplicationController
       flash[:alert] = t('.error')
       render :new
     end
-  end
-
-  def show
-    @topics = @forum.topics.includes(:account, posts: :account).paginate(page: page_param, per_page: 15)
   end
 
   def update
@@ -49,7 +49,7 @@ class ForumsController < ApplicationController
   private
 
   def find_forum_record
-    @forum = Forum.where(id: params[:id]).take
+    @forum = Forum.find_by(id: params[:id])
     raise ParamRecordNotFound unless @forum
   end
 

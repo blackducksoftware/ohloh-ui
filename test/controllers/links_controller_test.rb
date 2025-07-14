@@ -50,7 +50,7 @@ class LinksControllerTest < ActionController::TestCase
 
     get :index, params: { project_id: project.vanity_url }
 
-    assert_select '.alert', text: "×\n\nYou can view, but not change this data. Only managers may change this data."
+    assert_select '.alert', text: '× You can view, but not change this data. Only managers may change this data.'
   end
 
   it 'index must display sanitized links' do
@@ -296,7 +296,7 @@ class LinksControllerTest < ActionController::TestCase
     link = create(:link, project: create(:project))
     Link.any_instance.stubs(:destroy).returns false
     delete :destroy, params: { id: link.id, project_id: link.project.vanity_url }
-    assert_response 302
+    assert_response :found
   end
 
   it 'should_not_create_if_link_was_soft_deleted_already_in_a_link_category' do

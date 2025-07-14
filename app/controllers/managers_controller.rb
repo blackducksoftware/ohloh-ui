@@ -21,6 +21,10 @@ class ManagersController < SettingsController
     # rubocop:enable Naming/MemoizedInstanceVariableName
   end
 
+  def edit
+    render_unauthorized unless current_user_can_manage_or_self?
+  end
+
   def create
     @manage ||= Manage.new
     @manage.assign_attributes(model_params.merge(target: @parent, account: current_user))
@@ -30,10 +34,6 @@ class ManagersController < SettingsController
     else
       render :new, status: :unprocessable_entity
     end
-  end
-
-  def edit
-    return render_unauthorized unless current_user_can_manage_or_self?
   end
 
   def update

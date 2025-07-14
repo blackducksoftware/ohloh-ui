@@ -1,15 +1,15 @@
 # frozen_string_literal: true
 
-class Account::PositionCore < OhDelegator::Base
-  parent_scope do
-    has_many :positions, lambda {
-      positions = Position.arel_table
-      projects = Project.arel_table
-      joins(positions.join(projects).on(projects[:id].eq(positions[:project_id])
-                                    .and(projects[:deleted].eq(false))).join_sources)
-    }
-    has_many :claimed_positions, -> { where.not(name_id: nil) }, class_name: :Position
+require 'forwardable'
+class Account::PositionCore
+  extend Forwardable
+  attr_reader :account
+
+  def initialize(account)
+    @account = account
   end
+
+  def_delegators :account, :id, :positions
 
   def with_projects
     @with_projects ||=
@@ -17,8 +17,7 @@ class Account::PositionCore < OhDelegator::Base
                .order(Project.arel_table[:name].lower)
   end
 
-  # rubocop:disable Metrics/AbcSize
-  def ordered
+  def ordered # rubocop:disable Metrics/AbcSize
     preloaded_positions.sort do |position_a, position_b|
       position_a_name_fact = name_facts["#{position_a.project.best_analysis_id}_#{position_a.name_id}"].try(:first)
       position_b_name_fact = name_facts["#{position_b.project.best_analysis_id}_#{position_b.name_id}"].try(:first)
@@ -30,24 +29,19 @@ class Account::PositionCore < OhDelegator::Base
       end
     end
   end
-  # rubocop:enable Metrics/AbcSize
 
-  # Returns a mapping of (position.project.analysis_id)_(position.name_id) => [position.name_fact] for all positions.
   def name_facts
     return @name_facts if @name_facts
 
-    # Using preloaded_positions.pluck(:best_analysis_id) will trigger a new sql query.
     analysis_ids = preloaded_positions.map { |position| position.project.best_analysis_id }.compact
     name_ids = preloaded_positions.map(&:name_id).compact
 
     name_facts = NameFact.where(analysis_id: analysis_ids, name_id: name_ids)
     @name_facts ||= name_facts.group_by do |name_fact|
-      # Form unique groups
       "#{name_fact.analysis_id}_#{name_fact.name_id}"
     end
   end
 
-  # claim a position if there is no existing position for the project or create an alias
   def ensure_position_or_alias!(project, name, try_create: false, position_attributes: {})
     existing_position = project.positions.claimed_by(account).first
     return unless existing_position || try_create
@@ -89,10 +83,8 @@ class Account::PositionCore < OhDelegator::Base
   end
 
   def create_alias(project, name, existing_position, position_attributes)
-    # Augment the existing, valid position by creating an alias that merges the old and new names.
     Alias.create(project_id: project.id, commit_name_id: name.id, preferred_name_id: existing_position.name_id,
                  editor_account: account).tap do
-      # and update the existing position to use new position_attributes(title, desc)
       existing_position.update!(position_attributes)
     end
   end
@@ -107,10 +99,7 @@ class Account::PositionCore < OhDelegator::Base
   end
 
   def recreate_position(existing_position, attributes)
-    # User may already have a position and its name could be missing (from a deleted CVS repository, probably).
-    # In that case, let's delete the existing position, and create a new one.
     existing_position.try(:destroy)
-    # If no existing position, then create a new one including the form attributes(title, desc)
     Position.create!(attributes)
   end
 

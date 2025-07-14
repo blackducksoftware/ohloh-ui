@@ -22,7 +22,7 @@
       = account.kudo_rank
 
     .mini-badges-section.pull-left.kudo_badge
-      = render 'badges_row', badges: [BadgeDecorator.new(KudoRankBadge.new(account))]
+      = render 'badges_row', badges: [BadgeDecorator.new(Badge::KudoRankBadge.new(account))]
   .pull-left.commits_summary
     - if vf.commits > 0 && @positions_map.any?
       .commits_count.pull-left
@@ -71,5 +71,5 @@
       = account.kudo_rank
 
     .mini-badges-section.pull-left.kudo_badge
-      = render 'badges_row', badges: [BadgeDecorator.new(KudoRankBadge.new(account))]
+      = render 'badges_row', badges: [BadgeDecorator.new(Badge::KudoRankBadge.new(account))]
   .clear

@@ -3,7 +3,7 @@
 class Forge::SourceForge < Forge
   # attr_accessor :url
 
-  # rubocop:disable Lint/DuplicateBranch # Trying to avoid a long oneliner.
+  # rubocop:disable Lint/DuplicateBranch
   def match(url)
     @url = url
     case @url

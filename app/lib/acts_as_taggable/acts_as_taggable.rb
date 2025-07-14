@@ -32,7 +32,7 @@ module ActsAsTaggable
     def parse_tag_list(list)
       return [] if list.blank?
 
-      list.delete('"').split(/\s/).reject(&:blank?)
+      list.delete('"').split(/\s/).compact_blank
     end
   end
 end

@@ -4,7 +4,7 @@ class CiiBadge < ProjectBadge
   validates :identifier, numericality: { only_integer: true }
 
   def badge_url
-    "#{ENV['CII_API_BASE_URL']}projects/
+    "#{ENV.fetch('CII_API_BASE_URL', nil)}projects/
     #{identifier}/badge"
   end
 

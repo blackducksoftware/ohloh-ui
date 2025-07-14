@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
-class Account < ApplicationRecord
+require 'forwardable'
+
+class Account < ApplicationRecord # rubocop:disable Metrics/ClassLength
+  extend Forwardable
+
   include AffiliationValidation
   include AccountValidations
   include AccountAssociations
@@ -13,7 +17,17 @@ class Account < ApplicationRecord
   attr_reader :password
   attr_writer :ip
 
-  oh_delegators :stack_core, :project_core, :position_core, :claim_core, :access
+  # Delegations from position_core
+  def_delegators :position_core, :with_projects, :ordered
+  # Delegations from project_core
+  def_delegators :project_core, :stacked?, :used, :stacked_count
+  # Delegations from stack_core
+  def_delegators :stack_core, :default
+  # Delegations from claim_core
+  def_delegators :claim_core, :email_ids, :emails, :unclaimed_persons_count
+  # Delegations from access
+  def_delegators :access, :admin?, :default?, :bot?, :activated?, :email_verified?, :disabled?
+
   strip_attributes :name, :email, :login, :invite_code, :twitter_account
 
   serialize :reset_password_tokens, Hash
@@ -101,6 +115,26 @@ class Account < ApplicationRecord
     ManualVerification.create(account_id: id, unique_id: id)
   end
 
+  def stack_core
+    @stack_core ||= Account::StackCore.new(self)
+  end
+
+  def access
+    @access ||= Account::Access.new(self)
+  end
+
+  def position_core
+    @position_core ||= Account::PositionCore.new(self)
+  end
+
+  def claim_core
+    @claim_core ||= Account::ClaimCore.new(self)
+  end
+
+  def project_core
+    @project_core ||= Account::ProjectCore.new(self)
+  end
+
   class << self
     def resolve_login(login)
       Account.find_by('lower(login) = ?', login.to_s.downcase)
@@ -124,6 +158,14 @@ class Account < ApplicationRecord
 
     def find_or_create_anonymous_account
       find_by(login: AnonymousAccount::LOGIN) || AnonymousAccount.create!
+    end
+
+    def ransackable_attributes(_auth_object = nil)
+      authorizable_ransackable_attributes
+    end
+
+    def ransackable_associations(_auth_object = nil)
+      authorizable_ransackable_associations
     end
   end
 end

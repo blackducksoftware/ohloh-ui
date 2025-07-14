@@ -10,7 +10,7 @@ xml.affiliated_committers do
     xml.affiliator do
       xml.name acc.name
       xml.kudos acc.person.kudo_rank
-      xml.level FOSSerBadge.new(acc, positions_count: acc.positions.count).level
+      xml.level Badge::FosserBadge.new(acc, positions_count: acc.positions.count).level
       xml.most_commits do
         xml.project stats[:most_committed_project].name
         xml.commits stats[:max_commits]

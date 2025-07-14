@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Api::V1::JwtController < ApplicationController
-  include JWTHelper
+  include JwtHelper
   skip_before_action :verify_authenticity_token
   before_action :get_params
 
