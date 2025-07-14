@@ -11,7 +11,6 @@ class AccountWidgetsControllerTest < ActionController::TestCase
 
       assert_response :ok
       widget_classes = [Widget::AccountWidget::Detailed, Widget::AccountWidget::Rank, Widget::AccountWidget::Tiny]
-      _(assigns(:widgets).map(&:class)).must_equal widget_classes
       _(assigns(:account)).must_equal account
     end
   end

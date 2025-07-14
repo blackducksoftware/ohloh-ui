@@ -1,11 +1,5 @@
 # frozen_string_literal: true
 
-class MiniMagick::Tool::Convert
-  def executable
-    'magick'
-  end
-end
-
 module MiniMagickHelper
   private
 
