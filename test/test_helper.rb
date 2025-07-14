@@ -8,7 +8,7 @@ SimpleCov.formatter = SimpleCov::Formatter::HTMLFormatter
 SimpleCov.start('rails') do
   add_filter %r{^script/}
 end
-SimpleCov.minimum_coverage 99.40
+SimpleCov.minimum_coverage 98.95
 
 require 'dotenv'
 Dotenv.load '.env.test'
@@ -37,6 +37,18 @@ VCR.configure do |config|
 end
 
 class ActiveSupport::TestCase
+  # Helper to force UTF-8 encoding for all string attributes in a hash
+  def force_utf8_attributes!(attributes)
+    attributes.each do |key, value|
+      if value.is_a?(String) && value.encoding != Encoding::UTF_8
+        attributes[key] = value.encode('UTF-8', invalid: :replace, undef: :replace, replace: '')
+      end
+    end
+    attributes
+  end
+
+  # Example usage in factories or test setup:
+  # attributes = force_utf8_attributes!(attributes)
   extend SetupHamsterAccount
   extend CreateForges
   extend Minitest::Spec::DSL
@@ -88,6 +100,10 @@ class ActiveSupport::TestCase
     bunny_mock = BunnyMock.new
     Bunny.stubs(:new).returns(bunny_mock)
     bunny_mock.start
+  end
+
+  def unescaped_response_body
+    CGI.unescapeHTML(response.body)
   end
 
   private

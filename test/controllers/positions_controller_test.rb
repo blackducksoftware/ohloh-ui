@@ -331,8 +331,8 @@ class PositionsControllerTest < ActionController::TestCase
       get :index, params: { account_id: account.to_param }
       assert_response :success
       language = position.name_fact.primary_language.nice_name
-      _(response.body).must_match "1\nCommit\n</a>in mostly\n#{language}"
-      _(response.body).must_match position.name_fact.analysis.project.organization.name.gsub("'", '&#39;')
+      _(unescaped_response_body).must_match "1\nCommit\n</a>in mostly\n#{language}"
+      _(unescaped_response_body).must_match position.name_fact.analysis.project.organization.name
       assert_select 'div#all_projects.chart-with-data[data-value]', 1
     end
 

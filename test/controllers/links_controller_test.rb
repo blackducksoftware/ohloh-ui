@@ -60,7 +60,7 @@ class LinksControllerTest < ActionController::TestCase
 
     get :index, params: { project_id: project.vanity_url }
 
-    _(assert_select('a').count { |node| node.attr('href') =~ %r{https://baralert.+} }).must_equal 1
+    _(assert_select('a').count { |node| node.attr('href').to_s =~ %r{https://baralert.+} }).must_equal 1
     _(assert_select('a').count { |node| node.attr('href') == 'https://foobar.com' }).must_equal 1
   end
 

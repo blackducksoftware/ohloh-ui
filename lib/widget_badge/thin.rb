@@ -52,7 +52,7 @@ module WidgetBadge
     end
 
     def animate(*image_data, file_path)
-      MiniMagick::Tool::Convert.new do |convert|
+      MiniMagick::Tool.new('convert') do |convert|
         first_image_options = image_data.shift
         scroll_to_bottom(convert, first_image_options)
 

@@ -48,7 +48,7 @@ module WidgetBadge
     end
 
     def animate(*image_data, file_path)
-      MiniMagick::Tool::Convert.new do |convert|
+      MiniMagick::Tool.new('convert') do |convert|
         image_data.each do |options|
           convert_with_delay(convert, 320, options.merge(opacity: 100))
           convert_with_delay(convert, 10, options.merge(opacity: 70))
