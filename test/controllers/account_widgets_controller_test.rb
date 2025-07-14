@@ -10,7 +10,6 @@ class AccountWidgetsControllerTest < ActionController::TestCase
       get :index, params: { account_id: account.id }
 
       assert_response :ok
-      widget_classes = [Widget::AccountWidget::Detailed, Widget::AccountWidget::Rank, Widget::AccountWidget::Tiny]
       _(assigns(:account)).must_equal account
     end
   end
