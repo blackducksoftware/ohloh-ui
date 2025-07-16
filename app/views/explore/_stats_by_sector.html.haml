@@ -1,10 +1,10 @@
 :ruby
   orgs_count = @stats_by_sector.map(&:organization_count).max
-  scale = scale_to(orgs_count)
+  scale = scale_to(orgs_count) if orgs_count
   avg_commits = @stats_by_sector.map(&:average_commits).max
-  gauge_scale = scale_to(avg_commits, 1000)
+  gauge_scale = scale_to(avg_commits, 1000) if avg_commits
 
-.col-md-8.margin_left_10#stats-by-sector
+.margin_left_10#stats-by-sector
   %h2.margin_bottom_20= t '.title'
   %table.table{ style: 'border: 1px solid #ccc' }
     %thead
@@ -19,7 +19,7 @@
           %td
             #commit-gauge{ 'data-gauge' => orgs.average_commits.to_s, 'data-gauge-max' => gauge_scale.to_s, class: "gauge-#{orgs.org_type}" }
 
-          %td
+          %td.center
             .progress#progress-container
               #progress-bar{ role: 'progressbar', 'aria-valuemax' => scale.to_s,
               'aria-valuenow' => orgs.organization_count.to_s, 'aria-valuemin' => '1' }

@@ -1,20 +1,20 @@
-.well.col-md-4.margin_left_5#most-active-orgs
+.well.margin_left_5#most-active-orgs
   %h2.title= t('.title')
   - @most_active_orgs.each do |org_thirty_day_activity|
     - org = org_thirty_day_activity.organization
     .row
-      .col-md-3
+      .col-md-3.col-xs-3
         = link_to org.decorate.icon(:med), organization_path(org), title: org.name,
         style: 'text-decoration: none', class: 'logo'
-      .col-md-9
+      .col-md-9.col-xs-9
         = link_to h(truncate(org.name, length: 24)), organization_path(org), title: org.name
         .margin_top_10
         = link_to org_thirty_day_activity.commits_per_affiliate,
           organization_path(org, view: 'affiliated_committers')
         %i.small= t('.commits_or_affiliates')
   .row.no_margin_bottom#active-org-timestamp
-    .col-md-6
+    .col-md-6.col-xs-6
       %p= t('.within_30_days')
-    .col-md-6.pull-right
+    .col-md-6.pull-right.col-xs-6
       %p.pull-right.margin_right_10
         = t '.last_calculated', duration: time_ago_in_words(@most_active_orgs.first.created_at) if @most_active_orgs.first
