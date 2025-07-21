@@ -39,7 +39,7 @@ module OhlohUi
     matches = /([0-9.]+)/.match(`passenger -v 2>&1`)
     config.passenger_version = matches ? matches[0] : '???'
 
-    redis_config = { host: ENV.fetch('REDIS_HOST', nil), port: ENV.fetch('REDIS_PORT', nil),
+    redis_config = { host: ENV.fetch('REDIS_HOST', nil), port: ENV.fetch('REDIS_PORT', 0).to_i,
                      namespace: ENV.fetch('REDIS_NAMESPACE', nil) }
     redis_config[:password] = ENV.fetch('REDIS_PASSWORD', nil) if Rails.env.development?
     config.cache_store = :redis_store, redis_config

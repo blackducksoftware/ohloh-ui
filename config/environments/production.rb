@@ -92,6 +92,8 @@ Rails.application.configure do
 
   config.active_record.yaml_column_permitted_classes = [Symbol, Time]
 
+  config.active_record.cache_versioning = false
+
   # Use a different logger for distributed setups.
   logger           = ActiveSupport::Logger.new('/proc/1/fd/1')
   logger.formatter = config.log_formatter
