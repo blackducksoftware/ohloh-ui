@@ -6,20 +6,21 @@
 
 .margin_left_10#stats-by-sector
   %h2.margin_bottom_20= t '.title'
-  %table.table{ style: 'border: 1px solid #ccc' }
-    %thead
-      %tr{ style: 'background-color: #ccc' }
-        %th.strong= t '.sector'
-        %th.strong.center= t '.average'
-        %th.strong.center= t '.orgs'
-    %tbody
-      - @stats_by_sector.each do |orgs|
-        %tr{ style: 'background-color: #fff' }
-          %td.strong= Organization::ORG_TYPES.invert[orgs.org_type]
-          %td
-            #commit-gauge{ 'data-gauge' => orgs.average_commits.to_s, 'data-gauge-max' => gauge_scale.to_s, class: "gauge-#{orgs.org_type}" }
+  .table-responsive
+    %table.table{ style: 'border: 1px solid #ccc' }
+      %thead
+        %tr{ style: 'background-color: #ccc' }
+          %th.strong= t '.sector'
+          %th.strong.center= t '.average'
+          %th.strong.center= t '.orgs'
+      %tbody
+        - @stats_by_sector.each do |orgs|
+          %tr{ style: 'background-color: #fff' }
+            %td.strong= Organization::ORG_TYPES.invert[orgs.org_type]
+            %td
+              #commit-gauge{ 'data-gauge' => orgs.average_commits.to_s, 'data-gauge-max' => gauge_scale.to_s, class: "gauge-#{orgs.org_type}" }
 
-          %td.center
-            .progress#progress-container
-              #progress-bar{ role: 'progressbar', 'aria-valuemax' => scale.to_s,
-              'aria-valuenow' => orgs.organization_count.to_s, 'aria-valuemin' => '1' }
+            %td.center
+              .progress#progress-container
+                #progress-bar{ role: 'progressbar', 'aria-valuemax' => scale.to_s,
+                'aria-valuenow' => orgs.organization_count.to_s, 'aria-valuemin' => '1' }
