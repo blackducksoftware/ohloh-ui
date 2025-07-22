@@ -2,73 +2,72 @@
 - if @affiliated_committers.empty?
   %p= t('organizations.affiliated_committers.no_committers')
 - else
-  %table.table.table-striped.table-condensed#orgs_affiliated_list
-    %thead
-      %tr{ id: 'dingus-row' }
-        %td{ colspan: 14 } &nbsp;
-      %tr
-        %th{ rowspan: 2, style: 'width: 170px;' }= t('organizations.affiliated_committers.contrib_name')
-        %th.center{ rowspan: 2, style: 'width: 80px;' }= t('organizations.affiliated_committers.kudos')
-        %th{ rowspan: 2, style: 'width: 96px;' }
-          = image_tag('icons/foss-no-bg.png')
-          = t('organizations.affiliated_committers.level')
-        %th.center{ colspan: 2, style: 'width:200px' }
-          %strong= t('organizations.affiliated_committers.projects_committed_to')
-        %th{ rowspan: 2, style: 'width: 20px;' } &nbsp;
-        %th.center{ colspan: 2, style: 'width:200px' }
-          %strong= t('organizations.affiliated_committers.most_commits_to')
-        %th{ rowspan: 2, style: 'width: 20px;' } &nbsp;
-        %th.center{ colspan: 2, style: 'width:200px' }
-          %strong= t('organizations.affiliated_committers.most_recent_commits_on')
-      %tr
-        %th.center= t('organizations.affiliated_committers.portfolio')
-        %th.center= t('organizations.affiliated_committers.other')
-        %th.center= t('organizations.affiliated_committers.project')
-        %th.center= t('organizations.affiliated_committers.num_commits')
-        %th.center= t('organizations.affiliated_committers.project')
-        %th.center= t('organizations.affiliated_committers.date')
-
-    %tbody
-      - @affiliated_committers.each do |a|
-        - stats = organization_affiliated_committers_stats(@stats_map[a.id])
-        - next unless stats
-        - most_committed_project = stats[:most_committed_project]
-        - most_recent_project = stats[:most_recent_project]
-        - account_org = Account::OrganizationCore.new(a)
+  .table-responsive
+    %table.table.table-striped.table-condensed#orgs_affiliated_list
+      %thead
+        %tr{ id: 'dingus-row' }
+          %td{ colspan: 14 } &nbsp;
         %tr
-          %td
-            %a.float_left{ href: account_path(a) }
-              = image_tag avatar_img_path(a, 32), size: '32x32', style: 'margin-right:8px;'
-            %a{ href: account_path(a), title: h(a.name) }
-              = a.name.truncate(20)
-              - if @current_user && @current_user.id == a.id
-                %span= t('organizations.affiliated_committers.you')
-          %td.center!= avatar_small_laurels(a.person.kudo_rank)
-          %td.center
-            .mini-badges-section{ style: 'margin:0; position:relative;height: 0px' }
-              = render 'accounts/badges_row',
-                badges: [BadgeDecorator.new(FOSSerBadge.new(a, positions_count: a.positions.count))],
-                hide_foss_logo: true
-          - contribs_to_org = account_org.contributions_to_org_portfolio.to_i
-          - contribs_to_outside = account_org.contributions_outside_org.to_i
-          %td.center= (contribs_to_org == 0) ? '&mdash;'.html_safe : contribs_to_org
-          %td.center= (contribs_to_outside == 0) ? '&mdash;'.html_safe : contribs_to_outside
-          %td.center &nbsp;
-          %td.center
-            %a.logo-small{ href: project_path(most_committed_project), style: 'display: inline-block',
-                           title: most_committed_project.name }
-              = most_committed_project.decorate.icon(:small)
-          %td.center= stats[:max_commits]
-          %td.center &nbsp;
-          %td.center
-            %a.logo-small{ href: project_path(most_recent_project), title: most_recent_project.name,
-                           style: 'display: inline-block' }
-              = most_recent_project.decorate.icon(:small)
-          %td.center= stats[:last_checkin].to_date.to_s(:by) if stats[:last_checkin]
-  = render partial: 'pagination', locals: { count: @affiliated_committers.total_entries,
-                                            text: t('organizations.affiliated_committers.see_all',
-                                                     num: @organization.affiliators_count),
-                                            url: affiliated_committers_organization_path(@organization),
-                                            collection: @affiliated_committers }
+          %th{ rowspan: 2, style: 'width: 170px;' }= t('organizations.affiliated_committers.contrib_name')
+          %th.center{ rowspan: 2, style: 'width: 80px;' }= t('organizations.affiliated_committers.kudos')
+          %th{ rowspan: 2, style: 'width: 96px;' }
+            = image_tag('icons/foss-no-bg.png')
+            = t('organizations.affiliated_committers.level')
+          %th.center{ colspan: 2, style: 'width:200px' }
+            %strong= t('organizations.affiliated_committers.projects_committed_to')
+          %th{ rowspan: 2, style: 'width: 20px;' } &nbsp;
+          %th.center{ colspan: 2, style: 'width:200px' }
+            %strong= t('organizations.affiliated_committers.most_commits_to')
+          %th{ rowspan: 2, style: 'width: 20px;' } &nbsp;
+          %th.center{ colspan: 2, style: 'width:200px' }
+            %strong= t('organizations.affiliated_committers.most_recent_commits_on')
+        %tr
+          %th.center= t('organizations.affiliated_committers.portfolio')
+          %th.center= t('organizations.affiliated_committers.other')
+          %th.center= t('organizations.affiliated_committers.project')
+          %th.center= t('organizations.affiliated_committers.num_commits')
+          %th.center= t('organizations.affiliated_committers.project')
+          %th.center= t('organizations.affiliated_committers.date')
 
-.clear &nbsp;
+      %tbody
+        - @affiliated_committers.each do |a|
+          - stats = organization_affiliated_committers_stats(@stats_map[a.id])
+          - next unless stats
+          - most_committed_project = stats[:most_committed_project]
+          - most_recent_project = stats[:most_recent_project]
+          - account_org = Account::OrganizationCore.new(a)
+          %tr
+            %td
+              %a.float_left{ href: account_path(a) }
+                = image_tag avatar_img_path(a, 32), size: '32x32', style: 'margin-right:8px;'
+              %a{ href: account_path(a), title: h(a.name) }
+                = a.name.truncate(20)
+                - if @current_user && @current_user.id == a.id
+                  %span= t('organizations.affiliated_committers.you')
+            %td.center!= avatar_small_laurels(a.person.kudo_rank)
+            %td.center
+              .mini-badges-section{ style: 'margin:0; position:relative;height: 0px' }
+                = render 'accounts/badges_row',
+                  badges: [BadgeDecorator.new(FOSSerBadge.new(a, positions_count: a.positions.count))],
+                  hide_foss_logo: true
+            - contribs_to_org = account_org.contributions_to_org_portfolio.to_i
+            - contribs_to_outside = account_org.contributions_outside_org.to_i
+            %td.center= (contribs_to_org == 0) ? '&mdash;'.html_safe : contribs_to_org
+            %td.center= (contribs_to_outside == 0) ? '&mdash;'.html_safe : contribs_to_outside
+            %td.center &nbsp;
+            %td.center
+              %a.logo-small{ href: project_path(most_committed_project), style: 'display: inline-block',
+                            title: most_committed_project.name }
+                = most_committed_project.decorate.icon(:small)
+            %td.center= stats[:max_commits]
+            %td.center &nbsp;
+            %td.center
+              %a.logo-small{ href: project_path(most_recent_project), title: most_recent_project.name,
+                            style: 'display: inline-block' }
+                = most_recent_project.decorate.icon(:small)
+            %td.center= stats[:last_checkin].to_date.to_s(:by) if stats[:last_checkin]
+    = render partial: 'pagination', locals: { count: @affiliated_committers.total_entries,
+                                              text: t('organizations.affiliated_committers.see_all',
+                                                      num: @organization.affiliators_count),
+                                              url: affiliated_committers_organization_path(@organization),
+                                              collection: @affiliated_committers }
