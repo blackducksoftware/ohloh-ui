@@ -2,6 +2,8 @@
 
 class ProjectLicense < ApplicationRecord
   include KnowledgeBaseCallbacks
+  include ActsAsEditable
+  include ActsAsProtected
 
   belongs_to :project, optional: true
   belongs_to :license, optional: true

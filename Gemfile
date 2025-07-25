@@ -3,7 +3,7 @@
 source 'https://rubygems.org'
 gem 'activeadmin'
 gem 'airbrake', '~> 10.0.3'
-gem 'aws-sdk', '~> 2.3'
+gem 'aws-sdk', '~> 3'
 gem 'bcrypt_pbkdf', '~> 1.0'
 gem 'bootstrap_jt', '~> 0.1.0'
 gem 'brakeman', '>= 4.7.1'

@@ -3,6 +3,8 @@
 # rubocop:disable Metrics/ClassLength
 class Project < ApplicationRecord
   include ActsAsEditable
+  include ActsAsProtected
+  include ActsAsTaggable
   has_one :create_edit, as: :target
   acts_as_editable editable_attributes: %i[name vanity_url organization_id best_analysis_id
                                            description tag_list missing_source url download_url],

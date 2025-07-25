@@ -3,6 +3,7 @@
 ENV['RAILS_ENV'] ||= 'test'
 require 'simplecov'
 require 'simplecov-rcov'
+require 'aws-sdk-ses'
 
 SimpleCov.formatter = SimpleCov::Formatter::HTMLFormatter
 SimpleCov.start('rails') do

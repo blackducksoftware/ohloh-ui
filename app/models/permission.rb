@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Permission < ApplicationRecord
+  include ActsAsEditable
+  include ActsAsProtected
   belongs_to :target, polymorphic: true, optional: true
 
   acts_as_editable editable_attributes: [:remainder],
