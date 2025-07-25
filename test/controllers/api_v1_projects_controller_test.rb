@@ -17,6 +17,7 @@ class Api::V1::ProjectsControllerTest < ActionController::TestCase
     ENV['JWT_SECRET_API_KEY'] = Faker::Alphanumeric.alpha(number: 5)
     @jwt = build_jwt(@account.login, 24)
     @url = Faker::Internet.url
+    @admin_jwt = build_jwt(create(:admin).login, 24)
   end
 
   describe 'create', type: :controller do
@@ -37,7 +38,7 @@ class Api::V1::ProjectsControllerTest < ActionController::TestCase
         stubs(:current_user).returns(@account)
         url = 'git://github.com/rails/rails.git'
         license = create(:license, vanity_url: 'rails')
-        post :create, params: { JWT: @jwt, repo_url: url,
+        post :create, params: { JWT: @admin_jwt, repo_url: url,
                                 license_name: license.name }, format: :json
         @controller.instance_eval { project_params }
         @controller.instance_eval { populate_project_from_forge('https://github.com/rails/rails', true) }
@@ -80,9 +81,17 @@ class Api::V1::ProjectsControllerTest < ActionController::TestCase
   end
 
   describe 'create# for bad request' do
-    it 'it should not create a project without editor account' do
+    it 'it should not create a project without admin account' do
       VCR.use_cassette('code_location_find_by_url') do
         post :create, params: { JWT: @jwt }, format: :json
+        expect(@response.content_type).must_equal 'application/json'
+        assert_response :unauthorized
+      end
+    end
+
+    it 'it should not create a project without editor account' do
+      VCR.use_cassette('code_location_find_by_url') do
+        post :create, params: { JWT: @admin_jwt }, format: :json
         expect(@response.content_type).must_equal 'application/json'
         assert_response :bad_request
       end
