@@ -27,7 +27,7 @@ module JWTHelper
       return
     end
 
-    clearance_session.sign_in(account)
     return unless account.present? && current_user_is_admin?
+    clearance_session.sign_in(account)
   end
 end
