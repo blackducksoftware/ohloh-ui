@@ -57,6 +57,26 @@ class Api::V1::ProjectsControllerTest < ActionController::TestCase
     end
   end
 
+  describe 'code_location_branch' do
+    it 'must return nil when repository url is not a valid url' do
+      out = @controller.send(:code_location_branch, 'https:// rm -rf *')
+      _(out).must_be_nil
+    end
+
+    it 'must return nil when repository url has a pipe' do
+      out = @controller.send(:code_location_branch, 'https|sleep 20')
+      _(out).must_be_nil
+    end
+
+    it 'must return the branch when the url is valid' do
+      response = "ref: refs/heads/master        HEAD\n bfa452de7c35e6c12914b814096249691d977100 HEAD"
+      Open3.stubs(:capture3).returns [response, nil, nil]
+
+      out = @controller.send(:code_location_branch, 'https://github.com/blackducksoftware/ohloh-ui/')
+      _(out).must_equal 'master'
+    end
+  end
+
   describe 'create#ValidationError', type: :controller do
     it 'it should handle duplicate project creation throw validation error' do
       VCR.use_cassette('CreateProjectFromMatchURL') do
