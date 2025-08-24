@@ -17,6 +17,7 @@ class Api::V1::ProjectsControllerTest < ActionController::TestCase
     ENV['JWT_SECRET_API_KEY'] = Faker::Alphanumeric.alpha(number: 5)
     @jwt = build_jwt(@account.login, 24)
     @url = Faker::Internet.url
+    @admin_jwt = build_jwt(create(:admin).login, 24)
   end
 
   describe 'create', type: :controller do
@@ -37,7 +38,7 @@ class Api::V1::ProjectsControllerTest < ActionController::TestCase
         stubs(:current_user).returns(@account)
         url = 'git://github.com/rails/rails.git'
         license = create(:license, vanity_url: 'rails')
-        post :create, params: { JWT: @jwt, repo_url: url,
+        post :create, params: { JWT: @admin_jwt, repo_url: url,
                                 license_name: license.name }, format: :json
         @controller.instance_eval { project_params }
         @controller.instance_eval { populate_project_from_forge('https://github.com/rails/rails', true) }
@@ -53,6 +54,26 @@ class Api::V1::ProjectsControllerTest < ActionController::TestCase
       jwt = 'eyJhbGciOiJIUzI1.eyJleHBpcmF0aW9uIjoxNjMzMDI1NTcyLCJYWxleCJ9.whiDvp2KfeblCcMRnyskt7nehEcYKP5kEejkugIa0ko'
       post :create, params: { project: { JWT: jwt, url: @url } }, format: :json
       _(response).wont_be :successful?
+    end
+  end
+
+  describe 'code_location_branch' do
+    it 'must return nil when repository url is not a valid url' do
+      out = @controller.send(:code_location_branch, 'https:// rm -rf *')
+      _(out).must_be_nil
+    end
+
+    it 'must return nil when repository url has a pipe' do
+      out = @controller.send(:code_location_branch, 'https|sleep 20')
+      _(out).must_be_nil
+    end
+
+    it 'must return the branch when the url is valid' do
+      response = "ref: refs/heads/master        HEAD\n bfa452de7c35e6c12914b814096249691d977100 HEAD"
+      Open3.stubs(:capture3).returns [response, nil, nil]
+
+      out = @controller.send(:code_location_branch, 'https://github.com/blackducksoftware/ohloh-ui/')
+      _(out).must_equal 'master'
     end
   end
 
@@ -80,10 +101,18 @@ class Api::V1::ProjectsControllerTest < ActionController::TestCase
   end
 
   describe 'create# for bad request' do
-    it 'it should not create a project without editor account' do
+    it 'it should not create a project without admin account' do
       VCR.use_cassette('code_location_find_by_url') do
         post :create, params: { JWT: @jwt }, format: :json
-        expect(@response.content_type).must_equal 'application/json; charset=utf-8'
+        expect(@response.content_type).must_equal 'application/json'
+        assert_response :unauthorized
+      end
+    end
+
+    it 'it should not create a project without editor account' do
+      VCR.use_cassette('code_location_find_by_url') do
+        post :create, params: { JWT: @admin_jwt }, format: :json
+        expect(@response.content_type).must_equal 'application/json'
         assert_response :bad_request
       end
     end

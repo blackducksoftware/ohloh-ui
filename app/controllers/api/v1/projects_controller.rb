@@ -72,7 +72,10 @@ class Api::V1::ProjectsController < ApplicationController
   end
 
   def code_location_branch(url)
-    out, _err, _status = Open3.capture3("git ls-remote --symref #{url} HEAD | head -1 | awk '{print $2}'")
-    out.strip.sub('refs/heads/', '')
+    return unless url&.match(/^(https?|git)/)
+
+    out, _err, _status = Open3.capture3('git', 'ls-remote', '--symref', url.to_s, 'HEAD')
+    ref_line = out.lines.grep(/^ref:/).first
+    ref_line&.slice(%r{^ref: refs/heads/(\S+)}, 1)
   end
 end

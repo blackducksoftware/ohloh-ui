@@ -11,7 +11,7 @@ class Api::V1::EnlistmentsControllerTest < ActionController::TestCase
     @url = Faker::Internet.url
     @enlistment = create_random_enlistment(@url)
     @project_id = @enlistment.project_id
-    @account = create(:account)
+    @account = create(:admin)
     ENV['JWT_SECRET_API_KEY'] = Faker::Alphanumeric.alpha(number: 5)
     @jwt = build_jwt(@account.login, 24)
     Enlistment.any_instance.stubs(:update_subscription).returns(true)
