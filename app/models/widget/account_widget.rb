@@ -1,10 +1,11 @@
 # frozen_string_literal: true
 
-class AccountWidget < Widget
+class Widget::AccountWidget < Widget
   def initialize(vars = {})
     raise ArgumentError I18n.t('account_widgets.missing') unless vars[:account_id]
 
     super
+    @account_id = vars[:account_id]
   end
 
   def title

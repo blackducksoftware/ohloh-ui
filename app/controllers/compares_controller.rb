@@ -59,7 +59,7 @@ class ComparesController < ApplicationController
   def metric_data(metric_name, project)
     return [] unless metric_name
 
-    data = project.best_analysis.send("#{metric_name}_history".to_sym, @start_date, @end_date)
+    data = project.best_analysis.send(:"#{metric_name}_history", @start_date, @end_date)
     data.map do |values|
       metric_name == 'code_total' ? values['code_total'].to_i : values[metric_name.pluralize.to_s].to_i
     end

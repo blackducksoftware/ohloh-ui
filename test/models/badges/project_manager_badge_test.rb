@@ -5,7 +5,7 @@ require 'test_helper'
 class ProjectManagerBadgeTest < ActiveSupport::TestCase
   let(:user) { create(:account) }
   let(:project) { create(:project) }
-  let(:project_manager_badge) { ProjectManagerBadge.new(user) }
+  let(:project_manager_badge) { Badge::ProjectManagerBadge.new(user) }
 
   describe 'eligibility_count' do
     it 'should return managed projects' do

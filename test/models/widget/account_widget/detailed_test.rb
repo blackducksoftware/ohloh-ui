@@ -4,7 +4,7 @@ require 'test_helper'
 
 class DetailedTest < ActiveSupport::TestCase
   let(:account) { create(:account) }
-  let(:widget) { AccountWidget::Detailed.new(account_id: account.id) }
+  let(:widget) { Widget::AccountWidget::Detailed.new(account_id: account.id) }
 
   describe 'width' do
     it 'should return 230' do

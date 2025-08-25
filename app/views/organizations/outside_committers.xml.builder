@@ -12,7 +12,7 @@ xml.response do
         xml.contributor do
           xml.name outside_committer.name
           xml.kudos outside_committer.person.kudo_rank
-          xml.level FOSSerBadge.new(outside_committer, positions_count: outside_committer.positions.count).level
+          xml.level Badge::FosserBadge.new(outside_committer, positions_count: outside_committer.positions.count).level
           xml.affiliated_with outside_committer.organization.try(:name) || 'Unaffiliated'
           xml.contributions_to_portfolio_projects do
             xml.projects projects.map(&:name).join(', ')

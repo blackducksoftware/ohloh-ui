@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class ApiKey < ApplicationRecord
+  include FilterBy
   DEFAULT_DAILY_LIMIT = 1000
   STATUS_OK = 0
   STATUS_LIMIT_EXCEEDED = 1
@@ -47,12 +48,20 @@ class ApiKey < ApplicationRecord
     def find_for_oauth_application_uid(client_id)
       joins(:oauth_application).find_by('oauth_applications.uid' => client_id)
     end
+
+    def ransackable_attributes(_auth_object = nil)
+      authorizable_ransackable_attributes
+    end
+
+    def ransackable_associations(_auth_object = nil)
+      authorizable_ransackable_associations
+    end
   end
 
   private
 
   def daily_reset!
-    return unless day_began_at && day_began_at < (Time.current - 1.day)
+    return unless day_began_at && day_began_at < 1.day.ago
 
     assign_attributes(day_began_at: Time.current,
                       daily_count: 0,

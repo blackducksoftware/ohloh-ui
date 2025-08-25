@@ -28,7 +28,8 @@ module ProjectScopes
     scope :by_project_name, -> { order(name: :asc) }
     scope :language, -> { joins(best_analysis: :main_language).select('languages.name').map(&:name).first }
     scope :managed_by, lambda { |account|
-      joins(:manages).where.not(deleted: true, manages: { approved_by: nil }).where(manages: { account_id: account.id })
+      joins(:manages).where('projects.deleted != ? AND manages.approved_by IS NOT NULL AND manages.account_id = ?',
+                            true, account.id)
     }
     scope :case_insensitive_name, ->(mixed_case) { where(['lower(name) = ?', mixed_case.downcase]) }
     scope :case_insensitive_vanity_url, ->(mixed_case) { where(['lower(vanity_url) = ?', mixed_case.downcase]) }

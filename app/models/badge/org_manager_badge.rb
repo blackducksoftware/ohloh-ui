@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class OrgManagerBadge < Badge
+class Badge::OrgManagerBadge < Badge
   def eligibility_count
     @eligibility_count ||= vars[:manages_org_count]
     @eligibility_count ||= Organization.managed_by(account).count

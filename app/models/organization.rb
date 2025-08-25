@@ -1,11 +1,13 @@
 # frozen_string_literal: true
 
-class Organization < ApplicationRecord
+class Organization < ApplicationRecord # rubocop:disable Metrics/ClassLength
   include OrganizationSearchables
   include OrganizationJobs
   include OrganizationScopes
   include Tsearch
   include KnowledgeBaseCallbacks
+  include ActsAsEditable
+  include ActsAsProtected
 
   ORG_TYPES = { 'Commercial' => 1, 'Education' => 2, 'Government' => 3, 'Non-Profit' => 4 }.freeze
   ALLOWED_SORT_OPTIONS = %w[newest recent name projects].freeze
@@ -98,6 +100,14 @@ class Organization < ApplicationRecord
     def search_and_sort(query, sort, page)
       sort = 'projects' unless sort && ALLOWED_SORT_OPTIONS.include?(sort)
       tsearch(query, "sort_by_#{sort}").where.not(deleted: true).paginate(page: page, per_page: 10)
+    end
+
+    def ransackable_attributes(_auth_object = nil)
+      authorizable_ransackable_attributes
+    end
+
+    def ransackable_associations(_auth_object = nil)
+      authorizable_ransackable_associations
     end
   end
 

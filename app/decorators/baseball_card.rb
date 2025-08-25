@@ -78,7 +78,7 @@ class BaseballCard < Cherry::Decorator
       locals: { orgs: affiliated_orgs } }
   end
 
-  def i18n(string, options = {})
-    I18n.t("accounts.show.baseball_card.#{string}", options)
+  def i18n(string, **options)
+    I18n.t("accounts.show.baseball_card.#{string}", **options)
   end
 end

@@ -4,7 +4,7 @@ module DataDogReport
   module_function
 
   def info(message)
-    Logger.new(ENV['DATADOG_LOGGER_PATH']).info(message)
+    Logger.new(ENV.fetch('DATADOG_LOGGER_PATH', nil)).info(message)
   end
 
   def error(message)

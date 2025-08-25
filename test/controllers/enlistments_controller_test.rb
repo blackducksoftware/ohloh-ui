@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'test_helper'
+require Rails.root.join('app/lib/fisbot/fisbot_api')
 
 class EnlistmentsControllerTest < ActionController::TestCase
   before do
@@ -213,12 +214,11 @@ class EnlistmentsControllerTest < ActionController::TestCase
       error_response = Net::HTTPServerError.new('1.1', '503', 'error')
       error_response.stubs(:body).returns('Api error')
       Net::HTTP.any_instance.stubs(:request).returns(error_response)
-      _(lambda do
-        assert_no_difference 'Enlistment.count' do
-          post :create, params: { project_id: project.to_param,
-                                  code_location: { branch: 'master', url: url, scm_type: 'git' } }
-        end
-      end).must_raise(StandardError)
+      error = assert_raises(FisbotApiError) do
+        post :create, params: { project_id: project.to_param,
+                                code_location: { branch: 'master', url: url, scm_type: 'git' } }
+      end
+      _(error.message).must_match(/Api error/)
     end
 
     it 'must prevent non-managers from creating enlistments' do
@@ -393,6 +393,6 @@ def mock_and_get(action, dnf = false, params)
 
   ApiAccess.stubs(:available?).returns(true)
   WebMocker.get_code_location(@enlistment.code_location_id)
-  get action, params
+  get action, **params
 end
 # rubocop:enable Style/OptionalArguments

@@ -4,7 +4,7 @@ require 'test_helper'
 
 class PortfolioProjectsActivityTest < ActiveSupport::TestCase
   let(:org) { create(:organization) }
-  let(:widget) { OrganizationWidget::PortfolioProjectsActivity.new(organization_id: org.id) }
+  let(:widget) { Widget::OrganizationWidget::PortfolioProjectsActivity.new(organization_id: org.id) }
 
   describe 'title' do
     it 'should return title' do

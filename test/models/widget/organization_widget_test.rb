@@ -4,7 +4,7 @@ require 'test_helper'
 
 class OrganizationWidgetTest < ActiveSupport::TestCase
   let(:org) { create(:organization) }
-  let(:widget) { OrganizationWidget.new(organization_id: org.id) }
+  let(:widget) { Widget::OrganizationWidget.new(organization_id: org.id) }
 
   describe 'title' do
     it 'should return title' do
@@ -38,16 +38,16 @@ class OrganizationWidgetTest < ActiveSupport::TestCase
 
   describe 'create_widgets' do
     it 'should create descendan widgets' do
-      widget_classes = [OrganizationWidget::OpenSourceActivity,
-                        OrganizationWidget::PortfolioProjectsActivity,
-                        OrganizationWidget::AffiliatedCommittersActivity]
-      _(OrganizationWidget.create_widgets(org.id).map(&:class)).must_equal widget_classes
+      widget_classes = [Widget::OrganizationWidget::OpenSourceActivity,
+                        Widget::OrganizationWidget::PortfolioProjectsActivity,
+                        Widget::OrganizationWidget::AffiliatedCommittersActivity]
+      _(Widget::OrganizationWidget.create_widgets(org.id).map(&:class)).must_equal widget_classes
     end
   end
 
   describe 'initialize' do
     it 'should raise exception if account is missing' do
-      _(proc { OrganizationWidget.new }).must_raise ArgumentError
+      _(proc { Widget::OrganizationWidget.new }).must_raise ArgumentError
     end
   end
 end

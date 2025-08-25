@@ -331,8 +331,8 @@ class PositionsControllerTest < ActionController::TestCase
       get :index, params: { account_id: account.to_param }
       assert_response :success
       language = position.name_fact.primary_language.nice_name
-      _(response.body).must_match "1\nCommit\n</a>in mostly\n#{language}"
-      _(response.body).must_match position.name_fact.analysis.project.organization.name.gsub("'", '&#39;')
+      _(unescaped_response_body).must_match "1\nCommit\n</a>in mostly\n#{language}"
+      _(unescaped_response_body).must_match position.name_fact.analysis.project.organization.name
       assert_select 'div#all_projects.chart-with-data[data-value]', 1
     end
 
@@ -358,7 +358,7 @@ class PositionsControllerTest < ActionController::TestCase
       assert_response :success
       assert_select 'span.contribution_role', 'Release Engineer'
       # rubocop:disable Layout/LineLength
-      assert_select 'div.one-project-contribution', "Release Engineer\n\nAffiliated with Free Software Foundation\n\nwrote the module for wireless card driver ralink rt5390"
+      assert_select 'div.one-project-contribution', 'Release Engineer Affiliated with Free Software Foundation wrote the module for wireless card driver ralink rt5390'
       # rubocop:enable Layout/LineLength
     end
 
@@ -445,7 +445,7 @@ class PositionsControllerTest < ActionController::TestCase
 
     it 'must render error for a invalid position id' do
       get :show, params: { account_id: account.to_param, id: 0 }
-      assert_template 'error.html'
+      assert_template 'error'
     end
   end
 

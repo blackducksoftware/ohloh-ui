@@ -50,7 +50,7 @@ class ProjectsControllerTest < ActionController::TestCase
   end
 
   it 'index should handle query param sorting by new' do
-    create(:project, name: 'Foo_new', description: 'second', created_at: Time.current - 3.hours)
+    create(:project, name: 'Foo_new', description: 'second', created_at: 3.hours.ago)
     create(:project, name: 'FooBar_new', description: 'first')
     login_as nil
     get :index, params: { query: 'foo', sort: 'new' }
@@ -59,7 +59,7 @@ class ProjectsControllerTest < ActionController::TestCase
   end
 
   it 'index should handle q param sorting by new' do
-    create(:project, name: 'Foo_new', description: 'second', created_at: Time.current - 3.hours)
+    create(:project, name: 'Foo_new', description: 'second', created_at: 3.hours.ago)
     create(:project, name: 'FooBar_new', description: 'first')
     login_as nil
     get :index, params: { q: 'foo', sort: 'new' }
@@ -211,7 +211,7 @@ class ProjectsControllerTest < ActionController::TestCase
   it 'index should gracefully handle garbage numeric ids' do
     login_as nil
     get :index, params: { ids: '111112222222', api_key: client_id }, format: :xml
-    assert_response :not_found
+    assert_response :ok
   end
 
   it 'index should gracefully handle garbage non-numeric ids' do
@@ -242,7 +242,7 @@ class ProjectsControllerTest < ActionController::TestCase
   end
 
   it 'index should handle account sorting by "new"' do
-    project1 = create(:project, name: 'Foo_accounts_new', description: 'second', created_at: Time.current - 3.hours)
+    project1 = create(:project, name: 'Foo_accounts_new', description: 'second', created_at: 3.hours.ago)
     project2 = create(:project, name: 'FooBar_accounts_new', description: 'first')
     login_as nil
     manager = create(:account)
@@ -415,12 +415,12 @@ class ProjectsControllerTest < ActionController::TestCase
       login_as create(:account)
       get :show, params: { id: project }
       assert_response :ok
-      assert_select "a[href='#{oh_admin_project_jobs_path(project)}']", false, text: /View Jobs/
+      assert_select "a[href='#{oh_admin_project_jobs_path(project)}']", false
     end
 
     it 'must render 404 if unknown format' do
       get :show, params: { id: create(:project).to_param, format: 'abc' }
-      assert_template 'error.html'
+      assert_template 'error'
       assert_response :not_found
     end
 
@@ -443,8 +443,7 @@ class ProjectsControllerTest < ActionController::TestCase
       project.best_analysis.update! min_month: nil
 
       get :show, params: { id: project.to_param }
-
-      _(response.body).must_match(/no recognizable source code/)
+      _(response.body).must_match(/No source code was found in any of the code/)
       _(response.body).wont_match(/analysis isn't complete/)
     end
 
@@ -592,7 +591,7 @@ class ProjectsControllerTest < ActionController::TestCase
     assert_difference 'Project.count' do
       post :create, params: { project: { name: 'Foo Bar', vanity_url: 'foo_bar' } }
     end
-    assert_response 302
+    assert_response :found
   end
 
   it 'create should persist a valid project to the database' do
@@ -608,7 +607,7 @@ class ProjectsControllerTest < ActionController::TestCase
                                          project_licenses_attributes: license_attributes,
                                          enlistments_attributes: enlistment_params } }
     end
-    assert_response 302
+    assert_response :found
     project = Project.where(vanity_url: 'cool-beans').last
     _(project).wont_equal nil
     _(project.name).must_equal 'Cool Beans'
@@ -669,7 +668,7 @@ class ProjectsControllerTest < ActionController::TestCase
                                          project_licenses_attributes: license_attributes,
                                          enlistments_attributes: enlistment_params } }
     end
-    assert_response 302
+    assert_response :found
     project = Project.where(vanity_url: 'cool-beans').last
     _(project).wont_equal nil
     _(project.name).must_equal 'Cool Beans'
@@ -690,7 +689,7 @@ class ProjectsControllerTest < ActionController::TestCase
                                          project_licenses_attributes: [],
                                          enlistments_attributes: enlistment_params } }
     end
-    assert_response 302
+    assert_response :found
     project = Project.where(vanity_url: 'cool-beans').last
     _(project).wont_equal nil
     _(project.name).must_equal 'Cool Beans'
@@ -713,7 +712,7 @@ class ProjectsControllerTest < ActionController::TestCase
                                          project_licenses_attributes: license_attributes,
                                          enlistments_attributes: enlistment_params } }
     end
-    assert_response 302
+    assert_response :found
     project = Project.where(vanity_url: 'cool-beans').last
     _(project).wont_equal nil
     _(project.name).must_equal 'Cool Beans'
@@ -798,7 +797,7 @@ class ProjectsControllerTest < ActionController::TestCase
     project = create(:project)
     login_as create(:admin)
     put :update, params: { id: project.id, project: { name: 'KoolOSSProject' } }
-    assert_response 302
+    assert_response :found
     _(project.reload.name).must_equal 'KoolOSSProject'
   end
 

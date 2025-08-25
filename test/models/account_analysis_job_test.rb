@@ -17,7 +17,7 @@ class AccountAnalysisJobTest < ActiveSupport::TestCase
     AccountAnalysisJob.schedule_account_analysis(account, 10.minutes)
     account_analysis_jobs = AccountAnalysisJob.where(account_id: account.id)
     _(account_analysis_jobs.count).must_equal 1
-    _(account_analysis_jobs.first.wait_until).must_equal Time.current + 10.minutes
+    _(account_analysis_jobs.first.wait_until).must_equal 10.minutes.from_now
   end
 
   it 'should update job if exist' do
@@ -27,7 +27,7 @@ class AccountAnalysisJobTest < ActiveSupport::TestCase
     AccountAnalysisJob.schedule_account_analysis(account, 5.minutes)
     account_analysis_jobs = AccountAnalysisJob.where(account_id: account.id)
     _(account_analysis_jobs.count).must_equal 1
-    _(account_analysis_jobs.first.wait_until).must_equal Time.current + 5.minutes
+    _(account_analysis_jobs.first.wait_until).must_equal 5.minutes.from_now
   end
 
   it 'schedule_account_analysis_for_project' do

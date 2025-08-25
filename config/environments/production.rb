@@ -66,7 +66,8 @@ Rails.application.configure do
 
   config.action_mailer.smtp_settings = {
     user_name: 'apikey', # This is the string literal 'apikey', NOT the ID of your API key
-    password: ENV['SENDGRID_API_KEY'], # This is the secret sendgrid API key which was issued during API key creation
+    password: ENV.fetch('SENDGRID_API_KEY', nil),
+    # This is the secret sendgrid API key which was issued during API key creation
     domain: 'openhub.net',
     address: 'smtp.sendgrid.net',
     port: 587,
@@ -84,12 +85,14 @@ Rails.application.configure do
   # config.autoflush_log = false
 
   # Use default logging formatter so that PID and timestamp are not suppressed.
-  config.log_formatter = ::Logger::Formatter.new
+  config.log_formatter = Logger::Formatter.new
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
 
   config.active_record.yaml_column_permitted_classes = [Symbol, Time]
+
+  config.active_record.cache_versioning = false
 
   # Use a different logger for distributed setups.
   logger           = ActiveSupport::Logger.new('/proc/1/fd/1')

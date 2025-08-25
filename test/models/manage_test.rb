@@ -101,7 +101,7 @@ class ManageTest < ActiveSupport::TestCase
 
   it 'test destroy_by! fails if destroyer isnt approved' do
     Manage.create!(account: @user2, target: @proj1) # auto-approved
-    manage = Manage.create!(account: @user1, target: @proj1)
+    Manage.create!(account: @user1, target: @proj1)
     _(@proj1.reload.active_managers).wont_include(@user1)
 
     # create a manage entry for admin

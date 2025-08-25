@@ -3,7 +3,7 @@
 # rubocop:disable Metrics/ClassLength
 class ApplicationController < ActionController::Base
   include ClearanceSetup
-  BOT_REGEX = /\b(Baiduspider|Googlebot|libwww-perl|msnbot|SiteUptime|Slurp)\b/i.freeze
+  BOT_REGEX = /\b(Baiduspider|Googlebot|libwww-perl|msnbot|SiteUptime|Slurp)\b/i
   FORMATS_THAT_WE_RENDER_ERRORS_FOR = %w[html xml json].freeze
 
   include PageContextHelper
@@ -36,7 +36,7 @@ class ApplicationController < ActionController::Base
 
   def initialize(*params)
     @page_context = {}
-    super(*params)
+    super
   end
 
   def validate_request_format
@@ -117,7 +117,7 @@ class ApplicationController < ActionController::Base
   def current_user_can_manage?
     return true if current_user_is_admin?
 
-    logged_in? && current_project_or_org && current_project_or_org.active_managers.include?(current_user)
+    logged_in? && current_project_or_org&.active_managers&.include?(current_user)
   end
   helper_method :current_user_can_manage?
 
@@ -188,7 +188,7 @@ class ApplicationController < ActionController::Base
   end
 
   def render_with_format(action, status: :ok)
-    render "#{action}.#{request_format}", layout: 'application', status: status
+    render action, formats: [request_format.to_sym], layout: 'application', status: status
   end
 
   def clear_reminder
@@ -205,7 +205,7 @@ class ApplicationController < ActionController::Base
   end
 
   def redirect_to_saved_path(default = root_path, **args)
-    redirect_back(fallback_location: (session[:return_to] || default), **args)
+    redirect_back(fallback_location: session[:return_to] || default, **args)
     session[:return_to] = nil
   end
 
@@ -238,9 +238,7 @@ class ApplicationController < ActionController::Base
 
   def check_maintenance_mode
     maintenance_routes = ApplicationRecord.connection
-                                          .execute('select path from maintenance_routes;').to_a.collect do |data|
-      data['path']
-    end
+                                          .execute('select path from maintenance_routes;').to_a.pluck('path')
     render file: 'public/offline.html' if maintenance_routes.include?(controller_name)
   end
 
@@ -271,7 +269,7 @@ class ApplicationController < ActionController::Base
   end
 
   def api_client_id
-    params[:api_key] || (doorkeeper_token&.application && doorkeeper_token.application.uid)
+    params[:api_key] || doorkeeper_token&.application&.uid
   end
 
   def strip_query_param

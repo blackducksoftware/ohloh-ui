@@ -2,7 +2,7 @@
 
 class TravisBadge < ProjectBadge
   def badge_url
-    "#{ENV['TRAVIS_API_BASE_URL']}#{identifier}"
+    "#{ENV.fetch('TRAVIS_API_BASE_URL', nil)}#{identifier}"
   end
 
   def self.badge_name

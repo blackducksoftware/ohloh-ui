@@ -7,7 +7,7 @@ xml.outside_committers do
     xml.contributor do
       xml.name acc.name
       xml.kudos acc.person.kudo_rank
-      xml.level FOSSerBadge.new(acc, positions_count: acc.positions.count).level
+      xml.level Badge::FosserBadge.new(acc, positions_count: acc.positions.count).level
       xml.affiliated_with(acc.organization.try(:name) || 'Unaffiliated')
       xml.contributions_to_portfolio_projects do
         xml.projects acc.projects.map(&:name).join(', ')

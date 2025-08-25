@@ -6,7 +6,7 @@ class AccountWidgetsController < WidgetsController
   before_action :account_context, only: :index
 
   def index
-    @widgets = AccountWidget.create_widgets(params[:account_id])
+    @widgets = Widget::AccountWidget.create_widgets(params[:account_id])
   end
 
   private

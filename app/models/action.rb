@@ -18,11 +18,11 @@ class Action < ApplicationRecord
 
   def initialize(attributes = {})
     attributes ||= {}
-    super attributes.merge(parse_action(attributes.delete(:_action)))
+    super(attributes.merge(parse_action(attributes.delete(:_action))))
   end
 
   def run
-    return if !stack_project || account.stacks.count > 1
+    return if !stack_project || account.stacks.many?
 
     account.stack_core.default.projects << stack_project
     update status: STATUSES[:remind]

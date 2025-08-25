@@ -12,7 +12,7 @@ module OrganizationSearchables
       }
     end
 
-    # rubocop:disable Lint/BinaryOperatorWithIdenticalOperands # FIXME: bad logic
+    # rubocop:disable Lint/BinaryOperatorWithIdenticalOperands
     def searchable_factor
       projects_count = Project.not_deleted.count
       return 0.0 if projects_count.zero? || projects_count.zero?

@@ -1,13 +1,22 @@
 # frozen_string_literal: true
 
-class Account::Access < OhDelegator::Base
-  delegate :level, to: :account
+require 'forwardable'
+
+class Account::Access
+  extend Forwardable
+  def_delegator :account, :level
+
+  attr_reader :account
 
   DEFAULT = 0
   BOT = 5
   ADMIN = 10
   DISABLED = -10
   SPAM = -20
+
+  def initialize(account)
+    @account = account
+  end
 
   def admin?
     level.eql?(ADMIN)
@@ -60,7 +69,7 @@ class Account::Access < OhDelegator::Base
   end
 
   def manual_or_oauth_verified?
-    return if account.nil?
+    return false if account.nil?
 
     account.verifications.exists?
   end

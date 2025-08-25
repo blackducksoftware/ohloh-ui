@@ -7,7 +7,7 @@ require 'logger'
 class GenerateMissingTinyLogos
   def initialize
     @log = Logger.new('log/missing_tiny_logos.log')
-    @options = { bucket: ENV['OHLOH_S3_BUCKET_NAME'], acl: :public_read }
+    @options = { bucket: ENV.fetch('OHLOH_S3_BUCKET_NAME', nil), acl: :public_read }
     @tiny_image_count = 0
     @original_image_count = 0
   end

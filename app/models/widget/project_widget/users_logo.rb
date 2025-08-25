@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class ProjectWidget::UsersLogo < ProjectWidget
+class Widget::ProjectWidget::UsersLogo < Widget::ProjectWidget
   def height
     40
   end

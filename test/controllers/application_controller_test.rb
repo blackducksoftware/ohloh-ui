@@ -48,7 +48,7 @@ class ApplicationControllerTest < ActionController::TestCase
     it 'should render error template' do
       get :error_with_message
       assert_response :unauthorized
-      assert_template 'application/error.html'
+      assert_template 'application/error'
       _(assigns(:page_context)).must_equal({})
       assert_select('#project_header', 0)
       assert_select('#project_masthead', 0)

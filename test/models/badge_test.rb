@@ -6,7 +6,7 @@ class BadgeTest < ActiveSupport::TestCase
   describe 'BadgeTest' do
     let(:account) { create(:account) }
     let(:badge) { Badge.new(account, desc_edit_count: 10, manages_proj_count: 3) }
-    let(:kudo_badge) { KudoRankBadge.new(account) }
+    let(:kudo_badge) { Badge::KudoRankBadge.new(account) }
 
     it 'should initializes a new BadgeObject' do
       _(badge.account.id).must_equal account.id
@@ -24,12 +24,12 @@ class BadgeTest < ActiveSupport::TestCase
       badges = Badge.all_eligible(account)
       _(badges).must_be_kind_of Array
       _(badges.length).must_equal 1 # place holder it would change when implementing other badges
-      _(badges.first).must_be_kind_of KudoRankBadge
+      _(badges.first).must_be_kind_of Badge::KudoRankBadge
     end
 
     it 'should display the description of a badge' do
       _(kudo_badge.description(and_name: false)).must_equal 'Level 1'
-      _(kudo_badge.description(and_name: true)).must_equal 'Level 1 Kudo Rank'
+      _(kudo_badge.description(and_name: true)).must_equal 'Level 1 /Kudo Rank Badge'
     end
 
     it 'should test it has levels' do
@@ -50,7 +50,7 @@ class BadgeTest < ActiveSupport::TestCase
 
     it 'should test the string' do
       _(badge.to_underscore).must_be_empty
-      _(kudo_badge.to_underscore).must_equal 'kudo_rank'
+      _(kudo_badge.to_underscore).must_equal '/kudo_rank_badge'
     end
   end
 end

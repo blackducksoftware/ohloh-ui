@@ -8,4 +8,4 @@
           - link2 = link_to(t('header.stacked_nag_stack'), link2_uri)
           = t('header.stacked_nag_body', link1: link1, link2: link2).html_safe
           %a.command.soft{ href: url_for(clear_action_reminder: reminder.id) }= t('header.stacked_nag_close')
-  - reminder.update_attributes(status: Action::STATUSES[:completed]) if reminder.status == Action::STATUSES[:nag_once]
+  - reminder.update(status: Action::STATUSES[:completed]) if reminder.status == Action::STATUSES[:nag_once]

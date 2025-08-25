@@ -13,8 +13,16 @@ class AccountAnalysis < ApplicationRecord
 
   def language_logos
     facts = account_analysis_language_facts.with_language_and_projects
-    logo_ids = facts.joins(:most_commits_project).pluck(:logo_id) +
-               facts.joins(:recent_commit_project).pluck(:logo_id)
+    logo_ids = facts.joins(:most_commits_project).pluck('projects.logo_id') +
+               facts.joins(:recent_commit_project).pluck('projects.logo_id')
     Logo.where(id: logo_ids.compact)
+  end
+
+  def self.ransackable_attributes(_auth_object = nil)
+    authorizable_ransackable_attributes
+  end
+
+  def self.ransackable_associations(_auth_object = nil)
+    authorizable_ransackable_associations
   end
 end

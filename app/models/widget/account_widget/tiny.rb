@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class AccountWidget::Tiny < AccountWidget
+class Widget::AccountWidget::Tiny < Widget::AccountWidget
   def height
     15
   end

@@ -145,7 +145,7 @@ module Reverification
       end
 
       def verify_link
-        "<a href=#{url_helpers.new_authentication_url(host: ENV['URL_HOST'])}>reverification link</a>"
+        "<a href=#{url_helpers.new_authentication_url(host: ENV.fetch('URL_HOST', nil))}>reverification link</a>"
       end
     end
   end

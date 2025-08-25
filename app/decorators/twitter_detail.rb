@@ -17,7 +17,7 @@ class TwitterDetail < Cherry::Decorator
   end
 
   def url(request_url)
-    "https://twitter.com/intent/follow?original_referer=#{CGI.escape(request_url)}&region=follow_link&"\
+    "https://twitter.com/intent/follow?original_referer=#{CGI.escape(request_url)}&region=follow_link&" \
       "screen_name=#{twitter_account}&source=followbutton&variant=2.0"
   end
 

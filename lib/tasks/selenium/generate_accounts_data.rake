@@ -16,9 +16,9 @@ namespace :selenium do
   task prepare_accounts_data: %i[set_account account_summary generate_data]
 
   task set_account: :environment do
-    @account = Account.from_param(ENV['ACCOUNT_NAME']).take
+    @account = Account.from_param(ENV.fetch('ACCOUNT_NAME', nil)).take
 
-    abort "Account(#{ENV['ACCOUNT_NAME']}) not found" unless @account
+    abort "Account(#{ENV.fetch('ACCOUNT_NAME', nil)}) not found" unless @account
 
     @accounts_data = @account.attributes
   end

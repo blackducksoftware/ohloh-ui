@@ -230,7 +230,7 @@ class AccountTest < ActiveSupport::TestCase
   it 'should return recently active accounts' do
     best_account_analysis = create(:best_account_analysis)
     best_account_analysis.account
-                         .update(best_vita_id: best_account_analysis.id, created_at: Time.current - 4.days)
+                         .update(best_vita_id: best_account_analysis.id, created_at: 4.days.ago)
     account_analysis_fact = best_account_analysis.account_analysis_fact
     account_analysis_fact.update(last_checkin: Time.current)
 
@@ -249,7 +249,7 @@ class AccountTest < ActiveSupport::TestCase
     best_account_analysis = create(:best_account_analysis)
     level = Account::Access::BOT
     best_account_analysis.account.update(best_vita_id: best_account_analysis.id,
-                                         created_at: Time.current - 4.days, level: level)
+                                         created_at: 4.days.ago, level: level)
     account_analysis_fact = best_account_analysis.account_analysis_fact
     account_analysis_fact.update(last_checkin: Time.current)
     _(Account.recently_active.count).must_equal 0
@@ -618,7 +618,7 @@ class AccountTest < ActiveSupport::TestCase
 
   describe 'badges' do
     it 'should return all eligible badges' do
-      fosser_badge = FOSSerBadge.new(admin)
+      fosser_badge = Badge::FosserBadge.new(admin)
       Badge.stubs(:all_eligible).returns([fosser_badge])
       _(admin.badges).must_equal [fosser_badge]
     end

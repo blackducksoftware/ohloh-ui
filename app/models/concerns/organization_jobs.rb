@@ -5,7 +5,7 @@ module OrganizationJobs
 
   def ensure_job(priority = 0)
     Job.transaction do
-      return if jobs.incomplete.any?
+      next if jobs.incomplete.any?
 
       OrganizationAnalysisJob.create(organization: self, priority: priority, wait_until: Time.current.utc + 1.day)
     end

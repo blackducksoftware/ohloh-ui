@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class OhlohAnalyticsApi
-  URL = ENV['OHLOH_ANALYTICS_API_URL']
-  KEY = ENV['OHLOH_ANALYTICS_CLIENT_REGISTRATION_ID']
+  URL = ENV.fetch('OHLOH_ANALYTICS_API_URL', nil)
+  KEY = ENV.fetch('OHLOH_ANALYTICS_CLIENT_REGISTRATION_ID', nil)
 
   class << self
     def resource_uri(path = nil, query = {})

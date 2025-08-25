@@ -12,10 +12,11 @@ class DeleteGoogleCodeProjects
     @editor = Account.find_by(login: 'ohloh_slave')
   end
 
+  # rubocop:disable Metrics/MethodLength
   def execute
-    puts 'starting script'
+    DataDogReport.info 'starting script'
     @project_ids = fetch_googlecode_projects_array
-    puts "Attempting to delete #{@project_ids.length} google code projects"
+    DataDogReport.info "Attempting to delete #{@project_ids.length} google code projects"
 
     # update project deleted field for all googlecode projects in batches of 1000
     until (projects = Project.find(@project_ids.slice!(0..999))).empty?
@@ -23,8 +24,11 @@ class DeleteGoogleCodeProjects
         undo_project(project)
       end
     end
-    puts 'Successfully completed script - Please check deleted_googlecode_log_file.log to view any exceptions'
+    DataDogReport.info(
+      'Successfully completed script - Please check deleted_googlecode_log_file.log to view any exceptions'
+    )
   end
+  # rubocop:enable Metrics/MethodLength
 
   def fetch_googlecode_projects_array
     ActiveRecord::Base.connection.select_values("SELECT p.id as project_id
@@ -39,7 +43,7 @@ class DeleteGoogleCodeProjects
   end
 
   def undo_project(project)
-    puts "Processing project #{project.id}"
+    DataDogReport.info "Processing project #{project.id}"
     begin
       project.tags.delete_all
       project.create_edit.undo!(@editor) if project.create_edit.allow_undo?

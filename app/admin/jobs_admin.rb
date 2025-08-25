@@ -36,11 +36,11 @@ ActiveAdmin.register Job do
   member_action :reschedule, method: :put do
     job = Job.find(params[:id])
     if job.running?
-      flash[:warning] = 'Cannot schedule a running job.'
+      flash[:warning] = I18n.t('admin.jobs.cannot_schedule_running')
     else
       WorkerLog.create!(job: job, message: "Job rescheduled by #{current_user.name}.", level: WorkerLog::INFO)
       job.update!(status: Job::STATUS_SCHEDULED, worker: nil, exception: nil, backtrace: nil)
-      flash[:success] = 'Job has been rescheduled.'
+      flash[:success] = I18n.t('admin.jobs.rescheduled')
     end
     redirect_to_saved_path
   end
@@ -83,12 +83,12 @@ ActiveAdmin.register Job do
 
     def update
       Job.find(params['id']).update(permitted_params['job'])
-      flash[:success] = 'Priority has been updated'
+      flash[:success] = I18n.t('admin.jobs.priority_updated')
       redirect_to admin_job_path(params['id'])
     end
 
     def destroy
-      flash[:success] = 'Job has been deleted'
+      flash[:success] = I18n.t('admin.jobs.deleted')
       Job.find(params['id']).destroy
       redirect_to admin_jobs_path
     end

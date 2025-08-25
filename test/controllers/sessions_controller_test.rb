@@ -3,6 +3,9 @@
 require 'test_helper'
 
 class SessionsControllerTest < ActionController::TestCase
+  before do
+    ENV['MAX_LOGIN_RETRIES'] ||= '6'
+  end
   describe 'create' do
     let(:password) { Faker::Internet.password }
     let(:account) { create(:account, password: password) }
@@ -30,27 +33,26 @@ class SessionsControllerTest < ActionController::TestCase
       end
 
       it 'must increment auth failure count' do
+        ENV['FAILED_LOGIN_TIMEOUT'] = '15'
         auth_fail_count = max_login_retries - 2
-        account.update!(auth_fail_count: auth_fail_count)
+        account.update!(auth_fail_count: auth_fail_count, updated_at: Time.current)
         post :create, params: { login: { login: account.login } }
-
+        account.reload
         assert_template 'sessions/new'
         assert_response :unauthorized
-        account.reload
         _(account.auth_fail_count).must_equal(auth_fail_count + 1)
         _(flash.now[:error]).must_equal I18n.t('flashes.failure_after_create')
         assert_not account.access.disabled?
       end
 
       it 'wont compare password when recaptcha fails on the last try but auth passes' do
+        ENV['FAILED_LOGIN_TIMEOUT'] = '15'
         auth_fail_count = max_login_retries - 1
-        account.update!(auth_fail_count: auth_fail_count)
+        account.update!(auth_fail_count: auth_fail_count, updated_at: Time.current)
         @controller.expects(:verify_recaptcha)
-
         post :create, params: { login: { login: account.login, password: password },
                                 'g-recaptcha-response': Faker::Internet.password }
         account.reload
-
         assert_template 'sessions/new'
         _(account.auth_fail_count).must_equal auth_fail_count
         _(flash.now[:error]).must_equal I18n.t('sessions.create.recaptcha_failure')
@@ -59,12 +61,10 @@ class SessionsControllerTest < ActionController::TestCase
 
       it 'wont compare password or disable account when recaptcha fails on the last try alongwith auth failure' do
         auth_fail_count = max_login_retries - 1
-        account.update!(auth_fail_count: auth_fail_count)
+        account.update!(auth_fail_count: auth_fail_count, updated_at: Time.current)
         @controller.expects(:verify_recaptcha)
-
         post :create, params: { login: { login: account.login }, 'g-recaptcha-response': Faker::Internet.password }
         account.reload
-
         assert_template 'sessions/new'
         _(assert_select('label.control-label').children.first.text).must_equal I18n.t('shared.captcha.captcha_label')
         _(account.auth_fail_count).must_equal auth_fail_count
@@ -73,8 +73,9 @@ class SessionsControllerTest < ActionController::TestCase
       end
 
       it 'must disable account and send notice when auth failure reaches limit' do
+        ENV['FAILED_LOGIN_TIMEOUT'] = '15'
         auth_fail_count = max_login_retries - 1
-        account.update!(auth_fail_count: auth_fail_count)
+        account.update!(auth_fail_count: auth_fail_count, updated_at: Time.current)
 
         DataDogReport.expects(:info)
         AccountMailer.expects(:notify_disabled_account_for_login_failure).returns(stub(deliver_now: nil))
@@ -89,7 +90,8 @@ class SessionsControllerTest < ActionController::TestCase
       end
 
       it 'must render a captcha form after 3 failed login attempts' do
-        account.update!(auth_fail_count: 3)
+        ENV['FAILED_LOGIN_TIMEOUT'] = '15'
+        account.update!(auth_fail_count: 3, updated_at: Time.current)
 
         post :create, params: { login: { login: account.login } }
 

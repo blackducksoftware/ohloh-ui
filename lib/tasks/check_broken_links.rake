@@ -16,7 +16,7 @@ task check_broken_links: :environment do
       broken_link.touch
     end
   end
-  BrokenLink.where('updated_at < ?', 1.month.ago).destroy_all
+  BrokenLink.where(updated_at: ...1.month.ago).destroy_all
 end
 
 def valid_url(url)

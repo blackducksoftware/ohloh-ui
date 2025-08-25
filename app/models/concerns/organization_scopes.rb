@@ -9,7 +9,8 @@ module OrganizationScopes
     }
     scope :active, -> { where.not(deleted: true) }
     scope :managed_by, lambda { |account|
-      joins(:manages).where.not(deleted: true, manages: { approved_by: nil }).where(manages: { account_id: account.id })
+      joins(:manages).where('organizations.deleted != ? AND manages.approved_by IS NOT NULL AND manages.account_id = ?',
+                            true, account.id)
     }
     scope :case_insensitive_vanity_url, ->(mixed_case) { where(['lower(vanity_url) = ?', mixed_case.downcase]) }
     scope :sort_by_newest, -> { order(created_at: :desc) }

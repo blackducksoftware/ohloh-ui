@@ -4,7 +4,7 @@ slave.running_jobs
      .each_with_index do |job, i|
   status = case job.status
            when Job::STATUS_SCHEDULED then 'scheduled'
-           # rubocop:disable Lint/DuplicateBranch # Trying to avoid a long oneliner for under-five-minute.
+           # rubocop:disable Lint/DuplicateBranch
            when Job::STATUS_RUNNING
              case
              when job.current_step_at.nil? then 'under-five-minute'

@@ -52,7 +52,8 @@ class CodeLocationJobProgress
   end
 
   def completed
-    I18n.t 'repositories.job_progress.complete', at: time_ago_in_words(@job.current_step_at)
+    time = @job.current_step_at.to_i
+    I18n.t 'repositories.job_progress.complete', at: time_ago_in_words(time)
   end
 
   def no_job
@@ -72,6 +73,6 @@ class CodeLocationJobProgress
   end
 
   def sloc_set_code_set_time
-    best_code_set&.best_sloc_set && best_code_set.best_sloc_set.code_set_time
+    best_code_set&.best_sloc_set&.code_set_time
   end
 end

@@ -24,7 +24,7 @@ class OhAdmin::LicensePermissionsController < ApplicationController
     @delete_list = []
     parse_params
     save_changes
-    redirect_to oh_admin_license_permissions_path, notice: 'Changes Saved'
+    redirect_to oh_admin_license_permissions_path, notice: I18n.t('admin.license_permissions.changes_saved')
   end
 
   def get_permissions
@@ -50,10 +50,10 @@ class OhAdmin::LicensePermissionsController < ApplicationController
   end
 
   def retrieve_licenses
-    @licenses = License.all
-                       .joins(:license_license_permissions)
-                       .order(:name).distinct
-                       .collect { |license| [license.name, license.id] }
+    @licenses = License
+                .joins(:license_license_permissions)
+                .order(:name).distinct
+                .collect { |license| [license.name, license.id] }
   end
 
   def retrieve_license_rights
@@ -77,7 +77,7 @@ class OhAdmin::LicensePermissionsController < ApplicationController
 
     license_id = params[:license_id]
     sql = get_sql(license_id)
-    @permission_rights = ApplicationRecord.connection.select_all(sql).to_hash
+    @permission_rights = ApplicationRecord.connection.select_all(sql).to_a
   end
 
   def check_params

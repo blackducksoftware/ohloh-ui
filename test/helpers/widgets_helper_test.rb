@@ -7,7 +7,7 @@ class WidgetsHelperTest < ActionView::TestCase
 
   let(:factoid) { Factoid.new }
   let(:account) { create(:account) }
-  let(:widget) { AccountWidget::Detailed.new(account_id: account.id, test: 'test') }
+  let(:widget) { Widget::AccountWidget::Detailed.new(account_id: account.id, test: 'test') }
 
   describe 'factoid_image_path' do
     it 'should return good image path' do
@@ -58,7 +58,7 @@ class WidgetsHelperTest < ActionView::TestCase
     it 'should return url based on type' do
       path = "http://test.host/accounts/#{account.login}/widgets/account_detailed?format=js&test=test"
       stubs(:controller_name).returns(:account_widgets)
-      widget = AccountWidget::Detailed.new(account_id: account.id, test: 'test')
+      widget = Widget::AccountWidget::Detailed.new(account_id: account.id, test: 'test')
       _(widget_url(widget, 'account')).must_equal path
     end
   end

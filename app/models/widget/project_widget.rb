@@ -1,10 +1,13 @@
 # frozen_string_literal: true
 
-class ProjectWidget < Widget
+class Widget::ProjectWidget < Widget
+  attr_reader :project_id
+
   def initialize(vars = {})
-    raise ArgumentError I18n.t('project_widgets.missing') unless vars[:project_id]
+    raise ArgumentError, I18n.t('project_widgets.missing') unless vars[:project_id]
 
     super
+    @project_id = vars[:project_id]
   end
 
   def project
@@ -26,9 +29,9 @@ class ProjectWidget < Widget
 
   class << self
     def create_widgets(project_id)
-      widgets_classes = descendants.reject { |widget| widget == ProjectWidget::Users }
+      widgets_classes = descendants.reject { |widget| widget == Widget::ProjectWidget::Users }
       widgets = widgets_classes.map { |widget| widget.new(project_id: project_id) }
-      widgets += ProjectWidget::Users.instantiate_styled_badges(project_id: project_id)
+      widgets += Widget::ProjectWidget::Users.instantiate_styled_badges(project_id: project_id)
       widgets.select(&:can_display?).sort_by(&:position)
     end
   end

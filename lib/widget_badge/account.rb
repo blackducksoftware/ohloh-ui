@@ -32,6 +32,7 @@ module WidgetBadge
     end
 
     def new_text_image(text, options)
+      safe_text = text.to_s.gsub('"', '\"')
       new_image do |convert|
         convert.size('160x20')
         convert << 'xc:none'
@@ -39,7 +40,8 @@ module WidgetBadge
         set_font_and_color(convert, options)
         set_gravity(convert, options[:align])
 
-        convert.draw "text 0,#{options[:y_offset] - 8} '#{text.gsub("'") { |ch| "\\#{ch}" }}'"
+        # Use double quotes around text, escape double quotes only
+        convert.draw "text 0,#{options[:y_offset] - 8} \"#{safe_text}\""
       end
     end
 

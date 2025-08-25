@@ -18,7 +18,7 @@ class WidgetsController < ApplicationController
 
   def set_widget
     widget_name = action_name.split('_') - WIDGET_TYPES
-    @widget = Object.const_get("#{controller_name.camelize[0..-2]}::#{widget_name.join('_').camelize}")
+    @widget = Widget.const_get("#{controller_name.camelize[0..-2]}::#{widget_name.join('_').camelize}")
                     .new(permitted_params)
   end
 

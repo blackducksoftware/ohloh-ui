@@ -8,7 +8,7 @@ module CodeLocationJobs
       job = nil
       Job.transaction do
         job = jobs.incomplete.first
-        return job if job
+        next job if job
 
         # NOTE: PDP 2018-02-01 This method doesn't schedule a Fetch or Complete if the CL
         # hasn't been updated recently.  It should create a FetchJob if there isn't one scheduled

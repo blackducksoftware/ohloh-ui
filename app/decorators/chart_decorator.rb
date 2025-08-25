@@ -6,9 +6,8 @@ class ChartDecorator
     report_data = CommitsByProject.new(account).chart_data
     chart = CHART_DEFAULTS.clone
 
-    chart.deep_merge! YAML.safe_load(ERB.new(File.read(
-                                               Rails.root.join('config', 'charting', 'combined_commit_history.yml')
-                                             )).result(binding))
+    chart.deep_merge! YAML.safe_load(ERB.new(Rails.root.join('config', 'charting',
+                                                             'combined_commit_history.yml').read).result(binding))
     chart[:yAxis][:max] = report_data[:max_commits]
     chart[:xAxis][:categories] = string_to_hash(report_data[:x_axis])
     chart[:series] = [{ name: I18n.t('all_projects'), data: report_data[:y_axis] }]
@@ -38,7 +37,7 @@ class ChartDecorator
 
   # image_name is used in erb binding.
   def background_style(image_name)
-    file_contents = File.read(Rails.root.join('config', 'charting', 'chart_background_style.yml.erb'))
+    file_contents = Rails.root.join('config', 'charting', 'chart_background_style.yml.erb').read
     parsed_contents = ERB.new(file_contents).result(binding)
     YAML.safe_load(parsed_contents)
   end

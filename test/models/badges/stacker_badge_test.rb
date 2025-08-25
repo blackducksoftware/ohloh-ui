@@ -4,7 +4,7 @@ require 'test_helper'
 
 class StackerBadgeTest < ActiveSupport::TestCase
   let(:user) { create(:account) }
-  let(:stacker_badge) { StackerBadge.new(user) }
+  let(:stacker_badge) { Badge::StackerBadge.new(user) }
 
   describe 'eligibility_count' do
     it 'should return account stacks' do

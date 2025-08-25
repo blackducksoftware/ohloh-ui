@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require_relative 'project_builder'
 class ProjectParamsBuilder
   attr_accessor :row
   attr_reader :messages, :project
@@ -59,7 +60,7 @@ class ProjectParamsBuilder
 
   def validate_row
     raise ProjectParamsError, "kb id:#{@kb_project_id} contains a blank description" if @row['description'].blank?
-    raise ProjectExistsError, "kb id:#{@kb_project_id} project already exists"  if @row['owner'].nil?
+    raise ProjectExistsError, "kb id:#{@kb_project_id} project already exists" if @row['owner'].nil?
   end
 
   # rubocop:disable Metrics/MethodLength

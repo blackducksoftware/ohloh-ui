@@ -20,11 +20,20 @@ class TopicsController < ApplicationController
     end
   end
 
+  def show
+    @posts = @topic.posts.paginate(page: page_param, per_page: TopicDecorator::PER_PAGE)
+    @post = Post.new
+
+    render 'show.atom.builder' if request.format.rss?
+  end
+
   def new
     @topic = @forum.topics.build(account: current_user)
     @post = @topic.posts.build(account: current_user)
     redirect_to new_session_path unless logged_in?
   end
+
+  def edit; end
 
   def create
     @topic = Topic.new(topic_params)
@@ -34,13 +43,6 @@ class TopicsController < ApplicationController
     else
       render :new
     end
-  end
-
-  def show
-    @posts = @topic.posts.paginate(page: page_param, per_page: TopicDecorator::PER_PAGE)
-    @post = Post.new
-
-    render 'show.atom.builder' if request.format.rss?
   end
 
   def update
@@ -66,24 +68,22 @@ class TopicsController < ApplicationController
     redirect_to topic_path(@topic)
   end
 
-  def edit; end
-
   private
 
   def track_views
-    topic = Topic.where(id: params[:id]).take
+    topic = Topic.find_by(id: params[:id])
     raise ParamRecordNotFound unless topic
 
     topic.increment!(:hits) unless logged_in? && (@topic.account == current_user)
   end
 
   def find_forum_record
-    @forum = Forum.where(id: params[:forum_id]).take
+    @forum = Forum.find_by(id: params[:forum_id])
     raise ParamRecordNotFound unless @forum
   end
 
   def find_forum_and_topic_records
-    @topic = Topic.where(id: params[:id]).take
+    @topic = Topic.find_by(id: params[:id])
     raise ParamRecordNotFound unless @topic
 
     @forum = @topic.forum

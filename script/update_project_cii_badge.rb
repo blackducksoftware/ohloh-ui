@@ -49,7 +49,7 @@ class UpdateProjectCiiBadge
     project
   end
 
-  # rubocop:disable Lint/DuplicateBranch # Trying to avoid a long oneliner.
+  # rubocop:disable Lint/DuplicateBranch
   def normalize_url(url)
     case url
     when /^https?:\/\/\w+@github.com\/(.+)\.git$/
@@ -106,7 +106,7 @@ class UpdateProjectCiiBadge
   end
 
   def fetch_cii_projects(page)
-    JSON.parse Net::HTTP.get(URI("#{ENV['CII_API_BASE_URL']}projects.json?page=#{page}"))
+    JSON.parse Net::HTTP.get(URI("#{ENV.fetch('CII_API_BASE_URL', nil)}projects.json?page=#{page}"))
   end
 end
 

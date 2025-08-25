@@ -49,7 +49,7 @@ class Accounts::LanguagesControllerTest < ActionController::TestCase
 
       get :index, params: { account_id: account.id }
 
-      assert_response 302
+      assert_response :found
     end
   end
 end

@@ -46,7 +46,7 @@ class OhAdmin::AccountChart
       @spam[date] = 0 if @spam[date].nil?
       @regular[date] = 0 if @regular[date].nil?
       total_count_till_from_date += @regular[date]
-      @total_count <<  total_count_till_from_date if total_count_till_from_date
+      @total_count << total_count_till_from_date if total_count_till_from_date
       @x_axis << date.strftime('%a, %b %d')
     end
   end
