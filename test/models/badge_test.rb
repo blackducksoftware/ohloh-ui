@@ -52,5 +52,11 @@ class BadgeTest < ActiveSupport::TestCase
       _(badge.to_underscore).must_be_empty
       _(kudo_badge.to_underscore).must_equal '/kudo_rank_badge'
     end
+
+    it 'level returns lvl + 1 when count exceeds all limits' do
+      Badge.any_instance.stubs(:level_limits).returns([10, 20, 30])
+      Badge.any_instance.stubs(:eligibility_count).returns(40)
+      assert_equal 3, badge.level
+    end
   end
 end

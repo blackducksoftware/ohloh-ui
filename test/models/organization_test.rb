@@ -201,4 +201,21 @@ class OrganizationTest < ActiveSupport::TestCase
     org.update(name: Faker::Lorem.word + rand(999).to_s)
     _(KnowledgeBaseStatus.find_by(project_id: project.id).in_sync).must_equal false
   end
+
+  describe 'ransackable_associations method' do
+    let(:organization) { create(:organization) }
+
+    it 'should respond to ransackable_associations class method' do
+      assert_respond_to Organization, :ransackable_associations
+    end
+
+    it 'should call authorizable_ransackable_associations without auth_object parameter' do
+      # Mock the authorizable_ransackable_associations method
+      Organization.expects(:authorizable_ransackable_associations).once.returns(%w[projects accounts])
+
+      result = Organization.ransackable_associations
+
+      assert_equal %w[projects accounts], result
+    end
+  end
 end

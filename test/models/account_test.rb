@@ -221,6 +221,16 @@ class AccountTest < ActiveSupport::TestCase
     _(account_search.fifth.login).must_equal 'account_test'
   end
 
+  it 'non_anonymous excludes accounts with anonymous login or email' do
+    anon_login = create(:account, login: AccountScopes::ANONYMOUS_ACCOUNTS.first, email: 'user@example.com')
+    anon_email = create(:account, login: 'user1', email: AccountScopes::ANONYMOUS_ACCOUNTS_EMAILS.first)
+    normal = create(:account, login: 'normal_user', email: 'normal@example.com')
+    account_search = Account.non_anonymous
+    assert_not_includes account_search, anon_login
+    assert_not_includes account_search, anon_email
+    assert_includes account_search, normal
+  end
+
   it 'must protect from malicious sql' do
     create(:account, login: 'account-test')
     account_search = Account.simple_search("' OR 1 = 1")

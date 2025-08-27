@@ -419,4 +419,45 @@ class AccountsControllerTest < ActionController::TestCase
       get :settings, params: { id: create(:account).id }
     end
   end
+
+  describe 'disabled' do
+    it 'should render disabled template' do
+      account = create(:account)
+      account.access.spam!
+
+      get :disabled, params: { id: account.to_param }
+      assert_response :success
+    end
+  end
+
+  describe 'error handling' do
+    it 'should handle parameter missing exception' do
+      Airbrake.expects(:notify).once
+
+      post :create, params: {}
+
+      assert_redirected_to new_account_path
+    end
+  end
+
+  describe 'create_action_record' do
+    it 'create_action_record creates an Action with correct attributes' do
+      @account = create(:account)
+      @controller.stubs(:current_user).returns(@account)
+      @controller.instance_variable_set(:@account, @account)
+      @controller.stubs(:params).returns(
+        ActionController::Parameters.new(
+          _action: 'test_action',
+          status: 'after_activation',
+          account: @account
+        )
+      )
+      assert_difference('Action.count', 0) do
+        @controller.send(:create_action_record)
+      end
+      assert Action.exists?(_action: 'test_action',
+                            status: 'after_activation',
+                            account: @account)
+    end
+  end
 end

@@ -38,6 +38,7 @@ class Api::V1::ProjectsControllerTest < ActionController::TestCase
         stubs(:current_user).returns(@account)
         url = 'git://github.com/rails/rails.git'
         license = create(:license, vanity_url: 'rails')
+        @controller.expects(:create_code_location_subscription)
         post :create, params: { JWT: @admin_jwt, repo_url: url,
                                 license_name: license.name }, format: :json
         @controller.instance_eval { project_params }
@@ -104,7 +105,7 @@ class Api::V1::ProjectsControllerTest < ActionController::TestCase
     it 'it should not create a project without admin account' do
       VCR.use_cassette('code_location_find_by_url') do
         post :create, params: { JWT: @jwt }, format: :json
-        expect(@response.content_type).must_equal 'application/json'
+        expect(@response.content_type).must_equal 'application/json; charset=utf-8'
         assert_response :unauthorized
       end
     end
@@ -112,7 +113,7 @@ class Api::V1::ProjectsControllerTest < ActionController::TestCase
     it 'it should not create a project without editor account' do
       VCR.use_cassette('code_location_find_by_url') do
         post :create, params: { JWT: @admin_jwt }, format: :json
-        expect(@response.content_type).must_equal 'application/json'
+        expect(@response.content_type).must_equal 'application/json; charset=utf-8'
         assert_response :bad_request
       end
     end

@@ -88,6 +88,26 @@ class CodeLocationTest < ActiveSupport::TestCase
     end
   end
 
+  describe 'timeout_interval' do
+    it 'timeout_interval returns ENV SCM_URL_VALIDATION_TIMEOUT as integer' do
+      ENV['SCM_URL_VALIDATION_TIMEOUT'] = '42'
+      code_location = CodeLocation.new
+      assert_equal 42, code_location.send(:timeout_interval)
+    end
+
+    it 'timeout_interval returns 0 if ENV not set' do
+      ENV.delete('SCM_URL_VALIDATION_TIMEOUT')
+      code_location = CodeLocation.new
+      assert_equal 0, code_location.send(:timeout_interval)
+    end
+
+    it 'timeout_interval returns 0 if ENV is non-numeric' do
+      ENV['SCM_URL_VALIDATION_TIMEOUT'] = 'abc'
+      code_location = CodeLocation.new
+      assert_equal 0, code_location.send(:timeout_interval)
+    end
+  end
+
   private
 
   def clear_jobs

@@ -101,4 +101,13 @@ class ProjectAdminTest < ActionDispatch::IntegrationTest
       assert_equal job.reload.do_not_retry, true
     end
   end
+
+  describe 'collection is_important' do
+    test 'important collection action redirects to filtered projects' do
+      get important_admin_projects_path
+      assert_redirected_to(
+        '/admin/projects?q[has_active_enlistments]=true&q[is_important]=true&commit=Filter&order=name_asc'
+      )
+    end
+  end
 end

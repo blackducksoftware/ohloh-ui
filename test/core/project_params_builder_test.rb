@@ -2,9 +2,7 @@
 
 require 'test_helper'
 require_relative '../../app/core/project/project_params_builder'
-
-# Ensure the error class is available for the test
-class ProjectExistsError < StandardError; end
+require_relative '../../app/core/project/project_exists_error'
 
 class ProjectParamsBuilderTest < ActiveSupport::TestCase
   describe 'it will call the project builder after creating valid params' do

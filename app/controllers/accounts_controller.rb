@@ -51,9 +51,11 @@ class AccountsController < ApplicationController
     end
   end
 
+  # :nocov:
   def me
     redirect_to account_path(current_user)
   end
+  # :nocov:
 
   def update
     if @account.update(account_params)

@@ -1,6 +1,12 @@
 # frozen_string_literal: true
 
 ENV['RAILS_ENV'] ||= 'test'
+
+# Configure AWS SDK for test environment before requiring other gems
+ENV['AWS_ACCESS_KEY_ID'] ||= 'test_access_key_id'
+ENV['AWS_SECRET_ACCESS_KEY'] ||= 'test_secret_access_key'
+ENV['AWS_REGION'] ||= 'us-east-1'
+
 require 'simplecov'
 require 'simplecov-rcov'
 require 'aws-sdk-ses'
@@ -8,8 +14,15 @@ require 'aws-sdk-ses'
 SimpleCov.formatter = SimpleCov::Formatter::HTMLFormatter
 SimpleCov.start('rails') do
   add_filter %r{^script/}
+
+  # Filter out empty files or files with only comments/whitespace
+  add_filter do |source_file|
+    # Check if file has any executable lines
+    source_file.lines.none? ||
+      source_file.lines.all? { |line| line.skipped? || line.never? }
+  end
 end
-SimpleCov.minimum_coverage 98.95
+SimpleCov.minimum_coverage 99.40
 
 require 'dotenv'
 Dotenv.load '.env.test'
@@ -35,6 +48,29 @@ VCR.configure do |config|
   config.cassette_library_dir = 'fixtures/vcr_cassettes'
   config.hook_into :webmock
   config.allow_http_connections_when_no_cassette = false
+
+  # Ignore AWS metadata service requests (IMDSv1 and IMDSv2)
+  config.ignore_request do |request|
+    # AWS Instance Metadata Service v1 and v2
+    request.uri.match?(%r{^http://169\.254\.169\.254/}) ||
+      # AWS metadata token requests
+      request.uri.match?(%r{/latest/api/token}) ||
+      # AWS metadata requests
+      request.uri.match?(%r{/latest/meta-data/})
+  end
+
+  # Ignore other AWS service endpoints that might cause issues in tests
+  config.ignore_request do |request|
+    # AWS STS, EC2, S3, SES and other AWS service endpoints
+    request.uri.match?(%r{\.amazonaws\.com}) ||
+      request.uri.match?(%r{aws\.amazon\.com}) ||
+      request.uri.match?(%r{amazonaws\.com\.cn}) ||
+      # Local AWS endpoints (like LocalStack)
+      request.uri.match?(%r{localhost.*amazonaws})
+  end
+
+  # Optional: Add debug logging for troubleshooting
+  # config.debug_logger = File.open(Rails.root.join('log', 'vcr.log'), 'w')
 end
 
 class ActiveSupport::TestCase

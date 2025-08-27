@@ -156,4 +156,12 @@ class ProjectsHelperTest < ActionView::TestCase
       _(project_description_size_breached?(@project)).must_equal false
     end
   end
+
+  describe 'project_separator_text method' do
+    it 'should return the correct separator text' do
+      result = project_separator_text
+
+      assert_equal '&nbsp;|&nbsp;', result
+    end
+  end
 end

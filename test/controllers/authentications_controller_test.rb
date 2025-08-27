@@ -269,4 +269,22 @@ class AuthenticationsControllerTest < ActionController::TestCase
       end
     end
   end
+  describe 'github_api_account_is_verified?' do
+    it 'github_api_account_is_verified? returns github_verification if present' do
+      controller = AuthenticationsController.new
+      mock_verification = mock('GithubVerification')
+      mock_account = mock('Account')
+      mock_account.stubs(:github_verification).returns(mock_verification)
+      controller.stubs(:github_api_account).returns(mock_account)
+
+      assert_equal mock_verification, controller.send(:github_api_account_is_verified?)
+    end
+
+    it 'github_api_account_is_verified? returns nil if no account' do
+      controller = AuthenticationsController.new
+      controller.stubs(:github_api_account).returns(nil)
+
+      assert_nil controller.send(:github_api_account_is_verified?)
+    end
+  end
 end

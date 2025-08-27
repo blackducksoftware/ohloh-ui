@@ -82,5 +82,19 @@ class CodeLocationJobProgressTest < ActiveSupport::TestCase
       @job.update_columns(status: 4)
       _(repo_progress.message).must_equal 'Step 1 of 3: Downloading source code history (Waiting in queue)'
     end
+
+    it 'completed returns translated completion message with time ago' do
+      @job.update_columns(current_step_at: 2.hours.ago)
+
+      FisJob.stubs(:where).returns(stub(incomplete_fis_jobs: [@job]))
+
+      decorator = CodeLocationJobProgress.new(enlistment)
+      decorator.instance_variable_set(:@job, @job)
+
+      I18n.stubs(:t).with('repositories.job_progress.complete', at: kind_of(String)).returns('Completed 2 hours ago')
+      decorator.stubs(:time_ago_in_words).returns('2 hours ago')
+
+      assert_equal 'Completed 2 hours ago', decorator.send(:completed)
+    end
   end
 end
