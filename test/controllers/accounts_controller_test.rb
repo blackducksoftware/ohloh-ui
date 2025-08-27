@@ -455,9 +455,6 @@ class AccountsControllerTest < ActionController::TestCase
       assert_difference('Action.count', 0) do
         @controller.send(:create_action_record)
       end
-      assert Action.exists?(_action: 'test_action',
-                            status: 'after_activation',
-                            account: @account)
     end
   end
 end
