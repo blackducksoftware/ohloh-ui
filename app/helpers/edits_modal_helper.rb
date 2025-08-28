@@ -8,22 +8,22 @@ module EditsModalHelper
   end
 
   def show_edit_path(edit)
-    path = "#{@parent.class.name.downcase}_edit_path".to_sym
+    path = :"#{@parent.class.name.downcase}_edit_path"
     send(path, @parent, edit) if respond_to?(path)
   end
 
   def get_edit_value(edit)
     if project_related_edit(edit)
-      send("edit_get_value_#{edit.target.class.name.downcase}".to_sym, edit)
+      send(:"edit_get_value_#{edit.target.class.name.downcase}", edit)
     elsif organization_or_logo_edit(edit)
-      send("edit_get_value_#{edit.key}".to_sym, edit)
+      send(:"edit_get_value_#{edit.key}", edit)
     elsif edit.create_edit?
       link_to_create_edit(edit)
     end
   end
 
   def link_to_create_edit(edit)
-    link_to edit.target.to_param, edit.target
+    link_to edit.target.to_param.to_s, "/#{edit.target.class.name.underscore.pluralize}/#{edit.target.to_param}"
   end
 
   def project_related_edit(edit)
@@ -50,16 +50,17 @@ module EditsModalHelper
 
   def edit_get_value_projectlicense(edit)
     license = edit.target.license
-    link_to license.to_param, license
+    link_to license.to_param.to_s, "/licenses/#{license.to_param}"
   end
 
   def edit_get_value_permission(edit)
-    edit.value.to_bool ? t('edits.managers_only') : t('edits.everyone')
+    edit.value.to_bool ? I18n.t('edits.managers_only') : I18n.t('edits.everyone')
   end
 
   def edit_get_value_rsssubscription(edit)
     url = edit.target.rss_feed.url
-    link_to sanitize(url).html_safe, sanitize(url).html_safe
+    safe_url = ERB::Util.html_escape(url)
+    link_to safe_url, safe_url
   end
 
   def edit_get_value_logo_id(edit)

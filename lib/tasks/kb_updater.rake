@@ -9,8 +9,8 @@ namespace :kb_updater do
     count = 0
     KnowledgeBaseStatus.items_to_sync.limit(1000).each do |knowledge_base_status|
       puts "KBUpdater Cron Job: converting and sending #{knowledge_base_status.project_id}"
-      exchange.publish(knowledge_base_status.json_message, key: ENV['KB_EXCHANGE_KEY'])
-      knowledge_base_status.update_attributes(in_sync: true, updated_at: Time.now.utc)
+      exchange.publish(knowledge_base_status.json_message, key: ENV.fetch('KB_EXCHANGE_KEY', nil))
+      knowledge_base_status.update(in_sync: true, updated_at: Time.now.utc)
       count += 1
     end
     puts "#{count} projects updated"

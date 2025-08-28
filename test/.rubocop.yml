@@ -17,3 +17,6 @@ Lint/ConstantDefinitionInBlock:
 
 Style/OpenStructUse:
   Enabled: false
+
+Rails/ActionControllerTestCase:
+  Enabled: false

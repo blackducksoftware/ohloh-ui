@@ -35,11 +35,11 @@ describe AccountMailer do
     it 'should have the content' do
       _(mail.body.encoded).must_match I18n.t('.account_mailer.activation.dear', login: account.login)
       _(mail.body.encoded).must_match I18n.t('.account_mailer.activation.body1')
-      _(mail.body.encoded).must_match url_helpers.forums_url(host: ENV['URL_HOST'])
-      _(mail.body.encoded).must_match url_helpers.account_privacy_account_url(account, host: ENV['URL_HOST'])
-      _(mail.body.encoded).must_match url_helpers.edit_account_url(account, host: ENV['URL_HOST'])
-      _(mail.body.encoded).must_match url_helpers.new_account_position_url(account, host: ENV['URL_HOST'])
-      _(mail.body.encoded).must_match url_helpers.root_url(host: ENV['URL_HOST'])
+      _(mail.body.encoded).must_match url_helpers.forums_url(host: ENV.fetch('URL_HOST', nil))
+      _(mail.body.encoded).must_match url_helpers.account_privacy_account_url(account, host: ENV.fetch('URL_HOST', nil))
+      _(mail.body.encoded).must_match url_helpers.edit_account_url(account, host: ENV.fetch('URL_HOST', nil))
+      _(mail.body.encoded).must_match url_helpers.new_account_position_url(account, host: ENV.fetch('URL_HOST', nil))
+      _(mail.body.encoded).must_match url_helpers.root_url(host: ENV.fetch('URL_HOST', nil))
     end
   end
 
@@ -63,8 +63,8 @@ describe AccountMailer do
     end
 
     it 'should have the content' do
-      _(mail.body.encoded).must_match url_helpers.root_url(host: ENV['URL_HOST'])
-      _(mail.body.encoded).must_match url_helpers.new_password_url(host: ENV['URL_HOST'])
+      _(mail.body.encoded).must_match url_helpers.root_url(host: ENV.fetch('URL_HOST', nil))
+      _(mail.body.encoded).must_match url_helpers.new_password_url(host: ENV.fetch('URL_HOST', nil))
     end
   end
 end

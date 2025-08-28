@@ -4,7 +4,7 @@ require 'test_helper'
 
 class RepoPersonBadgeTest < ActiveSupport::TestCase
   let(:user) { create(:account) }
-  let(:repo_person_badge) { RepoPersonBadge.new(user) }
+  let(:repo_person_badge) { Badge::RepoPersonBadge.new(user) }
 
   describe 'eligibility_count' do
     it 'should return account enlistment edits' do

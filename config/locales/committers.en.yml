@@ -1,7 +1,7 @@
 en:
   committers:
     error: 'Valid committer required'
-    title: "Unclaimed Committer IDs %{text} - Open Hub"
+    title: "Unclaimed Committer IDs %{text}- Open Hub"
     user_title: "%{name} : Unclaimed Committer IDs - Open Hub"
     save_claim:
       success: 'Contributions claimed successfully'

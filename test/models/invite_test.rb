@@ -31,7 +31,7 @@ class InviteTest < ActiveSupport::TestCase
     _(invite).wont_be :valid?
     _(invite.errors).must_include(:invitee_email)
 
-    invite.invitee_email = Faker::Internet.free_email(name: 100) # long email
+    invite.invitee_email = Faker::Internet.email(name: 100) # long email
     _(invite).wont_be :valid?
     _(invite.errors).must_include(:invitee_email)
 

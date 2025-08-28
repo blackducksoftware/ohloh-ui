@@ -75,7 +75,7 @@ class OrganizationTest < ActiveSupport::TestCase
 
   describe 'sort_by_recent' do
     it 'org' do
-      org1 = create(:organization, name: 'test1', updated_at: Time.current + 5.days)
+      org1 = create(:organization, name: 'test1', updated_at: 5.days.from_now)
       org2 = create(:organization, name: 'test2')
 
       _(Organization.sort_by_recent).must_equal [org1, org2]
@@ -198,7 +198,24 @@ class OrganizationTest < ActiveSupport::TestCase
   it 'must flag organization project for sync with KB' do
     project = create(:project, organization: org)
 
-    org.update_attributes(name: Faker::Lorem.word + rand(999).to_s)
+    org.update(name: Faker::Lorem.word + rand(999).to_s)
     _(KnowledgeBaseStatus.find_by(project_id: project.id).in_sync).must_equal false
+  end
+
+  describe 'ransackable_associations method' do
+    let(:organization) { create(:organization) }
+
+    it 'should respond to ransackable_associations class method' do
+      assert_respond_to Organization, :ransackable_associations
+    end
+
+    it 'should call authorizable_ransackable_associations without auth_object parameter' do
+      # Mock the authorizable_ransackable_associations method
+      Organization.expects(:authorizable_ransackable_associations).once.returns(%w[projects accounts])
+
+      result = Organization.ransackable_associations
+
+      assert_equal %w[projects accounts], result
+    end
   end
 end

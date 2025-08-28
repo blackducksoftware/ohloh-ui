@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module JWTHelper
+module JwtHelper
   def build_jwt(user, valid_for_hours = 48)
     exp = Time.now.to_i + (valid_for_hours * 60 * 60)
     payload = { expiration: exp, user: user }

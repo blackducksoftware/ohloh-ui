@@ -47,7 +47,7 @@
           %td.center
             .mini-badges-section{ style: 'margin:0; position:relative;height: 0px' }
               = render 'accounts/badges_row',
-                badges: [BadgeDecorator.new(FOSSerBadge.new(a, positions_count: a.positions.count))],
+                badges: [BadgeDecorator.new(Badge::FosserBadge.new(a, positions_count: a.positions.count))],
                 hide_foss_logo: true
           - contribs_to_org = account_org.contributions_to_org_portfolio.to_i
           - contribs_to_outside = account_org.contributions_outside_org.to_i

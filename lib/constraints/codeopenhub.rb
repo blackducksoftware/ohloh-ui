@@ -2,6 +2,9 @@
 
 class Codeopenhub
   def self.matches?(request)
-    request.subdomain.include?(ENV['CODE_SUBDOMAIN'])
+    subdomain = ENV['CODE_SUBDOMAIN'] || ''
+    return false if subdomain.empty?
+
+    request.subdomain.include?(subdomain)
   end
 end

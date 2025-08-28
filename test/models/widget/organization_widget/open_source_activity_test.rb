@@ -4,7 +4,7 @@ require 'test_helper'
 
 class OpenSourceActivityTest < ActiveSupport::TestCase
   let(:org) { create(:organization) }
-  let(:widget) { OrganizationWidget::OpenSourceActivity.new(organization_id: org.id) }
+  let(:widget) { Widget::OrganizationWidget::OpenSourceActivity.new(organization_id: org.id) }
 
   describe 'short_nice_name' do
     it 'should return shorntened class name' do

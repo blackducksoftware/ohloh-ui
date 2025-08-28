@@ -427,7 +427,7 @@ class OrganizationsControllerTest < ActionController::TestCase
       put :update, params: { id: org.id, organization: { name: '', description: 'tes', vanity_url: 'test',
                                                          org_type: '2', homepage_url: 'http://test.com' } }
 
-      assert_response 422
+      assert_response :unprocessable_entity
       _(assigns(:organization).errors[:name]).must_equal ['can\'t be blank', 'is too short (minimum is 3 characters)']
     end
 

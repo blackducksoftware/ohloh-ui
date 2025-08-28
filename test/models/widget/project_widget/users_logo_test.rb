@@ -4,7 +4,7 @@ require 'test_helper'
 
 class UsersLogoTest < ActiveSupport::TestCase
   let(:project) { create(:project) }
-  let(:widget) { ProjectWidget::UsersLogo.new(project_id: project.id) }
+  let(:widget) { Widget::ProjectWidget::UsersLogo.new(project_id: project.id) }
 
   describe 'height' do
     it 'should return 40' do

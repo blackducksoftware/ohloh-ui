@@ -13,9 +13,9 @@ class Api
 
     def get_jwt_token
       unless Rails.cache.read('api_jwt_token')
-        uri = URI(ENV['KB_AUTH_API'])
+        uri = URI(ENV.fetch('KB_AUTH_API', nil))
         request = Net::HTTP::Post.new(uri)
-        request['Authorization'] = ENV['KB_API_AUTH_KEY']
+        request['Authorization'] = ENV.fetch('KB_API_AUTH_KEY', nil)
         _code, response = get_result(uri, request)
         Rails.cache.write('api_jwt_token', response['jsonWebToken'], expires_in: response['expiresInMillis'] / 1000)
       end

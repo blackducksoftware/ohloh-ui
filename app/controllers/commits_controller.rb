@@ -65,7 +65,7 @@ class CommitsController < SettingsController
     get_commit_contributor
     @commits = Commit.joins(:analysis_aliases)
                      .where(code_set_id: @commit_contributor.code_set_id, name_id: @commit_contributor.name_id)
-                     .where('commits.position <= ?', @commit_contributor.code_set.as_of.to_i)
+                     .where(commits: { position: ..@commit_contributor.code_set.as_of.to_i })
                      .where(analysis_aliases: { analysis_id: @commit_contributor.analysis_id })
                      .page(page_param).per_page(10)
   end

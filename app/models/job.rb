@@ -15,14 +15,14 @@ class Job < ApplicationRecord
   STATUS_COMPLETED = 5
 
   def initialize(attributes = {})
-    super(attributes)
+    super
     self.code_set_id ||= sloc_set.code_set_id if respond_to?(:sloc_set) && sloc_set
     self.code_location_id ||= code_set.code_location_id if respond_to?(:code_set_id) && code_set_id
   end
 
   scope :incomplete_fis_jobs, lambda {
-                                where.not(type: %w[TarballJob VulnerabilityJob TagJob RepostEventJob],
-                                          status: STATUS_COMPLETED)
+                                where.not(type: %w[TarballJob VulnerabilityJob TagJob RepostEventJob])
+                                     .where.not(status: STATUS_COMPLETED)
                               }
   scope :incomplete, -> { where.not(status: STATUS_COMPLETED) }
   scope :failed, -> { where(status: STATUS_FAILED) }

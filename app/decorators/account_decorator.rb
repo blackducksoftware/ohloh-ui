@@ -67,7 +67,7 @@ class AccountDecorator < Cherry::Decorator
         [:reviews,            I18n.t(:reviews_text),         h.account_reviews_path(account)]
       ]
     ].tap do |menus|
-      append_project_menu(menus) if projects.exists?
+      append_project_menu(menus) if projects.present?
       append_setting_menu(menus) if current_or_admin?(current_user)
       # TODO: account reports
       # append_report_menu(menus) if account == current_user && account.reports.exists?

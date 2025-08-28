@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class DescriberBadge < Badge
+class Badge::DescriberBadge < Badge
   def eligibility_count
     @eligibility_count ||= vars[:desc_edit_count]
     @eligibility_count ||= Edit.where(target_type: 'Project', key: 'description', account_id: account.id).count

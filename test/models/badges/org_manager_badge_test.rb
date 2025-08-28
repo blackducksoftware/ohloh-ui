@@ -5,7 +5,7 @@ require 'test_helper'
 class OrgManagerBadgeTest < ActiveSupport::TestCase
   let(:user) { create(:account) }
   let(:org) { create(:organization) }
-  let(:org_manager_badge) { OrgManagerBadge.new(user) }
+  let(:org_manager_badge) { Badge::OrgManagerBadge.new(user) }
 
   describe 'eligibility_count' do
     it 'should return orgs managed by account' do

@@ -33,7 +33,7 @@ class GithubApi
     return @secondary_emails if @secondary_emails
 
     @secondary_emails = email_responses.select { |hsh| !hsh['primary'] && hsh['verified'] }
-                                       .map { |response| response['email'] }.compact
+                                       .pluck('email').compact
   end
 
   def all_emails
@@ -54,8 +54,10 @@ class GithubApi
   end
 
   def config
-    CGI.unescape({ code: @code, client_id: ENV['GITHUB_CLIENT_ID'], client_secret: ENV['GITHUB_CLIENT_SECRET'],
-                   redirect_uri: ENV['GITHUB_REDIRECT_URI'] }.to_query)
+    CGI.unescape({ code: @code,
+                   client_id: ENV.fetch('GITHUB_CLIENT_ID', nil),
+                   client_secret: ENV.fetch('GITHUB_CLIENT_SECRET', nil),
+                   redirect_uri: ENV.fetch('GITHUB_REDIRECT_URI', nil) }.to_query)
   end
 
   def token_uri

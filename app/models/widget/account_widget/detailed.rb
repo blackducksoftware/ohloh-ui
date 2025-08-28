@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class AccountWidget::Detailed < AccountWidget
+class Widget::AccountWidget::Detailed < Widget::AccountWidget
   def width
     230
   end

@@ -75,5 +75,5 @@
     .pull-left.kudo_rank
       = claimed_person.kudo_rank || '1'
     .mini-badges-section.pull-left.kudo_badge
-      = render 'accounts/badges_row', badges: [BadgeDecorator.new(KudoRankBadge.new(account))]
+      = render 'accounts/badges_row', badges: [BadgeDecorator.new(Badge::KudoRankBadge.new(account))]
   .clear_both

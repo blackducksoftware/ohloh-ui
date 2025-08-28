@@ -1,6 +1,12 @@
 # frozen_string_literal: true
 
-class Account::ClaimCore < OhDelegator::Base
+class Account::ClaimCore
+  attr_reader :account
+
+  def initialize(account)
+    @account = account
+  end
+
   def email_ids
     NameFact.from("(#{email_ids_from_position.to_sql} union #{email_ids_from_aliases.to_sql}) name_facts")
             .pluck(:email_address_ids).flatten.uniq
@@ -35,7 +41,7 @@ class Account::ClaimCore < OhDelegator::Base
     NameFact.select(:email_address_ids)
             .joins(project: :positions)
             .where.not(positions_name_id.eq(nil))
-            .where(Position.arel_table[:account_id].eq(id))
+            .where(Position.arel_table[:account_id].eq(account.id))
             .select(:email_address_ids)
   end
 

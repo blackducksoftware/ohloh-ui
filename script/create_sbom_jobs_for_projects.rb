@@ -21,7 +21,7 @@ module CreateSbomJobs
                         project_id: project.id, priority: PRIORITY)
       end
 
-      puts "Created SbomJobs for the project => #{project.id}: #{project.vanity_url}"
+      DataDogReport.info "Created SbomJobs for the project => #{project.id}: #{project.vanity_url}"
     end
   end
 

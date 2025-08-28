@@ -26,7 +26,7 @@ class CodeLocationSubscriptionTest < ActiveSupport::TestCase
   end
 
   it 'should send https request and delete subscription for a given code_location' do
-    api_key = ENV['FISBOT_CLIENT_REGISTRATION_ID']
+    api_key = ENV.fetch('FISBOT_CLIENT_REGISTRATION_ID', nil)
     url = URI("https://vcrlocalhost.org:4004/api/v1/subscriptions/264/101.json?api_key=#{api_key}")
     ApiAccess.any_instance.stubs(:resource_uri).returns(url)
 

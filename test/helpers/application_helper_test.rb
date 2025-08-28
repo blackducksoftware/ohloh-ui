@@ -105,4 +105,30 @@ class ApplicationHelperTest < ActionView::TestCase
       _(time_ago_in_days_hours_minutes(time)).must_equal '60d 22h 59m'
     end
   end
+
+  describe 'needs_login_or_verification_or_default' do
+    test 'returns :needs_email_verification if user email not verified' do
+      user = mock('user')
+      access = mock('access')
+      user.stubs(:access).returns(access)
+      access.stubs(:email_verified?).returns(false)
+      stubs(:logged_in?).returns(true)
+      stubs(:current_user_is_verified?).returns(false)
+      stubs(:current_user).returns(user)
+
+      assert_equal :needs_email_verification, needs_login_or_verification_or_default
+    end
+
+    test 'returns :needs_verification if user email is verified' do
+      user = mock('user')
+      access = mock('access')
+      user.stubs(:access).returns(access)
+      access.stubs(:email_verified?).returns(true)
+      stubs(:logged_in?).returns(true)
+      stubs(:current_user_is_verified?).returns(false)
+      stubs(:current_user).returns(user)
+
+      assert_equal :needs_verification, needs_login_or_verification_or_default
+    end
+  end
 end

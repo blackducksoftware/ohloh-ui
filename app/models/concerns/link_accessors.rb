@@ -7,9 +7,9 @@ module LinkAccessors
     class << self
       def link_accessors(accessors: {})
         accessors.each do |accessor, link_category|
-          cache_method = "cached_#{accessor}_uri".to_sym
+          cache_method = :"cached_#{accessor}_uri"
 
-          send :attr_accessor, "#{accessor}_is_dirty".to_sym
+          send :attr_accessor, :"#{accessor}_is_dirty"
           send :attr_accessor, cache_method
 
           define_link_getter(accessor, cache_method, link_category)
@@ -25,12 +25,12 @@ module LinkAccessors
           return cached_uri if cached_uri
 
           link = links.of_category(Link::CATEGORIES[link_category]).first
-          link ? link.url : nil
+          link&.url
         end
       end
 
       def define_link_setter(accessor, cache_method, link_category)
-        define_method "#{accessor}=".to_sym do |uri|
+        define_method :"#{accessor}=" do |uri|
           cleaned_uri = String.clean_url(uri)
           cached_uri = send cache_method
           return if !cached_uri.nil? && cleaned_uri == cached_uri
@@ -43,8 +43,8 @@ module LinkAccessors
     private
 
     def update_link_uri(accessor, link, uri, title)
-      send "#{accessor}_is_dirty=".to_sym, true
-      send "cached_#{accessor}_uri=".to_sym, uri
+      send :"#{accessor}_is_dirty=", true
+      send :"cached_#{accessor}_uri=", uri
       if uri.blank?
         link.editor_account = editor_account
         link.destroy if link.persisted?

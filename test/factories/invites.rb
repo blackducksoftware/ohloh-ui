@@ -5,7 +5,7 @@ FactoryBot.define do
     association :project
     activation_code { Faker::Lorem.characters(number: 10) }
     association :invitor, factory: :account
-    invitee_email { Faker::Internet.free_email }
+    invitee_email { Faker::Internet.email }
     association :name, factory: :name_with_fact
     after(:build) do |obj|
       name_fact = NameFact.last

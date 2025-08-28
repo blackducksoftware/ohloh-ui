@@ -33,7 +33,9 @@ module AccountScopes
     scope :in_good_standing, -> { where('level >= 0') }
     scope :from_param, ->(param) { in_good_standing.where(arel_table[:login].eq(param).or(arel_table[:id].eq(param))) }
     scope :active, -> { where(level: 0) }
-    scope :non_anonymous, -> { where.not(login: ANONYMOUS_ACCOUNTS, email: ANONYMOUS_ACCOUNTS_EMAILS) }
+    scope :non_anonymous, lambda {
+      where('accounts.login NOT IN (?) AND accounts.email NOT IN (?)', ANONYMOUS_ACCOUNTS, ANONYMOUS_ACCOUNTS_EMAILS)
+    }
 
     scope :reverification_not_initiated, lambda { |limit = 0|
       find_by_sql ["SELECT DISTINCT(accounts.id) FROM accounts WHERE level = 0 AND id IN

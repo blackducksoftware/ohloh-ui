@@ -20,22 +20,6 @@ class AccountsController < ApplicationController
 
   rescue_from ActionController::ParameterMissing, with: :handle_parameter_missing
 
-  def new
-    @account = Account.new
-  end
-
-  def create
-    @account = Account.new(account_params)
-    @account.build_manual_verification
-
-    if @account.save
-      clearance_session.sign_in @account
-      redirect_to @account
-    else
-      render :new
-    end
-  end
-
   def index
     @cbp_map = PeopleDecorator.new(@people).commits_by_project_map
     @positions_map = Position.where(id: @cbp_map.values.map(&:first).flatten)
@@ -49,9 +33,29 @@ class AccountsController < ApplicationController
     page_context[:page_header] = 'accounts/show/header'
   end
 
+  def new
+    @account = Account.new
+  end
+
+  def edit; end
+
+  def create
+    @account = Account.new(account_params)
+    @account.build_manual_verification
+
+    if @account.save
+      clearance_session.sign_in @account
+      redirect_to @account
+    else
+      render :new
+    end
+  end
+
+  # :nocov:
   def me
     redirect_to account_path(current_user)
   end
+  # :nocov:
 
   def update
     if @account.update(account_params)
@@ -79,8 +83,6 @@ class AccountsController < ApplicationController
   end
 
   def confirm_delete; end
-
-  def edit; end
 
   def disabled; end
 

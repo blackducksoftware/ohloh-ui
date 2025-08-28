@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 def load_chart_options(source)
-  defaults = YAML.safe_load File.read(Rails.root.join("config/charting/#{source}"))
+  defaults = YAML.safe_load Rails.root.join("config/charting/#{source}").read
   defaults.with_indifferent_access
 end
 

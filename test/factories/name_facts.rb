@@ -13,7 +13,7 @@ FactoryBot.define do
     association :name
     association :primary_language, factory: :language
     type { 'AccountAnalysisFact' }
-    first_checkin { Time.current - 3.days }
-    last_checkin { Time.current - 1.day }
+    first_checkin { 3.days.ago }
+    last_checkin { 1.day.ago }
   end
 end

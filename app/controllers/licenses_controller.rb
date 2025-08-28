@@ -9,9 +9,13 @@ class LicensesController < ApplicationController
     @licenses = License.active.filter_by(params[:query]).by_vanity_url.paginate(page: page_param, per_page: 30)
   end
 
+  def show; end
+
   def new
     @license = License.new
   end
+
+  def edit; end
 
   def create
     @license = License.new(license_params)
@@ -33,10 +37,6 @@ class LicensesController < ApplicationController
       render :edit
     end
   end
-
-  def edit; end
-
-  def show; end
 
   private
 

@@ -2,10 +2,10 @@
 
 Airbrake.configure do |config|
   config.environment = Rails.env # must be set for ignore_environments to work
-  config.project_key = ENV['AIRBRAKE_API_KEY']
-  config.host = "#{ENV['AIRBRAKE_HOST']}:#{ENV['AIRBRAKE_PORT']}"
+  config.project_key = ENV.fetch('AIRBRAKE_API_KEY', nil)
+  config.host = "#{ENV.fetch('AIRBRAKE_HOST', nil)}:#{ENV.fetch('AIRBRAKE_PORT', nil)}"
 
-  config.project_id = ENV['AIRBRAKE_PROJECT_ID']
+  config.project_id = ENV.fetch('AIRBRAKE_PROJECT_ID', nil)
   config.ignore_environments = %w[development test]
 end
 

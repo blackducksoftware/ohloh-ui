@@ -79,12 +79,14 @@ Rails.application.configure do
   # config.autoflush_log = false
 
   # Use default logging formatter so that PID and timestamp are not suppressed.
-  config.log_formatter = ::Logger::Formatter.new
+  config.log_formatter = Logger::Formatter.new
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
 
   config.active_record.yaml_column_permitted_classes = [Symbol, Time]
+
+  config.active_record.cache_versioning = false
 
   # Use a different logger for distributed setups.
   logger           = ActiveSupport::Logger.new('/proc/1/fd/1')

@@ -4,7 +4,7 @@
 require_relative '../config/environment'
 
 class CreateScanProjectInUi
-  include JWTHelper
+  include JwtHelper
 
   def initialize
     @jwt = build_jwt(Account.hamster.login)
@@ -35,7 +35,7 @@ class CreateScanProjectInUi
   end
 
   def create_scan_project(params)
-    uri = URI("#{ENV['URL_HOST']}/api/v1/projects.json")
+    uri = URI("#{ENV.fetch('URL_HOST', nil)}/api/v1/projects.json")
     response, status = get_result(uri, params)
     code_location_ids(params[:repo_url]) if %w[200 201].include?(status)
     response
@@ -57,7 +57,7 @@ class CreateScanProjectInUi
   end
 
   def create_code_location_scan(project_id, row)
-    puts "Project Value #{project_id} row value #{row['name']}"
+    DataDogReport.info "Project Value #{project_id} row value #{row['name']}"
 
     code_location_id = Enlistment.not_deleted.where(project_id: project_id,
                                                     code_location_id: @code_location_ids).first&.code_location_id
@@ -94,13 +94,13 @@ class CreateScanProjectInUi
 
   def git_branch(url)
     out, _err, _status = Open3.capture3("git ls-remote --symref #{url} HEAD | head -1 | awk '{print $2}'")
-    out.strip.sub(/refs\/heads\//, '')
+    out.strip.sub('refs/heads/', '')
   end
 
   def create_enlistment(row, project_id)
     params = { url: fix_url(row['repo_url']), scm_type: 'git', branch: git_branch(fix_url(row['repo_url'])),
                project: project_id, JWT: @jwt }
-    uri = URI("#{ENV['URL_HOST']}/api/v1/enlistment/enlist.json")
+    uri = URI("#{ENV.fetch('URL_HOST', nil)}/api/v1/enlistment/enlist.json")
 
     response, _status = get_result(uri, params)
     return unless response && response['attributes']
@@ -113,7 +113,7 @@ class CreateScanProjectInUi
     response = Net::HTTP.post_form(uri, params)
     [JSON.parse(response.body), response.code]
   rescue StandardError => e
-    puts e.message
+    DataDogReport.error e.message
     nil
   end
 end

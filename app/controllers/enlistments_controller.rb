@@ -26,6 +26,10 @@ class EnlistmentsController < SettingsController
     @enlistment = Enlistment.new
   end
 
+  def edit
+    @examples = @enlistment.ignore_examples
+  end
+
   def create
     if @code_location.save
       create_enlistment
@@ -36,10 +40,6 @@ class EnlistmentsController < SettingsController
       flash[:error] = @code_location.errors['error']
       render :new
     end
-  end
-
-  def edit
-    @examples = @enlistment.ignore_examples
   end
 
   def edit_allowed_files
@@ -73,13 +73,13 @@ class EnlistmentsController < SettingsController
   end
 
   def set_flash_message
-    flash[:show_first_enlistment_alert] = true if @project.enlistments.count == 1
+    flash[:show_first_enlistment_alert] = true if @project.enlistments.one?
     flash[:success] = t('.success', url: @code_location.url,
                                     module_branch_name: (CGI.escapeHTML @code_location.branch.to_s))
   end
 
   def code_location_params
-    params[:code_location].select { |k, _v| %w[url branch scm_type].include?(k) }
+    params[:code_location].slice('url', 'branch', 'scm_type')
   end
 
   def create_subscription

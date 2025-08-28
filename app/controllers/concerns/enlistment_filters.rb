@@ -79,8 +79,9 @@ module EnlistmentFilters
   end
 
   def project_has_code_location?
-    return unless CodeLocationSubscription.code_location_exists?(@project.id, @code_location.url,
-                                                                 @code_location.branch, code_location_params[:scm_type])
+    return false unless CodeLocationSubscription.code_location_exists?(@project.id, @code_location.url,
+                                                                       @code_location.branch,
+                                                                       code_location_params[:scm_type])
 
     manage_deleted_enlistment
     redirect_to project_enlistments_path(@project)
@@ -110,6 +111,6 @@ module EnlistmentFilters
 
   def restore_deleted_enlistment
     CreateEdit.find_by(target: get_enlistment).redo!(current_user)
-    flash[:success] = 'Deleted CodeLocation has been successfully restored.'
+    flash[:success] = I18n.t('controllers.enlistment_filters.code_location_restored')
   end
 end

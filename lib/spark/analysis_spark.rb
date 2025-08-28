@@ -52,7 +52,7 @@ class Spark::AnalysisSpark < Spark::Base
 
     draw_bottom_pointer(convert, index)
     set_text_style(convert)
-    convert.draw "text #{x1_axis_value(index) + 6},#{y2_axis_value + SPARK[:label_height] - 2} "\
+    convert.draw "text #{x1_axis_value(index) + 6},#{y2_axis_value + SPARK[:label_height] - 2} " \
                  "#{time.strftime('%b')}"
   end
 

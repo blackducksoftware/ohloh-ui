@@ -144,7 +144,7 @@ class ContributionTest < ActiveSupport::TestCase
   def create_people_for_sort_by
     Person.update_all(kudo_position: 10)
     ContributorFact.update_all(commits: nil, twelve_month_commits: nil,
-                               last_checkin: nil, first_checkin: (Time.current - 5.years))
+                               last_checkin: nil, first_checkin: 5.years.ago)
     @person1 = create(:person, effective_name: 'AB test', kudo_position: 3)
     @person1.contributor_fact.update_columns(commits: 10, twelve_month_commits: 3,
                                              last_checkin: Time.current, first_checkin: Time.current)

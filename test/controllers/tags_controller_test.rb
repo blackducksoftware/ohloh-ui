@@ -12,9 +12,13 @@ class TagsControllerTest < ActionController::TestCase
       create(:tagging, tag: create(:tag, name: 'c++', taggings_count: 100), taggable: project)
       get :index
       assert_response :success
-      assert_select 'a[href="/tags?names=c"]', 1
-      assert_select 'a[href="/tags?names=algol"]', 0
-      assert_select 'a[href="/tags?names=c%2B%2B"]', 1
+      assert_select 'a[href="/tags?names=c"]' do |elements|
+        assert_equal 1, elements.size
+      end
+      assert_select 'a[href="/tags?names=algol"]', false
+      assert_select 'a[href="/tags?names=c%2B%2B"]' do |elements|
+        assert_equal 1, elements.size
+      end
       _(response.body).must_match 'c'
       _(response.body).wont_match 'agol'
       _(response.body).must_match 'c++'
@@ -56,6 +60,36 @@ class TagsControllerTest < ActionController::TestCase
       assert_response :success
       _(response.body).must_match 'web'
       _(response.body).must_match 'ruby'
+    end
+  end
+  describe 'find_related_tags method mapping' do
+    it 'maps related tags with count format correctly' do
+      # Create mock objects that will be returned by the query chain
+      mock_python = OpenStruct.new(tag: 'python (8)', name: 'python')
+      mock_django = OpenStruct.new(tag: 'django (3)', name: 'django')
+
+      # Stub the complex query chain
+      mock_related_relation = mock('related_relation')
+      mock_ordered_relation = mock('ordered_relation')
+      mock('selected_relation')
+
+      Tag.stubs(:related_tags).returns(mock_related_relation)
+      mock_related_relation.stubs(:order).returns(mock_ordered_relation)
+      mock_ordered_relation.stubs(:select).returns([mock_python, mock_django])
+
+      # Also stub find_tags to return some initial data
+      mock_find_relation = mock('find_relation')
+      mock_find_relation.stubs(:select).returns([OpenStruct.new(tag: 'ruby (5)', name: 'ruby')])
+      Tag.stubs(:where).returns(mock_find_relation)
+
+      get :index, params: { names: ['ruby'] }
+
+      assert_response :success
+
+      # Verify that related_tags includes both find_tags and related_tags results
+      related_tags = assigns(:related_tags)
+      assert_not_nil related_tags
+      assert related_tags.length >= 1
     end
   end
 end

@@ -4,7 +4,7 @@ require 'test_helper'
 
 class FactoidsStatsTest < ActiveSupport::TestCase
   let(:project) { create(:project) }
-  let(:widget) { ProjectWidget::FactoidsStats.new(project_id: project.id) }
+  let(:widget) { Widget::ProjectWidget::FactoidsStats.new(project_id: project.id) }
 
   describe 'height' do
     it 'should return 220' do

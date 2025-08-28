@@ -121,4 +121,43 @@ class FailureGroupAdminTest < ActionDispatch::IntegrationTest
       _(job.reload.failure_group_id).must_be_nil
     end
   end
+
+  describe '.ransackable_associations' do
+    it 'should return authorizable ransackable associations' do
+      expected_associations = %w[jobs failed_jobs exceptions]
+      FailureGroup.expects(:authorizable_ransackable_associations).returns(expected_associations)
+
+      result = FailureGroup.ransackable_associations
+      _(result).must_equal expected_associations
+    end
+
+    it 'should accept auth_object parameter' do
+      auth_object = { user: 'admin', role: 'manager' }
+      FailureGroup.expects(:authorizable_ransackable_associations).returns(['jobs'])
+
+      result = FailureGroup.ransackable_associations(auth_object)
+      _(result).must_equal ['jobs']
+    end
+
+    it 'should ignore auth_object parameter value' do
+      auth_objects = [nil, 'admin', { role: 'user' }, 12_345, true, false]
+
+      auth_objects.each do |auth_obj|
+        FailureGroup.expects(:authorizable_ransackable_associations).returns(['jobs']).once
+
+        result = FailureGroup.ransackable_associations(auth_obj)
+        _(result).must_equal ['jobs']
+      end
+    end
+  end
+
+  describe 'decategorize' do
+    it 'shows decategorize link on show page' do
+      login_as admin
+      @failure_group = create(:failure_group)
+      get admin_failure_group_path(@failure_group)
+      assert_response :success
+      assert_select 'a[href=?]', decategorize_admin_failure_group_path(@failure_group.id), text: 'Decategorize'
+    end
+  end
 end

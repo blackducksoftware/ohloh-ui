@@ -2,6 +2,8 @@
 
 class Alias < ApplicationRecord
   include AliasScopes
+  include ActsAsEditable
+  include ActsAsProtected
   belongs_to :project, optional: true
   belongs_to :commit_name, class_name: 'Name', optional: true
   belongs_to :preferred_name, class_name: 'Name', optional: true
@@ -14,11 +16,11 @@ class Alias < ApplicationRecord
   after_update :remove_unclaimed_person
 
   after_update :move_name_facts_to_preferred_name, if: proc { |obj|
-                                                         (obj.saved_changes.keys & %w[preferred_name_id]).present?
+                                                         obj.saved_changes.keys.intersect?(%w[preferred_name_id])
                                                        }
-  after_save :update_unclaimed_person, if: proc { |obj| (obj.saved_changes.keys & %w[id deleted]).present? }
+  after_save :update_unclaimed_person, if: proc { |obj| obj.saved_changes.keys.intersect?(%w[id deleted]) }
   after_save :schedule_project_analysis, if: proc { |obj|
-                                               (obj.saved_changes.keys & %w[preferred_name_id deleted]).present?
+                                               obj.saved_changes.keys.intersect?(%w[preferred_name_id deleted])
                                              }
 
   acts_as_editable editable_attributes: [:preferred_name_id]

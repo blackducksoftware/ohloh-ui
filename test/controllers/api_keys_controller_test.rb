@@ -39,7 +39,7 @@ class ApiKeysControllerTest < ActionController::TestCase
     login_as @user
     get :index, params: { account_id: @user.id }
     assert_response :ok
-    _(response.body).must_match(api_key1.oauth_application.name)
+    _(response.body).must_match(CGI.escapeHTML(api_key1.oauth_application.name))
     _(response.body).wont_match(api_key2.oauth_application.name)
   end
 
@@ -62,7 +62,7 @@ class ApiKeysControllerTest < ActionController::TestCase
     (1..ApiKey::KEY_LIMIT_PER_ACCOUNT).each { |i| create(:api_key, account_id: @user.id, key: "max_keys_test_#{i}") }
     login_as @user
     get :new, params: { account_id: @user.id }
-    assert_response 302
+    assert_response :found
   end
 
   it 'new should understand the me user for logged users' do
@@ -119,7 +119,7 @@ class ApiKeysControllerTest < ActionController::TestCase
     put :update, params: { account_id: @user.id, id: api_key.id, api_key: { name: 'Name',
                                                                             description: 'Repolished key!',
                                                                             terms: '1' } }
-    assert_response 302
+    assert_response :found
     api_key.reload
     _(api_key.description).must_equal 'Repolished key!'
   end
@@ -140,7 +140,7 @@ class ApiKeysControllerTest < ActionController::TestCase
     api_key = create(:api_key, account_id: @user.id, description: 'My doomed key.')
     login_as @user
     delete :destroy, params: { account_id: @user.id, id: api_key.id }
-    assert_response 302
+    assert_response :found
     _(ApiKey.where(account_id: @user.id, description: 'My doomed key.').first).wont_be :present?
   end
 
@@ -150,7 +150,7 @@ class ApiKeysControllerTest < ActionController::TestCase
     ApiKey.any_instance.stubs(:destroy).returns(false)
     login_as @user
     delete :destroy, params: { account_id: @user.id, id: api_key.id }
-    assert_response 302
+    assert_response :found
     _(ApiKey.where(account_id: @user.id, description: 'My safe key.').first).must_be :present?
   end
 end

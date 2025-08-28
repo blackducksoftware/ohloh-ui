@@ -4,7 +4,7 @@ require 'test_helper'
 
 class ThinBadgeTest < ActiveSupport::TestCase
   let(:project) { create(:project) }
-  let(:widget) { ProjectWidget::ThinBadge.new(project_id: project.id) }
+  let(:widget) { Widget::ProjectWidget::ThinBadge.new(project_id: project.id) }
 
   describe 'height' do
     it 'should return 32' do

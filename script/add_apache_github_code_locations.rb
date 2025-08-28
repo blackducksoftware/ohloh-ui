@@ -22,7 +22,7 @@ class AddGithubCodeLocations
         code_location_id = create_code_location(url)
         next unless code_location_id
 
-        Enlistment.not_deleted.where(code_location_id: row['code_location_id'].to_i).each do |en|
+        Enlistment.not_deleted.where(code_location_id: row['code_location_id'].to_i).find_each do |en|
           create_enlistment_for_project(en.project_id, code_location_id)
           delete_subscription(en.project_id, row['code_location_id'].to_i)
         end
@@ -49,17 +49,17 @@ class AddGithubCodeLocations
     hsh = JSON.parse(response.body)
     hsh['code_location_id']
   rescue StandardError => e
-    puts e.message
+    DataDogReport.error e.message
   end
 
   def git_branch(url)
     out, _err, _status = Open3.capture3("git ls-remote --symref #{url} HEAD | head -1 | awk '{print $2}'")
-    out.strip.gsub(/refs\/heads\//, '')
+    out.strip.gsub('refs/heads/', '')
   end
 
   def code_location_uri
-    query = { api_key: ENV['EFISBOT_API_TOKEN'] }
-    URI("#{ENV['FISBOT_API_URL']}/code_locations.json?#{query.to_query}")
+    query = { api_key: ENV.fetch('EFISBOT_API_TOKEN', nil) }
+    URI("#{ENV.fetch('FISBOT_API_URL', nil)}/code_locations.json?#{query.to_query}")
   end
 
   def create_subscription(project_id, code_location_id)

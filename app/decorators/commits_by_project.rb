@@ -35,7 +35,7 @@ class CommitsByProject < Cherry::Decorator
   def start_date
     return @start_date if @start_date
 
-    given_start_date = @context[:start_date] || (Time.current - 7.years)
+    given_start_date = @context[:start_date] || 7.years.ago
     @start_date = given_start_date.strftime('%Y-%m-01').to_date
   end
 

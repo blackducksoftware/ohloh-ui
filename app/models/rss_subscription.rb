@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class RssSubscription < ApplicationRecord
+  include ActsAsEditable
+  include ActsAsProtected
   belongs_to :project, optional: true
   belongs_to :rss_feed, optional: true
   has_one :create_edit, as: :target

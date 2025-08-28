@@ -2,9 +2,9 @@
 
 require 'test_helper'
 
-class FOSSerBadgeTest < ActiveSupport::TestCase
+class FosserBadgeTest < ActiveSupport::TestCase
   let(:user) { create(:account) }
-  let(:fosser_badge) { FOSSerBadge.new(user) }
+  let(:fosser_badge) { Badge::FosserBadge.new(user) }
 
   describe 'eligibility_count' do
     it 'should return positions' do

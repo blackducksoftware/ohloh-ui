@@ -43,7 +43,7 @@ class PositionDecorator < Cherry::Decorator
 
   def commits_compound_spark_path
     h.commits_compound_spark_account_position_path(account_id: position.account_id,
-                                                   id: (position.id || 'total'),
+                                                   id: position.id || 'total',
                                                    format: :png)
   end
 

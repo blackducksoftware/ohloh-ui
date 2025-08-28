@@ -10,7 +10,7 @@ class TwitterDetailTest < ActiveSupport::TestCase
 
   describe 'url' do
     it 'should return twitter url with given account' do
-      url = 'https://twitter.com/intent/follow?original_referer=http%3A%2F%2Ftwiiter.com%2Fmighty_joe'\
+      url = 'https://twitter.com/intent/follow?original_referer=http%3A%2F%2Ftwiiter.com%2Fmighty_joe' \
             '&region=follow_link&screen_name=mighty_joe&source=followbutton&variant=2.0'
 
       admin.stubs(:twitter_account).returns('mighty_joe')
@@ -36,7 +36,8 @@ class TwitterDetailTest < ActiveSupport::TestCase
       user.update(best_account_analysis: account_analysis)
       create(:account_analysis_fact, vita_id: account_analysis.id)
 
-      description = "It was, 0 total commits to 0 projects, most experienced in #{language.nice_name}, earned Kudo Rank"
+      description = "It was, 0 total commits to 0 projects, most experienced in #{language.nice_name}, " \
+                    'earned /Kudo Rank Badge'
       _(user_twitter_detail.description).must_equal description
     end
   end

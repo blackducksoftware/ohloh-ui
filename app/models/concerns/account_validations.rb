@@ -22,7 +22,7 @@ module AccountValidations
   private
 
   def valid_current_password?
-    return if current_password_matches_existing? && access.active_and_not_disabled?
+    return false if current_password_matches_existing? && access.active_and_not_disabled?
 
     errors.add(:current_password)
   end

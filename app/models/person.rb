@@ -4,6 +4,7 @@ class Person < ApplicationRecord
   self.primary_key = :id
   self.per_page = 10
 
+  include FilterBy
   include Tsearch
 
   belongs_to :account, optional: true
@@ -30,6 +31,7 @@ class Person < ApplicationRecord
   alias_attribute :person_name, :effective_name
 
   def searchable_factor
+    # rubocop:disable Style/CollectionQuerying
     return 0.0 if kudo_position.nil? || Person.count == 1
 
     num = (Person.count - kudo_position).to_f
@@ -39,6 +41,7 @@ class Person < ApplicationRecord
     num /= 10 unless account_id
 
     num / denum
+    # rubocop:enable Style/CollectionQuerying
   end
 
   class << self

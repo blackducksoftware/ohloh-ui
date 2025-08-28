@@ -9,8 +9,16 @@ class LinksController < SettingsController
   before_action :session_required, :redirect_unverified_account, only: %i[create new edit update]
   before_action :set_categories, only: %i[create new edit update]
 
+  def index
+    @links = @project.links
+  end
+
   def new
     @link = Link.new
+    load_category_and_title
+  end
+
+  def edit
     load_category_and_title
   end
 
@@ -26,10 +34,6 @@ class LinksController < SettingsController
     end
   end
 
-  def edit
-    load_category_and_title
-  end
-
   def update
     if @link.update(link_params)
       redirect_to project_links_path(@project), flash: { success: t('.success') }
@@ -37,10 +41,6 @@ class LinksController < SettingsController
       load_category_and_title
       render :edit, status: :unprocessable_entity
     end
-  end
-
-  def index
-    @links = @project.links
   end
 
   def destroy

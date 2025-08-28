@@ -7,6 +7,7 @@ CiiProject = Struct.new(:id, :name, :homepage_url, :repo_url) unless defined?(Ci
 describe ProjectBadgeMailer do
   describe '#check_cii_projects' do
     before do
+      ENV['CII_PROJECTS_EMAIL_RECEIPIENT'] = 'ohteam@blackduck.com'
       @cii_projects = (1..3).map do |i|
         CiiProject.new(i, Faker::Lorem.word, "http://#{Faker::Lorem.word}.com",
                        "http://github.com/#{Faker::Lorem.word}/#{Faker::Lorem.word}")

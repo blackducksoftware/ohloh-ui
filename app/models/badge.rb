@@ -15,7 +15,7 @@ class Badge
       ProjectManagerBadge,
       StackerBadge,
       OrgManagerBadge,
-      FOSSerBadge,
+      FosserBadge,
       TaxonomistBadge,
       KudoRankBadge
     ]
@@ -81,6 +81,6 @@ class Badge
   private
 
   def class_name
-    self.class.name.sub(/Badge/, '')
+    self.class.name.sub('Badge', '')
   end
 end

@@ -1,10 +1,11 @@
 # frozen_string_literal: true
 
-class OrganizationWidget < Widget
+class Widget::OrganizationWidget < Widget
   def initialize(vars = {})
     raise ArgumentError I18n.t('organization_widgets.missing') unless vars[:organization_id]
 
     super
+    @organization_id = vars[:organization_id]
   end
 
   def organization

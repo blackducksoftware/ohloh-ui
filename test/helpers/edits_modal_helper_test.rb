@@ -3,6 +3,8 @@
 require 'test_helper'
 
 describe EditsModalHelper do
+  include FactoryBot::Syntax::Methods
+  include ActionView::Helpers::UrlHelper
   include EditsHelper
   include ApplicationHelper
 
@@ -14,7 +16,8 @@ describe EditsModalHelper do
 
     it 'should retuen link for create edit' do
       edit = create(:create_edit)
-      _(edit_show_value(edit)).must_equal link_to edit.target.to_param, edit.target
+      path = "/#{edit.target.class.name.underscore.pluralize}/#{edit.target.to_param}"
+      _(edit_show_value(edit)).must_equal link_to edit.target.to_param.to_s, path
     end
 
     it 'should return vlaue for alias name' do
@@ -38,8 +41,8 @@ describe EditsModalHelper do
 
     it 'should return value for project license' do
       project_license = create(:project_license)
-      _(edit_show_value(project_license.edits.first)).must_equal link_to project_license.license.to_param,
-                                                                         project_license.license
+      _(edit_show_value(project_license.edits.first)).must_equal link_to project_license.license.to_param.to_s,
+                                                                         "/licenses/#{project_license.license.to_param}"
     end
 
     it 'should return value for rss_sunscription' do

@@ -22,6 +22,14 @@ class FisJob < Job
       report
     end
 
+    def ransackable_attributes(_auth_object = nil)
+      authorizable_ransackable_attributes
+    end
+
+    def ransackable_associations(_auth_object = nil)
+      authorizable_ransackable_associations
+    end
+
     private
 
     def dnf_source?(enlistments)
@@ -31,7 +39,8 @@ class FisJob < Job
     def failure_group_patterns
       # Converts "Connection Reset by Peer (SVN?)" to 'connection_reset_by_peer'.
       # e.g. output: { 11 => 'connection_reset_by_peer', 86 => 'investigate', ... }
-      # rubocop:disable Style/HashTransformValues # False positive: array wont respond to transform_values.
+      # rubocop:disable Style/HashTransformValues
+      # False positive: array wont respond to transform_values.
       @failure_group_patterns ||= FailureGroup.pluck(:id, :name)
                                               .to_h { |id, name| [id, underscore_and_clean(name)] }
       # rubocop:enable Style/HashTransformValues

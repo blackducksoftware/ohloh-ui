@@ -177,4 +177,18 @@ class Account::HooksTest < ActiveSupport::TestCase
       _(account.person.effective_name).must_equal 'test new name'
     end
   end
+
+  describe 'safe_undo' do
+    it 'safe_undo logs error when undo fails' do
+      hooks = Account::Hooks.new
+      edit = mock('edit')
+      edit.stubs(:allow_undo?).returns(true)
+      # Simulate undo! raising an error
+      edit.stubs(:undo!).raises(StandardError, 'Undo failed')
+
+      Rails.logger.expects(:info).with(regexp_matches(/Spam undo failed:.*Undo failed.*edit/m))
+
+      hooks.send(:safe_undo, edit)
+    end
+  end
 end

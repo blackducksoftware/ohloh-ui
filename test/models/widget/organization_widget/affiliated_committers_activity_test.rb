@@ -4,7 +4,7 @@ require 'test_helper'
 
 class AffiliatedCommittersActivityTest < ActiveSupport::TestCase
   let(:org) { create(:organization) }
-  let(:widget) { OrganizationWidget::AffiliatedCommittersActivity.new(organization_id: org.id) }
+  let(:widget) { Widget::OrganizationWidget::AffiliatedCommittersActivity.new(organization_id: org.id) }
 
   describe 'position' do
     it 'should return 3' do

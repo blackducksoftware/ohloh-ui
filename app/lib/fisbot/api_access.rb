@@ -5,9 +5,9 @@ require 'resolv'
 class ApiAccess
   cattr_accessor :fis_ip_url, :uptime_verified_time
 
-  URL = ENV['FISBOT_API_URL']
-  KEY = ENV['FISBOT_CLIENT_REGISTRATION_ID']
-  CACHE_DURATION = ENV['FISBOT_API_VERIFY_CACHE_MINS'].to_i.minutes
+  URL = ENV.fetch('FISBOT_API_URL', nil)
+  KEY = ENV.fetch('FISBOT_CLIENT_REGISTRATION_ID', nil)
+  CACHE_DURATION = ENV.fetch('FISBOT_API_VERIFY_CACHE_MINS', 5).to_i.minutes
 
   def initialize(resource)
     @resource = resource
@@ -25,7 +25,7 @@ class ApiAccess
     end
 
     def fis_public_url
-      ENV['FISBOT_PUBLIC_URL'].presence || ENV['FISBOT_API_URL']
+      ENV.fetch('FISBOT_PUBLIC_URL', nil).presence || ENV.fetch('FISBOT_API_URL', nil)
     end
 
     def available?

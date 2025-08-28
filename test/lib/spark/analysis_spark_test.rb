@@ -17,4 +17,30 @@ class Spark::AnalysisSparkTest < ActiveSupport::TestCase
       compare_images(result_file.path, expected_image_path, 0.17) # bumped from 0.14
     end
   end
+
+  describe 'max_value' do
+    it 'max_value returns the maximum integer from data last elements' do
+      data = [
+        [Date.new(2023, 1, 1), '10'],
+        [Date.new(2023, 1, 2), '25'],
+        [Date.new(2023, 1, 3), '7']
+      ]
+      spark = Spark::AnalysisSpark.new(data)
+      assert_equal 25, spark.send(:max_value)
+    end
+
+    it 'max_value returns nil for empty data' do
+      spark = Spark::AnalysisSpark.new([])
+      assert_nil spark.send(:max_value)
+    end
+
+    it 'max_value handles non-integer strings gracefully' do
+      data = [
+        [Date.new(2023, 1, 1), 'foo'],
+        [Date.new(2023, 1, 2), '20']
+      ]
+      spark = Spark::AnalysisSpark.new(data)
+      assert_equal 20, spark.send(:max_value)
+    end
+  end
 end

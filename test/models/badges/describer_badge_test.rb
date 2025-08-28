@@ -4,7 +4,7 @@ require 'test_helper'
 
 class DescriberBadgeTest < ActiveSupport::TestCase
   let(:user) { create(:account) }
-  let(:describer_badge) { DescriberBadge.new(user) }
+  let(:describer_badge) { Badge::DescriberBadge.new(user) }
 
   describe 'eligibility_count' do
     it 'should return project description edits' do

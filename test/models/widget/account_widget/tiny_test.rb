@@ -4,7 +4,7 @@ require 'test_helper'
 
 class TinyTest < ActiveSupport::TestCase
   let(:account) { create(:account) }
-  let(:widget) { AccountWidget::Tiny.new(account_id: account.id) }
+  let(:widget) { Widget::AccountWidget::Tiny.new(account_id: account.id) }
 
   describe 'width' do
     it 'should return 80' do

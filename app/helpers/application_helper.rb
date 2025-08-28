@@ -128,7 +128,7 @@ module ApplicationHelper
     return if actual_time.blank?
 
     base_time ||= @highlight_from || Time.current
-    return 'highlight' if actual_time >= base_time
+    'highlight' if actual_time >= base_time
   end
 
   def needs_login
@@ -161,7 +161,7 @@ module ApplicationHelper
     #{text[0..limit]}
     <span class="expander">
     <span x-wrapper>... #{link_to t('expander.more'), 'javascript:void(0);', class: 'ctrl'}</span>
-    <span x-wrapper style="display:none">#{text[limit + 1..]} #{link_to t('expander.less'), 'javascript:void(0);', class: 'ctrl'}</span>
+    <span x-wrapper style="display:none">#{text[(limit + 1)..]} #{link_to t('expander.less'), 'javascript:void(0);', class: 'ctrl'}</span>
     </span>
     EXPANDER
   end

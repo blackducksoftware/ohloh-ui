@@ -218,8 +218,7 @@ class AuthenticationsControllerTest < ActionController::TestCase
         get :github_callback, params: { code: Faker::Lorem.word }
 
         account.reload
-        _(account.access.activated_at).must_be :present?
-        _(account.access.activation_code).must_be_nil
+        _(account.access.activated?).must_be :present?
       end
 
       it 'must refresh github verification token and unique_id on every login' do
@@ -268,6 +267,24 @@ class AuthenticationsControllerTest < ActionController::TestCase
         _(flash[:notice]).must_equal I18n.t('authentications.github_callback.email_mismatch',
                                             settings_account_link: settings_account_path(account))
       end
+    end
+  end
+  describe 'github_api_account_is_verified?' do
+    it 'github_api_account_is_verified? returns github_verification if present' do
+      controller = AuthenticationsController.new
+      mock_verification = mock('GithubVerification')
+      mock_account = mock('Account')
+      mock_account.stubs(:github_verification).returns(mock_verification)
+      controller.stubs(:github_api_account).returns(mock_account)
+
+      assert_equal mock_verification, controller.send(:github_api_account_is_verified?)
+    end
+
+    it 'github_api_account_is_verified? returns nil if no account' do
+      controller = AuthenticationsController.new
+      controller.stubs(:github_api_account).returns(nil)
+
+      assert_nil controller.send(:github_api_account_is_verified?)
     end
   end
 end

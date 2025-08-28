@@ -48,7 +48,7 @@ class ApplicationControllerTest < ActionController::TestCase
     it 'should render error template' do
       get :error_with_message
       assert_response :unauthorized
-      assert_template 'application/error.html'
+      assert_template 'application/error'
       _(assigns(:page_context)).must_equal({})
       assert_select('#project_header', 0)
       assert_select('#project_masthead', 0)
@@ -192,6 +192,65 @@ class ApplicationControllerTest < ActionController::TestCase
       @controller.params = { page: 'i_am_a_banana' }
       _(@controller.page_param).must_equal 1
     end
+
+    it 'raise_not_found! raises ActionController::RoutingError with unmatched_route param' do
+      @controller.params = { unmatched_route: 'missing/path/here' }
+
+      error = assert_raises(ActionController::RoutingError) do
+        @controller.raise_not_found!
+      end
+
+      _(error.message).must_equal 'No route matches missing/path/here'
+    end
+
+    it 'raise_not_found! raises ActionController::RoutingError with nil unmatched_route param' do
+      @controller.params = { unmatched_route: nil }
+
+      error = assert_raises(ActionController::RoutingError) do
+        @controller.raise_not_found!
+      end
+
+      _(error.message).must_equal 'No route matches '
+    end
+
+    it 'rescue_from exception raises if consider_all_requests_local is true' do
+      Rails.application.config.stubs(:consider_all_requests_local).returns(true)
+
+      assert_raises(StandardError) do
+        get :throws_standard_error
+      end
+
+      Rails.application.config.unstub(:consider_all_requests_local)
+    end
+
+    it 'rescue_from exception calls render_404 if consider_all_requests_local is false' do
+      Rails.application.config.stubs(:consider_all_requests_local).returns(false)
+      @controller.expects(:notify_airbrake).once
+
+      get :throws_standard_error
+      assert_response :not_found
+
+      Rails.application.config.unstub(:consider_all_requests_local)
+    end
+
+    it 'rescue_from ActionView::MissingTemplate raises if consider_all_requests_local is true' do
+      Rails.application.config.stubs(:consider_all_requests_local).returns(true)
+
+      assert_raises(ActionView::MissingTemplate) do
+        get :throws_missing_template
+      end
+
+      Rails.application.config.unstub(:consider_all_requests_local)
+    end
+
+    it 'rescue_from ActionView::MissingTemplate calls render_404 if consider_all_requests_local is false' do
+      Rails.application.config.stubs(:consider_all_requests_local).returns(false)
+
+      get :throws_missing_template
+      assert_response :not_found
+
+      Rails.application.config.unstub(:consider_all_requests_local)
+    end
   end
 
   describe 'ProjectsController' do
@@ -266,6 +325,35 @@ class ApplicationControllerTest < ActionController::TestCase
         _(account.reload.last_seen_ip).must_equal ip
       end
     end
+
+    describe 'current_project method' do
+      it 'returns project when found by id param' do
+        project = create(:project)
+        get :show, params: { id: project.to_param }
+        _(@controller.send(:current_project)).must_equal project
+      end
+
+      it 'returns project when not found by id param' do
+        assert_raises(ParamRecordNotFound) do
+          @controller.params = { project_id: 99_999 }
+          @controller.send(:current_project)
+        end
+      end
+
+      it 'memoizes the project instance variable' do
+        project = create(:project)
+        get :show, params: { id: project.to_param }
+
+        # First call sets @project
+        first_result = @controller.send(:current_project)
+        # Second call should return the same memoized instance
+        second_result = @controller.send(:current_project)
+
+        _(first_result).must_equal project
+        _(second_result).must_equal project
+        _(first_result.object_id).must_equal second_result.object_id
+      end
+    end
   end
 end
 
@@ -304,6 +392,10 @@ class TestController < ApplicationController
   def throws_fisbot_api_error
     raise FisbotApiError
   end
+
+  def throws_missing_template
+    raise ActionView::MissingTemplate.new(%w[path1 path2], 'template_name', %w[detail1 detail2], false, 'html')
+  end
 end
 
 test_routes = proc do
@@ -315,5 +407,6 @@ test_routes = proc do
   get 'test/throws_routing_error' => 'test#throws_routing_error'
   get 'test/throws_standard_error' => 'test#throws_standard_error'
   get 'test/throws_fisbot_api_error' => 'test#throws_fisbot_api_error'
+  get 'test/throws_missing_template' => 'test#throws_missing_template'
 end
 Rails.application.routes.send(:eval_block, test_routes)

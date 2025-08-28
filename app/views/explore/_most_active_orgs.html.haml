@@ -17,4 +17,4 @@
       %p= t('.within_30_days')
     .col-md-6.pull-right
       %p.pull-right.margin_right_10
-        = t '.last_calculated', duration: time_ago_in_words(@most_active_orgs.first.created_at)
+        = t '.last_calculated', duration: time_ago_in_words(@most_active_orgs.first.created_at) if @most_active_orgs.first

@@ -4,7 +4,7 @@ class Api::V1::EnlistmentsController < ApplicationController
   helper EnlistmentsHelper
   helper ProjectsHelper
 
-  include JWTHelper
+  include JwtHelper
 
   skip_before_action :verify_authenticity_token
   before_action :authenticate_jwt
@@ -17,8 +17,8 @@ class Api::V1::EnlistmentsController < ApplicationController
       en.create_edit.undo!(current_user)
       delete_all_subscriptions(en.code_location_id)
     end
-    render json: 'No Code Locations', status: :not_found if @enlistments.length.zero?
-    render json: @enlistments, status: :ok unless @enlistments.length.zero?
+    render json: 'No Code Locations', status: :not_found if @enlistments.empty?
+    render json: @enlistments, status: :ok unless @enlistments.empty?
   end
 
   def enlist
@@ -33,8 +33,8 @@ class Api::V1::EnlistmentsController < ApplicationController
   def get_enlistments
     url = params[:url]
     branch = params[:branch]
-    join_string = 'join code_locations on code_location_id = code_locations.id join repositories'\
-                  ' on code_locations.repository_id = repositories.id'
+    join_string = 'join code_locations on code_location_id = code_locations.id join repositories ' \
+                  'on code_locations.repository_id = repositories.id'
     @enlistments = Enlistment.not_deleted.joins(:project).joins(join_string)
                              .where('code_locations.module_branch_name' => branch, 'repositories.url' => url)
   end
