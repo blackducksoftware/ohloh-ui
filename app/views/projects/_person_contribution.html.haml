@@ -4,7 +4,7 @@
   - contributions.take(3).each do |c|
     %p.margin_bottom_0
       Contributes to
-      = link_to c.project.name, project_path(c.project.to_param)
+      = link_to h(c.project.name), project_path(c.project.to_param)
       - if c.committer_name != person.effective_name
         as
         = h(obfuscate_email(c.committer_name))

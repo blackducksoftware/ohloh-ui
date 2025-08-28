@@ -5091,7 +5091,7 @@ CREATE TABLE oh.analysis_summaries (
     id integer NOT NULL,
     analysis_id integer NOT NULL,
     files_modified integer,
-    lines_added integer,
+    lines_added bigint,
     lines_removed integer,
     type text NOT NULL,
     created_at timestamp without time zone,
@@ -19304,6 +19304,8 @@ INSERT INTO oh.schema_migrations (version) VALUES ('20230801115125');
 INSERT INTO oh.schema_migrations (version) VALUES ('20240305184511');
 
 INSERT INTO oh.schema_migrations (version) VALUES ('20240724182111');
+
+INSERT INTO oh.schema_migrations (version) VALUES ('20250511154848');
 
 INSERT INTO oh.schema_migrations (version) VALUES ('21');
 

@@ -33,7 +33,7 @@
         %tr
           %td{ rowspan: 3 }
             = project.decorate.icon(:small)
-            = link_to truncate(project.name, length: 23), project_path(project), title: project.name
+            = link_to h(truncate(project.name, length: 23)), project_path(project), title: project.name
           %td{ rowspan: 3 }
             %div{ style: 'margin-top: -25px; position: relative' }
               - project_activity_level_class(project, :twenty)

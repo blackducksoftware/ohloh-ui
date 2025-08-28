@@ -119,13 +119,13 @@ module KudosHelper
 
   def kudo_account_link(kudo)
     id = kudo.account.nil? ? '' : "kudo_given_link_#{kudo.account.login}"
-    link_to kudo.account.name, account_path(kudo.account), id: id
+    link_to h(kudo.account.name), account_path(kudo.account), id: id
   end
 
   def kudo_contribution_link(kudo)
     contrib = Contribution.generate_id_from_project_id_and_name_id(kudo.project_id, kudo.name_id)
     path = project_contributor_path(kudo.project, contrib)
-    link_to("#{kudo.name.name} (#{kudo.project.name})", path, id: "kudo_given_link_#{kudo.sender.login}")
+    link_to("#{h(kudo.name.name)} (#{h(kudo.project.name)})", path, id: "kudo_given_link_#{kudo.sender.login}")
   end
 end
 # rubocop: enable Metrics/ModuleLength

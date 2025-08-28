@@ -1,7 +1,7 @@
 .well.pull-left.col-md-9{ style: 'padding: 10px 0px 19px 19px' }
   %h4
     = t('.activity_on', name: @project.name, committer: committer)
-    = link_to t('.see_full_profile', name: committer), account_path(account) if account
+    = link_to h(t('.see_full_profile', name: committer)), account_path(account) if account
   .committer-summary
     = image_tag avatar_img_path(@contribution.person, 64), class: 'pull-left avatar', style: 'margin-bottom:65px;'
     - unless fact.nil?

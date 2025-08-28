@@ -14,7 +14,7 @@
             .avatar
               = link_to avatar_img_for(person), avatar_path(person)
             .avatar_name
-              %h4.nomargin= link_to person.effective_name, avatar_path(person)
+              %h4.nomargin= link_to h(person.effective_name), avatar_path(person)
               %p.nomargin
                 != people_contribution_list_for person
           %td{ width: '5%' }

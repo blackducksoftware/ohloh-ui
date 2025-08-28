@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# rubocop:disable Metrics/ClassLength
+
 class AccountsController < ApplicationController
   include RedirectIfDisabled
 
@@ -15,6 +17,8 @@ class AccountsController < ApplicationController
   before_action :must_own_account, only: %i[edit update confirm_delete]
   before_action :find_claimed_people, only: :index
   before_action :redirect_if_logged_in, only: :new
+
+  rescue_from ActionController::ParameterMissing, with: :handle_parameter_missing
 
   def new
     @account = Account.new
@@ -118,7 +122,13 @@ class AccountsController < ApplicationController
     )
   end
 
+  def handle_parameter_missing(exception)
+    Airbrake.notify(exception)
+    redirect_to new_account_path
+  end
+
   def redirect_if_logged_in
     redirect_to account_path(current_user), notice: t('password_resets.already_logged_in') if logged_in?
   end
 end
+# rubocop:enable Metrics/ClassLength

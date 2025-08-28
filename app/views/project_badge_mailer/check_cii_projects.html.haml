@@ -16,6 +16,6 @@
     - @projects.each do |p|
       %tr
         %td= link_to p.id, "#{ENV['CII_API_BASE_URL']}projects/#{p.id}"
-        %td= link_to p.name, "#{ENV['CII_API_BASE_URL']}projects/#{p.id}"
-        %td= link_to p.homepage_url, p.homepage_url
+        %td= link_to h(p.name), "#{ENV['CII_API_BASE_URL']}projects/#{p.id}"
+        %td= link_to h(p.homepage_url), p.homepage_url
         %td= link_to p.repo_url, p.repo_url

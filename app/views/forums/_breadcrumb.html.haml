@@ -1,7 +1,7 @@
 %h1.margin_top_0
   = link_to t('forums.index.forums'), forums_path
   \:
-  = link_to forum.name, forum_path(forum)
+  = link_to h(forum.name), h(forum_path(forum))
 .clearfix
 = render partial: '/forums/notice'
 .clearfix

@@ -1,7 +1,7 @@
 - duplicate = project.is_a_duplicate
 - if duplicate
   .alert.alert-info
-    - link = link_to(duplicate.good_project.name, project_path(duplicate.good_project))
+    - link = link_to(h(duplicate.good_project.name), project_path(duplicate.good_project))
     %p!= t('.reported', link: link)
     - if (duplicate.account == current_user) || current_user_is_admin?
       %p

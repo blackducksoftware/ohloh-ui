@@ -8,9 +8,9 @@
 
   .col.col-md-6.last
     %p.inset
-      = link_to duplicate.bad_project.name, project_path(duplicate.bad_project)
+      = link_to h(duplicate.bad_project.name), project_path(duplicate.bad_project)
       = t('.is_duplicate')
-      = link_to duplicate.good_project.name, project_path(duplicate.good_project)
+      = link_to h(duplicate.good_project.name), project_path(duplicate.good_project)
       %br
       = t('.reported')
       - if duplicate.account_id

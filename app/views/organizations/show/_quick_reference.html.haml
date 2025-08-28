@@ -5,12 +5,12 @@
     %dd= @organization.org_type_label
     %dt.margin_bottom_10= t('.links')
     %dd
-      = link_to bootstrap_icon('icon-external-link', t('.homepage')), @organization.homepage_url, target: '_blank'
+      = link_to bootstrap_icon('icon-external-link', t('.homepage')), h(@organization.homepage_url), target: '_blank'
     %dt= link_to t('.managers'), list_managers_organization_path(@organization)
     %dd
       - if @organization.active_managers.any?
-        = @organization.active_managers.map { |m| link_to m.name, account_path(m) }.to_sentence.html_safe
+        = @organization.active_managers.map { |m| link_to h(m.name), account_path(m) }.to_sentence.html_safe
       - elsif current_user_is_admin?
-        = link_to t('.add_new', name: @organization.name), new_manager_organization_path(@organization)
+        = link_to t('.add_new', name: h(@organization.name)), new_manager_organization_path(@organization)
       - else
         &nbsp;

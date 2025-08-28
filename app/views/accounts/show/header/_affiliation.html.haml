@@ -1,6 +1,6 @@
 - if account.affiliation_type_unaffiliated? && my_account?(account)
   = link_to t('.unaffiliated'), edit_account_path(account), title: t('.title')
 - elsif account.organization_id
-  = link_to account.organization.name, organization_path(account.organization_id)
+  = link_to h(account.organization.name), organization_path(account.organization_id)
 - elsif account.organization_name.present?
   = account.organization_name

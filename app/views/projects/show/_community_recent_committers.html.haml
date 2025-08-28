@@ -16,6 +16,6 @@
                 end
             %td.recent_committers{ width: '49%', title: obfuscate_email(p.person_name) }
               - obfuscated_email = obfuscate_email(p.person_name).reverse.truncate(17).reverse
-              = link_to obfuscated_email, project_contributor_path(@project.id, contrib_id)
+              = link_to h(obfuscated_email), project_contributor_path(@project.id, contrib_id)
   - else
     %p= t('.no_one_recently')

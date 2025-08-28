@@ -13,7 +13,7 @@
       %h6
         - project_name = position.project.name
         - if project_name
-          = link_to project_name, position.project || position
+          = link_to h(project_name), position.project || position
         - if position.name_fact
           %span
             &nbsp;&nbsp;

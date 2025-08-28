@@ -9,7 +9,7 @@
         - project_activity_level_class(position.project, :fifteen)
         - organization = position.project.organization
         - if organization
-          = link_to "(#{organization.name})", organization, class: 'project-organization'
+          = link_to "(#{h(organization.name)})", organization, class: 'project-organization'
       .col-md-8.one-project-contribution
         %span.contribution_role
           = position.title

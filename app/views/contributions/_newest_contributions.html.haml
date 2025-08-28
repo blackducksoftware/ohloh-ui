@@ -15,7 +15,7 @@
             = avatar_img_for(contribution.person)
           - if contribution.person
             = link_to project_contributor_path(@project, contribution), class: 'avatar_name' do
-              = truncate(contribution.person.person_name, length: 30)
+              = h(truncate(contribution.person.person_name, length: 30))
         %td.center
           = fact.commits
         %td.center

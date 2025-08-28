@@ -27,7 +27,7 @@
       %tr{ class: class_name }
         %td.first
           %h3.nomargin
-            = link_to forum.name, forum_path(forum)
+            = link_to h(forum.name), forum_path(forum)
           %p.nomargin= forum.description
         %td.center= forum.topics_count
         %td.center= forum.posts_count

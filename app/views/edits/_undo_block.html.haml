@@ -9,7 +9,7 @@
     = disabled_button btn_text, class: 'btn-mini btn-warning'
   - if edit.undone_by
     .info
-      = link_to edit.undoer.name, account_url(edit.undoer)
+      = link_to h(edit.undoer.name), account_url(edit.undoer)
       = t('.undid_this_on')
       = edit_humanize_datetime(edit.undone_at)
 - else
@@ -24,6 +24,6 @@
       .info= t('.no_earlier_value')
   - if edit.undone_by
     .info
-      = link_to edit.undoer.name, account_url(edit.undoer)
+      = link_to h(edit.undoer.name), account_url(edit.undoer)
       = t('.redid_this_on')
       = edit_humanize_datetime(edit.undone_at)

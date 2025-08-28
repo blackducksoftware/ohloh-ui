@@ -3,7 +3,7 @@
 %h3= t('.heading')
 
 - measures.each do |key, value|
-  = link_to value, compare_languages_path(measure: key, language_name: params[:language_name]),
+  = link_to h(value), compare_languages_path(measure: key, language_name: params[:language_name]),
     class: "btn btn-mini #{@measure == key ? 'btn-primary' : 'btn-info'}"
 
 %h5

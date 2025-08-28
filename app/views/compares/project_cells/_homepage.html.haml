@@ -6,8 +6,8 @@
            project.url
          end
 - if !host.blank?
-  = link_to host, project.url
+  = link_to h(host), project.url
 - elsif !project.url.blank?
-  = link_to project.url
+  = link_to h(project.url)
 - else
   %span.soft= t('compares.no_data')
