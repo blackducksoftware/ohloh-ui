@@ -14,8 +14,10 @@
   = render partial: 'organizations/show/quick_reference'
 
 .col-md-12
-  .mezzo.padding_one_top.org-pictogram
-    = render partial: '/organizations/show/pictogram', locals: { print_icon: true }
+  .mezzo.padding_one_top.org-pictogram.responsive-pictogram-container
+    .pictogram-wrapper.d-flex.justify-content-center
+      .pictogram-content.position-relative
+        = render partial: '/organizations/show/pictogram', locals: { print_icon: true }
   .mezzo.padding_one_top
     .org-data-table.margin_left_10.margin_right_10
       - case @view

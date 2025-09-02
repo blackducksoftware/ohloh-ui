@@ -211,6 +211,7 @@ form#new_logo
   a[href]:after
     content: none !important
 
+// Responsive Pictogram Styles
 .org-pictogram
   display: flex
   justify-content: center
@@ -218,6 +219,217 @@ form#new_logo
   max-width: 100%
   margin-left: auto
   margin-right: auto
+  padding: 1rem 0
+
+// Responsive Pictogram Container
+.responsive-pictogram-container
+  overflow: hidden
+  
+  @media (max-width: 768px)
+    padding: 0.5rem 0
+
+// Pictogram Wrapper for Responsive Behavior
+.pictogram-wrapper
+  width: 100%
+  overflow-x: auto
+  -webkit-overflow-scrolling: touch
+  scroll-behavior: smooth
+  
+  @media (max-width: 1024px)
+    padding: 0 1rem
+    
+  @media (max-width: 768px)
+    padding: 0 0.5rem
+    
+  // Hide scrollbar but keep functionality
+  &::-webkit-scrollbar
+    height: 3px
+    
+  &::-webkit-scrollbar-track
+    background: #f1f1f1
+    border-radius: 3px
+    
+  &::-webkit-scrollbar-thumb
+    background: #888
+    border-radius: 3px
+    
+    &:hover
+      background: #555
+
+// Pictogram Content Responsive Scaling
+.pictogram-content
+  min-width: fit-content
+  transition: transform 0.3s ease
+  
+  // Large screens (desktop)
+  @media (min-width: 1200px)
+    transform: scale(1)
+    
+  // Medium screens (tablet landscape)
+  @media (min-width: 992px) and (max-width: 1199px)
+    transform: scale(0.9)
+    
+  // Small-medium screens (tablet portrait)
+  @media (min-width: 768px) and (max-width: 991px)
+    transform: scale(0.8)
+    transform-origin: center top
+    
+  // Small screens (mobile landscape)
+  @media (min-width: 576px) and (max-width: 767px)
+    transform: scale(0.7)
+    transform-origin: center top
+    
+  // Extra small screens (mobile portrait)
+  @media (max-width: 575px)
+    transform: scale(0.6)
+    transform-origin: center top
+
+// Enhanced Infographic Responsive Behavior
+#org_infographic
+  position: relative
+  width: 1000px
+  height: 290px
+  margin: 0 auto
+  
+  @media (max-width: 1024px)
+    width: 100%
+    min-width: 800px
+    
+  @media (max-width: 768px)
+    min-width: 600px
+    
+  @media (max-width: 576px)
+    min-width: 500px
+
+// Responsive Typography for Infographic
+@media (max-width: 768px)
+  #org_infographic
+    .about
+      font-size: 10px
+      
+    #infographic_box
+      .header
+        font-size: 14px
+        
+      .content
+        .commits
+          font-size: 11px
+        .projects
+          font-size: 9px
+          
+    #section1, #section2
+      .col1, .col2
+        .commits
+          font-size: 11px
+        .projects
+          font-size: 9px
+
+@media (max-width: 576px)
+  #org_infographic
+    .about
+      font-size: 8px
+      
+    #infographic_box
+      .header
+        font-size: 12px
+        
+      .content
+        .commits
+          font-size: 10px
+        .projects
+          font-size: 8px
+          
+        .col3
+          .icon-group
+            font-size: 40px
+            
+    #section1, #section2
+      .col1, .col2
+        .commits
+          font-size: 10px
+        .projects
+          font-size: 8px
+
+// Mobile Navigation Controls for Pictogram
+@media (max-width: 768px)
+  .pictogram-wrapper
+    position: relative
+    
+    // Add scroll indicators
+    &::before, &::after
+      content: ""
+      position: absolute
+      top: 50%
+      width: 30px
+      height: 30px
+      background: rgba(0, 0, 0, 0.5)
+      border-radius: 50%
+      z-index: 10
+      opacity: 0
+      transition: opacity 0.3s ease
+      pointer-events: none
+      
+    &::before
+      left: 10px
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='white' viewBox='0 0 24 24'%3E%3Cpath d='M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z'/%3E%3C/svg%3E")
+      background-repeat: no-repeat
+      background-position: center
+      background-size: 20px
+      
+    &::after
+      right: 10px
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='white' viewBox='0 0 24 24'%3E%3Cpath d='M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z'/%3E%3C/svg%3E")
+      background-repeat: no-repeat
+      background-position: center
+      background-size: 20px
+    
+    &.show-left-indicator::before
+      opacity: 1
+      
+    &.show-right-indicator::after
+      opacity: 1
+
+// Touch-friendly enhancements for mobile
+@media (max-width: 768px)
+  .org-pictogram
+    // Add touch padding
+    padding: 1rem 0.5rem
+    
+    // Make links more touch-friendly
+    a
+      min-height: 44px
+      display: inline-flex
+      align-items: center
+      justify-content: center
+      padding: 0.5rem
+      
+  #org_infographic
+    // Add touch feedback for interactive elements
+    a, .pictogram_link_active
+      -webkit-tap-highlight-color: rgba(102, 126, 234, 0.2)
+      transition: all 0.2s ease
+      
+      &:active
+        transform: scale(0.95)
+        background-color: rgba(102, 126, 234, 0.1)
+        border-radius: 4px
+
+// Print-specific responsive adjustments
+@media print
+  .responsive-pictogram-container
+    overflow: visible !important
+    
+  .pictogram-wrapper
+    overflow: visible !important
+    
+  .pictogram-content
+    transform: none !important
+    
+  #org_infographic
+    width: 100% !important
+    min-width: auto !important
+    max-width: 100% !important
+    page-break-inside: avoid
 
 @media only all and (min-width: 320px) and (max-width: 800px)
   .org-quick-reference
