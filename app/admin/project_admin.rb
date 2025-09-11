@@ -14,7 +14,6 @@ ActiveAdmin.register Project do
 
   controller do
     defaults finder: :find_by_vanity_url!
-    skip_before_action :authenticate_active_admin_user, only: :index
 
     before_action only: :index do
       if params['commit'].blank?
