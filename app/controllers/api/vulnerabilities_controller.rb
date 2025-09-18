@@ -44,6 +44,6 @@ class Api::VulnerabilitiesController < ApplicationController
   end
 
   def valid_bdsa_id
-    render 'no_data' unless params[:id].upcase.match(/^BDSA-(19|[2-9][0-9])\d{2}-\d{4}$/)
+    render 'no_data' unless params[:id].upcase.match(/^BDSA-(19|[2-9][0-9])\d{2}-\d{4,}$/)
   end
 end
