@@ -16,7 +16,7 @@ class Analysis::CommitHistoryTest < ActiveSupport::TestCase
     end
 
     it 'must return a list of dates in a range and commits' do
-      commit_history = Analysis::CommitHistory.new(@query_options)
+      commit_history = Analysis::CommitHistory.new(**@query_options)
       results = commit_history.execute
 
       _(results.count).must_equal 4

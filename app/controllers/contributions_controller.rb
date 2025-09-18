@@ -57,7 +57,7 @@ class ContributionsController < ApplicationController
     id = params[:id].to_i
     @contributor = Contribution.find(id).name_fact if id > (1 << 32)
     @contributor ||= ContributorFact.joins(:name).where(names: { id: id })
-                                    .where(analysis_id: @project.best_analysis_id).take
+                                    .find_by(analysis_id: @project.best_analysis_id)
     raise ParamRecordNotFound unless @contributor
   end
 

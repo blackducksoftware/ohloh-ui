@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class ProjectWidget::Cocomo < ProjectWidget
+class Widget::ProjectWidget::Cocomo < Widget::ProjectWidget
   def height
     205
   end

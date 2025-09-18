@@ -3,7 +3,7 @@
 require 'test_helper'
 
 class Api::V1::EnlistmentsControllerTest < ActionController::TestCase
-  include JWTHelper
+  include JwtHelper
 
   before do
     WebMocker.get_code_location
@@ -41,7 +41,7 @@ class Api::V1::EnlistmentsControllerTest < ActionController::TestCase
 
   it 'should remove the enlistment when code_location has no branch' do
     _(@enlistment.deleted).must_equal false
-    Enlistment.connection.execute('update code_locations set module_branch_name = null where id '\
+    Enlistment.connection.execute('update code_locations set module_branch_name = null where id ' \
                                   "= #{@enlistment.code_location_id}")
     post :unsubscribe, params: { JWT: @jwt, url: @url }, format: :json
     _(response).must_be :successful?

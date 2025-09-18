@@ -3,7 +3,7 @@
 require 'test_helper'
 
 class Api::V1::ProjectsControllerTest < ActionController::TestCase
-  include JWTHelper
+  include JwtHelper
   let(:api_key) { create(:api_key, account: create(:account)) }
   let(:client_id) { api_key.oauth_application.uid }
   let(:forge) { Forge.find_by(name: 'Github') }
@@ -27,7 +27,7 @@ class Api::V1::ProjectsControllerTest < ActionController::TestCase
         post :create, params: { project: { JWT: @jwt, repo_url: url } }, format: :json
         WebMocker.github_api('https://api.github.com/repos/rails/rails', url)
         unmocked_create_enlistment_with_code_location(project, {}, url)
-        expect(@response.content_type).must_equal 'application/json'
+        expect(@response.content_type).must_equal 'application/json; charset=utf-8'
         _(response).wont_be :successful?
       end
     end
@@ -38,6 +38,7 @@ class Api::V1::ProjectsControllerTest < ActionController::TestCase
         stubs(:current_user).returns(@account)
         url = 'git://github.com/rails/rails.git'
         license = create(:license, vanity_url: 'rails')
+        @controller.expects(:create_code_location_subscription)
         post :create, params: { JWT: @admin_jwt, repo_url: url,
                                 license_name: license.name }, format: :json
         @controller.instance_eval { project_params }
@@ -46,7 +47,7 @@ class Api::V1::ProjectsControllerTest < ActionController::TestCase
         Enlistment.any_instance.stubs(:ensure_forge_and_job).returns(true)
         @controller.instance_eval { build_project }
         @controller.instance_eval { create_code_location_subscription }
-        expect(@response.content_type).must_equal 'application/json'
+        expect(@response.content_type).must_equal 'application/json; charset=utf-8'
       end
     end
 
@@ -83,7 +84,7 @@ class Api::V1::ProjectsControllerTest < ActionController::TestCase
         create(:project, name: 'rails', description: 'Ruby on Rails', vanity_url: 'rails')
         url = 'git://github.com/rails/rails.git'
         post :create, params: { JWT: @jwt, repo_url: url }, format: :json
-        expect(@response.content_type).must_equal 'application/json'
+        expect(@response.content_type).must_equal 'application/json; charset=utf-8'
         _(response).wont_be :successful?
       end
     end
@@ -104,7 +105,7 @@ class Api::V1::ProjectsControllerTest < ActionController::TestCase
     it 'it should not create a project without admin account' do
       VCR.use_cassette('code_location_find_by_url') do
         post :create, params: { JWT: @jwt }, format: :json
-        expect(@response.content_type).must_equal 'application/json'
+        expect(@response.content_type).must_equal 'application/json; charset=utf-8'
         assert_response :unauthorized
       end
     end
@@ -112,7 +113,7 @@ class Api::V1::ProjectsControllerTest < ActionController::TestCase
     it 'it should not create a project without editor account' do
       VCR.use_cassette('code_location_find_by_url') do
         post :create, params: { JWT: @admin_jwt }, format: :json
-        expect(@response.content_type).must_equal 'application/json'
+        expect(@response.content_type).must_equal 'application/json; charset=utf-8'
         assert_response :bad_request
       end
     end

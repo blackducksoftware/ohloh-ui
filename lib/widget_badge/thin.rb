@@ -2,6 +2,7 @@
 
 # The width is constrained to be about 22 characters, so its up to the caller
 # to shorten each string to the correct length (or add ellipses).
+
 module WidgetBadge
   module Thin
     module_function
@@ -23,7 +24,9 @@ module WidgetBadge
       image.scale('138x21')
     end
 
-    def new_text_image(text, options)
+    def new_text_image(text, options) # rubocop:disable Metrics/MethodLength
+      # Escape single quotes for ImageMagick draw command
+      safe_text = text.to_s.gsub("'", "\\'")
       new_image do |convert|
         convert.size('87x14')
         convert << 'xc:white'
@@ -35,7 +38,7 @@ module WidgetBadge
         set_gravity(convert, options[:align])
 
         convert.motion_blur("0.0x#{options[:blur]}+90") if options[:blur] != 0
-        convert.draw "text 0,#{options[:y_offset]} '#{text}'"
+        convert.draw "text 0,#{options[:y_offset]} '#{safe_text}'"
       end
     end
 
@@ -49,7 +52,7 @@ module WidgetBadge
     end
 
     def animate(*image_data, file_path)
-      MiniMagick::Tool::Convert.new do |convert|
+      MiniMagick::Tool.new('convert') do |convert|
         first_image_options = image_data.shift
         scroll_to_bottom(convert, first_image_options)
 

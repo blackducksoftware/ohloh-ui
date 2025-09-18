@@ -4,10 +4,10 @@ require 'test_helper'
 
 class CommitsControllerTest < ActionController::TestCase
   before do
-    @commit1 = create(:commit, position: 0, comment: 'first commit', time: Time.current - 1.day)
+    @commit1 = create(:commit, position: 0, comment: 'first commit', time: 1.day.ago)
     @commit2 = create(:commit, position: 1,
                                comment: 'second commit',
-                               time: Time.current - 2.days,
+                               time: 2.days.ago,
                                code_set_id: @commit1.code_set_id)
     @project = create(:project)
     @name1 = create(:name)
@@ -203,13 +203,13 @@ class CommitsControllerTest < ActionController::TestCase
   def create_commits
     commits = []
     commits << create(:commit, code_set_id: @commit1.code_set_id, position: 2, name: create(:name),
-                               comment: 'third commit', time: Time.current - 5.days).id
+                               comment: 'third commit', time: 5.days.ago).id
     commits << create(:commit, code_set_id: @commit1.code_set_id, position: 3, name: create(:name),
-                               comment: 'fourth commit', time: Time.current - 7.days).id
+                               comment: 'fourth commit', time: 7.days.ago).id
     commits << create(:commit, code_set_id: @commit1.code_set_id, position: 4, name: create(:name),
-                               comment: 'fifth commit', time: Time.current - 2.months).id
+                               comment: 'fifth commit', time: 2.months.ago).id
     commits << create(:commit, code_set_id: @commit1.code_set_id, position: 5, name: create(:name),
-                               comment: 'sixth commit', time: Time.current - 2.years).id
+                               comment: 'sixth commit', time: 2.years.ago).id
     ass = AnalysisSlocSet.where(sloc_set_id: SlocSet.where(code_set_id: @commit1.code_set_id),
                                 analysis_id: @project.best_analysis_id).first
     ass.update!(as_of: 6)

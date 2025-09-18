@@ -10,7 +10,7 @@ namespace :jobs do
     failures.each do |failure|
       failed_jobs = Job.failed.where('exception ILIKE ?', failure.pattern)
                        .where('do_not_retry IS FALSE')
-                       .where('retry_count < ? ', retry_delays.size)
+                       .where(retry_count: ...retry_delays.size)
       exit(1) if failed_jobs.empty?
 
       failed_jobs.find_in_batches(batch_size: 100) do |jobs|

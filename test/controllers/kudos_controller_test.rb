@@ -144,7 +144,7 @@ class KudosControllerTest < ActionController::TestCase
     account = create(:account)
     login_as account
     post :create, params: { kudo: { account_id: account.id } }
-    assert_response 302
+    assert_response :found
     _(flash[:error]).must_equal I18n.t('kudos.cant_kudo_self')
     _(Kudo.where(account_id: account.id).count).must_equal 0
   end
@@ -153,7 +153,7 @@ class KudosControllerTest < ActionController::TestCase
     account = create(:account)
     login_as create(:account)
     post :create, params: { kudo: { account_id: account.id } }
-    assert_response 302
+    assert_response :found
     _(flash[:success]).must_equal I18n.t('kudos.create.success_account', name: account.name)
     _(Kudo.where(account_id: account.id).count).must_equal 1
   end
@@ -162,7 +162,7 @@ class KudosControllerTest < ActionController::TestCase
     account = create(:account)
     login_as create(:account)
     post :create, params: { kudo: { account_id: account.id, message: Faker::Lorem.sentences(number: 12) } }
-    assert_response 302
+    assert_response :found
     _(flash[:error]).must_equal 'Message is too long (maximum is 80 characters)'
     _(Kudo.where(account_id: account.id).count).must_equal 0
   end
@@ -171,7 +171,7 @@ class KudosControllerTest < ActionController::TestCase
     person = create(:person)
     login_as create(:account)
     post :create, params: { kudo: { contribution_id: person.id } }
-    assert_response 302
+    assert_response :found
     _(Kudo.where(project_id: person.project_id).count).must_equal 1
   end
 
@@ -189,7 +189,7 @@ class KudosControllerTest < ActionController::TestCase
     kudo = create(:kudo)
     login_as kudo.account
     delete :destroy, params: { id: kudo.id }
-    assert_response 302
+    assert_response :found
     _(Kudo.where(id: kudo.id).count).must_equal 0
   end
 
@@ -197,7 +197,7 @@ class KudosControllerTest < ActionController::TestCase
     kudo = create(:kudo)
     login_as kudo.sender
     delete :destroy, params: { id: kudo.id }
-    assert_response 302
+    assert_response :found
     _(Kudo.where(id: kudo.id).count).must_equal 0
   end
 
@@ -205,7 +205,7 @@ class KudosControllerTest < ActionController::TestCase
     kudo = create(:kudo)
     login_as create(:account)
     delete :destroy, params: { id: kudo.id }
-    assert_response 302
+    assert_response :found
     _(Kudo.where(id: kudo.id).count).must_equal 1
   end
 end

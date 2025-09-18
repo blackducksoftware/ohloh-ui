@@ -16,7 +16,7 @@ module AffiliationValidation
   end
 
   ALLOWED_AFFILIATION_TYPES.each do |type|
-    define_method "affiliation_type_#{type}?".to_sym do
+    define_method :"affiliation_type_#{type}?" do
       affiliation_type.to_s == type
     end
   end

@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 class License < ApplicationRecord
+  include ActsAsEditable
+  include ActsAsProtected
+
   validates :vanity_url, uniqueness: { case_sensitive: false }, length: { in: 2..50 },
                          default_param_format: true
   validates :name, uniqueness: { case_sensitive: false }, length: { in: 1..100 },

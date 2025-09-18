@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
+require_relative '../../../core/project/project_builder'
+
 class Api::V1::ProjectsController < ApplicationController
-  include JWTHelper
+  include JwtHelper
   include ProjectsHelper
 
   skip_before_action :verify_authenticity_token

@@ -37,7 +37,7 @@ module ActsAsEditable
     end
 
     def attribute_changed?(attribute)
-      dirty_method = "#{attribute}_is_dirty".to_sym
+      dirty_method = :"#{attribute}_is_dirty"
       return true if respond_to?(dirty_method) && send(dirty_method)
 
       super

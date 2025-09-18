@@ -4,7 +4,7 @@ require 'test_helper'
 
 class LanguagesTest < ActiveSupport::TestCase
   let(:project) { create(:project) }
-  let(:widget) { ProjectWidget::Languages.new(project_id: project.id) }
+  let(:widget) { Widget::ProjectWidget::Languages.new(project_id: project.id) }
 
   describe 'height' do
     it 'should return 210' do

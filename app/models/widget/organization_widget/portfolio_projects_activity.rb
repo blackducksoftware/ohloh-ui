@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class OrganizationWidget::PortfolioProjectsActivity < OrganizationWidget
+class Widget::OrganizationWidget::PortfolioProjectsActivity < Widget::OrganizationWidget
   def short_nice_name
     I18n.t('organization_widgets.portfolio_projects_activity.short_nice_name')
   end

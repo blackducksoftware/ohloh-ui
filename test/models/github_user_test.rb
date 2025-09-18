@@ -51,4 +51,18 @@ class GithubUserTest < ActiveSupport::TestCase
       WebMocker.create_subscriptions_for_code_locations
     end
   end
+
+  describe 'attributes' do
+    it 'attributes returns url and scm_type' do
+      user = GithubUser.new(url: 'octocat')
+      expected = { url: 'octocat', scm_type: 'GithubUser' }
+      assert_equal expected, user.attributes
+    end
+
+    it 'attributes uses alias username for url' do
+      user = GithubUser.new(url: 'testuser')
+      assert_equal user.url, user.attributes[:url]
+      assert_equal 'GithubUser', user.attributes[:scm_type]
+    end
+  end
 end

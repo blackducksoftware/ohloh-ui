@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require_relative 'lib/decorator'
-require_relative 'lib/decoratable'
+require_relative 'decorator'
+require_relative 'decoratable'
 
 # == Usage
 #
@@ -62,4 +62,6 @@ require_relative 'lib/decoratable'
 module Cherry
 end
 
-ApplicationRecord.include Cherry::Decoratable
+Rails.application.config.to_prepare do
+  ApplicationRecord.include Cherry::Decoratable if defined?(ApplicationRecord)
+end

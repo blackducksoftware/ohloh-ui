@@ -4,7 +4,7 @@ require 'test_helper'
 
 class AccountWidgetTest < ActiveSupport::TestCase
   let(:account) { create(:account) }
-  let(:widget) { AccountWidget.new(account_id: account.id) }
+  let(:widget) { Widget::AccountWidget.new(account_id: account.id) }
 
   describe 'title' do
     it 'should return title' do
@@ -37,15 +37,15 @@ class AccountWidgetTest < ActiveSupport::TestCase
   end
 
   describe 'create_widgets' do
-    it 'should create descendan widgets' do
-      widget_classes = [AccountWidget::Detailed, AccountWidget::Rank, AccountWidget::Tiny]
-      _(AccountWidget.create_widgets(account.id).map(&:class)).must_equal widget_classes
+    it 'should create descendant widgets' do
+      widget_classes = [Widget::AccountWidget::Detailed, Widget::AccountWidget::Rank, Widget::AccountWidget::Tiny]
+      _(Widget::AccountWidget.create_widgets(account.id).map(&:class)).must_equal widget_classes
     end
   end
 
   describe 'initialize' do
     it 'should raise exception if account is missing' do
-      _(proc { AccountWidget.new }).must_raise ArgumentError
+      _(proc { Widget::AccountWidget.new }).must_raise ArgumentError
     end
   end
 end

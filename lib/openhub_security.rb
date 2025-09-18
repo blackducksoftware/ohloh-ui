@@ -6,9 +6,9 @@ module OpenhubSecurity
   end
 
   def self.get_uuid(project_name)
-    url = ENV['KB_PROJECT_SEARCH_URL'] + "&q=#{CGI.escape(project_name)}"
+    url = ENV.fetch('KB_PROJECT_SEARCH_URL', nil) + "&q=#{CGI.escape(project_name)}"
     json = get_response(url)
-    return json['response']['docs'][0]['uuid'] if validate_response(json)
+    json['response']['docs'][0]['uuid'] if validate_response(json)
   end
 
   def self.get_http(url)
@@ -26,8 +26,8 @@ module OpenhubSecurity
     # "JSON.parse(http.request(request).read_body)", but this is easer to debug
     parsed_url = URI.parse(url)
     request = Net::HTTP::Get.new(parsed_url.request_uri)
-    request['X-BDS-AuthToken'] = ENV['KB_AUTH_KEY']
-    request['User-Agent'] = "ohloh-ui/#{ENV['COMMIT_SHA']}"
+    request['X-BDS-AuthToken'] = ENV.fetch('KB_AUTH_KEY', nil)
+    request['User-Agent'] = "ohloh-ui/#{ENV.fetch('COMMIT_SHA', nil)}"
     request
   end
 

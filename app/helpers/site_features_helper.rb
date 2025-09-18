@@ -35,10 +35,8 @@ module SiteFeaturesHelper
   end
 
   def random_site_features
-    [].tap do |arr|
-      (features_hash.keys - ['OpenHub']).each do |key|
-        arr << features_hash[key].sample(2)
-      end
+    (features_hash.keys - ['OpenHub']).map do |key|
+      features_hash[key].sample(2)
     end.flatten.zip(features_hash['OpenHub'].sample(2)).flatten
   end
   # rubocop:enable Metrics/MethodLength

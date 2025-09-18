@@ -14,6 +14,6 @@ class LinksHelperTest < ActionView::TestCase
   end
 
   it 'should return utf-8 encoded host' do
-    _(safe_slice_host('http://Étoilé.com/test')).must_equal '%C3%89toil%C3%A9.com'
+    _(safe_slice_host('http://Étoilé.com/test')).must_equal 'Étoilé.com'
   end
 end

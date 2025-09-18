@@ -110,7 +110,7 @@ class NilAnalysisTest < ActiveSupport::TestCase
 
   describe 'scan_analytics' do
     it 'should return nil' do
-      _(nil_analysis.scan_analytics).must_equal nil
+      assert_nil nil_analysis.scan_analytics
     end
   end
 end

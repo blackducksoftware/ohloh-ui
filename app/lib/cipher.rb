@@ -4,7 +4,7 @@ module Ohloh
   class Cipher
     class << self
       def default_key
-        Base64.decode64(ENV['OHLOH_CIPHER_KEY'])
+        Base64.decode64(ENV.fetch('OHLOH_CIPHER_KEY', nil))
       end
 
       def encrypt(data, key = default_key)

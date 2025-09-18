@@ -386,7 +386,7 @@ class ProjectTest < ActiveSupport::TestCase
     it 'should not create a new job if project already has a job' do
       project = create(:project)
       project.stubs(:code_locations).returns([code_location_stub])
-      ProjectAnalysisJob.create(project: project, wait_until: Time.current + 5.hours)
+      ProjectAnalysisJob.create(project: project, wait_until: 5.hours.from_now)
 
       project.ensure_job
       _(project.jobs.count).must_equal 1
@@ -449,7 +449,7 @@ class ProjectTest < ActiveSupport::TestCase
     it 'should update existing job if present' do
       project = create(:project)
       project.stubs(:code_locations).returns([code_location_stub])
-      ProjectAnalysisJob.create(project: project, wait_until: Time.current + 5.hours)
+      ProjectAnalysisJob.create(project: project, wait_until: 5.hours.from_now)
 
       _(project.jobs.count).must_equal 1
       project.schedule_delayed_analysis(2.hours)
@@ -530,7 +530,7 @@ class ProjectTest < ActiveSupport::TestCase
 
   it 'must flag project for sync with KB' do
     assert_difference('KnowledgeBaseStatus.count', 1) do
-      project.update_attributes(name: Faker::Lorem.word + rand(999).to_s)
+      project.update(name: Faker::Lorem.word + rand(999).to_s)
     end
     _(KnowledgeBaseStatus.find_by(project_id: project.id).in_sync).must_equal false
   end

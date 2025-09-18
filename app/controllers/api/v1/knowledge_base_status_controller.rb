@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Api::V1::KnowledgeBaseStatusController < ApplicationController
-  include JWTHelper
+  include JwtHelper
 
   skip_before_action :verify_authenticity_token
   before_action :authenticate_jwt
@@ -22,8 +22,8 @@ class Api::V1::KnowledgeBaseStatusController < ApplicationController
 
   def display_kb_message(exchange)
     kb = KnowledgeBaseStatus.find_by(project_id: params[:project_id])
-    exchange.publish(kb.json_message, key: ENV['KB_EXCHANGE_KEY'])
-    kb.update_attributes(in_sync: true, updated_at: Time.now.utc)
+    exchange.publish(kb.json_message, key: ENV.fetch('KB_EXCHANGE_KEY', nil))
+    kb.update(in_sync: true, updated_at: Time.now.utc)
     render json: { message: I18n.t(:kb_message, project_id: kb.project_id) }, status: :ok
   end
 end

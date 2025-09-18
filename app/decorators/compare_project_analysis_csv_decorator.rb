@@ -102,8 +102,8 @@ class CompareProjectAnalysisCsvDecorator
     require_best_analysis { |a| a.main_language ? a.main_language.nice_name : t('compares.no_code_found') }
   end
 
-  def t(*args)
-    I18n.t(*args)
+  def t(key, **options)
+    I18n.t(key, **options)
   end
 
   private
@@ -112,7 +112,7 @@ class CompareProjectAnalysisCsvDecorator
     if !@project.best_analysis.nil? && @project.best_analysis.last_commit_time
       yield @project.best_analysis
     else
-      @project.enlistments.count.positive? ? t('compares.pending') : t('compares.no_data')
+      @project.enlistments.any? ? t('compares.pending') : t('compares.no_data')
     end
   end
 

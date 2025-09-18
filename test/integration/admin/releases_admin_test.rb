@@ -19,4 +19,20 @@ class ReleaseAdminTest < ActionDispatch::IntegrationTest
     get admin_project_security_set_release_path(project_security_set, release)
     assert_response :success
   end
+
+  it 'ransackable_associations delegates to authorizable_ransackable_associations' do
+    expected = %w[vulnerabilities project_security_set]
+    Release.expects(:authorizable_ransackable_associations).returns(expected)
+    assert_equal expected, Release.ransackable_associations
+  end
+
+  it 'ransackable_associations passes auth_object parameter' do
+    Release.expects(:authorizable_ransackable_associations).returns(['vulnerabilities'])
+    assert_equal ['vulnerabilities'], Release.ransackable_associations('admin')
+  end
+
+  it 'ransackable_associations handles nil return' do
+    Release.stubs(:authorizable_ransackable_associations).returns(nil)
+    assert_nil Release.ransackable_associations
+  end
 end

@@ -26,7 +26,7 @@ class Analysis::QueryBase
   def monthly_commit_histories
     each_month_commits = @name_id ? contributor_monthly_commits : monthly_commits
     each_month_commits += missing_month_commits
-    each_month_commits.select { |commit| commit.month >= start_date && commit.month <= end_date }.sort_by(&:month)
+    each_month_commits.select { |commit| commit.month.between?(start_date, end_date) }.sort_by(&:month)
   end
 
   private

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class ProjectWidget::Languages < ProjectWidget
+class Widget::ProjectWidget::Languages < Widget::ProjectWidget
   def title
     I18n.t('project_widgets.languages.title')
   end

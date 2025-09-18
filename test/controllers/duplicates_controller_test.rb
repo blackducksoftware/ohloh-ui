@@ -121,7 +121,7 @@ class DuplicatesControllerTest < ActionController::TestCase
       create(:duplicate, good_project: project)
       login_as create(:account)
       get :new, params: { project_id: project.to_param }
-      assert_response 302
+      assert_response :found
     end
 
     it 'must render projects/deleted when project is deleted' do
@@ -150,7 +150,7 @@ class DuplicatesControllerTest < ActionController::TestCase
       login_as create(:account)
       post :create,
            params: { project_id: bad.to_param, duplicate: { good_project_id: good.to_param, comment: 'Cow says: Moo' } }
-      assert_response 302
+      assert_response :found
       _(Duplicate.where(good_project_id: good.id, bad_project_id: bad.id).first.comment).must_equal 'Cow says: Moo'
     end
 
@@ -188,7 +188,7 @@ class DuplicatesControllerTest < ActionController::TestCase
       duplicate = create(:duplicate, bad_project: project)
       login_as create(:account)
       get :edit, params: { project_id: project.to_param, id: duplicate.id }
-      assert_response 302
+      assert_response :found
     end
 
     it 'should allow the creator to edit duplicate' do
@@ -225,7 +225,7 @@ class DuplicatesControllerTest < ActionController::TestCase
       login_as create(:account)
       post :update, params: { project_id: project.to_param, id: duplicate.id,
                               duplicate: { good_project_id: duplicate.good_project_id, comment: 'Whatevs!' } }
-      assert_response 302
+      assert_response :found
       _(duplicate.reload.comment).wont_equal 'Whatevs!'
     end
 
@@ -235,7 +235,7 @@ class DuplicatesControllerTest < ActionController::TestCase
       login_as duplicate.account
       post :update, params: { project_id: project.to_param, id: duplicate.id,
                               duplicate: { good_project_id: duplicate.good_project_id, comment: 'Whatevs!' } }
-      assert_response 302
+      assert_response :found
       _(duplicate.reload.comment).must_equal 'Whatevs!'
     end
 
@@ -245,7 +245,7 @@ class DuplicatesControllerTest < ActionController::TestCase
       login_as create(:admin)
       post :update, params: { project_id: project.to_param, id: duplicate.id,
                               duplicate: { good_project_id: duplicate.good_project_id, comment: 'Whatevs!' } }
-      assert_response 302
+      assert_response :found
       _(duplicate.reload.comment).must_equal 'Whatevs!'
     end
 

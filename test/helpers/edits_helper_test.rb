@@ -8,19 +8,19 @@ class EditsHelperTest < ActionView::TestCase
 
   describe 'edit_humanize_datetime' do
     it 'reduce to time_ago_in_words when it was today' do
-      _(edit_humanize_datetime(Time.current - 1.second)).must_match 'ago'
-      _(edit_humanize_datetime(Time.current - 1.minute)).must_match 'ago'
-      _(edit_humanize_datetime(Time.current - 1.hour)).must_match 'ago'
+      _(edit_humanize_datetime(1.second.ago)).must_match 'ago'
+      _(edit_humanize_datetime(1.minute.ago)).must_match 'ago'
+      _(edit_humanize_datetime(1.hour.ago)).must_match 'ago'
     end
 
     it 'drop the year if it was this year' do
-      other_time = Time.current - 17.days
+      other_time = 17.days.ago
       dont_fail_around_new_years_date = Time.new(Time.current.year, other_time.month, other_time.day).in_time_zone
       _(edit_humanize_datetime(dont_fail_around_new_years_date)).wont_match Time.current.year
     end
 
     it 'includes the year if it was before this year' do
-      other_time = Time.current - 1700.days
+      other_time = 1700.days.ago
       _(edit_humanize_datetime(other_time)).must_match other_time.year.to_s
     end
   end

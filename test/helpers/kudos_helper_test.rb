@@ -12,4 +12,14 @@ class KudosHelperTest < ActionView::TestCase
       _(kudos_aka_name(kudo)).must_match kudo.name.name
     end
   end
+
+  it 'kudo_button_target_account returns person account for Contribution' do
+    account = Account.new
+    person = Person.new
+    person.stubs(:account).returns(account)
+    contribution = Contribution.new
+    contribution.stubs(:person).returns(person)
+
+    assert_equal account, send(:kudo_button_target_account, contribution)
+  end
 end

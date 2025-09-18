@@ -76,7 +76,7 @@ class ProjectTagsControllerTest < ActionController::TestCase
       project = create(:project_with_invalid_description)
       login_as create(:account)
       post :create, params: { project_id: project.to_param, tag_name: 'zesty' }
-      assert_response 422
+      assert_response :unprocessable_entity
       _(@response.body).must_match 'too long'
     end
   end

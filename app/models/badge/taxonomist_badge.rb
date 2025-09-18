@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class TaxonomistBadge < Badge
+class Badge::TaxonomistBadge < Badge
   def eligibility_count
     @eligibility_count ||= vars[:tags_count]
     @eligibility_count ||= Edit.where(target_type: 'Project', key: 'tag_list', account_id: account.id).count

@@ -34,8 +34,8 @@ class PopulateTravis
   end
 
   def print_stat
-    puts "repo_with_travis_badge: #{@repo_with_travis_badge}"
-    puts "total_badges_created:  #{@total_badges_created}"
+    DataDogReport.info("repo_with_travis_badge: #{@repo_with_travis_badge}")
+    DataDogReport.info("total_badges_created:  #{@total_badges_created}")
   end
 
   def ensure_proper_url_format(code_location)
@@ -62,10 +62,10 @@ class PopulateTravis
   def create_travis_badge(repo, badge_url)
     manipulated_url = manipulate_badge_url(badge_url)
     repo.enlistments.each do |enlistment|
-      next if enlistment.travis_badges.count.positive?
+      next if enlistment.travis_badges.any?
       next unless enlistment.travis_badges.create(identifier: manipulated_url)
 
-      puts "Succefully created badge: #{@total_badges_created += 1}"
+      DataDogReport.info("Successfully created badge: #{@total_badges_created += 1}")
     end
   end
 

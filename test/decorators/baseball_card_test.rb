@@ -9,7 +9,7 @@ class BaseballCardTest < ActiveSupport::TestCase
     it 'should return all rows with their values' do
       org = create(:organization)
       best_account_analysis = create(:best_account_analysis)
-      best_account_analysis.account.update(best_vita_id: best_account_analysis.id, created_at: Time.current - 4.days)
+      best_account_analysis.account.update(best_vita_id: best_account_analysis.id, created_at: 4.days.ago)
       create(:position, account: best_account_analysis.account)
       Account::OrganizationCore.any_instance.stubs(:positions).returns([create_position])
       Account::OrganizationCore.any_instance.stubs(:orgs_for_my_positions).returns([org])

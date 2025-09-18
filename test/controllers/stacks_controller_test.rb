@@ -166,6 +166,19 @@ class StacksControllerTest < ActionController::TestCase
         _(stack.title).must_equal 'New Stack 1'
         _(stack.description).must_be_nil
       end
+
+      it 'should redirect to account_stacks_path with error notice' do
+        # Mock Stack.new to return a stack that will fail to save
+        invalid_stack = Stack.new(title: '')
+        Stack.stubs(:new).returns(invalid_stack)
+        invalid_stack.stubs(:save).returns(false)
+
+        post :create, params: { stack: { title: '', description: 'Test' } }
+
+        # Test the specific redirect line: redirect_to account_stacks_path(current_user), notice: t('.error')
+        assert_redirected_to account_stacks_path(account)
+        assert_equal I18n.t('stacks.create.error'), flash[:notice]
+      end
     end
 
     describe 'with stack_entries_attributes' do

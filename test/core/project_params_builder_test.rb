@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 require 'test_helper'
+require_relative '../../app/core/project/project_params_builder'
+require_relative '../../app/core/project/project_exists_error'
 
 class ProjectParamsBuilderTest < ActiveSupport::TestCase
   describe 'it will call the project builder after creating valid params' do

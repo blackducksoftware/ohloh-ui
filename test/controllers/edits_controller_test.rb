@@ -72,7 +72,7 @@ class EditsControllerTest < ActionController::TestCase
       Edit.any_instance.stubs(:undo!).raises(ActiveRecord::Rollback)
       post :update, params: { id: CreateEdit.where(target: @project).first.id, undo: 'true',
                               project_id: @project.to_param }
-      assert_response 406
+      assert_response :not_acceptable
     end
 
     it 'redo should require a logged in user' do
@@ -100,7 +100,7 @@ class EditsControllerTest < ActionController::TestCase
       create_edit.undo! create(:admin)
       Edit.any_instance.stubs(:redo!).raises(ActiveRecord::Rollback)
       post :update, params: { id: create_edit.id, undo: 'false', project_id: @project.to_param }
-      assert_response 406
+      assert_response :not_acceptable
     end
   end
 

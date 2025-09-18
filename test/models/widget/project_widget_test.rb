@@ -4,7 +4,7 @@ require 'test_helper'
 
 class ProjectWidgetTest < ActiveSupport::TestCase
   let(:project) { create(:project) }
-  let(:widget) { ProjectWidget.new(project_id: project.id) }
+  let(:widget) { Widget::ProjectWidget.new(project_id: project.id) }
 
   describe 'project' do
     it 'should return the project' do
@@ -32,18 +32,18 @@ class ProjectWidgetTest < ActiveSupport::TestCase
 
   describe 'initialize' do
     it 'should raise error for missing id' do
-      _(proc { ProjectWidget.new }).must_raise ArgumentError
+      _(proc { Widget::ProjectWidget.new }).must_raise ArgumentError
     end
   end
 
   describe 'create_widgets' do
     it 'should raise error for missing id' do
       widgets_classes = [
-        ProjectWidget::FactoidsStats, ProjectWidget::Factoids, ProjectWidget::BasicStats,
-        ProjectWidget::Languages, ProjectWidget::Cocomo,
-        ProjectWidget::PartnerBadge, ProjectWidget::ThinBadge, ProjectWidget::UsersLogo
-      ] + ([ProjectWidget::Users] * 6)
-      _(ProjectWidget.create_widgets(project.id).map(&:class)).must_equal widgets_classes
+        Widget::ProjectWidget::FactoidsStats, Widget::ProjectWidget::Factoids, Widget::ProjectWidget::BasicStats,
+        Widget::ProjectWidget::Languages, Widget::ProjectWidget::Cocomo,
+        Widget::ProjectWidget::PartnerBadge, Widget::ProjectWidget::ThinBadge, Widget::ProjectWidget::UsersLogo
+      ] + ([Widget::ProjectWidget::Users] * 6)
+      _(Widget::ProjectWidget.create_widgets(project.id).map(&:class)).must_equal widgets_classes
     end
   end
 end

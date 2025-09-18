@@ -37,7 +37,7 @@ module PositionFilters
 
   def set_project_and_name
     @project = Project.where(name: params[:project_name]).not_deleted.take
-    @name = Name.where(name: params[:committer_name]).take
+    @name = Name.find_by(name: params[:committer_name])
     raise ParamRecordNotFound unless @project && @name
   end
 

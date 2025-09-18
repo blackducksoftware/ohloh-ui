@@ -9,5 +9,5 @@ xml.channel do
   end
   xml.language 'en-us'
   xml.ttl 60
-  xml << render(partial: 'posts/posts.atom.builder', collection: @posts) if @account.posts.count.positive?
+  xml << render(partial: 'posts/posts.atom.builder', collection: @posts) if @account.posts.any?
 end

@@ -43,7 +43,7 @@ class CommittersController < UnclaimedController
     @name = Name.from_param(params[:id]).take
     raise ParamRecordNotFound unless @name
 
-    redirect_to root_path, flash: { error: t('.error') } if @name.people.count.zero?
+    redirect_to root_path, flash: { error: t('.error') } if @name.people.none?
   end
 
   def render_claim

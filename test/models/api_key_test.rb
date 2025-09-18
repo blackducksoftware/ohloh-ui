@@ -18,7 +18,7 @@ class ApiKeyTest < ActiveSupport::TestCase
 
   it 'may_i_have_another? a new day dawns' do
     big_number = ApiKey::DEFAULT_DAILY_LIMIT * 2
-    api_key = create(:api_key, day_began_at: Time.current - 1.year,
+    api_key = create(:api_key, day_began_at: 1.year.ago,
                                total_count: big_number,
                                daily_count: 27)
     _(api_key.may_i_have_another?).must_equal true
@@ -40,12 +40,12 @@ class ApiKeyTest < ActiveSupport::TestCase
   end
 
   it 'may_i_have_another? a new day never dawns for disabled_accounts' do
-    api_key = create(:api_key, day_began_at: Time.current - 1.year, status: ApiKey::STATUS_DISABLED)
+    api_key = create(:api_key, day_began_at: 1.year.ago, status: ApiKey::STATUS_DISABLED)
     _(api_key.may_i_have_another?).must_equal false
   end
 
   it 'reset_all! works as expected' do
-    day_began_at = Time.current - 1.year
+    day_began_at = 1.year.ago
     api_key1 = create(:api_key, daily_count: 2,
                                 day_began_at: day_began_at)
     api_key2 = create(:api_key, daily_count: 3,

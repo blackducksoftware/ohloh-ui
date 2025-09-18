@@ -4,8 +4,7 @@ desc 'Updates the required Home Page stats'
 task home_page_stats: :environment do
   Rails.logger.info('Running home_page_stats task')
   contributors = Account.recently_active.includes(best_account_analysis: [:name_fact])
-  accounts_ids = []
-  contributors.each { |c| accounts_ids << c.id }
+  accounts_ids = contributors.map(&:id)
   accounts = Account.where(id: accounts_ids).index_by(&:id).values_at(*accounts_ids)
   Rails.cache.write('HomeDecorator-recently_active_accounts-cache', accounts)
 
@@ -21,7 +20,7 @@ end
 
 def write_most_active_cache
   Rails.logger.info('caching most active projects')
-  ids = Project.most_active.where('analyses.updated_on >= ?', 6.months.ago)
+  ids = Project.most_active.where(analyses: { updated_on: 6.months.ago.. })
                .includes(:logo, best_analysis: %i[main_language thirty_day_summary]).pluck(:id)
   Rails.cache.write('HomeDecorator-most_active_projects-cache', ids)
 end

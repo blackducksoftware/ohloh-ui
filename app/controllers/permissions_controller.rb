@@ -11,6 +11,8 @@ class PermissionsController < ApplicationController
   before_action :project_context, only: %i[show update], if: :projects_route?
   before_action :organization_context, only: %i[show update], if: :organizations_route?
 
+  def show; end
+
   def update
     if find_model.update(model_params)
       flash.now[:success] = t('.success')
@@ -20,8 +22,6 @@ class PermissionsController < ApplicationController
       render :show, status: :unprocessable_entity
     end
   end
-
-  def show; end
 
   private
 

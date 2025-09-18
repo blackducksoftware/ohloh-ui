@@ -40,7 +40,7 @@ class CodeSet < FisBase
   # After clumps are removed, delete from here ....
   def reimport
     old_clump.slave.run_local_or_remote("mv #{old_clump.path} #{new_clump.path}")
-    return ImportJob.create(code_set: new_code_set) if old_clump.delete
+    ImportJob.create(code_set: new_code_set) if old_clump.delete
   end
 
   class << self
@@ -58,10 +58,18 @@ class CodeSet < FisBase
     end
 
     def code_set_conditions
-      "COALESCE(code_sets.logged_at, '1970-01-01') + "\
-        "code_locations.update_interval * INTERVAL '1 second' <= NOW() AT TIME ZONE 'utc'"\
-        " AND COALESCE(analyses.oldest_code_set_time, '1970-01-01') >="\
-        " COALESCE(code_sets.logged_at, '1970-01-01') - INTERVAL '1 second'"
+      "COALESCE(code_sets.logged_at, '1970-01-01') + " \
+        "code_locations.update_interval * INTERVAL '1 second' <= NOW() AT TIME ZONE 'utc' " \
+        "AND COALESCE(analyses.oldest_code_set_time, '1970-01-01') >= " \
+        "COALESCE(code_sets.logged_at, '1970-01-01') - INTERVAL '1 second'"
+    end
+
+    def ransackable_attributes(_auth_object = nil)
+      authorizable_ransackable_attributes
+    end
+
+    def ransackable_associations(_auth_object = nil)
+      authorizable_ransackable_associations
     end
   end
 

@@ -11,7 +11,7 @@ namespace :project_badge do
       cii_projects = []
       page = 1
       loop do
-        projects = JSON.parse Net::HTTP.get(URI("#{ENV['CII_API_BASE_URL']}projects.json?page=#{page}"))
+        projects = JSON.parse Net::HTTP.get(URI("#{ENV.fetch('CII_API_BASE_URL', nil)}projects.json?page=#{page}"))
         break if projects.blank?
 
         projects.each do |p|

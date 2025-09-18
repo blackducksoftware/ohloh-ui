@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Duplicate < ApplicationRecord
+class Duplicate < ApplicationRecord # rubocop:disable Metrics/ClassLength
   RESOLVES = %i[stack_entries kudos tags ratings reviews links aliases
                 positions project_experiences edits self].freeze
   include DuplicateAssociations
@@ -14,6 +14,14 @@ class Duplicate < ApplicationRecord
   def resolve!(editor_account)
     @editor_account = editor_account
     Duplicate.transaction { RESOLVES.each { |r| send("resolve_#{r}!") } }
+  end
+
+  def self.ransackable_attributes(_auth_object = nil)
+    authorizable_ransackable_attributes
+  end
+
+  def self.ransackable_associations(_auth_object = nil)
+    authorizable_ransackable_associations
   end
 
   private

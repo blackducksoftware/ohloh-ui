@@ -58,7 +58,7 @@ ActiveAdmin.register Account do
   end
 
   form do |f|
-    f.semantic_errors(*f.object.errors.keys)
+    f.semantic_errors(*f.object.errors.attribute_names)
     f.inputs 'Details' do
       account_params.exclude(:level, :activated_at, :activation_resent_at, :remember_token_expires_at).each do |field|
         f.input field, as: :string

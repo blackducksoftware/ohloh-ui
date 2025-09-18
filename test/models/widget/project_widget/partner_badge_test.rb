@@ -4,7 +4,7 @@ require 'test_helper'
 
 class ProjectPartnerBadgeTest < ActiveSupport::TestCase
   let(:project) { create(:project) }
-  let(:widget) { ProjectWidget::PartnerBadge.new(project_id: project.id) }
+  let(:widget) { Widget::ProjectWidget::PartnerBadge.new(project_id: project.id) }
 
   describe 'height' do
     it 'should return 50' do

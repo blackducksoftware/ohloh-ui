@@ -38,7 +38,7 @@ class KudoTest < ActiveSupport::TestCase
 
     describe 'no account id' do
       before do
-        Kudo.all.each { |kudo| kudo.update!(account_id: nil) }
+        Kudo.find_each { |kudo| kudo.update!(account_id: nil) }
       end
 
       it 'must order by created_at DESC' do

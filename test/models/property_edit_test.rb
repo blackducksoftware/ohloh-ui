@@ -6,10 +6,10 @@ class PropertyEditTest < ActiveSupport::TestCase
   before do
     project = create(:project, description: 'Linux')
     Edit.for_target(project).delete_all
-    @undone_edit = create(:property_edit, value: 'Spammy!', created_at: Time.current + 5.days, target: project,
-                                          undone: true, undone_at: Time.current + 5.days, undone_by: create(:admin).id)
+    @undone_edit = create(:property_edit, value: 'Spammy!', created_at: 5.days.from_now, target: project,
+                                          undone: true, undone_at: 5.days.from_now, undone_by: create(:admin).id)
     @edit = create(:property_edit, value: 'Linux', target: project)
-    @previous_edit = create(:property_edit, value: '456', created_at: Time.current - 5.days, target: project)
+    @previous_edit = create(:property_edit, value: '456', created_at: 5.days.ago, target: project)
   end
 
   it 'test_undo_fails_with_no_editor' do

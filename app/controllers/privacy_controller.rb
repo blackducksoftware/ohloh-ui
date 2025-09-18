@@ -7,6 +7,8 @@ class PrivacyController < ApplicationController
   before_action :must_own_account, only: %i[edit update]
   before_action :set_oauth_applications
 
+  def edit; end
+
   def update
     if @account.update(account_params)
       redirect_to edit_account_privacy_account_path(@account), notice: t('.success')
@@ -14,8 +16,6 @@ class PrivacyController < ApplicationController
       render 'edit', status: :unprocessable_entity
     end
   end
-
-  def edit; end
 
   private
 

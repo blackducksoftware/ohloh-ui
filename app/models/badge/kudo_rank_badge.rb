@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class KudoRankBadge < Badge
+class Badge::KudoRankBadge < Badge
   def eligibility_count
     account.kudo_rank
   end

@@ -7,7 +7,7 @@ class OrganizationWidgetsController < WidgetsController
   before_action :organization_context, only: :index
 
   def index
-    @widgets = OrganizationWidget.create_widgets(params[:organization_id])
+    @widgets = Widget::OrganizationWidget.create_widgets(params[:organization_id])
   end
 
   private

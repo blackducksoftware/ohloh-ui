@@ -19,7 +19,7 @@ class ActsAsEditable::ActsAsEditableTest < ActiveSupport::TestCase
   end
 
   it 'edits do not get their property edits merged if they are not recent to one another' do
-    long_ago = Time.current - 5.days
+    long_ago = 5.days.ago
     Time.stubs(:now).returns long_ago
     project = create(:project, name: 'Foobar')
     Time.unstub(:now)

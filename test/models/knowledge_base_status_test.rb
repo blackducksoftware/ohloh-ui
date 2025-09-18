@@ -19,7 +19,7 @@ class KnowledgeBaseStatusTest < ActiveSupport::TestCase
 
   describe '.enable_sync!' do
     it 'must flag for KB sync' do
-      knowledge_base_status.update_attributes(in_sync: true)
+      knowledge_base_status.update(in_sync: true)
       KnowledgeBaseStatus.enable_sync!(project.id)
       _(knowledge_base_status.reload.in_sync).must_equal false
     end
@@ -65,7 +65,7 @@ class KnowledgeBaseStatusTest < ActiveSupport::TestCase
 
     it 'should return project forge match in the json data' do
       forge = Forge.find_by(name: 'Github')
-      project.update_attributes(forge_id: forge.id)
+      project.update(forge_id: forge.id)
       data = JSON.parse knowledge_base_status.json_message
       _(data['forge']).wont_be_empty
       _(data['forge']['forge_id']).must_equal forge.id

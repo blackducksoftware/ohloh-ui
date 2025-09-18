@@ -14,7 +14,7 @@ class ProjectSecuritySet < ApplicationRecord
   end
 
   def most_recent_vulnerabilities?
-    ReleasesVulnerability.where(release_id: most_recent_releases.map(&:id)).count.positive?
+    ReleasesVulnerability.where(release_id: most_recent_releases.map(&:id)).any?
   end
 
   def matching_releases(version_number)
@@ -49,4 +49,12 @@ class ProjectSecuritySet < ApplicationRecord
     self.class.find_by_sql(sql)
   end
   # rubocop:enable Metrics/MethodLength
+
+  def self.ransackable_attributes(_auth_object = nil)
+    authorizable_ransackable_attributes
+  end
+
+  def self.ransackable_associations(_auth_object = nil)
+    authorizable_ransackable_associations
+  end
 end

@@ -2,6 +2,8 @@
 
 class Enlistment < ApplicationRecord
   include KnowledgeBaseCallbacks
+  include ActsAsEditable
+  include ActsAsProtected
 
   has_one :create_edit, as: :target
   has_many :project_badges
@@ -90,5 +92,13 @@ class Enlistment < ApplicationRecord
     return CodeLocationSubscription.new(params).delete if deleted
 
     CodeLocationSubscription.create(params)
+  end
+
+  def self.ransackable_attributes(_auth_object = nil)
+    authorizable_ransackable_attributes
+  end
+
+  def self.ransackable_associations(_auth_object = nil)
+    authorizable_ransackable_associations
   end
 end

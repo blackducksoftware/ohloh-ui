@@ -9,7 +9,7 @@ CodeLocation.joins(:repository, :projects)
             .where(projects: { deleted: false })
             .where(repositories: { type: 'GitRepository' })
             .find_each do |cl|
-  puts "#{cl.id} :: #{index += 1}"
+  DataDogReport.info("#{cl.id} :: #{index += 1}")
   cl.enlistments do |e|
     e.create_edit.undo!(Account.hamster) unless cl.valid?
   rescue StandardError

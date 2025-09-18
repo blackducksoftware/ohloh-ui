@@ -12,6 +12,8 @@ class AliasesController < SettingsController
     @aliases = Alias.for_project(@project).includes(:commit_name, :preferred_name)
   end
 
+  def new; end
+
   def create
     @alias = Alias.create_for_project(current_user, @project, params[:commit_name_id], params[:preferred_name_id])
     redirect_to action: :index
@@ -35,8 +37,6 @@ class AliasesController < SettingsController
     @preferred_names = Alias.preferred_names(@project, params[:commit_name_id])
     render partial: 'aliases/preferred_names'
   end
-
-  def new; end
 
   private
 

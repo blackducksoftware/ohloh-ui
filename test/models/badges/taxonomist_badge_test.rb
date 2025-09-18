@@ -4,7 +4,7 @@ require 'test_helper'
 
 class TaxonomistBadgeTest < ActiveSupport::TestCase
   let(:user) { create(:account) }
-  let(:taxonomist_badge) { TaxonomistBadge.new(user) }
+  let(:taxonomist_badge) { Badge::TaxonomistBadge.new(user) }
 
   describe 'eligibility_count' do
     it 'should return project edits with key as tag_list' do

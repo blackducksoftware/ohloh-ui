@@ -38,10 +38,10 @@ class ProjectTagsController < SettingsController
   private
 
   def find_tagging
-    tag = Tag.where(name: params[:id]).take
+    tag = Tag.find_by(name: params[:id])
     raise ParamRecordNotFound if tag.nil?
 
-    @tagging = Tagging.where(taggable: @project, tag_id: tag.id).take
+    @tagging = Tagging.find_by(taggable: @project, tag_id: tag.id)
     raise ParamRecordNotFound if @tagging.nil?
   end
 

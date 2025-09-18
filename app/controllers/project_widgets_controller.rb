@@ -9,7 +9,7 @@ class ProjectWidgetsController < WidgetsController
   before_action :project_context, only: :index
 
   def index
-    @widgets = ProjectWidget.create_widgets(params[:project_id])
+    @widgets = Widget::ProjectWidget.create_widgets(params[:project_id])
   end
 
   def partner_badge; end

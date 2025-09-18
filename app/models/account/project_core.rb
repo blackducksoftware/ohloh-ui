@@ -1,11 +1,19 @@
 # frozen_string_literal: true
 
-class Account::ProjectCore < OhDelegator::Base
-  parent_scope do
-    has_many :projects, -> { where(deleted: false) }, through: :manages, source: :target, source_type: 'Project'
+require 'forwardable'
+
+class Account::ProjectCore
+  extend Forwardable
+  attr_reader :account
+
+  def initialize(account)
+    @account = account
   end
 
+  def_delegators :account, :id, :stacks, :manages
+
   def stacked?(project_id)
+    stacks = account.stacks
     stack = stacks.detect { |s| s.stacked_project?(project_id) }
     stack.present?
   end
@@ -28,6 +36,6 @@ class Account::ProjectCore < OhDelegator::Base
   private
 
   def stacks_account_id
-    Stack.arel_table[:account_id].eq(id)
+    Stack.arel_table[:account_id].eq(account.id)
   end
 end

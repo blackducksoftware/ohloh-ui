@@ -4,7 +4,7 @@ require 'test_helper'
 
 class BasicStatsTest < ActiveSupport::TestCase
   let(:project) { create(:project) }
-  let(:widget) { ProjectWidget::BasicStats.new(project_id: project.id) }
+  let(:widget) { Widget::ProjectWidget::BasicStats.new(project_id: project.id) }
 
   describe 'height' do
     it 'should return 225' do

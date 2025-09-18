@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class ProjectWidget::Factoids < ProjectWidget
+class Widget::ProjectWidget::Factoids < Widget::ProjectWidget
   def title
     I18n.t('project_widgets.factoids.title')
   end

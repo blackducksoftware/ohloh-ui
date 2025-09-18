@@ -22,12 +22,16 @@ class ReviewsController < ApplicationController
     @account_reviews = current_user.reviews.where(project: @project) if logged_in?
     @most_helpful_reviews = @parent.reviews.top(5)
     @recent_reviews = @parent.reviews.order_by('recently_added').limit(5)
-    @rating = logged_in? ? current_user.ratings.where(project_id: @project).take : nil
+    @rating = logged_in? ? current_user.ratings.find_by(project_id: @project) : nil
   end
 
   def new
     @review = Review.new
-    @rating = current_user.ratings.where(project_id: @project).take
+    @rating = current_user.ratings.find_by(project_id: @project)
+  end
+
+  def edit
+    @rating = current_user.ratings.find_by(project_id: @project)
   end
 
   def create
@@ -41,15 +45,11 @@ class ReviewsController < ApplicationController
     end
   end
 
-  def edit
-    @rating = current_user.ratings.where(project_id: @project).take
-  end
-
   def update
     if @review.update(review_params)
       redirect_to summary_project_reviews_path(@project), flash: { success: t('.success') }
     else
-      @rating = current_user.ratings.where(project_id: @project).take
+      @rating = current_user.ratings.find_by(project_id: @project)
       flash.now[:error] = t('.error')
       render :edit
     end

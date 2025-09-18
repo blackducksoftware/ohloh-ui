@@ -2,12 +2,16 @@
 
 class DeletedAccountNotifierMailer < ApplicationMailer
   def deletion(account)
-    recipient = ENV['DELETED_ACCOUNT_RECIPIENT']
+    recipient = ENV.fetch('DELETED_ACCOUNT_RECIPIENT', nil)
     @affiliation = organization_name(account)
     @claimed_projects = project_names(account)
     @account = account
-    mail(to: recipient, subject: 'Open Hub account deleted', from: 'mailer@openhub.net',
-         template_path: 'mailers', template_name: 'account_deletion_notification')
+    mail(
+      to: recipient,
+      subject: I18n.t('mailers.deleted_account_notifier_mailer.account_deleted'),
+      from: 'mailer@openhub.net',
+      template_path: 'mailers', template_name: 'account_deletion_notification'
+    )
   end
 
   protected

@@ -2,7 +2,7 @@
 
 FactoryBot.define do
   factory :deleted_account do
-    email { Faker::Internet.free_email }
+    email { Faker::Internet.email }
     login { Faker::Internet.user_name }
     reasons { [Random.rand(1..5)] }
 

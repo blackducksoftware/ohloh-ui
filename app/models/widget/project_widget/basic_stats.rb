@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class ProjectWidget::BasicStats < ProjectWidget
+class Widget::ProjectWidget::BasicStats < Widget::ProjectWidget
   def height
     225
   end

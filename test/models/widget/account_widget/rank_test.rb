@@ -4,7 +4,7 @@ require 'test_helper'
 
 class RankTest < ActiveSupport::TestCase
   let(:account) { create(:account) }
-  let(:widget) { AccountWidget::Rank.new(account_id: account.id) }
+  let(:widget) { Widget::AccountWidget::Rank.new(account_id: account.id) }
 
   describe 'width' do
     it 'should return 32' do

@@ -4,7 +4,7 @@ require 'test_helper'
 require 'jwt_helper'
 
 class Api::V1::JwtControllerTest < ActionController::TestCase
-  include JWTHelper
+  include JwtHelper
   before do
     @account = create(:account)
     ENV['JWT_SECRET_API_KEY'] = Faker::Alphanumeric.alpha(number: 5)
@@ -20,22 +20,22 @@ class Api::V1::JwtControllerTest < ActionController::TestCase
 
     it 'should return errors if given a bad user' do
       post :create, params: { username: 'jibberish', password: @account.password }
-      assert_response 401
+      assert_response :unauthorized
     end
 
     it 'should return errors if given a bad password' do
       post :create, params: { username: @account.login, password: 'jibberish' }
-      assert_response 401
+      assert_response :unauthorized
     end
 
     it 'should return errors if not given a user' do
       post :create, params: { password: @account.password }
-      assert_response 400
+      assert_response :bad_request
     end
 
     it 'should return errors if not given a password' do
       post :create, params: { username: @account.login }
-      assert_response 400
+      assert_response :bad_request
     end
   end
 end

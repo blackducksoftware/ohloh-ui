@@ -1,15 +1,18 @@
-require: rubocop-rails
+plugins:
+  - rubocop-rails
 
 Rails:
   Enabled: true
 
 AllCops:
-  TargetRubyVersion: 2.6
-  TargetRailsVersion: 5.0
+  TargetRubyVersion: 3.1
+  TargetRailsVersion: 6.1
   NewCops: enable
   Exclude:
     - vagrant/**/*
     - script/*_temp.rb
+
+  SuggestExtensions: false
 
 Rails/ActiveRecordAliases:
   Enabled: false
@@ -100,3 +103,6 @@ Style/EmptyCaseCondition:
 
 Rails/HttpPositionalArguments:
   Enabled: true
+
+Naming/PredicateMethod:
+  Enabled: false

@@ -22,4 +22,6 @@ module FilterBy
   end
 end
 
-ApplicationRecord.extend FilterBy
+Rails.application.config.to_prepare do
+  ApplicationRecord.extend FilterBy if defined?(ApplicationRecord)
+end

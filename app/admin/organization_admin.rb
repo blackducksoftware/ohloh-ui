@@ -33,7 +33,7 @@ ActiveAdmin.register Organization do
   end
 
   form do |f|
-    f.semantic_errors(*f.object.errors.keys)
+    f.semantic_errors(*f.object.errors.attribute_names)
     f.inputs 'Details' do
       f.input :name, as: :text
       f.input :vanity_url, as: :text
