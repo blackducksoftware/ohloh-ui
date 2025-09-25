@@ -18,7 +18,7 @@ class BadgeDecorator < Cherry::Decorator
   def css_class(size, header, index)
     is_last = index == size - 1
     is_last ||= header == :large && size > 4 && index == 3
-    object.class.to_s.underscore.dasherize + (is_last ? ' last' : '')
+    object.class.to_s.demodulize.underscore.dasherize + (is_last ? ' last' : '')
   end
 
   private

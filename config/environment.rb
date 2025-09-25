@@ -14,9 +14,8 @@ Rails.application.configure do
     },
     s3_region: ENV.fetch('AWS_REGION', nil),
     s3_protocol: :https,
-    s3_host_name: "s3.#{ENV.fetch('AWS_REGION', nil)}.amazonaws.com",
-    url: ':s3_domain_url',
-    endpoint: "https://s3.#{ENV.fetch('AWS_REGION', nil)}.amazonaws.com"
+    s3_host_name: 's3.amazonaws.com',
+    endpoint: 'https://s3.amazonaws.com'
   }
 end
 
