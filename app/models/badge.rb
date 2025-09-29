@@ -81,6 +81,6 @@ class Badge
   private
 
   def class_name
-    self.class.name.sub('Badge', '')
+    self.class.name.demodulize.sub('Badge', '')
   end
 end
