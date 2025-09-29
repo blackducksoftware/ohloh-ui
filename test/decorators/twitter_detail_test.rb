@@ -37,7 +37,7 @@ class TwitterDetailTest < ActiveSupport::TestCase
       create(:account_analysis_fact, vita_id: account_analysis.id)
 
       description = "It was, 0 total commits to 0 projects, most experienced in #{language.nice_name}, " \
-                    'earned /Kudo Rank Badge'
+                    'earned Kudo Rank'
       _(user_twitter_detail.description).must_equal description
     end
   end
