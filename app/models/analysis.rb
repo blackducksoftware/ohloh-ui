@@ -60,6 +60,10 @@ class Analysis < ApplicationRecord
     min_month.nil? || code_total.zero?
   end
 
+  def present?
+    super && !empty?
+  end
+
   def cocomo_value(avg_salary = AVG_SALARY)
     (man_years * avg_salary).to_i
   end
