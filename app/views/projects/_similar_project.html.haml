@@ -18,7 +18,7 @@
     - if project.best_analysis.present?
       %p.nomargin
         = t('.most_written')
-        = link_to project.best_analysis.main_language.nice_name, languages_summary_path
+        = link_to project.best_analysis.main_language&.nice_name, languages_summary_path
     %p.nomargin
       = t('.licence')
       - if project.licenses.any?
