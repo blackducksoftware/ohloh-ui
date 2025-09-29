@@ -40,7 +40,7 @@
 
     .stats.pull-left
       %p
-        - if project.best_analysis.blank?
+        - if project.best_analysis.empty?
           = link_to 0, '#'
         - else
           - code_total_str = project.best_analysis.code_total.to_human

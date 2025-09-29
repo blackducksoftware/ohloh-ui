@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 xml.instruct!
-if @analysis.blank?
+if @analysis.empty?
   xml.response do
     xml.status('error')
     xml.message('Code analysis is not available')

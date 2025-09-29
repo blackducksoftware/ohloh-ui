@@ -16,7 +16,7 @@ class ProjectsController < ApplicationController
   end
 
   def show
-    render 'projects/no_analysis' if request.format.xml? && @analysis.blank?
+    render 'projects/no_analysis' if request.format.xml? && @analysis.empty?
   end
 
   def users

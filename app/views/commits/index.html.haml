@@ -10,7 +10,7 @@
   = project_analysis_timestamp(@project)
 
 .col-md-12
-  - if analysis.blank?
+  - if analysis.empty?
     = render 'projects/show/no_analysis_summary'
   - else
     = render 'commit', commits: @commits, search_dingus: true
