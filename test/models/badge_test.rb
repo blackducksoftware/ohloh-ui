@@ -29,7 +29,7 @@ class BadgeTest < ActiveSupport::TestCase
 
     it 'should display the description of a badge' do
       _(kudo_badge.description(and_name: false)).must_equal 'Level 1'
-      _(kudo_badge.description(and_name: true)).must_equal 'Level 1 Kudo Rank Badge'
+      _(kudo_badge.description(and_name: true)).must_equal 'Level 1 Kudo Rank'
     end
 
     it 'should test it has levels' do
