@@ -37,6 +37,13 @@ Rails.application.configure do
   # Store uploaded files on the local file system in a temporary directory.
   config.active_storage.service = :test
 
+  # Configure Paperclip to use local filesystem for tests instead of S3
+  config.paperclip_defaults = {
+    storage: :filesystem,
+    path: "#{Rails.root}/tmp/test_files/:class/:attachment/:id_partition/:style/:filename",
+    url: '/tmp/test_files/:class/:attachment/:id_partition/:style/:filename'
+  }
+
   config.action_mailer.perform_caching = false
 
   # Tell Action Mailer not to deliver emails to the real world.

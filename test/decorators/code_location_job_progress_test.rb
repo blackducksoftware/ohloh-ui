@@ -68,8 +68,7 @@ class CodeLocationJobProgressTest < ActiveSupport::TestCase
       new_code_location = code_location_stub_with_id
       create(:fetch_job, code_location_id: new_code_location.id)
       create(:enlistment, project: enlistment.project, code_location_id: new_code_location.id)
-
-      _(repo_progress.message).must_equal 'Blocked by waiting job'
+      _(repo_progress.message).must_equal I18n.t('repositories.job_progress.blocked_by', status: 'waiting')
     end
 
     it 'should return update complete message' do
