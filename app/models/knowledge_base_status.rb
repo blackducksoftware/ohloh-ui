@@ -109,7 +109,7 @@ class KnowledgeBaseStatus < ApplicationRecord
   def get_best_analysis
     logger.info("Converting #{project.name} - getting best_analysis")
     analysis = project.best_analysis
-    return {} if analysis.blank?
+    return {} if analysis.empty?
 
     ba = { updated_on: analysis.updated_on, logged_at: analysis.oldest_code_set_time,
            factoids: get_factoids(analysis), language_breakdown: analysis.language_breakdown }

@@ -12,7 +12,7 @@ class CommitsController < SettingsController
   skip_before_action :show_permissions_alert
 
   def index
-    return if @project.best_analysis.blank?
+    return if @project.best_analysis.empty?
 
     params[:contributor_id].present? ? individual_named_commits : named_commits
   end
@@ -26,7 +26,7 @@ class CommitsController < SettingsController
 
   def summary
     @analysis = @project.best_analysis
-    return if @project.best_analysis.blank?
+    return if @project.best_analysis.empty?
 
     get_project_commits
     get_commit_contributors

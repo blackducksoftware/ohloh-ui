@@ -443,7 +443,7 @@ class ProjectsControllerTest < ActionController::TestCase
       project.best_analysis.update! min_month: nil
 
       get :show, params: { id: project.to_param }
-      _(response.body).must_match(/No source code was found in any of the code/)
+      _(response.body).must_match(/no recognizable source code/)
       _(response.body).wont_match(/analysis isn't complete/)
     end
 
