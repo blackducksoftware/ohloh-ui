@@ -17,6 +17,10 @@ class NullObject
     true
   end
 
+  def empty?
+    true
+  end
+
   class << self
     def nought_methods(*args)
       args.each do |method_name|

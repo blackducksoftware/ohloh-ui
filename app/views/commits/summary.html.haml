@@ -5,7 +5,7 @@
   %h2.pull-left= t('.commits')
   = project_analysis_timestamp(@project)
 
-- if @analysis.blank?
+- if @analysis.empty?
   = render 'projects/show/no_analysis_summary'
 - else
   :ruby

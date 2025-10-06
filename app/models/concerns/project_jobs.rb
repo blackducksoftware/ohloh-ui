@@ -58,7 +58,7 @@ module ProjectJobs
   end
 
   def create_new_job?
-    best_analysis.blank? || best_analysis.created_at < 1.month.ago ||
+    best_analysis.empty? || best_analysis.created_at < 1.month.ago ||
       sloc_sets_out_of_date? || !best_analysis.thirty_day_summary
   end
 
@@ -68,7 +68,7 @@ module ProjectJobs
   end
 
   def update_activity_level
-    return if best_analysis.blank? || best_analysis.updated_on >= 1.month.ago
+    return if best_analysis.empty? || best_analysis.updated_on >= 1.month.ago
 
     activity_index = ACTIVITY_LEVEL[best_analysis.activity_level]
     return if activity_index == activity_level_index

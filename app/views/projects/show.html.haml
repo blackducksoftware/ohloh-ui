@@ -67,14 +67,14 @@
   = render partial: 'projects/show/security'
 
 .row.mezzo
-- if @analysis.blank?
+- if @analysis.empty?
   .analysis_blank_container
     .row.project_row
       .col-md-12.blank_message_container
         .col-md-8.analysis_alert_container
           = render partial: 'projects/show/no_analysis_summary'
         .col-md-4#proj_rating= render 'projects/show/community_rating', title: t('.community_rating'), score: @score
-        - if @project.enlistments.empty? && @analysis.blank?
+        - if @project.enlistments.empty? && @analysis.empty?
           = image_tag('sample_ohloh_analysis.jpg', class: 'col-md-12')
 - else
   = render partial: 'projects/show/analysis_summary'
