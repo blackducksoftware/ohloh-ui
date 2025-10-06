@@ -13,10 +13,7 @@ module Api::VulnerabilitiesHelper
     return unless data
 
     cve_id = data['href'].split('/').last
-    nvd_link = ENV.fetch('NVD_LINK', nil)
-    return nil if nvd_link.nil? || cve_id.nil?
-
-    cve_url = nvd_link + cve_id
+    cve_url = ENV.fetch('NVD_LINK', nil) + cve_id
     link_to(cve_id, cve_url, target: '_blank', rel: 'noopener')
   end
 

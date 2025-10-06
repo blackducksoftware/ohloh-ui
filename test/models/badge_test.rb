@@ -29,7 +29,7 @@ class BadgeTest < ActiveSupport::TestCase
 
     it 'should display the description of a badge' do
       _(kudo_badge.description(and_name: false)).must_equal 'Level 1'
-      _(kudo_badge.description(and_name: true)).must_equal 'Level 1 /Kudo Rank Badge'
+      _(kudo_badge.description(and_name: true)).must_equal 'Level 1 Kudo Rank'
     end
 
     it 'should test it has levels' do
@@ -50,7 +50,7 @@ class BadgeTest < ActiveSupport::TestCase
 
     it 'should test the string' do
       _(badge.to_underscore).must_be_empty
-      _(kudo_badge.to_underscore).must_equal '/kudo_rank_badge'
+      _(kudo_badge.to_underscore).must_equal 'kudo_rank'
     end
 
     it 'level returns lvl + 1 when count exceeds all limits' do

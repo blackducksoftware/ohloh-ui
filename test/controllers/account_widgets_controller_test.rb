@@ -4,12 +4,15 @@ require 'test_helper'
 
 class AccountWidgetsControllerTest < ActionController::TestCase
   let(:account) { create(:account) }
+  before { Rails.application.eager_load! }
 
   describe 'index' do
     it 'should return all account widgets and account' do
       get :index, params: { account_id: account.id }
 
       assert_response :ok
+      widget_classes = [Widget::AccountWidget::Detailed, Widget::AccountWidget::Rank, Widget::AccountWidget::Tiny]
+      _(assigns(:widgets).map(&:class)).must_equal widget_classes
       _(assigns(:account)).must_equal account
     end
   end
