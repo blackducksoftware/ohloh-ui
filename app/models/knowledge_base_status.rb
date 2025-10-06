@@ -122,9 +122,9 @@ class KnowledgeBaseStatus < ApplicationRecord
   # rubocop:enable Metrics/AbcSize
 
   def analysis_main_language_details(analysis)
-    { name: analysis.main_language.name,
-      nice_name: analysis.main_language.nice_name,
-      category: analysis.main_language.category }
+    { name: analysis.main_language&.name,
+      nice_name: analysis.main_language&.nice_name,
+      category: analysis.main_language&.category }
   end
 
   def analysis_commit_data(analysis)
