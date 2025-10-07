@@ -65,7 +65,7 @@ ActiveAdmin.register FailureGroup do
       failure_group = FailureGroup.find(params[:id])
       failure_group.decategorize
       failure_group.destroy
-      redirect_to admin_failure_groups_path, notice: I18n.t('admin.failure_group.deleted')
+      redirect_to admin_failure_groups_path, notice: I18n.t('oh_admin.failure_group.deleted')
     end
 
     def scoped_collection
