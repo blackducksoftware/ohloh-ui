@@ -23,7 +23,7 @@ module EditsModalHelper
   end
 
   def link_to_create_edit(edit)
-    link_to edit.target.to_param.to_s, "/#{edit.target.class.name.underscore.pluralize}/#{edit.target.to_param}"
+    link_to edit.target.to_param, edit.target
   end
 
   def project_related_edit(edit)
