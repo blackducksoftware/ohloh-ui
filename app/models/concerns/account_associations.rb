@@ -28,12 +28,7 @@ module AccountAssociations
     has_one :reverification_tracker, dependent: :destroy
     has_many :projects, -> { where(deleted: false) }, through: :manages, source: :target, source_type: 'Project'
     has_many :stacks, -> { order(updated_at: :desc).where(deleted_at: nil) }
-    has_many :positions, lambda {
-      positions = Position.arel_table
-      projects = Project.arel_table
-      joins(positions.join(projects).on(projects[:id].eq(positions[:project_id])
-                                    .and(projects[:deleted].eq(false))).join_sources)
-    }
+    has_many :positions, -> { joins(:project).where(projects: { deleted: false }) }
     has_many :claimed_positions, -> { where.not(name_id: nil) }, class_name: :Position
   end
 end

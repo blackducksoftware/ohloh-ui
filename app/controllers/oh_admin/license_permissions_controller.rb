@@ -24,7 +24,7 @@ class OhAdmin::LicensePermissionsController < ApplicationController
     @delete_list = []
     parse_params
     save_changes
-    redirect_to oh_admin_license_permissions_path, notice: I18n.t('admin.license_permissions.changes_saved')
+    redirect_to oh_admin_license_permissions_path, notice: I18n.t('oh_admin.license_permissions.changes_saved')
   end
 
   def get_permissions

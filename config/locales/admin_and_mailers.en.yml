@@ -1,5 +1,5 @@
 en:
-  admin:
+  oh_admin:
     failure_group:
       deleted: "FailureGroup was successfully deleted"
     jobs:
