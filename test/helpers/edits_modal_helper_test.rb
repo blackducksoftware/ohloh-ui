@@ -7,8 +7,27 @@ describe EditsModalHelper do
   include ActionView::Helpers::UrlHelper
   include EditsHelper
   include ApplicationHelper
+  # Add Rails routing helpers
+  include Rails.application.routes.url_helpers
 
   describe '#edit_show_value' do
+    # Set up routing context before each test
+
+    before do
+      @routes = Rails.application.routes
+      default_url_options[:host] = 'test.host'
+
+      # Set up a mock controller context for link_to to work
+      @controller = OpenStruct.new(
+        request: OpenStruct.new(
+          protocol: 'http://',
+          host: 'test.host'
+        )
+      )
+
+      # Make controller method available
+      define_singleton_method(:controller) { @controller }
+    end
     it 'should return value for edit' do
       edit = create(:property_edit)
       _(edit_show_value(edit)).must_equal edit.value
@@ -16,8 +35,7 @@ describe EditsModalHelper do
 
     it 'should retuen link for create edit' do
       edit = create(:create_edit)
-      path = "/#{edit.target.class.name.underscore.pluralize}/#{edit.target.to_param}"
-      _(edit_show_value(edit)).must_equal link_to edit.target.to_param.to_s, path
+      _(edit_show_value(edit)).must_equal link_to edit.target.to_param, edit.target
     end
 
     it 'should return vlaue for alias name' do
