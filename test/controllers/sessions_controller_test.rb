@@ -3,9 +3,6 @@
 require 'test_helper'
 
 class SessionsControllerTest < ActionController::TestCase
-  before do
-    ENV['MAX_LOGIN_RETRIES'] ||= '6'
-  end
   describe 'create' do
     let(:password) { Faker::Internet.password }
     let(:account) { create(:account, password: password) }
@@ -33,7 +30,6 @@ class SessionsControllerTest < ActionController::TestCase
       end
 
       it 'must increment auth failure count' do
-        ENV['FAILED_LOGIN_TIMEOUT'] = '15'
         auth_fail_count = max_login_retries - 2
         account.update!(auth_fail_count: auth_fail_count, updated_at: Time.current)
         post :create, params: { login: { login: account.login } }
@@ -46,7 +42,6 @@ class SessionsControllerTest < ActionController::TestCase
       end
 
       it 'wont compare password when recaptcha fails on the last try but auth passes' do
-        ENV['FAILED_LOGIN_TIMEOUT'] = '15'
         auth_fail_count = max_login_retries - 1
         account.update!(auth_fail_count: auth_fail_count, updated_at: Time.current)
         @controller.expects(:verify_recaptcha)
@@ -73,7 +68,6 @@ class SessionsControllerTest < ActionController::TestCase
       end
 
       it 'must disable account and send notice when auth failure reaches limit' do
-        ENV['FAILED_LOGIN_TIMEOUT'] = '15'
         auth_fail_count = max_login_retries - 1
         account.update!(auth_fail_count: auth_fail_count, updated_at: Time.current)
 
@@ -90,7 +84,6 @@ class SessionsControllerTest < ActionController::TestCase
       end
 
       it 'must render a captcha form after 3 failed login attempts' do
-        ENV['FAILED_LOGIN_TIMEOUT'] = '15'
         account.update!(auth_fail_count: 3, updated_at: Time.current)
 
         post :create, params: { login: { login: account.login } }

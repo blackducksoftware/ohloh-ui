@@ -7,7 +7,6 @@ CiiProject = Struct.new(:id, :name, :homepage_url, :repo_url) unless defined?(Ci
 describe ProjectBadgeMailer do
   describe '#check_cii_projects' do
     before do
-      ENV['CII_PROJECTS_EMAIL_RECEIPIENT'] = 'ohteam@blackduck.com'
       @cii_projects = (1..3).map do |i|
         CiiProject.new(i, Faker::Lorem.word, "http://#{Faker::Lorem.word}.com",
                        "http://github.com/#{Faker::Lorem.word}/#{Faker::Lorem.word}")
@@ -16,7 +15,7 @@ describe ProjectBadgeMailer do
 
     it 'should send email the cii projects detail' do
       email = ProjectBadgeMailer.check_cii_projects(@cii_projects)
-      _(email.to).must_equal ['ohteam@blackduck.com']
+      _(email.to).must_equal [ENV.fetch('CII_PROJECTS_EMAIL_RECEIPIENT', nil)]
       _(email[:from].value).must_equal 'mailer@openhub.net'
       _(email.subject).must_equal "CII Best Practices Badge - Found #{@cii_projects.size} new projects"
       assert_difference('ActionMailer::Base.deliveries.count', 1) { email.deliver_now }
