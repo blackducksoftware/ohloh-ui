@@ -10,24 +10,25 @@ describe EditsModalHelper do
   # Add Rails routing helpers
   include Rails.application.routes.url_helpers
 
-  describe '#edit_show_value' do
-    # Set up routing context before each test
+  # Set up routing context before each test
 
-    before do
-      @routes = Rails.application.routes
-      default_url_options[:host] = 'test.host'
+  before do
+    @routes = Rails.application.routes
+    default_url_options[:host] = 'test.host'
 
-      # Set up a mock controller context for link_to to work
-      @controller = OpenStruct.new(
-        request: OpenStruct.new(
-          protocol: 'http://',
-          host: 'test.host'
-        )
+    # Set up a mock controller context for link_to to work
+    @controller = OpenStruct.new(
+      request: OpenStruct.new(
+        protocol: 'http://',
+        host: 'test.host'
       )
+    )
 
-      # Make controller method available
-      define_singleton_method(:controller) { @controller }
-    end
+    # Make controller method available
+    define_singleton_method(:controller) { @controller }
+  end
+
+  describe '#edit_show_value' do
     it 'should return value for edit' do
       edit = create(:property_edit)
       _(edit_show_value(edit)).must_equal edit.value
