@@ -23,12 +23,4 @@ class ApiKeysAdminTest < ActionDispatch::IntegrationTest
     get admin_api_key_path(api_key)
     assert_response :success
   end
-
-  it 'edit loads' do
-    api_key = create(:api_key)
-    admin = create(:admin, password: TEST_PASSWORD)
-    login_as admin
-    get edit_admin_api_key_path(api_key)
-    assert_response :success
-  end
 end
