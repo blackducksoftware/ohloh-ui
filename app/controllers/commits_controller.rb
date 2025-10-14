@@ -91,8 +91,15 @@ class CommitsController < SettingsController
   end
 
   def find_contributor_fact
-    @contributor_fact = ContributorFact.find_by(analysis_id: @project.best_analysis_id,
-                                                name_id: params[:contributor_id])
+    if @project.best_analysis_id
+      @contributor_fact = ContributorFact.find_by(analysis_id: @project.best_analysis_id,
+                                                  name_id: params[:contributor_id])
+    end
+    return if @contributor_fact
+
+    Airbrake.notify('ContributorFact Not Found',
+                    parameters: { analysis_id: @project.best_analysis_id, name_id: params[:contributor_id] })
+    render_404
   end
 
   def find_start_time
