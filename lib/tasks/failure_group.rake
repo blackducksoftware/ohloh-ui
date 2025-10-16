@@ -16,7 +16,7 @@ namespace :jobs do
       failed_jobs.find_in_batches(batch_size: 100) do |jobs|
         jobs.each do |job|
           job.status = Job::STATUS_SCHEDULED
-          job.slave = nil
+          job.worker = nil
           job.wait_until = (job.current_step_at || Time.now.utc) + retry_delays[job.retry_count]
           job.retry_count += 1
           job.notes = job.notes.to_s + "Auto-rescheduled #{Time.now.utc}\n"
