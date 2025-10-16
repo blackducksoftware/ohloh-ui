@@ -5,7 +5,7 @@ class Job < ApplicationRecord
   belongs_to :worker, optional: true
   belongs_to :job_status, foreign_key: 'status', optional: true
   belongs_to :failure_group, optional: true
-  has_many :slave_logs
+  has_many :worker_logs
 
   STATUS_SCHEDULED = 0
   STATUS_RUNNING   = 1

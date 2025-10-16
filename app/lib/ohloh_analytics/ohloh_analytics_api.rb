@@ -16,6 +16,10 @@ class OhlohAnalyticsApi
       handle_errors(response) { JSON.parse(response.body) }
     end
 
+    def analytics_worker_admin_url(job_id)
+      "#{URL}/admin/jobs/#{job_id}"
+    end
+
     private
 
     def handle_errors(response)

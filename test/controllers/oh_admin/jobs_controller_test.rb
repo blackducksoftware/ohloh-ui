@@ -8,7 +8,7 @@ class OhAdmin::JobsControllerTest < ActionController::TestCase
 
   it 'should render index template for a logged admin user' do
     login_as admin
-    create(:slave, id: 1)
+    create(:worker, id: 1)
     VCR.use_cassette('project_jobs', match_requests_on: [:path]) do
       get :index, params: { project_id: project.vanity_url, page: 1 }
       assert_response :success
@@ -28,7 +28,7 @@ class OhAdmin::JobsControllerTest < ActionController::TestCase
 
   it 'should render queued project jobs in jobs index page' do
     login_as admin
-    create(:slave, id: 1)
+    create(:worker, id: 1)
 
     VCR.use_cassette('project_jobs', match_requests_on: [:path]) do
       get :index, params: { project_id: project.vanity_url }

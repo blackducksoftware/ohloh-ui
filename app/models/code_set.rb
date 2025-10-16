@@ -39,7 +39,7 @@ class CodeSet < FisBase
 
   # After clumps are removed, delete from here ....
   def reimport
-    old_clump.slave.run_local_or_remote("mv #{old_clump.path} #{new_clump.path}")
+    # old_clump.slave.run_local_or_remote("mv #{old_clump.path} #{new_clump.path}")
     ImportJob.create(code_set: new_code_set) if old_clump.delete
   end
 
