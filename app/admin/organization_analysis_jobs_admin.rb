@@ -6,7 +6,7 @@ ActiveAdmin.register OrganizationAnalysisJob do
   config.sort_order = 'current_step_at_desc'
   permit_params :status, :priority, :wait_until, :current_step_at, :notes
 
-  filter :slave, collection: proc { Slave.pluck(:hostname).sort }
+  filter :worker, collection: proc { Worker.pluck(:hostname).sort }
   filter :job_status
   filter :organization_vanity_url, as: :string, label: 'ORGANIZATION VANITY URL'
   actions :all, except: :new
@@ -31,7 +31,7 @@ ActiveAdmin.register OrganizationAnalysisJob do
       span link_to "Organization #{job.organization.name}", project_path(job.organization) if job.organization_id
     end
     column 'Log' do |job|
-      span link_to 'Slave Log', admin_job_slave_logs_path(job)
+      span link_to 'Worker Log', admin_job_worker_logs_path(job)
     end
   end
 end

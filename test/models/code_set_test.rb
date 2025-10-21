@@ -10,7 +10,7 @@ describe CodeSet do
     it 'should create a new code set, clump and import job' do
       # Clone the most recently updated clump, which we want to be the factory created one.
       # So make one more older GitClump to test the sort.
-      code_set.clumps << GitClump.create(slave: Slave.first)
+      # code_set.clumps << GitClump.create(slave: Slave.first)
       code_set.clumps.last.update_attribute(:updated_at, clump.updated_at - 2.days)
       Slave.any_instance.stubs(:run_local_or_remote).returns(true)
 

@@ -3,6 +3,7 @@
 class OhlohAnalyticsApi
   URL = ENV.fetch('OHLOH_ANALYTICS_API_URL', nil)
   KEY = ENV.fetch('OHLOH_ANALYTICS_CLIENT_REGISTRATION_ID', nil)
+  PUBLIC_URL = ENV.fetch('OHLOH_ANALYTICS_PUBLIC_URL', nil)
 
   class << self
     def resource_uri(path = nil, query = {})
@@ -14,6 +15,10 @@ class OhlohAnalyticsApi
       uri = resource_uri(path, query)
       response = Net::HTTP.get_response(uri)
       handle_errors(response) { JSON.parse(response.body) }
+    end
+
+    def job_url(job_id)
+      "#{PUBLIC_URL}/admin/jobs/#{job_id}"
     end
 
     private

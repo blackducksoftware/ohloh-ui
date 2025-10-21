@@ -8,7 +8,7 @@ ActiveAdmin.register AccountAnalysisJob do
 
   permit_params :status, :priority, :wait_until, :current_step_at, :notes
 
-  filter :slave, collection: proc { Slave.pluck(:hostname).sort }
+  filter :worker, collection: proc { Worker.pluck(:hostname).sort }
   filter :job_status
   filter :account_login, as: :string, label: 'Account Login'
 

@@ -428,7 +428,7 @@ Rails.application.routes.draw do
   ActiveAdmin.routes(self)
   namespace :admin do
     resources :jobs do
-      resources :slave_logs
+      resources :worker_logs
       member do
         put :reschedule
         get :mark_as_failed

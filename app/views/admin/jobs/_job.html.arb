@@ -13,7 +13,7 @@ br
 span "Progress: (#{job.current_step || '-'} current step of #{job.max_steps || '-'} total steps)"
 br
 span 'Log: '
-a link_to('Slave Log', admin_job_slave_logs_path(job))
+a link_to('Worker Log', admin_job_worker_logs_path(job))
 br
 span "Status: #{job.job_status.try(:name)} "
 br

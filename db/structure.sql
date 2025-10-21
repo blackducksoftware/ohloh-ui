@@ -52,13 +52,6 @@ COMMENT ON SCHEMA oh IS 'standard public schema';
 
 
 --
--- Name: public; Type: SCHEMA; Schema: -; Owner: -
---
-
--- *not* creating schema, since initdb creates it
-
-
---
 -- Name: pg_stat_statements; Type: EXTENSION; Schema: -; Owner: -
 --
 
@@ -963,6 +956,68 @@ CREATE FUNCTION fis.admin_select_kb_cl_visited_stats(interval_span character var
 
 
 --
+-- Name: aggregate_ignored_fyle_metrics(integer, integer); Type: FUNCTION; Schema: fis; Owner: -
+--
+
+CREATE FUNCTION fis.aggregate_ignored_fyle_metrics(p_code_set_id integer, p_analysis_id integer) RETURNS TABLE(lines_added integer, lines_removed integer)
+    LANGUAGE plpgsql
+    AS $$
+DECLARE
+ pattern varchar;
+ where_clause varchar;
+BEGIN
+ where_clause := '';
+ FOR pattern in
+   SELECT regexp_replace(regexp_split_to_table(replace(trim(ignore), 'Disallow:', ''), E'\\r\\n+'),'\s','','g')::text
+   FROM analysis_sloc_sets
+   WHERE id = p_analysis_id
+ LOOP
+    RAISE NOTICE 'looping' ;
+    where_clause := where_clause || ', name like %' || pattern || '%' ;
+ END LOOP;
+
+ RAISE NOTICE 'where_clause:Â %',where_clause;
+
+ RETURN query EXECUTE 'SELECT 0 AS lines_added, '
+   || '0 AS lines_removed '
+   || 'LIMIT 1' ;
+END;
+$$;
+
+
+--
+-- Name: aggregate_sloc_metrics(integer, integer); Type: FUNCTION; Schema: fis; Owner: -
+--
+
+CREATE FUNCTION fis.aggregate_sloc_metrics(p_code_set_id integer, p_analysis_id integer) RETURNS TABLE(lines_added integer, lines_removed integer)
+    LANGUAGE plpgsql
+    AS $$
+
+DECLARE
+  diff_table_name varchar;
+  sloc_metric_table_name varchar;
+
+BEGIN
+  SELECT tableoid::pg_catalog.regclass FROM diffs WHERE code_set_id = p_code_set_id LIMIT 1 INTO diff_table_name;
+  SELECT tableoid::pg_catalog.regclass FROM sloc_metrics
+     WHERE sloc_set_id =
+     (SELECT sloc_set_id
+         FROM analysis_sloc_sets ASS where analysis_id = p_analysis_id) INTO sloc_metric_table_name ;  
+  
+  RETURN query EXECUTE 'SELECT SUM(SM.code_added + SM.comments_added + SM.blanks_added)::Int AS lines_added, '
+          || 'SUM(SM.code_removed + SM.comments_removed + SM.blanks_removed)::Int AS lines_removed '
+          ||  format('FROM %I SM ', sloc_metric_table_name)
+	  || 'INNER JOIN analysis_sloc_sets ASS ON ASS.analysis_id = ' || p_analysis_id || ' AND SM.sloc_set_id = ASS.sloc_set_id '
+          || 'INNER JOIN sloc_sets SS on SS.id = ASS.sloc_set_id AND SM.sloc_set_id = SS.id '
+          ||  format('INNER JOIN %I D ', diff_table_name) || 'ON D.id = SM.diff_id and D.code_set_id = ' || p_code_set_id 
+	  || ' INNER JOIN commits C on C.id = D.commit_id AND C.code_set_id = SS.code_set_id '
+	  || 'WHERE  ASS.as_of IS NOT NULL '                                                                    
+          || 'AND  C.position <= ASS.as_of' ; 
+END;
+$$;
+
+
+--
 -- Name: analysis_aliases_id_seq_view(); Type: FUNCTION; Schema: fis; Owner: -
 --
 
@@ -1023,7 +1078,6 @@ CREATE FUNCTION fis.commit_flags_id_seq_view() RETURNS integer
 CREATE FUNCTION fis.delete_old_code_sets(smallint, boolean) RETURNS jsonb
     LANGUAGE plpgsql
     AS $_$
-
       DECLARE
          result jsonb ;
          message varchar ;
@@ -1034,22 +1088,16 @@ CREATE FUNCTION fis.delete_old_code_sets(smallint, boolean) RETURNS jsonb
        BEGIN
        num_limit = $1 ;
        rollback = $2 ;
-
          RAISE NOTICE 'Limit set to % and rollback set to %', num_limit, rollback::text ;
-
          CREATE TEMPORARY TABLE temp_messages (
             message varchar
          ) ;
-
+        CREATE TEMPORARY TABLE temp_sloc_sets (
+             id integer
+         ) ;
          CREATE TEMPORARY TABLE temp_code_sets (
              id integer
          ) ;
-
-         CREATE TEMPORARY TABLE temp_commit_diffs (
-             diff_id bigint,
-             commit_id integer
-         ) ;
-
           INSERT INTO temp_code_sets (id)
            SELECT code_sets.id
            FROM code_sets
@@ -1058,82 +1106,49 @@ CREATE FUNCTION fis.delete_old_code_sets(smallint, boolean) RETURNS jsonb
            WHERE code_sets.id <> cl.best_code_set_id
              AND COALESCE(code_sets.logged_at, code_sets.updated_on)
                  < COALESCE(cs_best.logged_at, cs_best.updated_on)
-			 AND code_sets.id NOT IN
-			 	(SELECT distinct j.code_set_id FROM jobs j
-				 WHERE j.status <> 5 AND j.code_set_id IS NOT NULL)
-		   Limit num_limit ;
-
+                         AND code_sets.id NOT IN
+                                (SELECT distinct j.code_set_id FROM jobs j
+                                 WHERE j.status <> 5 AND j.code_set_id IS NOT NULL)
+                   Limit num_limit ;
          GET DIAGNOSTICS num_selected = row_count;
          RAISE NOTICE 'Selected %s code_sets', num_selected ;
          INSERT INTO temp_messages VALUES
            (FORMAT('Selected %s code_sets', num_selected))  ;
-
-         --DELETE FROM temp_code_sets
-         --WHERE id IN
-         --  (SELECT tcs.id
-         --     FROM temp_code_sets tcs
-         --     INNER JOIN jobs j ON tcs.id = j.code_set_id
-         --    WHERE j.status <> 5) ;
-
           GET DIAGNOSTICS num_selected = row_count;
           RAISE NOTICE 'Deleted %s incomplete jobs', num_selected ;
           INSERT INTO temp_messages VALUES
            (FORMAT('Deleted %s incomplete jobs', num_selected))  ;
-
          CREATE INDEX ON temp_code_sets (id) ;
-
-         INSERT INTO temp_commit_diffs (commit_id)
-         SELECT commit.id commit_id
-         from commits commit
-         WHERE commit.code_set_id IN
-                    (SELECT id FROM temp_code_sets)  ;
-
          GET DIAGNOSTICS num_selected = row_count;
          RAISE NOTICE 'Selected %s commits', num_selected ;
-         INSERT INTO temp_messages VALUES
-            (FORMAT('Selected %s commits', num_selected))  ;
-
-
-         INSERT INTO temp_commit_diffs (diff_id, commit_id)
-         SELECT diff.id diff_id, diff.commit_id
-            FROM Diffs diff
-         WHERE diff.commit_id IN
-            (SELECT commit_id FROM temp_commit_diffs) ;
-
-         GET DIAGNOSTICS num_selected = row_count;
-         RAISE NOTICE 'Selected %s diffs', num_selected ;
-         INSERT INTO temp_messages VALUES
-              (FORMAT('Selected %s diffs', num_selected))  ;
-
-         CREATE INDEX ON temp_commit_diffs (commit_id);
-         CREATE INDEX ON temp_commit_diffs (diff_id) ;
-
-         INSERT INTO temp_messages VALUES
-           (FORMAT('temporary tables created')) ;
-         RAISE NOTICE 'temporary tables created' ;
-
          SET session_replication_role TO replica ;
-
-         DELETE FROM slave_logs
+         DELETE FROM worker_logs
          WHERE code_set_id IN
            (SELECT id FROM temp_code_sets) ;
          GET DIAGNOSTICS num_selected = row_count;
-
-         RAISE NOTICE 'slave_logs deleted %s records', num_selected ;
+         RAISE NOTICE 'worker_logs deleted %s records', num_selected ;
          INSERT INTO temp_messages VALUES
-           (FORMAT('slave_logs deleted %s records', num_selected)) ;
-
+           (FORMAT('worker_logs deleted %s records', num_selected)) ;
+        INSERT INTO temp_sloc_sets (id)
+        select id from sloc_sets where code_set_id IN (SELECT id from temp_code_sets);
          DELETE FROM analysis_sloc_sets
-         WHERE id IN
-             (SELECT ass.id
-             FROM analysis_sloc_sets ass
-             INNER JOIN sloc_sets ss ON ass.sloc_set_id = ss.id
-             WHERE ss.code_set_id IN (SELECT id from temp_code_sets ));
+         WHERE sloc_set_id IN (SELECT id FROM temp_sloc_sets);
          GET DIAGNOSTICS num_selected = row_count;
          RAISE NOTICE 'analysis_sloc_sets deleted %s records', num_selected ;
          INSERT INTO temp_messages VALUES
            (FORMAT('analysis_sloc_sets deleted %s records', num_selected)) ;
-
+         DELETE FROM commit_flags
+         WHERE sloc_set_id IN (SELECT id FROM temp_sloc_sets);
+         GET DIAGNOSTICS num_selected = row_count;
+         RAISE NOTICE 'commit_flags deleted %s records', num_selected ;
+         INSERT INTO temp_messages VALUES
+           (FORMAT('commit_flags deleted %s records', num_selected)) ;
+         DELETE FROM sloc_metrics
+         WHERE sloc_set_id IN (SELECT id FROM temp_sloc_sets);
+         GET DIAGNOSTICS num_selected = row_count;
+         RAISE NOTICE 'commit_flags deleted %s records', num_selected ;
+         INSERT INTO temp_messages VALUES
+           (FORMAT('sloc_metrics deleted %s records', num_selected)) ;
          DELETE FROM sloc_sets
          WHERE code_set_id IN
           (SELECT id from temp_code_sets ) ;
@@ -1141,7 +1156,6 @@ CREATE FUNCTION fis.delete_old_code_sets(smallint, boolean) RETURNS jsonb
          RAISE NOTICE 'sloc_sets deleted %s records', num_selected ;
          INSERT INTO temp_messages VALUES
            (FORMAT('sloc_sets deleted %s records', num_selected)) ;
-
          DELETE FROM fyles
          WHERE code_set_id IN
           (SELECT id from temp_code_sets ) ;
@@ -1149,15 +1163,12 @@ CREATE FUNCTION fis.delete_old_code_sets(smallint, boolean) RETURNS jsonb
         RAISE NOTICE 'fyles deleted %s records', num_selected ;
         INSERT INTO temp_messages VALUES
           (FORMAT('fyles deleted %s records', num_selected));
-
         DELETE FROM diffs
-        WHERE diffs.id IN
-          (SELECT diff_id FROM temp_commit_diffs) ;
+        WHERE diffs.code_set_id in (select id from temp_code_sets);
         GET DIAGNOSTICS num_selected = row_count;
         RAISE NOTICE 'diffs deleted %s records', num_selected ;
         INSERT INTO temp_messages VALUES
            (FORMAT('diffs deleted %s records', num_selected)) ;
-
         DELETE FROM commits
         WHERE code_set_id IN
           (SELECT id FROM temp_code_sets) ;
@@ -1165,7 +1176,6 @@ CREATE FUNCTION fis.delete_old_code_sets(smallint, boolean) RETURNS jsonb
         RAISE NOTICE 'commits deleted %s records', num_selected ;
         INSERT INTO temp_messages VALUES
            (FORMAT('commits deleted %s records', num_selected)) ;
-
         DELETE FROM code_sets
         WHERE id IN
           (SELECT id FROM temp_code_sets) ;
@@ -1173,48 +1183,36 @@ CREATE FUNCTION fis.delete_old_code_sets(smallint, boolean) RETURNS jsonb
         RAISE NOTICE 'commits deleted % records', num_selected ;
         INSERT INTO temp_messages VALUES
            (FORMAT('code_sets deleted %s records', num_selected)) ;
-
         INSERT INTO old_code_sets (code_set_id, created_at, updated_at)
         SELECT id as code_set_id, now() as created_at, now() as updated_at
           FROM temp_code_sets ;
-
         GET DIAGNOSTICS num_selected = row_count;
         RAISE NOTICE 'old_code_sets inserted %s records', num_selected ;
         INSERT INTO temp_messages VALUES
            (FORMAT('old_code_sets inserted %s records', num_selected)) ;
-
         SET session_replication_role TO default ;
-
+        DROP TABLE temp_sloc_sets ;
         DROP TABLE temp_code_sets ;
-        DROP TABLE temp_commit_diffs ;
-
         INSERT INTO temp_messages VALUES
            ('dropped temp tables') ;
-
       IF rollback THEN
         RAISE NOTICE 'rollback is set';
-
         query := 'SELECT array_to_json(array_agg(row_to_json(row)))
         FROM (SELECT message FROM temp_messages) row' ;
         EXECUTE query INTO result;
-
         DROP TABLE temp_messages ;
         RAISE EXCEPTION 'rolling back --> %', result::text ;
       END IF ;
-
       INSERT INTO temp_messages VALUES
         ('done') ;
       RAISE NOTICE 'done' ;
-
       query := 'SELECT array_to_json(array_agg(row_to_json(row)))
       FROM (SELECT message FROM temp_messages) row' ;
       EXECUTE query INTO result;
-
       DROP TABLE temp_messages ;
       RETURN result ;
      END;
-
-$_$;
+    $_$;
 
 
 --
@@ -1309,7 +1307,7 @@ CREATE FUNCTION fis.sloc_sets_id_seq_view() RETURNS integer
 CREATE FUNCTION fis.ts_debug(text) RETURNS SETOF fis.tsdebug
     LANGUAGE sql STRICT
     AS $_$
-select
+select 
         m.ts_name,
         t.alias as tok_type,
         t.descr as description,
@@ -1323,9 +1321,9 @@ from
         pg_ts_cfg as c
 where
         t.tokid=p.tokid and
-        t.alias = m.tok_alias and
-        m.ts_name=c.ts_name and
-        c.oid=show_curcfg()
+        t.alias = m.tok_alias and 
+        m.ts_name=c.ts_name and 
+        c.oid=show_curcfg() 
 $_$;
 
 
@@ -1354,7 +1352,7 @@ CREATE FUNCTION oh.check_jobs(integer) RETURNS integer
 CREATE FUNCTION oh.ts_debug(text) RETURNS SETOF oh.tsdebug
     LANGUAGE sql STRICT
     AS $_$
-select
+select 
         m.ts_name,
         t.alias as tok_type,
         t.descr as description,
@@ -1368,9 +1366,9 @@ from
         pg_ts_cfg as c
 where
         t.tokid=p.tokid and
-        t.alias = m.tok_alias and
-        m.ts_name=c.ts_name and
-        c.oid=show_curcfg()
+        t.alias = m.tok_alias and 
+        m.ts_name=c.ts_name and 
+        c.oid=show_curcfg() 
 $_$;
 
 
@@ -1859,7 +1857,8 @@ CREATE TABLE fis.analysis_aliases (
     analysis_id integer NOT NULL,
     commit_name_id integer NOT NULL,
     preferred_name_id integer NOT NULL
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.001', autovacuum_vacuum_scale_factor='0.002');
 
 
 --
@@ -1907,7 +1906,8 @@ CREATE TABLE fis.analysis_sloc_sets (
     ignored_fyle_count integer,
     allowed_fyles text,
     allowed_fyle_count integer
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.001', autovacuum_vacuum_scale_factor='0.002');
 
 
 --
@@ -1958,6 +1958,36 @@ ALTER SEQUENCE fis.code_location_dnfs_id_seq OWNED BY fis.code_location_dnfs.id;
 
 
 --
+-- Name: code_location_file_storage_stats; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.code_location_file_storage_stats (
+    id bigint NOT NULL,
+    code_location_id integer,
+    filestorage_exists boolean DEFAULT false
+);
+
+
+--
+-- Name: code_location_file_storage_stats_id_seq; Type: SEQUENCE; Schema: fis; Owner: -
+--
+
+CREATE SEQUENCE fis.code_location_file_storage_stats_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: code_location_file_storage_stats_id_seq; Type: SEQUENCE OWNED BY; Schema: fis; Owner: -
+--
+
+ALTER SEQUENCE fis.code_location_file_storage_stats_id_seq OWNED BY fis.code_location_file_storage_stats.id;
+
+
+--
 -- Name: code_location_job_feeders; Type: TABLE; Schema: fis; Owner: -
 --
 
@@ -1988,6 +2018,37 @@ CREATE SEQUENCE fis.code_location_job_feeders_id_seq
 --
 
 ALTER SEQUENCE fis.code_location_job_feeders_id_seq OWNED BY fis.code_location_job_feeders.id;
+
+
+--
+-- Name: code_location_stats_active; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.code_location_stats_active (
+    id integer NOT NULL,
+    code_location_id integer,
+    size character varying
+);
+
+
+--
+-- Name: code_location_stats_id_seq; Type: SEQUENCE; Schema: fis; Owner: -
+--
+
+CREATE SEQUENCE fis.code_location_stats_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: code_location_stats_id_seq; Type: SEQUENCE OWNED BY; Schema: fis; Owner: -
+--
+
+ALTER SEQUENCE fis.code_location_stats_id_seq OWNED BY fis.code_location_stats_active.id;
 
 
 --
@@ -2038,8 +2099,9 @@ CREATE TABLE fis.code_locations (
     update_interval integer DEFAULT 3600,
     best_repository_directory_id integer,
     do_not_fetch boolean DEFAULT false,
-    last_job_id integer,
+    last_job_id bigint,
     cl_update_event_time timestamp without time zone,
+    ignored_files text,
     is_important boolean DEFAULT false
 );
 
@@ -2113,7 +2175,8 @@ CREATE TABLE fis.sloc_sets (
     updated_on timestamp without time zone,
     as_of integer,
     code_set_time timestamp without time zone
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0005', autovacuum_vacuum_scale_factor='0.001');
 
 
 --
@@ -2183,6 +2246,7 @@ CREATE TABLE oh.projects (
     best_project_security_set_id integer,
     coverity_project_id integer,
     reported_at timestamp without time zone,
+    is_expensive boolean DEFAULT false,
     CONSTRAINT valid_missing_source CHECK (((missing_source IS NULL) OR (missing_source = 'not available'::text) OR (missing_source = 'not supported'::text)))
 );
 
@@ -2221,7 +2285,7 @@ CREATE VIEW fis.commit_contributors AS
 CREATE TABLE fis.commit_flags (
     id integer NOT NULL,
     sloc_set_id integer NOT NULL,
-    commit_id integer NOT NULL,
+    commit_id bigint NOT NULL,
     "time" timestamp without time zone NOT NULL,
     type text NOT NULL,
     data text
@@ -2274,7 +2338,65 @@ CREATE TABLE fis.commits (
     on_trunk boolean DEFAULT true,
     email_address_id integer
 )
-WITH (autovacuum_analyze_scale_factor='0.001', autovacuum_vacuum_scale_factor='0.0005');
+WITH (autovacuum_analyze_scale_factor='0.001', autovacuum_vacuum_scale_factor='0.002');
+
+
+--
+-- Name: deleted_code_sets; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.deleted_code_sets (
+    id bigint NOT NULL,
+    code_set_id integer
+);
+
+
+--
+-- Name: deleted_code_sets_id_seq; Type: SEQUENCE; Schema: fis; Owner: -
+--
+
+CREATE SEQUENCE fis.deleted_code_sets_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: deleted_code_sets_id_seq; Type: SEQUENCE OWNED BY; Schema: fis; Owner: -
+--
+
+ALTER SEQUENCE fis.deleted_code_sets_id_seq OWNED BY fis.deleted_code_sets.id;
+
+
+--
+-- Name: deleted_sloc_sets; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.deleted_sloc_sets (
+    id bigint NOT NULL,
+    sloc_set_id integer
+);
+
+
+--
+-- Name: deleted_sloc_sets_id_seq; Type: SEQUENCE; Schema: fis; Owner: -
+--
+
+CREATE SEQUENCE fis.deleted_sloc_sets_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: deleted_sloc_sets_id_seq; Type: SEQUENCE OWNED BY; Schema: fis; Owner: -
+--
+
+ALTER SEQUENCE fis.deleted_sloc_sets_id_seq OWNED BY fis.deleted_sloc_sets.id;
 
 
 --
@@ -2330,7 +2452,8 @@ CREATE TABLE fis.diffs_0 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -2347,7 +2470,8 @@ CREATE TABLE fis.diffs_1 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -2364,7 +2488,8 @@ CREATE TABLE fis.diffs_10 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -2381,7 +2506,8 @@ CREATE TABLE fis.diffs_11 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -2398,7 +2524,8 @@ CREATE TABLE fis.diffs_12 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -2415,7 +2542,8 @@ CREATE TABLE fis.diffs_13 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -2432,7 +2560,8 @@ CREATE TABLE fis.diffs_14 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -2449,7 +2578,8 @@ CREATE TABLE fis.diffs_15 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -2466,7 +2596,8 @@ CREATE TABLE fis.diffs_16 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -2483,7 +2614,8 @@ CREATE TABLE fis.diffs_17 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -2500,7 +2632,8 @@ CREATE TABLE fis.diffs_18 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -2517,7 +2650,8 @@ CREATE TABLE fis.diffs_19 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -2534,7 +2668,8 @@ CREATE TABLE fis.diffs_2 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -2551,7 +2686,8 @@ CREATE TABLE fis.diffs_20 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -2568,7 +2704,8 @@ CREATE TABLE fis.diffs_21 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -2585,7 +2722,8 @@ CREATE TABLE fis.diffs_22 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -2602,7 +2740,8 @@ CREATE TABLE fis.diffs_23 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -2619,7 +2758,8 @@ CREATE TABLE fis.diffs_24 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -2636,7 +2776,8 @@ CREATE TABLE fis.diffs_25 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -2653,7 +2794,8 @@ CREATE TABLE fis.diffs_26 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -2670,7 +2812,8 @@ CREATE TABLE fis.diffs_27 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -2687,7 +2830,8 @@ CREATE TABLE fis.diffs_28 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -2704,7 +2848,8 @@ CREATE TABLE fis.diffs_29 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -2721,7 +2866,8 @@ CREATE TABLE fis.diffs_3 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -2738,7 +2884,8 @@ CREATE TABLE fis.diffs_30 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -2755,7 +2902,8 @@ CREATE TABLE fis.diffs_31 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -2772,7 +2920,8 @@ CREATE TABLE fis.diffs_32 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -2789,7 +2938,8 @@ CREATE TABLE fis.diffs_33 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -2806,7 +2956,8 @@ CREATE TABLE fis.diffs_34 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -2823,7 +2974,8 @@ CREATE TABLE fis.diffs_35 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -2840,7 +2992,8 @@ CREATE TABLE fis.diffs_36 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -2857,7 +3010,8 @@ CREATE TABLE fis.diffs_37 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -2874,7 +3028,8 @@ CREATE TABLE fis.diffs_38 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -2891,7 +3046,8 @@ CREATE TABLE fis.diffs_39 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -2908,7 +3064,8 @@ CREATE TABLE fis.diffs_4 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -2925,7 +3082,8 @@ CREATE TABLE fis.diffs_40 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -2942,7 +3100,8 @@ CREATE TABLE fis.diffs_41 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -2959,7 +3118,8 @@ CREATE TABLE fis.diffs_42 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -2976,7 +3136,8 @@ CREATE TABLE fis.diffs_43 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -2993,7 +3154,8 @@ CREATE TABLE fis.diffs_44 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -3010,7 +3172,8 @@ CREATE TABLE fis.diffs_45 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -3027,7 +3190,8 @@ CREATE TABLE fis.diffs_46 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -3044,7 +3208,8 @@ CREATE TABLE fis.diffs_47 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -3061,7 +3226,8 @@ CREATE TABLE fis.diffs_48 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -3078,7 +3244,8 @@ CREATE TABLE fis.diffs_49 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -3095,7 +3262,8 @@ CREATE TABLE fis.diffs_5 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -3112,7 +3280,8 @@ CREATE TABLE fis.diffs_50 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -3129,7 +3298,8 @@ CREATE TABLE fis.diffs_51 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -3146,7 +3316,8 @@ CREATE TABLE fis.diffs_52 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -3163,7 +3334,8 @@ CREATE TABLE fis.diffs_53 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -3180,7 +3352,8 @@ CREATE TABLE fis.diffs_54 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -3197,7 +3370,8 @@ CREATE TABLE fis.diffs_55 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -3214,7 +3388,8 @@ CREATE TABLE fis.diffs_56 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -3231,7 +3406,8 @@ CREATE TABLE fis.diffs_57 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -3248,7 +3424,8 @@ CREATE TABLE fis.diffs_58 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -3265,7 +3442,8 @@ CREATE TABLE fis.diffs_59 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -3282,7 +3460,8 @@ CREATE TABLE fis.diffs_6 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -3299,7 +3478,8 @@ CREATE TABLE fis.diffs_60 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -3316,7 +3496,8 @@ CREATE TABLE fis.diffs_61 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -3333,7 +3514,8 @@ CREATE TABLE fis.diffs_62 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -3350,7 +3532,8 @@ CREATE TABLE fis.diffs_63 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -3367,7 +3550,8 @@ CREATE TABLE fis.diffs_64 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -3384,7 +3568,8 @@ CREATE TABLE fis.diffs_65 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -3401,7 +3586,8 @@ CREATE TABLE fis.diffs_66 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -3418,7 +3604,8 @@ CREATE TABLE fis.diffs_67 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -3435,7 +3622,8 @@ CREATE TABLE fis.diffs_68 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -3452,7 +3640,8 @@ CREATE TABLE fis.diffs_69 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -3469,7 +3658,8 @@ CREATE TABLE fis.diffs_7 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -3486,7 +3676,8 @@ CREATE TABLE fis.diffs_70 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -3503,7 +3694,8 @@ CREATE TABLE fis.diffs_71 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -3520,7 +3712,8 @@ CREATE TABLE fis.diffs_72 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -3537,7 +3730,8 @@ CREATE TABLE fis.diffs_73 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -3554,7 +3748,8 @@ CREATE TABLE fis.diffs_74 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -3571,7 +3766,8 @@ CREATE TABLE fis.diffs_75 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -3588,7 +3784,8 @@ CREATE TABLE fis.diffs_76 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -3605,7 +3802,8 @@ CREATE TABLE fis.diffs_77 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -3622,7 +3820,8 @@ CREATE TABLE fis.diffs_78 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -3639,7 +3838,8 @@ CREATE TABLE fis.diffs_79 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -3656,7 +3856,8 @@ CREATE TABLE fis.diffs_8 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -3673,7 +3874,8 @@ CREATE TABLE fis.diffs_80 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -3690,7 +3892,8 @@ CREATE TABLE fis.diffs_81 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -3707,7 +3910,8 @@ CREATE TABLE fis.diffs_82 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -3724,7 +3928,8 @@ CREATE TABLE fis.diffs_83 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -3741,7 +3946,8 @@ CREATE TABLE fis.diffs_84 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -3758,7 +3964,8 @@ CREATE TABLE fis.diffs_85 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -3775,7 +3982,8 @@ CREATE TABLE fis.diffs_86 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -3792,7 +4000,8 @@ CREATE TABLE fis.diffs_87 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -3809,7 +4018,8 @@ CREATE TABLE fis.diffs_88 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -3826,7 +4036,8 @@ CREATE TABLE fis.diffs_89 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -3843,7 +4054,8 @@ CREATE TABLE fis.diffs_9 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -3860,7 +4072,8 @@ CREATE TABLE fis.diffs_90 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -3877,7 +4090,8 @@ CREATE TABLE fis.diffs_91 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -3894,7 +4108,8 @@ CREATE TABLE fis.diffs_92 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -3911,7 +4126,8 @@ CREATE TABLE fis.diffs_93 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -3928,7 +4144,8 @@ CREATE TABLE fis.diffs_94 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -3945,7 +4162,8 @@ CREATE TABLE fis.diffs_95 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -3962,7 +4180,8 @@ CREATE TABLE fis.diffs_96 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -3979,7 +4198,8 @@ CREATE TABLE fis.diffs_97 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -3996,7 +4216,8 @@ CREATE TABLE fis.diffs_98 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -4013,22 +4234,6 @@ CREATE TABLE fis.diffs_99 (
     deleted boolean,
     updated_at timestamp without time zone DEFAULT now() NOT NULL,
     code_set_id bigint
-);
-
-
---
--- Name: diffs_orig; Type: TABLE; Schema: fis; Owner: -
---
-
-CREATE TABLE fis.diffs_orig (
-    id bigint DEFAULT nextval('fis.diffs_orig_id_seq'::regclass) NOT NULL,
-    sha1 text,
-    parent_sha1 text,
-    commit_id bigint,
-    fyle_id bigint,
-    name text,
-    deleted boolean,
-    updated_at timestamp without time zone DEFAULT now() NOT NULL
 )
 WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
@@ -4080,7 +4285,9 @@ CREATE TABLE fis.failure_groups (
     name text NOT NULL,
     pattern text NOT NULL,
     priority integer DEFAULT 0,
-    auto_reschedule boolean DEFAULT false
+    auto_reschedule boolean DEFAULT false,
+    jobs_count integer,
+    description text
 );
 
 
@@ -4127,7 +4334,8 @@ CREATE TABLE fis.fisbot_events (
     updated_at timestamp without time zone NOT NULL,
     repository_id integer,
     component_id integer
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0005', autovacuum_vacuum_scale_factor='0.001');
 
 
 --
@@ -4194,7 +4402,7 @@ CREATE TABLE fis.fyles (
     name text NOT NULL,
     code_set_id integer NOT NULL
 )
-WITH (autovacuum_analyze_scale_factor='0.001', autovacuum_vacuum_scale_factor='0.0005');
+WITH (autovacuum_analyze_scale_factor='0.0005', autovacuum_vacuum_scale_factor='0.001');
 
 
 --
@@ -4230,7 +4438,7 @@ CREATE TABLE fis.jobs (
     wait_until timestamp without time zone,
     account_id integer,
     logged_at timestamp without time zone,
-    slave_id integer,
+    worker_id integer,
     started_at timestamp without time zone,
     retry_count integer DEFAULT 0,
     do_not_retry boolean DEFAULT false,
@@ -4240,7 +4448,7 @@ CREATE TABLE fis.jobs (
     code_location_tarball_id integer,
     is_expensive boolean DEFAULT false
 )
-WITH (autovacuum_analyze_scale_factor='0.0005', autovacuum_vacuum_scale_factor='0.001');
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -4358,6 +4566,38 @@ CREATE TABLE fis.registration_keys (
 
 
 --
+-- Name: renamed_code_locations_from_master_to_default_branches; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.renamed_code_locations_from_master_to_default_branches (
+    id bigint NOT NULL,
+    old_code_location_id integer,
+    new_code_location_id integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: renamed_code_locations_from_master_to_default_branches_id_seq; Type: SEQUENCE; Schema: fis; Owner: -
+--
+
+CREATE SEQUENCE fis.renamed_code_locations_from_master_to_default_branches_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: renamed_code_locations_from_master_to_default_branches_id_seq; Type: SEQUENCE OWNED BY; Schema: fis; Owner: -
+--
+
+ALTER SEQUENCE fis.renamed_code_locations_from_master_to_default_branches_id_seq OWNED BY fis.renamed_code_locations_from_master_to_default_branches.id;
+
+
+--
 -- Name: repositories_id_seq; Type: SEQUENCE; Schema: fis; Owner: -
 --
 
@@ -4454,19 +4694,36 @@ ALTER SEQUENCE fis.repository_tags_id_seq OWNED BY fis.repository_tags.id;
 
 
 --
--- Name: schema_migrations; Type: TABLE; Schema: fis; Owner: -
+-- Name: scan_results; Type: TABLE; Schema: fis; Owner: -
 --
 
-CREATE TABLE fis.schema_migrations (
-    version character varying NOT NULL
+CREATE TABLE fis.scan_results (
+    id bigint NOT NULL,
+    scan_project_id integer,
+    openhub_project_id integer,
+    components_loc integer,
+    defect_density_score double precision,
+    defect_density_over_time integer,
+    new_count integer,
+    eliminated_count integer,
+    total_count integer,
+    outstanding_count integer,
+    dismissed_count integer,
+    fixed_count integer,
+    loc integer,
+    project_url character varying,
+    cwe character varying,
+    build_date character varying,
+    prev_build_date character varying,
+    version character varying
 );
 
 
 --
--- Name: slave_logs_id_seq; Type: SEQUENCE; Schema: fis; Owner: -
+-- Name: scan_results_id_seq; Type: SEQUENCE; Schema: fis; Owner: -
 --
 
-CREATE SEQUENCE fis.slave_logs_id_seq
+CREATE SEQUENCE fis.scan_results_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -4475,17 +4732,29 @@ CREATE SEQUENCE fis.slave_logs_id_seq
 
 
 --
--- Name: slave_logs; Type: TABLE; Schema: fis; Owner: -
+-- Name: scan_results_id_seq; Type: SEQUENCE OWNED BY; Schema: fis; Owner: -
 --
 
-CREATE TABLE fis.slave_logs (
-    id bigint DEFAULT nextval('fis.slave_logs_id_seq'::regclass) NOT NULL,
-    message text,
-    created_on timestamp without time zone,
-    slave_id integer,
-    job_id integer,
-    code_set_id integer,
-    level integer DEFAULT 0
+ALTER SEQUENCE fis.scan_results_id_seq OWNED BY fis.scan_results.id;
+
+
+--
+-- Name: scan_urls; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.scan_urls (
+    repo_url character varying(100),
+    name character varying(50),
+    last_analyzed date
+);
+
+
+--
+-- Name: schema_migrations; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.schema_migrations (
+    version character varying NOT NULL
 );
 
 
@@ -4517,28 +4786,6 @@ CREATE SEQUENCE fis.slave_permissions_id_seq
 
 
 --
--- Name: slaves; Type: TABLE; Schema: fis; Owner: -
---
-
-CREATE TABLE fis.slaves (
-    id integer DEFAULT nextval('fis.slave_permissions_id_seq'::regclass) NOT NULL,
-    allow_deny text,
-    hostname text NOT NULL,
-    available_blocks integer,
-    used_blocks integer,
-    used_percent integer,
-    updated_at timestamp without time zone,
-    load_average numeric,
-    clump_dir text,
-    clump_status text,
-    oldest_clump_timestamp timestamp without time zone,
-    enable_profiling boolean DEFAULT false,
-    blocked_types text,
-    queue_name character varying
-);
-
-
---
 -- Name: sloc_metrics_id_seq; Type: SEQUENCE; Schema: fis; Owner: -
 --
 
@@ -4566,7 +4813,1812 @@ CREATE TABLE fis.sloc_metrics (
     blanks_removed integer DEFAULT 0 NOT NULL,
     sloc_set_id integer NOT NULL
 )
-WITH (autovacuum_analyze_scale_factor='0.0005', autovacuum_vacuum_scale_factor='0.001');
+PARTITION BY HASH (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_0; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_0 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
+-- Name: sloc_metrics_1; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_1 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
+-- Name: sloc_metrics_10; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_10 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
+-- Name: sloc_metrics_11; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_11 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
+-- Name: sloc_metrics_12; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_12 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
+-- Name: sloc_metrics_13; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_13 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
+-- Name: sloc_metrics_14; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_14 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
+-- Name: sloc_metrics_15; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_15 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
+-- Name: sloc_metrics_16; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_16 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
+-- Name: sloc_metrics_17; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_17 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+)
+WITH (autovacuum_analyze_scale_factor='0.001', autovacuum_vacuum_scale_factor='0.002');
+
+
+--
+-- Name: sloc_metrics_18; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_18 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
+-- Name: sloc_metrics_19; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_19 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
+-- Name: sloc_metrics_2; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_2 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
+-- Name: sloc_metrics_20; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_20 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
+-- Name: sloc_metrics_21; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_21 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
+-- Name: sloc_metrics_22; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_22 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
+-- Name: sloc_metrics_23; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_23 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
+-- Name: sloc_metrics_24; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_24 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
+-- Name: sloc_metrics_25; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_25 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
+-- Name: sloc_metrics_26; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_26 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
+-- Name: sloc_metrics_27; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_27 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
+-- Name: sloc_metrics_28; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_28 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
+-- Name: sloc_metrics_29; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_29 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
+-- Name: sloc_metrics_3; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_3 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
+-- Name: sloc_metrics_30; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_30 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
+-- Name: sloc_metrics_31; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_31 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
+-- Name: sloc_metrics_32; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_32 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
+-- Name: sloc_metrics_33; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_33 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
+-- Name: sloc_metrics_34; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_34 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
+-- Name: sloc_metrics_35; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_35 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
+-- Name: sloc_metrics_36; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_36 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
+-- Name: sloc_metrics_37; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_37 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
+-- Name: sloc_metrics_38; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_38 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
+-- Name: sloc_metrics_39; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_39 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
+-- Name: sloc_metrics_4; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_4 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
+-- Name: sloc_metrics_40; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_40 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+)
+WITH (autovacuum_analyze_scale_factor='0.001', autovacuum_vacuum_scale_factor='0.002');
+
+
+--
+-- Name: sloc_metrics_41; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_41 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
+-- Name: sloc_metrics_42; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_42 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+)
+WITH (autovacuum_analyze_scale_factor='0.001', autovacuum_vacuum_scale_factor='0.002');
+
+
+--
+-- Name: sloc_metrics_43; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_43 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
+-- Name: sloc_metrics_44; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_44 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
+-- Name: sloc_metrics_45; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_45 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
+-- Name: sloc_metrics_46; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_46 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+)
+WITH (autovacuum_analyze_scale_factor='0.001', autovacuum_vacuum_scale_factor='0.002');
+
+
+--
+-- Name: sloc_metrics_47; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_47 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
+-- Name: sloc_metrics_48; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_48 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
+-- Name: sloc_metrics_49; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_49 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
+-- Name: sloc_metrics_5; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_5 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
+-- Name: sloc_metrics_50; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_50 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
+-- Name: sloc_metrics_51; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_51 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
+-- Name: sloc_metrics_52; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_52 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
+-- Name: sloc_metrics_53; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_53 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
+-- Name: sloc_metrics_54; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_54 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
+-- Name: sloc_metrics_55; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_55 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
+-- Name: sloc_metrics_56; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_56 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
+-- Name: sloc_metrics_57; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_57 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
+-- Name: sloc_metrics_58; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_58 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
+-- Name: sloc_metrics_59; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_59 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
+-- Name: sloc_metrics_6; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_6 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
+-- Name: sloc_metrics_60; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_60 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
+-- Name: sloc_metrics_61; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_61 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
+-- Name: sloc_metrics_62; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_62 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
+-- Name: sloc_metrics_63; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_63 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
+-- Name: sloc_metrics_64; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_64 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
+-- Name: sloc_metrics_65; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_65 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
+-- Name: sloc_metrics_66; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_66 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
+-- Name: sloc_metrics_67; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_67 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
+-- Name: sloc_metrics_68; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_68 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
+-- Name: sloc_metrics_69; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_69 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
+-- Name: sloc_metrics_7; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_7 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
+-- Name: sloc_metrics_70; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_70 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
+-- Name: sloc_metrics_71; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_71 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
+-- Name: sloc_metrics_72; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_72 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
+-- Name: sloc_metrics_73; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_73 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
+-- Name: sloc_metrics_74; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_74 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
+-- Name: sloc_metrics_75; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_75 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
+-- Name: sloc_metrics_76; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_76 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
+-- Name: sloc_metrics_77; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_77 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
+-- Name: sloc_metrics_78; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_78 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
+-- Name: sloc_metrics_79; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_79 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
+-- Name: sloc_metrics_8; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_8 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
+-- Name: sloc_metrics_80; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_80 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
+-- Name: sloc_metrics_81; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_81 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
+-- Name: sloc_metrics_82; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_82 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
+-- Name: sloc_metrics_83; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_83 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
+-- Name: sloc_metrics_84; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_84 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
+-- Name: sloc_metrics_85; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_85 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
+-- Name: sloc_metrics_86; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_86 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
+-- Name: sloc_metrics_87; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_87 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
+-- Name: sloc_metrics_88; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_88 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
+-- Name: sloc_metrics_89; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_89 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
+-- Name: sloc_metrics_9; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_9 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
+-- Name: sloc_metrics_90; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_90 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
+-- Name: sloc_metrics_91; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_91 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
+-- Name: sloc_metrics_92; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_92 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
+-- Name: sloc_metrics_93; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_93 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
+-- Name: sloc_metrics_94; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_94 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
+-- Name: sloc_metrics_95; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_95 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
+-- Name: sloc_metrics_96; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_96 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
+-- Name: sloc_metrics_97; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_97 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
+-- Name: sloc_metrics_98; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_98 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+);
+
+
+--
+-- Name: sloc_metrics_99; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.sloc_metrics_99 (
+    id bigint DEFAULT nextval('fis.sloc_metrics_id_seq'::regclass) NOT NULL,
+    diff_id bigint,
+    language_id integer,
+    code_added integer DEFAULT 0 NOT NULL,
+    code_removed integer DEFAULT 0 NOT NULL,
+    comments_added integer DEFAULT 0 NOT NULL,
+    comments_removed integer DEFAULT 0 NOT NULL,
+    blanks_added integer DEFAULT 0 NOT NULL,
+    blanks_removed integer DEFAULT 0 NOT NULL,
+    sloc_set_id integer NOT NULL
+)
+WITH (autovacuum_analyze_scale_factor='0.001', autovacuum_vacuum_scale_factor='0.002');
 
 
 --
@@ -4603,6 +6655,15 @@ ALTER SEQUENCE fis.subscriptions_id_seq OWNED BY fis.subscriptions.id;
 
 
 --
+-- Name: tmp_queued_job_ids; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.tmp_queued_job_ids (
+    id bigint
+);
+
+
+--
 -- Name: users; Type: TABLE; Schema: fis; Owner: -
 --
 
@@ -4636,6 +6697,91 @@ CREATE SEQUENCE fis.users_id_seq
 --
 
 ALTER SEQUENCE fis.users_id_seq OWNED BY fis.users.id;
+
+
+--
+-- Name: worker_logs_id_seq; Type: SEQUENCE; Schema: fis; Owner: -
+--
+
+CREATE SEQUENCE fis.worker_logs_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: worker_logs; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.worker_logs (
+    id bigint DEFAULT nextval('fis.worker_logs_id_seq'::regclass) NOT NULL,
+    message text,
+    created_on timestamp without time zone,
+    worker_id integer,
+    job_id bigint,
+    code_set_id integer,
+    level integer DEFAULT 0
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
+
+
+--
+-- Name: workers; Type: TABLE; Schema: fis; Owner: -
+--
+
+CREATE TABLE fis.workers (
+    id integer DEFAULT nextval('fis.slave_permissions_id_seq'::regclass) NOT NULL,
+    allow_deny text,
+    hostname text NOT NULL,
+    available_blocks integer,
+    used_blocks integer,
+    used_percent integer,
+    updated_at timestamp without time zone,
+    load_average numeric,
+    clump_dir text,
+    clump_status text,
+    oldest_clump_timestamp timestamp without time zone,
+    enable_profiling boolean DEFAULT false,
+    blocked_types text,
+    queue_name character varying,
+    reset boolean DEFAULT false
+);
+
+
+--
+-- Name: bdsa; Type: TABLE; Schema: oa; Owner: -
+--
+
+CREATE TABLE oa.bdsa (
+    id bigint NOT NULL,
+    bdsa_id character varying,
+    vulnerability_id integer,
+    data json,
+    etag character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: bdsa_id_seq; Type: SEQUENCE; Schema: oa; Owner: -
+--
+
+CREATE SEQUENCE oa.bdsa_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: bdsa_id_seq; Type: SEQUENCE OWNED BY; Schema: oa; Owner: -
+--
+
+ALTER SEQUENCE oa.bdsa_id_seq OWNED BY oa.bdsa.id;
 
 
 --
@@ -4719,6 +6865,38 @@ ALTER SEQUENCE oa.jobs_id_seq OWNED BY oa.jobs.id;
 
 
 --
+-- Name: kb_uuids; Type: TABLE; Schema: oa; Owner: -
+--
+
+CREATE TABLE oa.kb_uuids (
+    id bigint NOT NULL,
+    uuid character varying,
+    failure_group_id integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: kb_uuids_id_seq; Type: SEQUENCE; Schema: oa; Owner: -
+--
+
+CREATE SEQUENCE oa.kb_uuids_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: kb_uuids_id_seq; Type: SEQUENCE OWNED BY; Schema: oa; Owner: -
+--
+
+ALTER SEQUENCE oa.kb_uuids_id_seq OWNED BY oa.kb_uuids.id;
+
+
+--
 -- Name: registration_keys; Type: TABLE; Schema: oa; Owner: -
 --
 
@@ -4783,7 +6961,8 @@ CREATE TABLE oa.workers (
     load_average numeric,
     enable_profiling boolean DEFAULT false,
     blocked_types text,
-    queue_name character varying
+    queue_name character varying,
+    reset boolean DEFAULT false
 );
 
 
@@ -4891,6 +7070,7 @@ CREATE TABLE oh.accounts (
     affiliation_type text DEFAULT 'unaffiliated'::text NOT NULL,
     organization_name text,
     auth_fail_count integer DEFAULT 0,
+    twitter_id character varying,
     CONSTRAINT accounts_email_check CHECK ((length(email) >= 3)),
     CONSTRAINT accounts_login_check CHECK ((length(login) >= 3))
 );
@@ -5005,7 +7185,8 @@ CREATE TABLE oh.activity_facts (
     analysis_id integer NOT NULL,
     commits integer DEFAULT 0,
     on_trunk boolean DEFAULT true
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0005', autovacuum_vacuum_scale_factor='0.001');
 
 
 --
@@ -5087,7 +7268,8 @@ CREATE TABLE oh.analyses (
     created_at timestamp without time zone,
     activity_score bigint,
     hotness_score double precision
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.001', autovacuum_vacuum_scale_factor='0.002');
 
 
 --
@@ -5110,7 +7292,8 @@ CREATE TABLE oh.analysis_summaries (
     affiliated_commits_count integer,
     outside_committers_count integer,
     outside_commits_count integer
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0005', autovacuum_vacuum_scale_factor='0.001');
 
 
 --
@@ -5371,6 +7554,17 @@ ALTER SEQUENCE oh.code_location_scan_id_seq OWNED BY oh.code_location_scan.id;
 
 
 --
+-- Name: code_location_stats; Type: TABLE; Schema: oh; Owner: -
+--
+
+CREATE TABLE oh.code_location_stats (
+    id integer DEFAULT nextval('fis.code_location_stats_id_seq'::regclass),
+    code_location_id integer,
+    size character varying
+);
+
+
+--
 -- Name: name_facts_id_seq; Type: SEQUENCE; Schema: oh; Owner: -
 --
 
@@ -5387,7 +7581,7 @@ CREATE SEQUENCE oh.name_facts_id_seq
 --
 
 CREATE TABLE oh.name_facts (
-    id integer DEFAULT nextval('oh.name_facts_id_seq'::regclass) NOT NULL,
+    id_old integer,
     analysis_id integer,
     name_id integer,
     primary_language_id integer,
@@ -5405,8 +7599,10 @@ CREATE TABLE oh.name_facts (
     twelve_month_commits integer,
     commits_by_project text,
     commits_by_language text,
-    email_address_ids integer[] DEFAULT '{}'::integer[]
-);
+    email_address_ids integer[] DEFAULT '{}'::integer[],
+    id bigint DEFAULT nextval('oh.name_facts_id_seq'::regclass) NOT NULL
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -5419,14 +7615,15 @@ CREATE TABLE oh.people (
     account_id integer,
     project_id integer,
     name_id integer,
-    name_fact_id integer,
+    name_fact_id bigint,
     kudo_position integer,
     kudo_score numeric,
     kudo_rank integer,
     vector tsvector,
     popularity_factor numeric,
     CONSTRAINT people_name_fact_id_account_id CHECK ((((name_fact_id IS NOT NULL) AND (name_id IS NOT NULL) AND (project_id IS NOT NULL)) OR (account_id IS NOT NULL)))
-);
+)
+WITH (autovacuum_vacuum_scale_factor='0.001');
 
 
 --
@@ -5451,30 +7648,6 @@ UNION
      JOIN oh.positions ON ((positions.account_id = people.account_id)))
      LEFT JOIN oh.projects ON ((projects.id = positions.project_id)))
      LEFT JOIN oh.name_facts ON (((name_facts.analysis_id = projects.best_analysis_id) AND (name_facts.name_id = positions.name_id))));
-
-
---
--- Name: contributions2; Type: VIEW; Schema: oh; Owner: -
---
-
-CREATE VIEW oh.contributions2 AS
- SELECT
-        CASE
-            WHEN (pos.id IS NULL) THEN ((((per.project_id)::bigint << 32) + (per.name_id)::bigint) + ('10000000000000000000000000000000'::"bit")::bigint)
-            ELSE (((pos.project_id)::bigint << 32) + (pos.account_id)::bigint)
-        END AS id,
-        CASE
-            WHEN (pos.id IS NULL) THEN per.name_fact_id
-            ELSE ( SELECT name_facts.id
-               FROM oh.name_facts
-              WHERE ((name_facts.analysis_id = p.best_analysis_id) AND (name_facts.name_id = pos.name_id)))
-        END AS name_fact_id,
-    pos.id AS position_id,
-    per.id AS person_id,
-    COALESCE(pos.project_id, per.project_id) AS project_id
-   FROM ((oh.people per
-     LEFT JOIN oh.positions pos ON ((per.account_id = pos.account_id)))
-     JOIN oh.projects p ON ((p.id = COALESCE(pos.project_id, per.project_id))));
 
 
 --
@@ -5673,6 +7846,7 @@ CREATE TABLE oh.enlistments (
     ignore text,
     code_location_id integer,
     allowed_fyles text,
+    CONSTRAINT code_location_id_not_null_constraint CHECK ((code_location_id IS NOT NULL)),
     CONSTRAINT project_id_not_null_constraint CHECK ((project_id IS NOT NULL))
 );
 
@@ -6593,6 +8767,15 @@ CREATE TABLE oh.links_truncated (
 
 
 --
+-- Name: m_projects; Type: TABLE; Schema: oh; Owner: -
+--
+
+CREATE TABLE oh.m_projects (
+    id integer
+);
+
+
+--
 -- Name: maintenance_routes; Type: TABLE; Schema: oh; Owner: -
 --
 
@@ -6787,7 +8970,7 @@ CREATE SEQUENCE oh.monitorships_id_seq
 CREATE TABLE oh.monthly_commit_histories (
     id integer NOT NULL,
     analysis_id integer,
-    "json" text
+    json text
 );
 
 
@@ -6841,7 +9024,8 @@ CREATE TABLE oh.name_language_facts (
     most_commits integer,
     recent_commit_project_id integer,
     recent_commit_month timestamp without time zone
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -7162,7 +9346,7 @@ CREATE VIEW oh.people_view AS
     a.id AS account_id,
     NULL::integer AS project_id,
     NULL::integer AS name_id,
-    NULL::integer AS name_fact_id,
+    NULL::bigint AS name_fact_id,
     ks."position" AS kudo_position,
     ks.score AS kudo_score,
     ks.rank AS kudo_rank
@@ -7769,14 +9953,15 @@ ALTER SEQUENCE oh.recommendations_id_seq OWNED BY oh.recommendations.id;
 --
 
 CREATE TABLE oh.releases (
-    id integer NOT NULL,
+    id bigint NOT NULL,
     kb_release_id character varying NOT NULL,
     released_on timestamp without time zone,
     version character varying,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
     project_security_set_id integer
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0005', autovacuum_vacuum_scale_factor='0.001');
 
 
 --
@@ -7803,9 +9988,10 @@ ALTER SEQUENCE oh.releases_id_seq OWNED BY oh.releases.id;
 --
 
 CREATE TABLE oh.releases_vulnerabilities (
-    release_id integer NOT NULL,
+    release_id bigint NOT NULL,
     vulnerability_id integer NOT NULL
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.0002', autovacuum_vacuum_scale_factor='0.0005');
 
 
 --
@@ -7921,30 +10107,6 @@ CREATE TABLE oh.reviews (
     updated_at timestamp without time zone,
     helpful_score integer DEFAULT 0 NOT NULL
 );
-
-
---
--- Name: robins_contributions_test; Type: VIEW; Schema: oh; Owner: -
---
-
-CREATE VIEW oh.robins_contributions_test AS
- SELECT
-        CASE
-            WHEN (pos.id IS NULL) THEN ((((per.project_id)::bigint << 32) + (per.name_id)::bigint) + ('10000000000000000000000000000000'::"bit")::bigint)
-            ELSE (((pos.project_id)::bigint << 32) + (pos.account_id)::bigint)
-        END AS id,
-    per.id AS person_id,
-    COALESCE(pos.project_id, per.project_id) AS project_id,
-        CASE
-            WHEN (pos.id IS NULL) THEN per.name_fact_id
-            ELSE ( SELECT name_facts.id
-               FROM oh.name_facts
-              WHERE ((name_facts.analysis_id = p.best_analysis_id) AND (name_facts.name_id = pos.name_id)))
-        END AS name_fact_id,
-    pos.id AS position_id
-   FROM ((oh.people per
-     LEFT JOIN oh.positions pos ON ((per.account_id = pos.account_id)))
-     JOIN oh.projects p ON ((p.id = COALESCE(pos.project_id, per.project_id))));
 
 
 --
@@ -8506,7 +10668,8 @@ CREATE TABLE oh.vita_analyses (
     id bigint NOT NULL,
     vita_id integer,
     analysis_id integer
-);
+)
+WITH (autovacuum_analyze_scale_factor='0.001', autovacuum_vacuum_scale_factor='0.002');
 
 
 --
@@ -9295,6 +11458,706 @@ ALTER TABLE ONLY fis.diffs ATTACH PARTITION fis.diffs_99 FOR VALUES WITH (modulu
 
 
 --
+-- Name: sloc_metrics_0; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_0 FOR VALUES WITH (modulus 100, remainder 0);
+
+
+--
+-- Name: sloc_metrics_1; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_1 FOR VALUES WITH (modulus 100, remainder 1);
+
+
+--
+-- Name: sloc_metrics_10; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_10 FOR VALUES WITH (modulus 100, remainder 10);
+
+
+--
+-- Name: sloc_metrics_11; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_11 FOR VALUES WITH (modulus 100, remainder 11);
+
+
+--
+-- Name: sloc_metrics_12; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_12 FOR VALUES WITH (modulus 100, remainder 12);
+
+
+--
+-- Name: sloc_metrics_13; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_13 FOR VALUES WITH (modulus 100, remainder 13);
+
+
+--
+-- Name: sloc_metrics_14; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_14 FOR VALUES WITH (modulus 100, remainder 14);
+
+
+--
+-- Name: sloc_metrics_15; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_15 FOR VALUES WITH (modulus 100, remainder 15);
+
+
+--
+-- Name: sloc_metrics_16; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_16 FOR VALUES WITH (modulus 100, remainder 16);
+
+
+--
+-- Name: sloc_metrics_17; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_17 FOR VALUES WITH (modulus 100, remainder 17);
+
+
+--
+-- Name: sloc_metrics_18; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_18 FOR VALUES WITH (modulus 100, remainder 18);
+
+
+--
+-- Name: sloc_metrics_19; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_19 FOR VALUES WITH (modulus 100, remainder 19);
+
+
+--
+-- Name: sloc_metrics_2; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_2 FOR VALUES WITH (modulus 100, remainder 2);
+
+
+--
+-- Name: sloc_metrics_20; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_20 FOR VALUES WITH (modulus 100, remainder 20);
+
+
+--
+-- Name: sloc_metrics_21; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_21 FOR VALUES WITH (modulus 100, remainder 21);
+
+
+--
+-- Name: sloc_metrics_22; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_22 FOR VALUES WITH (modulus 100, remainder 22);
+
+
+--
+-- Name: sloc_metrics_23; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_23 FOR VALUES WITH (modulus 100, remainder 23);
+
+
+--
+-- Name: sloc_metrics_24; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_24 FOR VALUES WITH (modulus 100, remainder 24);
+
+
+--
+-- Name: sloc_metrics_25; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_25 FOR VALUES WITH (modulus 100, remainder 25);
+
+
+--
+-- Name: sloc_metrics_26; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_26 FOR VALUES WITH (modulus 100, remainder 26);
+
+
+--
+-- Name: sloc_metrics_27; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_27 FOR VALUES WITH (modulus 100, remainder 27);
+
+
+--
+-- Name: sloc_metrics_28; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_28 FOR VALUES WITH (modulus 100, remainder 28);
+
+
+--
+-- Name: sloc_metrics_29; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_29 FOR VALUES WITH (modulus 100, remainder 29);
+
+
+--
+-- Name: sloc_metrics_3; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_3 FOR VALUES WITH (modulus 100, remainder 3);
+
+
+--
+-- Name: sloc_metrics_30; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_30 FOR VALUES WITH (modulus 100, remainder 30);
+
+
+--
+-- Name: sloc_metrics_31; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_31 FOR VALUES WITH (modulus 100, remainder 31);
+
+
+--
+-- Name: sloc_metrics_32; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_32 FOR VALUES WITH (modulus 100, remainder 32);
+
+
+--
+-- Name: sloc_metrics_33; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_33 FOR VALUES WITH (modulus 100, remainder 33);
+
+
+--
+-- Name: sloc_metrics_34; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_34 FOR VALUES WITH (modulus 100, remainder 34);
+
+
+--
+-- Name: sloc_metrics_35; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_35 FOR VALUES WITH (modulus 100, remainder 35);
+
+
+--
+-- Name: sloc_metrics_36; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_36 FOR VALUES WITH (modulus 100, remainder 36);
+
+
+--
+-- Name: sloc_metrics_37; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_37 FOR VALUES WITH (modulus 100, remainder 37);
+
+
+--
+-- Name: sloc_metrics_38; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_38 FOR VALUES WITH (modulus 100, remainder 38);
+
+
+--
+-- Name: sloc_metrics_39; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_39 FOR VALUES WITH (modulus 100, remainder 39);
+
+
+--
+-- Name: sloc_metrics_4; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_4 FOR VALUES WITH (modulus 100, remainder 4);
+
+
+--
+-- Name: sloc_metrics_40; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_40 FOR VALUES WITH (modulus 100, remainder 40);
+
+
+--
+-- Name: sloc_metrics_41; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_41 FOR VALUES WITH (modulus 100, remainder 41);
+
+
+--
+-- Name: sloc_metrics_42; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_42 FOR VALUES WITH (modulus 100, remainder 42);
+
+
+--
+-- Name: sloc_metrics_43; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_43 FOR VALUES WITH (modulus 100, remainder 43);
+
+
+--
+-- Name: sloc_metrics_44; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_44 FOR VALUES WITH (modulus 100, remainder 44);
+
+
+--
+-- Name: sloc_metrics_45; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_45 FOR VALUES WITH (modulus 100, remainder 45);
+
+
+--
+-- Name: sloc_metrics_46; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_46 FOR VALUES WITH (modulus 100, remainder 46);
+
+
+--
+-- Name: sloc_metrics_47; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_47 FOR VALUES WITH (modulus 100, remainder 47);
+
+
+--
+-- Name: sloc_metrics_48; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_48 FOR VALUES WITH (modulus 100, remainder 48);
+
+
+--
+-- Name: sloc_metrics_49; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_49 FOR VALUES WITH (modulus 100, remainder 49);
+
+
+--
+-- Name: sloc_metrics_5; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_5 FOR VALUES WITH (modulus 100, remainder 5);
+
+
+--
+-- Name: sloc_metrics_50; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_50 FOR VALUES WITH (modulus 100, remainder 50);
+
+
+--
+-- Name: sloc_metrics_51; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_51 FOR VALUES WITH (modulus 100, remainder 51);
+
+
+--
+-- Name: sloc_metrics_52; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_52 FOR VALUES WITH (modulus 100, remainder 52);
+
+
+--
+-- Name: sloc_metrics_53; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_53 FOR VALUES WITH (modulus 100, remainder 53);
+
+
+--
+-- Name: sloc_metrics_54; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_54 FOR VALUES WITH (modulus 100, remainder 54);
+
+
+--
+-- Name: sloc_metrics_55; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_55 FOR VALUES WITH (modulus 100, remainder 55);
+
+
+--
+-- Name: sloc_metrics_56; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_56 FOR VALUES WITH (modulus 100, remainder 56);
+
+
+--
+-- Name: sloc_metrics_57; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_57 FOR VALUES WITH (modulus 100, remainder 57);
+
+
+--
+-- Name: sloc_metrics_58; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_58 FOR VALUES WITH (modulus 100, remainder 58);
+
+
+--
+-- Name: sloc_metrics_59; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_59 FOR VALUES WITH (modulus 100, remainder 59);
+
+
+--
+-- Name: sloc_metrics_6; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_6 FOR VALUES WITH (modulus 100, remainder 6);
+
+
+--
+-- Name: sloc_metrics_60; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_60 FOR VALUES WITH (modulus 100, remainder 60);
+
+
+--
+-- Name: sloc_metrics_61; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_61 FOR VALUES WITH (modulus 100, remainder 61);
+
+
+--
+-- Name: sloc_metrics_62; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_62 FOR VALUES WITH (modulus 100, remainder 62);
+
+
+--
+-- Name: sloc_metrics_63; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_63 FOR VALUES WITH (modulus 100, remainder 63);
+
+
+--
+-- Name: sloc_metrics_64; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_64 FOR VALUES WITH (modulus 100, remainder 64);
+
+
+--
+-- Name: sloc_metrics_65; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_65 FOR VALUES WITH (modulus 100, remainder 65);
+
+
+--
+-- Name: sloc_metrics_66; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_66 FOR VALUES WITH (modulus 100, remainder 66);
+
+
+--
+-- Name: sloc_metrics_67; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_67 FOR VALUES WITH (modulus 100, remainder 67);
+
+
+--
+-- Name: sloc_metrics_68; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_68 FOR VALUES WITH (modulus 100, remainder 68);
+
+
+--
+-- Name: sloc_metrics_69; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_69 FOR VALUES WITH (modulus 100, remainder 69);
+
+
+--
+-- Name: sloc_metrics_7; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_7 FOR VALUES WITH (modulus 100, remainder 7);
+
+
+--
+-- Name: sloc_metrics_70; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_70 FOR VALUES WITH (modulus 100, remainder 70);
+
+
+--
+-- Name: sloc_metrics_71; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_71 FOR VALUES WITH (modulus 100, remainder 71);
+
+
+--
+-- Name: sloc_metrics_72; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_72 FOR VALUES WITH (modulus 100, remainder 72);
+
+
+--
+-- Name: sloc_metrics_73; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_73 FOR VALUES WITH (modulus 100, remainder 73);
+
+
+--
+-- Name: sloc_metrics_74; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_74 FOR VALUES WITH (modulus 100, remainder 74);
+
+
+--
+-- Name: sloc_metrics_75; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_75 FOR VALUES WITH (modulus 100, remainder 75);
+
+
+--
+-- Name: sloc_metrics_76; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_76 FOR VALUES WITH (modulus 100, remainder 76);
+
+
+--
+-- Name: sloc_metrics_77; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_77 FOR VALUES WITH (modulus 100, remainder 77);
+
+
+--
+-- Name: sloc_metrics_78; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_78 FOR VALUES WITH (modulus 100, remainder 78);
+
+
+--
+-- Name: sloc_metrics_79; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_79 FOR VALUES WITH (modulus 100, remainder 79);
+
+
+--
+-- Name: sloc_metrics_8; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_8 FOR VALUES WITH (modulus 100, remainder 8);
+
+
+--
+-- Name: sloc_metrics_80; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_80 FOR VALUES WITH (modulus 100, remainder 80);
+
+
+--
+-- Name: sloc_metrics_81; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_81 FOR VALUES WITH (modulus 100, remainder 81);
+
+
+--
+-- Name: sloc_metrics_82; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_82 FOR VALUES WITH (modulus 100, remainder 82);
+
+
+--
+-- Name: sloc_metrics_83; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_83 FOR VALUES WITH (modulus 100, remainder 83);
+
+
+--
+-- Name: sloc_metrics_84; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_84 FOR VALUES WITH (modulus 100, remainder 84);
+
+
+--
+-- Name: sloc_metrics_85; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_85 FOR VALUES WITH (modulus 100, remainder 85);
+
+
+--
+-- Name: sloc_metrics_86; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_86 FOR VALUES WITH (modulus 100, remainder 86);
+
+
+--
+-- Name: sloc_metrics_87; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_87 FOR VALUES WITH (modulus 100, remainder 87);
+
+
+--
+-- Name: sloc_metrics_88; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_88 FOR VALUES WITH (modulus 100, remainder 88);
+
+
+--
+-- Name: sloc_metrics_89; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_89 FOR VALUES WITH (modulus 100, remainder 89);
+
+
+--
+-- Name: sloc_metrics_9; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_9 FOR VALUES WITH (modulus 100, remainder 9);
+
+
+--
+-- Name: sloc_metrics_90; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_90 FOR VALUES WITH (modulus 100, remainder 90);
+
+
+--
+-- Name: sloc_metrics_91; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_91 FOR VALUES WITH (modulus 100, remainder 91);
+
+
+--
+-- Name: sloc_metrics_92; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_92 FOR VALUES WITH (modulus 100, remainder 92);
+
+
+--
+-- Name: sloc_metrics_93; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_93 FOR VALUES WITH (modulus 100, remainder 93);
+
+
+--
+-- Name: sloc_metrics_94; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_94 FOR VALUES WITH (modulus 100, remainder 94);
+
+
+--
+-- Name: sloc_metrics_95; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_95 FOR VALUES WITH (modulus 100, remainder 95);
+
+
+--
+-- Name: sloc_metrics_96; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_96 FOR VALUES WITH (modulus 100, remainder 96);
+
+
+--
+-- Name: sloc_metrics_97; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_97 FOR VALUES WITH (modulus 100, remainder 97);
+
+
+--
+-- Name: sloc_metrics_98; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_98 FOR VALUES WITH (modulus 100, remainder 98);
+
+
+--
+-- Name: sloc_metrics_99; Type: TABLE ATTACH; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.sloc_metrics ATTACH PARTITION fis.sloc_metrics_99 FOR VALUES WITH (modulus 100, remainder 99);
+
+
+--
 -- Name: admin_dashboard_stats id; Type: DEFAULT; Schema: fis; Owner: -
 --
 
@@ -9316,10 +12179,24 @@ ALTER TABLE ONLY fis.code_location_dnfs ALTER COLUMN id SET DEFAULT nextval('fis
 
 
 --
+-- Name: code_location_file_storage_stats id; Type: DEFAULT; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.code_location_file_storage_stats ALTER COLUMN id SET DEFAULT nextval('fis.code_location_file_storage_stats_id_seq'::regclass);
+
+
+--
 -- Name: code_location_job_feeders id; Type: DEFAULT; Schema: fis; Owner: -
 --
 
 ALTER TABLE ONLY fis.code_location_job_feeders ALTER COLUMN id SET DEFAULT nextval('fis.code_location_job_feeders_id_seq'::regclass);
+
+
+--
+-- Name: code_location_stats_active id; Type: DEFAULT; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.code_location_stats_active ALTER COLUMN id SET DEFAULT nextval('fis.code_location_stats_id_seq'::regclass);
 
 
 --
@@ -9341,6 +12218,20 @@ ALTER TABLE ONLY fis.code_locations ALTER COLUMN id SET DEFAULT nextval('fis.cod
 --
 
 ALTER TABLE ONLY fis.commit_flags ALTER COLUMN id SET DEFAULT nextval('fis.commit_flags_id_seq'::regclass);
+
+
+--
+-- Name: deleted_code_sets id; Type: DEFAULT; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.deleted_code_sets ALTER COLUMN id SET DEFAULT nextval('fis.deleted_code_sets_id_seq'::regclass);
+
+
+--
+-- Name: deleted_sloc_sets id; Type: DEFAULT; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.deleted_sloc_sets ALTER COLUMN id SET DEFAULT nextval('fis.deleted_sloc_sets_id_seq'::regclass);
 
 
 --
@@ -9379,6 +12270,13 @@ ALTER TABLE ONLY fis.old_code_sets ALTER COLUMN id SET DEFAULT nextval('fis.old_
 
 
 --
+-- Name: renamed_code_locations_from_master_to_default_branches id; Type: DEFAULT; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.renamed_code_locations_from_master_to_default_branches ALTER COLUMN id SET DEFAULT nextval('fis.renamed_code_locations_from_master_to_default_branches_id_seq'::regclass);
+
+
+--
 -- Name: repository_directories id; Type: DEFAULT; Schema: fis; Owner: -
 --
 
@@ -9390,6 +12288,13 @@ ALTER TABLE ONLY fis.repository_directories ALTER COLUMN id SET DEFAULT nextval(
 --
 
 ALTER TABLE ONLY fis.repository_tags ALTER COLUMN id SET DEFAULT nextval('fis.repository_tags_id_seq'::regclass);
+
+
+--
+-- Name: scan_results id; Type: DEFAULT; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.scan_results ALTER COLUMN id SET DEFAULT nextval('fis.scan_results_id_seq'::regclass);
 
 
 --
@@ -9407,6 +12312,13 @@ ALTER TABLE ONLY fis.users ALTER COLUMN id SET DEFAULT nextval('fis.users_id_seq
 
 
 --
+-- Name: bdsa id; Type: DEFAULT; Schema: oa; Owner: -
+--
+
+ALTER TABLE ONLY oa.bdsa ALTER COLUMN id SET DEFAULT nextval('oa.bdsa_id_seq'::regclass);
+
+
+--
 -- Name: failure_groups id; Type: DEFAULT; Schema: oa; Owner: -
 --
 
@@ -9418,6 +12330,13 @@ ALTER TABLE ONLY oa.failure_groups ALTER COLUMN id SET DEFAULT nextval('oa.failu
 --
 
 ALTER TABLE ONLY oa.jobs ALTER COLUMN id SET DEFAULT nextval('oa.jobs_id_seq'::regclass);
+
+
+--
+-- Name: kb_uuids id; Type: DEFAULT; Schema: oa; Owner: -
+--
+
+ALTER TABLE ONLY oa.kb_uuids ALTER COLUMN id SET DEFAULT nextval('oa.kb_uuids_id_seq'::regclass);
 
 
 --
@@ -9966,11 +12885,27 @@ ALTER TABLE ONLY fis.code_location_dnfs
 
 
 --
+-- Name: code_location_file_storage_stats code_location_file_storage_stats_pkey; Type: CONSTRAINT; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.code_location_file_storage_stats
+    ADD CONSTRAINT code_location_file_storage_stats_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: code_location_job_feeders code_location_job_feeders_pkey; Type: CONSTRAINT; Schema: fis; Owner: -
 --
 
 ALTER TABLE ONLY fis.code_location_job_feeders
     ADD CONSTRAINT code_location_job_feeders_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: code_location_stats_active code_location_stats_pkey; Type: CONSTRAINT; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.code_location_stats_active
+    ADD CONSTRAINT code_location_stats_pkey PRIMARY KEY (id);
 
 
 --
@@ -10014,11 +12949,19 @@ ALTER TABLE ONLY fis.commits
 
 
 --
--- Name: diffs_orig diffs_orig_pkey; Type: CONSTRAINT; Schema: fis; Owner: -
+-- Name: deleted_code_sets deleted_code_sets_pkey; Type: CONSTRAINT; Schema: fis; Owner: -
 --
 
-ALTER TABLE ONLY fis.diffs_orig
-    ADD CONSTRAINT diffs_orig_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY fis.deleted_code_sets
+    ADD CONSTRAINT deleted_code_sets_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: deleted_sloc_sets deleted_sloc_sets_pkey; Type: CONSTRAINT; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.deleted_sloc_sets
+    ADD CONSTRAINT deleted_sloc_sets_pkey PRIMARY KEY (id);
 
 
 --
@@ -10094,6 +13037,14 @@ ALTER TABLE ONLY fis.registration_keys
 
 
 --
+-- Name: renamed_code_locations_from_master_to_default_branches renamed_code_locations_from_master_to_default_branches_pkey; Type: CONSTRAINT; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.renamed_code_locations_from_master_to_default_branches
+    ADD CONSTRAINT renamed_code_locations_from_master_to_default_branches_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: repositories repositories_pkey; Type: CONSTRAINT; Schema: fis; Owner: -
 --
 
@@ -10118,19 +13069,11 @@ ALTER TABLE ONLY fis.repository_tags
 
 
 --
--- Name: slave_logs slave_logs_pkey; Type: CONSTRAINT; Schema: fis; Owner: -
+-- Name: scan_results scan_results_pkey; Type: CONSTRAINT; Schema: fis; Owner: -
 --
 
-ALTER TABLE ONLY fis.slave_logs
-    ADD CONSTRAINT slave_logs_pkey PRIMARY KEY (id);
-
-
---
--- Name: slaves slave_permissions_pkey; Type: CONSTRAINT; Schema: fis; Owner: -
---
-
-ALTER TABLE ONLY fis.slaves
-    ADD CONSTRAINT slave_permissions_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY fis.scan_results
+    ADD CONSTRAINT scan_results_pkey PRIMARY KEY (id);
 
 
 --
@@ -10150,19 +13093,35 @@ ALTER TABLE ONLY fis.subscriptions
 
 
 --
--- Name: diffs_orig unique_diffs_on_commit_id_fyle_id; Type: CONSTRAINT; Schema: fis; Owner: -
---
-
-ALTER TABLE ONLY fis.diffs_orig
-    ADD CONSTRAINT unique_diffs_on_commit_id_fyle_id UNIQUE (commit_id, fyle_id);
-
-
---
 -- Name: users users_pkey; Type: CONSTRAINT; Schema: fis; Owner: -
 --
 
 ALTER TABLE ONLY fis.users
     ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: worker_logs worker_logs_pkey; Type: CONSTRAINT; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.worker_logs
+    ADD CONSTRAINT worker_logs_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: workers workers_pkey; Type: CONSTRAINT; Schema: fis; Owner: -
+--
+
+ALTER TABLE ONLY fis.workers
+    ADD CONSTRAINT workers_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: bdsa bdsa_pkey; Type: CONSTRAINT; Schema: oa; Owner: -
+--
+
+ALTER TABLE ONLY oa.bdsa
+    ADD CONSTRAINT bdsa_pkey PRIMARY KEY (id);
 
 
 --
@@ -10179,6 +13138,14 @@ ALTER TABLE ONLY oa.failure_groups
 
 ALTER TABLE ONLY oa.jobs
     ADD CONSTRAINT jobs_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: kb_uuids kb_uuids_pkey; Type: CONSTRAINT; Schema: oa; Owner: -
+--
+
+ALTER TABLE ONLY oa.kb_uuids
+    ADD CONSTRAINT kb_uuids_pkey PRIMARY KEY (id);
 
 
 --
@@ -14129,6 +17096,13 @@ CREATE INDEX index_commits_on_code_set_id ON fis.commits USING btree (code_set_i
 
 
 --
+-- Name: index_commits_on_code_set_id_sha1; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX index_commits_on_code_set_id_sha1 ON fis.commits USING btree (code_set_id, sha1);
+
+
+--
 -- Name: index_commits_on_code_set_id_time; Type: INDEX; Schema: fis; Owner: -
 --
 
@@ -14143,24 +17117,17 @@ CREATE INDEX index_commits_on_name_id_month ON fis.commits USING btree (name_id,
 
 
 --
--- Name: index_commits_on_sha1; Type: INDEX; Schema: fis; Owner: -
+-- Name: index_deleted_code_sets_on_code_set_id; Type: INDEX; Schema: fis; Owner: -
 --
 
-CREATE INDEX index_commits_on_sha1 ON fis.commits USING btree (sha1);
-
-
---
--- Name: index_diffs_orig_on_commit_id; Type: INDEX; Schema: fis; Owner: -
---
-
-CREATE INDEX index_diffs_orig_on_commit_id ON fis.diffs_orig USING btree (commit_id);
+CREATE UNIQUE INDEX index_deleted_code_sets_on_code_set_id ON fis.deleted_code_sets USING btree (code_set_id);
 
 
 --
--- Name: index_diffs_orig_on_fyle_id; Type: INDEX; Schema: fis; Owner: -
+-- Name: index_deleted_sloc_sets_on_sloc_set_id; Type: INDEX; Schema: fis; Owner: -
 --
 
-CREATE INDEX index_diffs_orig_on_fyle_id ON fis.diffs_orig USING btree (fyle_id);
+CREATE UNIQUE INDEX index_deleted_sloc_sets_on_sloc_set_id ON fis.deleted_sloc_sets USING btree (sloc_set_id);
 
 
 --
@@ -14272,49 +17239,35 @@ CREATE INDEX index_repository_tags_on_repository_id ON fis.repository_tags USING
 -- Name: index_slave_logs_on_code_sets_id; Type: INDEX; Schema: fis; Owner: -
 --
 
-CREATE INDEX index_slave_logs_on_code_sets_id ON fis.slave_logs USING btree (code_set_id);
-
-
---
--- Name: index_slave_logs_on_created_on; Type: INDEX; Schema: fis; Owner: -
---
-
-CREATE INDEX index_slave_logs_on_created_on ON fis.slave_logs USING btree (created_on);
-
-
---
--- Name: index_slave_logs_on_job_id; Type: INDEX; Schema: fis; Owner: -
---
-
-CREATE INDEX index_slave_logs_on_job_id ON fis.slave_logs USING btree (job_id);
-
-
---
--- Name: index_slave_logs_on_slave_id; Type: INDEX; Schema: fis; Owner: -
---
-
-CREATE INDEX index_slave_logs_on_slave_id ON fis.slave_logs USING btree (slave_id);
+CREATE INDEX index_slave_logs_on_code_sets_id ON fis.worker_logs USING btree (code_set_id);
 
 
 --
 -- Name: index_sloc_metrics_on_diff_id; Type: INDEX; Schema: fis; Owner: -
 --
 
-CREATE INDEX index_sloc_metrics_on_diff_id ON fis.sloc_metrics USING btree (diff_id);
+CREATE INDEX index_sloc_metrics_on_diff_id ON ONLY fis.sloc_metrics USING btree (diff_id);
 
 
 --
 -- Name: index_sloc_metrics_on_id; Type: INDEX; Schema: fis; Owner: -
 --
 
-CREATE INDEX index_sloc_metrics_on_id ON fis.sloc_metrics USING btree (id);
+CREATE INDEX index_sloc_metrics_on_id ON ONLY fis.sloc_metrics USING btree (id);
 
 
 --
--- Name: index_sloc_metrics_on_sloc_set_id_language_id; Type: INDEX; Schema: fis; Owner: -
+-- Name: index_sloc_metrics_on_language_id; Type: INDEX; Schema: fis; Owner: -
 --
 
-CREATE INDEX index_sloc_metrics_on_sloc_set_id_language_id ON fis.sloc_metrics USING btree (sloc_set_id, language_id);
+CREATE INDEX index_sloc_metrics_on_language_id ON ONLY fis.sloc_metrics USING btree (language_id);
+
+
+--
+-- Name: index_sloc_metrics_on_sloc_set_id; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX index_sloc_metrics_on_sloc_set_id ON ONLY fis.sloc_metrics USING btree (sloc_set_id);
 
 
 --
@@ -14350,6 +17303,2827 @@ CREATE INDEX index_subscriptions_on_code_location_id ON fis.subscriptions USING 
 --
 
 CREATE INDEX index_users_on_email ON fis.users USING btree (email);
+
+
+--
+-- Name: index_worker_logs_on_created_on; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX index_worker_logs_on_created_on ON fis.worker_logs USING btree (created_on);
+
+
+--
+-- Name: index_worker_logs_on_job_id; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX index_worker_logs_on_job_id ON fis.worker_logs USING btree (job_id);
+
+
+--
+-- Name: index_worker_logs_on_worker_id; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX index_worker_logs_on_worker_id ON fis.worker_logs USING btree (worker_id);
+
+
+--
+-- Name: sloc_metrics_0_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_0_diff_id_idx ON fis.sloc_metrics_0 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_0_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_0_id_idx ON fis.sloc_metrics_0 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_0_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_0_language_id_idx ON fis.sloc_metrics_0 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_0_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_0_sloc_set_id_idx ON fis.sloc_metrics_0 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_10_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_10_diff_id_idx ON fis.sloc_metrics_10 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_10_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_10_id_idx ON fis.sloc_metrics_10 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_10_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_10_language_id_idx ON fis.sloc_metrics_10 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_10_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_10_sloc_set_id_idx ON fis.sloc_metrics_10 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_11_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_11_diff_id_idx ON fis.sloc_metrics_11 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_11_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_11_id_idx ON fis.sloc_metrics_11 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_11_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_11_language_id_idx ON fis.sloc_metrics_11 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_11_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_11_sloc_set_id_idx ON fis.sloc_metrics_11 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_12_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_12_diff_id_idx ON fis.sloc_metrics_12 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_12_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_12_id_idx ON fis.sloc_metrics_12 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_12_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_12_language_id_idx ON fis.sloc_metrics_12 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_12_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_12_sloc_set_id_idx ON fis.sloc_metrics_12 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_13_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_13_diff_id_idx ON fis.sloc_metrics_13 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_13_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_13_id_idx ON fis.sloc_metrics_13 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_13_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_13_language_id_idx ON fis.sloc_metrics_13 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_13_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_13_sloc_set_id_idx ON fis.sloc_metrics_13 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_14_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_14_diff_id_idx ON fis.sloc_metrics_14 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_14_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_14_id_idx ON fis.sloc_metrics_14 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_14_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_14_language_id_idx ON fis.sloc_metrics_14 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_14_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_14_sloc_set_id_idx ON fis.sloc_metrics_14 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_15_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_15_diff_id_idx ON fis.sloc_metrics_15 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_15_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_15_id_idx ON fis.sloc_metrics_15 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_15_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_15_language_id_idx ON fis.sloc_metrics_15 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_15_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_15_sloc_set_id_idx ON fis.sloc_metrics_15 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_16_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_16_diff_id_idx ON fis.sloc_metrics_16 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_16_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_16_id_idx ON fis.sloc_metrics_16 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_16_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_16_language_id_idx ON fis.sloc_metrics_16 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_16_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_16_sloc_set_id_idx ON fis.sloc_metrics_16 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_17_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_17_diff_id_idx ON fis.sloc_metrics_17 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_17_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_17_id_idx ON fis.sloc_metrics_17 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_17_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_17_language_id_idx ON fis.sloc_metrics_17 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_17_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_17_sloc_set_id_idx ON fis.sloc_metrics_17 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_18_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_18_diff_id_idx ON fis.sloc_metrics_18 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_18_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_18_id_idx ON fis.sloc_metrics_18 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_18_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_18_language_id_idx ON fis.sloc_metrics_18 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_18_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_18_sloc_set_id_idx ON fis.sloc_metrics_18 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_19_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_19_diff_id_idx ON fis.sloc_metrics_19 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_19_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_19_id_idx ON fis.sloc_metrics_19 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_19_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_19_language_id_idx ON fis.sloc_metrics_19 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_19_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_19_sloc_set_id_idx ON fis.sloc_metrics_19 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_1_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_1_diff_id_idx ON fis.sloc_metrics_1 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_1_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_1_id_idx ON fis.sloc_metrics_1 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_1_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_1_language_id_idx ON fis.sloc_metrics_1 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_1_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_1_sloc_set_id_idx ON fis.sloc_metrics_1 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_20_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_20_diff_id_idx ON fis.sloc_metrics_20 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_20_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_20_id_idx ON fis.sloc_metrics_20 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_20_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_20_language_id_idx ON fis.sloc_metrics_20 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_20_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_20_sloc_set_id_idx ON fis.sloc_metrics_20 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_21_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_21_diff_id_idx ON fis.sloc_metrics_21 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_21_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_21_id_idx ON fis.sloc_metrics_21 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_21_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_21_language_id_idx ON fis.sloc_metrics_21 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_21_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_21_sloc_set_id_idx ON fis.sloc_metrics_21 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_22_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_22_diff_id_idx ON fis.sloc_metrics_22 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_22_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_22_id_idx ON fis.sloc_metrics_22 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_22_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_22_language_id_idx ON fis.sloc_metrics_22 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_22_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_22_sloc_set_id_idx ON fis.sloc_metrics_22 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_23_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_23_diff_id_idx ON fis.sloc_metrics_23 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_23_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_23_id_idx ON fis.sloc_metrics_23 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_23_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_23_language_id_idx ON fis.sloc_metrics_23 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_23_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_23_sloc_set_id_idx ON fis.sloc_metrics_23 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_24_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_24_diff_id_idx ON fis.sloc_metrics_24 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_24_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_24_id_idx ON fis.sloc_metrics_24 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_24_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_24_language_id_idx ON fis.sloc_metrics_24 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_24_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_24_sloc_set_id_idx ON fis.sloc_metrics_24 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_25_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_25_diff_id_idx ON fis.sloc_metrics_25 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_25_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_25_id_idx ON fis.sloc_metrics_25 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_25_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_25_language_id_idx ON fis.sloc_metrics_25 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_25_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_25_sloc_set_id_idx ON fis.sloc_metrics_25 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_26_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_26_diff_id_idx ON fis.sloc_metrics_26 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_26_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_26_id_idx ON fis.sloc_metrics_26 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_26_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_26_language_id_idx ON fis.sloc_metrics_26 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_26_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_26_sloc_set_id_idx ON fis.sloc_metrics_26 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_27_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_27_diff_id_idx ON fis.sloc_metrics_27 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_27_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_27_id_idx ON fis.sloc_metrics_27 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_27_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_27_language_id_idx ON fis.sloc_metrics_27 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_27_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_27_sloc_set_id_idx ON fis.sloc_metrics_27 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_28_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_28_diff_id_idx ON fis.sloc_metrics_28 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_28_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_28_id_idx ON fis.sloc_metrics_28 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_28_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_28_language_id_idx ON fis.sloc_metrics_28 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_28_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_28_sloc_set_id_idx ON fis.sloc_metrics_28 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_29_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_29_diff_id_idx ON fis.sloc_metrics_29 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_29_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_29_id_idx ON fis.sloc_metrics_29 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_29_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_29_language_id_idx ON fis.sloc_metrics_29 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_29_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_29_sloc_set_id_idx ON fis.sloc_metrics_29 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_2_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_2_diff_id_idx ON fis.sloc_metrics_2 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_2_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_2_id_idx ON fis.sloc_metrics_2 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_2_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_2_language_id_idx ON fis.sloc_metrics_2 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_2_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_2_sloc_set_id_idx ON fis.sloc_metrics_2 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_30_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_30_diff_id_idx ON fis.sloc_metrics_30 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_30_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_30_id_idx ON fis.sloc_metrics_30 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_30_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_30_language_id_idx ON fis.sloc_metrics_30 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_30_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_30_sloc_set_id_idx ON fis.sloc_metrics_30 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_31_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_31_diff_id_idx ON fis.sloc_metrics_31 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_31_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_31_id_idx ON fis.sloc_metrics_31 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_31_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_31_language_id_idx ON fis.sloc_metrics_31 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_31_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_31_sloc_set_id_idx ON fis.sloc_metrics_31 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_32_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_32_diff_id_idx ON fis.sloc_metrics_32 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_32_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_32_id_idx ON fis.sloc_metrics_32 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_32_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_32_language_id_idx ON fis.sloc_metrics_32 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_32_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_32_sloc_set_id_idx ON fis.sloc_metrics_32 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_33_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_33_diff_id_idx ON fis.sloc_metrics_33 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_33_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_33_id_idx ON fis.sloc_metrics_33 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_33_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_33_language_id_idx ON fis.sloc_metrics_33 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_33_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_33_sloc_set_id_idx ON fis.sloc_metrics_33 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_34_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_34_diff_id_idx ON fis.sloc_metrics_34 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_34_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_34_id_idx ON fis.sloc_metrics_34 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_34_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_34_language_id_idx ON fis.sloc_metrics_34 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_34_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_34_sloc_set_id_idx ON fis.sloc_metrics_34 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_35_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_35_diff_id_idx ON fis.sloc_metrics_35 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_35_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_35_id_idx ON fis.sloc_metrics_35 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_35_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_35_language_id_idx ON fis.sloc_metrics_35 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_35_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_35_sloc_set_id_idx ON fis.sloc_metrics_35 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_36_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_36_diff_id_idx ON fis.sloc_metrics_36 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_36_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_36_id_idx ON fis.sloc_metrics_36 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_36_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_36_language_id_idx ON fis.sloc_metrics_36 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_36_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_36_sloc_set_id_idx ON fis.sloc_metrics_36 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_37_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_37_diff_id_idx ON fis.sloc_metrics_37 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_37_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_37_id_idx ON fis.sloc_metrics_37 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_37_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_37_language_id_idx ON fis.sloc_metrics_37 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_37_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_37_sloc_set_id_idx ON fis.sloc_metrics_37 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_38_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_38_diff_id_idx ON fis.sloc_metrics_38 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_38_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_38_id_idx ON fis.sloc_metrics_38 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_38_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_38_language_id_idx ON fis.sloc_metrics_38 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_38_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_38_sloc_set_id_idx ON fis.sloc_metrics_38 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_39_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_39_diff_id_idx ON fis.sloc_metrics_39 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_39_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_39_id_idx ON fis.sloc_metrics_39 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_39_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_39_language_id_idx ON fis.sloc_metrics_39 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_39_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_39_sloc_set_id_idx ON fis.sloc_metrics_39 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_3_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_3_diff_id_idx ON fis.sloc_metrics_3 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_3_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_3_id_idx ON fis.sloc_metrics_3 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_3_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_3_language_id_idx ON fis.sloc_metrics_3 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_3_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_3_sloc_set_id_idx ON fis.sloc_metrics_3 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_40_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_40_diff_id_idx ON fis.sloc_metrics_40 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_40_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_40_id_idx ON fis.sloc_metrics_40 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_40_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_40_language_id_idx ON fis.sloc_metrics_40 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_40_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_40_sloc_set_id_idx ON fis.sloc_metrics_40 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_41_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_41_diff_id_idx ON fis.sloc_metrics_41 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_41_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_41_id_idx ON fis.sloc_metrics_41 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_41_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_41_language_id_idx ON fis.sloc_metrics_41 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_41_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_41_sloc_set_id_idx ON fis.sloc_metrics_41 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_42_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_42_diff_id_idx ON fis.sloc_metrics_42 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_42_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_42_id_idx ON fis.sloc_metrics_42 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_42_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_42_language_id_idx ON fis.sloc_metrics_42 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_42_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_42_sloc_set_id_idx ON fis.sloc_metrics_42 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_43_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_43_diff_id_idx ON fis.sloc_metrics_43 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_43_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_43_id_idx ON fis.sloc_metrics_43 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_43_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_43_language_id_idx ON fis.sloc_metrics_43 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_43_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_43_sloc_set_id_idx ON fis.sloc_metrics_43 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_44_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_44_diff_id_idx ON fis.sloc_metrics_44 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_44_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_44_id_idx ON fis.sloc_metrics_44 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_44_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_44_language_id_idx ON fis.sloc_metrics_44 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_44_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_44_sloc_set_id_idx ON fis.sloc_metrics_44 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_45_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_45_diff_id_idx ON fis.sloc_metrics_45 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_45_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_45_id_idx ON fis.sloc_metrics_45 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_45_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_45_language_id_idx ON fis.sloc_metrics_45 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_45_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_45_sloc_set_id_idx ON fis.sloc_metrics_45 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_46_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_46_diff_id_idx ON fis.sloc_metrics_46 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_46_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_46_id_idx ON fis.sloc_metrics_46 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_46_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_46_language_id_idx ON fis.sloc_metrics_46 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_46_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_46_sloc_set_id_idx ON fis.sloc_metrics_46 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_47_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_47_diff_id_idx ON fis.sloc_metrics_47 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_47_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_47_id_idx ON fis.sloc_metrics_47 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_47_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_47_language_id_idx ON fis.sloc_metrics_47 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_47_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_47_sloc_set_id_idx ON fis.sloc_metrics_47 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_48_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_48_diff_id_idx ON fis.sloc_metrics_48 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_48_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_48_id_idx ON fis.sloc_metrics_48 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_48_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_48_language_id_idx ON fis.sloc_metrics_48 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_48_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_48_sloc_set_id_idx ON fis.sloc_metrics_48 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_49_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_49_diff_id_idx ON fis.sloc_metrics_49 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_49_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_49_id_idx ON fis.sloc_metrics_49 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_49_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_49_language_id_idx ON fis.sloc_metrics_49 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_49_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_49_sloc_set_id_idx ON fis.sloc_metrics_49 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_4_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_4_diff_id_idx ON fis.sloc_metrics_4 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_4_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_4_id_idx ON fis.sloc_metrics_4 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_4_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_4_language_id_idx ON fis.sloc_metrics_4 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_4_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_4_sloc_set_id_idx ON fis.sloc_metrics_4 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_50_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_50_diff_id_idx ON fis.sloc_metrics_50 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_50_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_50_id_idx ON fis.sloc_metrics_50 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_50_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_50_language_id_idx ON fis.sloc_metrics_50 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_50_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_50_sloc_set_id_idx ON fis.sloc_metrics_50 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_51_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_51_diff_id_idx ON fis.sloc_metrics_51 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_51_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_51_id_idx ON fis.sloc_metrics_51 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_51_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_51_language_id_idx ON fis.sloc_metrics_51 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_51_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_51_sloc_set_id_idx ON fis.sloc_metrics_51 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_52_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_52_diff_id_idx ON fis.sloc_metrics_52 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_52_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_52_id_idx ON fis.sloc_metrics_52 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_52_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_52_language_id_idx ON fis.sloc_metrics_52 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_52_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_52_sloc_set_id_idx ON fis.sloc_metrics_52 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_53_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_53_diff_id_idx ON fis.sloc_metrics_53 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_53_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_53_id_idx ON fis.sloc_metrics_53 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_53_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_53_language_id_idx ON fis.sloc_metrics_53 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_53_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_53_sloc_set_id_idx ON fis.sloc_metrics_53 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_54_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_54_diff_id_idx ON fis.sloc_metrics_54 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_54_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_54_id_idx ON fis.sloc_metrics_54 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_54_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_54_language_id_idx ON fis.sloc_metrics_54 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_54_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_54_sloc_set_id_idx ON fis.sloc_metrics_54 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_55_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_55_diff_id_idx ON fis.sloc_metrics_55 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_55_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_55_id_idx ON fis.sloc_metrics_55 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_55_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_55_language_id_idx ON fis.sloc_metrics_55 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_55_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_55_sloc_set_id_idx ON fis.sloc_metrics_55 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_56_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_56_diff_id_idx ON fis.sloc_metrics_56 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_56_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_56_id_idx ON fis.sloc_metrics_56 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_56_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_56_language_id_idx ON fis.sloc_metrics_56 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_56_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_56_sloc_set_id_idx ON fis.sloc_metrics_56 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_57_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_57_diff_id_idx ON fis.sloc_metrics_57 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_57_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_57_id_idx ON fis.sloc_metrics_57 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_57_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_57_language_id_idx ON fis.sloc_metrics_57 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_57_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_57_sloc_set_id_idx ON fis.sloc_metrics_57 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_58_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_58_diff_id_idx ON fis.sloc_metrics_58 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_58_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_58_id_idx ON fis.sloc_metrics_58 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_58_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_58_language_id_idx ON fis.sloc_metrics_58 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_58_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_58_sloc_set_id_idx ON fis.sloc_metrics_58 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_59_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_59_diff_id_idx ON fis.sloc_metrics_59 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_59_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_59_id_idx ON fis.sloc_metrics_59 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_59_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_59_language_id_idx ON fis.sloc_metrics_59 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_59_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_59_sloc_set_id_idx ON fis.sloc_metrics_59 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_5_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_5_diff_id_idx ON fis.sloc_metrics_5 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_5_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_5_id_idx ON fis.sloc_metrics_5 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_5_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_5_language_id_idx ON fis.sloc_metrics_5 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_5_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_5_sloc_set_id_idx ON fis.sloc_metrics_5 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_60_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_60_diff_id_idx ON fis.sloc_metrics_60 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_60_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_60_id_idx ON fis.sloc_metrics_60 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_60_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_60_language_id_idx ON fis.sloc_metrics_60 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_60_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_60_sloc_set_id_idx ON fis.sloc_metrics_60 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_61_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_61_diff_id_idx ON fis.sloc_metrics_61 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_61_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_61_id_idx ON fis.sloc_metrics_61 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_61_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_61_language_id_idx ON fis.sloc_metrics_61 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_61_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_61_sloc_set_id_idx ON fis.sloc_metrics_61 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_62_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_62_diff_id_idx ON fis.sloc_metrics_62 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_62_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_62_id_idx ON fis.sloc_metrics_62 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_62_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_62_language_id_idx ON fis.sloc_metrics_62 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_62_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_62_sloc_set_id_idx ON fis.sloc_metrics_62 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_63_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_63_diff_id_idx ON fis.sloc_metrics_63 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_63_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_63_id_idx ON fis.sloc_metrics_63 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_63_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_63_language_id_idx ON fis.sloc_metrics_63 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_63_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_63_sloc_set_id_idx ON fis.sloc_metrics_63 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_64_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_64_diff_id_idx ON fis.sloc_metrics_64 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_64_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_64_id_idx ON fis.sloc_metrics_64 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_64_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_64_language_id_idx ON fis.sloc_metrics_64 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_64_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_64_sloc_set_id_idx ON fis.sloc_metrics_64 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_65_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_65_diff_id_idx ON fis.sloc_metrics_65 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_65_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_65_id_idx ON fis.sloc_metrics_65 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_65_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_65_language_id_idx ON fis.sloc_metrics_65 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_65_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_65_sloc_set_id_idx ON fis.sloc_metrics_65 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_66_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_66_diff_id_idx ON fis.sloc_metrics_66 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_66_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_66_id_idx ON fis.sloc_metrics_66 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_66_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_66_language_id_idx ON fis.sloc_metrics_66 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_66_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_66_sloc_set_id_idx ON fis.sloc_metrics_66 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_67_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_67_diff_id_idx ON fis.sloc_metrics_67 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_67_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_67_id_idx ON fis.sloc_metrics_67 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_67_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_67_language_id_idx ON fis.sloc_metrics_67 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_67_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_67_sloc_set_id_idx ON fis.sloc_metrics_67 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_68_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_68_diff_id_idx ON fis.sloc_metrics_68 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_68_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_68_id_idx ON fis.sloc_metrics_68 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_68_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_68_language_id_idx ON fis.sloc_metrics_68 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_68_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_68_sloc_set_id_idx ON fis.sloc_metrics_68 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_69_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_69_diff_id_idx ON fis.sloc_metrics_69 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_69_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_69_id_idx ON fis.sloc_metrics_69 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_69_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_69_language_id_idx ON fis.sloc_metrics_69 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_69_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_69_sloc_set_id_idx ON fis.sloc_metrics_69 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_6_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_6_diff_id_idx ON fis.sloc_metrics_6 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_6_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_6_id_idx ON fis.sloc_metrics_6 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_6_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_6_language_id_idx ON fis.sloc_metrics_6 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_6_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_6_sloc_set_id_idx ON fis.sloc_metrics_6 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_70_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_70_diff_id_idx ON fis.sloc_metrics_70 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_70_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_70_id_idx ON fis.sloc_metrics_70 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_70_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_70_language_id_idx ON fis.sloc_metrics_70 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_70_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_70_sloc_set_id_idx ON fis.sloc_metrics_70 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_71_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_71_diff_id_idx ON fis.sloc_metrics_71 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_71_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_71_id_idx ON fis.sloc_metrics_71 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_71_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_71_language_id_idx ON fis.sloc_metrics_71 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_71_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_71_sloc_set_id_idx ON fis.sloc_metrics_71 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_72_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_72_diff_id_idx ON fis.sloc_metrics_72 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_72_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_72_id_idx ON fis.sloc_metrics_72 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_72_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_72_language_id_idx ON fis.sloc_metrics_72 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_72_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_72_sloc_set_id_idx ON fis.sloc_metrics_72 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_73_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_73_diff_id_idx ON fis.sloc_metrics_73 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_73_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_73_id_idx ON fis.sloc_metrics_73 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_73_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_73_language_id_idx ON fis.sloc_metrics_73 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_73_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_73_sloc_set_id_idx ON fis.sloc_metrics_73 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_74_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_74_diff_id_idx ON fis.sloc_metrics_74 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_74_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_74_id_idx ON fis.sloc_metrics_74 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_74_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_74_language_id_idx ON fis.sloc_metrics_74 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_74_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_74_sloc_set_id_idx ON fis.sloc_metrics_74 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_75_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_75_diff_id_idx ON fis.sloc_metrics_75 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_75_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_75_id_idx ON fis.sloc_metrics_75 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_75_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_75_language_id_idx ON fis.sloc_metrics_75 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_75_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_75_sloc_set_id_idx ON fis.sloc_metrics_75 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_76_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_76_diff_id_idx ON fis.sloc_metrics_76 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_76_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_76_id_idx ON fis.sloc_metrics_76 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_76_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_76_language_id_idx ON fis.sloc_metrics_76 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_76_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_76_sloc_set_id_idx ON fis.sloc_metrics_76 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_77_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_77_diff_id_idx ON fis.sloc_metrics_77 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_77_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_77_id_idx ON fis.sloc_metrics_77 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_77_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_77_language_id_idx ON fis.sloc_metrics_77 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_77_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_77_sloc_set_id_idx ON fis.sloc_metrics_77 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_78_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_78_diff_id_idx ON fis.sloc_metrics_78 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_78_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_78_id_idx ON fis.sloc_metrics_78 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_78_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_78_language_id_idx ON fis.sloc_metrics_78 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_78_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_78_sloc_set_id_idx ON fis.sloc_metrics_78 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_79_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_79_diff_id_idx ON fis.sloc_metrics_79 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_79_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_79_id_idx ON fis.sloc_metrics_79 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_79_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_79_language_id_idx ON fis.sloc_metrics_79 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_79_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_79_sloc_set_id_idx ON fis.sloc_metrics_79 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_7_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_7_diff_id_idx ON fis.sloc_metrics_7 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_7_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_7_id_idx ON fis.sloc_metrics_7 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_7_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_7_language_id_idx ON fis.sloc_metrics_7 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_7_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_7_sloc_set_id_idx ON fis.sloc_metrics_7 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_80_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_80_diff_id_idx ON fis.sloc_metrics_80 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_80_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_80_id_idx ON fis.sloc_metrics_80 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_80_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_80_language_id_idx ON fis.sloc_metrics_80 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_80_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_80_sloc_set_id_idx ON fis.sloc_metrics_80 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_81_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_81_diff_id_idx ON fis.sloc_metrics_81 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_81_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_81_id_idx ON fis.sloc_metrics_81 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_81_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_81_language_id_idx ON fis.sloc_metrics_81 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_81_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_81_sloc_set_id_idx ON fis.sloc_metrics_81 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_82_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_82_diff_id_idx ON fis.sloc_metrics_82 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_82_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_82_id_idx ON fis.sloc_metrics_82 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_82_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_82_language_id_idx ON fis.sloc_metrics_82 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_82_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_82_sloc_set_id_idx ON fis.sloc_metrics_82 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_83_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_83_diff_id_idx ON fis.sloc_metrics_83 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_83_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_83_id_idx ON fis.sloc_metrics_83 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_83_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_83_language_id_idx ON fis.sloc_metrics_83 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_83_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_83_sloc_set_id_idx ON fis.sloc_metrics_83 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_84_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_84_diff_id_idx ON fis.sloc_metrics_84 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_84_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_84_id_idx ON fis.sloc_metrics_84 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_84_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_84_language_id_idx ON fis.sloc_metrics_84 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_84_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_84_sloc_set_id_idx ON fis.sloc_metrics_84 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_85_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_85_diff_id_idx ON fis.sloc_metrics_85 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_85_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_85_id_idx ON fis.sloc_metrics_85 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_85_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_85_language_id_idx ON fis.sloc_metrics_85 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_85_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_85_sloc_set_id_idx ON fis.sloc_metrics_85 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_86_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_86_diff_id_idx ON fis.sloc_metrics_86 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_86_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_86_id_idx ON fis.sloc_metrics_86 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_86_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_86_language_id_idx ON fis.sloc_metrics_86 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_86_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_86_sloc_set_id_idx ON fis.sloc_metrics_86 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_87_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_87_diff_id_idx ON fis.sloc_metrics_87 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_87_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_87_id_idx ON fis.sloc_metrics_87 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_87_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_87_language_id_idx ON fis.sloc_metrics_87 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_87_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_87_sloc_set_id_idx ON fis.sloc_metrics_87 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_88_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_88_diff_id_idx ON fis.sloc_metrics_88 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_88_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_88_id_idx ON fis.sloc_metrics_88 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_88_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_88_language_id_idx ON fis.sloc_metrics_88 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_88_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_88_sloc_set_id_idx ON fis.sloc_metrics_88 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_89_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_89_diff_id_idx ON fis.sloc_metrics_89 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_89_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_89_id_idx ON fis.sloc_metrics_89 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_89_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_89_language_id_idx ON fis.sloc_metrics_89 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_89_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_89_sloc_set_id_idx ON fis.sloc_metrics_89 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_8_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_8_diff_id_idx ON fis.sloc_metrics_8 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_8_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_8_id_idx ON fis.sloc_metrics_8 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_8_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_8_language_id_idx ON fis.sloc_metrics_8 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_8_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_8_sloc_set_id_idx ON fis.sloc_metrics_8 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_90_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_90_diff_id_idx ON fis.sloc_metrics_90 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_90_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_90_id_idx ON fis.sloc_metrics_90 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_90_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_90_language_id_idx ON fis.sloc_metrics_90 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_90_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_90_sloc_set_id_idx ON fis.sloc_metrics_90 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_91_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_91_diff_id_idx ON fis.sloc_metrics_91 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_91_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_91_id_idx ON fis.sloc_metrics_91 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_91_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_91_language_id_idx ON fis.sloc_metrics_91 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_91_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_91_sloc_set_id_idx ON fis.sloc_metrics_91 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_92_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_92_diff_id_idx ON fis.sloc_metrics_92 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_92_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_92_id_idx ON fis.sloc_metrics_92 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_92_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_92_language_id_idx ON fis.sloc_metrics_92 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_92_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_92_sloc_set_id_idx ON fis.sloc_metrics_92 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_93_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_93_diff_id_idx ON fis.sloc_metrics_93 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_93_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_93_id_idx ON fis.sloc_metrics_93 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_93_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_93_language_id_idx ON fis.sloc_metrics_93 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_93_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_93_sloc_set_id_idx ON fis.sloc_metrics_93 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_94_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_94_diff_id_idx ON fis.sloc_metrics_94 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_94_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_94_id_idx ON fis.sloc_metrics_94 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_94_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_94_language_id_idx ON fis.sloc_metrics_94 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_94_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_94_sloc_set_id_idx ON fis.sloc_metrics_94 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_95_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_95_diff_id_idx ON fis.sloc_metrics_95 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_95_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_95_id_idx ON fis.sloc_metrics_95 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_95_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_95_language_id_idx ON fis.sloc_metrics_95 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_95_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_95_sloc_set_id_idx ON fis.sloc_metrics_95 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_96_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_96_diff_id_idx ON fis.sloc_metrics_96 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_96_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_96_id_idx ON fis.sloc_metrics_96 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_96_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_96_language_id_idx ON fis.sloc_metrics_96 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_96_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_96_sloc_set_id_idx ON fis.sloc_metrics_96 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_97_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_97_diff_id_idx ON fis.sloc_metrics_97 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_97_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_97_id_idx ON fis.sloc_metrics_97 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_97_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_97_language_id_idx ON fis.sloc_metrics_97 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_97_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_97_sloc_set_id_idx ON fis.sloc_metrics_97 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_98_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_98_diff_id_idx ON fis.sloc_metrics_98 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_98_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_98_id_idx ON fis.sloc_metrics_98 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_98_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_98_language_id_idx ON fis.sloc_metrics_98 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_98_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_98_sloc_set_id_idx ON fis.sloc_metrics_98 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_99_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_99_diff_id_idx ON fis.sloc_metrics_99 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_99_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_99_id_idx ON fis.sloc_metrics_99 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_99_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_99_language_id_idx ON fis.sloc_metrics_99 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_99_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_99_sloc_set_id_idx ON fis.sloc_metrics_99 USING btree (sloc_set_id);
+
+
+--
+-- Name: sloc_metrics_9_diff_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_9_diff_id_idx ON fis.sloc_metrics_9 USING btree (diff_id);
+
+
+--
+-- Name: sloc_metrics_9_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_9_id_idx ON fis.sloc_metrics_9 USING btree (id);
+
+
+--
+-- Name: sloc_metrics_9_language_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_9_language_id_idx ON fis.sloc_metrics_9 USING btree (language_id);
+
+
+--
+-- Name: sloc_metrics_9_sloc_set_id_idx; Type: INDEX; Schema: fis; Owner: -
+--
+
+CREATE INDEX sloc_metrics_9_sloc_set_id_idx ON fis.sloc_metrics_9 USING btree (sloc_set_id);
 
 
 --
@@ -14728,13 +20502,6 @@ CREATE INDEX index_names_on_name ON oh.names USING btree (name);
 --
 
 CREATE INDEX index_oauth_access_tokens_on_resource_owner_id ON oh.oauth_access_tokens USING btree (resource_owner_id);
-
-
---
--- Name: index_oauth_applications_on_uid; Type: INDEX; Schema: oh; Owner: -
---
-
-CREATE UNIQUE INDEX index_oauth_applications_on_uid ON oh.oauth_applications USING btree (uid);
 
 
 --
@@ -17937,6 +23704,2806 @@ ALTER INDEX fis.index_diffs_on_id ATTACH PARTITION fis.diffs_9_id_idx;
 
 
 --
+-- Name: sloc_metrics_0_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_0_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_0_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_0_id_idx;
+
+
+--
+-- Name: sloc_metrics_0_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_0_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_0_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_0_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_10_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_10_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_10_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_10_id_idx;
+
+
+--
+-- Name: sloc_metrics_10_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_10_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_10_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_10_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_11_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_11_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_11_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_11_id_idx;
+
+
+--
+-- Name: sloc_metrics_11_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_11_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_11_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_11_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_12_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_12_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_12_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_12_id_idx;
+
+
+--
+-- Name: sloc_metrics_12_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_12_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_12_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_12_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_13_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_13_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_13_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_13_id_idx;
+
+
+--
+-- Name: sloc_metrics_13_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_13_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_13_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_13_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_14_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_14_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_14_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_14_id_idx;
+
+
+--
+-- Name: sloc_metrics_14_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_14_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_14_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_14_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_15_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_15_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_15_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_15_id_idx;
+
+
+--
+-- Name: sloc_metrics_15_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_15_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_15_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_15_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_16_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_16_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_16_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_16_id_idx;
+
+
+--
+-- Name: sloc_metrics_16_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_16_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_16_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_16_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_17_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_17_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_17_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_17_id_idx;
+
+
+--
+-- Name: sloc_metrics_17_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_17_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_17_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_17_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_18_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_18_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_18_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_18_id_idx;
+
+
+--
+-- Name: sloc_metrics_18_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_18_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_18_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_18_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_19_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_19_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_19_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_19_id_idx;
+
+
+--
+-- Name: sloc_metrics_19_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_19_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_19_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_19_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_1_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_1_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_1_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_1_id_idx;
+
+
+--
+-- Name: sloc_metrics_1_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_1_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_1_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_1_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_20_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_20_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_20_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_20_id_idx;
+
+
+--
+-- Name: sloc_metrics_20_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_20_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_20_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_20_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_21_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_21_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_21_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_21_id_idx;
+
+
+--
+-- Name: sloc_metrics_21_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_21_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_21_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_21_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_22_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_22_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_22_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_22_id_idx;
+
+
+--
+-- Name: sloc_metrics_22_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_22_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_22_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_22_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_23_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_23_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_23_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_23_id_idx;
+
+
+--
+-- Name: sloc_metrics_23_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_23_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_23_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_23_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_24_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_24_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_24_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_24_id_idx;
+
+
+--
+-- Name: sloc_metrics_24_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_24_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_24_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_24_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_25_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_25_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_25_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_25_id_idx;
+
+
+--
+-- Name: sloc_metrics_25_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_25_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_25_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_25_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_26_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_26_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_26_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_26_id_idx;
+
+
+--
+-- Name: sloc_metrics_26_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_26_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_26_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_26_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_27_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_27_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_27_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_27_id_idx;
+
+
+--
+-- Name: sloc_metrics_27_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_27_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_27_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_27_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_28_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_28_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_28_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_28_id_idx;
+
+
+--
+-- Name: sloc_metrics_28_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_28_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_28_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_28_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_29_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_29_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_29_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_29_id_idx;
+
+
+--
+-- Name: sloc_metrics_29_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_29_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_29_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_29_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_2_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_2_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_2_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_2_id_idx;
+
+
+--
+-- Name: sloc_metrics_2_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_2_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_2_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_2_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_30_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_30_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_30_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_30_id_idx;
+
+
+--
+-- Name: sloc_metrics_30_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_30_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_30_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_30_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_31_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_31_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_31_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_31_id_idx;
+
+
+--
+-- Name: sloc_metrics_31_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_31_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_31_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_31_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_32_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_32_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_32_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_32_id_idx;
+
+
+--
+-- Name: sloc_metrics_32_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_32_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_32_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_32_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_33_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_33_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_33_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_33_id_idx;
+
+
+--
+-- Name: sloc_metrics_33_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_33_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_33_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_33_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_34_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_34_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_34_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_34_id_idx;
+
+
+--
+-- Name: sloc_metrics_34_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_34_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_34_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_34_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_35_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_35_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_35_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_35_id_idx;
+
+
+--
+-- Name: sloc_metrics_35_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_35_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_35_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_35_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_36_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_36_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_36_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_36_id_idx;
+
+
+--
+-- Name: sloc_metrics_36_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_36_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_36_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_36_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_37_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_37_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_37_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_37_id_idx;
+
+
+--
+-- Name: sloc_metrics_37_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_37_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_37_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_37_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_38_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_38_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_38_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_38_id_idx;
+
+
+--
+-- Name: sloc_metrics_38_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_38_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_38_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_38_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_39_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_39_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_39_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_39_id_idx;
+
+
+--
+-- Name: sloc_metrics_39_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_39_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_39_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_39_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_3_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_3_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_3_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_3_id_idx;
+
+
+--
+-- Name: sloc_metrics_3_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_3_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_3_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_3_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_40_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_40_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_40_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_40_id_idx;
+
+
+--
+-- Name: sloc_metrics_40_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_40_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_40_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_40_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_41_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_41_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_41_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_41_id_idx;
+
+
+--
+-- Name: sloc_metrics_41_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_41_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_41_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_41_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_42_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_42_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_42_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_42_id_idx;
+
+
+--
+-- Name: sloc_metrics_42_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_42_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_42_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_42_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_43_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_43_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_43_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_43_id_idx;
+
+
+--
+-- Name: sloc_metrics_43_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_43_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_43_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_43_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_44_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_44_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_44_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_44_id_idx;
+
+
+--
+-- Name: sloc_metrics_44_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_44_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_44_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_44_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_45_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_45_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_45_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_45_id_idx;
+
+
+--
+-- Name: sloc_metrics_45_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_45_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_45_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_45_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_46_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_46_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_46_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_46_id_idx;
+
+
+--
+-- Name: sloc_metrics_46_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_46_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_46_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_46_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_47_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_47_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_47_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_47_id_idx;
+
+
+--
+-- Name: sloc_metrics_47_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_47_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_47_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_47_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_48_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_48_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_48_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_48_id_idx;
+
+
+--
+-- Name: sloc_metrics_48_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_48_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_48_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_48_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_49_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_49_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_49_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_49_id_idx;
+
+
+--
+-- Name: sloc_metrics_49_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_49_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_49_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_49_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_4_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_4_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_4_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_4_id_idx;
+
+
+--
+-- Name: sloc_metrics_4_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_4_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_4_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_4_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_50_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_50_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_50_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_50_id_idx;
+
+
+--
+-- Name: sloc_metrics_50_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_50_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_50_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_50_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_51_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_51_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_51_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_51_id_idx;
+
+
+--
+-- Name: sloc_metrics_51_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_51_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_51_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_51_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_52_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_52_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_52_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_52_id_idx;
+
+
+--
+-- Name: sloc_metrics_52_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_52_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_52_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_52_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_53_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_53_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_53_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_53_id_idx;
+
+
+--
+-- Name: sloc_metrics_53_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_53_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_53_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_53_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_54_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_54_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_54_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_54_id_idx;
+
+
+--
+-- Name: sloc_metrics_54_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_54_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_54_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_54_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_55_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_55_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_55_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_55_id_idx;
+
+
+--
+-- Name: sloc_metrics_55_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_55_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_55_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_55_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_56_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_56_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_56_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_56_id_idx;
+
+
+--
+-- Name: sloc_metrics_56_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_56_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_56_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_56_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_57_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_57_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_57_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_57_id_idx;
+
+
+--
+-- Name: sloc_metrics_57_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_57_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_57_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_57_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_58_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_58_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_58_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_58_id_idx;
+
+
+--
+-- Name: sloc_metrics_58_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_58_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_58_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_58_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_59_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_59_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_59_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_59_id_idx;
+
+
+--
+-- Name: sloc_metrics_59_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_59_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_59_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_59_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_5_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_5_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_5_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_5_id_idx;
+
+
+--
+-- Name: sloc_metrics_5_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_5_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_5_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_5_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_60_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_60_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_60_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_60_id_idx;
+
+
+--
+-- Name: sloc_metrics_60_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_60_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_60_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_60_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_61_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_61_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_61_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_61_id_idx;
+
+
+--
+-- Name: sloc_metrics_61_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_61_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_61_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_61_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_62_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_62_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_62_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_62_id_idx;
+
+
+--
+-- Name: sloc_metrics_62_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_62_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_62_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_62_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_63_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_63_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_63_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_63_id_idx;
+
+
+--
+-- Name: sloc_metrics_63_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_63_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_63_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_63_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_64_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_64_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_64_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_64_id_idx;
+
+
+--
+-- Name: sloc_metrics_64_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_64_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_64_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_64_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_65_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_65_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_65_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_65_id_idx;
+
+
+--
+-- Name: sloc_metrics_65_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_65_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_65_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_65_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_66_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_66_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_66_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_66_id_idx;
+
+
+--
+-- Name: sloc_metrics_66_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_66_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_66_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_66_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_67_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_67_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_67_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_67_id_idx;
+
+
+--
+-- Name: sloc_metrics_67_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_67_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_67_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_67_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_68_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_68_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_68_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_68_id_idx;
+
+
+--
+-- Name: sloc_metrics_68_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_68_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_68_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_68_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_69_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_69_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_69_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_69_id_idx;
+
+
+--
+-- Name: sloc_metrics_69_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_69_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_69_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_69_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_6_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_6_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_6_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_6_id_idx;
+
+
+--
+-- Name: sloc_metrics_6_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_6_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_6_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_6_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_70_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_70_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_70_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_70_id_idx;
+
+
+--
+-- Name: sloc_metrics_70_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_70_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_70_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_70_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_71_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_71_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_71_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_71_id_idx;
+
+
+--
+-- Name: sloc_metrics_71_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_71_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_71_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_71_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_72_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_72_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_72_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_72_id_idx;
+
+
+--
+-- Name: sloc_metrics_72_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_72_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_72_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_72_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_73_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_73_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_73_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_73_id_idx;
+
+
+--
+-- Name: sloc_metrics_73_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_73_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_73_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_73_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_74_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_74_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_74_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_74_id_idx;
+
+
+--
+-- Name: sloc_metrics_74_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_74_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_74_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_74_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_75_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_75_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_75_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_75_id_idx;
+
+
+--
+-- Name: sloc_metrics_75_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_75_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_75_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_75_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_76_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_76_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_76_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_76_id_idx;
+
+
+--
+-- Name: sloc_metrics_76_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_76_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_76_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_76_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_77_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_77_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_77_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_77_id_idx;
+
+
+--
+-- Name: sloc_metrics_77_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_77_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_77_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_77_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_78_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_78_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_78_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_78_id_idx;
+
+
+--
+-- Name: sloc_metrics_78_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_78_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_78_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_78_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_79_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_79_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_79_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_79_id_idx;
+
+
+--
+-- Name: sloc_metrics_79_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_79_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_79_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_79_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_7_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_7_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_7_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_7_id_idx;
+
+
+--
+-- Name: sloc_metrics_7_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_7_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_7_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_7_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_80_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_80_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_80_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_80_id_idx;
+
+
+--
+-- Name: sloc_metrics_80_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_80_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_80_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_80_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_81_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_81_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_81_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_81_id_idx;
+
+
+--
+-- Name: sloc_metrics_81_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_81_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_81_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_81_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_82_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_82_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_82_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_82_id_idx;
+
+
+--
+-- Name: sloc_metrics_82_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_82_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_82_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_82_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_83_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_83_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_83_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_83_id_idx;
+
+
+--
+-- Name: sloc_metrics_83_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_83_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_83_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_83_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_84_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_84_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_84_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_84_id_idx;
+
+
+--
+-- Name: sloc_metrics_84_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_84_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_84_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_84_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_85_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_85_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_85_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_85_id_idx;
+
+
+--
+-- Name: sloc_metrics_85_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_85_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_85_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_85_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_86_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_86_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_86_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_86_id_idx;
+
+
+--
+-- Name: sloc_metrics_86_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_86_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_86_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_86_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_87_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_87_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_87_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_87_id_idx;
+
+
+--
+-- Name: sloc_metrics_87_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_87_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_87_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_87_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_88_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_88_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_88_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_88_id_idx;
+
+
+--
+-- Name: sloc_metrics_88_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_88_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_88_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_88_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_89_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_89_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_89_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_89_id_idx;
+
+
+--
+-- Name: sloc_metrics_89_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_89_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_89_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_89_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_8_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_8_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_8_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_8_id_idx;
+
+
+--
+-- Name: sloc_metrics_8_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_8_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_8_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_8_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_90_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_90_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_90_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_90_id_idx;
+
+
+--
+-- Name: sloc_metrics_90_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_90_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_90_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_90_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_91_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_91_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_91_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_91_id_idx;
+
+
+--
+-- Name: sloc_metrics_91_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_91_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_91_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_91_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_92_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_92_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_92_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_92_id_idx;
+
+
+--
+-- Name: sloc_metrics_92_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_92_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_92_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_92_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_93_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_93_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_93_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_93_id_idx;
+
+
+--
+-- Name: sloc_metrics_93_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_93_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_93_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_93_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_94_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_94_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_94_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_94_id_idx;
+
+
+--
+-- Name: sloc_metrics_94_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_94_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_94_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_94_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_95_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_95_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_95_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_95_id_idx;
+
+
+--
+-- Name: sloc_metrics_95_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_95_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_95_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_95_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_96_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_96_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_96_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_96_id_idx;
+
+
+--
+-- Name: sloc_metrics_96_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_96_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_96_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_96_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_97_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_97_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_97_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_97_id_idx;
+
+
+--
+-- Name: sloc_metrics_97_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_97_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_97_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_97_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_98_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_98_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_98_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_98_id_idx;
+
+
+--
+-- Name: sloc_metrics_98_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_98_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_98_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_98_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_99_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_99_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_99_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_99_id_idx;
+
+
+--
+-- Name: sloc_metrics_99_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_99_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_99_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_99_sloc_set_id_idx;
+
+
+--
+-- Name: sloc_metrics_9_diff_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_diff_id ATTACH PARTITION fis.sloc_metrics_9_diff_id_idx;
+
+
+--
+-- Name: sloc_metrics_9_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_id ATTACH PARTITION fis.sloc_metrics_9_id_idx;
+
+
+--
+-- Name: sloc_metrics_9_language_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_language_id ATTACH PARTITION fis.sloc_metrics_9_language_id_idx;
+
+
+--
+-- Name: sloc_metrics_9_sloc_set_id_idx; Type: INDEX ATTACH; Schema: fis; Owner: -
+--
+
+ALTER INDEX fis.index_sloc_metrics_on_sloc_set_id ATTACH PARTITION fis.sloc_metrics_9_sloc_set_id_idx;
+
+
+--
 -- Name: analysis_sloc_sets analysis_sloc_sets_sloc_set_id_fkey; Type: FK CONSTRAINT; Schema: fis; Owner: -
 --
 
@@ -17985,11 +26552,11 @@ ALTER TABLE ONLY fis.jobs
 
 
 --
--- Name: slave_logs slave_logs_slave_id_fkey; Type: FK CONSTRAINT; Schema: fis; Owner: -
+-- Name: worker_logs slave_logs_slave_id_fkey; Type: FK CONSTRAINT; Schema: fis; Owner: -
 --
 
-ALTER TABLE ONLY fis.slave_logs
-    ADD CONSTRAINT slave_logs_slave_id_fkey FOREIGN KEY (slave_id) REFERENCES fis.slaves(id) ON DELETE CASCADE;
+ALTER TABLE ONLY fis.worker_logs
+    ADD CONSTRAINT slave_logs_slave_id_fkey FOREIGN KEY (worker_id) REFERENCES fis.workers(id) ON DELETE CASCADE;
 
 
 --
@@ -19020,7 +27587,177 @@ ALTER TABLE ONLY oh.vitae
 -- PostgreSQL database dump complete
 --
 
-SET search_path TO oh,oa,fis,public;
+SET search_path TO oa,fis,oh,public;
+
+INSERT INTO oa.schema_migrations (version) VALUES ('20200627071334');
+
+INSERT INTO oa.schema_migrations (version) VALUES ('20200627132332');
+
+INSERT INTO oa.schema_migrations (version) VALUES ('20201117131904');
+
+INSERT INTO oa.schema_migrations (version) VALUES ('20201117131910');
+
+INSERT INTO oa.schema_migrations (version) VALUES ('20201201112503');
+
+INSERT INTO oa.schema_migrations (version) VALUES ('20201207132558');
+
+INSERT INTO oa.schema_migrations (version) VALUES ('20211104214912');
+
+INSERT INTO oa.schema_migrations (version) VALUES ('20211109010836');
+
+INSERT INTO oa.schema_migrations (version) VALUES ('20211109014644');
+
+INSERT INTO oa.schema_migrations (version) VALUES ('20220607143514');
+
+INSERT INTO oa.schema_migrations (version) VALUES ('20220712200702');
+
+INSERT INTO oa.schema_migrations (version) VALUES ('20230106122202');
+
+INSERT INTO oa.schema_migrations (version) VALUES ('20240506094848');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20150429084504');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20150504072306');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20150615040531');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20150615041336');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20170112183242');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20170615183328');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20170622141518');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20170905123152');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20170911100003');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20170913160134');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20170925190632');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20170925192153');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20170925192352');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20170925192829');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20170925193357');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20170925195815');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20171020021211');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20171025191016');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20171030153430');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20171030154453');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20171127181222');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20171128174144');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20171204165745');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20171206203036');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20171207154419');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20171209110545');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20171212162720');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20180104114359');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20180116211819');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20180211230753');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20180212162025');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20180212210716');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20180213152903');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20180213161347');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20180213163053');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20180907134326');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20180927143345');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20181009171118');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20181010181449');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20181108152834');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20181220010101');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20190107183802');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20190212105155');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20190214122613');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20190320154004');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20190320154440');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20190321201057');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20190508051951');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20190508052835');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20190813133442');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20190823151155');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20191010121016');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20200327135712');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20200715091451');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20200730110840');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20200824010101');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20201112135239');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20210101153940');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20210216020202');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20210705020202');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20220315135231');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20220424111301');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20220505105631');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20220607175022');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20220613201812');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20221201113522');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20221214121917');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20230104191144');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20230215133911');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20230712175621');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20250224134022');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20250415123838');
 
 INSERT INTO oh.schema_migrations (version) VALUES ('1');
 

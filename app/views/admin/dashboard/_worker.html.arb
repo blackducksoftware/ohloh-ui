@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-slave.running_jobs
-     .each_with_index do |job, i|
+worker.running_jobs
+      .each_with_index do |job, i|
   status = case job.status
            when Job::STATUS_SCHEDULED then 'scheduled'
            # rubocop:disable Lint/DuplicateBranch
