@@ -3,6 +3,7 @@
 class OhlohAnalyticsApi
   URL = ENV.fetch('OHLOH_ANALYTICS_API_URL', nil)
   KEY = ENV.fetch('OHLOH_ANALYTICS_CLIENT_REGISTRATION_ID', nil)
+  PUBLIC_URL = ENV.fetch('OHLOH_ANALYTICS_PUBLIC_URL', nil)
 
   class << self
     def resource_uri(path = nil, query = {})
@@ -17,7 +18,7 @@ class OhlohAnalyticsApi
     end
 
     def job_url(job_id)
-      "#{URL}/admin/jobs/#{job_id}"
+      "#{PUBLIC_URL}/admin/jobs/#{job_id}"
     end
 
     private
