@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# rubocop:disable Metrics/ClassLength
 class CommitsController < SettingsController
   helper ProjectsHelper
 
@@ -97,9 +98,40 @@ class CommitsController < SettingsController
     end
     return if @contributor_fact
 
-    Airbrake.notify('ContributorFact Not Found',
-                    parameters: { analysis_id: @project.best_analysis_id, name_id: params[:contributor_id] })
+    notify_contributor_fact_not_found
     render_404
+  end
+
+  def notify_contributor_fact_not_found
+    Airbrake.notify('ContributorFact Not Found for the give project') do |notice|
+      notice[:parameters] = contributor_fact_error_parameters
+      notice[:context] = contributor_fact_error_context
+      notice[:session] = contributor_fact_error_session
+    end
+  end
+
+  def contributor_fact_error_parameters
+    {
+      analysis_id: @project.best_analysis_id,
+      name_id: params[:contributor_id],
+      project_id: @project.id,
+      backtrace: caller(0, 10)
+    }
+  end
+
+  def contributor_fact_error_context
+    {
+      controller: self.class.name,
+      action: action_name,
+      request_id: request.request_id
+    }
+  end
+
+  def contributor_fact_error_session
+    {
+      user_id: current_user&.id,
+      session_id: session.id
+    }
   end
 
   def find_start_time
@@ -115,3 +147,4 @@ class CommitsController < SettingsController
     @commit_contributor = @project.commit_contributors.find_by(contribution_id: params[:contributor_id])
   end
 end
+# rubocop:enable Metrics/ClassLength
