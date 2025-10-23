@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 ActiveAdmin.register ApiKey do
+  actions :all, except: %i[new create edit update]
   filter :oauth_application_secret_or_key, as: :string, label: 'Key'
   filter :name
   filter :description
@@ -50,24 +51,5 @@ ActiveAdmin.register ApiKey do
         api_key.try(:oauth_application).try(:secret)
       end
     end
-  end
-
-  form do |f|
-    f.semantic_errors(*f.object.errors.attribute_names)
-    f.inputs 'Details' do
-      f.input :name, as: :string
-      f.input :key, as: :string
-      f.input :daily_limit
-      f.input :status, as: :select, include_blank: false,
-                       collection: { 'Active' => ApiKey::STATUS_OK,
-                                     'Limit Exceeded' => ApiKey::STATUS_LIMIT_EXCEEDED,
-                                     'Disabled' => ApiKey::STATUS_DISABLED }
-      f.input :description, as: :text
-      f.input :url, as: :url
-      f.input :support_url, as: :url
-      f.input :callback_url, as: :url
-      f.input :secret, as: :string
-    end
-    f.actions
   end
 end
