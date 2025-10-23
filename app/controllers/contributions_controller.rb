@@ -54,6 +54,8 @@ class ContributionsController < ApplicationController
   private
 
   def set_contributor
+    return render_404 unless @project.best_analysis_id
+
     id = params[:id].to_i
     @contributor = Contribution.find(id).name_fact if id > (1 << 32)
     @contributor ||= ContributorFact.joins(:name).where(names: { id: id })
