@@ -4,8 +4,8 @@ class FisJob < Job
   self.abstract_class = true
   self.table_name = 'fis.jobs'
 
-  belongs_to :slave, optional: true
-  has_many :slave_logs
+  belongs_to :worker, optional: true
+  has_many :worker_logs
 
   class << self
     def stale_jobs_report(enlistments)

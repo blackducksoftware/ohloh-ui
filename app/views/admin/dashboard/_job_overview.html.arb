@@ -22,24 +22,24 @@ panel 'Job Overview' do
     end
   end
 
-  table_for Slave.includes(:running_jobs, :failed_jobs).order(:id), row_class: ->(elem) { 'deny' if elem.deny? } do
-    # Seriously.  ActiveAdmin thinks the singular of "slave" is "slafe"  wft?
-    column :hostname do |slave|
-      link_to slave.hostname, admin_slafe_path(slave)
+  table_for Worker.includes(:running_jobs, :failed_jobs).order(:id), row_class: ->(elem) { 'deny' if elem.deny? } do
+    # Seriously.  ActiveAdmin thinks the singular of "worker" is "slafe"  wft?
+    column :hostname do |worker|
+      link_to worker.hostname, admin_slafe_path(worker)
     end
     column :allow_deny do |allow_deny|
       status_tag('Allow', :ok) if allow_deny.allow?
       status_tag('Deny', :error) if allow_deny.deny?
     end
     column :load_average
-    column :jobs do |slave|
-      render partial: 'slave', locals: { slave: slave }
+    column :jobs do |worker|
+      render partial: 'worker', locals: { worker: worker }
     end
-    column :failed do |slave|
-      render partial: 'failed', locals: { slave: slave }
+    column :failed do |worker|
+      render partial: 'failed', locals: { worker: worker }
     end
-    column :completed do |slave|
-      slave.jobs.complete.since(get_window).count
+    column :completed do |worker|
+      worker.jobs.complete.since(get_window).count
     end
   end
 end
