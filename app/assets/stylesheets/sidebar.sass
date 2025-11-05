@@ -13,11 +13,13 @@
   .nav-active
     @include bottom-nav-active-colors
     margin-left: -3px
+    width: 75%
 
   .nav-hover
     @include bottom-nav-hover-colors
     border-radius: 0px
     margin-left: -3px
+    width: 75%
 
   .navbar-justify
     border-radius: 0px
@@ -30,14 +32,14 @@
       padding: 6px
       margin-top: 2px
     .footer-nav
+      li
+        width: 75%
       &.nav-active
         @extend .nav-active
-        margin-left: 15px
-        padding-left: 0px
     .footer-nav
       &:hover
         @extend .nav-hover
-        margin-left: 15px
+        margin-left: -3px
       padding-left: 18px
       border-top: -10px
     .footer-navbar, h4
@@ -110,8 +112,6 @@
     font-size: 12px !important
     &.nav-active
       @extend .nav-active
-      margin-left: 0px !important
-      padding-left: 0px !important
 @media (max-width: 768px)
   .footer-navigation
     .footer-sidebar

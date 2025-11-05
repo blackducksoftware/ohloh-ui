@@ -3,7 +3,7 @@
 
 
 %h2= t('.title')
-.col-md-7.pull_left#org_summary
+.col-md-7#org_summary
   - if @organization.description.blank?
     = t('.no_desc')
     = link_to t('.add_desc'), edit_organization_path(@organization)
