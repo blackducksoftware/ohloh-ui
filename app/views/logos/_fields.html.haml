@@ -1,10 +1,10 @@
 .row
-  .col-md-12
-    .col-md-3.col
+  .col-md-12.col-sm-12.col-xs-12
+    .col-md-3.col.col-sm-3.col-xs-1
       %h6= t('.title')
       = @parent.decorate.icon(:med)
 
-    .col-md-9.col
+    .col-md-9.col.col-sm-9.col-xs-11
       - if logged_in? && @parent.edit_authorized?
         %h6= t('.head.first')
         %p= t('.body.first')
@@ -29,7 +29,7 @@
           %p= t('.message', login: current_user.login)
 
 .row
-  .col-md-12{ class: @organization ? 'hidden' : '' }
+  .col-md-12.col-sm-12.col-xs-12{ class: @organization ? 'hidden' : '' }
     %h5= t('.head.third')
     %p
       = t('.body.second')
@@ -51,7 +51,8 @@
               %label{ for: 'logo_' + logo.id.to_s }= label
 
 .row.margin_top_30
-  .col-md-12
+  .col-md-3.col-sm-3
+  .col-md-9.col-sm-9
     .actions
       - if logged_in? && @parent.edit_authorized?
         %input.btn.btn-sm.btn-primary{ type: 'submit', value: t('.button.save') }
