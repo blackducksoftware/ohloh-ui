@@ -187,7 +187,6 @@ tbody.portfolio-projects-table
   pointer-events: none !important
 
 /* ORG -- Infographics -- END */
-
 form#new_logo
   input
     size: 12px
@@ -201,11 +200,20 @@ form#new_logo
     height: 43px
     display: inline-flex
     align-items: center
+    background-color: #8f908f !important
 
 #organizations_create_page, #organizations_new_page
   h1
     margin-bottom: 15px
     margin-left: -15px
+
+#organizations_edit_page
+  input#organization_homepage_url, input#organization_name
+    width: 83%
+  input#organization_vanity_url
+    width: 375px
+  label.availability-preview
+    display: block
 
 #org_summary
   p
@@ -256,3 +264,11 @@ form#new_logo
   #organizations_settings_page, #organization_widgets_index_page, #organizations_projects_page
     .mezzo
       margin-bottom: 10px
+  #organizations_edit_page
+    input#organization_vanity_url
+      width: 20%
+  #logos_new_page
+    .project_content_title
+      height: 150px
+    #logo_url
+      width: 95%

@@ -36,7 +36,7 @@
               = project.decorate.icon(:small)
               = link_to h(truncate(project.name, length: 23)), project_path(project), title: project.name
             %td{ rowspan: 3 }
-              %div{ style: 'margin-top: -25px; position: relative' }
+              %div.margin_right_20{ style: 'margin-top: -25px; position: relative' }
                 - project_activity_level_class(project, :twenty)
             %td.center{ rowspan: 3 }
               - if language.nil?
