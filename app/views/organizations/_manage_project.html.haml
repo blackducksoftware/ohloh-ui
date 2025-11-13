@@ -1,14 +1,14 @@
 %td
   %a.logo.med{ href: project_path(p) }
     = p.decorate.icon(:med, width: 48)
-%td= link_to truncate(h(p.name), length: 20), project_path(p), title: p.name
+%td.col-md-1= link_to truncate(h(p.name), length: 20), project_path(p), title: p.name
 %td.center{ style: 'padding-right:15px;' }= p.user_count
 %td.center{ style: 'padding-right:15px;' }= p.best_analysis.code_total
-%td.left
+%td.center
   .project_activity_margin_top{ style: 'position: relative; top: -15px' }
     - project_activity_level_class(p, :fifteen)
 %td.center{ style: 'padding-right:15px;' }= p.active_committers
-%td.center
+%td.center.col-md-1
   - if p.rating_average.to_i.zero?
     = t('.none')
   - else

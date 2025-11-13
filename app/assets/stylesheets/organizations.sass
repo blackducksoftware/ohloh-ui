@@ -219,6 +219,11 @@ form#new_logo
   p
     word-wrap: break-word
 
+td
+  span#average_rating_stars
+    display: flex
+    justify-content: center
+
 @media print
   a[href]:after
     content: none !important
@@ -260,6 +265,7 @@ form#new_logo
   #organization_widgets_index_page
     .row
       margin-left: 0
+
 @media only all and (min-width: 320px) and (max-width: 480px)
   #organizations_settings_page, #organization_widgets_index_page, #organizations_projects_page
     .mezzo
@@ -268,7 +274,5 @@ form#new_logo
     input#organization_vanity_url
       width: 20%
   #logos_new_page
-    .project_content_title
-      height: 150px
     #logo_url
       width: 95%
