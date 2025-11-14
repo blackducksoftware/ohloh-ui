@@ -7,7 +7,7 @@
         multiple: true, onchange: 'this.form.submit()'
 
 - else
-  .col-md-5.col-sm-5.col-xs-5.no_padding
+  .col-md-5.col-sm-5.col-xs-12.no_padding
     %label #{t('.search_text')} &nbsp;
     = text_field_tag :query, params[:query]
 
