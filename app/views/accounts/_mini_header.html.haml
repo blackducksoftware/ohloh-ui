@@ -12,7 +12,7 @@
     .info.pull-left
       %h1{ itemprop: 'name' }
         = link_to h(@account.name), account_path(@account)
-      .col-xs-12.col-sm-12.col-md-12.pull-left.clearfix
+      .col-xs-8.col-sm-8.col-md-12.pull-left.clearfix
         - if @account.location.present?
           = @account.location
           %meta{ itemprop: 'homeLocation', content: @account.location }
