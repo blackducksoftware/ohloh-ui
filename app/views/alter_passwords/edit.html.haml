@@ -2,7 +2,7 @@
   = t('.edit_password_title', account: @account.name)
 
 %h2= t('.settings_password_html', href: link_to(t('.settings'), settings_account_path(@account)))
-.well.col-md-5#center_position
+.well.col-xs-12.col-sm-12.col-md-5
   = form_for(@account, url: alter_password_edit_account_path) do |f|
     %fieldset
       %legend.margin_left_30
@@ -27,7 +27,7 @@
   %h4
     .soft.inline= t('.about')
     = t('.password')
-  %ul.margin_left_40{ style: 'margin-top: -20px' }
+  %ul.margin_left_40
     %li= t('.openhub_foss_resume')
     %li= t('.password_specifications')
     %li= t('.confirmation_email')

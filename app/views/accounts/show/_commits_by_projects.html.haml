@@ -7,10 +7,10 @@
 .clearfix
 - if only_device?
   %div{ style: 'height:250px;' }
-    .chart#project_contributions{ style: 'width:450px; height:200px; margin-left:-26px;', 'datasrc' => chart_url }
+    .chart#project_contributions{ style: 'height:200px; margin-left:-26px;', 'datasrc' => chart_url }
 - elsif only_tab?
   %div{ style: 'height:350px;' }
-    .chart#project_contributions{ style: 'width:750px; height:300px; margin-left:-28px;', 'datasrc' => chart_url }
+    .chart#project_contributions{ style: 'height:300px; margin-left:-28px;', 'datasrc' => chart_url }
 - else
   %div{ style: 'height:350px;' }
-    .chart#project_contributions{ style: 'width:950px; height:300px; margin-left:-28px;', 'datasrc' => chart_url }
+    .chart#project_contributions{ style: 'height:300px; margin-left:-28px;', 'datasrc' => chart_url }

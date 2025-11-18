@@ -13,7 +13,7 @@
 #positions-index-page
   - if @account.positions.exists?
     = render 'commits_by_projects_extended'
-    .mezzo.padding_one_top
+    .row.mezzo.padding_one_top
       - @positions.each do |position|
         = render 'commits_by_individual_projects', position: position
       = will_paginate @positions

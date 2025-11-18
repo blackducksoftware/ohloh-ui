@@ -1,0 +1,249 @@
+/* Responsive Thickbox CSS - Layout Only, No Color Changes */
+
+/* Base overlay adjustments */
+#TB_overlay {
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  width: 100% !important;
+  height: 100% !important;
+  z-index: 100;
+}
+
+/* Main window responsive adjustments */
+#TB_window {
+  position: fixed !important;
+  z-index: 102;
+  text-align: left;
+  
+  /* Desktop default */
+  left: 50% !important;
+  top: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  margin: 0 !important;
+  
+  /* Responsive sizing - only apply max constraints */
+  max-width: 95vw;
+  max-height: 95vh;
+  overflow: auto;
+}
+
+/* Tablet styles (769px to 1024px) - Keep desktop behavior */
+@media screen and (min-width: 769px) and (max-width: 1024px) {
+  #TB_window {
+    /* Keep original thickbox sizing for tablets */
+    max-width: 90vw;
+    max-height: 90vh;
+  }
+  
+  #TB_Image {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+}
+
+/* Mobile phones only (max-width: 768px) */
+@media screen and (max-width: 768px) {
+  #TB_window {
+    width: 95% !important;
+    height: auto !important;
+    max-height: 90vh;
+    margin: 0 !important;
+  }
+  
+  /* Image display on mobile */
+  #TB_Image {
+    max-width: 100% !important;
+    height: auto !important;
+    display: block;
+    margin: 0 auto;
+  }
+  
+  /* Caption styling - layout only */
+  #TB_caption {
+    padding: 10px 15px;
+    line-height: 1.4;
+  }
+  
+  /* Navigation buttons - layout only */
+  #TB_secondLine {
+    margin-top: 8px;
+  }
+  
+  #TB_prev, #TB_next {
+    display: inline-block;
+    padding: 5px 10px;
+    margin: 0 5px;
+  }
+  
+  /* Close button - layout only */
+  #TB_closeWindow {
+    padding: 8px 15px;
+    text-align: center;
+  }
+  
+  #TB_closeWindowButton {
+    padding: 5px 15px;
+    text-decoration: none;
+  }
+}
+
+/* Tablet styles */
+@media screen and (min-width: 769px) and (max-width: 1024px) {
+  #TB_window {
+    width: 80% !important;
+    max-width: 700px;
+    max-height: 85vh;
+  }
+  
+  #TB_Image {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+}
+
+/* Small mobile devices only (max-width: 480px) */
+@media screen and (max-width: 480px) {
+  #TB_window {
+    width: 98% !important;
+  }
+  
+  #TB_caption {
+    padding: 8px 10px;
+  }
+  
+  #TB_prev, #TB_next {
+    padding: 4px 8px;
+  }
+  
+  #TB_closeWindow {
+    padding: 6px 10px;
+  }
+  
+  #TB_closeWindowButton {
+    padding: 4px 12px;
+  }
+}
+
+/* Ajax content responsive - mobile only */
+#TB_ajaxContent {
+  overflow: auto;
+  padding: 15px;
+}
+
+@media screen and (max-width: 768px) {
+  #TB_ajaxContent {
+    padding: 10px;
+    line-height: 1.4;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  #TB_ajaxContent {
+    padding: 8px;
+  }
+}
+
+/* Modal specific adjustments - mobile only */
+@media screen and (max-width: 768px) {
+  .TB_modal {
+    padding: 15px !important;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .TB_modal {
+    padding: 10px !important;
+  }
+}
+
+/* Title bar responsive - mobile only */
+#TB_title {
+  height: auto !important;
+  padding: 10px 15px;
+}
+
+@media screen and (max-width: 768px) {
+  #TB_title {
+    padding: 8px 10px;
+  }
+}
+
+#TB_ajaxWindowTitle {
+  margin-bottom: 0;
+}
+
+/* Close button in title - mobile only */
+#TB_closeAjaxWindow {
+  text-align: right;
+  margin-top: 5px;
+}
+
+@media screen and (max-width: 768px) {
+  #TB_closeAjaxWindow {
+    text-align: center;
+    margin-top: 8px;
+  }
+}
+
+/* Loading animation - layout only */
+#TB_load {
+  position: fixed !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  z-index: 101;
+}
+
+/* Iframe responsive - mobile only */
+@media screen and (max-width: 768px) {
+  #TB_iframeContent {
+    width: 100% !important;
+    height: 70vh !important;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  #TB_iframeContent {
+    height: 60vh !important;
+  }
+}
+
+/* Touch-friendly improvements - mobile only */
+@media screen and (max-width: 768px) and (hover: none) and (pointer: coarse) {
+  #TB_closeWindowButton,
+  #TB_prev a,
+  #TB_next a {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 15px;
+  }
+}
+
+/* Mobile scroll and touch optimization */
+@media screen and (max-width: 768px) {
+  #TB_overlay {
+    /* Prevent zoom on double-tap */
+    touch-action: manipulation;
+  }
+  
+  #TB_window {
+    /* Better scrolling on mobile */
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* Landscape orientation adjustments - mobile only */
+@media screen and (max-width: 768px) and (orientation: landscape) and (max-height: 500px) {
+  #TB_window {
+    max-height: 95vh !important;
+    width: 90% !important;
+  }
+  
+  #TB_Image {
+    max-height: 60vh !important;
+    width: auto !important;
+  }
+}

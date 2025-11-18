@@ -4,14 +4,14 @@
   page_context[:select_footer_nav] = :languages
 
 - if @account.decorate.account_analysis_status_message.blank?
-  .col-md-12
+  .col-xs-12.col-sm-12.col-md-12
     = render partial: 'accounts/languages/commits_by_language'
   - if @vlfs.present?
-    .col-md-12#language_detail
+    .col-xs-12.col-sm-12.col-md-12#language_detail
       %table.table.table-striped.table-condensed
         %thead= render partial: 'contributions/language_header'
         %tbody= render partial: 'contributions/language_fact', collection: @vlfs
 - else
   %h2= t('accounts.languages.index.title')
-  .col-md-12
+  .col-xs-12.col-sm-12.col-md-12
     %p= @account.decorate.account_analysis_status_message

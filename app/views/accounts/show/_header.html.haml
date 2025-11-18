@@ -9,7 +9,7 @@
     - else
       &nbsp;
   .col-xs-10.col-sm-10.col-md-10#account_header
-    .pull-left#account_name
+    .pull-left#account_name_header
       %h1{ itemprop: 'name' }= h(@account.name)
       .info
         = @account.location
@@ -43,6 +43,6 @@
       = render partial: 'badges_row', locals: { badges: badges, header: :large }
 
 .clearfix &nbsp;
-.col-md-12
+.col-xs-12.col-sm-12.col-md-12
   .mezzo
 = render partial: 'layouts/partials/alert'

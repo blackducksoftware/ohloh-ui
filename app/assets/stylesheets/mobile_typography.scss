@@ -1,0 +1,78 @@
+/* Mobile-only smaller font size globally */
+@media screen and (max-width: 768px) {
+  body, p, div, span, td, th, li, a {
+    font-size: small !important;
+  }
+  
+  h1 {
+    font-size: 1.5rem !important;
+  }
+  
+  h2 {
+    font-size: 1.25rem !important;
+  }
+  
+  h3 {
+    font-size: 1.125rem !important;
+  }
+  
+  h4 {
+    font-size: 1rem !important;
+  }
+  
+  h5, h6 {
+    font-size: 0.875rem !important;
+  }
+  
+  .btn, button, input[type="submit"], input[type="button"] {
+    font-size: small !important;
+  }
+  
+  input, select, textarea {
+    font-size: small !important;
+  }
+  
+  .alert {
+    font-size: small !important;
+  }
+  
+  table {
+    font-size: small !important;
+  }
+  
+  label, .control-label {
+    font-size: small !important;
+  }
+  
+  .badge, .label {
+    font-size: small !important;
+  }
+  
+  .breadcrumb {
+    font-size: small !important;
+  }
+  
+  .pagination {
+    font-size: small !important;
+  }
+  
+  nav, .nav, .navbar {
+    font-size: small !important;
+  }
+  
+  .panel, .card {
+    font-size: small !important;
+  }
+  
+  .modal-body {
+    font-size: small !important;
+  }
+  
+  footer, .footer {
+    font-size: small !important;
+  }
+  
+  code, pre {
+    font-size: small !important;
+  }
+}
