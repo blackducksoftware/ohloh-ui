@@ -1,5 +1,5 @@
 .account_header{ style: 'margin-top: 10px' }
-  .col-xs-2.col-sm-2.col-md-2#account_icon
+  .col-xs-4.col-sm-3.col-md-2#account_icon
     = image_tag avatar_img_path(@account, 128), size: '128x128', itemprop: 'image'
     - lang = @account.most_experienced_language
     - if lang
@@ -8,7 +8,7 @@
         = lang.nice_name
     - else
       &nbsp;
-  .col-xs-10.col-sm-10.col-md-10#account_header
+  .col-xs-7.col-sm-4.col-md-7#account_header
     .pull-left#account_name_header
       %h1{ itemprop: 'name' }= h(@account.name)
       .info
@@ -38,9 +38,9 @@
             rel: 'popup', title: "Follow @#{@account.twitter_account}" do
               %i.icon-twitter
           = render partial: 'accounts/show/header/kudo_button', locals: { css: 'btn-mini btn-info' }
-    .mini-badges-section.pull-right
-      - badges = @account.badges.map { |badge| BadgeDecorator.new(badge) }
-      = render partial: 'badges_row', locals: { badges: badges, header: :large }
+  .col-xs-12.col-sm-5.col-md-3.mini-badges-section
+    - badges = @account.badges.map { |badge| BadgeDecorator.new(badge) }
+    = render partial: 'badges_row', locals: { badges: badges }
 
 .clearfix &nbsp;
 .col-xs-12.col-sm-12.col-md-12
