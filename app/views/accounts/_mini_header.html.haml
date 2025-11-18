@@ -1,6 +1,6 @@
 - lang = @account.most_experienced_language
 .account_header{ style: 'margin-top: 5px' }
-  .col-xs-4.col-sm-2.col-md-2#account_icon
+  .col-xs-4.col-sm-3.col-md-2#account_icon
     = link_to account_path(@account) do
       = image_tag avatar_img_path(@account, 62), size: '128x128', itemprop: 'image'
     - if lang
@@ -8,7 +8,7 @@
       - text_color = language_text_color(lang.name)
       = link_to '', '#', style: "background-color: ##{bg_color}; color: ##{text_color};",
       title: t('accounts.mini_header.title'), class: 'center primary_language_bg'
-  .col-xs-8.col-sm-10.col-md-10#account_header
+  .col-xs-7.col-sm-4.col-md-7#account_header
     .info.pull-left
       %h1{ itemprop: 'name' }
         = link_to h(@account.name), account_path(@account)
@@ -28,7 +28,8 @@
               = truncate(@account.url, length: 60)
       .clearfix
       %meta{ itemprop: 'interactionCount', content: @account.kudo_rank }
-    .mini-badges-section.pull-right
+  .col-xs-12.col-sm-5.col-md-3
+    .mini-badges-section
       - badges = @account.badges.map { |badge| BadgeDecorator.new(badge) }
       = render partial: 'accounts/badges_row', locals: { badges: badges }
 

@@ -38,9 +38,10 @@
             rel: 'popup', title: "Follow @#{@account.twitter_account}" do
               %i.icon-twitter
           = render partial: 'accounts/show/header/kudo_button', locals: { css: 'btn-mini btn-info' }
-  .col-xs-12.col-sm-5.col-md-3.mini-badges-section
-    - badges = @account.badges.map { |badge| BadgeDecorator.new(badge) }
-    = render partial: 'badges_row', locals: { badges: badges }
+  .col-xs-12.col-sm-5.col-md-3
+    .mini-badges-section
+      - badges = @account.badges.map { |badge| BadgeDecorator.new(badge) }
+      = render partial: 'badges_row', locals: { badges: badges }
 
 .clearfix &nbsp;
 .col-xs-12.col-sm-12.col-md-12
