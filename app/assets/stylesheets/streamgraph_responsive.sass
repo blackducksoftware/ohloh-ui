@@ -1,0 +1,25 @@
+/* Language Graph Responsive Alignment */
+
+/* Desktop view - Center the stream graph */
+@media (min-width: 1025px)
+  #ohloh_streamgraph
+    float: left !important
+    margin-left:  120px !important
+    margin-right: auto !important
+    display: block
+  .nomargin
+    margin-left:  120px !important
+
+/* Tablet and Mobile - Keep left alignment with title */
+@media (max-width: 1024px)
+  #ohloh_streamgraph
+    float: left
+    margin-left: 0 !important
+    margin-right: 0
+
+/* Mobile specific adjustments */
+@media (max-width: 768px)
+  #ohloh_streamgraph
+    width: 100% !important
+    margin-left: 0 !important
+    float: none

@@ -3,4 +3,4 @@
   - chart_data = ChartDecorator.new.project_commit_history(@account, position.project_id)
   .margin_bottom_5
     .chart-with-data{ id: "project_contributions_#{position.project_id}", 'data-value' => chart_data.as_json,
-                      'data-pname' => pname, style: 'width: 910px; height: 170px' }
+                      'data-pname' => pname, style: 'height: 170px' }
