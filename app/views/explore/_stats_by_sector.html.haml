@@ -12,7 +12,7 @@
         %tr{ style: 'background-color: #ccc' }
           %th.strong= t '.sector'
           %th.strong.center= t '.average'
-          %th.strong.center= t '.orgs'
+          %th.strong= t '.orgs'
       %tbody
         - @stats_by_sector.each do |orgs|
           %tr{ style: 'background-color: #fff' }

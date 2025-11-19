@@ -1,35 +1,34 @@
 .row
-  .col-md-12
-    .col-md-3.col
-      %h6= t('.title')
-      = @parent.decorate.icon(:med)
+  .col-md-3.col.col-sm-3.col-xs-12
+    %h6= t('.title')
+    = @parent.decorate.icon(:med)
 
-    .col-md-9.col
-      - if logged_in? && @parent.edit_authorized?
-        %h6= t('.head.first')
-        %p= t('.body.first')
-        .col-md-10.no_margin_left{ style: 'padding: 0;' }
-          .col-md-8.no_margin_left.ace-file-input.margin_bottom_5{ style: 'padding: 0;' }
-            = f.file_field :attachment, class: 'new_file_upload', accept: 'image/*',
-              'data_max_size' => Logo::FILE_SIZE_LIMIT.max
-          %p.margin_bottom_5
-            = f.text_field :url, value: @logo.url, placeholder: t('.placeholder'), class: 'col-md-5'
-            - error_tag @logo, :url
-            - error_tag @logo, :attachment_content_type if @logo.url.present? && @logo.errors[:url].blank?
-            - error_tag @logo, :attachment_file_size
-          %div
-            - if @logo.attachment.url.blank?
-              - if @logo.attachment_file_name.blank?
-                - error_tag @logo, :attachment_file_name
-              - else
-                - error_tag @logo, :attachment_content_type
-      - else
-        %h6= t('.head.second')
-        - if logged_in?
-          %p= t('.message', login: current_user.login)
+  .col-md-9.col.col-sm-9.col-xs-12
+    - if logged_in? && @parent.edit_authorized?
+      %h6= t('.head.first')
+      %p= t('.body.first')
+      .col-md-10.no_margin_left{ style: 'padding: 0;' }
+        .col-md-8.no_margin_left.ace-file-input.margin_bottom_5{ style: 'padding: 0;' }
+          = f.file_field :attachment, class: 'new_file_upload', accept: 'image/*',
+            'data_max_size' => Logo::FILE_SIZE_LIMIT.max
+        %p.margin_bottom_5
+          = f.text_field :url, value: @logo.url, placeholder: t('.placeholder'), class: 'col-md-5'
+          - error_tag @logo, :url
+          - error_tag @logo, :attachment_content_type if @logo.url.present? && @logo.errors[:url].blank?
+          - error_tag @logo, :attachment_file_size
+        %div
+          - if @logo.attachment.url.blank?
+            - if @logo.attachment_file_name.blank?
+              - error_tag @logo, :attachment_file_name
+            - else
+              - error_tag @logo, :attachment_content_type
+    - else
+      %h6= t('.head.second')
+      - if logged_in?
+        %p= t('.message', login: current_user.login)
 
 .row
-  .col-md-12{ class: @organization ? 'hidden' : '' }
+  .col-md-12.col-sm-12.col-xs-12{ class: @organization ? 'hidden' : '' }
     %h5= t('.head.third')
     %p
       = t('.body.second')
@@ -51,7 +50,8 @@
               %label{ for: 'logo_' + logo.id.to_s }= label
 
 .row.margin_top_30
-  .col-md-12
+  .col-md-3.col-sm-3
+  .col-md-9.col-sm-9
     .actions
       - if logged_in? && @parent.edit_authorized?
         %input.btn.btn-sm.btn-primary{ type: 'submit', value: t('.button.save') }

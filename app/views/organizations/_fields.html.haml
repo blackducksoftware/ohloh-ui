@@ -16,7 +16,7 @@
             'data-original-value' => Organization.find_by(id: @organization).try(:vanity_url),
             'data-ajax-path' => organization_check_availabilities_path,
             'data-preview-base-url' => organizations_url,
-            autocomplete: 'off', style: 'width: 375px'
+            autocomplete: 'off'
           = render 'shared/availability_preview'
       - error_tag @organization, :vanity_url, class: 'error vanity_url'
 

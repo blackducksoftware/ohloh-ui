@@ -1,12 +1,12 @@
-.col-md-1.col-xs-3.no_padding#org_icon
+.col-md-1.col-xs-2.no_padding#org_icon
   = @organization.decorate.icon(:med)
-.col-md-11.col-xs-9#project_header
+.col-md-11.col-xs-10#project_header
   %h1.margin_top_10= link_to h(@organization.name), organization_path(@organization)
   .settings-link
     = link_to settings_organization_path(@organization) do
       %icon.icon-cogs
       = t('.settings')
-
-.col-md-12
+.clearfix &nbsp;
+.col-md-12.col-xs-12
   .mezzo
 = render partial: 'layouts/partials/alert'

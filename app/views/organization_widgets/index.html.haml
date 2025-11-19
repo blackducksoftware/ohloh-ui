@@ -5,6 +5,5 @@
   %h2= t('.title')
   %p= t('.embed')
 
-.clearfix
-  - @widgets.each do |widget|
-    = render partial: 'widget', locals: { widget: widget, type: 'organization' }
+- @widgets.each do |widget|
+  = render partial: 'widget', locals: { widget: widget, type: 'organization' }

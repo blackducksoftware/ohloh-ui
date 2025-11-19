@@ -1,11 +1,12 @@
-.col-md-4.col-sm-4.col-xs-4
+.col-md-4.col-sm-4.col-xs-12.no_padding_left
   - if filter_type == :checkbox
-    %label.checkbox.pull-right.padding_right_20#human_edits
+    %label.checkbox.pull-right.margin_right_20#human_edits
       %input{ type: 'checkbox', checked: params[:human] == 'true' }
-      = t('.show_only_humans')
-    %label.checkbox.pull-right.padding_right_15#enlistment_edits
+      %span= t('.show_only_humans')
+    %label.checkbox.pull-right.margin_right_20#enlistment_edits
       %input{ type: 'checkbox', id: 'enlistment_checkbox', checked: params[:enlistment] == 'true'}
-      = t('.filter_only_enlistment')
+      %span= t('.filter_only_enlistment')
+    .clearfix
     #sort_by
       %label= t('.sort_by')
       = select_tag :sort, options_for_select([["updated_at", "updated_at"], ["created_at", "created_at"]],
