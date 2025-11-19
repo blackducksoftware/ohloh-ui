@@ -8,9 +8,10 @@
     = render partial: 'accounts/languages/commits_by_language'
   - if @vlfs.present?
     .col-xs-12.col-sm-12.col-md-12#language_detail
-      %table.table.table-striped.table-condensed
-        %thead= render partial: 'contributions/language_header'
-        %tbody= render partial: 'contributions/language_fact', collection: @vlfs
+      .table-responsive
+        %table.table.table-striped.table-condensed
+          %thead= render partial: 'contributions/language_header'
+          %tbody= render partial: 'contributions/language_fact', collection: @vlfs
 - else
   %h2= t('accounts.languages.index.title')
   .col-xs-12.col-sm-12.col-md-12
