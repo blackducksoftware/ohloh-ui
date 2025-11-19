@@ -23,7 +23,6 @@
     height: 34px
     border-top: 10px
   input
-    width: 180px
     color: #000
   select
     width: 150px
@@ -41,8 +40,10 @@
     input
       width: 14px
 
-#nav-top-bar .new_main_menu form#quicksearch
-  margin-top: -4px
+#nav-top-bar form#quicksearch
+  .caret
+    border-top: 4px solid
+  margin-top: -25px
   button.submit
     background: none
     border: 0
@@ -55,6 +56,7 @@
         @include search-dropdown-link-color
         font-size: 14px
         text-transform: none
+        cursor: pointer
         &:hover
           @include search-dropdown-link-hover-colors
   .btn-small
@@ -69,13 +71,13 @@
 
 @media (min-width: 320px) and (max-width: 360px)
   form#quicksearch
-    margin-top: -20px !important
+    margin-top: -35px !important
     margin-right: -61px !important
     .btn-small
       font-size: 8px !important
 @media (min-width: 361px) and (max-width: 480px)
   form#quicksearch
-    margin-top: -6px !important
+    margin-top: -35px !important
     margin-right: -61px !important
     .btn-small
       font-size: 8px !important

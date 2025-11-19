@@ -9,7 +9,7 @@
   = project_analysis_timestamp(@project) if @project
 
 .row
-  .col-sm-6.col-sm-offset-2
+  .col-sm-6.col-xs-12
     .well
       - url = polymorphic_path([:permissions, @parent])
       = form_for @permission, as: :permission, url: url, html: { method: :put, id: 'permission_show' } do |f|
@@ -40,7 +40,7 @@
 %h4.nomargin
   %span.soft= t 'permissions.show.about_permissions_1'
   = t 'permissions.show.about_permissions_2'
-.col-sm-6
+.col-sm-12.col-xs-12
   %ul
     - parent_name = @parent.class.name
     %li= t 'permissions.show.help_1', name: parent_name

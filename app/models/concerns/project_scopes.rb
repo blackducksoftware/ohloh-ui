@@ -13,8 +13,8 @@ module ProjectScopes
     scope :by_vanity_url_or_id, ->(param) { where('lower(vanity_url) = ? OR id = ?', param.to_s.downcase, param.to_i) }
     scope :been_analyzed, -> { where.not(best_analysis_id: nil) }
     scope :recently_analyzed, -> { not_deleted.been_analyzed.order(created_at: :desc) }
-    scope :hot, lambda { |l_id = nil|
-      not_deleted.joins(:best_analysis).merge(Analysis.fresh_and_hot(l_id))
+    scope :hot, lambda { |language_id = nil|
+      not_deleted.joins(:best_analysis).merge(Analysis.fresh_and_hot(language_id))
     }
     scope :by_popularity, -> { where.not(user_count: 0).order(user_count: :desc) }
     scope :by_activity, -> { joins(:analyses).joins(:analysis_summaries).by_popularity.thirty_day_summaries }
@@ -41,7 +41,7 @@ module ProjectScopes
                           COALESCE(analysis_summaries.outside_commits_count, 0) DESC '))
         .limit(10)
     }
-    scope :with_pai_available, -> { active.where(arel_table[:activity_level_index].gt(0)).size }
+    scope :with_pai_available, -> { active.where('activity_level_index > 0').count }
     scope :tagged_with, lambda { |tags|
       not_deleted.joins(:tags)
                  .where(tags: { name: tags })

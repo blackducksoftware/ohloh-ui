@@ -1,15 +1,12 @@
-.well.col-md-3.margin_left_10.margin_top_20#explore_sidebar
-  = link_to t('.add_new_project'), new_project_path, class: 'btn btn-primary btn-mini add_new_project_btn_top'
+.well.col-md-3.col-lg-2.margin_top_10#explore_sidebar
   %div
-    %h3= t('.search')
-    .margin_left_10
-      %form.search#explore_search_form{ action: projects_path }
-        %input{ type: :hidden, name: 'ref', value: 'explore_project' }
-        %input.explore_search.margin_top_10{ type: :text, name: 'query', placeholder: t('.enter_string') }
-        .icon-search.search.submit
-
-    %h3= t('.tags')
-    .margin_left_10{ style: 'min-height: 100px; padding-left: 15px' }
+    %h3.margin_left_10= t('.search')
+    %form.margin_left_10.search#explore_search_form{ action: projects_path }     
+      %input{ type: :hidden, name: 'ref', value: 'explore_project' }
+      %input.explore_search.margin_top_10{ type: :text, name: 'query', placeholder: t('.enter_string'), title: 'Search Projects' }
+      .icon-search.search.submit
+    %h3.margin_left_10= t('.tags')
+    .margin_left_10{ style: 'min-height: 100px; padding-left: 10px' }
       .row
         #tagcloud
           - @tags.each do |tag|
@@ -17,28 +14,24 @@
     .margin_left_10
       %form.autocomplete-submit{ rel: 'tag_jump' }
         %input.explore_search.tag_autocomplete.autocompletable#input_tag{ type: :text, placeholder: t('.enter_tag'),
-        data: { source: '/autocompletes/tags', select: 'submitForm' } }
+        data: { source: '/autocompletes/tags', select: 'submitForm' }, title: 'Search Tag' }
 
-    %p &nbsp;
-    %h3= t('.compare')
-    %form.projects_compare.margin_left_15{ action: '/p/_compare' }
+    %h3.margin_left_10= t('.compare')
+    %form.margin_left_10.projects_compare.margin_left_15{ action: '/p/_compare' }
       - compare_project_inputs.each do |options|
-        %input.proj.explore_compare{ options }
-      %input.pull-right.btn.btn-primary.btn-small#compare_btn{ type: 'submit', value: 'Compare' }
+        %input.proj.explore_compare{ options.merge({title: 'Compare Project'}) }
+      %input.btn.btn-primary.btn-small#compare_btn{ type: 'submit', value: 'Compare' }
 
-    %p &nbsp;
-    %p &nbsp;
-    %h3= t('.similar')
+    %h3.margin_left_10= t('.similar')
     %form.autocomplete-submit.similar_projects.margin_left_10{ rel: 'similar_project_jump' }
       %input.autocompletable.explore_search#project{ type: 'text', placeholder: t('.enter_project'),
-      autocomplete: 'off', data: { source: '/autocompletes/project', select: 'submitFormWithId' } }
+      autocomplete: 'off', data: { source: '/autocompletes/project', select: 'submitFormWithId' }, title: 'Similar Projects' }
       .icon-search.search.submit
       %span.error.hidden= t('.invalid_select')
 
-    %p &nbsp;
-    %h3= t('.add')
-    %p.justify.margin_left_10.margin_top_20{ style: 'line-height: 20px' }
+    %h3.margin_left_10= t('.add')
+    %p.justify.margin_left_10{ style: 'line-height: 20px' }
       = t('.community')
       = t('.dont_see_a_project')
-    .text-center.add_new_project_btn_bottom
+    .margin_left_10
       = link_to t('.add_new_project'), new_project_path, class: 'btn btn-primary btn-small'

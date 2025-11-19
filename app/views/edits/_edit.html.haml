@@ -14,11 +14,12 @@
         - else
           = avatar_for(edit.account)
       .inside
-        %p.strong.nomargin{ class: edit_title_class(edit) }
-          = link_to edit.id, show_edit_path(edit), class: 'show_edit_btn', remote: true,
+        %p.nomargin{ class: edit_title_class(edit) }
+          %span.strong
+            = link_to edit.id, show_edit_path(edit), class: 'show_edit_btn', remote: true,
                     data: { toggle: 'modal', target: '#edit-details.modal', keyboard: true }
-          %span - #{edit_show_subject(edit)}
-        %p
-          by
-          = link_to h(edit.account.name), account_path(edit.account)
-          %span.date= edit_humanize_datetime(edit.created_at)
+            %span - #{edit_show_subject(edit)}
+          %span.editor_details
+            by
+            = link_to h(edit.account.name), account_path(edit.account)
+            %span.date= edit_humanize_datetime(edit.created_at)
