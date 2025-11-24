@@ -64,6 +64,8 @@ class CommitsController < SettingsController
 
   def individual_named_commits
     get_commit_contributor
+    return unless @commit_contributor
+
     @commits = Commit.joins(:analysis_aliases)
                      .where(code_set_id: @commit_contributor.code_set_id, name_id: @commit_contributor.name_id)
                      .where(commits: { position: ..@commit_contributor.code_set.as_of.to_i })
