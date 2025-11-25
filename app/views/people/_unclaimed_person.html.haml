@@ -1,6 +1,6 @@
 :ruby
-  name = people.first.name.name
-  name_id ||= people.first.name.id
+  name = people.first&.name&.name
+  name_id ||= people.first&.name&.id
   from_show_page ||= false
   unclaimed_people = people if from_show_page
   unclaimed_people ||= people.to_a.first(UNCLAIMED_TILE_LIMIT)
