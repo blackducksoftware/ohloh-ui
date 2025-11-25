@@ -105,19 +105,21 @@ class CommitsController < SettingsController
   end
 
   def notify_contributor_fact_not_found
-    Airbrake.notify('ContributorFact Not Found for the give project') do |notice|
-      notice[:parameters] = contributor_fact_error_parameters
-      notice[:context] = contributor_fact_error_context
-      notice[:session] = contributor_fact_error_session
-    end
+    raise StandardError, "ContributorFact Not Found for the given project #{@project.id}"
+  rescue StandardError => e
+    Airbrake.notify(e, {
+                      params: contributor_fact_error_parameters,
+                      context: contributor_fact_error_context,
+                      session: contributor_fact_error_session
+                    })
   end
 
   def contributor_fact_error_parameters
     {
       analysis_id: @project.best_analysis_id,
       name_id: params[:contributor_id],
-      project_id: @project.id,
-      backtrace: caller(0, 10)
+      project_id: @project.id
+
     }
   end
 
