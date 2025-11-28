@@ -1,0 +1,126 @@
+/* Responsive Thickbox CSS - Layout Only, No Color Changes */
+
+/* Base overlay adjustments */
+#TB_overlay {
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  width: 100% !important;
+  height: 100% !important;
+  z-index: 100;
+}
+
+/* Main window responsive adjustments */
+#TB_window {
+  position: fixed !important;
+  z-index: 102;
+  text-align: left;
+  
+  /* Desktop default */
+  left: 50% !important;
+  top: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  margin: 0 !important;
+  
+  /* Responsive sizing - only apply max constraints */
+  max-width: 95vw;
+  max-height: 95vh;
+  overflow: auto;
+}
+ 
+/* Small mobile devices only (max-width: 480px) */
+@media screen and (max-width: 480px) {
+  #TB_window {
+    width: 98% !important;
+  }
+  
+  #TB_caption {
+    padding: 8px 10px;
+  }
+  
+  #TB_prev, #TB_next {
+    padding: 4px 8px;
+  }
+
+  #TB_closeAjaxWindow {
+    padding: 7px 0 5px 10px;
+    margin-bottom: 1px;
+    text-align: right;
+    float: right;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  #TB_ajaxContent {
+    padding: 10px;
+    line-height: 1.4;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  #TB_ajaxContent {
+    padding: 8px;
+  }
+}
+
+/* Modal specific adjustments - mobile only */
+@media screen and (max-width: 768px) {
+  .TB_modal {
+    padding: 15px !important;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .TB_modal {
+    padding: 10px !important;
+  }
+}
+
+/* Loading animation - layout only */
+#TB_load {
+  position: fixed !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  z-index: 101;
+}
+
+/* Iframe responsive - mobile only */
+@media screen and (max-width: 768px) {
+  #TB_iframeContent {
+    width: 100% !important;
+    height: 70vh !important;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  #TB_iframeContent {
+    height: 60vh !important;
+  }
+}
+
+/* Mobile scroll and touch optimization */
+@media screen and (max-width: 768px) {
+  #TB_overlay {
+    /* Prevent zoom on double-tap */
+    touch-action: manipulation;
+  }
+  
+  #TB_window {
+    /* Better scrolling on mobile */
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* Landscape orientation adjustments - mobile only */
+@media screen and (max-width: 768px) and (orientation: landscape) and (max-height: 500px) {
+  #TB_window {
+    max-height: 95vh !important;
+    width: 90% !important;
+  }
+  
+  #TB_Image {
+    max-height: 60vh !important;
+    width: auto !important;
+  }
+}

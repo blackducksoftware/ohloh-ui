@@ -5,7 +5,7 @@
 
 %h1.margin_bottom_20= t('projects.new.call_to_action')
 .row
-  .col-md-12
+  .col-xs-12.col-sm-12.col-md-12
     %div{ style: 'padding: 0 15px;' }
       .well
         = form_for @project, as: :project, url: projects_path, html: { class: 'styled new_project' } do |f|
@@ -14,7 +14,7 @@
             .control-group.nomargin
               %label.control-label.required= t('.project_name')
               .controls
-                %input.col-md-5#project_name{ name: 'project[name]', type: 'text', value: @project.name }
+                %input.col-xs-10.col-md-5#project_name{ name: 'project[name]', type: 'text', value: @project.name }
                 - error_tag @project, :name
                 %p.help-block!= t('.project_name_help', link: link_to(t('.contact_us'), blog_url_for(:contact_form)))
             .control-group.nomargin
@@ -80,7 +80,7 @@
                 .input-prepend
                   %span.add-on= 'http://www.openhub.net/p/'
                   = f.text_field :vanity_url, class: 'check-availability', autocomplete: 'off',
-                                            style: 'width: 188px;',
+                                            style: 'width: auto;',
                                             'data-original-value' => Project.find_by(id: @project).try(:vanity_url),
                                             'data-ajax-path' => project_check_availabilities_path,
                                             'data-preview-base-url' => projects_url
@@ -93,7 +93,7 @@
             .control-group
               %label.control-label= t('.description')
               .controls
-                = find_and_preserve(f.text_area(:description, max_length: 800, style: 'width: 376px; height: 200px;'))
+                = find_and_preserve(f.text_area(:description, max_length: 800, style: 'width: auto; height: 200px;'))
                 - error_tag @project, :description
                 %p.help-block
                   = t('.description_help1')

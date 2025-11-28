@@ -1,18 +1,18 @@
 - lang = @account.most_experienced_language
-.margin_top_5#mini_account_row
-  .col-md-1
+.account_header{ style: 'margin-top: 5px' }
+  .col-xs-4.col-sm-3.col-md-2#account_icon
     = link_to account_path(@account) do
-      = image_tag avatar_img_path(@account, 62), size: '62x62', itemprop: 'image'
+      = image_tag avatar_img_path(@account, 62), size: '128x128', itemprop: 'image'
     - if lang
       - bg_color = language_color(lang.name)
       - text_color = language_text_color(lang.name)
       = link_to '', '#', style: "background-color: ##{bg_color}; color: ##{text_color};",
       title: t('accounts.mini_header.title'), class: 'center primary_language_bg'
-  .col-md-12#mini_account_header
-    .info.pull-left{ style: 'width: 40%' }
+  .col-xs-7.col-sm-4.col-md-7#account_header
+    .info.pull-left
       %h1{ itemprop: 'name' }
         = link_to h(@account.name), account_path(@account)
-      .col-md-12.pull-left.clearfix
+      .col-xs-8.col-sm-8.col-md-12.pull-left.clearfix
         - if @account.location.present?
           = @account.location
           %meta{ itemprop: 'homeLocation', content: @account.location }
@@ -22,17 +22,18 @@
         - unless my_account?(@account)
           = render partial: 'accounts/show/header/kudo_button', locals: { css: 'btn-minier btn-info link_space' }
       - if @account.url.present?
-        .pull-left.col-md-12.clearfix
+        .pull-left.col-xs-12.col-sm-12.col-md-12.clearfix
           = link_to @account.url, target: '_blank', title: @account.url, itemprop: 'url', rel: 'nofollow noopener noreferrer' do
             %i.icon-external-link
               = truncate(@account.url, length: 60)
       .clearfix
       %meta{ itemprop: 'interactionCount', content: @account.kudo_rank }
-    .mini-badges-section.pull-right
+  .col-xs-12.col-sm-5.col-md-3
+    .mini-badges-section
       - badges = @account.badges.map { |badge| BadgeDecorator.new(badge) }
       = render partial: 'accounts/badges_row', locals: { badges: badges }
 
 .clearfix &nbsp;
-.col-md-12
+.col-xs-12.col-sm-12.col-md-12
   .mezzo
 = render partial: 'layouts/partials/alert'

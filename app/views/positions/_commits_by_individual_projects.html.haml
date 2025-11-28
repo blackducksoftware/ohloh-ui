@@ -1,39 +1,40 @@
-%div{ class: position.decorate.analyzed_class_name }
-  %div
-    .one-project-header-left
-      %a.pull-left.logo{ href: project_path(position.project) }
-        = position.project.decorate.icon
-      .col-md-8.one-project-name#projects_similar_page
-        %a.title{ href: project_path(position.project), title: position.project.name }
-          = truncate(position.project.name, length: 40)
-        - project_activity_level_class(position.project, :fifteen)
-        - organization = position.project.organization
-        - if organization
-          = link_to "(#{h(organization.name)})", organization, class: 'project-organization'
-      .col-md-8.one-project-contribution
-        %span.contribution_role
-          = position.title
-        = position.decorate.affiliation
-        - if position.description && position.description.strip.size > 179
-          %span.one-project-description= expander(position.description, 150, 180)
-        - elsif position.description
-          %span.one-project-description{ style: 'display: inline', id: "proj_desc_#{position.id}_lg" }
-            = position.description
+.col-xs-12.col-sm-12.col-md-12.position-item
+  %div{ class: position.decorate.analyzed_class_name }
+    %div
+      .col-xs-6.col-sm-6.col-md-6.one-project-header-left
+        %a.pull-left.logo{ href: project_path(position.project) }
+          = position.project.decorate.icon
+        .col-xs-6.col-sm-6.col-md-6.one-project-name#projects_similar_page
+          %a.title{ href: project_path(position.project), title: position.project.name }
+            = truncate(position.project.name, length: 40)
+          - project_activity_level_class(position.project, :fifteen)
+          - organization = position.project.organization
+          - if organization
+            = link_to "(#{h(organization.name)})", organization, class: 'project-organization'
+        .col-xs-6.col-sm-6.col-md-6.one-project-contribution
+          %span.contribution_role
+            = position.title
+          = position.decorate.affiliation
+          - if position.description && position.description.strip.size > 179
+            %span.one-project-description= expander(position.description, 150, 180)
+          - elsif position.description
+            %span.one-project-description{ style: 'display: inline', id: "proj_desc_#{position.id}_lg" }
+              = position.description
 
-    .one-project-header-right
-      = render 'edit_link', position: position
-      = render 'commit_information', position: position
-  .clear
-  %div
-    - if position.name.nil?
-      .one_project_information_message
-        = t('.no_commits_to_display')
-    - elsif position.decorate.analyzed?
-      = render 'commits_by_individual_project_highchart', position: position
-    - else
-      .one_project_information_message.padding_left_30.padding_bottom_20
-        = t('.analysis_is_scheduled')
-  .clear{ style: 'margin-right: 10px' }
-    - analysis = position.project.try(:best_analysis)
-      - if analysis
-      = render 'shared/analysis_timestamp', analysis: analysis, project: position.project
+      .one-project-header-right
+        = render 'edit_link', position: position
+        = render 'commit_information', position: position
+    .clear
+    %div
+      - if position.name.nil?
+        .one_project_information_message
+          = t('.no_commits_to_display')
+      - elsif position.decorate.analyzed?
+        = render 'commits_by_individual_project_highchart', position: position
+      - else
+        .one_project_information_message.padding_left_30.padding_bottom_20
+          = t('.analysis_is_scheduled')
+    .clear{ style: 'margin-right: 10px' }
+      - analysis = position.project.try(:best_analysis)
+        - if analysis
+        = render 'shared/analysis_timestamp', analysis: analysis, project: position.project

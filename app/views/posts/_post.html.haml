@@ -1,7 +1,7 @@
 .well.posts{ style: post.account.access.admin? ? 'background: #D5E3E9;' : 'background: #F6F6F6' }
   = find_and_preserve(markdown_format(post.body))
   .clearfix.margin_top_10
-    .col-md-3.pull-right
+    .col-xs-3.col-sm-3.col-md-3.pull-right
       .pull-left
         %a= avatar_img_for post.account, 42
       .pull-left.margin_left_5

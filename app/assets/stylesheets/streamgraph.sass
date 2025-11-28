@@ -1,13 +1,10 @@
 #ohloh_streamgraph
   &.languages
     height: 300px !important
-  #ohloh_stream
-    width: 940px !important
-  width: 715px
+  width: 940px
   height: 350px !important
   float: left
-  margin-left: 15px
-  margin-right: 10px
+  margin-left: 90px
   .highlight
     stroke: #663300
     stroke-width: 2px
@@ -63,8 +60,7 @@
     background: asset_url('charts/watermark_692.png') no-repeat center left
 @media only all and (min-width: 320px) and (max-width: 480px)
   #ohloh_streamgraph
-    &.languages
-      height: 150px !important
+    margin-left: 0
     #ohloh_stream
       width: auto !important
     width: auto !important
@@ -75,5 +71,6 @@
     #ohloh_stream
       width: auto !important
     width: auto !important
-  #streamgraph_legend
-    margin-right: 48px
+@media (min-width: 700px) and (max-width: 800px)
+  #ohloh_streamgraph
+    margin-left: 0 

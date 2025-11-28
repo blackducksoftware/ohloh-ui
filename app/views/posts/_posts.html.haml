@@ -1,11 +1,11 @@
 .well.posts
-  .col-md-8{ style: 'width: 540px' }
+  .col-xs-8.col-sm-8.col-md-8
     %h4.margin_top_0#post_body_link_size
       = link_to h(posts.topic.forum.name), forum_path(posts.topic.forum)
       \:
       = link_to h(posts.topic.title), topic_path(posts.topic)
       %p.margin_top_15#post_body_text_size= expander(strip_tags(markdown_format(posts.body)), 200, 250)
-  .col-md-4
+  .col-xs-4.col-sm-4.col-md-4
     .float_left{ style: 'margin-left: -20px' }
       %div= t('.views')
       %div{ style: 'margin-top: 12px' }= t('.author')

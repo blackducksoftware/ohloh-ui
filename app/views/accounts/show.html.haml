@@ -16,7 +16,7 @@
 = render partial: 'accounts/show/admin' if current_user_is_admin?
 .mezzo.padding_one_top
   %h3= t('.dev_history')
-  .col-sm-12.col-md-12
+  .col-xs-12.col-sm-12.col-md-12
     - if @account.decorate.account_analysis_status_message
       %p= @account.decorate.account_analysis_status_message
     - else

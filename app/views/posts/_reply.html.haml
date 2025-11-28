@@ -1,11 +1,11 @@
 - if logged_in?
   .row
-    .col-md-9.pull-left
+    .col-xs-9.col-sm-9.col-md-9.pull-left
       %h3= t('.post_a_response')
       = form_for @post, url: topic_posts_path(@topic) do |f|
         = hidden_field_tag :page, params[:page]
         = render partial: 'posts/fields', locals: { f: f }
-    .col-md-2.margin_top_15.margin_left_25
+    .col-xs-3.col-sm-3.col-md-3.margin_top_15.margin_left_25
       = render 'shared/markdown_help'
 
 - else

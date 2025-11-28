@@ -13,42 +13,43 @@
 
   .margin_left_10
     .projects_compare
-      %table.side_by_side
-        = compare_section t('.general'), class: 'first', include_header: true
-        = compare_row t('.compare_table_activity_level'), :activity_level
-        = compare_row t('.compare_table_data_quality'), :data_quality
-        = compare_row t('.compare_table_homepage'), :homepage
-        = compare_row t('.compare_table_license'), :license
-        = compare_row t('.compare_table_cocomo'), :cocomo, help: :project_codebase_cost
-        = compare_section t('.all_time_statistics')
-        = compare_row t('.compare_table_committers_all_time'), :committers_all_time,
-                      graph: proj_names.merge(metric: 'contributor')
-        = compare_row t('.compare_table_commit_count'), :commit_count,
-                     graph: proj_names.merge(metric: 'commit')
-        = compare_row t('.compare_table_initial_commit'), :initial_commit
-        = compare_row t('.compare_table_most_recent_commit'), :most_recent_commit
+      .table-responsive
+        %table.side_by_side
+          = compare_section t('.general'), class: 'first', include_header: true
+          = compare_row t('.compare_table_activity_level'), :activity_level
+          = compare_row t('.compare_table_data_quality'), :data_quality
+          = compare_row t('.compare_table_homepage'), :homepage
+          = compare_row t('.compare_table_license'), :license
+          = compare_row t('.compare_table_cocomo'), :cocomo, help: :project_codebase_cost
+          = compare_section t('.all_time_statistics')
+          = compare_row t('.compare_table_committers_all_time'), :committers_all_time,
+                        graph: proj_names.merge(metric: 'contributor')
+          = compare_row t('.compare_table_commit_count'), :commit_count,
+                      graph: proj_names.merge(metric: 'commit')
+          = compare_row t('.compare_table_initial_commit'), :initial_commit
+          = compare_row t('.compare_table_most_recent_commit'), :most_recent_commit
 
-        = compare_section t('.twelve_month_statistics')
-        = compare_row t('.compare_table_twelve_months_committers'), :twelve_months_committers
-        = compare_row t('.compare_table_twelve_months_commits'), :twelve_months_commits
-        = compare_row t('.compare_table_twelve_months_files_modified'), :twelve_months_files_modified
-        = compare_row t('.compare_table_twelve_months_lines_added'), :twelve_months_lines_added
-        = compare_row t('.compare_table_twelve_months_lines_removed'), :twelve_months_lines_removed
-        = compare_row t('.compare_table_year_over_year_commits'), :year_over_year_commits
+          = compare_section t('.twelve_month_statistics')
+          = compare_row t('.compare_table_twelve_months_committers'), :twelve_months_committers
+          = compare_row t('.compare_table_twelve_months_commits'), :twelve_months_commits
+          = compare_row t('.compare_table_twelve_months_files_modified'), :twelve_months_files_modified
+          = compare_row t('.compare_table_twelve_months_lines_added'), :twelve_months_lines_added
+          = compare_row t('.compare_table_twelve_months_lines_removed'), :twelve_months_lines_removed
+          = compare_row t('.compare_table_year_over_year_commits'), :year_over_year_commits
 
-        = compare_section t('.thirty_day_statistics')
-        = compare_row t('.compare_table_thirty_day_committers'), :thirty_day_committers
-        = compare_row t('.compare_table_thirty_day_commits'), :thirty_day_commits
-        = compare_row t('.compare_table_thirty_day_files_modified'), :thirty_day_files_modified
-        = compare_row t('.compare_table_thirty_day_lines_added'), :thirty_day_lines_added
-        = compare_row t('.compare_table_thirty_day_lines_removed'), :thirty_day_lines_removed
+          = compare_section t('.thirty_day_statistics')
+          = compare_row t('.compare_table_thirty_day_committers'), :thirty_day_committers
+          = compare_row t('.compare_table_thirty_day_commits'), :thirty_day_commits
+          = compare_row t('.compare_table_thirty_day_files_modified'), :thirty_day_files_modified
+          = compare_row t('.compare_table_thirty_day_lines_added'), :thirty_day_lines_added
+          = compare_row t('.compare_table_thirty_day_lines_removed'), :thirty_day_lines_removed
 
-        = compare_section t('.code_analysis')
-        = compare_row t('.compare_table_mostly_written_in'), :mostly_written_in, help: :mostly_written
-        = compare_row t('.compare_table_comments'), :comments
-        = compare_row t('.compare_table_lines_of_code'), :lines_of_code,
-                      graph: proj_names.merge(metric: 'code_total')
-        = compare_section t('.people')
-        = compare_row t('.compare_table_managers'), :managers
-        = compare_row t('.compare_table_users'), :users
-        = compare_row t('.compare_table_rating'), :rating
+          = compare_section t('.code_analysis')
+          = compare_row t('.compare_table_mostly_written_in'), :mostly_written_in, help: :mostly_written
+          = compare_row t('.compare_table_comments'), :comments
+          = compare_row t('.compare_table_lines_of_code'), :lines_of_code,
+                        graph: proj_names.merge(metric: 'code_total')
+          = compare_section t('.people')
+          = compare_row t('.compare_table_managers'), :managers
+          = compare_row t('.compare_table_users'), :users
+          = compare_row t('.compare_table_rating'), :rating

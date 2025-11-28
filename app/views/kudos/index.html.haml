@@ -2,7 +2,7 @@
   content_for(:html_title) { t('.page_title', name: @person.account ? @person.account.name : @person.name) }
   page_context[:select_footer_nav] = :kudos
   position = @person ? kudo_position_for_person(@person.id, @person.kudo_position.to_i) : kudo_position_for_person(nil)
-.col-md-12
+.col-xs-12.col-sm-12.col-md-12
   %h2= t('.title')
   != position
   %table#kudo_mantle
