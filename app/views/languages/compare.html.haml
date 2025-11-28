@@ -16,7 +16,7 @@
   = hidden_field_tag :measure, @measure
   .col-md-8
     .chart.watermark440#language{ datasrc: chart_languages_path(measure: @measure, language_name: @language_names),
-      style: 'height: 270px;width: 480px' }
+      style: 'height: 270px;' }
   .col-md-4
     - @language_names.each do |name|
       .col-md-3{ style: "height: 28px;background-color: ##{language_color(name)}" }

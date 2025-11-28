@@ -21,7 +21,7 @@
                     .panel-body
                       #chartContainer
   - @projects.each do |project|
-    %td.col-md-3{ valign: 'top', style: 'padding-top: 5px;' }
+    %td.col-xs-3.col-sm-3.col-md-3{ valign: 'top', style: 'padding-top: 5px;' }
       - if project
         != render partial: "compares/project_cells/#{cell}", locals: { project: project }
       - else
