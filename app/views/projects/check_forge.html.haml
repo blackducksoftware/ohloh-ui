@@ -14,7 +14,7 @@
             .control-group.nomargin
               %label.control-label.required= t('.project_name')
               .controls
-                %input.col-xs-10.col-md-5#project_name{ name: 'project[name]', type: 'text', value: @project.name }
+                %input.col-xs-10.col-sm-11.col-md-5#project_name{ name: 'project[name]', type: 'text', value: @project.name }
                 - error_tag @project, :name
                 %p.help-block!= t('.project_name_help', link: link_to(t('.contact_us'), blog_url_for(:contact_form)))
             .control-group.nomargin
@@ -36,7 +36,7 @@
             .control-group
               .controls
                 %label.checkbox.control-label{ style: 'padding: 0;' }
-                  = f.check_box :managed_by_creator, choice: t('.i_manage_this_project'), class: 'col'
+                  = f.check_box :managed_by_creator, choice: t('.i_manage_this_project'), class: 'col', style: 'margin: 4px 0 0 -20px'
                   = t('.i_manage_this_project')
                 %p.help-block
                   = t('.i_manage_this_project_help1')
@@ -45,19 +45,19 @@
             .control-group
               %label.control-label= t('.homepage_page')
               .controls
-                = f.text_field :url, class: 'col-md-5'
+                = f.text_field :url, class: 'col-md-5 col-sm-11 col-xs-10'
                 - error_tag @project, :url
                 %p.help-block= t('.homepage_page_help')
             .control-group
               %label.control-label= t('.download_page')
               .controls
-                = f.text_field :download_url, class: 'col-md-5'
+                = f.text_field :download_url, class: 'col-md-5 col-sm-11 col-xs-10'
                 - error_tag @project, :download_url
                 %p.help-block= t('.download_page_help')
             .control-group
               %label.control-label= t('.add_license')
               .controls
-                %input.license.col-md-5#add_license{ type: 'text' }
+                %input.license.col-md-5.col-sm-11.col-xs-10#add_license{ type: 'text' }
                 %p.help-block
                   = t('.add_license_help1')
                   %br
@@ -93,7 +93,7 @@
             .control-group
               %label.control-label= t('.description')
               .controls
-                = find_and_preserve(f.text_area(:description, max_length: 800, style: 'width: auto; height: 200px;'))
+                = find_and_preserve(f.text_area(:description, max_length: 800, style: 'width: 345px; height: 200px;'))
                 - error_tag @project, :description
                 %p.help-block
                   = t('.description_help1')
