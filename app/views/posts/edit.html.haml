@@ -2,13 +2,13 @@
   = t('.edit_title')
 
 %br
-.col-md-12
+.col-xs-12.col-sm-12.col-md-12
   = render partial: 'forums/breadcrumb', locals: { forum:  @post.topic.forum }
 .clear
 .row
-  .col-md-8.pull-left.margin_top_10
+  .col-xs-8.col-sm-8.col-md-8.pull-left.margin_top_10
     %h2= t('.edit_post')
-  .col-md-3.pull-right
+  .col-xs-3.col-sm-3.col-md-3.pull-right
     - if current_user_is_admin?
       .btn-group
         .pull-left
@@ -19,9 +19,9 @@
           = button_to t('.delete'), topic_post_path(@topic, @post), method: :delete,
           data: { confirm: t('.delete_confirmation') }, class: 'btn btn-danger btn-mini'
 
-.well.col-md-12
-  .col-md-9
+.well.col-xs-12.col-sm-12.col-md-12
+  .col-xs-9.col-sm-9.col-md-9
     = form_for([@topic, @post], url: topic_post_path(@topic, @post), html: { method: 'put' }) do |f|
       = render partial: 'fields', locals: { f: f }
-  .col-md-2.margin_left_30.margin_top_10
+  .col-xs-2.col-sm-2.col-md-2.margin_left_30.margin_top_10
     = render partial: 'shared/markdown_help'

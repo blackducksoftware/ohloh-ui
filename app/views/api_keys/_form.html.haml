@@ -10,35 +10,35 @@
 %h2! #{settings_link} : #{account_api_keys_link} : #{@api_key.new_record? ? t(:new) : t(:edit)}
 
 = form_for [@account, @api_key] do |f|
-  .col-md-11.center-block.well.margin_left_20.padding_right_0
+  .col-md-11.col-sm-11.col-xs-11.center-block.well.margin_left_20.padding_right_0
     %fieldset
       - @api_key.oauth_application || @api_key.build_oauth_application
       = f.fields_for :oauth_application do |ff|
         .control-group
           %label.control-label.required= t 'api_keys.form.application_name'
           .controls
-            = ff.text_field :name, max_length: 50, class: 'col-md-7'
+            = ff.text_field :name, max_length: 50, class: 'col-md-7 col-sm-10 col-xs-10'
             - error_tag @api_key.oauth_application, :name
 
         .clearfix &nbsp;
         .control-group
           %label.control-label.required= t 'api_keys.redirect_uri'
           .controls
-            = ff.text_field :redirect_uri, max_length: 50, class: 'col-md-7'
+            = ff.text_field :redirect_uri, max_length: 50, class: 'col-md-7 col-sm-10 col-xs-10'
             - error_tag @api_key.oauth_application, :redirect_uri
 
       .clearfix &nbsp;
       .control-group
         %label.control-label= t 'api_keys.form.home_page_url'
         .controls
-          = f.text_field :url, max_length: 50, class: 'col-md-7'
+          = f.text_field :url, max_length: 50, class: 'col-md-7 col-sm-10 col-xs-10'
           - error_tag @api_key, :url
           %p.help-block= t 'api_keys.form.home_page_url_info'
 
       .control-group
         %label.control-label.required= t 'api_keys.form.description'
         .controls
-          = f.text_area :description, rows: 10, max_length: 2000, class: 'col-md-7'
+          = f.text_area :description, rows: 10, max_length: 2000, class: 'col-md-7 col-sm-10 col-xs-10'
           - error_tag @api_key, :description
           .clearfix &nbsp;
           %p.help-block= t 'api_keys.form.description_info'
@@ -47,7 +47,7 @@
         .control-group
           %label.control-label= t 'api_keys.form.daily_request_limit'
           .controls
-            = f.text_field :daily_limit, max_length: 10, class: 'col-md-4'
+            = f.text_field :daily_limit, max_length: 10, class: 'col-md-4 col-sm-8 col-xs-10'
             - error_tag @api_key, :daily_limit
           .clearfix
           %p.help-block= t 'api_keys.form.daily_request_limit_admin'

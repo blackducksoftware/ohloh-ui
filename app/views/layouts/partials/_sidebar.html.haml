@@ -1,8 +1,8 @@
 .row{ id: generate_page_name }
-  .col-md-2
-  .col-md-10
+  .col-xs-2.col-sm-2.col-md-2
+  .col-xs-10.col-sm-10.col-md-10
     %h1= page_context[:heading]
-  .col-md-2.padding_left_5
+  .col-xs-2.col-sm-2.col-md-2.padding_left_5
     .footer-navigation
       - page_context[:footer_menu_list].each do |section|
         %ul.nav.nav-stacked.nav-pills
@@ -19,4 +19,4 @@
               - link_class, link_name, link_url = link
               %li.sidebar-nav{ class: "#{link_class} #{'active' if page_context[:select_side_bar] == link_class}" }
                 %a{ href: link_url }= link_name
-  .col-md-10= yield
+  .col-xs-10.col-sm-10.col-md-10= yield

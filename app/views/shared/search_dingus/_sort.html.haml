@@ -14,7 +14,7 @@
         class: 'chzn-select', onchange: 'this.form.submit()'
 
   - elsif filter_type == :radiobutton
-    %label.radio.inline.margin_left_40
+    %label.radio.inline
       = radio_button_tag('find_by', 'name', params[:find_by] != 'email')
       = t('.by_name')
     %label.radio.inline

@@ -2,8 +2,6 @@
 - hide_foss_logo ||= false
 
 - badges.each_with_index do |badge, index|
-  - if header == :large && index == 4
-    %br.clear
   - if !hide_foss_logo
     - css_class = badge.css_class(badges.length, header, index)
     = link_to blog_url_for(:badges), class: "pull-left account-badge #{css_class}",
