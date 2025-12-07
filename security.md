@@ -5,7 +5,7 @@ The Black Duck PSIRT coordinates the response and, if necessary, disclosure of s
 
 Black Duck will investigate all reports for Black Duck products/platforms that are currently supported; accepted reports will be prioritized based on severity and other environmental factors. 
 
-If you believe you have found a security vulnerability in any repository that meets Black duck's definition of a security vulnerability, please report it to us as described below.maincontent/get-started/using-github/exploring-early-access-releases-with-feature-preview.md-early-access-releases-with-feature-preview.mdauthor:octocatdmcadotcom@gmail.comAS Cybersicherheit <dmcadotcom@gmail.com>
+If you believe you have found a security vulnerability in any repository that meets Black duck's definition of a security vulnerability, please report it to us as described below.
 
 ## Reporting Security Issues
 **Please do not report security vulnerabilities through public GitHub issues.**
