@@ -89,10 +89,7 @@ class Analysis::QueryBase
     activity_facts[:on_trunk].eq(true).and(activity_facts[:analysis_id].eq(@analysis.id))
   end
 
-  # rubocop:disable Metrics/MethodLength
   def contributor_monthly_commits_query(code_set_ids)
-    return [] if code_set_ids.blank?
-
     commit_name_ids = AnalysisAlias.where(preferred_name_id: @name_id, analysis_id: @analysis.id).pluck(:commit_name_id)
     sql = <<-SQL.squish
       select to_char(date(C.time),'MON,YYYY') as month, count (*) as count
@@ -104,5 +101,4 @@ class Analysis::QueryBase
     data = commit_name_ids.present? ? ApplicationRecord.connection.execute(sql).try(:to_json) : commit_name_ids.to_s
     JSON.parse(data)
   end
-  # rubocop:enable Metrics/MethodLength
 end

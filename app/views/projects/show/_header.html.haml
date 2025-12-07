@@ -33,20 +33,19 @@
         #i_use_this_container
           .use_count
             = link_to number_with_delimiter(@project.user_count), users_project_path(@project)
-        - unless @project.deleted?
-          - if logged_in?
-            = render partial: 'projects/show/i_use_this', locals: { project: @project }
-          - else
-            .btn.btn-mini.i_use_this_btn{ 'data-target' => '#LoginModal', 'data-toggle' => 'modal' }= t('.i_use_this')
-            .modal.fade#LoginModal{ 'aria-hidden' => 'true', 'aria-labelledby' => 'LoginModalLabel', :role => 'dialog' }
-              .modal-dialog.modal-sm
-                .modal-content{ style: 'width: 398px' }
-                  .modal-header
-                    %button.close{ 'aria-label' => 'Close', 'data-dismiss' => 'modal', :type => 'button' }
-                      %span{ 'aria-hidden' => 'true' } &times;
-                    %h4.modal-title#LoginModalLabel= t('.login_required')
-                  .model-body
-                    = render 'sessions/sign_in'
+        - if logged_in?
+          = render partial: 'projects/show/i_use_this', locals: { project: @project }
+        - else
+          .btn.btn-mini.i_use_this_btn{ 'data-target' => '#LoginModal', 'data-toggle' => 'modal' }= t('.i_use_this')
+          .modal.fade#LoginModal{ 'aria-hidden' => 'true', 'aria-labelledby' => 'LoginModalLabel', :role => 'dialog' }
+            .modal-dialog.modal-sm
+              .modal-content{ style: 'width: 398px' }
+                .modal-header
+                  %button.close{ 'aria-label' => 'Close', 'data-dismiss' => 'modal', :type => 'button' }
+                    %span{ 'aria-hidden' => 'true' } &times;
+                  %h4.modal-title#LoginModalLabel= t('.login_required')
+                .model-body
+                  = render 'sessions/sign_in'
       #project_header_activity_indicator
         - project_activity_level_class(@project, :thirtyfive)
         - project_activity_level_text(@project, :thirtyfive)
