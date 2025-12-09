@@ -63,7 +63,6 @@ class AccountDecorator < Cherry::Decorator
       [
         [:usage,              I18n.t(:usage),                nil],
         [:edit_history,       I18n.t(:website_edits),        h.account_edits_path(account)],
-        [:posts,              I18n.t(:post),                 h.account_posts_path(account)],
         [:reviews,            I18n.t(:reviews_text),         h.account_reviews_path(account)]
       ]
     ].tap do |menus|
