@@ -3,14 +3,14 @@
   script = "<script type='text/javascript' src='#{widget_url(widget, type)}'></script>"
 
 .widget_list
-  .row{ style: 'margin-left: -15px' }
-    .col-md-10
+  .row
+    .col-md-12
       %h3.inset_top.no_padding_top
         = widget.short_nice_name
-    .col-md-4.col
+    .col-md-3
       .widget_container.org_widget{ style: widget_iframe_style(widget) }
         = render template: "#{controller_name}/#{widget.name.underscore}", locals: locals
-    .col-md-7.col.pull-right
+    .col-md-9
       %h6.no_margin_top HTML
       %p= t('.embed')
       %pre.prettyprint

@@ -1,82 +1,83 @@
 - if @affiliated_projects.any?
   %h3= t('organizations.projects.title')
-  %table.table.table-striped.table-condensed
-    %thead
-      %tr{ id: 'dingus-row' }
-        %td{ colspan: '10' } &nbsp;
-      %tr
-        %th{ rowspan: 2, style: 'width: 190px;' }= t('organizations.projects.name')
-        %th.center{ rowspan: 2, style: 'width: 50px;' } &nbsp;
-        %th.center{ rowspan: 2, style: 'width: 120px;' }= t('organizations.projects.primary_language')
-        %th.center{ rowspan: 2, style: 'width: 90px;' }= t('organizations.projects.i_use_this')
-        %th.center{ rowspan: 2, style: 'width: 110px;' }= t('organizations.projects.community_rating')
-        %th.center{ rowspan: 2, style: 'width: 15px;' }
-        %th.center{ colspan: 2, style: 'width:250px' }
-          %strong= t('organizations.projects.twelve_month_activity')
-      %tr
-        %th= t('organizations.projects.contributors')
-        %th= t('organizations.projects.commits')
-
-    %tbody.portfolio-projects-table
-      - @affiliated_projects.each do |project|
-        - best_analysis                 = project.best_analysis
-        - twelve_month_summary          = best_analysis.twelve_month_summary
-        - previous_twelve_month_summary = best_analysis.previous_twelve_month_summary
-        - language                      = best_analysis.main_language
-
-        - best_analysis_decorator       = AnalysisDecorator.new(best_analysis)
-        - affiliated_commits_diff       = best_analysis_decorator.affiliated_commits_difference
-        - affiliated_committers_diff    = best_analysis_decorator.affiliated_committers_difference
-        - outside_commits_diff          = best_analysis_decorator.outside_commits_difference
-        - outside_committers_diff       = best_analysis_decorator.outside_committers_difference
-
+  .table-responsive
+    %table.table.table-condensed
+      %thead
+        %tr{ id: 'dingus-row' }
+          %td{ colspan: '10' } &nbsp;
         %tr
-          %td{ rowspan: 3 }
-            = project.decorate.icon(:small)
-            = link_to h(truncate(project.name, length: 23)), project_path(project), title: project.name
-          %td{ rowspan: 3 }
-            %div{ style: 'margin-top: -25px; position: relative' }
-              - project_activity_level_class(project, :twenty)
-          %td.center{ rowspan: 3 }
-            - if language.nil?
-              N/A
-            - else
-              .lang_bg{ style: "background-color: ##{language_color(language.name)};" }
-                = link_to language.nice_name, language_path(language), class: 'language_name',
-                  style: "color: ##{language_text_color(language.name)}"
-          %td.center{ rowspan: 3 }
-            = project.user_count
-          %td.center{ rowspan: 3 }
-            - if project.rating_average.to_i.zero?
-              none
-            - else
-              %span.org_project_rating
-                != rating_stars('rating_star', project.rating_average, mini: true)
+          %th{ rowspan: 2, style: 'width: 190px;' }= t('organizations.projects.name')
+          %th.center{ rowspan: 2, style: 'width: 50px;' } &nbsp;
+          %th.center{ rowspan: 2, style: 'width: 120px;' }= t('organizations.projects.primary_language')
+          %th.center{ rowspan: 2, style: 'width: 90px;' }= t('organizations.projects.i_use_this')
+          %th.center{ rowspan: 2, style: 'width: 110px;' }= t('organizations.projects.community_rating')
+          %th.center{ rowspan: 2, style: 'width: 15px;' }
+          %th.center{ colspan: 2, style: 'width:250px' }
+            %strong= t('organizations.projects.twelve_month_activity')
         %tr
-          %td.center &nbsp;
-          %td.proj_commit_stats
-            #{t('organizations.projects.affiliated')}:&nbsp;
-            = render partial: 'project_commit_status', locals: { diff: affiliated_committers_diff,
-              commit_count: twelve_month_summary.affiliated_committers_count,
-              prev_commit_count: previous_twelve_month_summary.affiliated_committers_count }
-          %td
-            = render partial: 'project_commit_status', locals: { diff: affiliated_commits_diff,
-              commit_count: twelve_month_summary.affiliated_commits_count,
-              prev_commit_count: previous_twelve_month_summary.affiliated_commits_count }
-        %tr
-          %td.center &nbsp;
-          %td.proj_committer_stats
-            #{t('organizations.projects.outside')}:&nbsp;&nbsp;&nbsp;
-            = render partial: 'project_commit_status', locals: { diff: outside_committers_diff,
-              commit_count: twelve_month_summary.outside_committers_count,
-              prev_commit_count: previous_twelve_month_summary.outside_committers_count }
-          %td
-            = render partial: 'project_commit_status', locals: { diff: outside_commits_diff,
-              commit_count: twelve_month_summary.outside_commits_count,
-              prev_commit_count: previous_twelve_month_summary.outside_commits_count }
-  - count = @organization.projects_count
-  = render partial: 'pagination', locals: { count: count,
-                                            text: t('organizations.projects.see_all_projects', num: count),
-                                            url: projects_organization_path(@organization),
-                                            collection: @affiliated_projects }
+          %th.center= t('organizations.projects.contributors')
+          %th.center= t('organizations.projects.commits')
+
+      %tbody.portfolio-projects-table
+        - @affiliated_projects.each do |project|
+          - best_analysis                 = project.best_analysis
+          - twelve_month_summary          = best_analysis.twelve_month_summary
+          - previous_twelve_month_summary = best_analysis.previous_twelve_month_summary
+          - language                      = best_analysis.main_language
+
+          - best_analysis_decorator       = AnalysisDecorator.new(best_analysis)
+          - affiliated_commits_diff       = best_analysis_decorator.affiliated_commits_difference
+          - affiliated_committers_diff    = best_analysis_decorator.affiliated_committers_difference
+          - outside_commits_diff          = best_analysis_decorator.outside_commits_difference
+          - outside_committers_diff       = best_analysis_decorator.outside_committers_difference
+
+          %tr
+            %td{ rowspan: 3 }
+              = project.decorate.icon(:small)
+              = link_to h(truncate(project.name, length: 23)), project_path(project), title: project.name
+            %td{ rowspan: 3 }
+              %div.margin_right_20{ style: 'margin-top: -25px; position: relative' }
+                - project_activity_level_class(project, :twenty)
+            %td.center{ rowspan: 3 }
+              - if language.nil?
+                N/A
+              - else
+                .lang_bg{ style: "background-color: ##{language_color(language.name)};" }
+                  = link_to language.nice_name, language_path(language), class: 'language_name',
+                    style: "color: ##{language_text_color(language.name)}"
+            %td.center{ rowspan: 3 }
+              = project.user_count
+            %td.center{ rowspan: 3 }
+              - if project.rating_average.to_i.zero?
+                none
+              - else
+                %span.org_project_rating
+                  != rating_stars('rating_star', project.rating_average, mini: true)
+          %tr
+            %td.center &nbsp;
+            %td.proj_commit_stats.center
+              #{t('organizations.projects.affiliated')}:&nbsp;
+              = render partial: 'project_commit_status', locals: { diff: affiliated_committers_diff,
+                commit_count: twelve_month_summary.affiliated_committers_count,
+                prev_commit_count: previous_twelve_month_summary.affiliated_committers_count }
+            %td.center
+              = render partial: 'project_commit_status', locals: { diff: affiliated_commits_diff,
+                commit_count: twelve_month_summary.affiliated_commits_count,
+                prev_commit_count: previous_twelve_month_summary.affiliated_commits_count }
+          %tr
+            %td.center &nbsp;
+            %td.proj_committer_stats.center
+              #{t('organizations.projects.outside')}:&nbsp;&nbsp;&nbsp;
+              = render partial: 'project_commit_status', locals: { diff: outside_committers_diff,
+                commit_count: twelve_month_summary.outside_committers_count,
+                prev_commit_count: previous_twelve_month_summary.outside_committers_count }
+            %td.center
+              = render partial: 'project_commit_status', locals: { diff: outside_commits_diff,
+                commit_count: twelve_month_summary.outside_commits_count,
+                prev_commit_count: previous_twelve_month_summary.outside_commits_count }
+    - count = @organization.projects_count
+    = render partial: 'pagination', locals: { count: count,
+                                              text: t('organizations.projects.see_all_projects', num: count),
+                                              url: projects_organization_path(@organization),
+                                              collection: @affiliated_projects }
 

@@ -46,6 +46,7 @@ tbody.portfolio-projects-table
 #org_infographic
   position: relative
   height: 290px
+  min-width: 1000px
   .about
     font-size: 12px
     color: #80539C
@@ -186,7 +187,6 @@ tbody.portfolio-projects-table
   pointer-events: none !important
 
 /* ORG -- Infographics -- END */
-
 form#new_logo
   input
     size: 12px
@@ -196,16 +196,111 @@ form#new_logo
       color: black
     &::-webkit-input-placeholder
       color: black
+  a.btn-refresh
+    height: 43px
+    display: inline-flex
+    align-items: center
+    background-color: #8f908f !important
 
 #organizations_create_page, #organizations_new_page
   h1
     margin-bottom: 15px
     margin-left: -15px
 
+#organizations_edit_page
+  input#organization_homepage_url, input#organization_name
+    width: 83%
+  input#organization_vanity_url
+    width: 375px
+  label.availability-preview
+    display: block
+
 #org_summary
   p
     word-wrap: break-word
 
+td
+  span#average_rating_stars
+    display: flex
+    justify-content: center
+
 @media print
   a[href]:after
     content: none !important
+
+.org-pictogram
+  display: flex
+  justify-content: center
+  align-items: center
+  max-width: 100%
+  margin-left: auto
+  margin-right: auto
+  overflow-x: auto
+
+#organizations_settings_page
+  .settings_module
+    height: 100px
+  .settings_content
+    padding-left: 50px
+#organization_widgets_index_page
+  .row
+    margin-left: 15px
+  .project_content_title
+    height: auto
+#organizations_projects_page
+  #portfolio_projects_list
+    padding: 0 5px
+.row.org_header_row
+  margin-left: 0
+
+#organizations_manage_projects_page
+  .claim_project
+    margin-bottom: 10px
+
+@media only all and (min-width: 320px) and (max-width: 800px)
+  .org-quick-reference
+    margin-top: 25px
+  #project_header
+    height: 80px
+
+  #organizations_settings_page
+    .settings_content
+      padding-left: 20px
+  #organization_widgets_index_page
+    .row
+      margin-left: 0
+  #organizations_manage_projects_page, #edits_index_page
+    button.btn-refresh
+      padding: 0 8px
+
+@media only all and (min-width: 320px) and (max-width: 480px)
+  #organizations_settings_page, #organization_widgets_index_page, #organizations_projects_page
+    .mezzo
+      margin-bottom: 5px
+  #organizations_edit_page
+    input#organization_vanity_url
+      width: 20%
+  #logos_new_page
+    #logo_url
+      width: 95%
+  #organizations_manage_projects_page, #edits_index_page
+    #search-dingus .col-md-4 #sort_by
+      float: none
+    #search-dingus 
+      .col-md-5, .col-md-4
+        width: auto
+        padding-left: 25px !important
+      .col-xs-12.no_padding_left > #sort_by
+        margin-top: 10px
+      #query
+        width: 40%
+      #sort_by
+        label
+          width: 125px
+  #edits_index_page
+    #human_edits, #enlistment_edits
+      display: block
+      float: none !important
+      margin-right: 0
+      span
+        margin-left: 20px

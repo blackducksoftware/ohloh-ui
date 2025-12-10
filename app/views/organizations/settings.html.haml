@@ -3,43 +3,40 @@
   page_context[:select_top_menu_nav] = 'select_organizations'
   page_context[:select_footer_nav] = :settings
 
-%h2.pull-left= t('settings')
-.clearfix
+%h2= t('settings')
 
-.row.margin_bottom_20
-  .col-md-4.settings_module
+.row.margin_bottom_20.settings_content
+  .col-lg-4.col-sm-6.settings_module
     %h4.nomargin
       = link_to t('.basics'), edit_organization_path(@organization)
     %span.pull-left
       %a.module_icon.basics{ href: edit_organization_path(@organization) }
     %span.pull-left.settings_description= t('.name_description_and_url')
-  .col-md-4.settings_module
+  .col-lg-4.col-sm-6.settings_module
     %h4.nomargin
       = link_to t('managers_link_name'), list_managers_organization_path(@organization)
     %span.pull-left
       %a.module_icon.managers{ href: list_managers_organization_path(@organization) }
     %span.pull-left.settings_description= t('.users_who_manage')
-  .col-md-4.settings_module
+  .col-lg-4.col-sm-6.settings_module
     %h4.nomargin
       = link_to t('.edit_history'), organization_edits_path(@organization)
     %span.pull-left
       %a.module_icon.history{ href: organization_edits_path(@organization) }
     %span.pull-left.settings_description= t('.list_of_recent_activity')
-
-.row.margin_bottom_20
-  .col-md-4.settings_module
+  .col-lg-4.col-sm-6.settings_module
     %h4.nomargin
       = link_to t('logo'), new_organization_logos_path(@organization)
     %span.pull-left
       %a.module_icon.logo{ href: new_organization_logos_path(@organization) }
     %span.pull-left.settings_description= t('.logo_displayed_for_org')
-  .col-md-4.settings_module
+  .col-lg-4.col-sm-6.settings_module
     %h4.nomargin
       = link_to t('.manage_projects'), manage_projects_organization_path(@organization)
     %span.pull-left
       %a.module_icon.orgs_manage_projects{ href: manage_projects_organization_path(@organization) }
     %span.pull-left.settings_description= t('.held_projects')
-  .col-md-4.settings_module
+  .col-lg-4.col-sm-6.settings_module
     %h4.nomargin
       = link_to t('.permissions'), permissions_organization_path(@organization)
     %span.pull-left

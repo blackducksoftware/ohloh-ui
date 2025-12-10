@@ -1,24 +1,25 @@
-.col-md-8.no_padding#orgs_by_30_days_volume
-  %h2.pull-left= t('.title')
-  .pull-right.nav-select-container#sort_by
-    %label.pull-left#filter!= t('.filter')
-    = select_tag(:org_type, options_for_select(OrgThirtyDayActivity::SORT_TYPES),
-    class: 'chzn-select pull-right', style: 'width:126px')
-  .clearfix
+.no_padding#orgs_by_30_days_volume
+  .d-flex.flex-column.flex-md-row.justify-content-between.mb-3
+    %h2.pull-left= t('.title')
+    .pull-right.nav-select-container#sort_by
+      %label.pull-left#filter!= t('.filter')
+      = select_tag(:org_type, options_for_select(OrgThirtyDayActivity::SORT_TYPES),
+      class: 'chzn-select pull-right', style: 'width:126px')
   #org_filter_no_result{ class: @org_by_30_day_commits.empty? ? '' : 'hidden' }
     %h5
       %i.icon-warning-sign
       = t '.no_results'
   .busy.hidden#commit_volume_loader
-  %table.table.table-condensed{ class: @org_by_30_day_commits.empty? ? 'hidden' : '' }
-    .margin_top_15
-    %thead
-      %tr#header
-        %th{ style: 'width:25%' }= t '.org'
-        %th.center{ style: 'width:15%' }= t '.type'
-        %th.center{ style: 'width:5%' }= t '.size'
-        %th.center{ style: 'width:15%' }= t '.projects'
-        %th.center{ style: 'width:15%' }= t '.affiliates'
-        %th.center{ style: 'width:20%' }= t '30_day_commits'
-    %tbody#30_day_commit_volume
-      = render partial: 'org_30_day_activity', collection: @org_by_30_day_commits
+  .table-responsive
+    %table.table.table-condensed{ class: @org_by_30_day_commits.empty? ? 'hidden' : '' }
+      .margin_top_15
+      %thead
+        %tr#header
+          %th{ style: 'width:20%' }= t '.org'
+          %th.center{ style: 'width:20%' }= t '.type'
+          %th.center{ style: 'width:5%' }= t '.size'
+          %th.center{ style: 'width:15%' }= t '.projects'
+          %th.center{ style: 'width:15%' }= t '.affiliates'
+          %th.center{ style: 'width:20%' }= t '30_day_commits'
+      %tbody#30_day_commit_volume
+        = render partial: 'org_30_day_activity', collection: @org_by_30_day_commits
