@@ -30,7 +30,6 @@ class AccountDecoratorTest < ActiveSupport::TestCase
       [
         [:usage, 'Usage', nil],
         [:edit_history, 'Website Edits', "/accounts/#{admin.login}/edits"],
-        [:posts, 'Posts', "/accounts/#{admin.login}/posts"],
         [:reviews, 'Reviews', "/accounts/#{admin.login}/reviews"]
       ]
     ]
@@ -97,11 +96,6 @@ class AccountDecoratorTest < ActiveSupport::TestCase
     it 'should have two menus in third section' do
       _(admin.decorate.sidebar_for(current_account).third.length).must_equal 2
       _(admin.decorate.sidebar_for(current_account).third).must_equal sidebars.third
-    end
-
-    it 'should have 4 menus in fourth sections' do
-      _(admin.decorate.sidebar_for(current_account).fourth.length).must_equal 4
-      _(admin.decorate.sidebar_for(current_account).fourth).must_equal sidebars.fourth
     end
   end
 

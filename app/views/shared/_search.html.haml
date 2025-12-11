@@ -16,8 +16,6 @@
             %a.default{ val: 'p' }= t('projects_menu')
           %li
             %a{ val: 'orgs' }= t('organizations_menu')
-          %li
-            %a{ val: 'posts' }= t('forum')
         %input.search.text.global_top_search{ type: :text, name: 'query', placeholder: t('shared.search.search_text'),
         value: global_search_param, autocomplete: 'off' }
         %input.search.hidden{ type: 'hidden', name: 'search_type', id: 'search_type', value: 'projects' }
