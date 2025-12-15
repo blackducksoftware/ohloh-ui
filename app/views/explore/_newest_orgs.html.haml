@@ -1,10 +1,10 @@
-.col-md-4#newest-orgs
+#newest-orgs
   %h2= t '.title'
   - @newest_orgs.each do |org|
     .row
-      .col-md-3
+      .col-md-3.col-xs-3
         = link_to org.decorate.icon(:med), organization_path(org), style: 'text-decoration: none', title: org.name
-      .col-md-9
+      .col-md-9.col-xs-9
         = link_to h(truncate(org.name, length: 24)), organization_path(org), title: org.name
         .margin_top_10
         = link_to t('.projects_count', count: org.projects_count),

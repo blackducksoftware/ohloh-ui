@@ -4,9 +4,9 @@
 
 %h1.margin_bottom_20= t('.title')
 .row
-  = render partial: 'most_active_orgs'
-  = render partial: 'orgs_by_30_day_commit_volume'
-.margin_bottom_20
-.row
-  = render partial: 'newest_orgs'
-  = render partial: 'stats_by_sector'
+  .col-md-3
+    = render partial: 'most_active_orgs'
+    = render partial: 'newest_orgs'
+  .col-md-9
+    = render partial: 'orgs_by_30_day_commit_volume'
+    = render partial: 'stats_by_sector'
