@@ -65,6 +65,10 @@ class ApplicationController < ActionController::Base
     render_404
   end
 
+  rescue_from ActionDispatch::Http::MimeNegotiation::InvalidType do
+    head :not_acceptable
+  end
+
   rescue_from ParamRecordNotFound, ActionController::UnknownFormat, ActionController::RoutingError do
     render_404
   end
