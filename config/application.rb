@@ -11,6 +11,11 @@ Dotenv.load '.env.local', ".env.#{Rails.env}"
 module OhlohUi
   class Application < Rails::Application
     config.middleware.use Rack::Deflater
+
+    # Fix invalid MIME type issues
+    require_relative '../app/middleware/mime_type_sanitizer'
+    config.middleware.insert_before ActionDispatch::Static, MimeTypeSanitizer
+
     config.load_defaults 6.1
 
     config.generators.stylesheets = false
