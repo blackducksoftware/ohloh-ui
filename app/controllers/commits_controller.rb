@@ -96,14 +96,22 @@ class CommitsController < SettingsController
   end
 
   def find_contributor_fact
-    if @project.best_analysis_id
-      @contributor_fact = ContributorFact.find_by(analysis_id: @project.best_analysis_id,
-                                                  name_id: params[:contributor_id])
-    end
+    return render_no_analysis_error if @project.best_analysis.empty?
+
+    @contributor_fact = ContributorFact.find_by(analysis_id: @project.best_analysis_id,
+                                                name_id: params[:contributor_id])
     return if @contributor_fact
 
     notify_contributor_fact_not_found
     render_404
+  end
+
+  def render_no_analysis_error
+    respond_to do |format|
+      format.xml do
+        render xml: { error: 'No analysis available for this project' }.to_xml(root: 'response'), status: :not_found
+      end
+    end
   end
 
   def notify_contributor_fact_not_found
