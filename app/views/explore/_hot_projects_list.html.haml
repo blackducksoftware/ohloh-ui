@@ -8,15 +8,15 @@
       org = project.organization
       org_name = truncate(org.name, length: 30) if org
     %tr
-      %td.center
+      %td{ width: '12%' }
         = (index + 1)
-      %td
+      %td{ width: '10%' }
         = project.decorate.icon(:small)
       %td
         = link_to h(project_name), project_path(project)
       %td.center
         = link_to h(org_name), organization_path(org), class: 'claimed-by-org', title: org.name if org
-      %td.pai
+      %td.pai{ width: '8%' }
         - project_activity_level_class(project, :twentyfive)
       %td.center
         = number_with_precision(project.best_analysis.angle, precision: 1)

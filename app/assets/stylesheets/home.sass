@@ -1,10 +1,7 @@
 .showcase
   padding-top: 20px
   padding-bottom: 30px
-  width: 980px
-  margin-left: -15px
-  padding-left: 5px
-  padding-right: 5px
+  width: 100%
 @media only all and (min-width: 320px) and (max-width: 480px)
   .showcase
     width: auto
@@ -50,7 +47,10 @@
   color: #646E81
   margin-left: -27px
   cursor: pointer
-
+.ossra_banner
+  img
+    margin: 1em 0 0 3em
+    width: 85%
 #global_statistics
   padding-top: 1px
   p
@@ -64,6 +64,8 @@
 .join_now_home
   padding-top: 10px
   font-size: 1.4em
+  display: flex
+  align-items: center
   p
     font-size: 14px !important
   .join_now_color
@@ -72,6 +74,9 @@
     font-size: 0.5em !important
     height: 30px
     width: 30px
+  ul
+    margin-left: 25px
+    margin-right: 25px
 .home_page_row
   .whats_new
     margin-right: -27px !important
@@ -147,7 +152,6 @@ input:focus::-ms-input-placeholder
 
 .landing
   margin-top: 20px
-  margin-left: -14px
 .top_ten_main
   padding-left: 40px !important
   padding-bottom: 6px !important
@@ -169,9 +173,6 @@ input:focus::-ms-input-placeholder
     font-size: 16px !important
 .top_ten.middle
   @include site-well-color
-.top_ten.last
-  h2
-    margin-right: -25px !important
 .top_ten_icon
   img
     background-color: #EEE
@@ -238,5 +239,3 @@ button
   float: right
 #no-background
   background-color: white !important
-
-

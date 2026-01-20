@@ -3,18 +3,18 @@
 
 
 %h2= t('.title')
-.col-md-5.pull_left#org_summary
+.col-md-7#org_summary
   - if @organization.description.blank?
     = t('.no_desc')
     = link_to t('.add_desc'), edit_organization_path(@organization)
   - else
     = simple_format @organization.description.strip_tags
   = render partial: '/shared/add_this', locals: { text: "#{@organization.name} organization" }
-.col-md-6.col-md-offset-1
+.col-md-4.col-md-offset-1.org-quick-reference
   = render partial: 'organizations/show/quick_reference'
 
 .col-md-12
-  .mezzo.padding_one_top
+  .mezzo.padding_one_top.org-pictogram
     = render partial: '/organizations/show/pictogram', locals: { print_icon: true }
   .mezzo.padding_one_top
     .org-data-table.margin_left_10.margin_right_10

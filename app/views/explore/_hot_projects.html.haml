@@ -1,20 +1,20 @@
-.pull-right.col-md-8.margin_top_20
-  %h2.pull-left= t('.title')
-  %form{ action: '', rel: 'sort_filter' }
-    .pull-right.nav-select-container#sort_by
-      %label.pull-left{ style: 'line-height: 28px' }
-        = t('.filter')
-        &nbsp;
-      = select_tag :lang, options_for_select(@languages, params[:lang]), class: 'chzn-select col-md-2 pull-right'
-  .clearfix
-  %table.table.table-striped.center-block#hot_projects
-    %tr
-      %th{ width: '5%' }= t('.rank')
-      %th{ width: '5%' }
-      %th{ width: '35%' }= t('.name')
-      %th{ width: '15%' }= t('.claimed')
-      %th.center{ width: '8%' }= t('.pai')
-      %th.center{ width: '12%' }
-        = link_to t('.hotness_score'), blog_url_for(:hotness_score), class: 'meta', target: '_blank'
-    = render 'hot_projects_list'
-  .clearfix
+.col-md-9.col-lg-10.margin_top_10
+  .d-flex.flex-column.flex-md-row.justify-content-between.mb-3
+    %h2.hot-projects-header= t('.title')
+    %form{ action: '', rel: 'sort_filter' }
+      .d-flex.align-items-center#sort_by
+        %label.me-2.mb-0
+          = t('.filter')
+        = select_tag :lang, options_for_select(@languages, params[:lang]), class: 'chzn-select col-md-5'
+  .table-responsive
+    %table.table.table-striped.center-block#hot_projects
+      %thead
+        %tr
+          %th{ width: '12%' }= t('.rank')
+          %th{ width: '10%' }
+          %th= t('.name')
+          %th= t('.claimed')
+          %th{ width: '8%' }= t('.pai')
+          %th.center
+            = link_to t('.hotness_score'), blog_url_for(:hotness_score), class: 'meta', target: '_blank'
+      = render 'hot_projects_list'

@@ -1,7 +1,9 @@
 #explore_orgs_page
-  h1
-    margin-left: -10px
   #orgs_by_30_days_volume
+    min-height: 260px
+    margin-left: 10px
+    #sort_by
+      margin-top: 10px
     label#filter
       margin-top: 4px
     td a
@@ -23,7 +25,7 @@
         background-color: #f9f9f9
 
   #newest-orgs
-    width: 32%
+    padding: 10px 15px 0 23px
     .row
       margin-bottom: 15px
       margin-left: 0px
@@ -38,18 +40,11 @@
       font-weight: bold
       font-size: 15px
 
-  #orgs_by_30_days_volume
-    min-height: 260px
-    width: 64%
-    margin-left: 20px
-
   #most-active-orgs
-    width: 32%
-    padding: 0px 0px 0px 10px
     border-radius: 0
-    margin-bottom: 0px
+    padding-bottom: 0
     .title
-      margin-top: 7px
+      margin-top: 5px
       margin-bottom: 15px
     .row
       margin-bottom: 15px
@@ -60,7 +55,7 @@
         font-weight: bold
         font-size: 15px
     .row#active-org-timestamp
-      font-size: 9px
+      font-size: 10px
       font-style: italic
       margin-bottom: 0px
 
@@ -106,3 +101,9 @@
       background-color: color-gradient($SECONDARY_SLATE_BLUE, 120)
       color: white
       padding: 0 0 0 3px
+
+@media only all and (min-width: 320px) and (max-width: 480px)
+  #explore_orgs_page
+    #newest-orgs
+      padding: 10px 15px 0 10px
+  
