@@ -7,6 +7,5 @@ password = ARGV[1] || :admin_password
 email = ARGV[2] || 'admin@example.com'
 
 account = Account.create!(login: login, level: 10, activated_at: Time.current,
-                          email: email, email_confirmation: email,
-                          password: password, password_confirmation: password)
-ManualVerification.create!(account: account, auth_id: account.login)
+                          email: email, password: password)
+ManualVerification.create!(account_id: account.id, unique_id: account.id)
