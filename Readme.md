@@ -1,120 +1,180 @@
-OhlohUI
-=======
+# OhlohUI
 
-Dependencies:
-----------------
+A Ruby on Rails application for the Open Hub platform.
 
-* OhlohUI uses the ruby version 2.5.3. Please install ruby '> 2.5'.
-* OhlohUI uses the postgresql database. Please install postgresql and create a new user on it.
+## 📋 Table of Contents
 
-Getting Started:
-----------------
+- [Prerequisites](#prerequisites)
+- [Getting Started](#getting-started)
+- [Database Setup](#database-setup)
+- [Running the Application](#running-the-application)
+- [Testing](#testing)
+- [Pull Request Checks](#pull-request-checks)
+- [Contributing](#contributing)
 
-```
-$ git clone git@github.com:blackducksoftware/ohloh-ui.git
-$ cd ohloh-ui
-$ gem install bundler
-$ bundle install
-```
+## 🔧 Prerequisites
 
-The OhlohUI data is split between two databases in production. The development setup needs to reflect the same.
-The database names are configured in a file specific to each environment. For development, create a file **env.development**, with the following contents.
+Before you begin, ensure you have the following installed:
 
-```
-DB_ENCODING = 'UTF-8'
+- **Ruby**: 3.1.7 (use `rbenv` or `rvm`)
+- **Rails**: 6.1.7.10
+- **PostgreSQL**: Latest stable version
 
-DB_HOST = localhost
-DB_NAME =
-DB_USERNAME =
-DB_PASSWORD =
-```
+### System-Specific Requirements
 
-The default DB encoding was set to SQL_ASCII to support data encoded by older ruby. For new data, the UTF-8 encoding should work fine. The *_USERNAME and *_PASSWORD entries need to reflect the user created in postgresql. The *DB_NAME entries should be new database names. These will be created during our setup.
-
-```
-$ rake db:create
-$ rake db:structure:load
-$ rake db:second_base:structure:load
+#### macOS
+```bash
+brew install postgresql
+brew services start postgresql
 ```
 
-This might throw a bunch of errors about relations and constraints already existing. Please ignore them and proceed.
-
-Setup a default admin user. The arguments are optional. By default a user with the login **admin_user**, password **admin_password** and email **admin@example.com** will be created.
-
-```
-$ ruby script/setup_default_admin.rb <login> <passsword> <email>
+#### Ubuntu/Debian
+```bash
+sudo apt-get update
+sudo apt-get install postgresql postgresql-contrib libpq-dev
 ```
 
-```
-$ rails s
-```
-
-Visit **localhost:3000** to checkout the site.
-
-Tests:
---------------------
-
-Add the following to the **.env.development** file. Fill in the blank values appropriately. Modify **.env.test** to reflect the values that were added here.
-
-```
-TEST_DB_HOST = localhost
-TEST_DB_NAME =
-TEST_DB_USERNAME =
-TEST_DB_PASSWORD =
+# Install Ruby version manager (rbenv)
+```bash
+brew install rbenv
+rbenv install 3.1.7
+rbenv global 3.1.7
 ```
 
-Then run the following:
+## 🚀 Getting Started
 
+### 1. Clone the Repository
+
+```bash
+git clone git@github.com:blackducksoftware/ohloh-ui.git
+cd ohloh-ui
 ```
-$ rake db:test:prepare
+
+### 2. Install Dependencies
+
+```bash
+gem install bundler
+bundle install
+```
+
+## 💾 Database Setup
+
+### 1. Configure Environment Variables
+
+Create a file named `.env.development` in the project root with the following content:
+
+```bash
+DB_ENCODING=UTF-8
+DB_HOST=localhost
+DB_NAME=oh_db
+DB_USERNAME=fis_user
+DB_PASSWORD=fis_password
+
+TEST_DB_HOST=localhost
+TEST_DB_NAME=oh_test
+TEST_DB_USERNAME=fis_user
+TEST_DB_PASSWORD=fis_password
+```
+
+### 2. Create PostgreSQL User
+
+```bash
+psql postgres
+```
+
+In PostgreSQL prompt:
+```sql
+CREATE USER fis_user WITH PASSWORD 'fis_password';
+ALTER USER fis_user WITH SUPERUSER;
+```
+
+> **Note**: The default DB encoding was set to SQL_ASCII for legacy data compatibility. UTF-8 encoding is recommended for new data.
+
+### 2. Create and Setup Databases
+
+```bash
+rails db:create
+rake db:structure:load
+rake db:migrate
+```
+
+> **Note**: You may see errors about existing relations and constraints. These can be safely ignored.
+
+### 3. Setup Admin User
+
+Create a default admin user (arguments are optional):
+
+```bash
+ruby script/setup_default_admin.rb <login> <password> <email>
+```
+
+**Default credentials if no arguments provided:**
+- Login: `admin_user`
+- Password: `admin_password`
+- Email: `admin@example.com`
+
+## ▶️ Running the Application
+
+Start the Rails server:
+
+```bash
+rails s
+```
+
+Visit [http://localhost:3000](http://localhost:3000) to view the application.
+
+## 🧪 Testing
+
+### Unit & Integration Tests
+Run the full test suite:
+
+```bash
 $ rake test
 ```
 
-Integration Tests:
---------------------
+Run a single test file:
 
-The following packages need to be installed to make the feature specs work:
-
-#### Mac OSX
-
-```sh
-$ brew install brew-cask
-$ brew cask install google-chrome
-$ brew install chromedriver
+```bash
+$ rake test test/models/account_test.rb
 ```
 
-#### Ubuntu 18.04
+Run a directory of tests:
 
-```sh
-$ sudo apt-get install chromium-browser
-$ sudo apt-get install chromium-chromedriver
-$ sudo ln -s /usr/lib/chromium-browser/chromedriver /usr/bin/chromedriver
+```bash
+$ rake test test/models
 ```
 
-### Recording/fixing VCR cassettes for Fisbot API:
+## 🔄 Pull Request Checks
 
-Define an alias for vcr.localhost.org in `/etc/hosts`:
-```sh
-127.0.0.1 vcrlocalhost.org
+### Pre Pull Request Checks
+
+The CI pipeline runs the following checks on all pull requests:
+
+```bash
+rake ci:all_tasks
 ```
 
-Start the fisbot server(test environment) at localhost:4004.
-Manually clean the fisbot tables after each recording.
+This includes:
+- **rubocop** - Ruby style linting
+- **bundle audit** - Dependency vulnerability checking
+- **rake test** - Ruby unit tests
 
-Pull Request Builder:
---------------------
+### Post Pull Request Checks
 
-The OhlohUI CI uses the following task to verify PR compatibility.
+After all the successful checks, CI pipeline will have success message like
+`All checks has been passed`.
 
-```
-$ rake ci:all_tasks
-```
+## 🤝 Contributing
 
-This runs:
-* rubocop
-* haml-lint
-* brakeman
-* bundle audit
-* teaspoon
-* rake test
-* spinach
+1. Create a feature branch from `main`
+2. Make your changes
+3. Run `rake ci:all_tasks` to ensure all checks pass
+4. Submit a pull request
+
+## 📝 License
+
+See [LICENSE](LICENSE) file for details.
+
+## 🔒 Security
+
+For security concerns, please refer to [security.md](security.md).
