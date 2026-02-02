@@ -1,2 +1,9 @@
-%a{ href: 'https://www.blackduck.com/resources/analyst-reports/open-source-security-risk-analysis.html', target: '_blank' }
-  %img{src: image_path('home/OSSRA-OH-banner.png'), style: 'margin-left: 25px; margin-top: 15px'}
+.whats_new_card
+  .card_inner
+    .card_header_section
+      %h3.whats_new_title= t('.whats_new')
+      %p.whats_new_subtitle= t('.latest_updates_reports')
+
+    .featured_image_section
+      %a{ href: 'https://www.blackduck.com/resources/analyst-reports/ossra-report.html', target: '_blank', class: 'featured_image_link' }
+        %img.featured_image{src: image_path('home/OSSRA-OH-banner.png'), alt: t('.ossra_report_alt')}

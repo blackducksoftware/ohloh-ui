@@ -3,6 +3,7 @@ en:
     index:
       page_title: 'Open Hub, the open source network'
       discover_message: 'Discover, Track and Compare Open Source'
+      worlds_largest_directory: "The world's largest directory of open source projects and contributors"
       join_now: 'Join Now'
       whats_new: "What's New"
       counting: 'Counting %{count} lines of code'
@@ -10,6 +11,16 @@ en:
       connecting: 'Connecting %{count} open source contributors'
       tracking: 'Tracking %{count} source control repositories'
       search_projects: 'Search Projects...'
+      feature_directory_title: 'Massive Directory'
+      feature_directory_desc: 'Indexing over 2.5 million open source projects.'
+      feature_health_title: 'Assess Health'
+      feature_health_desc: 'Check activity levels and risk before you adopt.'
+      feature_portfolio_title: 'Manage Portfolio'
+      feature_portfolio_desc: 'Claim your commits and track your developer rankings.'
+      projects_label: 'Projects'
+      contributors_label: 'Contributors'
+      languages_label: 'Languages'
+      organizations_label: 'Organizations'
     top_lists:
       popular_projects: 'Most Popular Projects'
       active_projects: 'Most Active Projects'
