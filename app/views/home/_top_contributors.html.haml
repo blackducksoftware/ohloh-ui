@@ -1,0 +1,33 @@
+.top_contributors_card
+  .card_header
+    .header_icon
+      %i.fa.fa-users
+    .header_content
+      %h3.card_title= t('.top_contributors')
+      %p.card_subtitle= t('.most_active_developers')
+
+  .contributors_list
+    - @top_contributors&.each_with_index do |contributor, index|
+      .contributor_item{class: "contributor-rank-#{index + 1}"}
+        .contributor_avatar
+          = link_to account_path(contributor) do
+            = gravatar_tag(contributor.email, size: 40, class: 'avatar_image', alt: contributor.name)
+        .contributor_info
+          .contributor_name_rank
+            %h4.contributor_name
+              = link_to contributor.name, account_path(contributor), class: 'contributor_link'
+            %span.contributor_rank= "##{index + 1}"
+          .contributor_stats
+            %span.stat_item
+              %i.fa.fa-code-fork
+              = number_with_delimiter(contributor.commits_count || 0)
+            %span.stat_item
+              %i.fa.fa-folder
+              = "#{contributor.projects_count || 0} projects"
+        .contributor_arrow
+          %i.fa.fa-chevron-right
+
+  .view_all_link
+    = link_to accounts_path, class: 'btn btn_view_all' do
+      %i.fa.fa-users
+      = t('.view_all_contributors')

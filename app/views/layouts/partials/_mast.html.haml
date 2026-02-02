@@ -1,52 +1,103 @@
+:ruby
+  explore_projects_class = params[:action] == 'explore/projects' ? 'select' : ''
+  explore_orgs_class = params[:action] == 'explore/orgs' ? 'select' : ''
+  tools_select = params[:action] == 'tools' ? 'select' : ''
+
 .navbar
-  %span{ itemscope: '', itemtype: 'http://schema.org/CreativeWork' }
-    %span.hidden{ itemprop: 'author' } openhub.net
-    %span.hidden{ itemprop: 'publisher' } Black Duck Software, Inc.
-    %span
+  .navbar-container
+    %span.hidden{ itemscope: '', itemtype: 'http://schema.org/CreativeWork' }
+      %span.hidden{ itemprop: 'author' } openhub.net
+      %span.hidden{ itemprop: 'publisher' } Black Duck Software, Inc.
+    .logo-and-brand
       %div.logo-div
-        %a.logo_link{ href: 'https://www.blackduck.com' }
-          %img.logo_img{ itemprop: 'image', src: image_path('logo/BlackDuckLogo.svg'), alt: 'Open Hub' }
-      %div.spacing-div
+        %a.logo_link{ href: root_path }
+          %img.logo_img{ itemprop: 'image', src: image_path('logo/BlackDuckLogo-OnDark.svg'), alt: 'Black Duck Open Hub' }
       %div.separator-div
-      %div.spacing-div
       %div.company-div
         %a{ href: root_path }
           %span.navbar_large_text
             Open Hub
-      %div.actions-div
-        %ul#top_nav_actions
-          %li.twitter_follow
-            :ruby
-              twitter_url = 'https://twitter.com/intent/follow?original_referer='
-              twitter_url += CGI.escape request.url
-              twitter_url += '&region=follow_link&screen_name=bdopenhub&source=followbutton&variant=2.0'
-            %a.btn.follow_btn{ href: twitter_url, target: '_blank' }
-              %i.icon-twitter
-              %p.follow! #{t(:follow)}&nbsp;@
-              %p.twitter-text &nbsp;OH&nbsp;
-          - if logged_in?
-            %li
-              .dropdown#logged_user_menu
-                %a{ 'data-toggle' => 'dropdown', :href => '#', :class => 'dropdown-toggle navbar-text link_no_underline' }
-                  %i.icon-user
-                  = h(current_user.name)
-                  %i.icon-caret-down
-                %ul.dropdown-menu.user-menu.pull-right.dropdown-menu.dropdown-yellow.dropdown-caret.dropdown-closer
+    %nav.nav-menu
+      %ul.new_main_menu{ class: page_context[:select_top_menu_nav] }
+        %li.menu_item.projects
+          = link_to t(:projects_menu), projects_explores_path, class: explore_projects_class
+        %li.menu_item.people
+          = link_to t(:people_menu), people_path, class: params[:action] == 'people' ? 'select' : ''
+        %li.menu_item.organizations
+          = link_to t(:organizations_menu), orgs_explores_path, class: explore_orgs_class
+        %li.menu_item.tools
+          = link_to t(:tools_menu), tools_path, class: tools_select
+        %li.menu_item.blog
+          %a{ href: 'https://community.blackduck.com/s/black-duck-open-hub?tabset-c30ff=d9d77', target: '_blank' }= t :blog
+        %li.menu_item.bdsa
+          %a{ href: bdsa_vulnerabilities_path, target: '_blank' }= t :bdsa
+    %div.actions-div
+      %button#theme-toggle.theme-toggle-btn{ 'aria-label' => 'Toggle theme' }
+        %i#theme-icon-moon.icon-moon.theme-icon
+        %i#theme-icon-sun.icon-sun.theme-icon.hidden
+      %ul#top_nav_actions.desktop-actions
+        - if logged_in?
+          %li
+            .dropdown#logged_user_menu
+              %a{ 'data-toggle' => 'dropdown', :href => '#', :class => 'dropdown-toggle navbar-text link_no_underline' }
+                %i.icon-user
+                = h(current_user.name)
+                %i.icon-caret-down
+              %ul.dropdown-menu.user-menu.pull-right.dropdown-menu.dropdown-yellow.dropdown-caret.dropdown-closer
+                %li
+                  = link_to("<i class='icon-user'></i> #{t(:profile)}".html_safe, account_path(current_user).to_s)
+                %li
+                  = link_to("<i class='icon-cog'></i> #{t(:settings)}".html_safe, settings_account_path(current_user).to_s)
+                - if current_user_is_admin?
                   %li
-                    = link_to("<i class='icon-user'></i> #{t(:profile)}".html_safe, account_path(current_user).to_s)
-                  %li
-                    = link_to("<i class='icon-cog'></i> #{t(:settings)}".html_safe, settings_account_path(current_user).to_s)
-                  - if current_user_is_admin?
-                    %li
-                      = link_to("<i class='icon-tachometer'></i> #{t(:admin_dashboard)}".html_safe, admin_accounts_path)
-                  %li.divider
-                  %li
-                    = link_to("<i class='icon-off'></i> #{t(:logout)}".html_safe, sessions_path, method: :delete)
-          - else
+                    = link_to("<i class='icon-tachometer'></i> #{t(:admin_dashboard)}".html_safe, admin_accounts_path)
+                %li.divider
+                %li
+                  = link_to("<i class='icon-off'></i> #{t(:logout)}".html_safe, sessions_path, method: :delete)
+        - else
+          %li
+            %a.btn.btn-primary.btn-header{ href: new_session_path }
+              %i.icon-user
+              = t :sign_in
+          %li
+            %a.btn.btn-outline.btn-join-now{ href: new_account_path }
+              Join Now
+      %button#mobile-menu-toggle.mobile-menu-toggle{ 'aria-label' => 'Menu' }
+        %i#mobile-menu-icon.icon-reorder
+  #mobile-menu.mobile-menu
+    .mobile-menu-content
+      %ul.mobile-menu-items
+        %li
+          = link_to t(:projects_menu), projects_explores_path, class: explore_projects_class
+        %li
+          = link_to t(:people_menu), people_path, class: params[:action] == 'people' ? 'select' : ''
+        %li
+          = link_to t(:organizations_menu), orgs_explores_path, class: explore_orgs_class
+        %li
+          = link_to t(:tools_menu), tools_path, class: tools_select
+        %li
+          %a{ href: 'https://community.blackduck.com/s/black-duck-open-hub?tabset-c30ff=d9d77', target: '_blank' }= t :blog
+        %li
+          %a{ href: bdsa_vulnerabilities_path, target: '_blank' }= t :bdsa
+        = render 'shared/search.html.haml'
+      - if logged_in?
+        %ul.mobile-menu-user
+          %li
+            = link_to("<i class='icon-user'></i> #{t(:profile)}".html_safe, account_path(current_user).to_s)
+          %li
+            = link_to("<i class='icon-cog'></i> #{t(:settings)}".html_safe, settings_account_path(current_user).to_s)
+          - if current_user_is_admin?
             %li
-              %a.btn.btn-mini.btn-primary.btn-header{ href: new_session_path }= t :sign_in
-            %li
-              %a.btn.btn-mini.btn-success.btn-header{ href: new_account_path }= t :join_now
+              = link_to("<i class='icon-tachometer'></i> #{t(:admin_dashboard)}".html_safe, admin_accounts_path)
+          %li
+            = link_to("<i class='icon-off'></i> #{t(:logout)}".html_safe, sessions_path, method: :delete)
+      - else
+        .mobile-menu-signin
+          %a.btn.btn-primary.btn-mobile-signin{ href: new_session_path }
+            %i.icon-user
+            = t :sign_in
+          %a.btn.btn-outline.btn-mobile-join-now{ href: new_account_path }
+            Join Now
 
 - if read_only_mode?
   %div

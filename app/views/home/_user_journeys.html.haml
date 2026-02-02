@@ -1,0 +1,272 @@
+.user_journeys_section
+  .container
+    .journeys_header
+      %h2.journeys_title= t('.your_journey_with_openhub')
+      %p.journeys_subtitle= t('.explore_ways_description')
+
+    / Mobile View - Collapsible Cards
+    .journeys_mobile
+      .journey_card
+        %button.journey_card_header.journey_toggle{'data-journey-index': '0'}
+          .journey_header_icon.journey_icon_compare
+            %i.fa.fa-balance-scale
+          %h3.journey_header_title= t('.discover_compare_title')
+          .journey_toggle_icon
+            %i.fa.fa-plus
+        .journey_card_content
+          %p.journey_description= t('.discover_compare_desc')
+          .journey_steps
+            %h4.steps_title= t('.key_steps')
+            %ul.steps_list
+              %li
+                %span.step_bullet •
+                %span= t('.discover_compare_step1')
+              %li
+                %span.step_bullet •
+                %span= t('.discover_compare_step2')
+              %li
+                %span.step_bullet •
+                %span= t('.discover_compare_step3')
+
+      .journey_card
+        %button.journey_card_header.journey_toggle{'data-journey-index': '1'}
+          .journey_header_icon.journey_icon_health
+            %i.fa.fa-heartbeat
+          %h3.journey_header_title= t('.assess_health_title')
+          .journey_toggle_icon
+            %i.fa.fa-plus
+        .journey_card_content
+          %p.journey_description= t('.assess_health_desc')
+          .journey_steps
+            %h4.steps_title= t('.key_steps')
+            %ul.steps_list
+              %li
+                %span.step_bullet •
+                %span= t('.assess_health_step1')
+              %li
+                %span.step_bullet •
+                %span= t('.assess_health_step2')
+              %li
+                %span.step_bullet •
+                %span= t('.assess_health_step3')
+
+      .journey_card
+        %button.journey_card_header.journey_toggle{'data-journey-index': '2'}
+          .journey_header_icon.journey_icon_portfolio
+            %i.fa.fa-id-card
+          %h3.journey_header_title= t('.manage_portfolio_title')
+          .journey_toggle_icon
+            %i.fa.fa-plus
+        .journey_card_content
+          %p.journey_description= t('.manage_portfolio_desc')
+          .journey_steps
+            %h4.steps_title= t('.key_steps')
+            %ul.steps_list
+              %li
+                %span.step_bullet •
+                %span= t('.manage_portfolio_step1')
+              %li
+                %span.step_bullet •
+                %span= t('.manage_portfolio_step2')
+              %li
+                %span.step_bullet •
+                %span= t('.manage_portfolio_step3')
+
+      .journey_card
+        %button.journey_card_header.journey_toggle{'data-journey-index': '3'}
+          .journey_header_icon.journey_icon_analyze
+            %i.fa.fa-bar-chart
+          %h3.journey_header_title= t('.analyze_code_title')
+          .journey_toggle_icon
+            %i.fa.fa-plus
+        .journey_card_content
+          %p.journey_description= t('.analyze_code_desc')
+          .journey_steps
+            %h4.steps_title= t('.key_steps')
+            %ul.steps_list
+              %li
+                %span.step_bullet •
+                %span= t('.analyze_code_step1')
+              %li
+                %span.step_bullet •
+                %span= t('.analyze_code_step2')
+              %li
+                %span.step_bullet •
+                %span= t('.analyze_code_step3')
+
+      .journey_card
+        %button.journey_card_header.journey_toggle{'data-journey-index': '4'}
+          .journey_header_icon.journey_icon_security
+            %i.fa.fa-shield
+          %h3.journey_header_title= t('.check_security_title')
+          .journey_toggle_icon
+            %i.fa.fa-plus
+        .journey_card_content
+          %p.journey_description= t('.check_security_desc')
+          .journey_steps
+            %h4.steps_title= t('.key_steps')
+            %ul.steps_list
+              %li
+                %span.step_bullet •
+                %span= t('.check_security_step1')
+              %li
+                %span.step_bullet •
+                %span= t('.check_security_step2')
+              %li
+                %span.step_bullet •
+                %span= t('.check_security_step3')
+
+      .journey_card
+        %button.journey_card_header.journey_toggle{'data-journey-index': '5'}
+          .journey_header_icon.journey_icon_contribute
+            %i.fa.fa-search
+          %h3.journey_header_title= t('.identify_opportunities_title')
+          .journey_toggle_icon
+            %i.fa.fa-plus
+        .journey_card_content
+          %p.journey_description= t('.identify_opportunities_desc')
+          .journey_steps
+            %h4.steps_title= t('.key_steps')
+            %ul.steps_list
+              %li
+                %span.step_bullet •
+                %span= t('.identify_opportunities_step1')
+              %li
+                %span.step_bullet •
+                %span= t('.identify_opportunities_step2')
+              %li
+                %span.step_bullet •
+                %span= t('.identify_opportunities_step3')
+
+    / Desktop View - Grid Cards
+    .journeys_desktop
+      .journey_grid_card
+        .grid_card_icon.journey_icon_compare
+          %i.fa.fa-balance-scale
+        %h3.grid_card_title= t('.discover_compare_title')
+        %p.grid_card_description= t('.discover_compare_desc')
+        .grid_card_steps
+          %h4.steps_title= t('.key_steps')
+          %ul.steps_list
+            %li
+              %span.step_bullet •
+              %span= t('.discover_compare_step1')
+            %li
+              %span.step_bullet •
+              %span= t('.discover_compare_step2')
+            %li
+              %span.step_bullet •
+              %span= t('.discover_compare_step3')
+
+      .journey_grid_card
+        .grid_card_icon.journey_icon_health
+          %i.fa.fa-heartbeat
+        %h3.grid_card_title= t('.assess_health_title')
+        %p.grid_card_description= t('.assess_health_desc')
+        .grid_card_steps
+          %h4.steps_title= t('.key_steps')
+          %ul.steps_list
+            %li
+              %span.step_bullet •
+              %span= t('.assess_health_step1')
+            %li
+              %span.step_bullet •
+              %span= t('.assess_health_step2')
+            %li
+              %span.step_bullet •
+              %span= t('.assess_health_step3')
+
+      .journey_grid_card
+        .grid_card_icon.journey_icon_portfolio
+          %i.fa.fa-id-card
+        %h3.grid_card_title= t('.manage_portfolio_title')
+        %p.grid_card_description= t('.manage_portfolio_desc')
+        .grid_card_steps
+          %h4.steps_title= t('.key_steps')
+          %ul.steps_list
+            %li
+              %span.step_bullet •
+              %span= t('.manage_portfolio_step1')
+            %li
+              %span.step_bullet •
+              %span= t('.manage_portfolio_step2')
+            %li
+              %span.step_bullet •
+              %span= t('.manage_portfolio_step3')
+
+      .journey_grid_card
+        .grid_card_icon.journey_icon_analyze
+          %i.fa.fa-bar-chart
+        %h3.grid_card_title= t('.analyze_code_title')
+        %p.grid_card_description= t('.analyze_code_desc')
+        .grid_card_steps
+          %h4.steps_title= t('.key_steps')
+          %ul.steps_list
+            %li
+              %span.step_bullet •
+              %span= t('.analyze_code_step1')
+            %li
+              %span.step_bullet •
+              %span= t('.analyze_code_step2')
+            %li
+              %span.step_bullet •
+              %span= t('.analyze_code_step3')
+
+      .journey_grid_card
+        .grid_card_icon.journey_icon_security
+          %i.fa.fa-shield
+        %h3.grid_card_title= t('.check_security_title')
+        %p.grid_card_description= t('.check_security_desc')
+        .grid_card_steps
+          %h4.steps_title= t('.key_steps')
+          %ul.steps_list
+            %li
+              %span.step_bullet •
+              %span= t('.check_security_step1')
+            %li
+              %span.step_bullet •
+              %span= t('.check_security_step2')
+            %li
+              %span.step_bullet •
+              %span= t('.check_security_step3')
+
+      .journey_grid_card
+        .grid_card_icon.journey_icon_contribute
+          %i.fa.fa-search
+        %h3.grid_card_title= t('.identify_opportunities_title')
+        %p.grid_card_description= t('.identify_opportunities_desc')
+        .grid_card_steps
+          %h4.steps_title= t('.key_steps')
+          %ul.steps_list
+            %li
+              %span.step_bullet •
+              %span= t('.identify_opportunities_step1')
+            %li
+              %span.step_bullet •
+              %span= t('.identify_opportunities_step2')
+            %li
+              %span.step_bullet •
+              %span= t('.identify_opportunities_step3')
+
+:javascript
+  document.addEventListener('DOMContentLoaded', function() {
+    const toggleButtons = document.querySelectorAll('.journey_toggle');
+
+    toggleButtons.forEach(function(button) {
+      button.addEventListener('click', function() {
+        const journeyCard = this.closest('.journey_card');
+        const content = journeyCard.querySelector('.journey_card_content');
+        const icon = this.querySelector('.journey_toggle_icon i');
+
+        journeyCard.classList.toggle('expanded');
+
+        if (journeyCard.classList.contains('expanded')) {
+          icon.classList.remove('fa-plus');
+          icon.classList.add('fa-minus');
+        } else {
+          icon.classList.remove('fa-minus');
+          icon.classList.add('fa-plus');
+        }
+      });
+    });
+  });
