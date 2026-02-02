@@ -1,21 +1,30 @@
 @import "base"
 
 body
-  background-color: #211e1e !important
-  font-family: Roboto
+  background-color: white !important
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"
   font-size: 1.3rem !important
   margin: 0
+  padding: 0
   color: #000
+  width: 100%
+  overflow-x: hidden
 
-#page
-  width: 980px
+.container#page, #page
+  width: 100% !important
+  max-width: 100% !important
   background-color: white
-  margin: 0 auto
-  padding: 10px 10px 0 10px
+  margin: 0 !important
+  padding: 0 !important
 
 header
-  background-color: white
-  margin: -10px -10px 0px -10px
+  // Figma design: gradient background for entire header
+  background: linear-gradient(to right, #000000, #1D0631, #5A2A82)
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"
+  font-size: 16px
+  margin: 0
+  padding: 0
+  width: 100%
 
 @media only all and (min-width: 320px) and (max-width: 480px)
   body
@@ -27,60 +36,84 @@ header
     overflow-x: hidden !important
 
 @media (min-width: 540px) and (max-width: 1024px)
-  #page
-    margin: 0 auto
-    padding: 10px 10px 0 10px
-    width: auto
+  #page, .container#page
+    margin: 0 !important
+    padding: 0 !important
+    width: 100% !important
+    max-width: 100% !important
 
 #nav-top-bar
-  margin: 11px 11px 0 11px
+  width: 100%
+  max-width: 1280px
+  margin: 0 auto
+  padding: 0 32px
+  display: flex
+  align-items: center
   .new_main_menu
     list-style: none
     margin: 0
     padding: 0
+    display: flex
+    align-items: center
+    gap: 32px
     li
       display: inline-block
-      margin-right: 32px
+      margin: 0
       a
-        @include top-navbar-menu-colors
-        font-size: 11pt
+        color: white !important
+        font-size: 16px
         text-decoration: none
+        font-weight: 500
+        transition: color 0.3s ease
+        white-space: nowrap
+        &:hover
+          color: #d1d5db !important
+          text-decoration: none
+        &.select
+          color: #FFB91A !important
+          font-weight: 600
 
 #navbar-inner
-  @include top-navbar-colors
-  padding-top: 1px
-  margin-left: 4px
-  margin-right: 5px
-  height: 42px
+  // Navigation moved to main navbar - hide this section
+  display: none
 
-@media (min-width: 320px) and (max-width: 340px)
+@media (min-width: 320px) and (max-width: 480px)
   #nav-top-bar
-    margin: 11px 4px 0 0px !important
+    padding: 0 16px
     .new_main_menu
+      gap: 16px
       li
-        margin-right: 2px !important
         a
-          font-size: 10px !important
-	  
-@media (min-width: 341px) and (max-width: 480px)
+          font-size: 11px !important
+  .mobile-menu
+    .mobile-menu-content
+      padding: 0 8px
+    .mobile-menu-items
+      li
+        a
+          padding: 10px 12px
+          font-size: 13px
+
+@media (min-width: 481px) and (max-width: 768px)
   #nav-top-bar
-    margin: 11px 10px 0 11px !important
-  .new_main_menu
-    li
-      margin-right: 6px !important
-      a
-        font-size: 10px !important
-#nav-top-bar .new_main_menu li a:hover
-	color: #fff
-	text-decoration: underline
+    padding: 0 24px
+    .new_main_menu
+      gap: 24px
+      li
+        a
+          font-size: 13px !important
 #page_contents
+  max-width: 100%
+  padding: 0 20px
   .separator-div
     @include site-separator-color
 
 #project_container
   background-color: white
   margin: 0 auto
-  padding: 10px 10px 0 10px
+  padding: 10px 20px 0 20px
+  width: 100%
+  max-width: 100%
   #page-contents
     width: auto
     #project_masthead
@@ -99,132 +132,494 @@ header
   .quick_reference_heading, .nutshell_heading
     padding-left: 2rem
 
-@media (min-width: 320px) and (max-width: 480px)
+// sm: 640px+
+@media (min-width: 640px)
   .navbar
-    margin-right: 0px !important
-    .btn
-      font-size: 10px !important
-  .company-div
-    float: none !important
-    .navbar_large_text
-      font-size: 18px !important
+    .navbar-container
+      padding: 0 12px
+      gap: 8px
+    .logo-and-brand
+      gap: 6px
+    .logo-div
+      .logo_img
+        height: 28px
+    .company-div
+      .navbar_large_text
+        font-size: 16px
+    .separator-div
+      display: block
+      height: 24px
+    .actions-div
+      gap: 8px
+    .theme-toggle-btn
+      padding: 8px
+      .theme-icon
+        font-size: 20px
+    .mobile-menu-toggle
+      padding: 8px
+      i
+        font-size: 20px
+  .mobile-menu
+    .mobile-menu-content
+      padding: 0 12px
+    .mobile-menu-items
+      li
+        a
+          padding: 12px 16px
+
+// md: 768px+
+@media (min-width: 768px)
+  .navbar
+    .navbar-container
+      padding: 0 24px
+    .logo-div
+      .logo_img
+        height: 32px
+    .company-div
+      .navbar_large_text
+        font-size: 18px
+    .separator-div
+      height: 26px
+  .mobile-menu
+    .mobile-menu-content
+      padding: 0 24px
+    .mobile-menu-items
+      li
+        a
+          padding: 14px 20px
+          font-size: 15px
+
+// lg: 1024px+ (Desktop)
+@media (min-width: 1024px)
+  .navbar
+    min-height: 72px
+    .navbar-container
+      padding: 0 32px
+      gap: 16px
+      min-height: 72px
+    .logo-and-brand
+      gap: 8px
+    .logo-div
+      .logo_img
+        height: 40px
+    .company-div
+      .navbar_large_text
+        font-size: 20px
+    .separator-div
+      height: 28px
+    .actions-div
+      gap: 16px
+    .nav-menu
+      display: flex !important
+    .desktop-actions
+      display: flex !important
+    .mobile-menu-toggle
+      display: none !important
+  .mobile-menu
+    display: none
+
+// xl: 1280px+
+@media (min-width: 1280px)
+  .navbar
+    min-height: 80px
+    .navbar-container
+      min-height: 80px
+    .nav-menu
+      .new_main_menu
+        gap: 24px
+    .logo-div
+      .logo_img
+        height: 48px
+    .company-div
+      .navbar_large_text
+        font-size: 24px
+    .nav-menu
+      .new_main_menu
+        li
+          a
+            font-size: 16px
+
+// 2xl: 1536px+
+@media (min-width: 1536px)
+  .navbar
+    min-height: 88px
+    .navbar-container
+      min-height: 88px
+    .nav-menu
+      .new_main_menu
+        gap: 32px
+    .logo-div
+      .logo_img
+        height: 56px
+    .company-div
+      .navbar_large_text
+        font-size: 30px
+
+// Mobile/Tablet: < 1024px (show hamburger menu)
+@media (max-width: 1023px)
+  .navbar
+    .nav-menu
+      display: none !important
+    .desktop-actions
+      display: none !important
+    .mobile-menu-toggle
+      display: flex !important
 
 .navbar
+  // Figma design: gradient background with purple theme
+  position: relative
+  background: linear-gradient(to right, #000000, #1D0631, #5A2A82)
   border-width: 0
-  margin-top: 15px
-  margin-right: 15px
-  margin-bottom: 5px !important
-  margin-left: 15px
-  padding: 0 0 5px 0
-  min-height: 30px
+  border-bottom: 1px solid #1f2937
+  margin: 0
+  padding: 0
+  min-height: 64px
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)
+  width: 100%
+  display: flex
+  align-items: flex-start
+  flex-wrap: wrap
+  overflow: visible
+  // Override global button styles for navbar
+  .btn
+    border: none !important
+    border-width: 0 !important
+    box-shadow: none !important
+    &:active
+      top: 0 !important
+      left: 0 !important
+  .navbar-container
+    max-width: 1280px
+    margin: 0 auto
+    padding: 0 8px
+    width: 100%
+    min-height: 64px
+    display: flex !important
+    flex-direction: row !important
+    flex-wrap: nowrap !important
+    align-items: center
+    justify-content: space-between
+    gap: 4px
+    .hidden
+      display: none !important
+      position: absolute !important
+      width: 0 !important
+      height: 0 !important
+      overflow: hidden !important
+  .logo-and-brand
+    display: flex
+    align-items: center
+    gap: 4px
+    flex-shrink: 1
+    min-width: 0
   .logo-div
-    height: 35px
-    float: left
+    display: flex
+    align-items: center
+    flex-shrink: 0
     .logo_link
       text-decoration: none
-      margin-top: 3px
+      display: flex
+      align-items: center
     .logo_img
-      height: 100%
+      height: 24px
+      width: auto
   .company-div
-    @include top-navigation-colors
-    float: left
+    color: white !important
+    display: flex
+    align-items: center
+    min-width: 0
     .navbar_small_text
       font-size: 10px !important
     .navbar_large_text
-      font-size: 24px
+      font-size: 18px
+      color: white !important
+      font-weight: 700
+      line-height: 1.25
+      letter-spacing: 0
+      white-space: nowrap
     a
-      @include top-navigation-colors
+      color: white !important
       text-decoration: none
-  .spacing-div
-    float: left
-    width: 2px
-    height: 30px
-    background-color: white
-    margin: 0 auto
+      &:hover
+        color: #d1d5db !important
+        transition: color 0.3s ease
   .separator-div
-    @include site-separator-color
-    @include site-separator-background-color
-    float: left
+    background-color: rgba(255, 255, 255, 0.2)
     width: 1px
-    height: 30px
-    margin: 0 2px 0 2px
+    height: 20px
+    margin: 0
+    display: none
+  .nav-menu
+    flex: 1
+    display: flex
+    justify-content: center
+    .new_main_menu
+      list-style: none
+      margin: 0
+      padding: 0
+      display: flex
+      align-items: center
+      gap: 24px
+      li
+        display: inline-block
+        margin: 0
+        a
+          color: white !important
+          font-size: 14px
+          text-decoration: none
+          font-weight: 500
+          transition: color 0.3s ease
+          white-space: nowrap
+          &:hover
+            color: #d1d5db !important
+            text-decoration: none
+          &.select
+            color: #FFB91A !important
+            font-weight: 600
   .actions-div
-    float: right
-  .twitter-text
-    @include twitter-background-color
-    color: white
-    font-weight: bold
-    font-size: 0.80em
+    display: flex
+    align-items: center
+    gap: 4px
+    flex-shrink: 0
+    flex-grow: 0
+  .theme-toggle-btn
+    padding: 6px
+    background-color: transparent
+    border: none
+    border-radius: 8px
+    cursor: pointer
+    display: flex
+    align-items: center
+    justify-content: center
+    transition: background-color 0.3s ease
+    flex-shrink: 0
+    &:hover
+      background-color: rgba(255, 255, 255, 0.1)
+    .theme-icon
+      font-size: 16px
+      color: white
+      transition: opacity 0.3s ease
+    .hidden
+      display: none
+  .mobile-menu-toggle
+    display: none
+    padding: 6px
+    background-color: transparent
+    border: none
+    border-radius: 8px
+    cursor: pointer
+    align-items: center
+    justify-content: center
+    transition: background-color 0.3s ease
+    flex-shrink: 0
+    &:hover
+      background-color: rgba(255, 255, 255, 0.1)
+    i
+      font-size: 16px
+      color: white
   .btn
     border: 0
-    display: inline-block
-    font-size: 15px
-    line-height: 25px
+    display: inline-flex
+    align-items: center
+    justify-content: center
+    font-size: 14px
+    line-height: 1.5
     margin: 0
-    padding: 1px 6px 0 7px
-  .follow_btn
-    @include follow-button-colors
-    display: inline-block
-    padding: 0 0 0 4px
-    height: 24px
-    i, p, img
-      color: white
-      display: inline-block
-      vertical-align: top
-    i
-      color: #555
-      vertical-align: middle
-      &:before
-        padding-right: 0
-    p
-      font-weight: normal
-      line-height: 24px
-      text-transform: none
-      margin: 0
-      border-radius: 0 4px 4px 0
-    img
-      margin-right: -1px
+    padding: 8px 16px
+    border-radius: 8px
+    font-weight: 600
+    transition: all 0.3s ease
+    cursor: pointer
+    text-decoration: none
+    white-space: nowrap
   ul
     list-style: none
-    margin: 3px 0 0 0
+    margin: 0
+    padding: 0
+    display: flex
+    align-items: center
+    gap: 12px
     li
-      float: left
-      padding: 0 0 0 8px
+      padding: 0
+      list-style: none
 #top_nav_actions
-  float: right
-  margin-right: 5px
+  display: flex
+  align-items: center
+  gap: 12px
+  margin: 0
+  padding: 0
   li
-    padding-top: 5px
+    padding: 0
+    list-style: none
+  .btn-primary, .btn-success
+    background-color: #FFB91A !important
+    color: #000 !important
+    border: none !important
+    border-width: 0 !important
+    font-weight: 600 !important
+    padding: 8px 20px !important
+    border-radius: 8px !important
+    display: inline-flex !important
+    align-items: center
+    justify-content: center
+    gap: 6px
+    transition: background-color 0.3s ease
+    font-size: 14px !important
+    text-decoration: none
+    line-height: 1.5 !important
+    box-shadow: none !important
+    &:hover
+      background-color: rgba(255, 185, 26, 0.9) !important
+      border-color: transparent !important
+      text-decoration: none
+    &:active
+      top: 0 !important
+      left: 0 !important
+    i
+      font-size: 14px
+      margin: 0
 
 @media (min-width: 320px) and (max-width: 340px)
   #top_nav_actions
     margin-right: 0px !important
 
+// Mobile Menu
+.mobile-menu
+  display: none
+  width: 100%
+  flex-basis: 100%
+  background: linear-gradient(to right, #1D0631, #5A2A82)
+  border-top: 1px solid rgba(255, 255, 255, 0.1)
+  padding: 16px 0
+  position: relative
+  z-index: 100
+  overflow: visible
+  order: 2
+  &.show
+    display: block !important
+    visibility: visible !important
+    opacity: 1 !important
+  .mobile-menu-content
+    max-width: 1280px
+    margin: 0 auto
+    padding: 0 16px
+    width: 100%
+    display: block
+    visibility: visible
+  .mobile-menu-items
+    list-style: none
+    margin: 0
+    padding: 0
+    display: block
+    visibility: visible
+    li
+      margin-bottom: 8px
+      display: block
+      visibility: visible
+      a
+        display: block !important
+        padding: 12px 16px
+        color: white !important
+        text-decoration: none
+        border-radius: 8px
+        transition: background-color 0.3s ease
+        font-weight: 500
+        visibility: visible !important
+        &:hover
+          background-color: rgba(255, 255, 255, 0.1)
+          text-decoration: none
+        &.select
+          color: #FFB91A !important
+          font-weight: 600
+  .mobile-menu-user
+    list-style: none
+    margin: 16px 0 0 0
+    padding: 16px 0 0 0
+    border-top: 1px solid rgba(255, 255, 255, 0.1)
+    display: block
+    visibility: visible
+    li
+      margin-bottom: 8px
+      display: block
+      visibility: visible
+      a
+        display: block !important
+        padding: 12px 16px
+        color: white !important
+        text-decoration: none
+        border-radius: 8px
+        transition: background-color 0.3s ease
+        visibility: visible !important
+        &:hover
+          background-color: rgba(255, 255, 255, 0.1)
+          text-decoration: none
+  .mobile-menu-signin
+    margin-top: 16px
+    padding: 16px 0 0 0
+    border-top: 1px solid rgba(255, 255, 255, 0.1)
+    display: block
+    visibility: visible
+    .btn-mobile-signin
+      width: 100%
+      display: flex !important
+      align-items: center
+      justify-content: center
+      gap: 8px
+      padding: 12px 20px
+      background-color: #FFB91A !important
+      color: #000 !important
+      border: none !important
+      border-radius: 8px
+      font-weight: 600
+      font-size: 14px
+      text-decoration: none
+      transition: background-color 0.3s ease
+      visibility: visible !important
+      &:hover
+        background-color: rgba(255, 185, 26, 0.9) !important
+        text-decoration: none
+
 #logged_user_menu
-  a
-    color: black !important
+  .dropdown-toggle
+    color: white !important
     text-transform: none
     text-decoration: none
-    margin: 0 0px 15px
-    padding-right: 10px
-    padding-top: 3px
-  ul
-    margin-top: 40px
-    border-radius: 0
+    margin: 0
+    padding: 8px 16px
+    background-color: rgba(255, 255, 255, 0.1)
+    border-radius: 8px
+    display: inline-flex
+    align-items: center
+    gap: 8px
+    font-size: 14px
+    font-weight: 500
+    transition: background-color 0.3s ease
+    &:hover
+      background-color: rgba(255, 255, 255, 0.2)
+      text-decoration: none
+    i
+      font-size: 14px
+  ul.dropdown-menu
+    margin-top: 8px
+    border-radius: 8px
+    border: 1px solid rgba(255, 255, 255, 0.1)
+    background-color: rgba(29, 6, 49, 0.95)
+    backdrop-filter: blur(8px)
     li
-      width: 150px
+      width: 180px
       a
-        color: black
+        color: white
         margin: 0
+        padding: 10px 16px
         &:hover
-          background-color: #0082C6 !important
-          color: #fff !important
+          background-color: rgba(255, 185, 26, 0.2) !important
+          color: #FFB91A !important
     .divider
       width: 100%
       height: 1px
-      margin: 13px 0
+      margin: 4px 0
       overflow: hidden
-      border-bottom: 1px solid #e5e5e5
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1)
 
 
 #flash-msg .alert
@@ -533,3 +928,17 @@ fieldset
               width: 14rem
             .language_percentage_indicator
               width: 3rem
+
+// Full-width layout styles
+.page-content-wrapper
+  width: 100%
+  max-width: 100%
+  margin: 0 auto
+  padding: 20px
+
+// Ensure home page content uses full width
+.home-content, .explore-content, .billboard
+  width: 100%
+  max-width: 100%
+  margin: 0 auto
+  padding: 0 20px

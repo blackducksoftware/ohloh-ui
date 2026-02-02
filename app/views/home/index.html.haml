@@ -1,31 +1,81 @@
 - content_for(:html_title) { t('.page_title') }
-.showcase
-  .billboard
-    .row
-      .col-md-12
-        %h2.discover_msg
-          = t('.discover_message')
-    .row
-      .col-md-12.billboard_search
-        %form.search#search_form{ action: projects_path }
-          %input{ type: :hidden, name: 'ref', value: 'homepage' }
-          %input.for_search_all_code{ type: :text, name: 'query', placeholder: t('.search_projects'), id: 'text' }
-            %i#icon_text.fa.fa-search
+- content_for(:javascript) { javascript_include_tag 'rotating_stats' }
 
+/ Hero Section
+.hero_section
+  .hero_container
+    / Hero Header - Centered
+    .hero_header
+      %h1.hero_title= t('.discover_message')
+      %p.hero_subtitle= t('.worlds_largest_directory')
+
+    / Search Bar - Centered & Compact
+    .search_container
+      %form.search_form#search_form{ action: projects_path }
+        %input{ type: :hidden, name: 'ref', value: 'homepage' }
+        .search_input_wrapper
+          %i.fa.fa-search.search_icon
+          %input.search_input{ type: :text, name: 'query', placeholder: t('.search_projects'), id: 'text', autocomplete: 'off' }
+
+      / Rotating Stats
+      .rotating_stats
+        #global_statistics
+          %p.hide#content-0= t('.counting', count: number_with_delimiter(@home.lines_count.to_i))
+          %p.hide#content-1= t('.indexing', count: number_with_delimiter(@home.active_project_count))
+          %p.hide#content-2= t('.connecting', count: number_with_delimiter(@home.person_count))
+          %p.hide#content-3= t('.tracking', count: number_with_delimiter(@home.repository_count))
+
+    / Feature Cards - Moved to Top
+    .features_section
+      .feature_card
+        .feature_icon.feature_icon_yellow
+          %i.fa.fa-database
+        %h3.feature_title= t('.feature_directory_title')
+        %p.feature_description= t('.feature_directory_desc')
+      .feature_card
+        .feature_icon.feature_icon_blue
+          %i.fa.fa-heartbeat
+        %h3.feature_title= t('.feature_health_title')
+        %p.feature_description= t('.feature_health_desc')
+      .feature_card
+        .feature_icon.feature_icon_green
+          %i.fa.fa-user-circle
+        %h3.feature_title= t('.feature_portfolio_title')
+        %p.feature_description= t('.feature_portfolio_desc')
+
+    / Quick Stats Bar - Ultra Compact & Elegant
+    .quick_stats_bar
+      .stat_item
+        .stat_value= "2.5M+"
+        .stat_label= t('.projects_label')
+      .stat_divider
+      .stat_item
+        .stat_value= number_with_delimiter(@home.person_count / 1000) + "K"
+        .stat_label= t('.contributors_label')
+      .stat_divider
+      .stat_item
+        .stat_value= "450+"
+        .stat_label= t('.languages_label')
+      .stat_divider
+      .stat_item
+        .stat_value= "12K"
+        .stat_label= t('.organizations_label')
+/ Top Contributors and What's New Section
+.content_section
+  .container
     .row
-      .col-md-12
-        .global_stats
-          #global_statistics
-            %p.hide#content-0= t('.counting', count: number_with_delimiter(@home.lines_count.to_i))
-            %p.hide#content-1= t('.indexing', count: number_with_delimiter(@home.active_project_count))
-            %p.hide#content-2= t('.connecting', count: number_with_delimiter(@home.person_count))
-            %p.hide#content-3= t('.tracking', count: number_with_delimiter(@home.repository_count))
-.home_page_row
-  .col-md-4.col-xs-7.col-sm-6
-    %h2.join_now= t('.join_now')
-    = render partial: '/home/join_now_home'
-  .col-md-8.col-xs-5.col-sm-6
-    %h2.wh_new= t('.whats_new')
-    = render partial: '/home/whats_new'
+      / Top Contributors - 35%
+      .col-md-4.col-sm-12.contributors_column
+        = render partial: '/home/top_contributors'
+
+      / What's New and Join Now - 65%
+      .col-md-8.col-sm-12.whats_new_column
+        .whats_new_join_stack
+          = render partial: '/home/whats_new'
+          = render partial: '/home/join_now_home'
+
+/ User Journeys Section
+= render partial: '/home/user_journeys'
+
 .landing.col-md-12.col-sm-12.col-xs-12.last_section
   = home_top_lists
