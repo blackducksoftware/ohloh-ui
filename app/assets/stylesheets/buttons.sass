@@ -90,14 +90,49 @@ button.btn:active
     border-color: #005481
 
 .btn-refresh
-  @include secondary-button-colors
+  color: white !important
+  background-color: #5A2A82 !important
+  border-color: #5A2A82 !important
+  border-radius: 0 12px 12px 0
+  margin-left: -1px
+  padding: 10px 18px
+  min-width: 48px
+  transition: all 0.15s ease-in-out
+  &:hover
+    background-color: rgba(90, 42, 130, 0.9) !important
+    border-color: #5A2A82 !important
+    transform: none
+  &:active
+    background-color: #4A1A72 !important
+    border-color: #4A1A72 !important
   &.no-hover:hover
-    background-color: #0082C6 !important
+    background-color: #5A2A82 !important
   &.active, &.no-border.active
-    background-color: #66B7E8 !important
-    border-color: #66B7E8
+    background-color: #4A1A72 !important
+    border-color: #4A1A72
   &.disabled, &[disabled]
-    background-color: #66CEF6 !important
+    background-color: #8A5AAA !important
+    border-color: #8A5AAA !important
+    opacity: 0.6
+    cursor: not-allowed
+  i
+    font-size: 16px
+    line-height: 1
+  
+  // Dark mode support
+  .dark &
+    background-color: #ffb91a !important
+    border-color: #ffb91a !important
+    color: #1D0631 !important
+    &:hover
+      background-color: rgba(255, 185, 26, 0.9) !important
+      border-color: #ffb91a !important
+    &:active
+      background-color: #e6a617 !important
+      border-color: #e6a617 !important
+    &.active, &.no-border.active
+      background-color: #e6a617 !important
+      border-color: #e6a617
 
 .btn-success
   @include join-now-button-colors

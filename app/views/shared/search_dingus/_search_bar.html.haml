@@ -8,8 +8,10 @@
 
 - else
   .col-md-5.col-sm-5.col-xs-5.no_padding
-    %label #{t('.search_text')} &nbsp;
-    = text_field_tag :query, params[:query]
+    %label.sr-only= t('.search_text')
+    .search-input-group
+      = text_field_tag :query, params[:query], 
+        placeholder: t('.search_text')
 
-    %button.btn.btn-refresh{ type: 'Submit' }
-      %i.icon-refresh
+      %button.btn.btn-refresh{ type: 'Submit' }
+        %i.icon-search
