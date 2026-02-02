@@ -55,13 +55,16 @@
 
 @mixin top-navbar-colors
   color: white
-  background-color: #211e1e !important
+  background: linear-gradient(to right, #1D0631, #5A2A82) !important
 
 @mixin top-navbar-menu-colors
-  color: white
+  color: white !important
+  font-weight: 500
+  transition: color 0.3s ease
   &:hover
     padding-bottom: 0px
-    color: color-gradient($SECONDARY_YELLOW, 60)
+    color: rgba(255, 255, 255, 0.7) !important
+    text-decoration: none
 
 @mixin twitter-background-color
   background-color: #5A2A82
@@ -119,15 +122,15 @@
   border-left: 3px solid color-gradient($PRIMARY_DARK_GRAY, 100)
 
 @mixin footer-colors
-  color: color-gradient($PRIMARY_PURPLE, 120) !important
-  background-color: color-gradient($FOOTER_BACKGROUND, 0) !important
+  color: white !important
+  background: linear-gradient(to right, #1D0631, #5A2A82) !important
   a
     &:hover
-      color: color-gradient($FOOTER_BACKGROUND, 0)
+      color: white !important
       border-radius: 0
 
 @mixin footer-copyright-colors
-  color: color-gradient($LIGHT_GRAY, 100) !important
+  color: rgba(156, 163, 175, 1) !important
 
 ////////////////////////////////////////////////////////////////////
 //
@@ -263,6 +266,26 @@
     border-color: color-gradient($LIGHT_GRAY, 80) !important
   &.no-border:hover
     border-color: color-gradient($LIGHT_GRAY, 80) !important
+
+@mixin purple-theme-button-colors
+  color: white
+  background-color: #5A2A82 !important
+  border-color: #5A2A82 !important
+  &:hover
+    background-color: #4A1A72 !important
+    border-color: #4A1A72 !important
+  &.no-border:hover
+    border-color: #4A1A72 !important
+
+@mixin search-input-colors
+  background-color: #ffffff
+  color: #202020
+  border-color: #d1d5db
+  &:focus
+    border-color: #5A2A82
+    box-shadow: 0 0 0 3px rgba(90, 42, 130, 0.1)
+  &::placeholder
+    color: #9ca3af
 
 @mixin join-now-button-colors
   color: white

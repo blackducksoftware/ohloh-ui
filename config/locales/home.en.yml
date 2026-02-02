@@ -3,24 +3,89 @@ en:
     index:
       page_title: 'Open Hub, the open source network'
       discover_message: 'Discover, Track and Compare Open Source'
+      worlds_largest_directory: "The world's largest directory of open source projects and contributors"
       join_now: 'Join Now'
-      whats_new: "What's New"
       counting: 'Counting %{count} lines of code'
       indexing: 'Indexing %{count} open source projects'
       connecting: 'Connecting %{count} open source contributors'
       tracking: 'Tracking %{count} source control repositories'
       search_projects: 'Search Projects...'
+      feature_directory_title: 'Massive Directory'
+      feature_directory_desc: 'Indexing over 2.5 million open source projects.'
+      feature_health_title: 'Assess Health'
+      feature_health_desc: 'Check activity levels and risk before you adopt.'
+      feature_portfolio_title: 'Manage Portfolio'
+      feature_portfolio_desc: 'Claim your commits and track your developer rankings.'
+      projects_label: 'Projects'
+      contributors_label: 'Contributors'
+      languages_label: 'Languages'
+      organizations_label: 'Organizations'
     top_lists:
       popular_projects: 'Most Popular Projects'
       active_projects: 'Most Active Projects'
       active_contributors: 'Most Active Contributors'
       recent_projects: 'Recently Added Projects'
+      show_more: 'Show More'
+      show_less: 'Show Less'
+      view_all_projects: 'View All Projects'
 
     join_now_home:
-      claim: 'Claim'
-      contributions: 'your contributions'
-      manage: 'Manage'
-      projects_data: "your project's data"
-      highlight: 'Highlight'
-      use: 'your use of FOSS'
       join_now: 'Join Now'
+      become_part_community: 'Become part of the community'
+      track_contributions_title: 'Track Your Contributions'
+      track_contributions_desc: 'Showcase your open source portfolio and contributions'
+      gain_recognition_title: 'Gain Recognition'
+      gain_recognition_desc: 'Build your developer profile with verified achievements'
+      create_account: 'Create Your Account'
+
+    whats_new:
+      whats_new: "What's New"
+      latest_updates_reports: 'Latest updates and reports'
+      ossra_report_alt: 'Open Source Security and Risk Analysis Report'
+
+    top_contributors:
+      top_contributors: 'Top Contributors'
+      most_active_developers: 'Most active contributors'
+      view_all_contributors: 'View All Contributors'
+      view_all: 'View all'
+
+    user_journeys:
+      your_journey_with_openhub: 'Your Journey with Open Hub'
+      explore_ways_description: 'Explore the many ways you can discover, track, and contribute to open source projects'
+      key_steps: 'Key Steps'
+      
+      discover_compare_title: 'Discover & Compare Solutions'
+      discover_compare_desc: 'Find the perfect open source solution by comparing features, project activity, and community engagement side-by-side.'
+      discover_compare_step1: 'Compare projects side-by-side'
+      discover_compare_step2: 'Review activity metrics'
+      discover_compare_step3: 'Analyze community interest'
+      
+      assess_health_title: 'Assess Project Health'
+      assess_health_desc: 'Determine if a project is safe to adopt by analyzing commit frequency, number of contributors, and growth trends.'
+      assess_health_step1: 'Analyze commit history trends'
+      assess_health_step2: 'Review year-over-year growth'
+      assess_health_step3: 'Track number of contributors'
+      
+      manage_portfolio_title: 'Manage Your Developer Portfolio'
+      manage_portfolio_desc: 'Build a unified portfolio of your open source work by claiming your contributions across all repositories.'
+      manage_portfolio_step1: 'Claim your commits'
+      manage_portfolio_step2: 'Earn "Kudos" and rankings'
+      manage_portfolio_step3: 'Track your global rank'
+      
+      analyze_code_title: 'Analyze Code Composition'
+      analyze_code_desc: 'Get deep insights into the codebase architecture, including language breakdown, lines of code, and comment ratios.'
+      analyze_code_step1: 'View language distribution'
+      analyze_code_step2: 'Check comment-to-code ratios'
+      analyze_code_step3: 'Estimate effort (COCOMO model)'
+      
+      check_security_title: 'Check Security Vulnerabilities'
+      check_security_desc: 'Verify the security track record of a project by checking known vulnerabilities and confidence scores before you adopt.'
+      check_security_step1: 'View Security Confidence Index'
+      check_security_step2: 'Check reported vulnerabilities (CVEs)'
+      check_security_step3: 'Assess risk level'
+      
+      identify_opportunities_title: 'Identify Contribution Opportunities'
+      identify_opportunities_desc: 'Find projects that need your skills and identify the best repositories to start your open source journey.'
+      identify_opportunities_step1: 'Find beginner-friendly projects'
+      identify_opportunities_step2: 'Locate source repositories (GitHub/GitLab)'
+      identify_opportunities_step3: 'Track your contribution impact'
