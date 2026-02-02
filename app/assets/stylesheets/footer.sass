@@ -8,69 +8,32 @@ footer
   padding: 0
   width: 100%
   max-width: 100%
+  // Matches Figma: max-w-7xl mx-auto px-4 sm:px-6 lg:px-8
   .footer-container
     position: relative
     max-width: 1280px
     margin: 0 auto
-    padding: 48px 32px 24px 32px
+    padding: 24px 16px
+    @media (min-width: 640px)
+      padding: 32px 24px
+    @media (min-width: 1024px)
+      padding: 48px 32px
 
-  // Mobile: < 640px
-  @media (max-width: 639px)
-    .footer-container
-      padding: 32px 16px 16px 16px
-    .footer-grid
-      gap: 32px
-      margin-bottom: 24px
-    .footer-left
-      .logo_img
-        height: 28px
-    .footer-mid, .footer-right
-      h3
-        font-size: 10px
-        margin-bottom: 12px
-      a
-        font-size: 10px
-      li
-        margin-bottom: 8px
-    .footer-bottom
-      .footer-bottom-content
-        gap: 8px
-      .copyright
-        font-size: 9px
-        text-align: center
-      .follow-us
-        span
-          font-size: 10px
-        a
-          width: 28px
-          height: 28px
-          i
-            font-size: 14px
-
-  // Tablet: 640px - 767px
-  @media (min-width: 640px) and (max-width: 767px)
-    .footer-container
-      padding: 40px 24px 20px 24px
-    .footer-grid
-      gap: 40px
-      margin-bottom: 28px
-
-  // Tablet landscape: 768px - 1023px
-  @media (min-width: 768px) and (max-width: 1023px)
-    .footer-container
-      padding: 44px 32px 22px 32px
-    .footer-grid
-      gap: 36px
-
+  // Matches Figma: grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 md:gap-12
   .footer-grid
     display: grid
     grid-template-columns: 1fr
-    gap: 48px
-    margin-bottom: 32px
+    gap: 24px
+    margin-bottom: 24px
+    @media (min-width: 640px)
+      gap: 32px
+      margin-bottom: 32px
     @media (min-width: 768px)
       grid-template-columns: repeat(3, 1fr)
       gap: 48px
+      margin-bottom: 48px
 
+  // Matches Figma: h-8 sm:h-10
   .footer-left
     display: flex
     align-items: flex-start
@@ -85,16 +48,17 @@ footer
         @media (min-width: 640px)
           height: 40px
 
+  // Matches Figma: text-xs sm:text-sm for headers and links
   .footer-mid, .footer-right
     h3
-      font-size: 11px
+      font-size: 12px
       font-weight: 600
       color: white !important
-      margin-bottom: 16px
+      margin-bottom: 8px
       text-transform: uppercase
       letter-spacing: 0.05em
       @media (min-width: 640px)
-        font-size: 13px
+        font-size: 14px
         margin-bottom: 12px
       @media (min-width: 768px)
         margin-bottom: 16px
@@ -103,13 +67,13 @@ footer
       margin: 0
       padding: 0
       li
-        margin-bottom: 10px
+        margin-bottom: 6px
         @media (min-width: 640px)
           margin-bottom: 8px
         @media (min-width: 768px)
           margin-bottom: 10px
     p
-      margin: 0 0 10px 0
+      margin: 0 0 6px 0
       @media (min-width: 640px)
         margin: 0 0 8px 0
       @media (min-width: 768px)
@@ -117,14 +81,15 @@ footer
     a
       color: #d1d5db !important
       text-decoration: none
-      font-size: 11px
+      font-size: 12px
       font-weight: 400
       transition: color 0.3s ease
       @media (min-width: 640px)
-        font-size: 13px
+        font-size: 14px
       &:hover
         color: white !important
 
+  // Matches Figma: py-3 sm:py-4 md:py-6
   .footer-bottom
     border-top: 1px solid rgba(255, 255, 255, 0.1)
     padding: 12px 0
@@ -140,6 +105,7 @@ footer
       gap: 12px
       @media (min-width: 640px)
         flex-direction: row
+    // Matches Figma: text-[10px] sm:text-xs
     .copyright
       color: #9ca3af !important
       font-size: 10px
@@ -154,12 +120,14 @@ footer
       order: 1
       @media (min-width: 640px)
         order: 2
+      // Matches Figma: text-xs sm:text-sm
       span
         color: #d1d5db !important
         font-size: 12px
         font-weight: 500
         @media (min-width: 640px)
           font-size: 14px
+      // Matches Figma: w-8 h-8
       a
         display: flex
         align-items: center

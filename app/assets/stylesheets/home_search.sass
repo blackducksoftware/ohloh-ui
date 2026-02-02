@@ -1,0 +1,145 @@
+// ========================================
+// Home Page Search Bar - Figma Design
+// ========================================
+// Dedicated styles for search input with higher specificity
+// to override Bootstrap and other base styles
+
+// Hero Section Search Container - Nested under .hero_section
+.hero_section
+  .search_form#search_form
+    margin-bottom: 0
+    position: relative
+    width: 100%
+
+  .search_input_wrapper
+    position: relative
+    width: 100%
+    display: block
+
+  // Search Icon - Figma: w-3.5 h-3.5 (14px) sm:w-5 sm:h-5 (20px)
+  // Positioned to align with input text baseline
+  .search_icon
+    position: absolute
+    top: 50%
+    left: 8px
+    transform: translateY(-60%)
+    display: block
+    width: 14px
+    height: 14px
+    font-size: 14px
+    color: #9ca3af
+    pointer-events: none
+    z-index: 10
+    transition: color 0.3s ease
+    text-align: center
+    font-style: normal
+    @media (min-width: 640px)
+      left: 24px
+      width: 20px
+      height: 20px
+      font-size: 20px
+    // Dark mode support
+    html.dark &
+      color: #6b7280
+    // Ensure Font Awesome icon centers properly
+    &::before
+      display: block
+
+  // Search Input - Figma: pl-8 pr-3 py-2.5, sm:pl-14 sm:pr-4 sm:py-4
+  input.search_input
+    width: 100%
+    padding: 10px 12px 10px 32px
+    font-size: 11px
+    font-weight: 400
+    line-height: 1.5
+    height: auto
+    border: 2px solid #e5e7eb
+    border-radius: 16px
+    outline: none
+    background: #ffffff
+    background-clip: padding-box
+    color: #111827
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05)
+    transition: all 0.3s ease
+    appearance: none
+    -webkit-appearance: none
+    -moz-appearance: none
+    vertical-align: middle
+    box-sizing: border-box
+
+    // Placeholder styling - Figma specs
+    &::placeholder
+      color: #9ca3af
+      opacity: 1
+
+    // Hover state - Figma specs
+    &:hover
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)
+      border-color: #d1d5db
+
+    // Focus state - Figma specs
+    &:focus
+      border-color: #0E4B7A
+      outline: none
+      box-shadow: 0 0 0 4px rgba(14, 75, 122, 0.1)
+      background: #ffffff
+      &::placeholder
+        color: #d1d5db
+
+    // Desktop - Figma: sm:pl-14 sm:pr-4 sm:py-4
+    @media (min-width: 640px)
+      padding: 16px 16px 16px 56px
+      font-size: 16px
+      border-radius: 16px
+
+    // Dark mode support
+    html.dark &
+      background: #1D0631
+      color: #ffffff
+      border-color: #4b5563
+      &::placeholder
+        color: #6b7280
+        opacity: 1
+      &:hover
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -1px rgba(0, 0, 0, 0.1)
+        border-color: #6b7280
+      &:focus
+        border-color: #2E8B9E
+        background: #1D0631
+        box-shadow: 0 0 0 4px rgba(46, 139, 158, 0.1)
+
+// ========================================
+// Bootstrap Override - Global Search Form
+// ========================================
+// High specificity overrides for Bootstrap and other frameworks
+// Ensures Figma padding is applied: pl-8 pr-3 py-2.5, sm:pl-14 sm:pr-4 sm:py-4
+form#search_form
+  input[type="text"].search_input,
+  input.search_input
+    width: 100% !important
+    padding: 10px 12px 10px 32px !important
+    font-size: 11px !important
+    height: auto !important
+    border: 2px solid #e5e7eb !important
+    border-radius: 16px !important
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important
+    background: #ffffff !important
+    color: #111827 !important
+    box-sizing: border-box !important
+    @media (min-width: 640px)
+      padding: 16px 16px 16px 56px !important
+      font-size: 16px !important
+    &:focus
+      border-color: #0E4B7A !important
+      box-shadow: 0 0 0 4px rgba(14, 75, 122, 0.1) !important
+      outline: none !important
+    // Dark mode support
+    html.dark &
+      background: #1D0631 !important
+      color: #ffffff !important
+      border-color: #4b5563 !important
+      &:focus
+        border-color: #2E8B9E !important
+        background: #1D0631 !important
+        box-shadow: 0 0 0 4px rgba(46, 139, 158, 0.1) !important

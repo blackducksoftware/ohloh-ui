@@ -7,27 +7,34 @@
       %p.card_subtitle= t('.most_active_developers')
 
   .contributors_list
-    - @top_contributors&.each_with_index do |contributor, index|
-      .contributor_item{class: "contributor-rank-#{index + 1}"}
+    - @home.most_active_contributors&.each_with_index do |contributor, index|
+      = link_to account_path(contributor), class: 'contributor_item' do
         .contributor_avatar
-          = link_to account_path(contributor) do
-            = gravatar_tag(contributor.email, size: 40, class: 'avatar_image', alt: contributor.name)
+          - begin
+            = image_tag avatar_img_path(contributor, 40), class: 'avatar_img', alt: contributor.name, onerror: "this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2240%22 height=%2240%22 viewBox=%220 0 40 40%22%3E%3Crect width=%2240%22 height=%2240%22 rx=%226%22 fill=%22%239CA3AF%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-family=%22Arial%22 font-size=%2218%22 font-weight=%22600%22 fill=%22white%22%3E#{h(contributor.name[0].upcase)}%3C/text%3E%3C/svg%3E';"
+          - rescue
+            %div.avatar_placeholder{style: "width: 40px; height: 40px; border-radius: 12px; background: #9CA3AF; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; font-size: 18px;"}
+              = contributor.name[0].upcase
+
         .contributor_info
-          .contributor_name_rank
-            %h4.contributor_name
-              = link_to contributor.name, account_path(contributor), class: 'contributor_link'
-            %span.contributor_rank= "##{index + 1}"
+          .contributor_name_row
+            %span.contributor_name= h(contributor.name)
+            %span.contributor_rank= "Rank ##{index + 1}"
           .contributor_stats
-            %span.stat_item
-              %i.fa.fa-code-fork
-              = number_with_delimiter(contributor.commits_count || 0)
-            %span.stat_item
-              %i.fa.fa-folder
-              = "#{contributor.projects_count || 0} projects"
+            - commits = contributor.best_account_analysis&.account_analysis_fact&.thirty_day_commits || 0
+            - commits_by_project = contributor.best_account_analysis&.account_analysis_fact&.commits_by_project
+            - project_count = commits_by_project.present? ? commits_by_project.split(',').length : 0
+            %span.stat_commits
+              %i.fa.fa-dot-circle-o
+              = number_with_delimiter(commits)
+            %span.stat_projects
+              %i.fa.fa-code
+              = "#{project_count} projects"
+
         .contributor_arrow
           %i.fa.fa-chevron-right
 
-  .view_all_link
-    = link_to accounts_path, class: 'btn btn_view_all' do
+  .view_all_footer
+    = link_to accounts_path, class: 'view_all_link' do
       %i.fa.fa-users
-      = t('.view_all_contributors')
+      %span= t('.view_all_contributors')

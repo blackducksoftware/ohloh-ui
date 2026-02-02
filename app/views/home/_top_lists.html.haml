@@ -1,56 +1,85 @@
-.col-md-3.top_ten
-  - if device?
-    %h2.most_popular_projects
-      %button.collapsed#no-background{"aria-controls" => "collapseOne", "aria-expanded" => "false", "data-target" => "#collapseOne", "data-toggle" => "collapse"}
-        %span.toggle-icon.glyphicon.glyphicon-chevron-down.pull-right#collpase1
-        =t('.popular_projects')
-    .collapse#collapseOne
-      = render partial: 'content', locals: { popular_items: @home.most_popular_projects,
-        commit: 'user', colors: 'popular', required: 'most_popular_projects',
-        max: @home.most_popular_projects.map(&:user_count).max }
-  - else
-    %h2.most_popular_projects= t('.popular_projects')
-    = render partial: 'content', locals: { popular_items: @home.most_popular_projects,
-    commit: 'user', colors: 'popular', required: 'most_popular_projects',
-    max: @home.most_popular_projects.map(&:user_count).max }
-.col-md-3.top_ten.middle
-  - if device?
-    %h2.most_active_projects
-      %button.collapsed{"aria-controls" => "collapseTwo", "aria-expanded" => "false", "data-target" => "#collapseTwo", "data-toggle" => "collapse"}
-        %span.toggle-icon.glyphicon.glyphicon-chevron-down.pull-right#collpase2
-        =t('.active_projects')
-    .collapse#collapseTwo
-      = render partial: 'content', locals: { popular_items: @home.most_active_projects,
-        commit: 'commit', colors: 'active', required: 'most_active_projects', max: @home.commit_count.max }
-  - else
-    %h2.most_active_projects= t('.active_projects')
-    = render partial: 'content', locals: { popular_items: @home.most_active_projects,
-      commit: 'commit', colors: 'active', required: 'most_active_projects', max: @home.commit_count.max }
-.col-md-3.top_ten.last
-  - if device?
-    %h2.most_recent_projects
-      %button.collapsed#no-background{"aria-controls" => "collapseThree", "aria-expanded" => "false", "data-target" => "#collapseThree", "data-toggle" => "collapse"}
-        %span.toggle-icon.glyphicon.glyphicon-chevron-down.pull-right#collpase3
-        =t('.recent_projects')
-    .collapse#collapseThree
-      = render partial: 'content', locals: { popular_items: @home.most_recent_projects,
-        commit: 'since', colors: 'recent', required: 'most_recent_projects',
-        max: @home.most_recent_projects.size }
-  - else
-    %h2.most_recent_projects=t('.recent_projects')
-    = render partial: 'content', locals: { popular_items: @home.most_recent_projects,
-      commit: 'since', colors: 'recent', required: 'most_recent_projects',
-      max: @home.most_recent_projects.size }
-.col-md-3.top_ten.middle
-  - if device?
-    %h2.most_active_contributors
-      %button.collapsed{"aria-controls" => "collapseFour", "aria-expanded" => "false", "data-target" => "#collapseFour", "data-toggle" => "collapse"}
-        %span.toggle-icon.glyphicon.glyphicon-chevron-down.pull-right#collpase4
-        =t('.active_contributors')
-    .collapse#collapseFour
-      = render partial: 'content', locals: { popular_items: @home.most_active_contributors,
-        commit: 'commit', colors: 'contributor', required: 'most_active_contributors', max: @home.account_analysis_count.max }
-  - else
-    %h2.most_active_contributors=t('.active_contributors')
-    = render partial: 'content', locals: { popular_items: @home.most_active_contributors,
-      commit: 'commit', colors: 'contributor', required: 'most_active_contributors', max: @home.account_analysis_count.max }
+/ Project Swimlanes Section - New Design
+.project_swimlanes_section
+  .swimlanes_container
+    .swimlanes_grid
+      / Most Active Projects Column
+      .swimlane_column
+        .swimlane_header
+          %h2.swimlane_title= t('.active_projects')
+        .swimlane_content{ data: { swimlane: 'active' } }
+          / Desktop: Show all projects
+          - @home.most_active_projects.each_with_index do |project, index|
+            .desktop_only
+              = render partial: 'compact_project_card', locals: { project: project }
+
+          / Mobile: Show first 2 projects initially
+          - @home.most_active_projects.first(2).each do |project|
+            .mobile_only.mobile_card
+              = render partial: 'compact_project_card', locals: { project: project }
+
+          / Mobile: Hidden cards (to be shown on click)
+          - if @home.most_active_projects.size > 2
+            - @home.most_active_projects.drop(2).each do |project|
+              .mobile_only.mobile_card.hidden_card{ style: 'display: none;' }
+                = render partial: 'compact_project_card', locals: { project: project }
+
+            / Show More Button (mobile only)
+            %button.show_more_btn.mobile_only{ type: 'button', data: { swimlane: 'active', target: 'active', expanded: 'false', show_text: t('.show_more'), hide_text: t('.show_less') } }
+              = t('.show_more')
+
+      / Most Popular Projects Column
+      .swimlane_column
+        .swimlane_header
+          %h2.swimlane_title= t('.popular_projects')
+        .swimlane_content{ data: { swimlane: 'popular' } }
+          / Desktop: Show all projects
+          - @home.most_popular_projects.each_with_index do |project, index|
+            .desktop_only
+              = render partial: 'compact_project_card', locals: { project: project }
+
+          / Mobile: Show first 2 projects initially
+          - @home.most_popular_projects.first(2).each do |project|
+            .mobile_only.mobile_card
+              = render partial: 'compact_project_card', locals: { project: project }
+
+          / Mobile: Hidden cards (to be shown on click)
+          - if @home.most_popular_projects.size > 2
+            - @home.most_popular_projects.drop(2).each do |project|
+              .mobile_only.mobile_card.hidden_card{ style: 'display: none;' }
+                = render partial: 'compact_project_card', locals: { project: project }
+
+            / Show More Button (mobile only)
+            %button.show_more_btn.mobile_only{ type: 'button', data: { swimlane: 'popular', target: 'popular', expanded: 'false', show_text: t('.show_more'), hide_text: t('.show_less') } }
+              = t('.show_more')
+
+      / Recently Added Projects Column
+      .swimlane_column
+        .swimlane_header
+          %h2.swimlane_title= t('.recent_projects')
+        .swimlane_content{ data: { swimlane: 'recent' } }
+          / Desktop: Show all projects
+          - @home.most_recent_projects.each_with_index do |project, index|
+            .desktop_only
+              = render partial: 'compact_project_card', locals: { project: project }
+
+          / Mobile: Show first 2 projects initially
+          - @home.most_recent_projects.first(2).each do |project|
+            .mobile_only.mobile_card
+              = render partial: 'compact_project_card', locals: { project: project }
+
+          / Mobile: Hidden cards (to be shown on click)
+          - if @home.most_recent_projects.size > 2
+            - @home.most_recent_projects.drop(2).each do |project|
+              .mobile_only.mobile_card.hidden_card{ style: 'display: none;' }
+                = render partial: 'compact_project_card', locals: { project: project }
+
+            / Show More Button (mobile only)
+            %button.show_more_btn.mobile_only{ type: 'button', data: { swimlane: 'recent', target: 'recent', expanded: 'false', show_text: t('.show_more'), hide_text: t('.show_less') } }
+              = t('.show_more')
+
+
+  / View All Projects Button
+  .view_all_container
+    = link_to projects_path, class: 'btn_view_all_projects' do
+      = t('.view_all_projects')
+      %i.fa.fa-arrow-right

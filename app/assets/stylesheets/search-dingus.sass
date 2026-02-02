@@ -1,15 +1,19 @@
 #search-dingus
   @include site-well-color
-  padding: 7px 0px
+  padding: 10px 15px
   line-height: 29px
-  min-height: 33px
+  min-height: 50px
   margin-bottom: 1em
+  border-radius: 8px
   #value_select
     display: inline !important
     select
       width: 400px
   .col-md-5
-    width: 43%
+    width: 50%
+    display: flex
+    align-items: stretch
+    padding: 0
 
   .col-md-4
     width: 32%
@@ -19,12 +23,75 @@
 
   label.paginate
     font-size: 13px
+    
+  label.sr-only
+    position: absolute
+    width: 1px
+    height: 1px
+    padding: 0
+    margin: -1px
+    overflow: hidden
+    clip: rect(0, 0, 0, 0)
+    white-space: nowrap
+    border-width: 0
+    
+  .search-input-group
+    display: flex
+    align-items: stretch
+    width: 100%
+    max-width: 500px
+    
   button.btn
-    height: 34px
-    border-top: 10px
-  input
-    width: 180px
-    color: #000
+    height: auto
+    border: 1px solid #5A2A82
+    line-height: 1
+    padding: 8px 16px
+    display: flex
+    align-items: center
+    justify-content: center
+    
+  input[type="text"]
+    flex: 1
+    min-width: 250px
+    max-width: 100%
+    font-size: 14px
+    color: #1f2937
+    background-color: #ffffff
+    border: 1px solid #d1d5db
+    padding: 10px 14px
+    transition: all 0.15s ease-in-out
+    border-radius: 12px 0 0 12px
+    margin: 0
+    height: auto
+    line-height: 1.5
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05)
+    &:hover
+      border-color: #9ca3af
+    &:focus
+      outline: none
+      border-color: #5A2A82
+      box-shadow: 0 0 0 3px rgba(90, 42, 130, 0.1)
+      background-color: #ffffff
+    &::placeholder
+      color: #9ca3af
+      font-size: 14px
+  
+  // Dark mode support
+  .dark &
+    background-color: rgba(29, 6, 49, 0.5)
+    input[type="text"]
+      background-color: #1D0631
+      color: #ffffff
+      border-color: #4b5563
+      &:hover
+        border-color: #6b7280
+      &:focus
+        border-color: #ffb91a
+        box-shadow: 0 0 0 3px rgba(255, 185, 26, 0.1)
+        background-color: #1D0631
+      &::placeholder
+        color: #6b7280
+  
   select
     width: 150px
   label.checkbox
