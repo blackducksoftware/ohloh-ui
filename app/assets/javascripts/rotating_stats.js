@@ -1,14 +1,14 @@
 // Rotating Stats Animation for Homepage
 document.addEventListener('DOMContentLoaded', function() {
-  const globalStats = document.getElementById('global_statistics');
+  var globalStats = document.getElementById('global_statistics');
 
   if (!globalStats) return;
 
-  const statElements = globalStats.querySelectorAll('p');
+  var statElements = globalStats.querySelectorAll('p');
 
   if (statElements.length === 0) return;
 
-  let currentIndex = 0;
+  var currentIndex = 0;
 
   // Show first stat initially
   statElements[0].classList.remove('hide');

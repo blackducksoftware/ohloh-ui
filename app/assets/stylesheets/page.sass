@@ -1,5 +1,14 @@
 @import "base"
 
+// Mobile menu slide down animation
+@keyframes slideDown
+  0%
+    opacity: 0
+    transform: translateY(-10px)
+  100%
+    opacity: 1
+    transform: translateY(0)
+
 body
   background-color: white !important
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"
@@ -25,6 +34,8 @@ header
   margin: 0
   padding: 0
   width: 100%
+  position: relative
+  z-index: 1
 
 @media only all and (min-width: 320px) and (max-width: 480px)
   body
@@ -50,28 +61,44 @@ header
   display: flex
   align-items: center
   .new_main_menu
-    list-style: none
-    margin: 0
-    padding: 0
-    display: flex
-    align-items: center
-    gap: 32px
+    list-style: none !important
+    margin: 0 !important
+    padding: 0 !important
+    display: flex !important
+    align-items: center !important
+    gap: 18px !important
     li
-      display: inline-block
-      margin: 0
+      display: inline-block !important
+      margin: 0 !important
+      padding: 0 !important
+      list-style-type: none !important
+      &.menu_item
+        display: inline-block !important
+        margin: 0 !important
+        padding: 0 !important
       a
         color: white !important
-        font-size: 16px
-        text-decoration: none
-        font-weight: 500
-        transition: color 0.3s ease
-        white-space: nowrap
-        &:hover
+        font-size: 14px !important
+        text-decoration: none !important
+        font-weight: 500 !important
+        transition: color 0.3s ease !important
+        white-space: nowrap !important
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important
+        line-height: 1.5 !important
+        letter-spacing: 0 !important
+        padding: 6px 0 !important
+        margin: 0 !important
+        display: inline-block !important
+        background: none !important
+        border: none !important
+        box-shadow: none !important
+        &:hover, &:focus, &:active
           color: #d1d5db !important
-          text-decoration: none
+          text-decoration: none !important
+          background: none !important
         &.select
           color: #FFB91A !important
-          font-weight: 600
+          font-weight: 600 !important
 
 #navbar-inner
   // Navigation moved to main navbar - hide this section
@@ -82,9 +109,6 @@ header
     padding: 0 16px
     .new_main_menu
       gap: 16px
-      li
-        a
-          font-size: 11px !important
   .mobile-menu
     .mobile-menu-content
       padding: 0 8px
@@ -99,9 +123,6 @@ header
     padding: 0 24px
     .new_main_menu
       gap: 24px
-      li
-        a
-          font-size: 13px !important
 #page_contents
   max-width: 100%
   padding: 0 20px
@@ -136,8 +157,8 @@ header
 @media (min-width: 640px)
   .navbar
     .navbar-container
-      padding: 0 12px
-      gap: 8px
+      padding: 0 16px
+      gap: 12px
     .logo-and-brand
       gap: 6px
     .logo-div
@@ -172,14 +193,18 @@ header
   .navbar
     .navbar-container
       padding: 0 24px
+      gap: 16px
     .logo-div
       .logo_img
         height: 32px
     .company-div
       .navbar_large_text
-        font-size: 18px
+        font-size: 32px
     .separator-div
+      display: block
       height: 26px
+    .logo-and-brand
+      gap: 10px
   .mobile-menu
     .mobile-menu-content
       padding: 0 24px
@@ -195,10 +220,9 @@ header
     min-height: 72px
     .navbar-container
       padding: 0 32px
-      gap: 16px
       min-height: 72px
     .logo-and-brand
-      gap: 8px
+      gap: 12px
     .logo-div
       .logo_img
         height: 40px
@@ -211,6 +235,16 @@ header
       gap: 16px
     .nav-menu
       display: flex !important
+      .new_main_menu
+        gap: 18px !important
+        li
+          margin: 0 !important
+          padding: 0 !important
+          a
+            font-size: 14px !important
+            font-weight: 500 !important
+            padding: 6px 0 !important
+            margin: 0 !important
     .desktop-actions
       display: flex !important
     .mobile-menu-toggle
@@ -224,9 +258,6 @@ header
     min-height: 80px
     .navbar-container
       min-height: 80px
-    .nav-menu
-      .new_main_menu
-        gap: 24px
     .logo-div
       .logo_img
         height: 48px
@@ -235,9 +266,15 @@ header
         font-size: 24px
     .nav-menu
       .new_main_menu
+        gap: 28px !important
         li
+          margin: 0 !important
+          padding: 0 !important
           a
-            font-size: 16px
+            font-size: 16px !important
+            font-weight: 500 !important
+            padding: 6px 0 !important
+            margin: 0 !important
 
 // 2xl: 1536px+
 @media (min-width: 1536px)
@@ -245,15 +282,23 @@ header
     min-height: 88px
     .navbar-container
       min-height: 88px
-    .nav-menu
-      .new_main_menu
-        gap: 32px
     .logo-div
       .logo_img
-        height: 56px
+        height: 32px
     .company-div
       .navbar_large_text
         font-size: 30px
+    .nav-menu
+      .new_main_menu
+        gap: 36px !important
+        li
+          margin: 0 !important
+          padding: 0 !important
+          a
+            font-size: 16px !important
+            font-weight: 500 !important
+            padding: 6px 0 !important
+            margin: 0 !important
 
 // Mobile/Tablet: < 1024px (show hamburger menu)
 @media (max-width: 1023px)
@@ -269,17 +314,20 @@ header
   // Figma design: gradient background with purple theme
   position: relative
   background: linear-gradient(to right, #000000, #1D0631, #5A2A82)
+  backdrop-filter: blur(12px)
+  -webkit-backdrop-filter: blur(12px)
   border-width: 0
-  border-bottom: 1px solid #1f2937
+  border-bottom: 1px solid rgba(31, 41, 55, 0.8)
   margin: 0
   padding: 0
   min-height: 64px
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2)
   width: 100%
   display: flex
   align-items: flex-start
   flex-wrap: wrap
   overflow: visible
+  z-index: 100
   // Override global button styles for navbar
   .btn
     border: none !important
@@ -289,9 +337,9 @@ header
       top: 0 !important
       left: 0 !important
   .navbar-container
-    max-width: 1280px
+    max-width: 100%
     margin: 0 auto
-    padding: 0 8px
+    padding: 0 16px
     width: 100%
     min-height: 64px
     display: flex !important
@@ -299,7 +347,8 @@ header
     flex-wrap: nowrap !important
     align-items: center
     justify-content: space-between
-    gap: 4px
+    gap: 12px
+    position: relative
     .hidden
       display: none !important
       position: absolute !important
@@ -309,8 +358,8 @@ header
   .logo-and-brand
     display: flex
     align-items: center
-    gap: 4px
-    flex-shrink: 1
+    gap: 8px
+    flex-shrink: 0
     min-width: 0
   .logo-div
     display: flex
@@ -320,9 +369,6 @@ header
       text-decoration: none
       display: flex
       align-items: center
-    .logo_img
-      height: 24px
-      width: auto
   .company-div
     color: white !important
     display: flex
@@ -331,7 +377,6 @@ header
     .navbar_small_text
       font-size: 10px !important
     .navbar_large_text
-      font-size: 18px
       color: white !important
       font-weight: 700
       line-height: 1.25
@@ -350,40 +395,66 @@ header
     margin: 0
     display: none
   .nav-menu
-    flex: 1
-    display: flex
-    justify-content: center
+    display: none
+    position: absolute
+    left: 50%
+    transform: translateX(-50%)
     .new_main_menu
-      list-style: none
-      margin: 0
-      padding: 0
-      display: flex
-      align-items: center
-      gap: 24px
+      list-style: none !important
+      margin: 0 !important
+      padding: 0 !important
+      display: flex !important
+      align-items: center !important
       li
-        display: inline-block
-        margin: 0
+        display: inline-block !important
+        margin: 0 !important
+        padding: 0 !important
+        list-style-type: none !important
+        &.menu_item
+          display: inline-block !important
+          margin: 0 !important
+          padding: 0 !important
         a
           color: white !important
-          font-size: 14px
-          text-decoration: none
-          font-weight: 500
-          transition: color 0.3s ease
-          white-space: nowrap
-          &:hover
+          font-size: 14px !important
+          text-decoration: none !important
+          font-weight: 500 !important
+          transition: all 0.3s ease !important
+          white-space: nowrap !important
+          position: relative !important
+          padding: 6px 0 !important
+          margin: 0 !important
+          font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important
+          line-height: 1.5 !important
+          letter-spacing: 0 !important
+          display: inline-block !important
+          background: none !important
+          border: none !important
+          box-shadow: none !important
+          &:hover, &:focus, &:active
             color: #d1d5db !important
-            text-decoration: none
+            text-decoration: none !important
+            background: none !important
           &.select
             color: #FFB91A !important
-            font-weight: 600
+            font-weight: 600 !important
+            &::after
+              content: '' !important
+              position: absolute !important
+              bottom: 0 !important
+              left: 0 !important
+              right: 0 !important
+              height: 2px !important
+              background-color: #FFB91A !important
+              border-radius: 2px !important
   .actions-div
     display: flex
     align-items: center
-    gap: 4px
+    gap: 12px
     flex-shrink: 0
     flex-grow: 0
   .theme-toggle-btn
-    padding: 6px
+    padding: 8px
     background-color: transparent
     border: none
     border-radius: 8px
@@ -391,31 +462,37 @@ header
     display: flex
     align-items: center
     justify-content: center
-    transition: background-color 0.3s ease
+    transition: all 0.3s ease
     flex-shrink: 0
     &:hover
       background-color: rgba(255, 255, 255, 0.1)
+      transform: scale(1.05)
+    &:active
+      transform: scale(0.95)
     .theme-icon
-      font-size: 16px
+      font-size: 18px
       color: white
-      transition: opacity 0.3s ease
+      transition: all 0.3s ease
     .hidden
       display: none
   .mobile-menu-toggle
     display: none
-    padding: 6px
+    padding: 8px
     background-color: transparent
     border: none
     border-radius: 8px
     cursor: pointer
     align-items: center
     justify-content: center
-    transition: background-color 0.3s ease
+    transition: all 0.3s ease
     flex-shrink: 0
     &:hover
       background-color: rgba(255, 255, 255, 0.1)
+      transform: scale(1.05)
+    &:active
+      transform: scale(0.95)
     i
-      font-size: 16px
+      font-size: 18px
       color: white
   .btn
     border: 0
@@ -457,27 +534,60 @@ header
     border: none !important
     border-width: 0 !important
     font-weight: 600 !important
-    padding: 8px 20px !important
+    padding: 10px 20px !important
     border-radius: 8px !important
     display: inline-flex !important
     align-items: center
     justify-content: center
     gap: 6px
-    transition: background-color 0.3s ease
+    transition: all 0.3s ease
     font-size: 14px !important
     text-decoration: none
     line-height: 1.5 !important
-    box-shadow: none !important
+    box-shadow: 0 2px 8px rgba(255, 185, 26, 0.3) !important
     &:hover
       background-color: rgba(255, 185, 26, 0.9) !important
       border-color: transparent !important
       text-decoration: none
+      transform: translateY(-2px)
+      box-shadow: 0 4px 12px rgba(255, 185, 26, 0.4) !important
     &:active
       top: 0 !important
       left: 0 !important
+      transform: translateY(0)
+      box-shadow: 0 2px 4px rgba(255, 185, 26, 0.3) !important
     i
       font-size: 14px
       margin: 0
+  .btn-outline
+    background-color: transparent !important
+    color: #FFB91A !important
+    border: 2px solid #FFB91A !important
+    font-weight: 600 !important
+    padding: 8px 18px !important
+    border-radius: 8px !important
+    display: inline-flex !important
+    align-items: center
+    justify-content: center
+    gap: 6px
+    transition: all 0.3s ease
+    font-size: 14px !important
+    text-decoration: none
+    line-height: 1.5 !important
+    box-shadow: 0 0 0 rgba(255, 185, 26, 0) !important
+    backdrop-filter: blur(4px)
+    -webkit-backdrop-filter: blur(4px)
+    &:hover
+      background-color: rgba(255, 185, 26, 0.15) !important
+      border-color: #FFB91A !important
+      text-decoration: none
+      transform: translateY(-2px)
+      box-shadow: 0 4px 12px rgba(255, 185, 26, 0.25) !important
+    &:active
+      top: 0 !important
+      left: 0 !important
+      transform: translateY(0)
+      box-shadow: 0 0 0 rgba(255, 185, 26, 0) !important
 
 @media (min-width: 320px) and (max-width: 340px)
   #top_nav_actions
@@ -489,16 +599,20 @@ header
   width: 100%
   flex-basis: 100%
   background: linear-gradient(to right, #1D0631, #5A2A82)
-  border-top: 1px solid rgba(255, 255, 255, 0.1)
-  padding: 16px 0
+  backdrop-filter: blur(12px)
+  -webkit-backdrop-filter: blur(12px)
+  border-top: 1px solid rgba(255, 255, 255, 0.15)
+  padding: 20px 0
   position: relative
   z-index: 100
   overflow: visible
   order: 2
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.2)
   &.show
     display: block !important
     visibility: visible !important
     opacity: 1 !important
+    animation: slideDown 0.3s ease-out
   .mobile-menu-content
     max-width: 1280px
     margin: 0 auto
@@ -513,46 +627,51 @@ header
     display: block
     visibility: visible
     li
-      margin-bottom: 8px
+      margin-bottom: 4px
       display: block
       visibility: visible
       a
         display: block !important
-        padding: 12px 16px
+        padding: 14px 16px
         color: white !important
         text-decoration: none
         border-radius: 8px
-        transition: background-color 0.3s ease
+        transition: all 0.3s ease
         font-weight: 500
+        font-size: 15px
         visibility: visible !important
         &:hover
-          background-color: rgba(255, 255, 255, 0.1)
+          background-color: rgba(255, 255, 255, 0.12)
           text-decoration: none
+          transform: translateX(4px)
         &.select
           color: #FFB91A !important
           font-weight: 600
+          background-color: rgba(255, 185, 26, 0.15)
   .mobile-menu-user
     list-style: none
     margin: 16px 0 0 0
     padding: 16px 0 0 0
-    border-top: 1px solid rgba(255, 255, 255, 0.1)
+    border-top: 1px solid rgba(255, 255, 255, 0.15)
     display: block
     visibility: visible
     li
-      margin-bottom: 8px
+      margin-bottom: 4px
       display: block
       visibility: visible
       a
         display: block !important
-        padding: 12px 16px
+        padding: 14px 16px
         color: white !important
         text-decoration: none
         border-radius: 8px
-        transition: background-color 0.3s ease
+        transition: all 0.3s ease
+        font-size: 15px
         visibility: visible !important
         &:hover
-          background-color: rgba(255, 255, 255, 0.1)
+          background-color: rgba(255, 255, 255, 0.12)
           text-decoration: none
+          transform: translateX(4px)
   .mobile-menu-signin
     margin-top: 16px
     padding: 16px 0 0 0
@@ -565,19 +684,52 @@ header
       align-items: center
       justify-content: center
       gap: 8px
-      padding: 12px 20px
+      padding: 14px 20px
       background-color: #FFB91A !important
       color: #000 !important
       border: none !important
       border-radius: 8px
       font-weight: 600
-      font-size: 14px
+      font-size: 15px
       text-decoration: none
-      transition: background-color 0.3s ease
+      transition: all 0.3s ease
       visibility: visible !important
+      margin-bottom: 12px
+      box-shadow: 0 2px 8px rgba(255, 185, 26, 0.3)
       &:hover
         background-color: rgba(255, 185, 26, 0.9) !important
         text-decoration: none
+        transform: translateY(-2px)
+        box-shadow: 0 4px 12px rgba(255, 185, 26, 0.4)
+      &:active
+        transform: translateY(0)
+        box-shadow: 0 2px 4px rgba(255, 185, 26, 0.3)
+    .btn-mobile-join-now
+      width: 100%
+      display: flex !important
+      align-items: center
+      justify-content: center
+      gap: 8px
+      padding: 14px 20px
+      background-color: transparent !important
+      color: #FFB91A !important
+      border: 2px solid #FFB91A !important
+      border-radius: 8px
+      font-weight: 600
+      font-size: 15px
+      text-decoration: none
+      transition: all 0.3s ease
+      visibility: visible !important
+      backdrop-filter: blur(4px)
+      -webkit-backdrop-filter: blur(4px)
+      &:hover
+        background-color: rgba(255, 185, 26, 0.15) !important
+        text-decoration: none
+        transform: translateY(-2px)
+        box-shadow: 0 4px 12px rgba(255, 185, 26, 0.25)
+      &:active
+        transform: translateY(0)
+        box-shadow: none
 
 #logged_user_menu
   .dropdown-toggle
@@ -585,7 +737,7 @@ header
     text-transform: none
     text-decoration: none
     margin: 0
-    padding: 8px 16px
+    padding: 10px 16px
     background-color: rgba(255, 255, 255, 0.1)
     border-radius: 8px
     display: inline-flex
@@ -593,33 +745,43 @@ header
     gap: 8px
     font-size: 14px
     font-weight: 500
-    transition: background-color 0.3s ease
+    transition: all 0.3s ease
+    border: 1px solid transparent
     &:hover
-      background-color: rgba(255, 255, 255, 0.2)
+      background-color: rgba(255, 255, 255, 0.15)
+      border-color: rgba(255, 255, 255, 0.2)
       text-decoration: none
+      transform: translateY(-1px)
+    &:active
+      transform: translateY(0)
     i
       font-size: 14px
   ul.dropdown-menu
-    margin-top: 8px
-    border-radius: 8px
-    border: 1px solid rgba(255, 255, 255, 0.1)
-    background-color: rgba(29, 6, 49, 0.95)
-    backdrop-filter: blur(8px)
+    margin-top: 12px
+    border-radius: 12px
+    border: 1px solid rgba(255, 255, 255, 0.15)
+    background-color: rgba(29, 6, 49, 0.97)
+    backdrop-filter: blur(12px)
+    -webkit-backdrop-filter: blur(12px)
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3), 0 4px 10px rgba(0, 0, 0, 0.2)
     li
-      width: 180px
+      width: 200px
       a
         color: white
         margin: 0
-        padding: 10px 16px
+        padding: 12px 16px
+        transition: all 0.3s ease
+        border-radius: 8px
         &:hover
           background-color: rgba(255, 185, 26, 0.2) !important
           color: #FFB91A !important
+          transform: translateX(4px)
     .divider
       width: 100%
       height: 1px
-      margin: 4px 0
+      margin: 8px 0
       overflow: hidden
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1)
+      border-bottom: 1px solid rgba(255, 255, 255, 0.15)
 
 
 #flash-msg .alert
@@ -942,3 +1104,33 @@ fieldset
   max-width: 100%
   margin: 0 auto
   padding: 0 20px
+
+// Override Bootstrap navigation styles
+.navbar .nav-menu .new_main_menu li.menu_item a,
+.navbar ul.new_main_menu li.menu_item a,
+ul.new_main_menu li.menu_item a
+  color: white !important
+  font-size: 14px !important
+  font-weight: 500 !important
+  text-decoration: none !important
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important
+  line-height: 1.5 !important
+  padding: 6px 0 !important
+  margin: 0 !important
+  background: none !important
+  border: none !important
+  box-shadow: none !important
+  letter-spacing: 0 !important
+  &:hover, &:focus, &:active, &:visited
+    color: #d1d5db !important
+    text-decoration: none !important
+    background: none !important
+  &.select
+    color: #FFB91A !important
+    font-weight: 600 !important
+
+@media (min-width: 1280px)
+  .navbar .nav-menu .new_main_menu li.menu_item a,
+  .navbar ul.new_main_menu li.menu_item a,
+  ul.new_main_menu li.menu_item a
+    font-size: 16px !important
