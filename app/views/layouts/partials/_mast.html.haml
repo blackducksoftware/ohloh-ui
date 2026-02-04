@@ -60,6 +60,9 @@
             %a.btn.btn-primary.btn-header{ href: new_session_path }
               %i.icon-user
               = t :sign_in
+          %li
+            %a.btn.btn-outline.btn-join-now{ href: new_account_path }
+              Join Now
       %button#mobile-menu-toggle.mobile-menu-toggle{ 'aria-label' => 'Menu' }
         %i#mobile-menu-icon.icon-reorder
   #mobile-menu.mobile-menu
@@ -94,6 +97,8 @@
           %a.btn.btn-primary.btn-mobile-signin{ href: new_session_path }
             %i.icon-user
             = t :sign_in
+          %a.btn.btn-outline.btn-mobile-join-now{ href: new_account_path }
+            Join Now
 
 - if read_only_mode?
   %div
