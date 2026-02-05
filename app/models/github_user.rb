@@ -51,7 +51,7 @@ class GithubUser
 
     loop do
       page += 1
-      repository_data = get_github_response(URI(github_url(page)))
+      repository_data = get_repository_data(page)
       break if repository_data.blank?
 
       unforked_repo_data = repository_data.reject { |data| data['fork'] }
@@ -61,19 +61,23 @@ class GithubUser
     repository_urls
   end
 
-  def get_github_response(uri)
-    http = Net::HTTP.new(uri.host, uri.port)
-    http.use_ssl = true
-    response = http.get(uri.request_uri, authorization: "token #{get_api_key}")
+  def get_repository_data(page)
+    response = get_github_response(github_uri(page))
     JSON.parse(response.body)
   end
 
-  def github_url(page)
-    GITHUB_API_URL + username + "/repos?page=#{page}&per_page=100"
+  def get_github_response(uri)
+    http = Net::HTTP.new(uri.host, uri.port)
+    http.use_ssl = true
+    http.get(uri.request_uri, authorization: "token #{get_api_key}")
   end
 
-  def github_username_url
-    GITHUB_API_URL + username + "?access_token=#{get_api_key}"
+  def github_uri(page)
+    URI(GITHUB_API_URL + username + "/repos?page=#{page}&per_page=100")
+  end
+
+  def github_username_uri
+    URI(GITHUB_API_URL + username)
   end
 
   def get_api_key
@@ -81,8 +85,7 @@ class GithubUser
   end
 
   def username_must_exist
-    _stdin, stdout = Open3.popen3('curl', github_username_url)
-    output = JSON.parse(stdout.read)
-    errors.add(:url, I18n.t('invalid_github_username')) if output.is_a?(Hash) && output['message'] == 'Not Found'
+    response = get_github_response(github_username_uri)
+    errors.add(:url, I18n.t('invalid_github_username')) unless (200..299).include?(response.code.to_i)
   end
 end
