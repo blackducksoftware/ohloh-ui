@@ -201,6 +201,7 @@ class EnlistmentsControllerTest < ActionController::TestCase
     it 'must create enlistments jobs using github username' do
       _(EnlistmentWorker.jobs.size).must_equal 0
       username = 'stan'
+      GithubUser.any_instance.stubs(:valid?).returns true
       post :create, params: { project_id: project.to_param, code_location: { scm_type: :GithubUser, url: username } }
       assert_response :redirect
       assert_redirected_to action: :index
@@ -230,9 +231,11 @@ class EnlistmentsControllerTest < ActionController::TestCase
 
     it 'should not create job for a existing github user_name' do
       username = 'stan'
+      GithubUser.any_instance.stubs(:valid?).returns true
       post :create, params: { project_id: project.to_param, code_location: { scm_type: :GithubUser, url: username } }
       _(EnlistmentWorker.jobs.size).must_equal 1
 
+      GithubUser.any_instance.stubs(:valid?).returns false
       post :create, params: { project_id: project.to_param, code_location: { scm_type: :GithubUser, url: username } }
       assert_redirected_to action: :index
       _(EnlistmentWorker.jobs.size).must_equal 1
