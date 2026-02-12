@@ -1,136 +1,88 @@
-// Hero Section - Updated to match Figma exactly
+// ========================================
+// Hero Section - Figma Design System
+// ========================================
+// Main container with consistent 1280px max-width throughout
+// Isolated from global body font-size: 1.3rem override
+
 .hero_section
-  padding-top: 60px
-  padding-bottom: 40px
-  padding-left: 16px
-  padding-right: 16px
+  padding: 0 16px 40px
   background: #fff !important
   transition: background 0.3s ease
+  box-sizing: border-box
   @media (min-width: 640px)
-    padding-top: 72px
-    padding-left: 24px
-    padding-right: 24px
+    padding: 0 24px 40px
   @media (min-width: 1024px)
-    padding-top: 88px
-    padding-left: 32px
-    padding-right: 32px
+    padding: 0 32px 40px
   // Dark mode support
   html.dark &
     background: #1D0631 !important
+  // Ensure all child elements use border-box
+  *, *::before, *::after
+    box-sizing: border-box
 
+// Hero Container - Controls all child widths consistently (1280px)
 .hero_container
-  max-width: 80rem
+  max-width: 1280px
   margin: 0 auto
+  width: 100%
+  box-sizing: border-box
 
 // Hero Header - Figma Specs
 .hero_header
   text-align: center
   margin-bottom: 24px
+  padding: 0
+  @media (min-width: 768px)
+    margin-bottom: 24px
 
 .hero_title
-  font-size: 1.875rem !important
+  font-size: 1.875rem
   font-weight: 700
   color: #5A2A82
   margin-bottom: 8px
-  line-height: 2.25rem !important
+  line-height: 2.25rem
   transition: color 0.3s ease
   @media (min-width: 640px)
-    font-size: 2.25rem !important
-    line-height: 2.5rem !important
+    font-size: 2.25rem
+    line-height: 2.5rem
   @media (min-width: 768px)
-    font-size: 3rem !important
-    line-height: 1 !important
+    font-size: 48px
+    line-height: 1
   // Dark mode support
   html.dark &
     color: #ffffff
 
 .hero_subtitle
-  font-size: 0.875rem !important
+  font-size: 0.875rem
   color: #6b7280
-  max-width: 42rem
   margin: 0 auto
-  line-height: 1.25rem !important
+  max-width: 672px
+  line-height: 1.25rem
   transition: color 0.3s ease
   @media (min-width: 640px)
-    font-size: 1rem !important
-    line-height: 1.5rem !important
+    font-size: 16px
+    line-height: 1.5rem
   // Dark mode support
   html.dark &
     color: #9ca3af
 
-// Search Container - Figma Specs
+// Search Container - Narrower for focused search UX (768px)
 .search_container
-  max-width: 48rem
+  max-width: 768px
   margin: 0 auto 20px
-
-.search_form
-  margin-bottom: 0
-  position: relative
-
-.search_input_wrapper
-  position: relative
-
-.search_icon
-  position: absolute
-  top: 50%
-  transform: translateY(-50%)
-  left: 8px
-  font-size: 14px
-  color: #9ca3af
-  pointer-events: none
-  z-index: 1
-  transition: color 0.3s ease
-  @media (min-width: 640px)
-    left: 24px
-    font-size: 20px
-  // Dark mode support
-  html.dark &
-    color: #6b7280
-
-.search_input
   width: 100%
-  padding: 10px 12px 10px 32px
-  font-size: 11px !important
-  border: 2px solid #e5e7eb
-  border-radius: 16px
-  outline: none
-  background: #fff
-  color: #111827
-  font-family: inherit
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05)
-  transition: all 0.2s ease
-  &::placeholder
-    color: #9ca3af
-  &:hover
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1)
-  &:focus
-    border-color: #0E4B7A
-    box-shadow: 0 0 0 4px rgba(14, 75, 122, 0.1)
-    &::placeholder
-      color: #d1d5db
-  @media (min-width: 640px)
-    padding: 16px 16px 16px 56px
-    font-size: 16px !important
-  // Dark mode support
-  html.dark &
-    background: #1D0631 !important
-    color: #ffffff
-    border-color: #374151
-    &::placeholder
-      color: #6b7280
-    &:focus
-      border-color: #2E8B9E
-      box-shadow: 0 0 0 4px rgba(46, 139, 158, 0.1)
+  box-sizing: border-box
 
 // Rotating Stats - Figma Animation
 .rotating_stats
   text-align: center
   margin-top: 12px
+  margin-bottom: 24px
   height: 20px
 
 #global_statistics
   p
-    font-size: 12px !important
+    font-size: 12px
     font-weight: 500
     background: linear-gradient(90deg, #5A2A82 0%, #5A2A82 100%)
     -webkit-background-clip: text
@@ -147,21 +99,40 @@
       display: block
     // Dark mode support
     html.dark &
-      background: linear-gradient(90deg, #ffffff 0%, #ffffff 100%)
+      background: linear-gradient(90deg, #ffffff 0%, #ffffff 100%) !important
+      -webkit-background-clip: text !important
+      -webkit-text-fill-color: transparent !important
+      background-clip: text !important
 // Old join_now and home_page_row styles removed - using new card-based design
 // Old placeholder and btn_join_now styles removed - handled in new components
 
 .landing
   margin-top: 20px
   margin-left: 0
-  padding: 0 20px
+  padding: 32px 16px
   width: 100%
+  background: #f9fafb !important
+  transition: background 0.3s ease
+  @media (min-width: 640px)
+    padding: 32px 24px
+  @media (min-width: 1024px)
+    padding: 32px 32px
+  // Dark mode support
+  html.dark &
+    background: #1D0631 !important
 .top_ten_main
   padding-left: 40px !important
   padding-bottom: 6px !important
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"
 .top_ten_row
   padding-left: 9px !important
   padding-bottom: 15px
+  transition: all 0.3s ease
+  border-radius: 8px
+  margin-bottom: 12px
+  &:hover
+    background: rgba(90, 42, 130, 0.05)
+    transform: translateX(4px)
 .top_ten_bar
   line-height: 0.6em
   width: 30%
@@ -170,11 +141,31 @@
 .top_ten_label
   line-height: 1.5em
   padding-left: 8px
-  color: #555
+  color: #6b7280
+  font-size: 12px
+  font-weight: 500
+  transition: color 0.3s ease
+  @media (min-width: 640px)
+    font-size: 13px
+  @media (min-width: 768px)
+    font-size: 14px
+  // Dark mode support
+  html.dark &
+    color: #9ca3af
 .top_ten
   h2
-    font-weight: 500 !important
+    font-weight: 600 !important
     font-size: 16px !important
+    color: #111827
+    line-height: 1.2
+    transition: color 0.3s ease
+    @media (min-width: 640px)
+      font-size: 18px !important
+    @media (min-width: 768px)
+      font-size: 20px !important
+    // Dark mode support
+    html.dark &
+      color: #ffffff
 .top_ten.middle
   @include site-well-color
 .top_ten.last
@@ -182,8 +173,8 @@
     margin-right: -25px !important
 .top_ten_icon
   img
-    background-color: #EEE
-    color: #000
+    background-color: #f3f4f6
+    color: #111827
     font-size: 4px
     line-height: 32px
     width: 32px
@@ -192,10 +183,21 @@
     float: left
     margin-bottom: 0
     margin-top: 0
-    margin-right: 2px
+    margin-right: 8px
+    border-radius: 8px
+    border: 1px solid #e5e7eb
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05)
     -webkit-filter:grayscale(1)
     filter: grayscale(1)
-    opacity: .75
+    opacity: .85
+    transition: all 0.3s ease
+    // Dark mode support
+    html.dark &
+      background-color: rgba(255, 255, 255, 0.1)
+      border-color: #4b5563
+  &:hover img
+    opacity: 1
+    transform: scale(1.05)
 a.top_ten_icon p
   opacity: .75
   background-color: #999
@@ -203,6 +205,23 @@ a.top_ten_icon p
 .top_ten_link
   a
     border: 0
+    color: #5A2A82
+    font-weight: 600
+    font-size: 14px
+    text-decoration: none
+    transition: all 0.3s ease
+    @media (min-width: 640px)
+      font-size: 15px
+    @media (min-width: 768px)
+      font-size: 16px
+    &:hover
+      color: #1D0631
+      text-decoration: none
+    // Dark mode support
+    html.dark &
+      color: #ffffff
+      &:hover
+        color: #ffb91a
 // Old .icon_search, .wh_new, .common removed - using new card-based design
 .most_popular_projects
   @include most-popular-projects-colors
@@ -228,10 +247,11 @@ button
 #no-background
   background-color: white !important
 
-// Feature Cards Section - Figma Specs
+// Feature Cards Section - Figma: 1024px width
 .features_section
-  max-width: 64rem
-  margin: 0 auto 32px
+  max-width: 1024px
+  margin: 0 auto 24px
+  box-sizing: border-box
   @media (min-width: 768px)
     display: grid
     grid-template-columns: repeat(3, 1fr)
@@ -286,7 +306,7 @@ button
 .feature_description
   font-size: 10px !important
   color: #6b7280
-  line-height: 1.5
+  line-height: 1.625
   padding: 0 8px
   transition: color 0.3s ease
   @media (min-width: 640px)
@@ -295,12 +315,12 @@ button
   html.dark &
     color: #9ca3af
 
-// Quick Stats Bar - Figma Specs (grid-cols-2 md:flex)
+// Quick Stats Bar - Compact and centered (768px)
 .quick_stats_bar
   display: grid
   grid-template-columns: repeat(2, 1fr)
   gap: 16px
-  max-width: 48rem
+  max-width: 768px
   margin: 0 auto
   padding: 16px
   background: linear-gradient(90deg, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0.6) 50%, rgba(255,255,255,0.8) 100%)
@@ -309,6 +329,7 @@ button
   border: 1px solid rgba(229, 231, 235, 0.6)
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05)
   transition: all 0.3s ease
+  box-sizing: border-box
   @media (min-width: 768px)
     display: flex
     align-items: center
@@ -324,21 +345,21 @@ button
   text-align: center
 
 .stat_value
-  font-size: 16px !important
+  font-size: 16px
   font-weight: 700
   color: #5A2A82
   line-height: 1.2
   transition: color 0.3s ease
   @media (min-width: 640px)
-    font-size: 18px !important
+    font-size: 18px
   @media (min-width: 768px)
-    font-size: 20px !important
+    font-size: 20px
   // Dark mode - Purple text on yellow background
   html.dark &
     color: #5A2A82
 
 .stat_label
-  font-size: 8px !important
+  font-size: 8px
   color: #6b7280
   text-transform: uppercase
   font-weight: 500
@@ -346,9 +367,9 @@ button
   margin-top: 2px
   transition: color 0.3s ease
   @media (min-width: 640px)
-    font-size: 9px !important
+    font-size: 9px
   @media (min-width: 768px)
-    font-size: 10px !important
+    font-size: 10px
   // Dark mode - Purple text on yellow background
   html.dark &
     color: #5A2A82
@@ -360,8 +381,8 @@ button
     display: block
     width: 1px
     height: 32px
-    background: #d1d5db
-    opacity: 0.3
+    background: #9ca3af
+    opacity: 1
   // Dark mode - Purple divider on yellow background
   html.dark &
     @media (min-width: 768px)
@@ -377,169 +398,297 @@ button
   html.dark &
     background: #1D0631 !important
 
-.contributors_column, .whats_new_column
-  @media (max-width: 768px)
-    margin-bottom: 24px
+  .container
+    max-width: 1280px
+    margin: 0 auto
+    padding: 0 16px
+    @media (min-width: 640px)
+      padding: 0 24px
+    @media (min-width: 1024px)
+      padding: 0 32px
+
+// Content Grid - matches Figma design: grid md:grid-cols-[35%_65%] gap-6
+.content_grid
+  display: grid
+  grid-template-columns: 1fr
+  gap: 24px
+  @media (min-width: 768px)
+    grid-template-columns: 35% 65%
+
+.contributors_column
+  width: 100%
+
+.whats_new_column
+  width: 100%
+  display: block
 
 .whats_new_join_stack
   display: flex
   flex-direction: column
   gap: 24px
 
-// Top Contributors Card
+// Top Contributors Card - Matches ContributorJourney.tsx
 .top_contributors_card
   position: relative
   padding: 3px
   border-radius: 16px
-  overflow: hidden
   background: linear-gradient(135deg, #5A2A82 0%, #ffb91a 50%, #5A2A82 100%)
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1)
+  margin-bottom: 24px
+  overflow: hidden
   transition: box-shadow 0.3s
   &:hover
-    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.15)
-  > div
-    background: white
-    border-radius: 14px
-    height: 100%
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)
+  html.dark &
+    background: linear-gradient(135deg, #5A2A82 0%, #ffb91a 50%, #5A2A82 100%)
 
-.card_header
+  > *
+    background: white
+    border-radius: 16px
+    overflow: hidden
+    html.dark &
+      background: #1D0631
+
+// Card Header
+.top_contributors_card .card_header
   display: flex
   align-items: flex-start
   gap: 16px
-  padding: 24px
-  padding-bottom: 16px
+  padding: 24px 24px 16px 24px
   background: white
+  html.dark &
+    background: #1D0631
 
-.header_icon
-  width: 48px
-  height: 48px
-  background: rgba(90, 42, 130, 0.1)
-  border-radius: 12px
+.top_contributors_card .header_icon
   display: flex
   align-items: center
   justify-content: center
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1)
+  width: 40px
+  height: 40px
+  border-radius: 12px
+  background: rgba(90, 42, 130, 0.1)
   flex-shrink: 0
-  i
-    font-size: 24px
-    color: #5A2A82
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05)
+  @media (min-width: 640px)
+    width: 48px
+    height: 48px
+  html.dark &
+    background: linear-gradient(135deg, #1D0631 0%, #5A2A82 100%)
 
-.header_content
+  i
+    color: #5A2A82
+    font-size: 20px
+    @media (min-width: 640px)
+      font-size: 24px
+    html.dark &
+      color: white
+
+.top_contributors_card .header_content
   flex: 1
 
-.card_title
-  font-size: 18px
+.top_contributors_card .card_title
+  font-size: 16px
   font-weight: 700
   color: #5A2A82
-  margin-bottom: 4px
+  margin: 0 0 6px 0
+  line-height: 1.4
+  @media (min-width: 640px)
+    font-size: 18px
+  html.dark &
+    color: white
 
-.card_subtitle
-  font-size: 12px
+.top_contributors_card .card_subtitle
+  font-size: 10px
   color: rgba(90, 42, 130, 0.7)
+  margin: 0
   line-height: 1.5
+  @media (min-width: 640px)
+    font-size: 12px
+  html.dark &
+    color: #9CA3AF
 
-.contributors_list
+// Contributors List
+.top_contributors_card .contributors_list
   padding: 16px
-  flex: 1
-  overflow-y: auto
+  display: flex
+  flex-direction: column
+  gap: 8px
 
-.contributor_item
-  background: linear-gradient(90deg, #f9fafb 0%, #f3f4f6 100%)
-  border-radius: 12px
-  padding: 12px
-  border: 1px solid #e5e7eb
-  cursor: pointer
-  transition: all 0.3s
-  margin-bottom: 8px
+.top_contributors_card .contributor_item
   display: flex
   align-items: center
   gap: 12px
+  padding: 12px
+  background: linear-gradient(to right, #f9fafb 0%, #f1f5f9 100%)
+  border: 1px solid #e5e7eb
+  border-radius: 12px
+  transition: all 0.2s
+  text-decoration: none
+  cursor: pointer
+
   &:hover
-    background: linear-gradient(90deg, #f5f3ff 0%, #ede9fe 100%)
+    background: linear-gradient(to right, #f5f3ff 0%, #ede9fe 100%)
     border-color: #5A2A82
 
-.contributor_avatar
-  flex-shrink: 0
-  .avatar_image
-    width: 40px
-    height: 40px
-    border-radius: 12px
-    object-fit: cover
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1)
-    border: 2px solid #9ca3af
+  html.dark &
+    background: linear-gradient(to right, rgba(55, 65, 81, 0.5) 0%, rgba(71, 85, 105, 0.5) 100%)
+    border-color: #4B5563
+    &:hover
+      background: linear-gradient(to right, rgba(109, 40, 217, 0.3) 0%, rgba(124, 58, 237, 0.3) 100%)
+      border-color: #5A2A82
 
-.contributor_info
+// Show only top 4 contributors on mobile
+.top_contributors_card .contributor_item:nth-child(n+5)
+  @media (max-width: 767px)
+    display: none
+
+// Avatar
+.top_contributors_card .contributor_avatar
+  flex-shrink: 0
+  width: 40px
+  height: 40px
+
+.top_contributors_card .avatar_img,
+.top_contributors_card .avatar_placeholder
+  width: 40px
+  height: 40px
+  border-radius: 12px
+  object-fit: cover
+  display: block
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05)
+  border: 2px solid #9CA3AF
+
+// Contributor Info
+.top_contributors_card .contributor_info
   flex: 1
   min-width: 0
+  display: flex
+  flex-direction: column
+  gap: 2px
 
-.contributor_name_rank
+.top_contributors_card .contributor_name_row
   display: flex
   align-items: center
   gap: 8px
   margin-bottom: 2px
 
-.contributor_name
+.top_contributors_card .contributor_name
   font-size: 14px
   font-weight: 600
   color: #5A2A82
-  margin: 0
-  .contributor_link
-    color: inherit
-    text-decoration: none
-    &:hover
-      text-decoration: underline
+  line-height: 1.3
+  white-space: nowrap
+  overflow: hidden
+  text-overflow: ellipsis
+  html.dark &
+    color: white
 
-.contributor_rank
+.top_contributors_card .contributor_rank
   font-size: 9px
+  font-weight: 400
   color: rgba(90, 42, 130, 0.6)
   text-transform: uppercase
   letter-spacing: 0.05em
+  white-space: nowrap
   flex-shrink: 0
+  html.dark &
+    color: #9CA3AF
 
-.contributor_stats
+.top_contributors_card .contributor_stats
   display: flex
   align-items: center
   gap: 12px
   font-size: 10px
   color: rgba(90, 42, 130, 0.7)
-  .stat_item
+
+  html.dark &
+    color: #9CA3AF
+
+  span
     display: flex
     align-items: center
     gap: 4px
-    i
-      font-size: 10px
 
-.contributor_arrow
+  i
+    flex-shrink: 0
+    display: inline-flex
+    align-items: center
+    justify-content: center
+    font-size: 9px
+    color: rgba(90, 42, 130, 0.7)
+    html.dark &
+      color: #9CA3AF
+
+.top_contributors_card .stat_commits,
+.top_contributors_card .stat_projects
+  font-weight: 400
+  color: rgba(90, 42, 130, 0.7)
+  html.dark &
+    color: #9CA3AF
+
+.top_contributors_card .stat_separator
+  display: none
+
+// Arrow
+.top_contributors_card .contributor_arrow
   flex-shrink: 0
   color: rgba(90, 42, 130, 0.4)
-  transition: color 0.3s
+  display: flex
+  align-items: center
+  transition: color 0.2s
+
   i
     font-size: 16px
 
-.contributor_item:hover .contributor_arrow
+  html.dark &
+    color: rgba(255, 255, 255, 0.3)
+
+.top_contributors_card .contributor_item:hover .contributor_arrow
   color: #5A2A82
+  html.dark &
+    color: white
 
-.view_all_link
+// View All Footer
+.top_contributors_card .view_all_footer
   padding: 16px
-  .btn_view_all
-    width: 100%
-    display: flex
-    align-items: center
-    justify-center
-    gap: 8px
-    font-size: 14px
-    font-weight: 600
-    color: #5A2A82
-    transition: color 0.3s
-    padding: 12px
-    border-top: 1px solid rgba(90, 42, 130, 0.2)
-    text-decoration: none
-    i
-      font-size: 16px
-    &:hover
-      color: #1D0631
 
-// What's New Card
+.top_contributors_card .view_all_link
+  display: flex
+  width: 100%
+  align-items: center
+  justify-content: center
+  gap: 8px
+  padding: 12px
+  font-size: 14px
+  font-weight: 600
+  color: #5A2A82
+  text-decoration: none
+  border-top: 1px solid rgba(90, 42, 130, 0.2)
+  transition: color 0.2s
+  cursor: pointer
+
+  span
+    border-bottom: 1px solid #5A2A82
+
+  &:hover
+    color: #1D0631
+    span
+      border-bottom-color: #1D0631
+
+  i
+    font-size: 16px
+
+  html.dark &
+    color: white !important
+    border-top-color: #ffb91a
+    border-top-width: 2px
+    border-radius: 12px
+    margin-top: 8px
+    span
+      border-bottom-color: white
+    &:hover
+      color: white !important
+
+// What's New Card - Figma Design
 .whats_new_card
   position: relative
   padding: 3px
@@ -555,24 +704,49 @@ button
     border-radius: 14px
     overflow: hidden
     height: 100%
+    // Dark mode support
+    html.dark &
+      background: #1D0631
 
 .card_header_section
-  padding: 24px
-  padding-bottom: 16px
+  padding: 16px 16px 12px 16px !important
   background: white
+  @media (min-width: 640px)
+    padding: 24px 24px 16px 24px !important
+  // Dark mode support
+  html.dark &
+    background: #1D0631
 
 .whats_new_title
-  font-size: 20px
-  font-weight: 700
-  color: #5A2A82
-  margin-bottom: 4px
+  font-size: 18px !important
+  font-weight: 700 !important
+  color: #5A2A82 !important
+  margin: 0 0 4px 0 !important
+  line-height: 1.2 !important
+  @media (min-width: 640px)
+    font-size: 20px !important
+  @media (min-width: 768px)
+    font-size: 24px !important
+  // Dark mode support
+  html.dark &
+    color: white !important
 
 .whats_new_subtitle
-  font-size: 12px
-  color: rgba(90, 42, 130, 0.7)
+  font-size: 12px !important
+  color: rgba(90, 42, 130, 0.7) !important
+  line-height: 1.5 !important
+  margin: 0 !important
+  @media (min-width: 640px)
+    font-size: 14px !important
+  // Dark mode support
+  html.dark &
+    color: #9ca3af !important
 
 .featured_image_section
-  padding: 0 24px 24px
+  padding: 0 16px 16px !important
+  display: block
+  @media (min-width: 640px)
+    padding: 0 24px 24px !important
 
 .featured_image_link
   display: block
@@ -588,9 +762,11 @@ button
 .featured_image
   width: 100%
   height: auto
+  display: block
+  max-width: 100%
   transition: transform 0.3s
 
-// Join Now Card
+// Join Now Card - Figma Design (p-6 wrapper)
 .join_now_card
   position: relative
   padding: 3px
@@ -606,17 +782,21 @@ button
     border-radius: 14px
     overflow: hidden
     height: 100%
+    padding: 24px !important
+    // Dark mode support
+    html.dark &
+      background: #1D0631
 
 .join_header
   display: flex
   align-items: center
-  gap: 12px
-  padding: 24px
-  padding-bottom: 16px
+  gap: 12px !important
+  margin-bottom: 16px !important
+  padding: 0 !important
 
 .join_icon
-  width: 48px
-  height: 48px
+  width: 40px
+  height: 40px
   background: linear-gradient(135deg, #1D0631 0%, #5A2A82 100%)
   border-radius: 12px
   display: flex
@@ -624,96 +804,151 @@ button
   justify-content: center
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1)
   flex-shrink: 0
+  @media (min-width: 640px)
+    width: 48px
+    height: 48px
   i
-    font-size: 24px
+    font-size: 20px
     color: white
+    @media (min-width: 640px)
+      font-size: 24px
 
 .join_header_text
   flex: 1
 
 .join_title
-  font-size: 20px
-  font-weight: 700
-  color: #5A2A82
-  margin-bottom: 2px
+  font-size: 18px !important
+  font-weight: 700 !important
+  color: #5A2A82 !important
+  margin: 0 !important
+  line-height: 1.2 !important
+  @media (min-width: 640px)
+    font-size: 20px !important
+  @media (min-width: 768px)
+    font-size: 24px !important
+  // Dark mode support
+  html.dark &
+    color: white !important
 
 .join_subtitle
-  font-size: 12px
-  color: #6b7280
+  font-size: 12px !important
+  color: #6b7280 !important
+  line-height: 1.5 !important
+  margin: 0 !important
+  @media (min-width: 640px)
+    font-size: 14px !important
+  // Dark mode support
+  html.dark &
+    color: #9ca3af !important
 
 .benefits_list
-  padding: 0 24px
-  margin-bottom: 24px
+  padding: 0 !important
+  margin-bottom: 24px !important
+  // Figma: space-y-3 (12px gap)
+  > * + *
+    margin-top: 12px !important
 
 .benefit_item
   display: flex
   align-items: flex-start
   gap: 12px
-  margin-bottom: 12px
 
 .benefit_icon
-  width: 32px
-  height: 32px
+  width: 28px
+  height: 28px
   border-radius: 8px
   display: flex
   align-items: center
   justify-content: center
   flex-shrink: 0
   margin-top: 2px
+  @media (min-width: 640px)
+    width: 32px
+    height: 32px
 
 .benefit_icon_award
   background: rgba(90, 42, 130, 0.1)
   i
-    font-size: 16px
+    font-size: 14px
     color: #5A2A82
+    @media (min-width: 640px)
+      font-size: 16px
+  // Dark mode support
+  html.dark &
+    background: rgba(90, 42, 130, 0.2)
+    i
+      color: #5A2A82
 
 .benefit_icon_trending
   background: rgba(29, 6, 49, 0.1)
   i
-    font-size: 16px
+    font-size: 14px
     color: #1D0631
+    @media (min-width: 640px)
+      font-size: 16px
+  // Dark mode support
+  html.dark &
+    background: rgba(90, 42, 130, 0.2)
+    i
+      color: #1D0631
 
 .benefit_content
   flex: 1
 
 .benefit_title
-  font-size: 13px
-  font-weight: 600
-  color: #111827
-  margin-bottom: 2px
+  font-size: 12px !important
+  font-weight: 600 !important
+  color: #111827 !important
+  margin: 0 0 4px 0 !important
+  line-height: 1.2 !important
+  @media (min-width: 640px)
+    font-size: 14px !important
+  // Dark mode support
+  html.dark &
+    color: white !important
 
 .benefit_description
-  font-size: 11px
-  color: #6b7280
-  line-height: 1.5
+  font-size: 10px !important
+  color: #6b7280 !important
+  line-height: 1.625 !important
+  margin: 0 !important
+  @media (min-width: 640px)
+    font-size: 12px !important
+  // Dark mode support
+  html.dark &
+    color: #9ca3af !important
 
 .join_cta
-  padding: 0 24px 24px
+  padding: 0 !important
 
 .btn_join_cta
   width: 100%
-  padding: 12px 24px
-  background: linear-gradient(90deg, #1D0631 0%, #5A2A82 100%)
-  color: white
-  border-radius: 8px
-  font-weight: 600
+  padding: 12px 24px !important
+  background: linear-gradient(90deg, #1D0631 0%, #5A2A82 100%) !important
+  color: white !important
+  border-radius: 8px !important
+  font-weight: 600 !important
   transition: all 0.3s
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1)
   display: flex
   align-items: center
   justify-content: center
   gap: 8px
-  font-size: 16px
-  text-decoration: none
+  font-size: 14px !important
+  text-decoration: none !important
   border: none
   cursor: pointer
+  @media (min-width: 640px)
+    font-size: 16px !important
   &:hover
-    background: linear-gradient(90deg, #1D0631dd 0%, #5A2A82dd 100%)
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15)
-    color: white
-    text-decoration: none
+    background: linear-gradient(90deg, rgba(29, 6, 49, 0.9) 0%, rgba(90, 42, 130, 0.9) 100%) !important
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2) !important
+    color: white !important
+    text-decoration: none !important
   i
-    font-size: 16px
+    font-size: 14px
+    @media (min-width: 640px)
+      font-size: 16px
 
 // User Journeys Section
 .user_journeys_section
@@ -722,30 +957,43 @@ button
   @media (max-width: 768px)
     padding: 48px 0
 
+  // Matches Figma: max-w-7xl mx-auto
+  .container
+    max-width: 1280px
+    margin: 0 auto
+    padding: 0 16px
+    @media (min-width: 640px)
+      padding: 0 24px
+    @media (min-width: 1024px)
+      padding: 0 32px
+
 .journeys_header
   text-align: center
   margin-bottom: 48px
 
+// Matches Figma: text-2xl sm:text-3xl
 .journeys_title
-  font-size: 30px
-  font-weight: 700
+  font-size: 24px
+  font-weight: 700 !important
   color: white
   margin-bottom: 12px
-  @media (max-width: 768px)
-    font-size: 24px
+  @media (min-width: 640px)
+    font-size: 30px
 
+// Matches Figma: text-base sm:text-lg max-w-2xl
 .journeys_subtitle
-  font-size: 18px
+  font-size: 16px
   color: #d1d5db
-  max-width: 768px
+  max-width: 672px
   margin: 0 auto
-  @media (max-width: 768px)
-    font-size: 16px
+  @media (min-width: 640px)
+    font-size: 18px
 
 // Mobile View - Collapsible
+// Matches Figma: lg:hidden (shows below 768px, then desktop grid takes over)
 .journeys_mobile
   display: block
-  @media (min-width: 1024px)
+  @media (min-width: 768px)
     display: none
 
 .journey_card
@@ -757,6 +1005,7 @@ button
   margin-bottom: 16px
   transition: all 0.3s
 
+// Matches Figma: rounded-xl p-4
 .journey_card_header
   width: 100%
   display: flex
@@ -768,7 +1017,7 @@ button
   background: #1D0631
   border: none
   cursor: pointer
-  border-radius: 10px
+  border-radius: 12px
   &:hover
     background: rgba(90, 42, 130, 0.2)
 
@@ -789,8 +1038,9 @@ button
 .journey_header_title
   flex: 1
   font-size: 14px
-  font-weight: 600
+  font-weight: 600 !important
   color: white
+  overflow-wrap: break-word
 
 .journey_toggle_icon
   flex-shrink: 0
@@ -798,11 +1048,12 @@ button
     font-size: 20px
     color: white
 
+// Matches Figma: px-4 pb-4
 .journey_card_content
   display: none
   padding: 0 16px 16px
   background: #1D0631
-  border-radius: 0 0 10px 10px
+  border-radius: 0 0 12px 12px
 
 .journey_card.expanded .journey_card_content
   display: block
@@ -821,6 +1072,7 @@ button
   color: #d1d5db
   line-height: 1.5
   margin-bottom: 16px
+  overflow-wrap: break-word
 
 .journey_steps
   background: rgba(90, 42, 130, 0.2)
@@ -855,19 +1107,25 @@ button
   font-weight: 700
 
 // Desktop View - Grid
+// Matches Figma: hidden lg:grid md:grid-cols-2 lg:grid-cols-3 gap-6
 .journeys_desktop
   display: none
-  @media (min-width: 1024px)
+  @media (min-width: 768px)
     display: grid
-    grid-template-columns: repeat(3, 1fr)
+    grid-template-columns: repeat(2, 1fr)
     gap: 24px
+    min-width: 0
+  @media (min-width: 1024px)
+    grid-template-columns: repeat(3, 1fr)
 
+// Matches Figma: rounded-xl p-6
 .journey_grid_card
   border-radius: 12px
   padding: 24px
   border: 1px solid rgba(90, 42, 130, 0.4)
   background: #1D0631
   transition: all 0.3s
+  min-width: 0
   &:hover
     box-shadow: 0 10px 15px rgba(0, 0, 0, 0.3)
     border-color: #ffb91a
@@ -891,16 +1149,19 @@ button
   transform: scale(1.1)
 
 .grid_card_title
-  font-size: 20px
-  font-weight: 700
+  font-size: 17px
+  font-weight: 700 !important
   color: white
   margin-bottom: 8px
+  line-height: 1.2
+  overflow-wrap: break-word
 
 .grid_card_description
   font-size: 14px
   color: #d1d5db
   margin-bottom: 16px
   line-height: 1.5
+  overflow-wrap: break-word
 
 .grid_card_steps
   background: rgba(90, 42, 130, 0.2)
@@ -908,4 +1169,386 @@ button
   padding: 16px
   border: 1px solid rgba(90, 42, 130, 0.4)
 
+// Project Swimlanes Section - Matches Figma: py-8 px-4 sm:px-6 lg:px-8 bg-gray-50
+.project_swimlanes_section
+  padding: 32px 16px
+  background: #f9fafb
+  transition: background 0.3s ease
+  @media (min-width: 640px)
+    padding: 32px 24px
+  @media (min-width: 1024px)
+    padding: 32px 32px
+  html.dark &
+    background: #1D0631
 
+// Matches Figma: max-w-7xl mx-auto
+.swimlanes_container
+  max-width: 1280px
+  margin: 0 auto
+
+// Matches Figma: grid lg:grid-cols-3 md:grid-cols-2 gap-6
+.swimlanes_grid
+  display: grid
+  grid-template-columns: 1fr
+  gap: 24px
+  @media (min-width: 768px)
+    grid-template-columns: repeat(2, 1fr)
+  @media (min-width: 1024px)
+    grid-template-columns: repeat(3, 1fr)
+
+.swimlane_column
+  display: flex
+  flex-direction: column
+
+// Matches Figma: mb-4
+.swimlane_header
+  margin-bottom: 16px
+
+// Matches Figma: text-base sm:text-lg md:text-xl font-bold
+.swimlane_title
+  font-size: 16px
+  font-weight: 700 !important
+  color: #111827
+  transition: color 0.3s ease
+  @media (min-width: 640px)
+    font-size: 18px
+  @media (min-width: 768px)
+    font-size: 20px
+  html.dark &
+    color: #ffffff
+
+// Matches Figma: space-y-3
+.swimlane_content
+  display: flex
+  flex-direction: column
+  gap: 12px
+
+// Compact Project Card Styles
+.compact_project_card
+  position: relative
+  padding: 3px
+  border-radius: 8px
+  overflow: hidden
+  transition: all 0.3s ease
+  background: transparent
+  cursor: pointer
+  &:hover
+    background: linear-gradient(135deg, #5A2A82 0%, #ffb91a 50%, #5A2A82 100%)
+    .compact_card_inner
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1)
+
+.compact_project_card .compact_card_inner
+  background: white
+  border-radius: 8px
+  padding: 12px
+  transition: all 0.3s ease
+  height: 100%
+  border: 1px solid #e5e7eb
+  @media (min-width: 640px)
+    padding: 16px
+  html.dark &
+    background: #1D0631
+    border-color: #4b5563
+
+.compact_project_card .compact_card_header
+  display: flex
+  align-items: flex-start
+  gap: 8px
+  margin-bottom: 8px
+  @media (min-width: 640px)
+    gap: 12px
+
+.compact_project_card .project_logo
+  flex-shrink: 0
+  width: 32px
+  height: 32px
+  @media (min-width: 640px)
+    width: 40px
+    height: 40px
+  img
+    width: 100%
+    height: 100%
+    border-radius: 8px
+    object-fit: cover
+    border: 1px solid #e5e7eb
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05)
+    html.dark &
+      border-color: #4b5563
+
+.compact_project_card .project-icon-placeholder
+  width: 100%
+  height: 100%
+  display: flex
+  align-items: center
+  justify-content: center
+  background: #f3f4f6
+  border-radius: 8px
+  font-size: 16px
+  font-weight: 600
+  color: #6b7280
+  border: 1px solid #e5e7eb
+  html.dark &
+    background: rgba(255, 255, 255, 0.1)
+    border-color: #4b5563
+    color: #9ca3af
+
+.compact_project_card .account-avatar
+  width: 100%
+  height: 100%
+  border-radius: 8px
+  object-fit: cover
+  border: 1px solid #e5e7eb
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05)
+  html.dark &
+    border-color: #4b5563
+
+.compact_project_card .project_info
+  flex: 1
+  min-width: 0
+
+.compact_project_card .project_name_row
+  display: flex
+  align-items: center
+  gap: 8px
+
+.compact_project_card .project_name
+  color: #111827
+  font-size: 14px
+  font-weight: 600
+  text-decoration: none
+  transition: color 0.3s ease
+  display: inline-block
+  line-height: 1.4
+  @media (min-width: 640px)
+    font-size: 16px
+  &:hover
+    color: #5A2A82
+  html.dark &
+    color: #ffffff !important
+    &:hover
+      color: #ffb91a !important
+  span
+    display: inline
+
+.compact_project_card .trending_icon
+  flex-shrink: 0
+  i
+    color: #ff6b35
+    font-size: 12px
+    @media (min-width: 640px)
+      font-size: 14px
+
+.compact_project_card .compact_card_description
+  margin-bottom: 12px
+  p
+    font-size: 12px
+    color: #6b7280
+    line-height: 1.5
+    margin: 0
+    overflow: hidden
+    text-overflow: ellipsis
+    display: -webkit-box
+    -webkit-line-clamp: 2
+    -webkit-box-orient: vertical
+    @media (min-width: 640px)
+      font-size: 14px
+    html.dark &
+      color: #9ca3af
+
+.compact_project_card .compact_card_footer
+  display: flex
+  align-items: center
+  justify-content: space-between
+  font-size: 10px
+  @media (min-width: 640px)
+    font-size: 12px
+
+.compact_project_card .footer_left
+  display: flex
+  align-items: center
+  gap: 12px
+
+.compact_project_card .contributor_info
+  display: flex
+  align-items: center
+  gap: 4px
+  color: #6b7280
+  html.dark &
+    color: #9ca3af
+  i
+    font-size: 10px
+    @media (min-width: 640px)
+      font-size: 12px
+  span
+    font-size: 10px
+    @media (min-width: 640px)
+      font-size: 12px
+
+.compact_project_card .footer_right
+  display: flex
+  align-items: center
+
+.compact_project_card .language_badge
+  display: inline-flex
+  align-items: center
+  justify-content: center
+  padding: 2px 8px
+  border-radius: 9999px
+  font-size: 10px
+  font-weight: 500
+  line-height: 1.5
+  white-space: nowrap
+  text-align: center
+  min-width: 40px
+  background: rgba(255, 185, 26, 0.3)
+  color: #1D0631
+  transition: all 0.3s ease
+  @media (min-width: 640px)
+    font-size: 12px
+  html.dark &
+    background: #ffb91a
+    color: #000000
+
+// Responsive visibility helpers
+.desktop_only
+  display: none !important
+  @media (min-width: 768px)
+    display: block !important
+
+.mobile_only
+  display: block
+  @media (min-width: 768px)
+    display: none !important
+
+.mobile_card
+  width: 100%
+
+.hidden_card
+  width: 100%
+  margin-bottom: 16px
+
+// Show More Button
+.show_more_btn
+  width: 100%
+  font-size: 14px
+  background: white
+  color: #5A2A82
+  border: 2px solid #5A2A82
+  padding: 12px 16px
+  border-radius: 8px
+  font-weight: 600
+  cursor: pointer
+  transition: all 0.3s ease
+  margin-top: 8px
+  display: block
+  &:hover
+    background: #5A2A82
+    color: white
+  html.dark &
+    background: transparent
+    color: white
+    border-color: white
+    &:hover
+      background: white
+      color: #5A2A82
+
+// Pagination Controls
+.pagination_controls
+  display: flex
+  align-items: center
+  justify-content: center
+  gap: 16px
+  margin-top: 16px
+  padding: 12px
+
+.pagination_btn
+  display: flex
+  align-items: center
+  justify-content: center
+  width: 32px
+  height: 32px
+  background: white
+  border: 1px solid #e5e7eb
+  border-radius: 8px
+  cursor: pointer
+  transition: all 0.3s ease
+  color: #5A2A82
+  &:hover:not([disabled])
+    background: #5A2A82
+    color: white
+    border-color: #5A2A82
+  &[disabled]
+    opacity: 0.4
+    cursor: not-allowed
+  i
+    font-size: 14px
+  html.dark &
+    background: rgba(255, 255, 255, 0.1)
+    border-color: #4b5563
+    color: white
+    &:hover:not([disabled])
+      background: #5A2A82
+      border-color: #5A2A82
+
+.pagination_info
+  font-size: 14px
+  color: #6b7280
+  font-weight: 500
+  html.dark &
+    color: #9ca3af
+  .current_page
+    color: #5A2A82
+    font-weight: 700
+    html.dark &
+      color: #ffb91a
+
+.swimlane_project_item
+  display: none
+  &[data-page="1"]
+    display: block
+
+// View All Projects Button - Matches Figma: pt-4 pb-8
+.view_all_container
+  padding-top: 16px
+  padding-bottom: 32px
+  padding-left: 16px
+  padding-right: 16px
+  display: flex
+  justify-content: center
+  background: #f9fafb
+  transition: background 0.3s ease
+  @media (min-width: 640px)
+    padding-left: 24px
+    padding-right: 24px
+  @media (min-width: 1024px)
+    padding-left: 32px
+    padding-right: 32px
+  html.dark &
+    background: #1D0631
+
+// Matches Figma: flex items-center gap-2 px-6 py-3 bg-[#ffb91a] rounded-lg
+.btn_view_all_projects
+  display: inline-flex
+  align-items: center
+  gap: 8px
+  padding: 12px 24px
+  background: #ffb91a
+  color: #000000
+  border-radius: 8px
+  font-weight: 600
+  font-size: 14px
+  text-decoration: none
+  transition: all 0.3s ease
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1)
+  @media (min-width: 640px)
+    font-size: 16px
+  &:hover
+    background: rgba(255, 185, 26, 0.9)
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1)
+    color: #000000
+  html.dark &
+    color: #ffffff !important
+    &:hover
+      color: #ffffff !important
+  i
+    font-size: 16px

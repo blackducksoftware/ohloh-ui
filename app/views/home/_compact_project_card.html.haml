@@ -1,0 +1,35 @@
+- is_account = project.is_a?(Account)
+- if is_account
+  - project_icon_html = image_tag(avatar_img_path(project), class: 'account-avatar')
+- else
+  - project_icon_html = project.logo.present? ? project_icon(project, :small) : content_tag(:div, project.name[0].upcase, class: 'project-icon-placeholder')
+- project_url = is_account ? account_path(project) : project_path(project)
+
+.compact_project_card{ data: { project_id: project.id } }
+  .compact_card_inner
+    .compact_card_header
+      .project_logo
+        = link_to project_url do
+          = project_icon_html
+      .project_info
+        .project_name_row
+          = link_to project_url, class: 'project_name' do
+            %span= h(truncate(project.name, length: 30))
+          - if !is_account && project.updated_at > 7.days.ago
+            %span.trending_icon
+              %i.fa.fa-arrow-trend-up
+    .compact_card_description
+      - description = is_account ? (project.try(:about) || '') : (project.description || '')
+      %p= h(truncate(description, length: 80))
+    .compact_card_footer
+      .footer_left
+        .contributor_info
+          %i.fa.fa-users
+          - count = is_account ? (project.best_account_analysis&.account_analysis_fact&.thirty_day_commits || 0) : (project.best_analysis&.headcount || 0)
+          %span= count
+      .footer_right
+        - if is_account
+          - language_name = project.best_account_analysis&.account_analysis_fact&.primary_language&.nice_name || 'N/A'
+        - else
+          - language_name = project.best_analysis&.main_language&.nice_name || 'NA'
+        %span.language_badge= language_name
