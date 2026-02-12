@@ -1,0 +1,150 @@
+// Dark Theme Styles
+// Applied when .dark class is added to html element
+
+html.dark
+  // Body and background colors - matches home page sections
+  body
+    background-color: #1D0631 !important
+    color: #e2e8f0 !important
+
+  // Page container
+  #page, .container#page
+    background-color: #1D0631 !important
+
+  // Header stays with purple gradient (no change needed)
+  // Footer stays with purple gradient (no change needed)
+
+  // Content areas
+  #page-contents, #page_contents
+    background-color: #1D0631 !important
+    color: #e2e8f0 !important
+
+  // Cards and wells
+  .well
+    background-color: #1D0631 !important
+    color: #e2e8f0 !important
+    border-color: #4b5563 !important
+
+  // Tables
+  table
+    background-color: #1D0631
+    color: #e2e8f0
+    td, th
+      border-color: #4b5563 !important
+      color: #e2e8f0 !important
+
+  // Links
+  a
+    color: #60a5fa !important
+    &:hover
+      color: #93c5fd !important
+
+  // Buttons (keep primary yellow button, update others)
+  .btn
+    &:not(.btn-primary):not(.btn-success)
+      background-color: #334155 !important
+      color: #e2e8f0 !important
+      &:hover
+        background-color: #475569 !important
+
+  // Forms
+  input, textarea, select
+    background-color: #1D0631 !important
+    color: #e2e8f0 !important
+    border-color: #4b5563 !important
+    &::placeholder
+      color: #94a3b8 !important
+
+  // Billboard/Showcase
+  .billboard
+    background-color: #1D0631 !important
+    color: #e2e8f0 !important
+
+  .showcase
+    background-color: #1D0631 !important
+
+  // Project container
+  #project_container
+    background-color: #1D0631 !important
+    color: #e2e8f0 !important
+
+  // Headings
+  h1, h2, h3, h4, h5, h6
+    color: #f1f5f9 !important
+
+  // Alerts
+  .alert
+    background-color: #1D0631 !important
+    color: #e2e8f0 !important
+    border-color: #4b5563 !important
+
+  // Dropdown menus
+  .dropdown-menu
+    background-color: #1D0631 !important
+    border-color: #4b5563 !important
+    li a
+      color: #e2e8f0 !important
+      &:hover
+        background-color: rgba(90, 42, 130, 0.5) !important
+
+  // Home page sections
+  .top_ten, .top_ten.middle, .top_ten.last
+    background-color: #1D0631 !important
+    color: #e2e8f0 !important
+
+  .home_page_row .col-md-4
+    background-color: #1D0631 !important
+
+  // Navigation menu - keep white text on purple gradient
+  .navbar, #navbar-inner
+    .new_main_menu li a
+      color: white !important
+
+  // Search inputs
+  .for_search_all_code
+    background-color: #1D0631 !important
+    color: #e2e8f0 !important
+    border-color: #4b5563 !important
+
+  // Badges
+  .badge
+    background-color: rgba(90, 42, 130, 0.5) !important
+    color: #e2e8f0 !important
+
+  // Panels
+  .panel
+    background-color: #1D0631 !important
+    border-color: #4b5563 !important
+    .panel-heading
+      background-color: rgba(90, 42, 130, 0.5) !important
+      color: #e2e8f0 !important
+    .panel-body
+      background-color: #1D0631 !important
+      color: #e2e8f0 !important
+
+  // Code blocks
+  pre, code
+    background-color: #1D0631 !important
+    color: #e2e8f0 !important
+    border-color: #4b5563 !important
+
+  // Borders
+  .mezzo
+    border-top-color: #4b5563 !important
+
+  .right_border
+    border-right-color: #4b5563 !important
+
+  // Text colors
+  .signature_color
+    color: #60a5fa !important
+
+  // Keep error colors visible
+  .error
+    color: #ef4444 !important
+
+  .bad
+    color: #f87171 !important
+
+  .good
+    color: #4ade80 !important
