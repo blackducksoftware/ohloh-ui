@@ -26,5 +26,14 @@
       - error_tag(@account, :password)
       %p.help-block= t('.password_help')
 
+    .control-group{ style: 'position: absolute; left: -9999px; opacity: 0;' }
+      %label Age (mandatory)
+      = text_field_tag :mandatory_age, nil, autocomplete: 'off', tabindex: '-1'
+
+    = hidden_field_tag :visitor_id, Time.current.to_i
+
+    .control-group
+      = render 'shared/captcha'
+
     .actions
       %input.btn.btn-primary{ type: :submit, value: t('.sign_up') }
