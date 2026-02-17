@@ -14,7 +14,7 @@ class AccountsController < ApplicationController
   before_action :redirect_unverified_account, only: %i[edit update me]
   before_action :disabled_during_read_only_mode, only: %i[edit update]
   before_action :account_context, only: %i[edit update confirm_delete]
-  before_action :must_own_account, only: %i[edit update confirm_delete]
+  before_action :must_own_account, only: %i[edit update destroy confirm_delete]
   before_action :find_claimed_people, only: :index
   before_action :redirect_if_logged_in, only: :new
   before_action :check_honeypot, only: :create

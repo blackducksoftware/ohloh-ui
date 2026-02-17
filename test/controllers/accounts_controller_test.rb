@@ -370,7 +370,7 @@ class AccountsControllerTest < ActionController::TestCase
       assert_no_difference 'Account.count' do
         post :destroy, params: { id: your_account.to_param }
       end
-      assert_redirected_to edit_deleted_account_path(your_account)
+      assert_redirected_to new_session_path
     end
 
     it 'while deleting an account, edits.account_id and edits.undone_by should be marked with Anonymous Coward ID' do
