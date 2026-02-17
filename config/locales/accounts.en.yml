@@ -206,6 +206,9 @@ en:
       sign_up_with: Sign up with
       github_disclaimer: OpenHub will only keep your Github email and login.
 
+    create:
+      recaptcha_failure: 'Please verify the captcha to proceed.'
+
     join_now:
       please_note: 'Please Note'
       terms_of_use: 'Terms of Use'

@@ -35,6 +35,11 @@ class AccountsControllerTest < ActionController::TestCase
   end
 
   describe 'create' do
+    before do
+      account_params.merge!(visitor_id: 10.seconds.ago.to_i)
+      @controller.stubs(:verify_recaptcha).returns(true)
+    end
+
     it 'must return errors for invalid email' do
       post :create, params: account_params.merge(account: { email: '' })
       _(assigns(:account)).wont_be :valid?
@@ -433,8 +438,9 @@ class AccountsControllerTest < ActionController::TestCase
   describe 'error handling' do
     it 'should handle parameter missing exception' do
       Airbrake.expects(:notify).once
+      @controller.stubs(:verify_recaptcha).returns(true)
 
-      post :create, params: {}
+      post :create, params: { visitor_id: 10.seconds.ago.to_i }
 
       assert_redirected_to new_account_path
     end
@@ -454,6 +460,89 @@ class AccountsControllerTest < ActionController::TestCase
       )
       assert_difference('Action.count', 0) do
         @controller.send(:create_action_record)
+      end
+    end
+  end
+
+  describe 'anti_spam' do
+    describe 'check_honeypot' do
+      it 'must reject signup when honeypot field is filled' do
+        assert_no_difference 'Account.count' do
+          post :create, params: account_params.merge(mandatory_age: '25')
+        end
+
+        assert_response :ok
+        _(response.body).must_be :empty?
+      end
+
+      it 'must allow signup when honeypot field is empty' do
+        @controller.stubs(:verify_recaptcha).returns(true)
+        timestamp = 10.seconds.ago.to_i
+
+        assert_difference 'Account.count', 1 do
+          post :create, params: account_params.merge(visitor_id: timestamp)
+        end
+
+        assert_redirected_to Account.last
+      end
+    end
+
+    describe 'check_submission_timing' do
+      it 'must reject signup when form submitted too quickly' do
+        timestamp = 4.seconds.ago.to_i
+
+        assert_no_difference 'Account.count' do
+          post :create, params: account_params.merge(visitor_id: timestamp)
+        end
+
+        assert_response :ok
+        _(response.body).must_be :empty?
+      end
+
+      it 'must reject signup when timestamp is missing' do
+        assert_no_difference 'Account.count' do
+          post :create, params: account_params
+        end
+
+        assert_response :ok
+        _(response.body).must_be :empty?
+      end
+
+      it 'must allow signup when timing is valid' do
+        @controller.stubs(:verify_recaptcha).returns(true)
+        timestamp = 10.seconds.ago.to_i
+
+        assert_difference 'Account.count', 1 do
+          post :create, params: account_params.merge(visitor_id: timestamp)
+        end
+
+        assert_redirected_to Account.last
+      end
+    end
+
+    describe 'captcha_verify' do
+      it 'must reject signup when recaptcha fails' do
+        @controller.stubs(:verify_recaptcha).returns(false)
+        timestamp = 10.seconds.ago.to_i
+
+        assert_no_difference 'Account.count' do
+          post :create, params: account_params.merge(visitor_id: timestamp)
+        end
+
+        assert_template :new
+        assert_response :unauthorized
+        _(flash.now[:error]).must_equal I18n.t('accounts.create.recaptcha_failure')
+      end
+
+      it 'must allow signup when recaptcha passes' do
+        @controller.stubs(:verify_recaptcha).returns(true)
+        timestamp = 10.seconds.ago.to_i
+
+        assert_difference 'Account.count', 1 do
+          post :create, params: account_params.merge(visitor_id: timestamp)
+        end
+
+        assert_redirected_to Account.last
       end
     end
   end

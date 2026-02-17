@@ -11,12 +11,15 @@ class AccountsController < ApplicationController
   before_action :session_required, only: %i[edit destroy confirm_delete me]
   before_action :set_account, only: %i[destroy show update edit confirm_delete disabled settings]
   before_action :redirect_if_disabled, only: %i[show update edit]
-  before_action :redirect_unverified_account, only: %i[edit destroy confirm_delete me]
+  before_action :redirect_unverified_account, only: %i[edit update me]
   before_action :disabled_during_read_only_mode, only: %i[edit update]
   before_action :account_context, only: %i[edit update confirm_delete]
   before_action :must_own_account, only: %i[edit update confirm_delete]
   before_action :find_claimed_people, only: :index
   before_action :redirect_if_logged_in, only: :new
+  before_action :check_honeypot, only: :create
+  before_action :check_submission_timing, only: :create
+  before_action :captcha_verify, only: :create
 
   rescue_from ActionController::ParameterMissing, with: :handle_parameter_missing
 
@@ -131,6 +134,23 @@ class AccountsController < ApplicationController
 
   def redirect_if_logged_in
     redirect_to account_path(current_user), notice: t('password_resets.already_logged_in') if logged_in?
+  end
+
+  def check_submission_timing
+    elapsed = Time.current.to_i - params[:visitor_id].to_i
+    head :ok and return unless elapsed.between?(5, 1.hour.to_i)
+  end
+
+  def check_honeypot
+    head :ok and return if params[:mandatory_age].present?
+  end
+
+  def captcha_verify
+    return if verify_recaptcha
+
+    @account = Account.new(account_params)
+    flash.now[:error] = t('.recaptcha_failure')
+    render :new, status: :unauthorized
   end
 end
 # rubocop:enable Metrics/ClassLength

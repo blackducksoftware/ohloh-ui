@@ -103,7 +103,7 @@ class VulnerabilitiesHelperTest < ActionView::TestCase
       _(sort_releases_by_version_number(Release.all)).must_equal [rel4, rel3, rel5, rel1, rel2]
     end
 
-    # rubocop: disable Metrics/LineLength
+    # rubocop: disable Layout/LineLength
     it 'should correctly filter a mix of valid and invalid version release names' do
       project = FactoryBot.create(:project)
       FactoryBot.create(:project_security_set, project: project)
@@ -120,6 +120,6 @@ class VulnerabilitiesHelperTest < ActionView::TestCase
       rel11 = FactoryBot.create(:release, version: 'BEEingLibs')
       _(sort_releases_by_version_number(Release.all)).must_equal [rel6, rel8, rel7, rel10, rel4, rel11, rel3, rel2, rel1, rel9, rel5]
     end
-    # rubocop: enable Metrics/LineLength
+    # rubocop: enable Layout/LineLength
   end
 end
