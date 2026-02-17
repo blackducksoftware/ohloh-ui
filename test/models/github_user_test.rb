@@ -19,7 +19,7 @@ class GithubUserTest < ActiveSupport::TestCase
     it 'wont be valid when username does not exist on github' do
       username = 'invalid_github'
       output = { message: 'Not Found', documentation_url: 'https://developer.github.com/v3' }.to_json
-      Open3.stubs(:popen3).returns [nil, stub(read: output)]
+      Net::HTTP.any_instance.stubs(:get).returns stub(code: '404', body: output)
       github_user = GithubUser.new(url: username)
       github_user.valid?
       _(github_user.errors.messages[:url].first).must_equal I18n.t('invalid_github_username')
