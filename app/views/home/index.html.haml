@@ -1,5 +1,7 @@
 - content_for(:html_title) { t('.page_title') }
-- content_for(:javascript) { javascript_include_tag 'rotating_stats' }
+- content_for(:javascript) do
+  = javascript_include_tag 'rotating_stats'
+  = javascript_include_tag 'project_swimlanes'
 
 / Hero Section
 .hero_section
@@ -63,13 +65,13 @@
 / Top Contributors and What's New Section
 .content_section
   .container
-    .row
+    .content_grid
       / Top Contributors - 35%
-      .col-md-4.col-sm-12.contributors_column
+      .contributors_column
         = render partial: '/home/top_contributors'
 
       / What's New and Join Now - 65%
-      .col-md-8.col-sm-12.whats_new_column
+      .whats_new_column
         .whats_new_join_stack
           = render partial: '/home/whats_new'
           = render partial: '/home/join_now_home'
@@ -77,5 +79,5 @@
 / User Journeys Section
 = render partial: '/home/user_journeys'
 
-.landing.col-md-12.col-sm-12.col-xs-12.last_section
-  = home_top_lists
+/ Project Swimlanes Section
+= home_top_lists
