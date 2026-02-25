@@ -18,13 +18,17 @@ body
   color: #000
   width: 100%
   overflow-x: hidden
+  background-color: #f9fafb !important
 
 .container#page, #page
   width: 100% !important
   max-width: 100% !important
-  background-color: white
+  background-color: #f9fafb
   margin: 0 !important
   padding: 0 !important
+  transition: background-color 0.3s ease
+  html.dark &
+    background-color: #1D0631
 
 header
   // Figma design: gradient background for entire header
@@ -313,7 +317,9 @@ header
 
 .navbar
   // Figma design: gradient background with purple theme
-  position: relative
+  position: sticky
+  top: 0
+  z-index: 1000
   background: linear-gradient(to right, #000000, #1D0631, #5A2A82)
   backdrop-filter: blur(12px)
   -webkit-backdrop-filter: blur(12px)
@@ -603,16 +609,17 @@ header
 .mobile-menu
   display: none
   width: 100%
-  flex-basis: 100%
   background: linear-gradient(to right, #1D0631, #5A2A82)
   backdrop-filter: blur(12px)
   -webkit-backdrop-filter: blur(12px)
   border-top: 1px solid rgba(255, 255, 255, 0.15)
   padding: 20px 0
-  position: relative
+  position: absolute
+  top: 64px
+  left: 0
+  right: 0
   z-index: 1002
   overflow: visible
-  order: 2
   box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.2)
   &.show
     display: block !important
@@ -694,7 +701,7 @@ header
       background-color: #FFB91A !important
       color: #000 !important
       border: none !important
-      border-radius: 8px
+      border-radius: 12px
       font-weight: 600
       font-size: 15px
       text-decoration: none
@@ -720,7 +727,7 @@ header
       background-color: transparent !important
       color: #FFB91A !important
       border: 2px solid #FFB91A !important
-      border-radius: 8px
+      border-radius: 12px
       font-weight: 600
       font-size: 15px
       text-decoration: none
@@ -736,6 +743,13 @@ header
       &:active
         transform: translateY(0)
         box-shadow: none
+      html.dark &
+        background-color: transparent !important
+        color: #FFB91A !important
+        border-color: #FFB91A !important
+        &:hover
+          background-color: rgba(255, 185, 26, 0.15) !important
+
 
 .dropdown#logged_user_menu
   position: relative

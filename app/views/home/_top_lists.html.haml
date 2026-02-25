@@ -19,7 +19,7 @@
 
           / Mobile: Hidden cards (to be shown on click)
           - if @home.most_active_projects.size > 2
-            - @home.most_active_projects.drop(2).each do |project|
+            - @home.most_active_projects[2..9].each do |project|
               .mobile_only.mobile_card.hidden_card{ style: 'display: none;' }
                 = render partial: 'compact_project_card', locals: { project: project }
 
@@ -44,7 +44,7 @@
 
           / Mobile: Hidden cards (to be shown on click)
           - if @home.most_popular_projects.size > 2
-            - @home.most_popular_projects.drop(2).each do |project|
+            - @home.most_popular_projects[2..9].each do |project|
               .mobile_only.mobile_card.hidden_card{ style: 'display: none;' }
                 = render partial: 'compact_project_card', locals: { project: project }
 
@@ -69,7 +69,7 @@
 
           / Mobile: Hidden cards (to be shown on click)
           - if @home.most_recent_projects.size > 2
-            - @home.most_recent_projects.drop(2).each do |project|
+            - @home.most_recent_projects[2..9].each do |project|
               .mobile_only.mobile_card.hidden_card{ style: 'display: none;' }
                 = render partial: 'compact_project_card', locals: { project: project }
 

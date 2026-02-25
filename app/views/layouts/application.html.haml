@@ -18,8 +18,8 @@
 
   %body{ zoom: 1 }
     = yield :session_projects_banner
+    %header= render partial: 'layouts/partials/header'
     .container#page
-      %header= render partial: 'layouts/partials/header'
       = render partial: 'layouts/partials/page', locals: { responsive_layout: true }
       .clear
       %footer= render partial: 'layouts/partials/footer'
