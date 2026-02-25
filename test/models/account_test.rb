@@ -933,6 +933,58 @@ class AccountTest < ActiveSupport::TestCase
     end
   end
 
+  describe 'blocked_domain_validation' do
+    it 'should reject url containing a blocked domain' do
+      Setting.create(key: 'blocked_domains', value: 'cr.com|aks.ai|ch.in')
+      account = create(:account)
+      account.url = 'http://something.cr.com'
+      _(account).wont_be :valid?
+
+      account.url = 'http://test.aks.ai/page'
+      _(account).wont_be :valid?
+
+      _(account.errors[:url]).must_be :present?
+    end
+
+    it 'should reject about_raw containing a blocked domain' do
+      Setting.create(key: 'blocked_domains', value: 'cr.com|aks.ai|ch.in')
+      account = create(:account)
+
+      account.about_raw = 'this is something.cr.com'
+      _(account).wont_be :valid?
+
+      account.about_raw = 'visit my site at test.ch.in for more'
+      _(account).wont_be :valid?
+
+      _(account.errors[:about_raw]).must_be :present?
+    end
+
+    it 'should allow url when no blocked domains match' do
+      Setting.create(key: 'blocked_domains', value: 'cr.com|aks.ai|ch.in')
+      account = create(:account)
+      account.url = 'http://www.aks.aic'
+      _(account).must_be :valid?
+    end
+
+    it 'should allow about_raw when no blocked domains match' do
+      Setting.create(key: 'blocked_domains', value: 'cr.com|aks.ai|ch.in')
+      account = create(:account)
+
+      account.about_raw = 'I am a ch.ind developer'
+      _(account).must_be :valid?
+
+      account.about_raw = 'I am a cr-com developer'
+      _(account).must_be :valid?
+    end
+
+    it 'should allow url and about_raw when blocked_domains setting is absent' do
+      account = create(:account)
+      account.url = 'http://www.ch.in'
+      account.about_raw = 'check out cr.com site'
+      _(account).must_be :valid?
+    end
+  end
+
   describe 'create_manual_verification' do
     it 'should create a manual verification object for one account' do
       unverified_account = create(:position_with_unverified_account).account
