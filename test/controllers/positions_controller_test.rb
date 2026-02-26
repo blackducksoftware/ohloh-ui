@@ -461,6 +461,7 @@ class PositionsControllerTest < ActionController::TestCase
     it 'must remove positions successfully' do
       position = create_position
       account = position.account
+      login_as account
 
       post :destroy, params: { account_id: account.to_param, id: position.to_param }
 
