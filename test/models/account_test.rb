@@ -956,19 +956,40 @@ class AccountTest < ActiveSupport::TestCase
       account.about_raw = 'visit my site at test.ch.in for more'
       _(account).wont_be :valid?
 
-      _(account.errors[:about_raw]).must_be :present?
+      _(account.errors[:'markup.raw']).must_be :present?
+    end
+
+    it 'should work as expected when blocked_domains has unexpected patterns' do
+      account = build(:account)
+
+      setting = Setting.create(key: 'blocked_domains', value: 'cr.com| ')
+
+      account.about_raw = 'this is something.cr.com,'
+      _(account).wont_be :valid?
+
+      account.about_raw = 'this is some.valid.com'
+      _(account).must_be :valid?
+
+      setting.update!(value: ' cr.com ')
+
+      account.about_raw = ''
+      account.url = 'something.cr.com'
+      _(account).wont_be :valid?
+
+      account.url = 'https://some.valid.com'
+      _(account).must_be :valid?
     end
 
     it 'should allow url when no blocked domains match' do
       Setting.create(key: 'blocked_domains', value: 'cr.com|aks.ai|ch.in')
-      account = create(:account)
+      account = build(:account)
       account.url = 'http://www.aks.aic'
       _(account).must_be :valid?
     end
 
     it 'should allow about_raw when no blocked domains match' do
       Setting.create(key: 'blocked_domains', value: 'cr.com|aks.ai|ch.in')
-      account = create(:account)
+      account = build(:account)
 
       account.about_raw = 'I am a ch.ind developer'
       _(account).must_be :valid?

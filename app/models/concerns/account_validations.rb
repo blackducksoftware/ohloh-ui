@@ -3,8 +3,6 @@
 module AccountValidations
   extend ActiveSupport::Concern
 
-  BLOCKED_DOMAIN_MESSAGE = 'contains a blocked spam pattern. Contact info@openhub.net if incorrect.'
-
   included do
     validates :email, presence: true, length: { in: 3..100 }, uniqueness: { case_sensitive: false },
                       email_format: true, allow_blank: false
@@ -39,12 +37,12 @@ module AccountValidations
   end
 
   def url_not_blocked_domain
-    errors.add(:url, BLOCKED_DOMAIN_MESSAGE) if matches_blocked_domain?(url)
+    errors.add(:url, I18n.t('accounts.edit.blocked_domain_error')) if matches_blocked_domain?(url)
   end
 
   def about_raw_not_blocked_domain
     raw = about_raw || markup&.raw
-    errors.add(:about_raw, BLOCKED_DOMAIN_MESSAGE) if matches_blocked_domain?(raw)
+    errors.add(:'markup.raw', I18n.t('accounts.edit.blocked_domain_error')) if matches_blocked_domain?(raw)
   end
 
   def valid_current_password?
