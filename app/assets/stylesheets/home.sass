@@ -443,6 +443,8 @@ button
   margin-bottom: 4px
   box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)
   transition: box-shadow 0.2s
+  display: flex
+  flex-direction: column
   &:hover
     box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)
   html.dark &
@@ -516,6 +518,30 @@ button
   display: flex
   flex-direction: column
   gap: 8px
+  max-height: 300px
+  overflow-y: scroll
+  scrollbar-width: thin
+  scrollbar-color: rgba(90, 42, 130, 0.4) rgba(90, 42, 130, 0.1)
+  @media (min-width: 768px)
+    max-height: 500px
+  &::-webkit-scrollbar
+    width: 8px
+  &::-webkit-scrollbar-track
+    background: rgba(90, 42, 130, 0.1)
+    border-radius: 3px
+  &::-webkit-scrollbar-thumb
+    background: rgba(90, 42, 130, 0.4)
+    border-radius: 3px
+    &:hover
+      background: rgba(90, 42, 130, 0.6)
+  html.dark &
+    scrollbar-color: rgba(255, 185, 26, 0.4) rgba(255, 185, 26, 0.1)
+    &::-webkit-scrollbar-track
+      background: rgba(255, 185, 26, 0.1)
+    &::-webkit-scrollbar-thumb
+      background: rgba(255, 185, 26, 0.4)
+      &:hover
+        background: rgba(255, 185, 26, 0.6)
 
 .top_contributors_card .contributor_item
   display: flex
@@ -540,10 +566,8 @@ button
       background: linear-gradient(to right, rgba(109, 40, 217, 0.3) 0%, rgba(124, 58, 237, 0.3) 100%)
       border-color: #5A2A82
 
-// Show only top 4 contributors on mobile
-.top_contributors_card .contributor_item:nth-child(n+5)
-  @media (max-width: 767px)
-    display: none
+// All contributors visible on mobile to enable scrolling
+// Mobile users can scroll to see all contributors
 
 // Avatar
 .top_contributors_card .contributor_avatar
@@ -948,7 +972,7 @@ button
 // User Journeys Section
 .user_journeys_section
   background: #1D0631
-  padding: 8px 0 !important
+  padding: 32px 0 !important
   width: 100vw
   margin-left: calc(-50vw + 50%)
   margin-right: calc(-50vw + 50%)
@@ -996,10 +1020,10 @@ button
 
 .journey_card
   position: relative
-  padding: 3px
   border-radius: 12px
   overflow: hidden
-  background: linear-gradient(135deg, #5A2A82 0%, #ffb91a 50%, #5A2A82 100%)
+  border: 0.8px solid #ffb91a
+  background: #1D0631
   margin-bottom: 16px
   transition: all 0.3s
 
@@ -1230,11 +1254,14 @@ button
   border: 1px solid rgba(229, 231, 235, 0.8)
   background: white
   box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)
+  height: 100%
+  display: flex
+  flex-direction: column
 
   &:hover
     border-color: #5A2A82
     box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)
-  
+
   html.dark &
     background: #2D1548
     border-color: rgba(255, 255, 255, 0.1)
@@ -1247,6 +1274,8 @@ button
   padding: 12px
   transition: all 0.3s ease
   height: 100%
+  display: flex
+  flex-direction: column
   @media (min-width: 640px)
     padding: 16px
 
@@ -1347,6 +1376,8 @@ button
 
 .compact_project_card .compact_card_description
   margin-bottom: 12px
+  flex: 1
+  min-height: 40px
   p
     font-size: 12px
     color: #6b7280
