@@ -22,6 +22,14 @@ xml.project do
   xml.rating_count project.ratings.count
   xml.review_count project.reviews.count
   xml.analysis_id project.best_analysis_id
+  if project.organization
+    xml.organization do
+      xml.id project.organization.id
+      xml.name project.organization.name
+      xml.vanity_url project.organization.vanity_url
+      xml.html_url organization_url(project.organization)
+    end
+  end
   tags = project.tag_list.split
   if tags.any?
     xml.tags do
