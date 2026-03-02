@@ -126,7 +126,6 @@ header
       gap: 24px
 #page_contents
   max-width: 100%
-  padding: 0 20px
   .separator-div
     @include site-separator-color
 
@@ -1122,6 +1121,44 @@ fieldset
               width: 14rem
             .language_percentage_indicator
               width: 3rem
+
+// Dark mode guards for legacy project security/no-analysis blocks
+html.dark
+  #project_container
+    .project_row
+      #did_you_know
+        .well
+          background-color: #1D0631 !important
+          border: 1px solid #4b5563 !important
+          box-shadow: none !important
+
+        h4
+          color: #f8fafc !important
+
+        p, li, span, .indent
+          color: #cbd5e1 !important
+
+        a
+          color: #60a5fa !important
+
+      .no_analysis_message
+        .alert.alert-info.alert-block
+          background-color: #2D1548 !important
+          border: 1px solid rgba(159, 122, 186, 0.35) !important
+
+        p,
+        .analysis_in_progress,
+        .indent,
+        span
+          color: #60a5fa !important
+
+body.dark
+  #project_container
+    .project_row
+      #did_you_know
+        .well
+          background-color: #1D0631 !important
+          border: 1px solid #4b5563 !important
 
 // Full-width layout styles
 .page-content-wrapper
