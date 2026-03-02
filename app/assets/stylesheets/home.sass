@@ -1254,7 +1254,6 @@ button
   border: 1px solid rgba(229, 231, 235, 0.8)
   background: white
   box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)
-  height: 100%
   display: flex
   flex-direction: column
 
@@ -1376,8 +1375,11 @@ button
 
 .compact_project_card .compact_card_description
   margin-bottom: 12px
-  flex: 1
-  min-height: 40px
+  height: 42px
+  display: flex
+  align-items: center
+  @media (min-width: 640px)
+    height: 44px
   p
     font-size: 12px
     color: #6b7280
