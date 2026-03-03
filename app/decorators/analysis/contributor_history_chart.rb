@@ -27,6 +27,8 @@ class Analysis::ContributorHistoryChart < Analysis::Chart
   end
 
   def x_and_y_axis_data
+    return [] unless series.last
+
     [{ 'x' => series.last.ticks, 'y' => series.last.contributors }]
   end
 end

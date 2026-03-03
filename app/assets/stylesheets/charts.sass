@@ -398,9 +398,15 @@
   .highcharts-tooltip .highcharts-color-9
     @include project-contributions-color-9-fill
 
-#code_analysis_chart, #activity_chart, #community_chart
+#code_analysis_chart, #community_chart
   .highcharts-graph
     @include code-analysis-chart-color-0-stroke
+
+#activity_chart
+  .highcharts-graph,
+  .highcharts-point
+    stroke: #5A2A82
+    fill: #5A2A82
 
 #committer_history_chart
   .highcharts-graph

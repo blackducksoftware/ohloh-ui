@@ -18,7 +18,7 @@ class Analysis::Chart
   end
 
   def first_ticks
-    series.first.ticks
+    series.first&.ticks
   end
 
   def min_month_as_ticks

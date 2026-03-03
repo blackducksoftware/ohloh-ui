@@ -150,6 +150,25 @@ en:
         add_a_code_location: "Add a code location"
         no_code_locations: "There are no Code Locations added to this project so Open Hub cannot display the commits per month chart. %{link} to see this information."
         community: "Community"
+      analysis_summary_redesign:
+        code: "Code"
+        lines_of_code: "Lines of Code"
+        languages: "Languages"
+        no_code_locations: "There are no Code Locations added to this project so Open Hub cannot display this chart."
+        activity: "Activity"
+        commits_per_month: "Commits per Month"
+        zoom: "Zoom"
+        no_commits: "No commit data available"
+        thirty_day_summary: "30 Day Summary"
+        twelve_month_summary: "12 Month Summary"
+        not_available: "not available"
+        commits: "Commits"
+        contributors: "Contributors"
+        community: "Community"
+        contributors_per_month: "Contributors per Month"
+        no_contributors: "No contributor data available"
+        most_recent_contributors: "Most Recent Contributors"
+        ratings: "Ratings"
       committers_per_month_chart:
         contributors_per_month: "Contributors per Month"
         add_a_code_location: "Add a code location"
@@ -162,8 +181,9 @@ en:
         be_the_first: "Be the first to rate this project"
         click_to_edit: "Click to edit your rating"
         click_to_add: "Click to add your rating"
+        click_to_add_review: "Click to add your review"
         clear: "Clear"
-        review_this_project: "Review this Project!"
+        review_this_project: "Review this project"
       community_recent_committers:
         most_recent: "Most Recent Contributors"
         no_one_recently: "No one has contributed to this project recently"
@@ -234,7 +254,7 @@ en:
       vulnerability_report:
         no_data: 'No data available'
         pvs_tooltip: 'Score: %{score} <br/> Percentage: %{percentage} <br/> Rank: %{rank} of %{max_rank}'
-        title: 'Project Vulnerability Report'
+        title: 'Vulnerability Report'
         blog_link: 'About Project Vulnerability Report'
         pvs:
           title: 'Vulnerability Exposure Index'
@@ -246,7 +266,7 @@ en:
           poor: 'Poor security track-record'
       vulnerabilities_per_version:
         title: 'Vulnerabilities per Version'
-        title_detail: '( last 10 releases )'
+        title_detail: '(Most recent versions)'
         no_data: 'No data available'
       thirty_day_summary:
         commit: "Commit"
@@ -276,7 +296,7 @@ en:
         most_recent_commit: most recent commit %{time}
       security:
         title: 'Project Security'
-        title_nvd: 'This Project has No vulnerabilities Reported Against it'
+        title_nvd: 'This project has no vulnerabilities reported against it'
         blog_link: 'About Project Security'
       licenses_redesign:
         licenses: 'Licenses'

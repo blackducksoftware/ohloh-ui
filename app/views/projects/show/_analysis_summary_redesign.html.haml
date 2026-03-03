@@ -1,0 +1,104 @@
+/ Code, Activity, Community Grid
+.analysis-grid
+  / Code Card
+  .gradient-card.analysis-card
+    .card-content
+      %h3.section-header= t('.code')
+
+      %h4.chart-title
+        = link_to t('.lines_of_code'), languages_summary_project_analysis_path(@project, id: 'latest')
+
+      - if @analysis.present?
+        - chart_url = lines_of_code_project_analysis_path(@project, id: 'latest')
+        .chart.watermark440#loc_chart{ datasrc: chart_url, style: 'width: 100%; height: 200px;' }
+      - else
+        %p.no-data= t('.no_code_locations')
+
+      %h4.subsection-title= t('.languages')
+      = render partial: 'projects/show/languages_redesign'
+
+  / Activity Card
+  .gradient-card.analysis-card
+    .card-content
+      %h3.section-header= t('.activity')
+
+      .chart-header
+        %h4.chart-title
+          = link_to t('.commits_per_month'), summary_project_commits_path(@project)
+
+
+      - if @analysis.present?
+        - chart_url = commits_history_project_analysis_path(@project, id: 'latest')
+        #activity_chart.chart.watermark440{ datasrc: chart_url, style: 'width: 100%; min-height: 210px' }
+      - else
+        %p.no-data= t('.no_commits')
+
+      .summary-grid
+        .summary-section.thirty-day-summary
+          - thirty_day_summary = @analysis&.thirty_day_summary
+          %h5.summary-header= t('.thirty_day_summary')
+          %p.summary-timespan
+            - if thirty_day_summary && @analysis.oldest_code_set_time
+              = (@analysis.oldest_code_set_time - 30.days).strftime('%b %e %Y')
+              &mdash;
+              = @analysis.oldest_code_set_time.strftime('%b %e %Y')
+            - else
+              = t('.not_available')
+
+          %p.summary-stat
+            %span.stat-number= number_with_delimiter(thirty_day_summary&.commits_count.to_i)
+            = t('.commits')
+          %p.summary-stat
+            %span.stat-number= number_with_delimiter(thirty_day_summary&.committer_count.to_i)
+            = t('.contributors')
+
+        .summary-section
+          %h5.summary-header= t('.twelve_month_summary')
+          %p.summary-timespan
+            - if @analysis.twelve_month_summary.present? && @analysis.oldest_code_set_time
+              = (@analysis.oldest_code_set_time - 12.months).strftime('%b %e %Y')
+              &mdash;
+              = @analysis.oldest_code_set_time.strftime('%b %e %Y')
+            - else
+              = t('.not_available')
+
+          - if @analysis.twelve_month_summary.present?
+            - previous_summary = @analysis.previous_twelve_month_summary
+            %p.summary-stat
+              %span.stat-number= number_with_delimiter(@analysis.twelve_month_summary.commits_count)
+              Commits
+            - if previous_summary&.data?
+              - diff = previous_summary.commits_difference
+              %p.summary-change{ class: diff > 0 ? 'positive' : 'negative' }
+                = diff > 0 ? "Up +#{number_with_delimiter(diff.abs)}" : "Down -#{number_with_delimiter(diff.abs)}"
+                - prev_commits = previous_summary.commits_count
+                - if prev_commits.to_i > 0
+                  (#{(diff.abs.to_f / prev_commits.to_f * 100).floor}%)
+                from previous 12
+
+            %p.summary-stat
+              %span.stat-number= number_with_delimiter(@analysis.twelve_month_summary.committer_count)
+              Contributors
+            - if previous_summary&.data?
+              - diff = previous_summary.committers_difference
+              %p.summary-change{ class: diff > 0 ? 'positive' : 'negative' }
+                = diff > 0 ? "Up +#{number_with_delimiter(diff.abs)}" : "Down -#{number_with_delimiter(diff.abs)}"
+                - prev_committers = previous_summary.committer_count
+                - if prev_committers.to_i > 0
+                  (#{(diff.abs.to_f / prev_committers.to_f * 100).floor}%)
+                from previous 12 months
+
+  / Community Card
+  .gradient-card.analysis-card
+    .card-content
+      %h3.section-header= t('.community')
+
+      .community-chart-wrap
+        = render partial: 'projects/show/committers_per_month_chart'
+
+      %h4.subsection-title= t('.most_recent_contributors')
+      = render partial: 'projects/show/community_recent_committers_redesign'
+
+      .ratings-section
+        %h4.subsection-title= t('.ratings')
+        = render partial: 'projects/show/community_rating_redesign', locals: { score: @score }
