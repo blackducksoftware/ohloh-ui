@@ -77,7 +77,7 @@
               - tags = @project.tag_list.split(' ')
               - if tags.any?
                 - tags.each do |tag|
-                  = link_to tag, tagged_projects_path(tag: tag), class: 'tag'
+                  = link_to tag, tags_path(names: tag), class: 'tag'
               - else
                 %span.tag
                   = t('.no_tags')
@@ -246,7 +246,7 @@
               - tags = @project.tag_list.split(' ')
               - if tags.any?
                 - tags.each do |tag|
-                  = link_to tag, tagged_projects_path(tag: tag), class: 'tag'
+                  = link_to tag, tags_path(names: tag), class: 'tag'
               - else
                 %span.tag= t('.no_tags')
 
@@ -305,7 +305,7 @@
 
     / Code, Activity, Community Grid
     - if @analysis.present?
-      = render partial: 'projects/show/analysis_summary'
+      = render partial: 'projects/show/analysis_summary_redesign'
 
     / Project Navigation Footer
     .footer-nav-section
@@ -319,9 +319,9 @@
               %line{ x1: "12", y1: "8", x2: "12.01", y2: "8" }
             %h4= t('.project_summary')
           %ul
-            %li= link_to t('.news'), '#'
+            %li= link_to t('.news'), project_rss_subscriptions_path(@project)
             %li= link_to t('.settings'), settings_project_path(@project)
-            %li= link_to t('.sharing_widgets'), '#'
+            %li= link_to t('.sharing_widgets'), project_widgets_path(@project)
             %li= link_to t('.related_projects'), similar_project_path(@project)
 
         .nav-column
@@ -333,7 +333,7 @@
           %ul
             %li= link_to t('.languages.languages'), languages_summary_project_analysis_path(@project, id: 'latest')
             %li= link_to t('.cost_estimates'), estimated_cost_project_path(@project)
-            %li= link_to t('.security.title'), '#security'
+            %li= link_to t('.security.title'), security_project_path(@project)
 
         .nav-column
           .column-header
@@ -357,8 +357,8 @@
             %h4= t('.community_data')
           %ul
             %li= link_to t('.users'), users_project_path(@project)
-            %li= link_to t('.ratings_reviews'), '#'
-            %li= link_to t('.user_contributor_locations'), '#'
+            %li= link_to t('.ratings_reviews'), summary_project_reviews_path(@project)
+            %li= link_to t('.user_contributor_locations'), map_project_path(@project)
 
       / Mobile: Accordion
       .footer-nav-accordion
@@ -374,9 +374,9 @@
               %polyline{ points: "6 9 12 15 18 9" }
           .accordion-content-footer{ style: "display: none;" }
             %ul
-              %li= link_to t('.news'), '#'
+              %li= link_to t('.news'), project_rss_subscriptions_path(@project)
               %li= link_to t('.settings'), settings_project_path(@project)
-              %li= link_to t('.sharing_widgets'), '#'
+              %li= link_to t('.sharing_widgets'), project_widgets_path(@project)
               %li= link_to t('.related_projects'), similar_project_path(@project)
 
         .accordion-item
@@ -392,7 +392,7 @@
             %ul
               %li= link_to t('.languages.languages'), languages_summary_project_analysis_path(@project, id: 'latest')
               %li= link_to t('.cost_estimates'), estimated_cost_project_path(@project)
-              %li= link_to t('.security.title'), '#security'
+              %li= link_to t('.security.title'), security_project_path(@project)
 
         .accordion-item
           %button.accordion-header-btn{ onclick: "toggleFooterAccordion(this)" }
@@ -424,8 +424,8 @@
           .accordion-content-footer{ style: "display: none;" }
             %ul
               %li= link_to t('.users'), users_project_path(@project)
-              %li= link_to t('.ratings_reviews'), '#'
-              %li= link_to t('.user_contributor_locations'), '#'
+              %li= link_to t('.ratings_reviews'), summary_project_reviews_path(@project)
+              %li= link_to t('.user_contributor_locations'), map_project_path(@project)
 
 :javascript
   function toggleAccordion(button) {
