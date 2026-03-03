@@ -1,0 +1,1283 @@
+// Project Show Page Redesign - Clean Implementation Based on Figma Design
+// ============================================================================
+
+// Design System Variables
+// ============================================================================
+$purple-dark: #1D0631
+$purple-primary: #5A2A82
+$purple-light: #9F7ABA
+$yellow-accent: #FFB91A
+$yellow-hover: #FFCC4D
+
+// Neutrals
+$gray-50: #f9fafb
+$gray-100: #f3f4f6
+$gray-200: #e5e7eb
+$gray-600: #6b7280
+$gray-700: #374151
+$gray-900: #111827
+
+// Shadows
+$shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05)
+$shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)
+$shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)
+
+// System Font Stack
+$font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif
+
+// ============================================================================
+// Global Overrides - Remove Bootstrap padding/margins
+// ============================================================================
+
+// Remove navbar margin globally with maximum specificity
+.navbar,
+.navbar-default,
+.navbar-static-top,
+nav.navbar,
+header .navbar,
+.navbar-fixed-top,
+.navbar-fixed-bottom
+  margin-bottom: 0 !important
+  margin-top: 0 !important
+
+// Additional Bootstrap navbar overrides
+body .navbar
+  margin-bottom: 0 !important
+
+// Target specific header navbar
+header
+  .navbar
+    margin-bottom: 0 !important
+
+// Remove container and page padding when showing redesigned project page
+body:has(.project-show-redesign)
+  #project_container,
+  .container-fluid#project_container
+    padding: 0 !important
+    margin: 0 !important
+    max-width: 100% !important
+
+  #page-contents,
+  .row#page-contents
+    margin: 0 !important
+    padding: 0 !important
+
+    > div
+      padding: 0 !important
+
+// Direct child approach - more specific
+#project_container
+  > .row#page-contents
+    > .col-xs-12,
+    > .col-sm-12,
+    > .col-md-12
+      padding: 0 !important
+
+      > .project-show-redesign
+        margin: 0 !important
+
+// Force remove padding from all Bootstrap column classes in project container
+.project-show-redesign
+  ~ *
+    .container,
+    .container-fluid,
+    .row,
+    [class*="col-"]
+      padding-left: 0 !important
+      padding-right: 0 !important
+
+// ============================================================================
+// Main Container
+// ============================================================================
+.project-show-redesign
+  width: 100%
+  min-height: 100vh
+  background-color: $gray-50
+  font-family: $font-family
+  -webkit-font-smoothing: antialiased
+  -moz-osx-font-smoothing: grayscale
+  margin: 0 !important
+
+  // Hide old project header elements
+  #project_masthead,
+  #project_header,
+  #project_icon,
+  #widgets,
+  #project_header_activity_indicator
+    display: none !important
+
+  // Reset global styles that interfere
+  *
+    box-sizing: border-box
+
+  // ============================================================================
+  // Project Header Section
+  // ============================================================================
+  .project-header-gradient
+    background: linear-gradient(135deg, $purple-dark 0%, $purple-primary 100%)
+    padding: 50px 16px 32px
+    position: relative
+    overflow: hidden
+
+    // Decorative gradient circle
+    &::before
+      content: ''
+      position: absolute
+      top: -192px
+      right: -192px
+      width: 384px
+      height: 384px
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%)
+      border-radius: 50%
+
+    .header-content
+      margin: 0 auto
+      position: relative
+      z-index: 10
+
+    .header-main
+      display: flex
+      flex-direction: column
+      gap: 16px
+
+      @media (min-width: 768px)
+        flex-direction: row
+        align-items: flex-start
+        justify-content: space-between
+        gap: 24px
+
+    a,
+    button
+      font-family: $font-family
+
+    // Desktop: Top-right user stats and button
+    .header-top-right
+      position: absolute
+      top: 49px
+      right: 16px
+      display: none
+      align-items: center
+      gap: 12px
+      z-index: 20
+
+      @media (min-width: 640px)
+        display: flex
+        right: 24px
+
+      @media (min-width: 1024px)
+        right: 32px
+
+      .stats-card
+        background: white
+        border-radius: 8px
+        padding: 12px 16px
+        box-shadow: $shadow-md
+        min-width: 140px
+
+    .activity-indicator-wrapper
+      display: flex
+      flex-direction: column
+      align-items: center
+      justify-content: center
+      gap: 4px
+      min-width: 80px
+
+      [class^='thirtyfive_project_activity_level_']
+        position: static
+        top: auto
+        margin-left: 0
+
+      .thirtyfive_project_activity_text
+        margin: 0
+        width: auto
+        line-height: 1.2
+        font-size: 12px
+        font-weight: 600
+        color: white
+        text-align: center
+        white-space: nowrap
+
+    .stats-card
+        .stats-inner
+          display: flex
+          align-items: center
+          gap: 12px
+          margin-bottom: 12px
+
+          svg
+            width: 20px
+            height: 20px
+            color: $purple-primary
+            flex-shrink: 0
+
+          .user-count
+            font-size: 28px
+            font-weight: 700
+            color: $purple-primary
+            line-height: 1
+
+        .i-use-this-btn
+          width: 100%
+          padding: 10px 16px
+          border-radius: 6px
+          font-weight: 600
+          font-size: 14px
+          display: flex
+          align-items: center
+          justify-content: center
+          gap: 8px
+          border: none
+          cursor: pointer
+          transition: all 0.2s
+
+          &.using
+            background: $purple-primary
+            color: white
+
+            &:hover
+              background: darken($purple-primary, 8%)
+
+          &.not-using
+            background: $yellow-accent
+            color: $purple-dark
+
+            &:hover
+              background: $yellow-hover
+
+          svg
+            width: 16px
+            height: 16px
+
+    // Project title and info section
+    .project-title-section
+      flex: 1
+      min-width: 0
+      max-width: 900px
+
+      @media (min-width: 768px)
+        max-width: calc(100% - 280px)
+
+      h1
+        font-size: 32px
+        font-weight: 700
+        color: white
+        line-height: 1.2
+        letter-spacing: -0.02em
+        margin: 0 0 12px
+
+        @media (min-width: 768px)
+          font-size: 48px
+
+        @media (min-width: 1024px)
+          font-size: 48px
+
+      .action-buttons
+        display: flex
+        flex-wrap: wrap
+        gap: 8px
+        margin-bottom: 20px
+
+        .action-btn
+          display: inline-flex
+          align-items: center
+          gap: 6px
+          padding: 6px 12px
+          border-radius: 8px
+          font-size: 12px
+          font-weight: 500
+          line-height: 1.25
+          text-decoration: none !important
+          appearance: none
+          -webkit-appearance: none
+          background-image: none !important
+          box-shadow: none !important
+          border: 0
+          cursor: pointer
+          transition: all 0.2s ease
+
+          &:link,
+          &:visited,
+          &:hover,
+          &:active
+            color: white !important
+            text-decoration: none !important
+
+          @media (min-width: 768px)
+            font-size: 14px
+
+          svg
+            width: 14px
+            height: 14px
+            flex-shrink: 0
+            stroke: currentColor
+
+          // Outlined button style (for Settings and Report Duplicate)
+          &.action-btn-outline
+            background: rgba(255, 255, 255, 0.1)
+            border: 1px solid rgba(255, 255, 255, 0.2)
+            color: white !important
+            box-shadow: none
+
+            &:hover
+              background: rgba(255, 255, 255, 0.2)
+              border-color: rgba(255, 255, 255, 0.2)
+              color: white !important
+              transform: none
+
+            &:active
+              transform: none
+              background: rgba(255, 255, 255, 0.2)
+
+            &:focus-visible
+              outline: 2px solid rgba(255, 255, 255, 0.55)
+              outline-offset: 2px
+
+      .project-description
+        font-size: 16px
+        color: rgba(255, 255, 255, 0.9)
+        line-height: 1.6
+        margin-bottom: 12px
+
+        @media (min-width: 768px)
+          font-size: 17px
+
+      .timestamp
+        font-size: 14px
+        color: rgba(255, 255, 255, 0.7)
+        line-height: 1.5
+
+    // Mobile: Bottom stats card
+    .header-mobile-stats
+      display: flex
+      gap: 12px
+      margin-top: 24px
+
+      @media (min-width: 640px)
+        display: none
+
+      .activity-card-mobile
+        display: flex
+        flex-direction: column
+        align-items: center
+        justify-content: center
+        gap: 4px
+        padding: 10px 12px
+        background: rgba(255, 255, 255, 0.1)
+        backdrop-filter: blur(10px)
+        border: 1px solid rgba(255, 255, 255, 0.2)
+        border-radius: 8px
+
+        [class^='twentyfive_project_activity_level_']
+          position: static
+          top: auto
+          margin-left: 0
+
+        .twentyfive_project_activity_text
+          margin: 0
+          width: auto
+          min-height: 0
+          font-size: 10px
+          line-height: 1.2
+          font-weight: 600
+          color: white
+          text-align: center
+          white-space: nowrap
+
+      .stats-card-mobile
+        flex: 1
+        display: flex
+        flex-direction: column
+        background: rgba(255, 255, 255, 0.1)
+        backdrop-filter: blur(10px)
+        border: 1px solid rgba(255, 255, 255, 0.2)
+        border-radius: 8px
+        padding: 0
+        overflow: hidden
+
+        .stats-top
+          display: flex
+          align-items: center
+          gap: 8px
+          margin-bottom: 0
+          padding: 10px 12px 6px
+
+          svg
+            width: 16px
+            height: 16px
+            color: $yellow-accent
+
+          .user-count
+            font-size: 18px
+            font-weight: 700
+            color: $yellow-accent
+
+          .users-label
+            font-size: 12px
+            color: rgba(255, 255, 255, 0.8)
+
+        .i-use-this-btn-mobile
+          width: calc(100% - 20px)
+          margin: 0 10px 10px
+          padding: 8px 12px
+          border-radius: 8px
+          font-weight: 600
+          font-size: 14px
+          display: flex
+          align-items: center
+          justify-content: center
+          gap: 8px
+          border: none
+          cursor: pointer
+          line-height: 1.25
+
+          &.using
+            background: $purple-primary
+            color: white
+
+          &.not-using
+            background: $yellow-accent
+            color: $purple-dark
+
+          svg
+            width: 16px
+            height: 16px
+
+  // ============================================================================
+  // Main Content Area
+  // ============================================================================
+  .project-content
+    margin: 0 auto
+    padding: 24px
+
+    @media (min-width: 768px)
+      padding: 32px
+
+  // ============================================================================
+  // Stats Grid (3 columns)
+  // ============================================================================
+  .stats-grid
+    display: grid
+    grid-template-columns: repeat(3, 1fr)
+    gap: 16px
+    margin-bottom: 32px
+
+    @media (min-width: 768px)
+      gap: 24px
+
+    .stat-card
+      background: white
+      border-radius: 12px
+      padding: 20px 16px
+      text-align: center
+      box-shadow: $shadow-sm
+      transition: box-shadow 0.2s
+
+      &:hover
+        box-shadow: $shadow-md
+
+      .stat-value
+        font-size: 28px
+        font-weight: 700
+        color: $purple-primary
+        line-height: 1
+        margin-bottom: 8px
+
+        @media (min-width: 768px)
+          font-size: 36px
+
+      .stat-label
+        font-size: 14px
+        color: $gray-600
+        font-weight: 500
+        line-height: 1.2
+
+  // ============================================================================
+  // Card Components
+  // ============================================================================
+  .gradient-card
+    background: white
+    border-radius: 12px
+    // Enhanced shadow to match Figma design - more prominent
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.04)
+    overflow: hidden
+    transition: box-shadow 0.2s
+
+    &:hover
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12), 0 4px 8px rgba(0, 0, 0, 0.06)
+
+    .card-content
+      padding: 24px
+
+      @media (min-width: 768px)
+        padding: 32px
+
+      h3
+        font-size: 20px
+        font-weight: 700
+        color: $gray-900
+        line-height: 1.3
+        margin: 0 0 16px
+        padding-bottom: 12px
+        border-bottom: 2px solid $gray-100
+
+      h4
+        font-size: 16px
+        font-weight: 600
+        color: $gray-900
+        line-height: 1.4
+        margin: 0 0 12px
+
+      p
+        font-size: 15px
+        line-height: 1.6
+        color: $gray-700
+        margin: 0
+
+      ul
+        list-style: none
+        padding: 0
+        margin: 0
+
+  // ============================================================================
+  // Desktop: 3-column grid
+  // ============================================================================
+  .three-col-grid
+    display: none
+
+    @media (min-width: 1024px)
+      display: grid
+      grid-template-columns: repeat(3, 1fr)
+      gap: 24px
+      margin-bottom: 32px
+
+  // ============================================================================
+  // Mobile: Accordion cards
+  // ============================================================================
+  .mobile-accordion
+    display: flex
+    flex-direction: column
+    gap: 16px
+    margin-bottom: 32px
+
+    @media (min-width: 1024px)
+      display: none
+
+    .accordion-card
+      .accordion-header
+        width: 100%
+        display: flex
+        align-items: center
+        justify-content: space-between
+        padding: 20px
+        background: none
+        border: none
+        cursor: pointer
+        text-align: left
+
+        .header-left
+          display: flex
+          align-items: center
+          gap: 12px
+
+          svg
+            width: 20px
+            height: 20px
+            color: $purple-primary
+
+          h3
+            font-size: 18px
+            font-weight: 600
+            color: $gray-900
+            margin: 0
+
+        .chevron
+          width: 20px
+          height: 20px
+          color: $gray-600
+          transition: transform 0.2s
+
+          &.expanded
+            transform: rotate(180deg)
+
+      .accordion-content
+        padding: 0 20px 20px
+        display: none
+
+        &.expanded
+          display: block
+
+  // ============================================================================
+  // Tags
+  // ============================================================================
+  .tags-container
+    display: flex
+    flex-wrap: wrap
+    gap: 8px
+    margin-top: 12px
+
+    .tag
+      padding: 6px 12px
+      background: $gray-100
+      color: $gray-700
+      font-size: 14px
+      border-radius: 6px
+      text-decoration: none
+      transition: all 0.15s
+
+      &:hover
+        background: $purple-primary
+        color: white
+
+  // ============================================================================
+  // Nutshell List
+  // ============================================================================
+  .nutshell-list
+    list-style: none
+    padding: 0
+    margin: 0
+
+    li
+      display: flex
+      gap: 12px
+      padding: 12px 0
+      font-size: 15px
+      line-height: 1.6
+      border-top: 1px solid $gray-100
+
+      &:first-child
+        border-top: none
+        padding-top: 0
+
+      svg
+        width: 20px
+        height: 20px
+        color: $purple-primary
+        flex-shrink: 0
+        margin-top: 2px
+
+      .content
+        color: $gray-700
+
+        a
+          color: $purple-primary
+          font-weight: 600
+          text-decoration: none
+
+          &:hover
+            text-decoration: underline
+
+  // ============================================================================
+  // Quick Reference List
+  // ============================================================================
+  .quick-ref-list
+    list-style: none
+    padding: 0
+    margin: 0
+
+    li
+      display: flex
+      justify-content: space-between
+      align-items: flex-start
+      gap: 16px
+      padding: 12px 0
+      font-size: 15px
+      border-bottom: 1px solid $gray-100
+
+      &:last-child
+        border-bottom: none
+
+      .label
+        color: $gray-600
+        font-weight: 500
+        flex-shrink: 0
+
+      .value
+        color: $purple-primary
+        font-weight: 600
+        text-align: right
+
+        a
+          color: $purple-primary
+          text-decoration: none
+          display: inline-flex
+          align-items: center
+          gap: 4px
+
+          &:hover
+            text-decoration: underline
+
+          svg
+            width: 14px
+            height: 14px
+
+  // ============================================================================
+  // Licenses Section
+  // ============================================================================
+  .licenses-section
+    margin-bottom: 32px
+
+    .section-title
+      font-size: 24px
+      font-weight: 700
+      color: $gray-900
+      margin-bottom: 16px
+
+    .license-card
+      .license-header
+        width: 100%
+        display: flex
+        align-items: center
+        justify-content: space-between
+        padding: 20px 24px
+        background: none
+        border: none
+        cursor: pointer
+
+        .header-left
+          display: flex
+          align-items: center
+          gap: 12px
+
+          svg
+            width: 20px
+            height: 20px
+            color: $purple-primary
+
+          h4
+            font-size: 18px
+            font-weight: 600
+            color: $purple-primary
+            margin: 0
+
+        .chevron
+          width: 20px
+          height: 20px
+          color: $gray-600
+          transition: transform 0.2s
+
+          &.expanded
+            transform: rotate(180deg)
+
+      .license-content
+        display: none
+        padding: 0 24px 24px
+
+        &.expanded
+          display: block
+
+        @media (min-width: 1024px)
+          display: block
+
+        .license-details-grid
+          display: grid
+          gap: 16px
+
+          @media (min-width: 768px)
+            grid-template-columns: repeat(3, 1fr)
+            gap: 24px
+
+          .license-detail-card
+            border-radius: 8px
+            padding: 20px
+
+            &.permitted
+              background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%)
+
+            &.forbidden
+              background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%)
+
+            &.required
+              background: linear-gradient(135deg, #fefce8 0%, #fef9c3 100%)
+
+            h5
+              font-weight: 600
+              margin-bottom: 12px
+              display: flex
+              align-items: center
+              gap: 8px
+
+              svg
+                width: 16px
+                height: 16px
+
+            ul
+              list-style: none
+              padding: 0
+
+              li
+                font-size: 14px
+                margin-bottom: 8px
+                display: flex
+                align-items: center
+                gap: 8px
+
+                svg
+                  width: 12px
+                  height: 12px
+
+        .license-disclaimer
+          margin-top: 24px
+          padding-top: 16px
+          border-top: 1px solid $gray-200
+          text-align: center
+
+          p
+            font-size: 13px
+            color: $gray-600
+            font-style: italic
+
+        .view-all-link
+          margin-top: 16px
+          text-align: right
+
+          a
+            font-size: 14px
+            font-weight: 600
+            color: $purple-primary
+            text-decoration: none
+
+            &:hover
+              text-decoration: underline
+
+  // ============================================================================
+  // Footer Navigation
+  // ============================================================================
+  .footer-nav-section
+    background: white
+    border-radius: 16px
+    padding: 16px
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24)
+    margin-bottom: 24px
+
+    @media (min-width: 640px)
+      padding: 32px
+      margin-bottom: 32px
+
+    a
+      &:link,
+      &:visited,
+      &:hover,
+      &:active
+        text-decoration: none
+
+    // Desktop: 4-column grid
+    .footer-nav-grid
+      display: none
+
+      @media (min-width: 768px)
+        display: grid
+        grid-template-columns: repeat(4, 1fr)
+        gap: 32px
+
+      .nav-column
+        .column-header
+          display: flex
+          align-items: center
+          gap: 8px
+          margin-bottom: 12px
+          padding-bottom: 8px
+          border-bottom: 1px solid $gray-200
+
+          svg
+            width: 16px
+            height: 16px
+            color: $purple-primary
+
+          h4
+            font-size: 14px
+            font-weight: 600
+            color: $gray-900
+            margin: 0
+
+        ul
+          list-style: none
+          padding: 0
+          margin: 0
+
+          li
+            margin-bottom: 8px
+
+            &:last-child
+              margin-bottom: 0
+
+            a
+              font-size: 14px
+              color: #5A2A82 !important
+              text-decoration: none
+              transition: color 0.15s
+
+              &:hover
+                text-decoration: underline
+
+              &:visited,
+              &:active
+                color: $purple-primary
+
+    // Mobile: Accordion
+    .footer-nav-accordion
+      display: flex
+      flex-direction: column
+
+      @media (min-width: 768px)
+        display: none
+
+      .accordion-item
+        border-bottom: 1px solid $gray-200
+
+        &:last-child
+          border-bottom: none
+
+        .accordion-header-btn
+          width: 100%
+          display: flex
+          align-items: center
+          justify-content: space-between
+          padding: 12px 0
+          background: none
+          border: none
+          cursor: pointer
+
+          .header-left
+            display: flex
+            align-items: center
+            gap: 10px
+
+            svg
+              width: 16px
+              height: 16px
+              color: $purple-primary
+
+            span
+              font-size: 14px
+              font-weight: 600
+              color: $gray-900
+
+          .chevron
+            width: 16px
+            height: 16px
+            color: $gray-600
+            transition: transform 0.2s
+
+            &.expanded
+              transform: rotate(180deg)
+
+        .accordion-content-footer
+          padding-bottom: 12px
+          padding-left: 24px
+          display: none
+
+          &.expanded
+            display: block
+
+          ul
+            list-style: none
+            padding: 0
+            margin: 0
+
+            li
+              margin-bottom: 6px
+
+              a
+                font-size: 14px
+                color: $purple-primary
+                text-decoration: none
+
+                &:hover
+                  text-decoration: underline
+
+                &:visited,
+                &:active
+                  color: $purple-primary
+
+// ============================================================================
+// Dark Theme Overrides (Project Show Redesign)
+// ============================================================================
+html.dark
+  .project-show-redesign
+    background-color: $purple-dark
+    color: #e2e8f0
+
+    .project-content
+      background: transparent
+
+    .stats-grid
+      .stat-card
+        background: #2D1548
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.24), 0 1px 2px rgba(0, 0, 0, 0.48)
+
+        .stat-value
+          color: $yellow-accent
+
+        .stat-label
+          color: #94a3b8
+
+    .gradient-card
+      background: #2D1548
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.24), 0 1px 2px rgba(0, 0, 0, 0.48)
+
+      .card-content
+        h3
+          color: #f8fafc
+          border-bottom-color: rgba(159, 122, 186, 0.3)
+
+        h4
+          color: #f1f5f9
+
+        p
+          color: #cbd5e1
+
+        a
+          color: $yellow-accent
+
+    .mobile-accordion
+      .accordion-card
+        .accordion-header
+          .header-left
+            svg
+              color: $yellow-accent
+
+            h3
+              color: #f8fafc
+
+          .chevron
+            color: #94a3b8
+
+    .tags-container
+      .tag
+        background: rgba(90, 42, 130, 0.35)
+        color: #e2e8f0
+
+        &:hover
+          background: $yellow-accent
+          color: $purple-dark
+
+    .nutshell-list
+      li
+        border-top-color: rgba(159, 122, 186, 0.25)
+
+        svg
+          color: $yellow-accent
+
+        .content
+          color: #cbd5e1
+
+          a
+            color: $yellow-accent
+
+    .quick-ref-list
+      li
+        border-bottom-color: rgba(159, 122, 186, 0.25)
+
+        .label
+          color: #94a3b8
+
+        .value
+          color: #e2e8f0
+
+          a
+            color: $yellow-accent
+
+    .licenses-section
+      .section-title
+        color: #f8fafc
+
+      .license-card
+        .license-header
+          .header-left
+            svg
+              color: $yellow-accent
+
+            h4
+              color: #f8fafc
+
+          .chevron
+            color: #94a3b8
+
+        .license-content
+          .license-detail-card
+            &.permitted
+              background: rgba(22, 101, 52, 0.25)
+
+            &.forbidden
+              background: rgba(153, 27, 27, 0.25)
+
+            &.required
+              background: rgba(133, 77, 14, 0.25)
+
+            h5,
+            li
+              color: #e2e8f0
+
+          .license-disclaimer
+            border-top-color: rgba(159, 122, 186, 0.25)
+
+            p
+              color: #94a3b8
+
+          .view-all-link
+            a
+              color: $yellow-accent
+
+    .footer-nav-section
+      background: #2D1548
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.24), 0 1px 2px rgba(0, 0, 0, 0.48)
+
+      .footer-nav-grid
+        .nav-column
+          .column-header
+            border-bottom-color: rgba(159, 122, 186, 0.3)
+
+            svg
+              color: $yellow-accent
+
+            h4
+              color: #f8fafc
+
+          ul
+            li
+              a
+                color: $yellow-accent !important
+
+                &:visited,
+                &:active
+                  color: $yellow-accent !important
+
+      .footer-nav-accordion
+        .accordion-item
+          border-bottom-color: rgba(159, 122, 186, 0.3)
+
+          .accordion-header-btn
+            .header-left
+              svg
+                color: $yellow-accent
+
+              span
+                color: #f8fafc
+
+            .chevron
+              color: #94a3b8
+
+          .accordion-content-footer
+            ul
+              li
+                a
+                  color: $yellow-accent
+
+                  &:visited,
+                  &:active
+                    color: $yellow-accent
+
+    // Legacy sections rendered inside redesign page (security + analysis summary)
+    .project_row
+      color: #e2e8f0
+
+      h2, h3, h4, h5
+        color: #f8fafc !important
+
+      p, small, td, th, li, span
+        color: #cbd5e1
+
+      a
+        color: $yellow-accent
+
+      .well,
+      .activity_well,
+      .community_well,
+      #vulnerability-report .well
+        background-color: #2D1548 !important
+        border-color: rgba(159, 122, 186, 0.3) !important
+
+      .right_border
+        border-right-color: rgba(159, 122, 186, 0.3) !important
+
+    .security_blog_link
+      color: $yellow-accent !important
+
+    #did_you_know
+      background-color: transparent !important
+
+      h4
+        color: #f8fafc !important
+
+      .well
+        background-color: #1D0631 !important
+        border-color: #4b5563 !important
+
+      ul,
+      li,
+      .indent,
+      p,
+      span
+        color: #cbd5e1 !important
+
+      a
+        color: $yellow-accent !important
+
+        &:hover
+          color: $yellow-hover !important
+          text-decoration: underline
+
+    .project_row
+      #did_you_know
+        .well
+          background-color: #1D0631 !important
+          border-color: #4b5563 !important
+
+    .no_analysis_message
+      .alert.alert-info.alert-block
+        background-color: #2D1548 !important
+        border: 1px solid rgba(159, 122, 186, 0.35) !important
+        color: #cbd5e1 !important
+
+      .title
+        h3
+          color: #f8fafc !important
+
+          i,
+          [class^='icon-'],
+          [class*=' icon-']
+            color: $yellow-accent !important
+
+      p,
+      .analysis_in_progress,
+      .indent,
+      span
+        color: #60a5fa !important
+
+      a
+        color: $yellow-accent !important
+
+      .btn.btn-primary,
+      .btn.btn-large.btn-primary
+        background-color: $yellow-accent !important
+        border-color: $yellow-accent !important
+        color: $purple-dark !important
+
+        &:hover,
+        &:focus,
+        &:active
+          background-color: $yellow-hover !important
+          border-color: $yellow-hover !important
+          color: $purple-dark !important
+
+// Final cascade guard for legacy styles overriding Did You Know dark theme
+html.dark #page #project_container .project-show-redesign .project_row #did_you_know
+  background: transparent !important
+
+html.dark #page #project_container .project-show-redesign .project_row #did_you_know .well
+  background-color: #1D0631 !important
+  border: 1px solid #4b5563 !important
+  box-shadow: none !important
+
+html.dark #page #project_container .project-show-redesign .project_row #did_you_know h4
+  color: #f8fafc !important
+
+html.dark #page #project_container .project-show-redesign .project_row #did_you_know,
+html.dark #page #project_container .project-show-redesign .project_row #did_you_know p,
+html.dark #page #project_container .project-show-redesign .project_row #did_you_know li,
+html.dark #page #project_container .project-show-redesign .project_row #did_you_know .indent,
+html.dark #page #project_container .project-show-redesign .project_row #did_you_know span
+  color: #cbd5e1 !important
+
+html.dark #page #project_container .project-show-redesign .project_row #did_you_know a
+  color: $yellow-accent !important
