@@ -4,13 +4,13 @@
 
     - @project.licenses.each do |license|
       .license-card.gradient-card
-        %button.license-header{ onclick: "toggleLicense(this)", class: "license-toggle-#{license.id}" }
+        %button.license-header{ onclick: "toggleLicense(this)", class: "license-toggle-#{license.id}", type: "button" }
           .header-left
-            %svg{ viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", 'stroke-width': "2" }
+            %svg{ viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", 'stroke-width': "2", 'stroke-linecap': "round", 'stroke-linejoin': "round" }
               %path{ d: "M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" }
             %h4= license.name
 
-          %svg.chevron{ viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", 'stroke-width': "2" }
+          %svg.chevron{ viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", 'stroke-width': "2", 'stroke-linecap': "round", 'stroke-linejoin': "round" }
             %polyline{ points: "6 9 12 15 18 9" }
 
         .license-content{ class: "license-content-#{license.id}" }
@@ -18,22 +18,22 @@
             / Permitted Column
             .license-detail-card.permitted
               %h5
-                %svg{ viewBox: "0 0 24 24", fill: "currentColor" }
-                  %path{ d: "M22 11.08V12a10 10 0 1 1-5.93-9.14" }
-                  %polyline{ points: "22 4 12 14.01 9 11.01" }
+                %svg{ viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", 'stroke-width': "2", 'stroke-linecap': "round", 'stroke-linejoin': "round" }
+                  %circle{ cx: "12", cy: "12", r: "10" }
+                  %path{ d: "m9 12 2 2 4-4" }
                 = t('.permitted')
               %ul
                 - license.permitted_license_permissions.each do |p|
                   %li{ 'data-tipso': p.description, title: p.description }
-                    %svg{ viewBox: "0 0 24 24", fill: "currentColor" }
-                      %path{ d: "M22 11.08V12a10 10 0 1 1-5.93-9.14" }
-                      %polyline{ points: "22 4 12 14.01 9 11.01" }
+                    %svg{ viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", 'stroke-width': "2", 'stroke-linecap': "round", 'stroke-linejoin': "round" }
+                      %circle{ cx: "12", cy: "12", r: "10" }
+                      %path{ d: "m9 12 2 2 4-4" }
                     = p.name
 
             / Forbidden Column
             .license-detail-card.forbidden
               %h5
-                %svg{ viewBox: "0 0 24 24", fill: "currentColor" }
+                %svg{ viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", 'stroke-width': "2", 'stroke-linecap': "round", 'stroke-linejoin': "round" }
                   %circle{ cx: "12", cy: "12", r: "10" }
                   %line{ x1: "15", y1: "9", x2: "9", y2: "15" }
                   %line{ x1: "9", y1: "9", x2: "15", y2: "15" }
@@ -41,7 +41,7 @@
               %ul
                 - license.forbidden_license_permissions.each do |p|
                   %li{ 'data-tipso': p.description, title: p.description }
-                    %svg{ viewBox: "0 0 24 24", fill: "currentColor" }
+                    %svg{ viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", 'stroke-width': "2", 'stroke-linecap': "round", 'stroke-linejoin': "round" }
                       %circle{ cx: "12", cy: "12", r: "10" }
                       %line{ x1: "15", y1: "9", x2: "9", y2: "15" }
                       %line{ x1: "9", y1: "9", x2: "15", y2: "15" }
@@ -50,18 +50,18 @@
             / Required Column
             .license-detail-card.required
               %h5
-                %svg{ viewBox: "0 0 24 24", fill: "currentColor" }
+                %svg{ viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", 'stroke-width': "2", 'stroke-linecap': "round", 'stroke-linejoin': "round" }
                   %circle{ cx: "12", cy: "12", r: "10" }
                   %line{ x1: "12", y1: "16", x2: "12", y2: "12" }
-                  %line{ x1: "12", y1: "8", x2: "12.01", y2: "8" }
+                  %path{ d: "M12 8h.01" }
                 = t('.required')
               %ul
                 - license.required_license_permissions.each do |p|
                   %li{ 'data-tipso': p.description, title: p.description }
-                    %svg{ viewBox: "0 0 24 24", fill: "currentColor" }
+                    %svg{ viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", 'stroke-width': "2", 'stroke-linecap': "round", 'stroke-linejoin': "round" }
                       %circle{ cx: "12", cy: "12", r: "10" }
                       %line{ x1: "12", y1: "16", x2: "12", y2: "12" }
-                      %line{ x1: "12", y1: "8", x2: "12.01", y2: "8" }
+                      %path{ d: "M12 8h.01" }
                     = p.name
 
           .license-disclaimer
@@ -72,6 +72,11 @@
 
 :javascript
   function toggleLicense(button) {
+    // Only toggle on mobile (screen width < 1024px)
+    if (window.innerWidth >= 1024) {
+      return;
+    }
+
     const content = button.nextElementSibling;
     const chevron = button.querySelector('.chevron');
     const isExpanded = content.classList.contains('expanded');
