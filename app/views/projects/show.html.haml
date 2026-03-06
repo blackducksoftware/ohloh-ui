@@ -52,7 +52,7 @@
         .card-content
           %h3= t('.project_summary')
           - if @project.description.present?
-            = simple_format(@project.description.strip_tags)
+            %p= simple_format(@project.description.strip_tags)
           - else
             %p
               = t('.no_description')
@@ -83,11 +83,6 @@
                   = t('.no_tags')
                   - if @project.edit_authorized?
                     = link_to t('.add_tags'), project_tags_path(@project)
-
-          - if @project.project_badges.active.any?
-            %section#project_badges
-              = show_badges
-              = more_badges_link
 
       / In a Nutshell
       .gradient-card
