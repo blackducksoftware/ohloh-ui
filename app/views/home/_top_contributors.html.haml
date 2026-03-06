@@ -22,14 +22,9 @@
             %span.contributor_rank= "Rank ##{index + 1}"
           .contributor_stats
             - commits = contributor.best_account_analysis&.account_analysis_fact&.thirty_day_commits || 0
-            - commits_by_project = contributor.best_account_analysis&.account_analysis_fact&.commits_by_project
-            - project_count = commits_by_project.present? ? commits_by_project.split(',').length : 0
             %span.stat_commits
               %i.fa.fa-dot-circle-o
-              = number_with_delimiter(commits)
-            %span.stat_projects
-              %i.fa.fa-code
-              = "#{project_count} projects"
+              = "#{number_with_delimiter(commits)} commits"
 
         .contributor_arrow
           %i.fa.fa-chevron-right
