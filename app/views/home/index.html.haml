@@ -1,6 +1,5 @@
 - content_for(:html_title) { t('.page_title') }
 - content_for(:javascript) do
-  = javascript_include_tag 'rotating_stats'
   = javascript_include_tag 'project_swimlanes'
 
 / Hero Section
@@ -16,7 +15,8 @@
       %form.search_form#search_form{ action: projects_path }
         %input{ type: :hidden, name: 'ref', value: 'homepage' }
         .search_input_wrapper
-          %i.fa.fa-search.search_icon
+          .search_icon_wrapper
+            %i.fa.fa-search.search_icon
           %input.search_input{ type: :text, name: 'query', placeholder: t('.search_projects'), id: 'text', autocomplete: 'off' }
 
       / Rotating Stats
@@ -76,8 +76,8 @@
           = render partial: '/home/whats_new'
           = render partial: '/home/join_now_home'
 
-/ User Journeys Section
-= render partial: '/home/user_journeys'
-
 / Project Swimlanes Section
 = home_top_lists
+
+/ User Journeys Section
+= render partial: '/home/user_journeys'
