@@ -192,8 +192,8 @@ class ProjectsControllerTest < ActionController::TestCase
     assert_response :ok
     nodes = Nokogiri::XML(response.body).css('project')
     _(nodes.length).must_equal 2
-    _(nodes[0].css('name').children.to_s).must_equal 'FooBar_xml'
-    _(nodes[1].css('name').children.to_s).must_equal 'Foo_xml'
+    _(nodes[0].css('name').children[0].to_s).must_equal 'FooBar_xml'
+    _(nodes[1].css('name').children[0].to_s).must_equal 'Foo_xml'
   end
 
   it 'index should respond to xml format with list of ids' do
@@ -204,8 +204,8 @@ class ProjectsControllerTest < ActionController::TestCase
     assert_response :ok
     nodes = Nokogiri::XML(response.body).css('project')
     _(nodes.length).must_equal 2
-    _(nodes[0].css('name').children.to_s).must_equal 'Baz_xml'
-    _(nodes[1].css('name').children.to_s).must_equal 'BazBar_xml'
+    _(nodes[0].css('name').children[0].to_s).must_equal 'Baz_xml'
+    _(nodes[1].css('name').children[0].to_s).must_equal 'BazBar_xml'
   end
 
   it 'index should gracefully handle garbage numeric ids' do
@@ -238,7 +238,7 @@ class ProjectsControllerTest < ActionController::TestCase
     assert_response :ok
     nodes = Nokogiri::XML(response.body).css('project')
     _(nodes.length).must_equal 5
-    _(nodes[0].css('id').children.to_s.to_i).must_equal projects[5].id
+    _(nodes[0].css('id').children[0].to_s.to_i).must_equal projects[5].id
   end
 
   it 'index should handle account sorting by "new"' do
@@ -1060,8 +1060,8 @@ class ProjectsControllerTest < ActionController::TestCase
         assert_response :ok
         nodes = Nokogiri::XML(response.body).css('project')
         _(nodes.length).must_equal 2
-        _(nodes[0].css('name').children.to_s).must_equal 'FooBar_xml'
-        _(nodes[1].css('name').children.to_s).must_equal 'Foo_xml'
+        _(nodes[0].css('name').children[0].to_s).must_equal 'FooBar_xml'
+        _(nodes[1].css('name').children[0].to_s).must_equal 'Foo_xml'
       end
     end
   end
