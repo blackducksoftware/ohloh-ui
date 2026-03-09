@@ -1,0 +1,63 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  prechecks:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:14
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      RAILS_ENV: test
+      DB_ENCODING: UTF8
+      DB_PORT: 5432
+      DB_SEARCH_PATH: public
+      TEST_DB_HOST: 127.0.0.1
+      TEST_DB_NAME: ohloh_ui_test
+      TEST_DB_USERNAME: postgres
+      TEST_DB_PASSWORD: postgres
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: .ruby-version
+          bundler-cache: false
+
+      - name: Run Jenkins-equivalent build steps
+        run: |
+          bundle config set without development
+          bundle install --jobs 4 --retry 3
+          rm -f log/test.log
+
+          bundle exec bin/rails db:environment:set RAILS_ENV=test 2> /dev/null || true
+          bundle exec rake db:drop || true
+          bundle exec rake db:create RAILS_ENV=test
+          bundle exec rake db:structure:load RAILS_ENV=test
+          bundle exec rake db:migrate RAILS_ENV=test
+          bundle exec rake ci:all_tasks
