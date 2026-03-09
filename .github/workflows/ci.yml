@@ -31,11 +31,11 @@ jobs:
 
     env:
       RAILS_ENV: test
-      DB_ENCODING: UTF8
+      DB_ENCODING: SQL_ASCII
       DB_PORT: 5432
-      DB_SEARCH_PATH: public
+      DB_SEARCH_PATH: oh,oa,fis,public
       TEST_DB_HOST: 127.0.0.1
-      TEST_DB_NAME: ohloh_ui_test
+      TEST_DB_NAME: oh_test
       TEST_DB_USERNAME: postgres
       TEST_DB_PASSWORD: postgres
 
@@ -52,9 +52,9 @@ jobs:
       - name: Install system dependencies
         run: sudo apt-get update && sudo apt-get install -y libsodium-dev
 
-      - name: Run Jenkins-equivalent build steps
+      - name: Install Ruby gems, prepare test DB, and run CI tasks
         run: |
-          bundle config set without development
+          bundle config set --local without development
           bundle install --jobs 4 --retry 3
           rm -f log/test.log
 
