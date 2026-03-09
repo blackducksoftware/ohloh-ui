@@ -47,14 +47,14 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: .ruby-version
-          bundler-cache: true
+          bundler-cache: false
 
       - name: Install system dependencies
         run: sudo apt-get update && sudo apt-get install -y libsodium-dev imagemagick
 
       - name: Install Ruby gems, prepare test DB, and run CI tasks
         run: |
-          bundle config set --local without development
+          bundle config set without development
           bundle install --jobs 4 --retry 3
           rm -f log/test.log
 
