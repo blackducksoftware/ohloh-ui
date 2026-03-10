@@ -1,28 +1,45 @@
-.col-md-4.col-sm-4.col-xs-4
-  - if filter_type == :checkbox
-    %label.checkbox.pull-right.padding_right_20#human_edits
-      %input{ type: 'checkbox', checked: params[:human] == 'true' }
-      = t('.show_only_humans')
-    %label.checkbox.pull-right.padding_right_15#enlistment_edits
-      %input{ type: 'checkbox', id: 'enlistment_checkbox', checked: params[:enlistment] == 'true'}
-      = t('.filter_only_enlistment')
-    #sort_by
-      %label= t('.sort_by')
-      = select_tag :sort, options_for_select([["updated_at", "updated_at"], ["created_at", "created_at"]],
-        params[:sort]),
-        class: 'chzn-select', onchange: 'this.form.submit()'
+- if filter_type == :checkbox
+  %label.checkbox#human_edits
+    %input{ type: 'checkbox', checked: params[:human] == 'true' }
+    = t('.show_only_humans')
+  %label.checkbox#enlistment_edits
+    %input{ type: 'checkbox', id: 'enlistment_checkbox', checked: params[:enlistment] == 'true'}
+    = t('.filter_only_enlistment')
+  .sort-section
+    %label= t('.sort_by')
+    :ruby
+      sort_options = [["updated_at", "updated_at"], ["created_at", "created_at"]]
+      current_sort = params[:sort] || "updated_at"
+      selected_label = sort_options.find { |opt| opt[1] == current_sort }&.first || sort_options.first.first
+    .custom-sort-dropdown
+      %button.sort-dropdown-btn.dropdown-toggle{ type: 'button', 'data-toggle' => 'dropdown' }
+        %span.selection{ data: { value: current_sort } }= selected_label
+        %i.fa.fa-chevron-down
+      .dropdown-menu.sort-dropdown-menu
+        - sort_options.each do |label, value|
+          %button.sort-dropdown-item{ type: 'button', data: { value: value }, class: (value == current_sort ? 'active' : '') }= label
+      %input{ type: 'hidden', name: 'sort', value: current_sort, class: 'sort-value-input' }
 
-  - elsif filter_type == :radiobutton
-    %label.radio.inline.margin_left_40
+- elsif filter_type == :radiobutton
+  .search-section
+    %label.radio.inline
       = radio_button_tag('find_by', 'name', params[:find_by] != 'email')
       = t('.by_name')
     %label.radio.inline
       = radio_button_tag('find_by', 'email', params[:find_by] == 'email')
       = t('.by_email')
 
-  - elsif sort_context.present?
-    #sort_by
-      %label= t('.sort_by')
-      = select_tag :sort, options_for_select(SORT_OPTIONS[sort_context][:options],
-        params[:sort] || SORT_OPTIONS[sort_context][:default]),
-        class: 'chzn-select', onchange: 'this.form.submit()'
+- elsif sort_context.present?
+  .sort-section
+    %label= t('.sort_by')
+    :ruby
+      current_sort = params[:sort] || SORT_OPTIONS[sort_context][:default]
+      selected_label = SORT_OPTIONS[sort_context][:options].find { |opt| opt[1] == current_sort }&.first || SORT_OPTIONS[sort_context][:options].first.first
+    .custom-sort-dropdown
+      %button.sort-dropdown-btn.dropdown-toggle{ type: 'button', 'data-toggle' => 'dropdown' }
+        %span.selection{ data: { value: current_sort } }= selected_label
+        %i.fa.fa-chevron-down
+      .dropdown-menu.sort-dropdown-menu
+        - SORT_OPTIONS[sort_context][:options].each do |label, value|
+          %button.sort-dropdown-item{ type: 'button', data: { value: value }, class: (value == current_sort ? 'active' : '') }= label
+      %input{ type: 'hidden', name: 'sort', value: current_sort, class: 'sort-value-input' }
