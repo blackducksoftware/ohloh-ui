@@ -1,5 +1,5 @@
 !!!5
-%html
+%html{lang: "en"}
   %head
     - page_title = content_for?(:html_title) ? yield(:html_title).to_s : t('layouts.application.openhub')
     %title= sanitize(page_title)
@@ -20,6 +20,6 @@
       %header= render partial: 'layouts/partials/header'
       = render partial: 'layouts/partials/page', locals: { responsive_layout: true }
       .clear
-      %footer.fluid_footer= render partial: 'layouts/partials/fluid_footer'
+      %footer.footer-container= render partial: 'layouts/partials/footer'
       = render 'cookies/consent_banner' unless cookies[:cookie_consented]
     = render partial: 'layouts/partials/js_scripts'
