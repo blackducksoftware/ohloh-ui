@@ -1,5 +1,5 @@
 - if search_type == :tags
-  .search_tags
+  .search-section
     %label= t('.filter_by_tags')
     .chosen#value_select
       = select_tag :names, options_for_select(tags.map { |ary| ary.map(&:fix_encoding_if_invalid) }, params[:names]),
@@ -7,11 +7,11 @@
         multiple: true, onchange: 'this.form.submit()'
 
 - else
-  .col-md-5.col-sm-5.col-xs-5.no_padding
-    %label.sr-only= t('.search_text')
-    .search-input-group
-      = text_field_tag :query, params[:query], 
-        placeholder: t('.search_text')
-
-      %button.btn.btn-refresh{ type: 'Submit' }
-        %i.icon-search
+  .search-section
+    %label{for: 'query'}= t('.search_text')
+    .search-input-wrapper
+      %input#query{type: 'text', name: 'query', placeholder: t('.search_text'), value: params[:query]}
+      %button.search-cancel-btn{ type: 'button', style: (params[:query].blank? ? 'display: none;' : '') }
+        %i.fa.fa-times
+    %button.search-refresh-btn{ type: 'submit' }
+      %i.fa.fa-refresh

@@ -3,22 +3,17 @@
   global_search_param = '' if @avoid_global_search
 
 - unless request.path == root_path
-  %form.pull-right#quicksearch{ action: projects_path }
-    .dropdown
-      .btn-group.ux-dropdown
-        %a.btn.btn-small.dropdown-toggle{ 'data-toggle' => 'dropdown' }
-          %span.selection= t('projects_menu')
-          %span.caret
-        %ul.dropdown-menu
-          %li
-            %a{ val: 'people' }= t('people_menu')
-          %li
-            %a.default{ val: 'p' }= t('projects_menu')
-          %li
-            %a{ val: 'orgs' }= t('organizations_menu')
-        %input.search.text.global_top_search{ type: :text, name: 'query', placeholder: t('shared.search.search_text'),
-        value: global_search_param, autocomplete: 'off' }
-        %input.search.hidden{ type: 'hidden', name: 'search_type', id: 'search_type', value: 'projects' }
-        %button.submit.no_padding{ type: 'submit' }
-          .icon-search.global_top_search_icon
+  %form#header-search-form.header-search-form{ action: projects_path }
+    .btn-group.ux-dropdown.header-search-dropdown
+      %button.search-filter-btn.dropdown-toggle{ type: 'button', 'data-toggle' => 'dropdown' }
+        %span.selection{ val: 'p' }= t('projects_menu')
+        %i.fa.fa-chevron-down
+      .dropdown-menu.search-dropdown-menu
+        %button.dropdown-item.active{ type: 'button', val: 'p' }= t('projects_menu')
+        %button.dropdown-item{ type: 'button', val: 'people' }= t('people_menu')
+        %button.dropdown-item{ type: 'button', val: 'orgs' }= t('organizations_menu')
+    %input.header-search-input{ type: 'text', name: 'query', placeholder: t('shared.search.search_text'), value: global_search_param, autocomplete: 'off' }
+    %input.search.hidden{ type: 'hidden', name: 'search_type', id: 'search_type', value: 'projects' }
+    %button.header-search-btn{ type: 'submit' }
+      %i.fa.fa-search
 
