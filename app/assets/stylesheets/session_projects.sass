@@ -1,44 +1,250 @@
-.sp_label
-  margin-right: 10px
-
 #sp_menu
   position: fixed
-  left: 50%
-  transform: translate(-50%, 0)
-  top: 0
-  width: 960px
-  z-index: 1
-  color: white
-  .inner
-    background-color: #0088cc
-    padding: 10px 20px 0
-    box-shadow: 0 5px 0 #666
-    -webkit-box-shadow: 0 5px 0 #666
-    -ms-filter: "progid:DXImageTransform.Microsoft.DropShadow(color='#666666',offX='0', offY='5')"
-  ul.nav li
-    margin-right: 3em
-    &.last
-      margin-right: 0
-  .sp_form
-    margin-bottom: 0
-    .sp_label
-      color: #fff
-      margin-right: 0
-    .sp_input
-      font-size: 17px
-      line-height: 17px
-      vertical-align: middle
-      margin-top: 2px
-      cursor: pointer
-  .compare
-    float: right
-    font-weight: bold
-  .limit
-    display: inline
-    margin-left: 0.5em
+  bottom: 0
+  left: 0
+  right: 0
+  z-index: 1000
+  display: none
+  transition: all 0.3s ease
 
-#compare-submit-button
-  margin: -2px 0px 10px
-  padding: 0px 12px 1px
-  height: 29px
-  width: 75px
+  // Toggle Tab Button
+  .compare-toggle-tab
+    display: flex
+    justify-content: center
+
+    .compare-toggle-button
+      display: flex
+      align-items: center
+      gap: 8px
+      padding: 8px 20px
+      background-color: #5A2A82
+      color: #ffffff
+      border: none
+      border-radius: 12px 12px 0 0
+      font-size: 14px
+      font-weight: 600
+      cursor: pointer
+      box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.15)
+      transition: all 0.2s ease
+
+      &:hover
+        opacity: 0.9
+
+      html.dark &
+        background-color: #ffb91a
+        color: #1D0631
+        box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.3)
+
+      .toggle-icon
+        transition: transform 0.2s ease
+        font-size: 12px
+
+        &.rotate
+          transform: rotate(180deg)
+
+  // Expandable Tray Content
+  .compare-tray-content
+    max-height: 0
+    overflow: hidden
+    background-color: #ffffff
+    border-top: 1px solid #e5e7eb
+    box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.12)
+    transition: max-height 0.3s ease
+
+    &.expanded
+      max-height: 280px
+
+    html.dark &
+      background-color: #2D1548
+      border-top-color: #5A2A82
+      box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.4)
+
+    .compare-tray-inner
+      max-width: 1200px
+      margin: 0 auto
+      padding: 16px 24px
+
+      @media (max-width: 768px)
+        padding: 12px 16px
+
+  // Projects Grid
+  .compare-projects-grid
+    display: grid
+    grid-template-columns: repeat(2, 1fr)
+    gap: 12px
+    margin-bottom: 16px
+
+    @media (min-width: 640px)
+      grid-template-columns: repeat(3, 1fr)
+
+    .compare-project-slot
+      position: relative
+      background-color: #f9fafb
+      border: 1px solid #e5e7eb
+      border-radius: 12px
+      padding: 12px
+      display: flex
+      align-items: start
+      gap: 12px
+      min-height: 80px
+
+      html.dark &
+        background-color: #1D0631
+        border-color: #5A2A82
+
+      &.empty-slot
+        border: 2px dashed #d1d5db
+        flex-direction: column
+        align-items: center
+        justify-content: center
+        color: #9ca3af
+
+        html.dark &
+          border-color: #5A2A82
+          color: #6b7280
+
+        i
+          font-size: 20px
+          margin-bottom: 4px
+
+        span
+          font-size: 12px
+
+      .remove-project
+        position: absolute
+        top: 8px
+        right: 8px
+        width: 20px
+        height: 20px
+        padding: 0
+        background-color: #e5e7eb
+        border: none
+        border-radius: 50%
+        color: #6b7280
+        cursor: pointer
+        display: flex
+        align-items: center
+        justify-content: center
+        transition: all 0.15s ease
+
+        &:hover
+          background-color: #fee2e2
+          color: #ef4444
+
+        html.dark &
+          background-color: rgba(255, 255, 255, 0.1)
+          color: #9ca3af
+
+          &:hover
+            background-color: rgba(239, 68, 68, 0.2)
+            color: #fca5a5
+
+        i
+          font-size: 10px
+
+      .project-slot-icon
+        flex-shrink: 0
+        width: 40px
+        height: 40px
+        background-color: #e5e7eb
+        border: 1px solid #d1d5db
+        border-radius: 8px
+        display: flex
+        align-items: center
+        justify-content: center
+        overflow: hidden
+
+        html.dark &
+          background-color: rgba(255, 255, 255, 0.1)
+          border-color: #6b7280
+
+        img
+          width: 100%
+          height: 100%
+          object-fit: cover
+
+        i
+          font-size: 18px
+          color: #9ca3af
+
+      .project-slot-info
+        flex: 1
+        min-width: 0
+        padding-right: 20px
+
+        .project-slot-name
+          font-size: 14px
+          font-weight: 600
+          color: #111827
+          margin: 0 0 4px 0
+          white-space: nowrap
+          overflow: hidden
+          text-overflow: ellipsis
+
+          html.dark &
+            color: #ffffff
+
+        .project-slot-meta
+          font-size: 12px
+          color: #6b7280
+          margin: 2px 0
+
+          html.dark &
+            color: #9ca3af
+
+  // Compare Action
+  .compare-action
+    display: flex
+    justify-content: center
+
+    form
+      width: auto
+
+    .btn-compare-submit
+      padding: 10px 32px
+      background-color: #5A2A82
+      border: 1px solid #5A2A82
+      border-radius: 8px
+      color: #ffffff
+      font-size: 14px
+      font-weight: 600
+      cursor: pointer
+      transition: all 0.2s ease
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23)
+
+      &:hover:not(:disabled)
+        opacity: 0.9
+
+      &:disabled
+        background-color: #d1d5db
+        border-color: #d1d5db
+        color: #9ca3af
+        cursor: not-allowed
+        box-shadow: none
+
+      html.dark &
+        background-color: #ffb91a
+        border-color: #ffb91a
+        color: #1D0631
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.32), 0 3px 6px rgba(0, 0, 0, 0.46)
+
+        &:disabled
+          background-color: #4b5563
+          border-color: #4b5563
+          color: #6b7280
+
+// Add bottom padding when compare tray is visible
+#projects_index_page.has-compare-tray
+  .projects-container
+    padding-bottom: 120px
+
+// Compare checkbox disabled state
+.compare-checkbox.disabled
+  opacity: 0.5
+  cursor: not-allowed !important
+
+  &:hover
+    color: #9ca3af !important
+
+    html.dark &
+      color: #6b7280 !important

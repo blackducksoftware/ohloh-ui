@@ -20,56 +20,101 @@ var ohloh = (function builder($) {
       init: function(){
         var $scope = $('.ux-dropdown');
         var $search_text_field = $scope.find('.text');
-        var dropdownHead = $('a span.selection', $scope);
+        var dropdownHead = $('button span.selection, a span.selection', $scope);
         var getSelectedValue = function() {
           return dropdownHead.first().attr('val');
         };
-        $('.dropdown-menu li a', $scope).click(function() {
+        $('.dropdown-menu .dropdown-item', $scope).click(function() {
           var selectedText = $(this).attr('val')
           dropdownHead.attr('val',selectedText)
           dropdownHead.html( $(this).html() )
           dropdownHead.parents('form').attr('action',selectedText)
+          // Update active class
+          $('.dropdown-menu .dropdown-item', $scope).removeClass('active')
+          $(this).addClass('active')
           if(selectedText != "//code.ohloh.net/search"){
             dropdownHead.parents('form').removeAttr('target');
           }
         });
-        $('ul.dropdown-menu li a', $scope).on('click', 'a', function() {
+        $('.dropdown-menu .dropdown-item', $scope).on('click', function() {
           var $this = $(this);
           var section_name = $this.text();
 
-          $('ul.dropdown-menu li a', $scope).removeClass('selected');
+          $('.dropdown-menu .dropdown-item', $scope).removeClass('selected');
 
           $this.addClass('selected');
 
-          $('.ux-dropdown a span.selection', $scope).html(section_name);
+          $('.ux-dropdown button span.selection', $scope).html(section_name);
         });
 
         $(document).ajaxStop($.unblockUI);
 
         if( (/\/p(\/|\?|$)/ig).test(window.location.href) ) {
-          $('a', $scope).removeClass('default');
-          $('a[val="p"]', $scope).addClass('default');
+          $('.dropdown-item', $scope).removeClass('default');
+          $('.dropdown-item[val="p"]', $scope).addClass('default');
         }
 
         if( (/\/orgs(\/|\?|$)/ig).test(window.location.href) ) {
-          $('a', $scope).removeClass('default');
-          $('a[val="orgs"]', $scope).addClass('default');
+          $('.dropdown-item', $scope).removeClass('default');
+          $('.dropdown-item[val="orgs"]', $scope).addClass('default');
         }
 
         if( (/\/(posts|forums)(\/|\?|$)/ig).test(window.location.href) ) {
-          $('a', $scope).removeClass('default');
-          $('a[val="posts"]', $scope).addClass('default');
+          $('.dropdown-item', $scope).removeClass('default');
+          $('.dropdown-item[val="posts"]', $scope).addClass('default');
         }
 
         if( (/\/(people|accounts|committers)(\/|\?|$)/ig).test(window.location.href) ) {
-          $('a', $scope).removeClass('default');
-          $('a[val="people"]', $scope).addClass('default');
+          $('.dropdown-item', $scope).removeClass('default');
+          $('.dropdown-item[val="people"]', $scope).addClass('default');
         }
 
-        $('a.default', $scope).trigger('click');
+        $('.dropdown-item.default', $scope).trigger('click');
 
-        $('.dropdown-menu li a', $scope).on('click', 'a', function(){
+        $('.dropdown-menu .dropdown-item', $scope).on('click', function(){
           $('input[name="query"].search').trigger('click').focus();
+        });
+
+        // Handle custom sort dropdown
+        $('.custom-sort-dropdown .sort-dropdown-item').on('click', function(e) {
+          e.preventDefault();
+          var $item = $(this);
+          var $dropdown = $item.closest('.custom-sort-dropdown');
+          var selectedValue = $item.data('value');
+          var selectedLabel = $item.text();
+
+          // Update button text
+          $dropdown.find('.selection').text(selectedLabel).data('value', selectedValue);
+
+          // Update hidden input
+          $dropdown.find('.sort-value-input').val(selectedValue);
+
+          // Update active class
+          $dropdown.find('.sort-dropdown-item').removeClass('active');
+          $item.addClass('active');
+
+          // Submit form
+          $dropdown.closest('form').submit();
+        });
+
+        // Handle search input with cancel button
+        $('#query').on('input', function() {
+          var $input = $(this);
+          var $cancelBtn = $input.siblings('.search-cancel-btn');
+
+          if ($input.val().length > 0) {
+            $cancelBtn.show();
+          } else {
+            $cancelBtn.hide();
+          }
+        });
+
+        // Handle search cancel button
+        $('.search-cancel-btn').on('click', function() {
+          var $input = $('#query');
+          $input.val('');
+          $(this).hide();
+          $input.focus();
         });
 
         if( (/\?[query]=.{1,}/ig).test(window.location.href) ) {
