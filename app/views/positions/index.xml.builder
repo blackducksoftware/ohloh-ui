@@ -3,8 +3,8 @@
 xml.response do
   xml.status 'success'
   xml.items_returned @positions.length
-  xml.items_available @positions.length
-  xml.first_item_position 0
+  xml.items_available @positions.total_entries
+  xml.first_item_position @positions.offset
   xml.result do
     @positions.each do |position|
       xml.position do
