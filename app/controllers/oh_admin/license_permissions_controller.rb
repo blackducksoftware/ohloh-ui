@@ -44,7 +44,7 @@ class OhAdmin::LicensePermissionsController < ApplicationController
   def retrieve_license_permissions
     @license_permissions = LicenseLicensePermission
                            .includes(:license, license_permission: [:license_right])
-                           .where(params[:query])
+                           .where(@query)
                            .order('licenses.id, license_permissions.id')
                            .paginate(page: page_param, per_page: 25)
   end
@@ -75,7 +75,7 @@ class OhAdmin::LicensePermissionsController < ApplicationController
   def retrieve_permission_rights
     return unless params[:license_id]
 
-    license_id = params[:license_id]
+    license_id = params[:license_id].to_i
     sql = get_sql(license_id)
     @permission_rights = ApplicationRecord.connection.select_all(sql).to_a
   end
@@ -90,8 +90,9 @@ class OhAdmin::LicensePermissionsController < ApplicationController
   end
 
   def build_query
-    p = permitted_params.slice(:license_id, :status, :license_right_id).to_h
-    params[:query] = p.map { |k, v| "#{k}=#{v}" if v.present? }.compact.join(' and ')
+    filter_params = permitted_params.slice(:license_id, :status, :license_right_id).to_h.compact_blank
+    permission_attrs = filter_params.extract!('status', 'license_right_id')
+    @query = filter_params.merge(permission_attrs.present? ? { license_permissions: permission_attrs } : {})
   end
 
   def clear_params
