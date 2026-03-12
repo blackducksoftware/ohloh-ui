@@ -1,8 +1,7 @@
 .pagination-info
   - if collection.respond_to?(:current_page) && !collection.length.zero?
-    Showing page
-    %span.page-number= collection.current_page
-    of
-    %span.page-number= collection.total_pages
+    = t('.pagination_status',
+        current_page: number_with_delimiter(collection.current_page),
+        total_pages: number_with_delimiter(collection.total_pages))
   - elsif !total_count.to_i.zero?
     = t('.count_status', current_count: collection.length, total_count: number_with_delimiter(total_count))

@@ -31,10 +31,25 @@
     / Modern Pagination
     - if @projects.total_pages > 1
       .modern-pagination
-        %button.page-btn{disabled: @projects.current_page == 1, onclick: "window.location.href='?page=#{@projects.current_page - 1}'"}
+        - current_page = @projects.current_page
+        - total_pages = @projects.total_pages
+        %button.page-btn{disabled: current_page == 1, onclick: "window.location.href='?#{request.query_parameters.merge(page: (current_page - 1)).to_query}'"}
           %i.fa.fa-chevron-left
-        - (1..@projects.total_pages).each do |page|
-          %button.page-btn{class: ('active' if page == @projects.current_page), onclick: "window.location.href='?page=#{page}'"}
-            = page
-        %button.page-btn{disabled: @projects.current_page == @projects.total_pages, onclick: "window.location.href='?page=#{@projects.current_page + 1}'"}
+        - visible_pages = []
+        - window_size = 2
+        - visible_pages << 1
+        - if total_pages > 1
+          - left = [current_page - window_size, 2].max
+          - right = [current_page + window_size, total_pages - 1].min
+          - visible_pages << :gap if left > 2
+          - visible_pages.concat((left..right).to_a) if left <= right
+          - visible_pages << :gap if right < total_pages - 1
+          - visible_pages << total_pages
+        - visible_pages.each do |page|
+          - if page == :gap
+            %span.page-ellipsis …
+          - else
+            %button.page-btn{class: ('active' if page == current_page), onclick: "window.location.href='?#{request.query_parameters.merge(page: page).to_query}'"}
+              = page
+        %button.page-btn{disabled: current_page == total_pages, onclick: "window.location.href='?#{request.query_parameters.merge(page: (current_page + 1)).to_query}'"}
           %i.fa.fa-chevron-right

@@ -37,7 +37,7 @@
       .project-icon-desc
         .project-icon
           - if project.logo.present?
-            = image_tag project.logo.url(:med), alt: project.name
+            = image_tag project.logo.attachment.url(:med), alt: project.name
           - else
             %i.fa.fa-cube
 
@@ -48,20 +48,19 @@
           - elsif project.description
             = project.description
           - else
-            %span.text-muted No description available
+            %span.text-muted= t('.no_description_available')
 
       / Language and License
       .project-lang-license
         .language
           - if project.best_analysis.present? && project.best_analysis.main_language
             - lang = project.best_analysis.main_language.nice_name
-            Mostly written in
-            = link_to lang, languages_summary_project_analysis_path(project, 'latest')
+            = t('.mostly_written_in', lang: link_to(lang, languages_summary_project_analysis_path(project, 'latest'))).html_safe
           - else
-            %span Not available
+            %span= t('.not_available')
 
         .licenses
-          %span.license-label Licenses:
+          %span.license-label= t('.licenses')
           - if project.licenses.any?
             = project.licenses.first(3).collect { |l| l.short_name.truncate(12) }.join(', ')
           - else
@@ -70,13 +69,13 @@
       / Tags
       .project-tags
         - unless project.tag_list.blank?
-          %span.tags-label Tags
+          %span.tags-label= t('.tags')
           - tags = project.tag_list.split(' ')
           - tags.first(8).each do |tag|
             - tag = tag.fix_encoding_if_invalid
             = link_to html_escape(tag), tags_path(names: tag), class: 'tag'
           - if tags.length > 8
-            %span.more-tags= "#{tags.length - 8} more..."
+            %span.more-tags= t('.n_more', n: tags.length - 8)
 
     / Stats - Right Side
     .project-stats
@@ -89,7 +88,7 @@
               0
             - else
               = project.best_analysis.code_total.to_human
-          %span.stat-label lines of code
+          %span.stat-label= t('.loc')
 
         .activity-indicator
           .activity-icon
@@ -100,7 +99,7 @@
         / Row 2: Contributors
         .stat-item
           %span.stat-value= number_with_delimiter(project.active_committers)
-          %span.stat-label current contributors
+          %span.stat-label= t('.current_contributors')
 
         / Row 3: Last Commit | Star Rating
         .stat-item
@@ -109,14 +108,18 @@
               = time_ago_in_words(project.best_analysis.last_commit_time)
             - else
               0
-          %span.stat-label since last commit
+          %span.stat-label= t('.since_last_commit')
 
         .rating-section
           .stars
-            - rating = project.rating_average.to_f || 0
+            - rating = project.rating_average.to_f
+            - full_stars = rating.floor
+            - has_half_star = (rating - full_stars) >= 0.5
             - 5.times do |i|
-              - if i < rating.floor
+              - if i < full_stars
                 %i.fa.fa-star.star.filled
+              - elsif has_half_star && i <= full_stars
+                %i.fa.fa-star-half-o.star.half
               - else
                 %i.fa.fa-star.star.empty
           .review-count
@@ -125,11 +128,11 @@
         / Row 4: Users on Open Hub | I Use This Button
         .stat-item
           %span.stat-value= number_with_delimiter(project.user_count)
-          %span.stat-label users on Open Hub
+          %span.stat-label= t('.users_on_open_hub')
 
         .use-this-button
           - if logged_in?
             = render partial: 'projects/show/i_use_this', locals: { project: project }
           - else
             %button.btn-use-this{ 'data-target' => '#LoginModal', 'data-toggle' => 'modal' }
-              I Use This
+              = t('.i_use_this')

@@ -3,7 +3,7 @@
   .compare-toggle-tab
     %button#compare_toggle_btn.compare-toggle-button
       %i.fa.fa-exchange
-      Compare Projects (#{@session_projects.size}/3)
+      = t('.compare_projects', count: @session_projects.size)
       %i.fa.fa-chevron-up.toggle-icon
 
   / Expandable Tray Content
@@ -17,19 +17,19 @@
               %i.fa.fa-times
             .project-slot-icon
               - if project.logo.present?
-                = image_tag project.logo.url(:small), alt: project.name
+                = image_tag project.logo.attachment.url(:small), alt: project.name
               - else
                 %i.fa.fa-cube
             .project-slot-info
               %p.project-slot-name{ title: project.name }= project.name.truncate(25)
               - if project.best_analysis
-                %p.project-slot-meta= "#{project.best_analysis.code_total.to_human} lines"
-                %p.project-slot-meta= "#{project.active_committers} contributors"
+                %p.project-slot-meta= t('.lines', count: project.best_analysis.code_total.to_human)
+                %p.project-slot-meta= t('.contributors', count: project.active_committers)
 
         - (3 - @session_projects.size).times do
           .compare-project-slot.empty-slot
             %i.fa.fa-plus
-            %span Select Project
+            %span= t('.select_project')
 
       / Compare Action Button
       .compare-action
@@ -38,6 +38,6 @@
             %input{ type: 'hidden', name: "project_#{i}", value: p.name }
           %button.btn-compare-submit{ type: 'submit', disabled: @session_projects.size < 2 }
             - if @session_projects.size >= 2
-              = "Compare #{@session_projects.size} Projects"
+              = t('.compare_n_projects', count: @session_projects.size)
             - else
-              Compare (Select at least 2)
+              = t('.compare_select_at_least')
