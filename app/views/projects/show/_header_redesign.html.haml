@@ -69,7 +69,14 @@
                 %line{ x1: "4", y1: "22", x2: "4", y2: "15" }
               = t('.report_duplicate')
 
-        %p.project-description{ itemprop: 'description' }
+          - if current_user_is_admin?
+            = link_to oh_admin_project_jobs_path(@project), class: 'action-btn action-btn-outline' do
+              %svg{ viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", 'stroke-width': "2", 'stroke-linecap': "round", 'stroke-linejoin': "round" }
+                %rect{ x: "3", y: "7", width: "18", height: "13", rx: "2", ry: "2" }
+                %path{ d: "M16 3v4M8 3v4M3 11h18" }
+              = t('projects.header.job')
+
+        .project-description{ itemprop: 'description' }
           - if @project.description.present?
             = truncate(@project.description.strip_tags, length: 200)
           - else

@@ -120,7 +120,7 @@ en:
       add_code_location_link: "Add code location"
       similar_projects_label: "Similar Projects"
       managers_label: "Managers"
-      become_first_manager: "Become the first manager of %{what}"
+      become_first_manager: "Become the first manager for %{what}"
       news: "News"
       sharing_widgets: "Sharing Widgets"
       related_projects: "Related Projects"
