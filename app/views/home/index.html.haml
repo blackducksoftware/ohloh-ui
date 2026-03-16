@@ -1,6 +1,10 @@
 - content_for(:html_title) { t('.page_title') }
+<<<<<<< OTWO-7546
 - content_for(:javascript) do
   = javascript_include_tag 'project_swimlanes'
+=======
+- content_for(:javascript) { javascript_include_tag 'rotating_stats' }
+>>>>>>> ui-redesign
 
 / Hero Section
 .hero_section
@@ -15,8 +19,12 @@
       %form.search_form#search_form{ action: projects_path }
         %input{ type: :hidden, name: 'ref', value: 'homepage' }
         .search_input_wrapper
+<<<<<<< OTWO-7546
           .search_icon_wrapper
             %i.fa.fa-search.search_icon
+=======
+          %i.fa.fa-search.search_icon
+>>>>>>> ui-redesign
           %input.search_input{ type: :text, name: 'query', placeholder: t('.search_projects'), id: 'text', autocomplete: 'off' }
 
       / Rotating Stats
@@ -65,6 +73,7 @@
 / Top Contributors and What's New Section
 .content_section
   .container
+<<<<<<< OTWO-7546
     .content_grid
       / Top Contributors - 35%
       .contributors_column
@@ -72,12 +81,29 @@
 
       / What's New and Join Now - 65%
       .whats_new_column
+=======
+    .row
+      / Top Contributors - 35%
+      .col-md-4.col-sm-12.contributors_column
+        = render partial: '/home/top_contributors'
+
+      / What's New and Join Now - 65%
+      .col-md-8.col-sm-12.whats_new_column
+>>>>>>> ui-redesign
         .whats_new_join_stack
           = render partial: '/home/whats_new'
           = render partial: '/home/join_now_home'
 
+<<<<<<< OTWO-7546
 / Project Swimlanes Section
 = home_top_lists
 
 / User Journeys Section
 = render partial: '/home/user_journeys'
+=======
+/ User Journeys Section
+= render partial: '/home/user_journeys'
+
+.landing.col-md-12.col-sm-12.col-xs-12.last_section
+  = home_top_lists
+>>>>>>> ui-redesign

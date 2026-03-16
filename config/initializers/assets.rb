@@ -6,6 +6,10 @@
 Rails.application.config.assets.version = '1.0'
 
 Rails.application.config.assets.precompile += %w[application.js application.css permissions.js admin/admin.css
+<<<<<<< OTWO-7546
                                                  api/vulnerability.sass api/vulnerability.js
                                                  project_swimlanes.js]
+=======
+                                                 api/vulnerability.sass api/vulnerability.js rotating_stats.js]
+>>>>>>> ui-redesign
 Rails.application.config.assets.precompile += %w[*.svg *.eot *.woff *.ttf]
