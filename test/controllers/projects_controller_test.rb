@@ -20,9 +20,9 @@ class ProjectsControllerTest < ActionController::TestCase
     login_as nil
     get :index, params: { query: 'foo' }
     assert_response :ok
-    assert_select "div.well#project_#{project1.id}", true
-    assert_select "div.well#project_#{project2.id}", true
-    assert_select "div.well#project_#{project3.id}", false
+    assert_select "div#project_#{project1.id}", true
+    assert_select "div#project_#{project2.id}", true
+    assert_select "div#project_#{project3.id}", false
   end
 
   it 'index should handle the q param for unlogged users' do
@@ -32,9 +32,9 @@ class ProjectsControllerTest < ActionController::TestCase
     login_as nil
     get :index, params: { q: 'foo' }
     assert_response :ok
-    assert_select "div.well#project_#{project1.id}", true
-    assert_select "div.well#project_#{project2.id}", true
-    assert_select "div.well#project_#{project3.id}", false
+    assert_select "div#project_#{project1.id}", true
+    assert_select "div#project_#{project2.id}", true
+    assert_select "div#project_#{project3.id}", false
   end
 
   it 'index should handle query param that matches no project' do
