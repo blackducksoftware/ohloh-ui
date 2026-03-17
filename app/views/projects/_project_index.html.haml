@@ -1,104 +1,138 @@
 - project = project_index
-.well.searchable{ id: "project_#{project.id}" }
-  %h2.title.pull-left= link_to h(project.name.truncate(70)), project_path(project), title: project.name
-  .pull-right
-    .compare
-      - project_compare_button(project, t('.compare')) if defined?(compare) && compare
-    - if params[:action].to_s != 'check_forge'
-      .i_use_this
-        - project_iusethis_button(project) if defined?(i_use_this) && i_use_this
-  .clear
+.project-card.searchable{ id: "project_#{project.id}" }
+  / Project Header with Compare Option
+  .project-header
+    .project-title-section
+      %h2
+        = link_to h(project.name.truncate(70)), project_path(project), title: project.name            
 
-  .pull-left#inner_content
-    %a.pull-left.logo{ href: project_path(project), style: 'max-width: 64px;' }
-      - project_icon(project, :med)
+    - if defined?(compare) && compare
+      .compare-section
+        .compare-checkbox{ data: { project_id: project.to_param } }
+          %span Compare
+          %i.fa.fa-square-o
 
-    .info.pull-left
-      %p
-        - if project.organization
+  / Project Content
+  .project-content
+    .project-meta
+      - if project.organization
+        .claimed-by
           = t('.claimed_by')
-          = link_to h(truncate(project.organization.name, length: 30)),
-                    organization_path(project.organization), class: 'claimed-by-org', title: project.organization.name
-        - else
-          &nbsp;
-
+          %span
+            = link_to h(truncate(project.organization.name, length: 30)),
+                      organization_path(project.organization), title: project.organization.name
+      .analyzed-date
         - if !project.best_analysis.nil? || @analysis
           - analysis = (project.best_analysis || @analysis)
           %i
             %abbr.date{ title: analysis.updated_on }
               = t('.analyzed_ago', time: time_ago_in_words(analysis.updated_on))
         - else
-          %span.soft.pull-right
-            %i= t('.no_analysis_available')
+          %span.soft
+            %i= t('.no_analysis_available')  
 
-      .desc
-        - if project.description && project.description.strip.size > 340
-          = expander(project.description, 300, 340)
-        - elsif project.description
-          %span.proj_desc_toggle{ style: 'display: inline', id: "proj_desc_#{project.id}_lg" }
+    / Main Content - Left Side
+    .project-main
+      / Icon and Description
+      .project-icon-desc
+        .project-icon
+          - if project.logo.present?
+            = image_tag project.logo.attachment.url(:med), alt: project.name
+          - else
+            %i.fa.fa-cube
+
+        .project-description
+          - if project.description && project.description.strip.size > 220
+            = project.description.truncate(220)
+            %span.read-more [More]
+          - elsif project.description
             = project.description
+          - else
+            %span.text-muted= t('.no_description_available')
 
-    .stats.pull-left
-      %p
-        - if project.best_analysis.empty?
-          = link_to 0, '#'
-        - else
-          - code_total_str = project.best_analysis.code_total.to_human
-          = link_to code_total_str, languages_summary_project_analysis_path(project, 'latest')
-        %span= t('.loc')
-      %p
-        = link_to number_with_delimiter(project.active_committers), summary_project_contributors_path(project)
-        %span= t('.current_contributors')
-      %p
-        - if !project.best_analysis.nil? && project.best_analysis.last_commit_time
-          %a{ href: summary_project_commits_path(project) }= time_ago_in_words(project.best_analysis.last_commit_time)
-        - else
-          = link_to 0, '#'
-        %span= t('.since_last_commit')
-      %p
-        = link_to number_with_delimiter(project.user_count), users_project_path(project)
-        %span= t('.users_on_open_hub')
+      / Language and License
+      .project-lang-license
+        .language
+          - if project.best_analysis.present? && project.best_analysis.main_language
+            - lang = project.best_analysis.main_language.nice_name
+            = t('.mostly_written_in', lang: link_to(lang, languages_summary_project_analysis_path(project, 'latest'))).html_safe
+          - else
+            %span= t('.not_available')
 
-    .reviews-and-pai.pull-left
-      - project_activity_level_class(project, :twentyfive)
-      - project_activity_level_text(project, :twentyfive)
-      .stars!= rating_stars('average_rating_stars', project.rating_average.to_f || 0, mini: true)
-      .reviews
-        = link_to pluralize_with_delimiter(project.reviews.count, t('.review')), summary_project_reviews_path(project)
-      .use_this{ style: 'margin-top: 10px; margin-left: 10px' }
-        - if logged_in?
-          = render partial: 'projects/show/i_use_this', locals: { project: project }
-        - else
-          .btn.btn-mini.i_use_this_btn{ 'data-target' => '#LoginModal', 'data-toggle' => 'modal' }= t('.i_use_this')
-          .modal.fade#LoginModal{ 'aria-hidden' => 'true', 'aria-labelledby' => 'LoginModalLabel', :role => 'dialog' }
-            .modal-dialog.modal-sm
-              .modal-content{ style: 'width: 398px' }
-                .modal-header
-                  %button.close{ 'aria-label' => 'Close', 'data-dismiss' => 'modal', :type => 'button' }
-                    %span{ 'aria-hidden' => 'true' } &times;
-                  %h4.modal-title#LoginModalLabel= t('.login_required')
-                .model-body
-                  = render 'sessions/sign_in'
+        .licenses
+          %span.license-label= t('.licenses')
+          - if project.licenses.any?
+            = project.licenses.first(3).collect { |l| l.short_name.truncate(12) }.join(', ')
+          - else
+            = t('.no_declared_licenses')
 
-  .add-info
-    .main_language.pull-left
-      - if project.best_analysis.present? && project.best_analysis.main_language
-        - lang = project.best_analysis.main_language.nice_name
-        = link_to t('.mostly_written_in', lang: lang), languages_summary_project_analysis_path(project, 'latest')
-      - else
-        %span= t('.mostly_written_lang_not_available')
-    .licenses.pull-right
-      = link_to t('.licenses'), project_licenses_path(project)
-      - if project.licenses.any?
-        = project.licenses.first(3).collect { |l| l.short_name.truncate(12) }.join(', ')
-      - else
-        %span= t('.no_declared_licenses')
-    .clear_both
+      / Tags
+      .project-tags
+        - unless project.tag_list.blank?
+          %span.tags-label= t('.tags')
+          - tags = project.tag_list.split(' ')
+          - tags.first(8).each do |tag|
+            - tag = tag.fix_encoding_if_invalid
+            = link_to html_escape(tag), tags_path(names: tag), class: 'tag'
+          - if tags.length > 8
+            %span.more-tags= t('.n_more', n: tags.length - 8)
 
-  .tags
-    - unless project.tag_list.blank?
-      - tags = project.tag_list.split(' ')
-      = tag_icon_link(project)
-      = tag_links(tags, 12)
-      - if tags.length > 12
-        = link_to t('.n_more', n: (tags.length - 12)), project_path(project)
+    / Stats - Right Side
+    .project-stats
+
+      .stats-grid
+        / Row 1: Lines of Code | Activity Indicator (spans 2 rows)
+        .stat-item
+          %span.stat-value
+            - if project.best_analysis.empty?
+              0
+            - else
+              = project.best_analysis.code_total.to_human
+          %span.stat-label= t('.loc')
+
+        .activity-indicator
+          .activity-icon
+            - project_activity_level_class(project, :twentyfive)
+          .activity-label
+            = project_activity_text(project, true)
+
+        / Row 2: Contributors
+        .stat-item
+          %span.stat-value= number_with_delimiter(project.active_committers)
+          %span.stat-label= t('.current_contributors')
+
+        / Row 3: Last Commit | Star Rating
+        .stat-item
+          %span.stat-value
+            - if !project.best_analysis.nil? && project.best_analysis.last_commit_time
+              = time_ago_in_words(project.best_analysis.last_commit_time)
+            - else
+              0
+          %span.stat-label= t('.since_last_commit')
+
+        .rating-section
+          .stars
+            - rating = project.rating_average.to_f
+            - full_stars = rating.floor
+            - has_half_star = (rating - full_stars) >= 0.5
+            - 5.times do |i|
+              - if i < full_stars
+                %i.fa.fa-star.star.filled
+              - elsif has_half_star && i <= full_stars
+                %i.fa.fa-star-half-o.star.half
+              - else
+                %i.fa.fa-star.star.empty
+          .review-count
+            = link_to pluralize_with_delimiter(project.reviews.count, t('.review')), summary_project_reviews_path(project)
+
+        / Row 4: Users on Open Hub | I Use This Button
+        .stat-item
+          %span.stat-value= number_with_delimiter(project.user_count)
+          %span.stat-label= t('.users_on_open_hub')
+
+        .use-this-button
+          - if logged_in?
+            = render partial: 'projects/show/i_use_this', locals: { project: project }
+          - else
+            %button.btn-use-this{ 'data-target' => '#LoginModal', 'data-toggle' => 'modal' }
+              = t('.i_use_this')

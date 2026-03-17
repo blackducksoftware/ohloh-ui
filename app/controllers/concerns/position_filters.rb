@@ -7,7 +7,7 @@ module PositionFilters
     before_action :session_required, :redirect_unverified_account,
                   only: %i[edit new create delete one_click_create]
     before_action :set_account
-    before_action :must_own_account, only: %i[edit update new create one_click_create]
+    before_action :must_own_account, only: %i[edit update new destroy create one_click_create]
     before_action :redirect_to_languages, only: :show, if: :params_id_is_total?
     before_action :set_position, only: %i[show edit update destroy commits_compound_spark]
     before_action :redirect_to_contribution_if_found, only: :show, unless: :params_id_is_total?

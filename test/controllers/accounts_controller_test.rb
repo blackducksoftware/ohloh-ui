@@ -329,6 +329,16 @@ class AccountsControllerTest < ActionController::TestCase
       assert_select "p.error[rel='markup.raw']", text: 'is too long (maximum is 500 characters)'
     end
 
+    it 'must not allow url or description with blocked pattern' do
+      Setting.create(key: 'blocked_domains', value: 'cr.com|aks.ai|ch.in')
+      post :update, params: { id: account.to_param, account: { url: 'http://t.aks.ai/p', about_raw: ' b.cr.com ' } }
+
+      _(assigns(:account).errors.messages[:'markup.raw']).must_be :present?
+      _(assigns(:account).errors.messages[:url]).must_be :present?
+      assert_select "p.error[rel='url']", text: I18n.t('accounts.edit.blocked_domain_error')
+      assert_select "p.error[rel='markup.raw']", text: I18n.t('accounts.edit.blocked_domain_error')
+    end
+
     it 'must accept description within 500 characters' do
       post :update, params: { id: account.to_param, account: {
         about_raw: "#{'a' * 99}\n#{'a' * 99}\r#{'a' * 300}"
@@ -370,7 +380,7 @@ class AccountsControllerTest < ActionController::TestCase
       assert_no_difference 'Account.count' do
         post :destroy, params: { id: your_account.to_param }
       end
-      assert_redirected_to edit_deleted_account_path(your_account)
+      assert_redirected_to new_session_path
     end
 
     it 'while deleting an account, edits.account_id and edits.undone_by should be marked with Anonymous Coward ID' do

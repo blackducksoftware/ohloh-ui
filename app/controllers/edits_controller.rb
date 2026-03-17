@@ -76,8 +76,8 @@ class EditsController < SettingsController
   end
 
   def find_edits
-    params[:sort] = params[:sort] || 'updated_at'
-    edits = Edit.page(page_param).per_page(10).order("edits.#{params[:sort]} DESC, edits.id DESC")
+    sort = params[:sort] == 'created_at' ? :created_at : :updated_at
+    edits = Edit.page(page_param).per_page(10).order("edits.#{sort} DESC, edits.id DESC")
     @edits = add_query_term(add_robotic_term(add_where_term(edits)))
   end
 

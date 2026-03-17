@@ -45,7 +45,7 @@ module Tsearch
       end
 
       def tsearch_query(dictionary, query)
-        "(to_tsquery('#{dictionary}', '#{query_parser(query)}'))"
+        "(to_tsquery('#{dictionary}', '#{query_parser(connection.quote_string(query))}'))"
       end
 
       def tsearch_rank(dictionary, query)

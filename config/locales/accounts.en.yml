@@ -53,6 +53,7 @@ en:
       about_raw_help: 'A short (less than 500 characters) description of you.'
       delete_account: 'Delete Account'
       account_basics: ' : Account Basics'
+      blocked_domain_error: 'contains a blocked spam pattern. Contact info@openhub.net if incorrect.'
       homepage_url: 'Homepage URL'
       help_1: Your login ID will be shown in many places on Open Hub, including in lists that highlight your contributions to projects, so please choose something you want to be seen.
       help_2: Your email address is used to show your Gravitar. In addition, your email address may be used by Open Hub to match against discovered, unclaimed committer IDs on projects as a convenient way to locate your FOSS contributions. You may change your email address; we will send an activiation letter to that address for confirmation.
