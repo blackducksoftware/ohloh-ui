@@ -23,18 +23,8 @@
           - @tags.each do |tag|
             = link_to h(tag[0]), tags_path(names: tag[0]), class: 'tag-item', data: { weight: tag[1] }
         - else
-          .tag-item 3d
-          .tag-item C++
-          .tag-item collection
-          .tag-item cross-platform
-          .tag-item development
-          .tag-item framework
-          .tag-item graphics
-          .tag-item linux
-          .tag-item php
-          .tag-item python
-          .tag-item web
-          .tag-item windows
+          - %w[3d C++ collection cross-platform development framework graphics linux php python web windows].each do |tag|
+            = link_to tag, tags_path(names: tag), class: 'tag-item'
 
       / Custom Tag Input with icon inside
       .tag-input-wrapper
@@ -50,9 +40,9 @@
     .card-body.compare-body
       %form.compare-form{ action: '/p/_compare', method: :get }
         .compare-inputs
-          = text_field_tag 'project1', '', placeholder: t('.enter_project_name', default: 'Enter a project name'), class: 'compare-input'
-          = text_field_tag 'project2', '', placeholder: t('.enter_project_name', default: 'Enter a project name'), class: 'compare-input'
-          = text_field_tag 'project3', '', placeholder: t('.enter_project_name', default: 'Enter a project name'), class: 'compare-input'
+          = text_field_tag 'project_0', '', placeholder: t('.enter_project_name', default: 'Enter a project name'), class: 'compare-input'
+          = text_field_tag 'project_1', '', placeholder: t('.enter_project_name', default: 'Enter a project name'), class: 'compare-input'
+          = text_field_tag 'project_2', '', placeholder: t('.enter_project_name', default: 'Enter a project name'), class: 'compare-input'
 
         %button.btn-compare{ type: 'submit' }= t('.compare_btn', default: 'Compare')
 
