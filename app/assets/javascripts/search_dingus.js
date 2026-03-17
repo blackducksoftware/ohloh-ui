@@ -19,16 +19,13 @@ var ohloh = (function builder($) {
     ui: {
       init: function(){
         var $scope = $('.ux-dropdown');
-        var $search_text_field = $scope.find('.text');
+        var $search_text_field = $scope.find('.text').add($scope.siblings('.header-search-input'));
         var dropdownHead = $('button span.selection, a span.selection', $scope);
-        var getSelectedValue = function() {
-          return dropdownHead.first().attr('val');
-        };
         $('.dropdown-menu .dropdown-item', $scope).click(function() {
           var selectedText = $(this).attr('val')
           dropdownHead.attr('val',selectedText)
           dropdownHead.html( $(this).html() )
-          dropdownHead.parents('form').attr('action',selectedText)
+          // Do NOT set form action here; URL will be built on submit
           // Update active class
           $('.dropdown-menu .dropdown-item', $scope).removeClass('active')
           $(this).addClass('active')
@@ -128,34 +125,33 @@ var ohloh = (function builder($) {
         $search_text_field.keydown(function(e){
           if(e.which == 13) {
             e.preventDefault();
-            $(this).siblings('.submit').trigger('click');
+            $(this).siblings('.submit, .header-search-btn').trigger('click');
             return false;
           }
         });
 
-        $search_text_field.siblings('.submit').click(function(e) {
-          var search_term = $.trim($search_text_field.val());
+        $search_text_field.siblings('.submit, .header-search-btn').click(function(e) {
+          var $btn = $(this);
+          var $field = $btn.siblings('.text, .header-search-input');
+          var $local_scope = $btn.closest('form').find('.ux-dropdown');
+          var localDropdownHead = $('button span.selection, a span.selection', $local_scope);
+          var search_term = $.trim($field.val());
 
           if(search_term.length > 0) {
             e.preventDefault();
 
-            var section = getSelectedValue(),
-              url_format = "/#{activator}?"+$search_text_field.attr('name')+"=#{query}";
+            var section = localDropdownHead.first().attr('val');
+            var url = "/" + section + "?query=" + encodeURIComponent(search_term);
 
-            var data = {
-              activator: section,
-              query: search_term
-            };
-
-            if($search_text_field.attr('name') == 's')
-              url_format += "&ref=Open%20Hub";
+            if($field.attr('name') == 's')
+              url += "&ref=Open%20Hub";
 
             if(window.location.href.indexOf("sort=") > -1) {
               sort_value = window.location.href.split('sort=')[1].split('&')[0];
-              url_format += "&sort=" + sort_value;
+              url += "&sort=" + sort_value;
             }
 
-            window.location.href = url_format._f(data);
+            window.location.href = url;
           }
 
           return false;
