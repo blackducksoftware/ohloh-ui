@@ -22,6 +22,8 @@ Before you begin, ensure you have the following installed:
 
 ### System-Specific Requirements
 
+We are currently using Postgres 11 on staging and production. However, Postgres 11 is no longer supported by Homebrew. Our structure.sql was generated using Postgres 11, so if we install the latest version, we might encounter issues when loading the structure. Therefore, try using Postgres 14 if version 11 cannot be installed.
+
 #### macOS
 ```bash
 brew install postgresql
