@@ -1,44 +1,83 @@
-.well.col-md-3.margin_left_10.margin_top_20#explore_sidebar
-  = link_to t('.add_new_project'), new_project_path, class: 'btn btn-primary btn-mini add_new_project_btn_top'
-  %div
-    %h3= t('.search')
-    .margin_left_10
-      %form.search#explore_search_form{ action: projects_path }
-        %input{ type: :hidden, name: 'ref', value: 'explore_project' }
-        %input.explore_search.margin_top_10{ type: :text, name: 'query', placeholder: t('.enter_string') }
-        .icon-search.search.submit
+.sidebar-container
+  / Search Projects Section
+  .sidebar-card.search-card
+    .card-header
+      %h3.card-title= t('.search_projects', default: 'Search Projects')
 
-    %h3= t('.tags')
-    .margin_left_10{ style: 'min-height: 100px; padding-left: 15px' }
-      .row
-        #tagcloud
+    .card-body
+      %form.sidebar-search-form{ action: projects_path, role: 'search' }
+        .search-input-wrapper
+          = text_field_tag :query, params[:query], placeholder: t('.enter_search_string', default: 'Enter search string'), class: 'sidebar-search-input'
+          %button.search-icon-btn{ type: 'submit' }
+            %i.fa.fa-search
+
+  / Explore Tags Section
+  .sidebar-card.tags-card
+    %button.card-header.collapsible{ type: 'button', data: { toggle: 'tags' } }
+      %h3.card-title= t('.explore_tags', default: 'Explore Tags')
+
+    .card-body.tags-body
+      / Tag Cloud
+      .tag-cloud
+        - if defined?(@tags) && @tags.present?
           - @tags.each do |tag|
-            = link_to h(tag[0]), tags_path(names: tag[0]), data: { weight: tag[1] }
-    .margin_left_10
-      %form.autocomplete-submit{ rel: 'tag_jump' }
-        %input.explore_search.tag_autocomplete.autocompletable#input_tag{ type: :text, placeholder: t('.enter_tag'),
-        data: { source: '/autocompletes/tags', select: 'submitForm' } }
+            = link_to h(tag[0]), tags_path(names: tag[0]), class: 'tag-item', data: { weight: tag[1] }
+        - else
+          .tag-item 3d
+          .tag-item C++
+          .tag-item collection
+          .tag-item cross-platform
+          .tag-item development
+          .tag-item framework
+          .tag-item graphics
+          .tag-item linux
+          .tag-item php
+          .tag-item python
+          .tag-item web
+          .tag-item windows
 
-    %p &nbsp;
-    %h3= t('.compare')
-    %form.projects_compare.margin_left_15{ action: '/p/_compare' }
-      - compare_project_inputs.each do |options|
-        %input.proj.explore_compare{ options }
-      %input.pull-right.btn.btn-primary.btn-small#compare_btn{ type: 'submit', value: 'Compare' }
+      / Custom Tag Input with icon inside
+      .tag-input-wrapper
+        = text_field_tag :custom_tag, '', placeholder: t('.enter_different_tag', default: 'Enter different tag'), class: 'tag-input'
+        %button.tag-search-btn{ type: 'button' }
+          %i.fa.fa-search
 
-    %p &nbsp;
-    %p &nbsp;
-    %h3= t('.similar')
-    %form.autocomplete-submit.similar_projects.margin_left_10{ rel: 'similar_project_jump' }
-      %input.autocompletable.explore_search#project{ type: 'text', placeholder: t('.enter_project'),
-      autocomplete: 'off', data: { source: '/autocompletes/project', select: 'submitFormWithId' } }
-      .icon-search.search.submit
-      %span.error.hidden= t('.invalid_select')
+  / Compare Section
+  .sidebar-card.compare-card
+    %button.card-header.collapsible{ type: 'button', data: { toggle: 'compare' } }
+      %h3.card-title= t('.compare', default: 'Compare:')
 
-    %p &nbsp;
-    %h3= t('.add')
-    %p.justify.margin_left_10.margin_top_20{ style: 'line-height: 20px' }
-      = t('.community')
-      = t('.dont_see_a_project')
-    .text-center.add_new_project_btn_bottom
-      = link_to t('.add_new_project'), new_project_path, class: 'btn btn-primary btn-small'
+    .card-body.compare-body
+      %form.compare-form{ action: '/p/_compare', method: :get }
+        .compare-inputs
+          = text_field_tag 'project1', '', placeholder: t('.enter_project_name', default: 'Enter a project name'), class: 'compare-input'
+          = text_field_tag 'project2', '', placeholder: t('.enter_project_name', default: 'Enter a project name'), class: 'compare-input'
+          = text_field_tag 'project3', '', placeholder: t('.enter_project_name', default: 'Enter a project name'), class: 'compare-input'
+
+        %button.btn-compare{ type: 'submit' }= t('.compare_btn', default: 'Compare')
+
+  / Similar Projects Section
+  .sidebar-card.similar-card
+    %button.card-header.collapsible{ type: 'button', data: { toggle: 'similar' } }
+      %h3.card-title= t('.similar_projects_to', default: 'Similar Projects to:')
+
+    .card-body.similar-body
+      %form.similar-form.autocomplete-submit{ rel: 'similar_project_jump' }
+        .search-input-wrapper
+          = text_field_tag :project, '', placeholder: t('.enter_project_name', default: 'Enter a project name'), class: 'sidebar-search-input autocompletable', autocomplete: 'off', data: { source: '/autocompletes/project', select: 'submitFormWithId' }
+          %button.search-icon-btn{ type: 'button' }
+            %i.fa.fa-search
+        %span.error.hidden= t('.invalid_select', default: 'Invalid selection')
+
+  / Add a Project Section
+  .sidebar-card.add-project-card
+    .card-header
+      %h3.card-title= t('.add_a_project', default: 'Add a Project:')
+
+    .card-body
+      %p.add-project-text
+        = t('.community_driven', default: 'Open Hub is community driven web site that thrives when members tell us about new FOSS projects. If you don\'t see a project for which you are looking:')
+
+      = link_to new_project_path, class: 'btn-add-project-full' do
+        %i.fa.fa-plus
+        = t('.add_new_project', default: 'Add New Project')

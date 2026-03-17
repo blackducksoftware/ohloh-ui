@@ -1,6 +1,6 @@
 App.Explore =
   init: () ->
-    return if $('#explore_projects_page').length == 0
+    return if $('#explore_projects_page').length == 0 && $('.explore-projects-page').length == 0
 
     $('#explore_search_form .icon-search').click (e) ->
       e.preventDefault()
@@ -29,6 +29,16 @@ App.Explore =
       if $('#explore_projects_page') && $(this).val() == ''
         $(this).attr('disabled', 'disabled')
       $(this).parents('form').attr('action', document.location).submit()
+
+    # Language filter dropdown toggle
+    $(document).on 'click', '.language-toggle', (e) ->
+      e.stopPropagation()
+      menu = $(this).siblings('.language-dropdown-menu')
+      menu.toggleClass('show')
+
+    $(document).on 'click', (e) ->
+      unless $(e.target).closest('.language-dropdown').length
+        $('.language-dropdown-menu').removeClass('show')
 
 $(document).on 'page:change', ->
   App.Explore.init()

@@ -1,5 +1,53 @@
-= render 'projects_sidebar'
+.explore-projects-page
+  / Full-width header above the sidebar+content grid (matches Figma layout)
+  .explore-page-wrapper
+    .explore-header
+      .explore-header-top
+        %h1.explore-title= t('.title', default: 'Projects')
 
-= render 'hot_projects'
+        / Add New Project Button and Search Bar
+        .explore-header-actions
+          / Add New Project Button (hidden on mobile)
+          = link_to new_project_path, class: 'btn-add-project btn-desktop-only' do
+            %i.fa.fa-plus
+            = t('.add_new_project', default: 'Add New Project')
 
-= render 'project_demographics'
+          / Search Bar with Filters (uses search-dingus styles)
+          %form.header-search-form{ action: projects_path, method: :get, role: 'search' }
+            .btn-group.ux-dropdown.header-search-dropdown
+              %button.search-filter-btn.dropdown-toggle{ type: 'button', 'data-toggle' => 'dropdown' }
+                %span.selection{ val: 'p' }= t('.projects', default: 'Projects')
+                %i.fa.fa-chevron-down
+              .dropdown-menu.search-dropdown-menu
+                %button.dropdown-item.active{ type: 'button', val: 'p' }= t('.projects', default: 'Projects')
+                %button.dropdown-item{ type: 'button', val: 'people' }= t('.people', default: 'People')
+                %button.dropdown-item{ type: 'button', val: 'orgs' }= t('.orgs', default: 'Organizations')
+            = text_field_tag :query, params[:query], placeholder: t('.search_placeholder', default: 'Search projects...'), class: 'header-search-input'
+            %input.search.hidden{ type: 'hidden', name: 'search_type', id: 'search_type_explore', value: 'projects' }
+            %button.header-search-btn{ type: 'submit' }
+              %i.fa.fa-search
+
+    / Mobile - Discover More Collapsible
+    .discover-more-mobile
+      %button.discover-toggle{ type: 'button', data: { toggle: 'collapse' } }
+        %span.discover-title= t('.discover_more', default: 'Discover More')
+        %span.chevron ▼
+
+      .discover-content.collapse
+        = render 'projects_sidebar'
+
+  / Sidebar + Main Content Grid
+  .explore-main-container
+    / Left Sidebar - Desktop Only
+    %aside.explore-sidebar
+      = render 'projects_sidebar'
+
+    / Main Content Area
+    %main.explore-content
+      / Hot Projects Section
+      .explore-section.hot-projects-section
+        = render 'hot_projects'
+
+      / Project Demographics Section
+      .explore-section.demographics-section
+        = render 'project_demographics'
