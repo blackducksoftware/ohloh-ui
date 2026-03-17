@@ -12,7 +12,11 @@ class ExploreController < ApplicationController
   end
 
   def demographic_chart
-    render json: Project::DemographicChart.data
+    data = Project::DemographicChart.data
+    render json: data
+  rescue StandardError => e
+    Rails.logger.error("DemographicChart failed: #{e.message}")
+    render json: nil, status: :ok
   end
 
   def orgs

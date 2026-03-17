@@ -30,10 +30,10 @@ class Project::ActivityLevelIndex
   end
 
   def sliced
-    @level_index == INACTIVE_INDEX
+    false
   end
 
   def selected
-    name == ACTIVITY_LEVEL_INDEX[INACTIVE_INDEX]
+    false
   end
 end

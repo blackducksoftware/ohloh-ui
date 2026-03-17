@@ -1,6 +1,6 @@
 ProjectDemographics =
   init: () ->
-    return if $('#project_demographics').length == 0
+    return if $('#demographics_chart').length == 0
 
     $.ajax
       url: $('#demographics_chart').data('src')
