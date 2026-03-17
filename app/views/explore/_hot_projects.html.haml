@@ -1,20 +1,78 @@
-.pull-right.col-md-8.margin_top_20
-  %h2.pull-left= t('.title')
-  %form{ action: '', rel: 'sort_filter' }
-    .pull-right.nav-select-container#sort_by
-      %label.pull-left{ style: 'line-height: 28px' }
-        = t('.filter')
-        &nbsp;
-      = select_tag :lang, options_for_select(@languages, params[:lang]), class: 'chzn-select col-md-2 pull-right'
-  .clearfix
-  %table.table.table-striped.center-block#hot_projects
-    %tr
-      %th{ width: '5%' }= t('.rank')
-      %th{ width: '5%' }
-      %th{ width: '35%' }= t('.name')
-      %th{ width: '15%' }= t('.claimed')
-      %th.center{ width: '8%' }= t('.pai')
-      %th.center{ width: '12%' }
-        = link_to t('.hotness_score'), blog_url_for(:hotness_score), class: 'meta', target: '_blank'
-    = render 'hot_projects_list'
-  .clearfix
+/ Header with Language Filter (outside table card, matching Figma)
+.hot-projects-header
+  %h2.section-title= t('.title', default: 'Hot Projects on Open Hub')
+
+  .language-filter-wrapper
+    %span.filter-label= t('.filter_by', default: 'Filter by:')
+
+    .language-dropdown
+      %button.language-toggle{ type: 'button', data: { toggle: 'language' } }
+        %span.language-selected= params[:lang].present? ? params[:lang] : t('.all_languages', default: 'All Languages')
+        %span.chevron-down ▼
+
+      .language-dropdown-menu
+        - if defined?(@languages) && @languages.present?
+          - @languages.each do |lang_name, lang_code|
+            = link_to lang_name, lang_code.blank? ? projects_explores_path : projects_explores_path(lang: lang_code), class: "language-option#{(lang_code.blank? && params[:lang].blank?) || params[:lang] == lang_code ? ' active' : ''}"
+        - else
+          = link_to t('.all_languages', default: 'All Languages'), projects_explores_path, class: "language-option#{params[:lang].blank? ? ' active' : ''}"
+          = link_to 'C++', projects_explores_path(lang: 'c++'), class: "language-option#{params[:lang] == 'c++' ? ' active' : ''}"
+          = link_to 'PHP', projects_explores_path(lang: 'php'), class: "language-option#{params[:lang] == 'php' ? ' active' : ''}"
+          = link_to 'Python', projects_explores_path(lang: 'python'), class: "language-option#{params[:lang] == 'python' ? ' active' : ''}"
+          = link_to 'JavaScript', projects_explores_path(lang: 'javascript'), class: "language-option#{params[:lang] == 'javascript' ? ' active' : ''}"
+          = link_to 'Java', projects_explores_path(lang: 'java'), class: "language-option#{params[:lang] == 'java' ? ' active' : ''}"
+
+/ Hot Projects Table Card
+.hot-projects-container
+  .hot-projects-table-wrapper
+    / Table Header
+    .projects-table-header
+      .header-cell.rank-col= t('.rank', default: 'Rank')
+      .header-cell.icon-col
+      .header-cell.name-col= t('.name', default: 'Name')
+      .header-cell.claimed-col= t('.claimed_by', default: 'Claimed By')
+      .header-cell.pai-col= t('.pai', default: 'PAI')
+      .header-cell.hotness-col
+        = link_to t('.hotness_score', default: 'Hotness'), blog_url_for(:hotness_score), class: 'meta', target: '_blank'
+
+    / Table Body
+    .projects-table-body
+      - if defined?(@projects) && @projects.present?
+        - @projects.each_with_index do |project, index|
+          - project_name = truncate(project.name, length: 26)
+          - org = project.organization
+          - org_name = truncate(org.name, length: 30) if org
+
+          .project-row
+            / Rank
+            .table-cell.rank-col
+              %span.rank-number= (index + 1)
+
+            / Icon
+            .table-cell.icon-col
+              .project-icon
+                = project.decorate.icon(:small)
+
+            / Name
+            .table-cell.name-col
+              = link_to h(project_name), project_path(project), class: 'project-name-link'
+
+            / Claimed By
+            .table-cell.claimed-col
+              - if org
+                = link_to h(org_name), organization_path(org), class: 'org-link', title: org.name
+              - else
+                %span.no-org —
+
+            / PAI Indicator
+            .table-cell.pai-col
+              .pai-indicator
+                - project_activity_level_class(project, :twentyfive)
+
+            / Hotness Score
+            .table-cell.hotness-col
+              %span.hotness-score= number_with_precision(project.best_analysis.angle, precision: 1)
+
+      - else
+        .no-projects
+          %p.no-projects-message= t('.no_matching_records', default: 'No matching projects found')
