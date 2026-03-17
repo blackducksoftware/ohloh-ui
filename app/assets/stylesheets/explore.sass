@@ -37,6 +37,12 @@ $shadow-dark-hover: 0 3px 6px rgba(0, 0, 0, 0.32), 0 3px 6px rgba(0, 0, 0, 0.46)
   padding: 0 16px
   margin-bottom: 24px
 
+  @media (min-width: 640px)
+    padding: 0 24px
+
+  @media (min-width: 1024px)
+    padding: 0 32px
+
 // Main Layout Container (sidebar + content grid)
 .explore-main-container
   max-width: 1280px
@@ -45,6 +51,12 @@ $shadow-dark-hover: 0 3px 6px rgba(0, 0, 0, 0.32), 0 3px 6px rgba(0, 0, 0, 0.46)
   display: grid
   grid-template-columns: 280px 1fr
   gap: 32px
+
+  @media (min-width: 640px)
+    padding: 0 24px
+
+  @media (min-width: 1024px)
+    padding: 0 32px
 
   @media (max-width: 1024px)
     grid-template-columns: 1fr
@@ -402,6 +414,9 @@ $shadow-dark-hover: 0 3px 6px rgba(0, 0, 0, 0.32), 0 3px 6px rgba(0, 0, 0, 0.46)
 .explore-header
   margin-bottom: 32px
 
+  @media (max-width: 640px)
+    margin-bottom: 24px
+
 .explore-header-top
   display: flex
   justify-content: space-between
@@ -410,7 +425,7 @@ $shadow-dark-hover: 0 3px 6px rgba(0, 0, 0, 0.32), 0 3px 6px rgba(0, 0, 0, 0.46)
   margin-bottom: 24px
   flex-wrap: wrap
 
-  @media (max-width: 768px)
+  @media (max-width: 1024px)
     flex-direction: column
 
 .explore-title
@@ -424,17 +439,26 @@ $shadow-dark-hover: 0 3px 6px rgba(0, 0, 0, 0.32), 0 3px 6px rgba(0, 0, 0, 0.46)
   html.dark &
     color: #ffffff !important
 
-  @media (max-width: 768px)
+  @media (max-width: 640px)
     font-size: 30px !important
 
 .explore-header-actions
   display: flex
-  gap: 16px
+  gap: 12px
   align-items: center
   flex-wrap: wrap
 
-  @media (max-width: 768px)
+  @media (max-width: 1024px)
     width: 100%
+
+  @media (max-width: 640px)
+    flex-direction: column
+    align-items: stretch
+
+  .header-search-form
+    @media (max-width: 1024px)
+      max-width: none
+      flex: 1
 
 .btn-add-project
   display: inline-flex
@@ -548,7 +572,7 @@ $shadow-dark-hover: 0 3px 6px rgba(0, 0, 0, 0.32), 0 3px 6px rgba(0, 0, 0, 0.46)
   flex-wrap: wrap
   gap: 16px
 
-  @media (max-width: 768px)
+  @media (max-width: 640px)
     flex-direction: column
     align-items: flex-start
 
@@ -669,7 +693,7 @@ $shadow-dark-hover: 0 3px 6px rgba(0, 0, 0, 0.32), 0 3px 6px rgba(0, 0, 0, 0.46)
 
 .projects-table-header
   display: grid
-  grid-template-columns: 50px 50px minmax(80px, 1fr) minmax(80px, 150px) 80px 80px
+  grid-template-columns: 50px 50px minmax(80px, 3fr) minmax(80px, 3fr) 80px 80px
   gap: 16px
   padding: 16px 24px
   background: $bg-light
@@ -680,10 +704,12 @@ $shadow-dark-hover: 0 3px 6px rgba(0, 0, 0, 0.32), 0 3px 6px rgba(0, 0, 0, 0.46)
     background: $bg-table-dark
     border-color: #374151
 
+  // Mobile: proportional 12-unit grid (rank:1 icon:1 name:4 claimed:2 pai:2 hotness:2)
+  // matches Figma col-span values — name always gets 33% regardless of screen width
   @media (max-width: 768px)
-    grid-template-columns: 40px 40px 1fr 80px 60px 60px
-    gap: 8px
-    padding: 12px 16px
+    grid-template-columns: 1fr 1fr 4fr 2fr 2fr 2fr
+    gap: 6px
+    padding: 10px 12px
 
 .header-cell
   font-size: 12px
@@ -707,7 +733,7 @@ $shadow-dark-hover: 0 3px 6px rgba(0, 0, 0, 0.32), 0 3px 6px rgba(0, 0, 0, 0.46)
 
 .project-row
   display: grid
-  grid-template-columns: 50px 50px minmax(80px, 1fr) minmax(80px, 150px) 80px 80px
+  grid-template-columns: 50px 50px minmax(80px, 3fr) minmax(80px, 3fr) 80px 80px
   gap: 16px
   padding: 16px 24px
   border-bottom: 1px solid $border-gray
@@ -723,15 +749,21 @@ $shadow-dark-hover: 0 3px 6px rgba(0, 0, 0, 0.32), 0 3px 6px rgba(0, 0, 0, 0.46)
     html.dark &
       background: rgba($bg-dark, 0.5)
 
+  // Mobile: proportional 12-unit grid (rank:1 icon:1 name:4 claimed:2 pai:2 hotness:2)
+  // matches Figma col-span values — name always gets 33% regardless of screen width
   @media (max-width: 768px)
-    grid-template-columns: 40px 40px 1fr 80px 60px 60px
-    gap: 8px
-    padding: 12px 16px
+    grid-template-columns: 1fr 1fr 4fr 2fr 2fr 2fr
+    gap: 6px
+    padding: 10px 12px
 
 .table-cell
   display: flex
   align-items: center
   font-size: 14px
+  min-width: 0
+
+  @media (max-width: 768px)
+    font-size: 12px
 
   &.rank-col
     justify-content: center
@@ -742,8 +774,14 @@ $shadow-dark-hover: 0 3px 6px rgba(0, 0, 0, 0.32), 0 3px 6px rgba(0, 0, 0, 0.46)
   &.name-col
     min-width: 0
 
+  &.claimed-col
+    min-width: 0
+
   &.pai-col
     justify-content: center
+    transform-origin: center
+    @media (max-width: 768px)
+      transform: scale(0.8)
 
   &.hotness-col
     justify-content: flex-end
@@ -757,7 +795,7 @@ $shadow-dark-hover: 0 3px 6px rgba(0, 0, 0, 0.32), 0 3px 6px rgba(0, 0, 0, 0.46)
     color: $primary-yellow
 
   @media (max-width: 768px)
-    font-size: 14px
+    font-size: 13px
 
 .project-icon
   width: 40px
@@ -772,8 +810,8 @@ $shadow-dark-hover: 0 3px 6px rgba(0, 0, 0, 0.32), 0 3px 6px rgba(0, 0, 0, 0.46)
     background: linear-gradient(to bottom right, #374151, #1f2937)
 
   @media (max-width: 768px)
-    width: 32px
-    height: 32px
+    width: 28px
+    height: 28px
 
 .project-name-link
   color: #3182ce
@@ -783,12 +821,17 @@ $shadow-dark-hover: 0 3px 6px rgba(0, 0, 0, 0.32), 0 3px 6px rgba(0, 0, 0, 0.46)
   overflow: hidden
   text-overflow: ellipsis
   white-space: nowrap
+  display: block
+  width: 100%
 
   html.dark &
     color: #60a5fa !important
 
   &:hover
     text-decoration: underline
+
+  @media (max-width: 768px)
+    font-size: 12px
 
 .org-link
   color: #3182ce
@@ -797,6 +840,8 @@ $shadow-dark-hover: 0 3px 6px rgba(0, 0, 0, 0.32), 0 3px 6px rgba(0, 0, 0, 0.46)
   overflow: hidden
   text-overflow: ellipsis
   white-space: nowrap
+  display: block
+  width: 100%
 
   html.dark &
     color: #60a5fa !important
@@ -804,12 +849,18 @@ $shadow-dark-hover: 0 3px 6px rgba(0, 0, 0, 0.32), 0 3px 6px rgba(0, 0, 0, 0.46)
   &:hover
     text-decoration: underline
 
+  @media (max-width: 768px)
+    font-size: 12px
+
 .no-org
   color: $text-light
   font-size: 14px
 
   html.dark &
     color: #9ca3af
+
+  @media (max-width: 768px)
+    font-size: 12px
 
 .hotness-score
   font-weight: 600
