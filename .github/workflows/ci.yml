@@ -43,37 +43,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Install system dependencies
+        run: sudo apt-get update && sudo apt-get install -y libsodium-dev imagemagick
+
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: .ruby-version
           bundler-cache: false
-
-      - name: Install system dependencies
-        run: sudo apt-get update && sudo apt-get install -y libsodium-dev imagemagick
-
-      - name: Bundle install
         run: |
           bundle config set without development
           bundle install --jobs 4 --retry 3
-
-      - name: Clean test log
-        run: rm -f log/test.log
-
-      - name: Set Rails test environment
-        run: bundle exec bin/rails db:environment:set RAILS_ENV=test 2> /dev/null || true
-
-      - name: Drop test database
-        run: bundle exec rake db:drop || true
-
-      - name: Create test database
-        run: bundle exec rake db:create RAILS_ENV=test
-
-      - name: Load structure.sql
-        run: bundle exec rake db:structure:load RAILS_ENV=test
-
-      - name: Run migrations
-        run: bundle exec rake db:migrate RAILS_ENV=test
 
       - name: Rubocop
         run: bundle exec rubocop
@@ -83,6 +63,15 @@ jobs:
           bundle exec bundle-audit update
           bundle exec bundle-audit check
         continue-on-error: true
+
+      - name: Setup test environment
+        run:
+          - rm -f log/test.log
+          - bundle exec bin/rails db:environment:set RAILS_ENV=test 2> /dev/null || true
+          - bundle exec rake db:drop || true
+          - bundle exec rake db:create RAILS_ENV=test
+          - bundle exec rake db:structure:load RAILS_ENV=test
+          - bundle exec rake db:migrate RAILS_ENV=test
 
       - name: Run Minitest suite
         run: RAILS_ENV=test bundle exec rake test
