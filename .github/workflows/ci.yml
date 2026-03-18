@@ -46,11 +46,14 @@ jobs:
       - name: Install system dependencies
         run: sudo apt-get update && sudo apt-get install -y libsodium-dev imagemagick
 
+
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: .ruby-version
           bundler-cache: false
+
+      - name: Bundle install
         run: |
           bundle config set without development
           bundle install --jobs 4 --retry 3
@@ -65,13 +68,13 @@ jobs:
         continue-on-error: true
 
       - name: Setup test environment
-        run:
-          - rm -f log/test.log
-          - bundle exec bin/rails db:environment:set RAILS_ENV=test 2> /dev/null || true
-          - bundle exec rake db:drop || true
-          - bundle exec rake db:create RAILS_ENV=test
-          - bundle exec rake db:structure:load RAILS_ENV=test
-          - bundle exec rake db:migrate RAILS_ENV=test
+        run: |
+          rm -f log/test.log
+          bundle exec bin/rails db:environment:set RAILS_ENV=test 2> /dev/null || true
+          bundle exec rake db:drop || true
+          bundle exec rake db:create RAILS_ENV=test
+          bundle exec rake db:structure:load RAILS_ENV=test
+          bundle exec rake db:migrate RAILS_ENV=test
 
-      - name: Run Minitest suite
+      - name: Run tests
         run: RAILS_ENV=test bundle exec rake test
