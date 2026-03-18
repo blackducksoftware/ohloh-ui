@@ -726,7 +726,7 @@ $dark-shadow-lg: 0 8px 16px rgba(0,0,0,0.48)
               text-decoration: underline
 
             html.dark &
-              color: $dark-primary-color
+              color: $dark-primary-color !important
 
       .analyzed-date
         font-style: italic
@@ -761,14 +761,14 @@ $dark-shadow-lg: 0 8px 16px rgba(0,0,0,0.48)
           flex-shrink: 0
           width: 48px
           height: 48px
-          background-color: $bg-color
           border-radius: 12px
-          border: 1px solid $border-color
           display: flex
           align-items: center
           justify-content: center
           font-size: 24px
           overflow: hidden
+          background-color: $bg-color
+          border: 1px solid $border-color
           box-shadow: 0 1px 2px rgba(0,0,0,0.05)
           html.dark &
             background-color: $dark-bg-color
@@ -833,7 +833,7 @@ $dark-shadow-lg: 0 8px 16px rgba(0,0,0,0.48)
             &:hover
               text-decoration: underline
             html.dark &
-              color: $dark-primary-color
+              color: $dark-primary-color !important
 
         .licenses
           .license-label
@@ -870,7 +870,7 @@ $dark-shadow-lg: 0 8px 16px rgba(0,0,0,0.48)
             background-color: rgba(255, 185, 26, 0.3)
           html.dark &
             background-color: rgba(255, 185, 26, 0.15)
-            color: $dark-primary-color
+            color: $dark-primary-color !important
             border-color: rgba(255, 185, 26, 0.2)
             &:hover
               background-color: rgba(255, 185, 26, 0.25)
