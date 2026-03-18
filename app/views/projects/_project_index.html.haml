@@ -35,11 +35,12 @@
     .project-main
       / Icon and Description
       .project-icon-desc
-        .project-icon
+        .project-icon{ class: project.logo.present? ? 'has-logo' : nil }
           - if project.logo.present?
-            = image_tag project.logo.attachment.url(:med), alt: project.name
+            = image_tag project.logo.attachment.url(:med), alt: project.name, onerror: "this.style.display='none'; this.nextElementSibling.style.display='flex'; this.parentElement.classList.remove('has-logo');"
+            %span.project-icon-letter{ style: 'display:none' }= project.name.first.upcase
           - else
-            %i.fa.fa-cube
+            %span.project-icon-letter= project.name.first.upcase
 
         .project-description
           - if project.description && project.description.strip.size > 220
