@@ -9,7 +9,9 @@
           - if is_account
             = image_tag(avatar_img_path(project), class: 'account-avatar')
           - elsif project.logo.present?
-            = image_tag(project.logo.attachment.url(:small), alt: project.name)
+            = image_tag(project.logo.attachment.url(:small), alt: project.name, onerror: "this.style.display='none'; this.nextElementSibling.style.display='flex';")
+            .project-icon-placeholder{ style: 'display:none' }
+              = project.name[0].upcase
           - else
             .project-icon-placeholder
               = project.name[0].upcase
