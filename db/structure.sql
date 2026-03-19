@@ -976,7 +976,7 @@ BEGIN
     where_clause := where_clause || ', name like %' || pattern || '%' ;
  END LOOP;
 
- RAISE NOTICE 'where_clause:Â %',where_clause;
+ RAISE NOTICE 'where_clause: %',where_clause;
 
  RETURN query EXECUTE 'SELECT 0 AS lines_added, '
    || '0 AS lines_removed '
