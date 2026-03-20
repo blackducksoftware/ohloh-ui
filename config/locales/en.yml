@@ -398,7 +398,12 @@ en:
 
   session_projects:
     menu:
-      compare_projects: 'Compare Projects:'
+      compare_projects: 'Compare Projects (%{count}/3)'
+      select_project: 'Select Project'
+      lines: '%{count} lines'
+      contributors: '%{count} contributors'
+      compare_n_projects: 'Compare %{count} Projects'
+      compare_select_at_least: 'Compare (Select at least 2)'
       limit_reached: limit reached
     create:
       limit_exceeded: Project count limit exceeded

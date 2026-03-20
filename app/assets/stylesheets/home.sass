@@ -1376,8 +1376,11 @@ button
 
 .compact_project_card .compact_card_description
   margin-bottom: 12px
-  flex: 1
-  min-height: 40px
+  height: 42px
+  display: flex
+  align-items: center
+  @media (min-width: 640px)
+    height: 44px
   p
     font-size: 12px
     color: #6b7280
