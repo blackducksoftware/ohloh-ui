@@ -10,8 +10,8 @@ class Analysis::CommitHistoryChart < Analysis::Chart
 
   def data
     chart_data = series_and_range_data(@defaults)
-      .deep_merge(ANALYSIS_CHARTS_OPTIONS['commits_history_auxillaries'])
-      .deep_merge(chart_watermark)
+                 .deep_merge(ANALYSIS_CHARTS_OPTIONS['commits_history_auxillaries'])
+                 .deep_merge(chart_watermark)
 
     apply_commits_palette(chart_data)
   end
