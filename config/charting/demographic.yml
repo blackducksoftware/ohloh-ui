@@ -20,16 +20,28 @@ plotOptions:
   pie:
     allowPointSelect: true
     cursor: 'pointer'
-    innerSize: 80
-    slicedOffset: 10
-    borderColor: '#fff'
-    borderWidth: 0
+    showInLegend: true
+    innerSize: '55%'
+    slicedOffset: 0
+    borderWidth: 2
     dataLabels:
       enabled: true
       minSize: 1
       color: '#000000'
-      connectorColor: '#000000'
-      format: '<b>{point.name}</b>: {point.y} %'
+      connectorColor: '#94a3b8'
+      format: '{point.name}: {point.y}%'
+legend:
+  enabled: true
+  align: 'center'
+  verticalAlign: 'bottom'
+  layout: 'horizontal'
+  symbolRadius: 6
+  symbolHeight: 12
+  symbolWidth: 12
+  labelFormat: '{name} ({y}%)'
+  itemStyle:
+    fontWeight: 'normal'
+    fontSize: '12px'
 credits:
   enabled: false
 series: [{type: 'pie'}]
