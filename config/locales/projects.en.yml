@@ -92,6 +92,16 @@ en:
     show:
       page_title: "The %{name} Open Source Project on Open Hub"
       project_summary: "Project Summary"
+      overview: "Overview"
+      news: "News"
+      settings: "Settings"
+      sharing_widgets: "Sharing Widgets"
+      related_projects: "Related Projects"
+      languages: "Languages"
+      commits: "Commits"
+      contributors: "Contributors"
+      users: "Users"
+      security: "Security"
       no_description: "No description has been added for this project."
       add_description: "Add description"
       tags: "Tags"
@@ -99,6 +109,33 @@ en:
       add_tags: "add some now"
       community_rating: "Community Rating"
       in_a_nutshell: "In a Nutshell, %{name}"
+      lines_of_code: "Lines of Code"
+      contributors: "Contributors"
+      total_commits: "Total Commits"
+      note: "Note:"
+      organization: "Organization"
+      homepage: "Homepage"
+      documentation: "Documentation"
+      code_location: "Code Location"
+      add_code_location_link: "Add code location"
+      similar_projects_label: "Similar Projects"
+      managers_label: "Managers"
+      become_first_manager: "Become the first manager of %{what}"
+      news: "News"
+      sharing_widgets: "Sharing Widgets"
+      related_projects: "Related Projects"
+      code_data: "Code Data"
+      languages_label: "Languages"
+      cost_estimates: "Cost Estimates"
+      security_label: "Security"
+      scm_data: "SCM Data"
+      commits_label: "Commits"
+      contributors_label: "Contributors"
+      community_data: "Community Data"
+      users_label: "Users"
+      ratings_reviews: "Ratings & Reviews"
+      user_contributor_locations: "User & Contributor Locations"
+      licenses_title: "Licenses"
       site_features:
         did_you_know: 'Did You Know'
       analysis_summary:
@@ -113,6 +150,25 @@ en:
         add_a_code_location: "Add a code location"
         no_code_locations: "There are no Code Locations added to this project so Open Hub cannot display the commits per month chart. %{link} to see this information."
         community: "Community"
+      analysis_summary_redesign:
+        code: "Code"
+        lines_of_code: "Lines of Code"
+        languages: "Languages"
+        no_code_locations: "There are no Code Locations added to this project so Open Hub cannot display this chart."
+        activity: "Activity"
+        commits_per_month: "Commits per Month"
+        zoom: "Zoom"
+        no_commits: "No commit data available"
+        thirty_day_summary: "30 Day Summary"
+        twelve_month_summary: "12 Month Summary"
+        not_available: "not available"
+        commits: "Commits"
+        contributors: "Contributors"
+        community: "Community"
+        contributors_per_month: "Contributors per Month"
+        no_contributors: "No contributor data available"
+        most_recent_contributors: "Most Recent Contributors"
+        ratings: "Ratings"
       committers_per_month_chart:
         contributors_per_month: "Contributors per Month"
         add_a_code_location: "Add a code location"
@@ -125,14 +181,33 @@ en:
         be_the_first: "Be the first to rate this project"
         click_to_edit: "Click to edit your rating"
         click_to_add: "Click to add your rating"
+        click_to_add_review: "Click to add your review"
         clear: "Clear"
-        review_this_project: "Review this Project!"
+        review_this_project: "Review this project"
       community_recent_committers:
         most_recent: "Most Recent Contributors"
         no_one_recently: "No one has contributed to this project recently"
+      header_redesign:
+        i_use_this: 'I Use This!'
+        you_use_this: 'You use this'
+        login_required: 'Login Required'
+        settings: 'Settings'
+        edit_duplicate: 'Edit Duplicate'
+        report_duplicate: 'Report Duplicate'
+        users: 'users'
+        analyzed: 'Analyzed %{time} ago.'
+        based_on_code: 'Based on code collected %{time} ago.'
+        no_description: 'No description available'
       header:
         i_use_this: 'I Use This!'
+        you_use_this: 'You use this'
         login_required: 'Login Required'
+        settings: 'Settings'
+        edit_duplicate: 'Edit Duplicate'
+        report_duplicate: 'Report Duplicate'
+        users: 'users'
+        analyzed: 'Analyzed %{time} ago.'
+        based_on_code: 'Based on code collected %{time} ago.'
       i_use_this:
         i_use_this: 'I Use This!'
       is_a_duplicate:
@@ -179,7 +254,7 @@ en:
       vulnerability_report:
         no_data: 'No data available'
         pvs_tooltip: 'Score: %{score} <br/> Percentage: %{percentage} <br/> Rank: %{rank} of %{max_rank}'
-        title: 'Project Vulnerability Report'
+        title: 'Vulnerability Report'
         blog_link: 'About Project Vulnerability Report'
         pvs:
           title: 'Vulnerability Exposure Index'
@@ -191,7 +266,7 @@ en:
           poor: 'Poor security track-record'
       vulnerabilities_per_version:
         title: 'Vulnerabilities per Version'
-        title_detail: '( last 10 releases )'
+        title_detail: '(Most recent versions)'
         no_data: 'No data available'
       thirty_day_summary:
         commit: "Commit"
@@ -221,8 +296,15 @@ en:
         most_recent_commit: most recent commit %{time}
       security:
         title: 'Project Security'
-        title_nvd: 'This Project has No vulnerabilities Reported Against it'
+        title_nvd: 'This project has no vulnerabilities reported against it'
         blog_link: 'About Project Security'
+      licenses_redesign:
+        licenses: 'Licenses'
+        permitted: 'Permitted'
+        forbidden: 'Forbidden'
+        required: 'Required'
+        disclaimer: 'These details are provided for information only. No information here is legal advice and should not be used as such.'
+        view_all_licenses: 'View All Licenses'
       licenses:
         title: 'Licenses'
         all: 'All Licenses'
