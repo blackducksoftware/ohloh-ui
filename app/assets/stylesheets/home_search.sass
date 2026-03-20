@@ -16,34 +16,34 @@
     width: 100%
     display: block
 
-  // Search Icon - Figma: w-3.5 h-3.5 (14px) sm:w-5 sm:h-5 (20px)
-  // Positioned to align with input text baseline
-  .search_icon
-    position: absolute
-    top: 50%
-    left: 8px
-    transform: translateY(-60%)
-    display: block
-    width: 14px
-    height: 14px
-    font-size: 14px
-    color: #9ca3af
-    pointer-events: none
-    z-index: 10
-    transition: color 0.3s ease
-    text-align: center
-    font-style: normal
-    @media (min-width: 640px)
-      left: 24px
-      width: 20px
-      height: 20px
-      font-size: 20px
-    // Dark mode support
-    html.dark &
-      color: #6b7280
-    // Ensure Font Awesome icon centers properly
-    &::before
-      display: block
+  // Search Icon Wrapper - Figma Design
+.search_icon_wrapper
+  position: absolute
+  top: 0
+  bottom: 0
+  left: 8px
+  display: flex
+  align-items: center
+  pointer-events: none
+  @media (min-width: 640px)
+    left: 24px
+
+// Search Icon - Figma specs
+.search_icon
+  width: 14px
+  height: 14px
+  font-size: 14px
+  line-height: 0.5
+  color: #9ca3af
+  transition: color 0.3s ease
+  @media (min-width: 640px)
+    width: 20px
+    height: 20px
+    font-size: 20px
+  // Dark mode support
+  html.dark &
+    color: #6b7280
+
 
   // Search Input - Figma: pl-8 pr-3 py-2.5, sm:pl-14 sm:pr-4 sm:py-4
   input.search_input
@@ -131,15 +131,15 @@ form#search_form
       padding: 16px 16px 16px 56px !important
       font-size: 16px !important
     &:focus
-      border-color: #0E4B7A !important
+      border-color: #5A2A82 !important
       box-shadow: 0 0 0 4px rgba(14, 75, 122, 0.1) !important
       outline: none !important
     // Dark mode support
     html.dark &
       background: #1D0631 !important
       color: #ffffff !important
-      border-color: #4b5563 !important
+      border-color: #5A2A82 !important
       &:focus
-        border-color: #2E8B9E !important
+        border-color: #ffb91a !important
         background: #1D0631 !important
-        box-shadow: 0 0 0 4px rgba(46, 139, 158, 0.1) !important
+        box-shadow: 0 0 0 4px rgba(255, 185, 26, 0.1) !important

@@ -4,15 +4,21 @@
 // Main container with consistent 1280px max-width throughout
 // Isolated from global body font-size: 1.3rem override
 
-.hero_section
-  padding: 0 16px 40px
-  background: #fff !important
+// Common section background
+.section_bg
+  background: #f9fafb !important
   transition: background 0.3s ease
+  html.dark &
+    background: #1D0631 !important
+
+.hero_section
+  @extend .section_bg
+  padding: 0 16px 4px
   box-sizing: border-box
   @media (min-width: 640px)
-    padding: 0 24px 40px
+    padding: 0 24px 16px
   @media (min-width: 1024px)
-    padding: 0 32px 40px
+    padding: 0 32px 16px
   // Dark mode support
   html.dark &
     background: #1D0631 !important
@@ -107,12 +113,11 @@
 // Old placeholder and btn_join_now styles removed - handled in new components
 
 .landing
+  @extend .section_bg
   margin-top: 20px
   margin-left: 0
   padding: 32px 16px
   width: 100%
-  background: #f9fafb !important
-  transition: background 0.3s ease
   @media (min-width: 640px)
     padding: 32px 24px
   @media (min-width: 1024px)
@@ -338,8 +343,9 @@ button
     padding: 12px 24px
   // Dark mode support - Yellow background with purple text
   html.dark &
-    background: linear-gradient(90deg, #ffb91a 0%, #ffb91a 50%, #ffb91a 100%)
-    border-color: #ffb91a
+    background: linear-gradient(90deg, #2D1548 0%, #2D1548 50%, #2D1548 100%)
+    border-color: rgba(255, 255, 255, 0.1)
+
 
 .stat_item
   text-align: center
@@ -354,9 +360,10 @@ button
     font-size: 18px
   @media (min-width: 768px)
     font-size: 20px
-  // Dark mode - Purple text on yellow background
+  // Dark mode - Yellow text on purple background
   html.dark &
-    color: #5A2A82
+    color: #ffb91a
+
 
 .stat_label
   font-size: 8px
@@ -370,9 +377,10 @@ button
     font-size: 9px
   @media (min-width: 768px)
     font-size: 10px
-  // Dark mode - Purple text on yellow background
+  // Dark mode - Gray text on purple background
   html.dark &
-    color: #5A2A82
+    color: #9ca3af
+
 
 .stat_divider
   display: none
@@ -383,17 +391,17 @@ button
     height: 32px
     background: #9ca3af
     opacity: 1
-  // Dark mode - Purple divider on yellow background
+  // Dark mode - White divider with low opacity on purple background
   html.dark &
     @media (min-width: 768px)
-      background: #5A2A82
-      opacity: 0.3
+      background: #ffffff
+      opacity: 0.2
+
 
 // Content Section
 .content_section
+  @extend .section_bg
   padding: 32px 0
-  background: white !important
-  transition: background 0.3s ease
   // Dark mode support
   html.dark &
     background: #1D0631 !important
@@ -429,24 +437,22 @@ button
 
 // Top Contributors Card - Matches ContributorJourney.tsx
 .top_contributors_card
-  position: relative
-  padding: 3px
+  background: white
   border-radius: 16px
-  background: linear-gradient(135deg, #5A2A82 0%, #ffb91a 50%, #5A2A82 100%)
-  margin-bottom: 24px
   overflow: hidden
-  transition: box-shadow 0.3s
+  margin-bottom: 4px
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)
+  transition: box-shadow 0.2s
+  display: flex
+  flex-direction: column
   &:hover
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)
   html.dark &
-    background: linear-gradient(135deg, #5A2A82 0%, #ffb91a 50%, #5A2A82 100%)
+    background: #2D1548
+    box-shadow: 0 1px 3px rgba(0,0,0,0.24), 0 1px 2px rgba(0,0,0,0.48)
+    &:hover
+      box-shadow: 0 3px 6px rgba(0,0,0,0.32), 0 3px 6px rgba(0,0,0,0.46)
 
-  > *
-    background: white
-    border-radius: 16px
-    overflow: hidden
-    html.dark &
-      background: #1D0631
 
 // Card Header
 .top_contributors_card .card_header
@@ -456,7 +462,7 @@ button
   padding: 24px 24px 16px 24px
   background: white
   html.dark &
-    background: #1D0631
+    background: #2D1548
 
 .top_contributors_card .header_icon
   display: flex
@@ -512,6 +518,30 @@ button
   display: flex
   flex-direction: column
   gap: 8px
+  max-height: 300px
+  overflow-y: scroll
+  scrollbar-width: thin
+  scrollbar-color: rgba(90, 42, 130, 0.4) rgba(90, 42, 130, 0.1)
+  @media (min-width: 768px)
+    max-height: 500px
+  &::-webkit-scrollbar
+    width: 8px
+  &::-webkit-scrollbar-track
+    background: rgba(90, 42, 130, 0.1)
+    border-radius: 3px
+  &::-webkit-scrollbar-thumb
+    background: rgba(90, 42, 130, 0.4)
+    border-radius: 3px
+    &:hover
+      background: rgba(90, 42, 130, 0.6)
+  html.dark &
+    scrollbar-color: rgba(255, 185, 26, 0.4) rgba(255, 185, 26, 0.1)
+    &::-webkit-scrollbar-track
+      background: rgba(255, 185, 26, 0.1)
+    &::-webkit-scrollbar-thumb
+      background: rgba(255, 185, 26, 0.4)
+      &:hover
+        background: rgba(255, 185, 26, 0.6)
 
 .top_contributors_card .contributor_item
   display: flex
@@ -536,10 +566,8 @@ button
       background: linear-gradient(to right, rgba(109, 40, 217, 0.3) 0%, rgba(124, 58, 237, 0.3) 100%)
       border-color: #5A2A82
 
-// Show only top 4 contributors on mobile
-.top_contributors_card .contributor_item:nth-child(n+5)
-  @media (max-width: 767px)
-    display: none
+// All contributors visible on mobile to enable scrolling
+// Mobile users can scroll to see all contributors
 
 // Avatar
 .top_contributors_card .contributor_avatar
@@ -662,51 +690,45 @@ button
   font-weight: 600
   color: #5A2A82
   text-decoration: none
-  border-top: 1px solid rgba(90, 42, 130, 0.2)
-  transition: color 0.2s
+  border: 2px solid rgba(90, 42, 130, 0.2)
+  border-radius: 12px
+  margin-top: 8px
+  transition: all 0.2s
   cursor: pointer
-
-  span
-    border-bottom: 1px solid #5A2A82
+  background: transparent
 
   &:hover
     color: #1D0631
-    span
-      border-bottom-color: #1D0631
+    border-color: #5A2A82
+    background: rgba(90, 42, 130, 0.05)
 
   i
     font-size: 16px
 
   html.dark &
-    color: white !important
-    border-top-color: #ffb91a
-    border-top-width: 2px
-    border-radius: 12px
-    margin-top: 8px
-    span
-      border-bottom-color: white
+    color: #ffb91a !important
+    border-color: #ffb91a
     &:hover
-      color: white !important
+      background: #ffb91a
+      color: #1D0631 !important
+
 
 // What's New Card - Figma Design
 .whats_new_card
-  position: relative
-  padding: 3px
+  background: white
   border-radius: 16px
   overflow: hidden
-  background: linear-gradient(135deg, #5A2A82 0%, #ffb91a 50%, #5A2A82 100%)
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1)
-  transition: box-shadow 0.3s
+  height: 100%
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)
+  transition: box-shadow 0.2s
   &:hover
-    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.15)
-  .card_inner
-    background: white
-    border-radius: 14px
-    overflow: hidden
-    height: 100%
-    // Dark mode support
-    html.dark &
-      background: #1D0631
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)
+  html.dark &
+    background: #2D1548
+    box-shadow: 0 1px 3px rgba(0,0,0,0.24), 0 1px 2px rgba(0,0,0,0.48)
+    &:hover
+      box-shadow: 0 3px 6px rgba(0,0,0,0.32), 0 3px 6px rgba(0,0,0,0.46)
+
 
 .card_header_section
   padding: 16px 16px 12px 16px !important
@@ -715,7 +737,7 @@ button
     padding: 24px 24px 16px 24px !important
   // Dark mode support
   html.dark &
-    background: #1D0631
+    background: #2D1548
 
 .whats_new_title
   font-size: 18px !important
@@ -768,24 +790,21 @@ button
 
 // Join Now Card - Figma Design (p-6 wrapper)
 .join_now_card
-  position: relative
-  padding: 3px
+  background: white
   border-radius: 16px
   overflow: hidden
-  background: linear-gradient(135deg, #5A2A82 0%, #ffb91a 50%, #5A2A82 100%)
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1)
-  transition: box-shadow 0.3s
+  height: 100%
+  padding: 24px
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)
+  transition: box-shadow 0.2s
   &:hover
-    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.15)
-  .card_inner
-    background: white
-    border-radius: 14px
-    overflow: hidden
-    height: 100%
-    padding: 24px !important
-    // Dark mode support
-    html.dark &
-      background: #1D0631
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)
+  html.dark &
+    background: #2D1548
+    box-shadow: 0 1px 3px rgba(0,0,0,0.24), 0 1px 2px rgba(0,0,0,0.48)
+    &:hover
+      box-shadow: 0 3px 6px rgba(0,0,0,0.32), 0 3px 6px rgba(0,0,0,0.46)
+
 
 .join_header
   display: flex
@@ -953,9 +972,12 @@ button
 // User Journeys Section
 .user_journeys_section
   background: #1D0631
-  padding: 64px 0
+  padding: 32px 0 !important
+  width: 100vw
+  margin-left: calc(-50vw + 50%)
+  margin-right: calc(-50vw + 50%)
   @media (max-width: 768px)
-    padding: 48px 0
+    padding: 16px 0 !important
 
   // Matches Figma: max-w-7xl mx-auto
   .container
@@ -998,10 +1020,10 @@ button
 
 .journey_card
   position: relative
-  padding: 3px
   border-radius: 12px
   overflow: hidden
-  background: linear-gradient(135deg, #5A2A82 0%, #ffb91a 50%, #5A2A82 100%)
+  border: 0.8px solid #ffb91a
+  background: #1D0631
   margin-bottom: 16px
   transition: all 0.3s
 
@@ -1171,13 +1193,12 @@ button
 
 // Project Swimlanes Section - Matches Figma: py-8 px-4 sm:px-6 lg:px-8 bg-gray-50
 .project_swimlanes_section
-  padding: 32px 16px
-  background: #f9fafb
-  transition: background 0.3s ease
+  @extend .section_bg
+  padding: 8px 16px !important
   @media (min-width: 640px)
-    padding: 32px 24px
+    padding: 8px 24px !important
   @media (min-width: 1024px)
-    padding: 32px 32px
+    padding: 8px 32px !important
   html.dark &
     background: #1D0631
 
@@ -1226,29 +1247,37 @@ button
 // Compact Project Card Styles
 .compact_project_card
   position: relative
-  padding: 3px
-  border-radius: 8px
+  border-radius: 16px
   overflow: hidden
   transition: all 0.3s ease
-  background: transparent
   cursor: pointer
+  border: 1px solid rgba(229, 231, 235, 0.8)
+  background: white
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)
+  height: 100%
+  display: flex
+  flex-direction: column
+
   &:hover
-    background: linear-gradient(135deg, #5A2A82 0%, #ffb91a 50%, #5A2A82 100%)
-    .compact_card_inner
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1)
+    border-color: #5A2A82
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)
+
+  html.dark &
+    background: #2D1548
+    border-color: rgba(255, 255, 255, 0.1)
+    box-shadow: 0 1px 3px rgba(0,0,0,0.24), 0 1px 2px rgba(0,0,0,0.48)
+    &:hover
+      border-color: #ffb91a
+      box-shadow: 0 3px 6px rgba(0,0,0,0.32), 0 3px 6px rgba(0,0,0,0.46)
 
 .compact_project_card .compact_card_inner
-  background: white
-  border-radius: 8px
   padding: 12px
   transition: all 0.3s ease
   height: 100%
-  border: 1px solid #e5e7eb
+  display: flex
+  flex-direction: column
   @media (min-width: 640px)
     padding: 16px
-  html.dark &
-    background: #1D0631
-    border-color: #4b5563
 
 .compact_project_card .compact_card_header
   display: flex
@@ -1347,6 +1376,8 @@ button
 
 .compact_project_card .compact_card_description
   margin-bottom: 12px
+  flex: 1
+  min-height: 40px
   p
     font-size: 12px
     color: #6b7280
@@ -1432,7 +1463,6 @@ button
 
 .hidden_card
   width: 100%
-  margin-bottom: 16px
 
 // Show More Button
 .show_more_btn
@@ -1442,7 +1472,7 @@ button
   color: #5A2A82
   border: 2px solid #5A2A82
   padding: 12px 16px
-  border-radius: 8px
+  border-radius: 12px
   font-weight: 600
   cursor: pointer
   transition: all 0.3s ease
@@ -1453,11 +1483,11 @@ button
     color: white
   html.dark &
     background: transparent
-    color: white
-    border-color: white
+    color: #ffb91a
+    border-color: #ffb91a
     &:hover
-      background: white
-      color: #5A2A82
+      background: #ffb91a
+      color: #1D0631
 
 // Pagination Controls
 .pagination_controls
@@ -1516,7 +1546,7 @@ button
 
 // View All Projects Button - Matches Figma: pt-4 pb-8
 .view_all_container
-  padding-top: 16px
+  padding-top: 32px
   padding-bottom: 32px
   padding-left: 16px
   padding-right: 16px
@@ -1540,8 +1570,8 @@ button
   gap: 8px
   padding: 12px 24px
   background: #ffb91a
-  color: #000000
-  border-radius: 8px
+  color: #1D0631
+  border-radius: 12px
   font-weight: 600
   font-size: 14px
   text-decoration: none
@@ -1552,10 +1582,10 @@ button
   &:hover
     background: rgba(255, 185, 26, 0.9)
     box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1)
-    color: #000000
+    color: #1D0631
   html.dark &
-    color: #ffffff !important
+    color: #1D0631 !important
     &:hover
-      color: #ffffff !important
+      color: #1D0631 !important
   i
     font-size: 16px
