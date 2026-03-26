@@ -72,6 +72,23 @@ var ohloh = (function builder($) {
           $('input[name="query"].search').trigger('click').focus();
         });
 
+        // Toggle sort dropdown open/close on button click.
+        // NOTE: sort button intentionally has NO data-toggle="dropdown" so Bootstrap's
+        // dropdown plugin does not interfere — both would toggle .open on the same click
+        // and cancel each other out, keeping the menu permanently closed.
+        $(document).on('click', '.sort-dropdown-btn', function() {
+          var $dropdown = $(this).closest('.custom-sort-dropdown');
+          $('.custom-sort-dropdown').not($dropdown).removeClass('open');
+          $dropdown.toggleClass('open');
+        });
+
+        // Close any open sort dropdown when clicking outside it
+        $(document).on('click', function(e) {
+          if (!$(e.target).closest('.custom-sort-dropdown').length) {
+            $('.custom-sort-dropdown.open').removeClass('open');
+          }
+        });
+
         // Handle custom sort dropdown
         $('.custom-sort-dropdown .sort-dropdown-item').on('click', function(e) {
           e.preventDefault();

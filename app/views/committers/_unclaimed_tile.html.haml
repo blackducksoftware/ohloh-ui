@@ -10,12 +10,10 @@
 .logo
   %a{ href: project_path(project), title: project.name }
     - project_icon(project, :small, class: 'logo')
-.commits{ style: "background-color: ##{bg_color}; color: ##{txt_color} !important", title: emails.join("\n") }
-  %span= name_fact.commits
-  .clearfix
+  %span.commit-count= name_fact.commits
+.commits{ title: emails.join("\n") }
   %a{ href: project_contributor_path(project, contributor_id), style: 'display: inline-block;' }
-    = 'commit'.pluralize(name_fact.commits).to_s
-.clearfix
+    = 'COMMITS'
 
 .project_link
   = link_to h(truncate(project.name, length: 14)), project_path(project), title: project.name

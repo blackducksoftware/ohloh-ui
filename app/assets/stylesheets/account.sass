@@ -1,85 +1,487 @@
-#accounts_index_page, #people_index_page
-  .account_details
-    width: 220px
-    margin-left: 15px
-    position: relative
-    height: 128px
-  .commits_summary
-    @include commits-summary-background-color
-    width: 470px
-    margin: 5px 0px
-    height: 118px
-    .in
-      padding: 49px 2px
-    .project_summary
-      padding: 5px 10px 0px 7px
-      width: auto
-      min-height: 99px
-      div
-        height: 23px
-      .project_name
-        @include projects-summary-projects-name-background-color
-        color: white
-        border: 1px dashed white
-        font-size: 18px
-        line-height: 24px
-        width: 24px
-        height: 24px
-        text-align: center
-        float: left
-        margin-bottom: 0
-        margin-top: 0
-        margin-right: 2px
-    .language_summary
-      padding: 5px 7px 5px 9px
-      width: 129px
-      .language_name
-        width: 113px
-        margin-bottom: 5px
-        height: 28px
-        line-height: 28px
-        span
-          padding-left: 8px
-      a
-        color: inherit
-    .other_language
-      color: white
-      font-size: 10px
-      white-space: nowrap
-      line-height: 10px
-      margin-bottom: 0
-      a
-        @include site-link-color
-    .more_commits_padding
-      padding-left: 10px
-  .no_commits
-    text-align: center
-    padding: 50px
-    font-size: 15px
-    color: black
-  .member_info
-    position: absolute
-    bottom: 0px
-    left: 0px
-  .kudo_rank
-    margin-top: 0px
-    font-size: 30px
-    text-align: center
-    padding: 42px 5px 0px 5px
-    font-weight: 100
-    width: 35px
-    color: #183867
-  .commits_count
-    font-size: 27px
-    line-height: 30px
-    display: inline-block
-    padding: 31px 20px 20px
-    text-align: center
-    width: 115px
-    div
-      font-size: 12px
-      text-align: center !important
+// ── People page max-width container ──────────────────────────────────────────
+.people-page-container
+  max-width: 1280px
+  margin: 0 auto
+  padding: 32px 16px 0
 
+.people-page-header
+  display: flex
+  flex-direction: column
+  gap: 16px
+  margin-bottom: 32px
+  @media only all and (min-width: 640px)
+    flex-direction: row
+    align-items: center
+    justify-content: space-between
+  .people-page-title
+    margin: 0
+
+// ── People & Accounts page headings ──────────────────────────────────────────
+.people-page-title
+  font-size: 24px
+  font-weight: 700
+  color: #111827
+  margin: 0
+  @media only all and (min-width: 640px)
+    font-size: 30px
+  @media only all and (min-width: 1024px)
+    font-size: 36px
+
+.people-section-title
+  font-size: 20px !important
+  font-weight: 700 !important
+  color: #111827
+  margin: 0 0 16px
+  line-height: 1.3 !important
+  @media only all and (min-width: 640px)
+    font-size: 24px !important
+    margin-bottom: 24px
+
+.accounts-back-link
+  display: inline-flex
+  align-items: center
+  gap: 6px
+  color: #4b5563
+  text-decoration: none
+  font-size: 14px
+  margin-bottom: 24px
+  transition: color 0.2s
+  &:hover
+    color: #111827
+    text-decoration: none
+
+.people-more-btn
+  display: block
+  width: 100%
+  background-color: #5A2A82
+  color: #ffffff
+  border: none
+  padding: 8px 16px
+  font-weight: 600
+  border-radius: 4px
+  font-size: 14px
+  text-align: center
+  text-decoration: none
+  margin-top: 12px
+  margin-bottom: 12px
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23)
+  transition: background-color 0.2s, box-shadow 0.2s
+  &:hover
+    background-color: #4A1A72
+    color: #ffffff
+    text-decoration: none
+  @media only all and (min-width: 640px)
+    display: inline-block
+    width: auto
+    padding: 8px 24px
+    font-size: 16px
+    margin-top: 12px
+
+// ── People Card ───────────────────────────────────────────────────────────────
+.people-card
+  background: #ffffff
+  border-radius: 16px
+  border: 1px solid rgba(229, 231, 235, 0.8)
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24)
+  transition: border-color 0.3s, box-shadow 0.3s
+  margin-bottom: 16px
+  overflow: hidden
+  cursor: pointer
+  &:hover
+    border-color: #5A2A82
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23)
+
+.people-card__body
+  padding: 16px
+
+// Card row — mobile: column, desktop: row
+.people-card__row
+  display: flex
+  flex-direction: column
+  gap: 12px
+
+// Avatar + info wrapper — on desktop becomes display:contents
+// so avatar & info become direct flex children of .people-card__row
+.people-card__avatar-info
+  display: flex
+  align-items: flex-start
+  gap: 16px
+
+  img, .gravatar
+    width: 80px
+    height: 80px
+    border-radius: 4px
+    object-fit: cover
+    flex-shrink: 0
+
+.people-card__info
+  flex: 1
+  min-width: 0
+
+.people-card__name
+  font-size: 20px
+  font-weight: 600
+  margin: 0 0 4px
+  line-height: 1.4
+  a
+    color: #5a2a82 !important
+    text-decoration: none
+    &:hover
+      text-decoration: underline
+
+.people-card__meta
+  font-size: 13px
+  color: #6b7280
+  margin: 2px 0
+  a
+    color: #6b7280
+    text-decoration: none
+    &:hover
+      color: #5A2A82
+      text-decoration: underline
+
+// Commits — mobile: top border, desktop: left border
+.people-card__commits
+  display: flex
+  flex-direction: column
+  align-items: center
+  justify-content: center
+  padding: 8px 0
+  border-top: 1px solid #e5e7eb
+
+.people-card__commits-count
+  font-size: 30px
+  font-weight: 700
+  color: #111827
+  line-height: 1.1
+  text-align: center
+
+.people-card__commits-label
+  font-size: 11px
+  color: #6b7280
+  text-transform: uppercase
+  letter-spacing: 0.05em
+  text-align: center
+  margin-top: 4px
+  a
+    color: #6b7280
+    text-decoration: none
+    font-size: 11px
+    &:hover
+      color: #5A2A82
+
+// Activity — languages + projects
+.people-card__activity
+  flex: 1
+  min-width: 0
+  display: flex
+  flex-direction: column
+  gap: 15px
+
+.people-card__row-langs,
+.people-card__row-projects
+  display: flex
+  align-items: flex-start
+  gap: 8px
+  flex-wrap: wrap
+
+.people-card__label
+  font-size: 12px
+  color: #9ca3af
+  white-space: nowrap
+  padding-top: 2px
+  flex-shrink: 0
+
+.people-card__lang-tags
+  display: flex
+  align-items: center
+  flex-wrap: wrap
+  gap: 6px
+
+.people-card__lang-primary
+  display: inline-block
+  padding: 2px 10px
+  background: linear-gradient(to right, #5A2A82, #7F3FA0)
+  color: #ffffff
+  font-size: 12px
+  font-weight: 600
+  border-radius: 4px
+  a
+    color: #ffffff !important
+    text-decoration: none
+    &:hover
+      text-decoration: underline
+
+.people-card__lang-secondary
+  font-size: 13px
+  color: #374151
+  a
+    color: #374151
+    text-decoration: none
+    &:hover
+      color: #5A2A82
+
+.people-card__no-lang
+  font-size: 13px
+  color: #9ca3af
+  font-style: italic
+
+.people-card__project-list
+  display: flex
+  align-items: center
+  flex-wrap: wrap
+  gap: 8px
+
+.people-card__project-item
+  display: flex
+  align-items: center
+  gap: 4px
+  img, .people-card__project-icon
+    width: 20px
+    height: 20px
+    border-radius: 3px
+    flex-shrink: 0
+
+.people-card__project-name
+  font-size: 13px
+  color: #5A2A82
+  text-decoration: none
+  &:hover
+    text-decoration: underline
+
+.people-card__other-links
+  font-size: 12px
+  margin-top: 2px
+  .people-card__link
+    color: #5A2A82
+    text-decoration: none
+    &:hover
+      text-decoration: underline
+  .people-card__link-dot
+    color: #d1d5db
+    margin: 0 2px
+
+.people-card__no-commits
+  font-size: 14px
+  color: #9ca3af
+  font-style: italic
+  text-align: center
+  padding: 20px 0
+
+// Kudos — mobile: top border row, desktop: column no border
+.people-card__kudos
+  display: flex
+  align-items: center
+  justify-content: center
+  gap: 12px
+  padding-top: 8px
+  border-top: 1px solid #e5e7eb
+  flex-shrink: 0
+
+.people-card__kudos-rank
+  font-size: 28px
+  font-weight: 700
+  color: #111827
+  text-align: center
+
+.people-card__kudos-badge
+  display: flex
+  align-items: center
+
+// ── Unclaimed Card ────────────────────────────────────────────────────────────
+.unclaimed-card__header
+  display: flex
+  align-items: center
+  justify-content: space-between
+  gap: 12px
+  margin-bottom: 16px
+  flex-wrap: wrap
+
+.unclaimed-card__name
+  font-size: 20px
+  font-weight: 600
+  color: #5A2A82
+  margin: 0
+  line-height: 1.4
+  a
+    color: #5A2A82
+    text-decoration: none
+    &:hover
+      text-decoration: underline
+
+.unclaimed-card__btn
+  background-color: #5A2A82 !important
+  color: #ffffff !important
+  border: none !important
+  padding: 6px 14px !important
+  font-weight: 600 !important
+  height: auto !important
+  line-height: normal !important
+  border-radius: 6px !important
+  font-size: 13px !important
+  white-space: nowrap
+  transition: background-color 0.2s
+  &:hover
+    background-color: #4A1A72 !important
+    color: #ffffff !important
+
+// Ensure inputs and buttons with this class inherit font family and weight
+input.unclaimed-card__btn,
+button.unclaimed-card__btn
+  font-weight: 600 !important
+  font-family: inherit !important
+  -webkit-font-smoothing: antialiased !important
+  height: auto !important
+  line-height: normal !important
+
+.unclaimed-card__grid
+  display: grid
+  grid-template-columns: repeat(2, 1fr)
+  gap: 16px
+
+.unclaimed-card__item
+  position: relative
+
+  // Modern tile layout to match OpenHub design (image + absolute commit badge)
+  display: flex
+  flex-direction: column
+  align-items: center
+  gap: 8px
+  min-width: 0
+  padding: 8px
+
+.unclaimed-card__more
+  grid-column: 1 / -1
+  display: flex
+  align-items: center
+  justify-content: center
+  a
+    font-size: 13px
+    color: #5A2A82
+    text-decoration: none
+    &:hover
+      text-decoration: underline
+
+// Unclaimed item inner elements: logo and commit badge
+.unclaimed-card__item
+  .logo
+    position: relative
+    img, p
+      width: 48px !important
+      height: 48px !important
+      border-radius: 8px
+      object-fit: cover
+      border: 1px solid #e5e7eb !important
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05)
+      @media only all and (min-width: 640px)
+        width: 64px !important
+        height: 64px !important
+
+    p
+      // placeholder text inside logo (when no image available)
+      display: flex
+      align-items: center
+      justify-content: center
+      margin: 0
+      font-size: 16px
+      font-weight: 600
+      color: #6b7280
+      background: #f3f4f6
+      border-radius: 8px
+      @media only all and (min-width: 640px)
+        font-size: 18px
+
+  .commits
+    // container for commit badge + label; keep in document flow so label sits below logo
+    font-size: 12px
+    display: inline-flex
+    flex-direction: column
+    align-items: center
+    justify-content: center
+
+    a
+      color: #6a7282 !important
+      text-transform: uppercase
+      line-height: 1.3
+      letter-spacing: 0.3px
+
+  .logo .commit-count
+    // absolute badge overlayed on the project logo (positioned relative to .logo)
+    position: absolute
+    top: -6px
+    right: -6px
+    font-size: 12px
+    display: inline-flex
+    align-items: center
+    justify-content: center
+    background: linear-gradient(to right, #5A2A82, #7F3FA0)
+    color: #ffffff
+    padding: 2px 6px
+    border-radius: 4px
+    font-weight: 700
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)
+    @media only all and (min-width: 640px)
+      top: -8px
+      right: -8px
+      padding: 4px 8px
+
+  .project_link
+    font-size: 12px
+    line-height: 1.4
+    text-align: center
+    width: 100%
+    overflow-wrap: break-word
+    word-break: break-word
+    cursor: pointer
+    @media only all and (min-width: 640px)
+      font-size: 14px
+
+    a
+      color: #5A2A82
+      &:hover
+        text-decoration: underline
+
+// ── Desktop overrides (sm: 576px+) ───────────────────────────────────────────
+@media only all and (min-width: 576px)
+  .people-card__body
+    padding: 24px
+
+  .people-card__row
+    flex-direction: row
+    align-items: flex-start
+    gap: 24px
+
+  // Make avatar+info transparent so children become direct row flex items
+  .people-card__avatar-info
+    display: contents
+    img, .gravatar
+      width: 96px
+      height: 96px
+      border-radius: 4px
+
+  // Commits: remove top border, add left border
+  .people-card__commits
+    border-top: none
+    border-left: 1px solid #e5e7eb
+    padding: 16px 24px
+
+  .people-card__commits-count
+    font-size: 40px
+
+  // Kudos: remove top border, become a column
+  .people-card__kudos
+    flex-direction: column
+    border-top: none
+    padding-top: 0
+    gap: 4px
+
+  // Unclaimed grid: flex wrap on desktop
+  .unclaimed-card__grid
+    display: flex
+    flex-wrap: wrap
+    gap: 24px
+
+// ── Account settings (unchanged) ─────────────────────────────────────────────
 #analysis_timestamp
   @include analysis-timestamp-color
   margin-top: 0px
@@ -127,6 +529,7 @@
 .settings_specifications
   width: 380px
   length: 88px
+
 .verification-buttons-container
   width: 100%
   margin-left: auto
@@ -142,94 +545,3 @@
 
 .grecaptcha-badge
   display: none
-@media only all and (min-width: 768px) and (max-width: 1024px)
-  #accounts_index_page
-    h1
-      font-size: 24px
-      margin-bottom: 0
-      margin-top: 10px
-    h3
-      font-size: 18px
-      margin-bottom: 0
-      margin-top: 10px
-    .account_details
-      width: 142px
-      margin-left: 5px
-    .commits_summary
-      width: 379px
-    .commits_count
-      width: auto
-      font-size: 15px
-      padding: 31px 0px 12px
-      line-height: 20px
-    .well
-      min-height: 142px
-    .language_summary
-      width: 100px !important
-    .language_name
-      width: 85px !important
-    .kudo_rank
-      font-size: 18px
-      padding: 0
-      font-weight: 500
-      margin-top: 30px !important
-      width: auto
-    .kudo_badge
-      margin-top: 28px !important
-      padding: 0
-    #search-dingus label.paginate
-      font-size: 10px !important
-    label
-      font-size: 10px
-    #search-dingus button.btn
-      font-size: 10px
-@media only all and (min-width: 320px) and (max-width: 480px)
-  #accounts_index_page
-    h1
-      font-size: 18px
-      margin-bottom: 0
-      margin-top: 10px
-    h3
-      font-size: 12px
-      margin-bottom: 0
-      margin-top: 10px
-    .account_details
-      width: auto
-    .commits_summary
-      width: auto
-    .commits_count
-      width: auto
-      font-size: 15px
-      padding: 31px 0px 12px
-      line-height: 20px
-    .kudo_rank
-      font-size: 24px
-      padding: 0
-      margin-top: 35px
-    .kudo_badge
-      margin-top: 28px !important
-      padding: 0
-    .language_name
-      width: 90px !important
-    .unclaimed_committers_box .header_row h4
-      font-size: 12px
-    .well
-      min-height: 142px
-    .unclaimed_committers_box .header_row .btn-mini
-      font-size: 8px
-    .language_summary
-      width: 100px !important
-    #more_account
-      font-size: 10px
-    #more_unclaimed
-      font-size: 10px
-    #search-dingus label.paginate
-      font-size: 8px !important
-    label
-      font-size: 8px
-    #search-dingus button.btn
-      font-size: 8px
-    #search-dingus input
-      width: auto
-    #search-dingus select
-      width: auto
