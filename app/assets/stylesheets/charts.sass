@@ -394,3 +394,39 @@
   .highcharts-graph
     @include code-analysis-chart-color-0-stroke
 
+// Dark mode chart axis styling
+html.dark
+  #top_commit_volume_chart,
+  #committer_history_chart,
+  .committers_chart
+    .highcharts-axis-title
+      fill: #e2e8f0 !important
+
+    .highcharts-axis-labels text
+      fill: #e2e8f0 !important
+
+    .highcharts-xaxis-labels text,
+    .highcharts-yaxis-labels text
+      fill: #e2e8f0 !important
+
+    .highcharts-legend-item text
+      fill: #e2e8f0 !important
+
+    .highcharts-legend-box
+      fill: #2D1548 !important
+
+    .highcharts-button text,
+    g.highcharts-button text
+      fill: #e2e8f0 !important
+
+    // Target all text in button groups
+    .highcharts-exporting-group text
+      fill: #e2e8f0 !important
+
+    .highcharts-button-box
+      fill: #2D1548 !important
+      stroke: #5A2A82 !important
+
+  #committer_history_chart
+    .highcharts-graph
+      stroke: #60a5fa !important

@@ -1,10 +1,5 @@
 @import oh-styles
 
-#project_header_activity_indicator
-  width: 88px
-  margin-top: 1.4rem
-  margin-left: 2rem
-
 .thirtyfive_project_activity_text
   font-size: 11px
   text-align: center
@@ -29,26 +24,28 @@
   text-align: left
   margin-left: 19px
 
-#i_use_this_container
-  margin-bottom: 0.8rem
-  .btn.iusethis
-    font-size: 13px
-    height: 30px
-    margin-right: 10px
+// Redesigned header activity indicator wrapper
+.activity-indicator-wrapper
+  display: flex
+  flex-direction: column
+  align-items: center
+  justify-content: center
+  gap: 8px
+  min-width: 80px
 
-  .use_count
-    padding: 0 10px
-    font-size: 24px
-    height: 32px
-    line-height: 36px
-    display: block
+  [class^='thirtyfive_project_activity_level_']
+    position: static
+    top: auto
+    margin-left: 0
+    transform: scale(1.25)
+    transform-origin: center center
+
+  .thirtyfive_project_activity_text
+    margin: 0
+    width: auto
+    line-height: 1.2
+    font-size: 12px
+    font-weight: 600
+    color: white
     text-align: center
-    margin-top: 2px
-    a
-      @include site-link-color
-
-#project_container
-  #i_use_this_container
-    padding: 0
-    .btn.iusethis
-      font-size: 2rem
+    white-space: nowrap
