@@ -10,7 +10,424 @@
   left: 4px
   font-size: 10px !important
 
-#contributions_index_page
-  #search-dingus
-    margin-bottom: 0px !important
-    margin-top: 0px !important
+// Search bar styling moved to search-dingus.sass
+
+// Contributors Summary Page - Figma Design Styling
+.project_content_title
+  h1, h2
+    color: #111827
+    html.dark &
+      color: #ffffff
+
+.committers_chart
+  display: flex
+  flex-wrap: wrap
+  margin-bottom: 24px
+  
+  .pull-left
+    flex: 45
+    min-width: 300px
+    background: #ffffff
+    border-radius: 16px
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24)
+    padding: 24px
+    margin-right: 24px !important
+    margin-bottom: 16px
+    
+    html.dark &
+      background: #2D1548
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.24), 0 1px 2px rgba(0, 0, 0, 0.48)
+  
+  .pull-right
+    flex: 55
+    min-width: 300px
+    background: #ffffff
+    border-radius: 16px
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24)
+    padding: 24px
+    margin-bottom: 16px
+    
+    html.dark &
+      background: #2D1548
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.24), 0 1px 2px rgba(0, 0, 0, 0.48)
+  
+  h4
+    color: #5A2A82
+    font-weight: 700
+    margin-bottom: 16px
+    
+    html.dark &
+      color: #ffb91a
+
+.col-md-12
+  h4
+    color: #5A2A82
+    font-weight: 700
+    
+    html.dark &
+      color: #ffb91a
+    
+    a
+      color: #5A2A82 !important
+      text-decoration: underline
+      
+      html.dark &
+        color: #ffb91a !important
+
+// Contributors Section Layout
+.contributors-section
+  .section-title,
+  h2.section-title
+    display: flex
+    align-items: center
+    gap: 8px
+    font-size: 16px
+    font-weight: 600
+    color: #111827
+    margin: 0 0 16px 0 !important
+
+    @media (min-width: 768px)
+      font-size: 20px
+
+    html.dark &
+      color: #ffffff
+
+    .section-icon
+      width: 20px
+      height: 20px
+      color: #5A2A82
+      flex-shrink: 0
+
+      html.dark &
+        color: #ffb91a
+
+    .section-title-link
+      color: #5A2A82
+      text-decoration: none
+
+      html.dark &
+        color: #ffb91a !important
+
+      &:hover
+        color: #5A2A82
+        text-decoration: underline
+
+        html.dark &
+          color: #ffb91a !important
+
+// Two-column layout for newest contributors
+.two-column-layout
+  display: grid
+  grid-template-columns: 1fr
+  gap: 0
+
+  @media (min-width: 768px)
+    grid-template-columns: repeat(2, 1fr)
+    gap: 32px
+
+  .column-left,
+  .column-right
+    .col-md-6
+      padding: 0
+      width: 100%
+
+// Desktop only - hide on mobile, show on desktop
+.desktop-only
+  display: none
+
+  @media (min-width: 768px)
+    display: block
+
+// Two-column layout specific grid display
+.two-column-layout.desktop-only
+  @media (min-width: 768px)
+    display: grid
+
+// Mobile only - show on mobile, hide on desktop
+.mobile-only
+  display: block
+
+  @media (min-width: 768px)
+    display: none
+
+// Mobile contributors cards styling
+.contributors-cards-container
+  background: #ffffff
+  border-radius: 16px
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24)
+  overflow: hidden
+  padding: 0
+
+  html.dark &
+    background: #2D1548
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.24), 0 1px 2px rgba(0, 0, 0, 0.48)
+
+  .contributor-card-item
+    border-bottom: 1px solid #f3f4f6
+    transition: background-color 0.2s
+
+    html.dark &
+      border-bottom-color: rgba(90, 42, 130, 0.2)
+
+    &:last-child
+      border-bottom: none
+
+    .card-item-header
+      display: flex
+      align-items: center
+      justify-content: space-between
+      padding: 16px 24px
+      cursor: pointer
+
+      &:hover
+        background-color: #f9fafb
+
+        html.dark &
+          background-color: rgba(255, 255, 255, 0.05)
+
+      .contributor-link
+        display: flex
+        align-items: center
+        gap: 12px
+        text-decoration: none
+        flex: 1
+        min-width: 0
+
+        img
+          width: 48px
+          height: 48px
+          border-radius: 50%
+          flex-shrink: 0
+
+        .contributor-name
+          font-size: 14px
+          font-weight: 600
+          color: #111827
+          white-space: nowrap
+          overflow: hidden
+          text-overflow: ellipsis
+
+          html.dark &
+            color: #ffffff
+
+      .expand-toggle
+        background: none
+        border: none
+        padding: 8px
+        cursor: pointer
+        color: #6b7280
+        transition: transform 0.2s
+
+        html.dark &
+          color: #9ca3af
+
+        i
+          font-size: 16px
+
+    .card-item-content
+      display: none
+      padding: 0 24px 16px
+      flex-direction: column
+      gap: 12px
+
+      .content-row
+        display: grid
+        grid-template-columns: 1fr 1fr
+        gap: 12px
+
+        &.full-width
+          grid-template-columns: 1fr
+
+      .content-item
+        display: flex
+        flex-direction: column
+        gap: 4px
+        text-align: center
+
+        .label
+          font-size: 11px
+          font-weight: 600
+          color: #6b7280
+          text-transform: uppercase
+          letter-spacing: 0.05em
+
+          html.dark &
+            color: #9ca3af
+
+        .value
+          font-size: 14px
+          color: #111827
+          font-weight: 500
+
+          html.dark &
+            color: #e2e8f0
+
+          img
+            height: 20px
+            width: auto
+            margin-right: 4px
+            vertical-align: middle
+
+      .trend-image
+        margin-top: 8px
+        text-align: center
+
+    &.expanded
+      .card-item-header
+        .expand-toggle
+          transform: rotate(180deg)
+
+      .card-item-content
+        display: flex
+
+// See All Contributors Button
+.see-all-container
+  text-align: center
+  margin-top: 10px
+  margin-bottom: 0
+
+  .btn
+    display: inline-flex
+    align-items: center
+    justify-content: center
+    gap: 8px
+    font-size: 14px !important
+    font-weight: 600
+    color: #ffffff !important
+    background-color: #5A2A82 !important
+    border: 2px solid #5A2A82
+    border-radius: 14px !important
+    padding: 12px 24px
+    transition: all 0.2s ease
+    text-decoration: none
+
+    &:hover
+      color: #ffffff !important
+      background-color: #1D0631 !important
+      border-color: #1D0631
+      text-decoration: none
+
+    &:focus
+      outline: none
+      box-shadow: 0 0 0 3px rgba(90, 42, 130, 0.2)
+
+    html.dark &
+      color: #1D0631 !important
+      border-color: #ffb91a
+
+      &:hover
+        border-color: #ffd966
+
+      &:focus
+        box-shadow: 0 0 0 3px rgba(255, 185, 26, 0.2)
+
+// Responsive improvements
+// Tablet (768px - 991px)
+@media (max-width: 991px)
+  .committers_chart
+    .pull-left, .pull-right
+      flex: 1 1 100% !important
+      margin-right: 0 !important
+      margin-bottom: 16px
+      
+// Mobile (below 768px)
+@media (max-width: 767px)
+  .project_content_title
+    h1
+      font-size: 24px
+  
+  .committers_chart
+    margin-bottom: 16px
+    
+    .pull-left, .pull-right
+      flex: 1 1 100% !important
+      margin-right: 0 !important
+      padding: 16px
+      margin-bottom: 16px
+      
+      .chart
+        height: 280px !important
+        width: 100% !important
+  
+  .top-committers
+    margin-top: 16px
+    overflow-x: auto
+    
+    h4
+      font-size: 18px
+      margin-bottom: 12px
+    
+    table
+      font-size: 11px
+      
+      thead th
+        padding: 8px 4px
+        white-space: nowrap
+        font-size: 11px
+      
+      tbody td
+        padding: 8px 4px
+        
+        &:first-child
+          min-width: 150px
+        
+        img[src*="commits_spark"]
+          width: 120px
+          height: 24px
+        
+        .avatar_name
+          font-size: 12px
+    
+  .see-all-container .btn
+    font-size: 13px
+    padding: 10px 20px
+
+// Extra small mobile (below 480px)
+@media (max-width: 480px)
+  .project_content_title
+    h1
+      font-size: 20px
+      line-height: 1.2
+  
+  .committers_chart
+    .pull-left, .pull-right
+      padding: 12px
+      border-radius: 12px
+      
+      h4
+        font-size: 16px
+        margin-bottom: 12px
+      
+      .chart
+        height: 240px !important
+  
+  .top-committers
+    
+    h4
+      font-size: 16px
+    
+    table
+      font-size: 10px
+      
+      thead th
+        padding: 6px 2px
+        font-size: 10px
+      
+      tbody td
+        padding: 6px 2px
+        
+        &:first-child
+          min-width: 120px
+        
+        img[src*="commits_spark"]
+          width: 100px
+          height: 20px
+          display: block
+        
+        .contribution_title
+          font-size: 9px
+
+  .see-all-container .btn
+    width: 100%
+    padding: 12px 20px
+    font-size: 14px

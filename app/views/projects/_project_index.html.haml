@@ -67,17 +67,6 @@
           - else
             = t('.no_declared_licenses')
 
-      / Tags
-      .project-tags
-        - unless project.tag_list.blank?
-          %span.tags-label= t('.tags')
-          - tags = project.tag_list.split(' ')
-          - tags.first(8).each do |tag|
-            - tag = tag.fix_encoding_if_invalid
-            = link_to html_escape(tag), tags_path(names: tag), class: 'tag'
-          - if tags.length > 8
-            %span.more-tags= t('.n_more', n: tags.length - 8)
-
     / Stats - Right Side
     .project-stats
 
@@ -137,3 +126,14 @@
           - else
             %button.btn-use-this{ 'data-target' => '#LoginModal', 'data-toggle' => 'modal' }
               = t('.i_use_this')
+
+    / Tags
+    .project-tags
+      - unless project.tag_list.blank?
+        %span.tags-label= t('.tags')
+        - tags = project.tag_list.split(' ')
+        - tags.first(8).each do |tag|
+          - tag = tag.fix_encoding_if_invalid
+          = link_to html_escape(tag), tags_path(names: tag), class: 'tag'
+        - if tags.length > 8
+          %span.more-tags= t('.n_more', n: tags.length - 8)

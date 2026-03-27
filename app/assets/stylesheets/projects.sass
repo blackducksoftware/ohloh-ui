@@ -1,3 +1,30 @@
+// Design System Variables for Redesigned Header
+// ============================================================================
+$purple-dark: #1D0631
+$purple-primary: #5A2A82
+$purple-light: #9F7ABA
+$yellow-accent: #FFB91A
+$yellow-hover: #FFCC4D
+
+// Neutrals
+$gray-50: #f9fafb
+$gray-100: #f3f4f6
+$gray-200: #e5e7eb
+$gray-300: #d1d5db
+$gray-400: #9ca3af
+$gray-500: #6b7280
+$gray-600: #4b5563
+$gray-700: #374151
+$gray-900: #111827
+
+// Shadows
+$shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05)
+$shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)
+$shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)
+
+// System Font Stack
+$font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif
+
 $sizes: (('fifteen', 15, 1), ('twenty', 20, 0), ('twentyfive', 25, 19), ('thirtyfive', 35, 23))
 $pai_levels: (('very_high',0), ('high', 1), ('moderate', 2), ('low', 3), ('very_low', 4), ('inactive', 5), ('na', 6), ('new', 7))
 
@@ -33,9 +60,6 @@ $pai_levels: (('very_high',0), ('high', 1), ('moderate', 2), ('low', 3), ('very_
 .margin_top_two
   margin-top: 32px
 
-.thirtyfive_project_activity_text
-  width: 200px
-
 .row-eq-height
   display: -webkit-box
   display: -webkit-flex
@@ -57,40 +81,213 @@ $pai_levels: (('very_high',0), ('high', 1), ('moderate', 2), ('low', 3), ('very_
     li
       margin: 0
       width: 130px
-      overflow: auto
+      overflow: edit_authorized
+      
+.project-header-gradient
+  width: 100vw
+  margin-left: calc(-50vw + 50%)
+  margin-right: calc(-50vw + 50%)
+  background: linear-gradient(135deg, $purple-dark 0%, $purple-primary 100%)
+  padding: 32px 16px 32px
+  position: relative
+  overflow: hiddenßß
 
-#project_masthead
-  height: 85px
+  .header-content
+    padding: 0px 10px
+    margin: 0 auto
+    position: relative
+    z-index: 10
 
-  #project_icon
-    margin-top: 8px
+  .header-main
+    display: flex
+    flex-direction: column
+    gap: 16px
 
-  #widgets
-    width: 496px
+    @media (min-width: 768px)
+      flex-direction: row
+      align-items: flex-start
+      justify-content: space-between
+      gap: 24px
 
-  #project_header
-    padding-right: 0px
-    .project_title
-      margin: 0px 0px 0px 0px
-      h1
-        margin: 15px 0px 6px 0px
-      i
-        @include project-icon-colors
+  a,
+  button
+    font-family: $font-family
 
-  .about
-    margin-top: 10px
-    li
-      margin: 15px 0 15px 30px
-#add_this
-  margin-left: 85px
-  margin-top: 85px
-  a
-    @include add-this-link-colors
+  // Top-right user stats and button (mobile and desktop)
+  .header-top-right
+    display: flex
+    align-items: center
+    gap: 12px
+    margin-top: 24px
+    z-index: 20
 
-#project_container
-  #project_masthead
-    #widgets
-      width: 480px
+    @media (min-width: 640px)
+      position: absolute
+      top: 49px
+      right: 24px
+      margin-top: 0
+
+    @media (min-width: 1024px)
+      right: 32px
+
+    .activity-indicator-wrapper
+      display: flex
+      flex-direction: column
+      align-items: center
+      justify-content: center
+      gap: 8px
+      min-width: 80px
+
+      [class^='thirtyfive_project_activity_level_']
+        position: static
+        top: auto
+        margin-left: 0
+        transform: scale(1.25)
+        transform-origin: center center
+
+      .thirtyfive_project_activity_text
+        margin: 0
+        width: auto
+        line-height: 1.2
+        font-size: 12px
+        font-weight: 600
+        color: white
+        text-align: center
+
+    .stats-card
+      background: white
+      border-radius: 8px
+      padding: 12px 16px
+      box-shadow: $shadow-md
+      min-width: 140px
+
+  .stats-card
+    .stats-inner
+      display: flex
+      align-items: center
+      gap: 12px
+      margin-bottom: 12px
+
+      svg
+        width: 20px
+        height: 20px
+        color: $purple-primary
+        flex-shrink: 0
+
+      .user-count
+        font-size: 28px
+        font-weight: 700
+        color: $purple-primary
+        line-height: 1
+
+    .i-use-this-btn
+      width: 100%
+      html.dark &
+        background-color: #5A2A82 !important
+        color: #ffffff !important
+
+  // Project title and info section
+  .project-title-section
+    flex: 1
+    min-width: 0
+    max-width: 900px
+
+    @media (min-width: 768px)
+      max-width: calc(100% - 280px)
+
+    h1
+      font-size: 32px
+      font-weight: 700
+      color: white
+      line-height: 1.2
+      letter-spacing: -0.02em
+      margin: 0 0 12px
+
+      @media (min-width: 768px)
+        font-size: 48px
+
+      @media (min-width: 1024px)
+        font-size: 48px
+
+    .action-buttons
+      display: flex
+      flex-wrap: wrap
+      gap: 8px
+      margin-bottom: 20px
+
+      .action-btn
+        display: inline-flex
+        align-items: center
+        gap: 6px
+        padding: 6px 12px
+        border-radius: 8px
+        font-size: 12px
+        font-weight: 500
+        line-height: 1.25
+        text-decoration: none !important
+        appearance: none
+        -webkit-appearance: none
+        background-image: none !important
+        box-shadow: none !important
+        border: 0
+        cursor: pointer
+        transition: all 0.2s ease
+
+        &:link,
+        &:visited,
+        &:hover,
+        &:active
+          color: white !important
+          text-decoration: none !important
+
+        @media (min-width: 768px)
+          font-size: 14px
+
+        svg
+          width: 14px
+          height: 14px
+          flex-shrink: 0
+          stroke: currentColor
+
+        // Outlined button style (for Settings and Report Duplicate)
+        &.action-btn-outline
+          background: rgba(255, 255, 255, 0.1)
+          border: 1px solid rgba(255, 255, 255, 0.2)
+          color: white !important
+          box-shadow: none
+
+          &:hover
+            background: rgba(255, 255, 255, 0.2)
+            border-color: rgba(255, 255, 255, 0.2)
+            color: white !important
+            transform: none
+
+          &:active
+            transform: none
+            background: rgba(255, 255, 255, 0.2)
+
+          &:focus-visible
+            outline: 2px solid rgba(255, 255, 255, 0.55)
+            outline-offset: 2px
+
+    .project-description
+      font-size: 16px
+      color: rgba(255, 255, 255, 0.9)
+      line-height: 1.6
+      margin-bottom: 12px
+
+      @media (min-width: 768px)
+        font-size: 17px
+        
+  // Mobile Stats Section
+  .header-mobile-stats
+    display: flex
+    gap: 12px
+    margin-top: 4px
+
+    @media (min-width: 640px)
+      display: none
+
 // settings page styles
 .settings_module
   :cursor pointer
@@ -842,49 +1039,6 @@ $dark-shadow-lg: 0 8px 16px rgba(0,0,0,0.48)
             html.dark &
               color: $dark-text-primary
 
-      .project-tags
-        display: flex
-        flex-wrap: wrap
-        gap: 6px
-        align-items: center
-
-        .tags-label
-          font-size: 12px
-          color: $text-secondary
-          margin-right: 4px
-          html.dark &
-            color: $dark-text-secondary
-
-        .tag
-          padding: 2px 10px
-          border-radius: 9999px
-          font-size: 11px
-          font-weight: 500
-          background-color: rgba(255, 185, 26, 0.2)
-          color: $accent-color
-          border: 1px solid rgba(255, 185, 26, 0.3)
-          transition: background-color 0.2s ease
-          cursor: pointer
-          text-decoration: none
-          &:hover
-            background-color: rgba(255, 185, 26, 0.3)
-          html.dark &
-            background-color: rgba(255, 185, 26, 0.15)
-            color: $dark-primary-color !important
-            border-color: rgba(255, 185, 26, 0.2)
-            &:hover
-              background-color: rgba(255, 185, 26, 0.25)
-
-        .more-tags
-          color: $primary-color
-          font-size: 12px
-          font-weight: 500
-          cursor: pointer
-          &:hover
-            text-decoration: underline
-          html.dark &
-            color: $dark-primary-color
-
     .project-stats
       grid-column: 2
       grid-row: 1 / 3
@@ -917,8 +1071,7 @@ $dark-shadow-lg: 0 8px 16px rgba(0,0,0,0.48)
             font-size: 16px
             font-weight: bold
             color: $primary-color
-            min-width: 70px
-            text-align: right
+            text-align: left
             html.dark &
               color: $dark-primary-color
 
@@ -1006,24 +1159,45 @@ $dark-shadow-lg: 0 8px 16px rgba(0,0,0,0.48)
           display: flex
           justify-content: center
           align-items: center
+    
+    .project-tags
+      display: flex
+      flex-wrap: wrap
+      gap: 6px
+      align-items: center
 
-          .btn-use-this
-            padding: 6px 16px
-            background-color: $primary-color
-            color: #ffffff
-            border: none
-            border-radius: 8px
-            font-size: 12px
-            font-weight: 600
-            cursor: pointer
-            transition: background-color 0.2s ease
-            &:hover
-              background-color: $primary-hover
-            html.dark &
-              background-color: $dark-primary-color
-              color: $dark-bg-color
-              &:hover
-                background-color: $dark-primary-hover
+      .tags-label
+        font-size: 12px
+        color: $text-secondary
+        margin-right: 4px
+        html.dark &
+          color: $dark-text-secondary
+
+      .tag
+        padding: 2px 10px
+        border-radius: 9999px
+        font-size: 11px
+        font-weight: 500
+        background-color: rgba(255, 185, 26, 0.2)
+        color: #1D0631
+        transition: background-color 0.2s ease
+        cursor: pointer
+        text-decoration: none
+        &:hover
+        background-color: rgba(255, 185, 26, 0.3)
+        html.dark &
+          background-color: #ffb91a
+          color: #1D0631
+
+      .more-tags
+        color: $primary-color
+        font-size: 12px
+        font-weight: 500
+        cursor: pointer
+        &:hover
+          text-decoration: underline
+        html.dark &
+          color: $dark-primary-color
 
 // Responsive adjustments
 @media (max-width: 1024px)
