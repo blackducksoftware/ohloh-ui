@@ -1,9 +1,9 @@
 // Contributors mobile card expand/collapse functionality
 document.addEventListener('DOMContentLoaded', function() {
-  const contributorCards = document.querySelectorAll('.contributor-card-item');
+  var contributorCards = document.querySelectorAll('.contributor-card-item');
 
   contributorCards.forEach(function(card) {
-    const header = card.querySelector('.card-item-header');
+    var header = card.querySelector('.card-item-header');
 
     if (header) {
       header.addEventListener('click', function(e) {
