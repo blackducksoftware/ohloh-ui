@@ -1,0 +1,2496 @@
+// Project Show Page Redesign - Clean Implementation Based on Figma Design
+// ============================================================================
+
+// Design System Variables
+// ============================================================================
+$purple-dark: #1D0631
+$purple-primary: #5A2A82
+$purple-light: #9F7ABA
+$yellow-accent: #FFB91A
+$yellow-hover: #FFCC4D
+
+// Neutrals
+$gray-50: #f9fafb
+$gray-100: #f3f4f6
+$gray-200: #e5e7eb
+$gray-300: #d1d5db
+$gray-400: #9ca3af
+$gray-500: #6b7280
+$gray-600: #4b5563
+$gray-700: #374151
+$gray-900: #111827
+
+// Shadows
+$shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05)
+$shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)
+$shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)
+
+// System Font Stack
+$font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif
+
+// ============================================================================
+// Global Overrides - Remove Bootstrap padding/margins
+// ============================================================================
+
+// Remove navbar margin globally with maximum specificity
+.navbar,
+.navbar-default,
+.navbar-static-top,
+nav.navbar,
+header .navbar,
+.navbar-fixed-top,
+.navbar-fixed-bottom
+  margin-bottom: 0 !important
+  margin-top: 0 !important
+
+// Additional Bootstrap navbar overrides
+body .navbar
+  margin-bottom: 0 !important
+
+// Target specific header navbar
+header
+  .navbar
+    margin-bottom: 0 !important
+
+// Remove container and page padding when showing redesigned project page
+body:has(.project-show-redesign)
+  #project_container,
+  .container-fluid#project_container
+    padding: 0 !important
+    margin: 0 !important
+    max-width: 100% !important
+
+  #page-contents,
+  .row#page-contents
+    margin: 0 !important
+    padding: 0 !important
+
+    > div
+      padding: 0 !important
+
+// Direct child approach - more specific
+#project_container
+  > .row#page-contents
+    > .col-xs-12,
+    > .col-sm-12,
+    > .col-md-12
+      padding: 0 !important
+
+      > .project-show-redesign
+        margin: 0 !important
+
+// Force remove padding from all Bootstrap column classes in project container
+.project-show-redesign
+  ~ *
+    .container,
+    .container-fluid,
+    .row,
+    [class*="col-"]
+      padding-left: 0 !important
+      padding-right: 0 !important
+
+// ============================================================================
+// Main Container
+// ============================================================================
+.project-show-redesign
+  width: 100%
+  min-height: 100vh
+  font-family: $font-family
+  -webkit-font-smoothing: antialiased
+  -moz-osx-font-smoothing: grayscale
+  margin: 0 !important
+
+  // Hide old project header elements
+  #project_masthead,
+  #project_header,
+  #project_icon,
+  #widgets,
+  #project_header_activity_indicator
+    display: none !important
+
+  // Reset global styles that interfere
+  *
+    box-sizing: border-box
+
+  // Override any legacy project container color styles
+  color: $gray-900
+
+  a
+    color: $purple-primary
+
+    &:hover
+      color: $purple-primary
+
+  // ============================================================================
+  // Main Content Area
+  // ============================================================================
+  .project-content
+    margin: 0 auto
+    padding: 24px 0
+
+    @media (min-width: 768px)
+      padding: 32px 0
+
+  // ============================================================================
+  // Stats Grid (3 columns)
+  // ============================================================================
+  .stats-grid
+    display: grid
+    grid-template-columns: repeat(3, 1fr)
+    gap: 16px
+    margin-bottom: 32px
+
+    @media (min-width: 768px)
+      gap: 24px
+
+    .stat-card
+      background: white
+      border-radius: 12px
+      padding: 20px 16px
+      text-align: center
+      box-shadow: $shadow-sm
+      transition: box-shadow 0.2s
+
+      &:hover
+        box-shadow: $shadow-md
+
+      .stat-value
+        font-size: 28px
+        font-weight: 700
+        color: $purple-primary
+        line-height: 1
+        margin-bottom: 8px
+
+        @media (min-width: 768px)
+          font-size: 36px
+
+      .stat-label
+        font-size: 14px
+        color: $gray-600
+        font-weight: 500
+        line-height: 1.2
+
+  // ============================================================================
+  // Card Components
+  // ============================================================================
+  .gradient-card
+    background: white
+    border-radius: 12px
+    // Enhanced shadow to match Figma design - more prominent
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.04)
+    overflow: hidden
+    transition: box-shadow 0.2s
+
+    &:hover
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12), 0 4px 8px rgba(0, 0, 0, 0.06)
+
+    .card-content
+      padding: 20px
+
+      @media (min-width: 768px)
+        padding: 24px
+
+      h3
+        font-size: 20px !important
+        font-weight: 600 !important
+        color: $gray-900 !important
+        line-height: 1.3
+        margin: 0 0 16px !important
+        padding-bottom: 12px
+        border-bottom: 1px solid $gray-200
+
+      h4
+        font-size: 16px !important
+        font-weight: 600 !important
+        color: $gray-900 !important
+        line-height: 1.4
+        margin: 0 0 12px !important
+
+      p
+        font-size: 14px !important
+        line-height: 1.5
+        color: $gray-700 !important
+        margin: 0 0 16px !important
+
+        &:last-child
+          margin-bottom: 0
+
+        &.note
+          font-size: 12px !important
+          color: $gray-500 !important
+          font-style: italic
+
+      ul
+        list-style: none
+        padding: 0
+        margin: 0
+
+  // ============================================================================
+  // Desktop: 3-column grid
+  // ============================================================================
+  .three-col-grid
+    display: none
+
+    @media (min-width: 1024px)
+      display: grid
+      grid-template-columns: repeat(3, 1fr)
+      gap: 24px
+      margin-bottom: 32px
+
+  // ============================================================================
+  // Mobile: Accordion cards
+  // ============================================================================
+  .mobile-accordion
+    display: flex
+    flex-direction: column
+    gap: 16px
+    margin-bottom: 32px
+
+    @media (min-width: 1024px)
+      display: none
+
+    .accordion-card
+      .accordion-header
+        width: 100%
+        display: flex
+        align-items: center
+        justify-content: space-between
+        padding: 20px
+        background: none
+        border: none
+        cursor: pointer
+        text-align: left
+
+        .header-left
+          display: flex
+          align-items: center
+          gap: 12px
+
+          svg
+            width: 20px
+            height: 20px
+            color: $purple-primary
+
+          h3
+            font-size: 16px !important
+            font-weight: 600 !important
+            color: $gray-900 !important
+            margin: 0 !important
+
+        .chevron
+          width: 20px
+          height: 20px
+          color: $gray-600
+          transition: transform 0.2s
+
+          &.expanded
+            transform: rotate(180deg)
+
+      .accordion-content
+        padding: 0 20px 20px
+        display: none
+
+        &.expanded
+          display: block
+
+  // ============================================================================
+  // Tags
+  // ============================================================================
+  #project_tags,
+  #project_tags_mobile
+    margin-top: 24px
+
+    h4
+      font-size: 16px !important
+      font-weight: 600 !important
+      color: $gray-900 !important
+      margin-bottom: 12px
+      display: flex
+      align-items: center
+      gap: 8px
+
+      svg
+        width: 16px
+        height: 16px
+        color: $gray-900 !important
+
+  .tags-container
+    display: flex
+    flex-wrap: wrap
+    gap: 8px
+
+    .tag
+      padding: 4px 12px
+      background: $gray-100
+      color: $gray-900 !important
+      font-size: 14px
+      border-radius: 6px
+      text-decoration: none
+      transition: all 0.15s
+
+      &:hover
+        background: $purple-primary
+        color: white !important
+
+  // ============================================================================
+  // Nutshell List
+  // ============================================================================
+  .nutshell-list
+    list-style: none
+    padding: 0
+    margin: 0
+    display: flex
+    flex-direction: column
+    gap: 12px
+
+    li
+      display: flex
+      gap: 12px
+      padding-top: 12px
+      font-size: 14px !important
+      line-height: 1.5
+      border-top: 1px solid $gray-100
+      color: $gray-700 !important
+
+      &:first-child
+        border-top: none
+        padding-top: 0
+
+      svg
+        width: 16px
+        height: 16px
+        color: $purple-primary !important
+        flex-shrink: 0
+        margin-top: 2px
+
+      .content
+        color: $gray-700 !important
+        flex: 1
+
+        a
+          color: $purple-primary !important
+          font-weight: 600
+          text-decoration: none
+
+          &:hover
+            text-decoration: underline
+            color: $purple-primary !important
+
+        .font-semibold,
+        span.font-semibold
+          font-weight: 600
+          color: $gray-700 !important
+
+  // ============================================================================
+  // Quick Reference List
+  // ============================================================================
+  .quick-ref-list
+    list-style: none
+    padding: 0
+    margin: 0
+    display: flex
+    flex-direction: column
+    gap: 12px
+
+    li
+      display: flex
+      justify-content: space-between
+      align-items: flex-start
+      gap: 16px
+      padding-bottom: 12px
+      font-size: 14px !important
+      border-bottom: 1px solid $gray-100
+
+      &:last-child
+        border-bottom: none
+        padding-bottom: 0
+
+      .label
+        color: $gray-600 !important
+        font-weight: 500 !important
+        font-size: 14px !important
+        flex-shrink: 0
+        line-height: 1.5
+
+      .value
+        color: $purple-primary !important
+        font-weight: 600 !important
+        font-size: 14px !important
+        text-align: right
+        flex: 1
+        line-height: 1.5
+
+        a
+          color: inherit !important
+          text-decoration: none
+          display: inline-flex
+          align-items: center
+          gap: 4px
+          font-size: 14px !important
+          font-weight: 600 !important
+
+          &:hover
+            text-decoration: underline
+            color: inherit !important
+
+          svg
+            width: 12px
+            height: 12px
+            flex-shrink: 0
+            color: currentColor !important
+
+        i
+          font-size: 14px !important
+          color: $purple-primary !important
+          font-weight: 600 !important
+
+  // Maximum specificity overrides for Quick Reference to prevent legacy interference
+  #page #project_container .project-show-redesign
+    .gradient-card .card-content h3
+      font-size: 20px !important
+      font-weight: 600 !important
+      color: $gray-900 !important
+
+    .quick-ref-list li
+      font-size: 14px !important
+
+      .label
+        font-size: 14px !important
+        font-weight: 500 !important
+        color: $gray-600 !important
+
+      .value
+        font-size: 14px !important
+        font-weight: 600 !important
+        color: $purple-primary !important
+
+        a
+          font-size: 14px !important
+          font-weight: 600 !important
+          color: $purple-primary !important
+
+        i
+          font-size: 14px !important
+          font-weight: 600 !important
+          color: $purple-primary !important
+
+    .mobile-accordion .accordion-card .accordion-header .header-left h3
+      font-size: 16px !important
+      font-weight: 600 !important
+
+    // Languages section override
+    .languages-content .language-legend .language-item
+      font-size: 12px !important
+
+      .language-name
+        color: $gray-700 !important
+        font-size: 12px !important
+
+        a
+          color: $purple-primary !important
+          font-size: 12px !important
+
+      .language-percent
+        color: $gray-500 !important
+        font-size: 12px !important
+
+    // Summary sections override
+    .summary-section
+      .summary-header
+        font-size: 12px !important
+        font-weight: 600 !important
+        color: $gray-900 !important
+
+      .summary-timespan
+        font-size: 12px !important
+        color: $gray-400 !important
+
+      .summary-stat
+        font-size: 12px !important
+        color: $gray-700 !important
+
+        .stat-number
+          font-weight: 600 !important
+          color: $gray-900 !important
+
+      .summary-change
+        font-size: 12px !important
+
+        &.positive
+          color: #16a34a !important
+
+        &.negative
+          color: #dc2626 !important
+
+  // ============================================================================
+  // Even more specific overrides for Activity card summary sections
+  // ============================================================================
+  #page #project_container .project-show-redesign .analysis-grid .gradient-card.analysis-card .card-content
+    .summary-grid .summary-section
+      h5.summary-header
+        font-size: 12px !important
+        font-weight: 600 !important
+        color: #111827 !important
+        margin-bottom: 4px !important
+
+      p.summary-timespan
+        font-size: 12px !important
+        color: #9ca3af !important
+        margin-bottom: 8px !important
+
+      p.summary-stat
+        font-size: 12px !important
+        color: #374151 !important
+        margin-bottom: 4px !important
+
+        span.stat-number
+          font-weight: 600 !important
+          color: #111827 !important
+
+      p.summary-change
+        font-size: 12px !important
+
+        &.positive
+          color: #16a34a !important
+
+        &.negative
+          color: #dc2626 !important
+
+  // ============================================================================
+  // Licenses Section
+  // ============================================================================
+  .licenses-section
+    margin-bottom: 32px
+
+    @media (min-width: 768px)
+      margin-bottom: 48px
+
+    .section-title
+      display: block
+      visibility: visible
+      opacity: 1
+      font-size: 20px
+      font-weight: 600
+      color: $gray-900
+      margin-bottom: 12px
+      line-height: 1.3
+
+      @media (min-width: 768px)
+        font-size: 24px
+        margin-bottom: 16px
+
+    .license-card
+      margin-bottom: 16px
+      border-radius: 16px
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24)
+
+      &:hover
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24)
+
+      &:last-child
+        margin-bottom: 0
+
+      .license-header
+        width: 100%
+        display: flex
+        align-items: center
+        justify-content: space-between
+        padding: 16px
+        background: none
+        border: none
+        cursor: pointer
+        text-align: left
+
+        @media (min-width: 768px)
+          padding: 24px
+
+        @media (min-width: 1024px)
+          cursor: default
+
+        .header-left
+          display: flex
+          align-items: center
+          gap: 8px
+
+          svg
+            width: 20px
+            height: 20px
+            color: $purple-primary
+            flex-shrink: 0
+
+            @media (min-width: 768px)
+              width: 20px
+              height: 20px
+
+          h4
+            font-size: 16px
+            font-weight: 600
+            color: $purple-primary
+            margin: 0
+            line-height: 1.3
+
+            @media (min-width: 768px)
+              font-size: 18px
+
+        .chevron
+          width: 20px
+          height: 20px
+          color: $gray-500
+          transition: transform 0.2s
+          flex-shrink: 0
+
+          @media (min-width: 1024px)
+            display: none
+
+          &.expanded
+            transform: rotate(180deg)
+
+      .license-content
+        display: none
+        border-top: 1px solid $gray-200
+        padding: 16px
+
+        &.expanded
+          display: block
+
+        @media (min-width: 768px)
+          padding: 24px
+
+        @media (min-width: 1024px)
+          display: block
+
+        .license-details-grid
+          display: grid
+          gap: 16px
+
+          @media (min-width: 768px)
+            grid-template-columns: repeat(3, 1fr)
+            gap: 24px
+
+          .license-detail-card
+            border-radius: 8px
+            padding: 16px
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24)
+
+            @media (min-width: 768px)
+              padding: 20px
+
+            &.permitted
+              background: linear-gradient(to bottom right, #faf5ff 0%, #f3e8ff 100%)
+
+              h5
+                color: $purple-primary
+
+                svg
+                  color: $purple-primary
+
+              li
+                color: $gray-700
+
+                svg
+                  color: $purple-primary
+
+            &.forbidden
+              background: linear-gradient(to bottom right, #fff7ed 0%, #fed7aa 100%)
+
+              h5
+                color: #c2410c
+
+                svg
+                  color: #c2410c
+
+              li
+                color: $gray-700
+
+                svg
+                  color: #c2410c
+
+            &.required
+              background: linear-gradient(to bottom right, #fefce8 0%, #fef3c7 100%)
+
+              h5
+                color: #a16207
+
+                svg
+                  color: #a16207
+
+              li
+                color: $gray-700
+
+                svg
+                  color: #a16207
+
+            h5
+              font-size: 14px
+              font-weight: 600
+              margin-bottom: 12px
+              display: flex
+              align-items: center
+              gap: 8px
+
+              svg
+                width: 16px
+                height: 16px
+                flex-shrink: 0
+
+            ul
+              list-style: none
+              padding: 0
+              margin: 0
+
+              li
+                font-size: 14px
+                margin-bottom: 8px
+                display: flex
+                align-items: center
+                gap: 8px
+                line-height: 1.4
+
+                &:last-child
+                  margin-bottom: 0
+
+                svg
+                  width: 12px
+                  height: 12px
+                  flex-shrink: 0
+                  margin-top: 0
+
+        .license-disclaimer
+          margin-top: 20px
+          padding-top: 16px
+          border-top: 1px solid $gray-200
+          text-align: center
+
+          @media (min-width: 768px)
+            margin-top: 24px
+
+          p
+            font-size: 12px
+            color: $gray-500
+            font-style: italic
+            margin: 0
+            line-height: 1.5
+
+        .view-all-link
+          margin-top: 16px
+          text-align: right
+
+          a
+            font-size: 14px !important
+            font-weight: 500 !important
+            color: $purple-primary !important
+            text-decoration: none
+
+            &:visited,
+            &:active
+              color: $purple-primary !important
+
+            &:hover
+              text-decoration: underline
+              color: $purple-primary !important
+
+  // ============================================================================
+  // Project Security Section
+  // ============================================================================
+  .security-section
+    margin-bottom: 32px
+
+    @media (min-width: 768px)
+      margin-bottom: 48px
+
+    .section-title
+      font-size: 20px !important
+      font-weight: 600 !important
+      color: $gray-900 !important
+      margin-bottom: 12px !important
+
+      @media (min-width: 768px)
+        font-size: 24px !important
+        margin-bottom: 16px !important
+
+    .security-grid
+      display: grid
+      grid-template-columns: 1fr
+      gap: 16px
+      margin-bottom: 16px
+
+      @media (min-width: 768px)
+        gap: 24px
+
+      @media (min-width: 1024px)
+        grid-template-columns: repeat(3, 1fr)
+
+    .card-subtitle
+      display: block !important
+      visibility: visible !important
+      opacity: 1 !important
+      font-size: 14px !important
+      font-weight: 600 !important
+      color: $gray-900 !important
+      margin-bottom: 16px !important
+      line-height: 1.4
+
+      @media (min-width: 768px)
+        font-size: 16px !important
+
+      .security-link
+        color: $gray-900 !important
+        text-decoration: none
+
+        &:hover
+          color: $purple-primary !important
+          text-decoration: underline
+
+      .subtitle-detail
+        visibility: visible !important
+        opacity: 1 !important
+        display: block !important
+        font-size: 12px !important
+        font-weight: 400 !important
+        color: #6b7280 !important
+        margin-top: 4px
+
+        @media (min-width: 768px)
+          display: inline !important
+          margin-left: 8px
+
+    #vulnerability_version_chart
+      .chart-container
+        min-height: 250px
+        background: $gray-50
+        border-radius: 8px
+        padding: 16px
+
+      .no-data
+        text-align: center
+        padding: 60px 20px
+        color: $gray-600
+        font-size: 14px
+
+    // Vulnerability Report Indices
+    .vulnerability-indices
+      display: flex
+      flex-direction: column
+      gap: 24px
+      margin-top: 16px
+
+    .index-section
+      .index-title
+        display: block !important
+        visibility: visible !important
+        opacity: 1 !important
+        font-size: 14px !important
+        font-weight: 500 !important
+        color: #4b5563 !important
+        margin-bottom: 8px !important
+        line-height: 1.4
+
+      .gradient-bar-container
+        position: relative
+        height: 32px
+        margin-bottom: 8px
+
+        @media (min-width: 768px)
+          height: 40px
+
+        .gradient-bar
+          width: 100%
+          height: 100%
+          background: linear-gradient(to right, #5A2A82 0%, #ffb91a 50%, #f59e0b 100%)
+          border-radius: 8px
+
+        .indicator-pointer
+          position: absolute
+          top: 0
+          width: 4px
+          height: 100%
+          background: #1D0631
+          border-radius: 9999px
+          cursor: pointer
+          transition: all 0.2s
+
+          &:hover
+            background: $gray-900
+
+      .index-labels
+        display: flex
+        justify-content: space-between
+        font-size: 12px
+        color: #6b7280
+
+        .label-left,
+        .label-right
+          max-width: 45%
+
+    .report-link-container
+      margin-top: 16px
+      text-align: center
+
+      .report-link
+        font-size: 14px !important
+        font-weight: 600 !important
+        color: $purple-primary !important
+        text-decoration: none
+
+        &:hover
+          text-decoration: underline
+
+    // Did You Know Card
+    .did-you-know-card
+      background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%)
+      border-radius: 12px
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.04)
+      transition: box-shadow 0.2s
+
+      &:hover
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12), 0 4px 8px rgba(0, 0, 0, 0.06)
+
+      &.single
+        max-width: 600px
+        margin: 0 auto
+
+      .card-content
+        padding: 20px
+
+        @media (min-width: 768px)
+          padding: 24px
+
+      .did-you-know-title
+        display: flex !important
+        visibility: visible !important
+        opacity: 1 !important
+        font-size: 16px !important
+        font-weight: 600 !important
+        color: #78350f !important
+        margin-bottom: 12px !important
+        align-items: center
+        gap: 8px
+
+        @media (min-width: 768px)
+          font-size: 18px !important
+
+        svg
+          width: 20px !important
+          height: 20px !important
+          color: #78350f !important
+
+      .feature-list
+        list-style: disc
+        padding-left: 24px
+        margin: 0
+        display: flex
+        flex-direction: column
+        gap: 8px
+
+        li
+          visibility: visible !important
+          opacity: 1 !important
+          font-size: 14px !important
+          color: #78350f !important
+          line-height: 1.5
+
+    .security-footer-link
+      margin-top: 16px
+      text-align: right
+
+      a
+        font-size: 14px !important
+        font-weight: 600 !important
+        color: $purple-primary !important
+        text-decoration: none
+
+        &:hover
+          text-decoration: underline
+
+    .no-data
+      text-align: center
+      padding: 40px 20px
+      color: $gray-600
+      font-size: 14px
+
+  // ============================================================================
+  // No Analysis Message (Light Mode)
+  // ============================================================================
+  .no_analysis_message
+    .btn.btn-primary,
+    .btn.btn-large.btn-primary
+      background-color: $purple-primary !important
+      border-color: $purple-primary !important
+      color: white !important
+
+      &:hover,
+      &:focus,
+      &:active
+        background-color: $purple-dark !important
+        border-color: $purple-dark !important
+        color: white !important
+
+// ============================================================================
+// Dark Theme Overrides (Project Show Redesign)
+// ============================================================================
+html.dark
+  .project-show-redesign
+    color: #e2e8f0 !important
+
+    // Override any legacy color styles
+    a
+      color: $yellow-accent !important
+
+      &:hover
+        color: $yellow-accent !important
+
+    .project-content
+      background: transparent
+
+    .stats-grid
+      .stat-card
+        background: #2D1548
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.24), 0 1px 2px rgba(0, 0, 0, 0.48)
+
+        .stat-value
+          color: $yellow-accent
+
+        .stat-label
+          color: #94a3b8
+
+    .gradient-card
+      background: #2D1548
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.24), 0 1px 2px rgba(0, 0, 0, 0.48)
+
+      .card-content
+        h3
+          color: white !important
+          border-bottom-color: rgba(90, 42, 130, 0.3)
+
+        h4
+          color: white !important
+
+        p
+          color: #cbd5e1 !important
+
+          &.note
+            color: #94a3b8 !important
+
+        a
+          color: $yellow-accent !important
+
+          &:hover
+            text-decoration: underline
+            color: $yellow-accent !important
+
+    .mobile-accordion
+      .accordion-card
+        .accordion-header
+          .header-left
+            svg
+              color: $yellow-accent
+
+            h3
+              color: #f8fafc !important
+
+          .chevron
+            color: #94a3b8
+
+    #project_tags,
+    #project_tags_mobile
+      h4
+        color: white !important
+
+        svg
+          color: white !important
+
+    .tags-container
+      .tag
+        background: $purple-dark
+        color: $gray-300 !important
+
+        &:hover
+          background: $yellow-accent
+          color: $purple-dark !important
+
+    .nutshell-list
+      li
+        border-top-color: rgba(90, 42, 130, 0.2)
+        color: $gray-300 !important
+
+        svg
+          color: $yellow-accent !important
+
+        .content
+          color: $gray-300 !important
+
+          a
+            color: $yellow-accent !important
+
+            &:hover
+              text-decoration: underline
+              color: $yellow-accent !important
+
+          .font-semibold,
+          span.font-semibold
+            color: $gray-300 !important
+
+    .quick-ref-list
+      li
+        border-bottom-color: rgba(90, 42, 130, 0.2)
+
+        .label
+          color: $gray-400 !important
+          font-size: 14px !important
+          font-weight: 500 !important
+
+        .value
+          color: $yellow-accent !important
+          font-size: 14px !important
+          font-weight: 600 !important
+
+          a
+            color: $yellow-accent !important
+            font-size: 14px !important
+            font-weight: 600 !important
+
+            &:hover
+              text-decoration: underline
+              color: $yellow-accent !important
+
+          i
+            color: $yellow-accent !important
+            font-size: 14px !important
+            font-weight: 600 !important
+
+  // Maximum specificity dark mode overrides
+  html.dark #page #project_container .project-show-redesign
+    .gradient-card .card-content h3
+      color: white !important
+
+    .quick-ref-list li
+      .label
+        color: $gray-400 !important
+        font-size: 14px !important
+
+      .value
+        color: $yellow-accent !important
+        font-size: 14px !important
+
+        a,
+        i
+          color: $yellow-accent !important
+          font-size: 14px !important
+
+    // Languages section dark mode override
+    .languages-content .language-legend .language-item
+      .language-name
+        color: $gray-300 !important
+        font-size: 12px !important
+
+        a
+          color: $yellow-accent !important
+          font-size: 12px !important
+
+      .language-percent
+        color: $gray-400 !important
+        font-size: 12px !important
+
+    // Summary sections dark mode override
+    .summary-section
+      .summary-header
+        color: white !important
+
+      .summary-timespan
+        color: $gray-500 !important
+
+      .summary-stat
+        color: $gray-300 !important
+
+        .stat-number
+          color: white !important
+
+      .summary-change
+        &.positive
+          color: #4ade80 !important
+
+        &.negative
+          color: #f87171 !important
+
+  // Even more specific dark mode overrides for Activity card summary sections
+  html.dark #page #project_container .project-show-redesign .analysis-grid .gradient-card.analysis-card .card-content
+    .summary-grid .summary-section
+      h5.summary-header
+        color: white !important
+
+      p.summary-timespan
+        color: #6b7280 !important
+
+      p.summary-stat
+        color: #d1d5db !important
+
+        span.stat-number
+          color: white !important
+
+      p.summary-change
+        &.positive
+          color: #4ade80 !important
+
+        &.negative
+          color: #f87171 !important
+
+  // Maximum specificity for rating section
+  #page #project_container .project-show-redesign .analysis-grid .gradient-card.analysis-card .card-content
+    .ratings-section
+      .rating-content
+        .rating-info
+          font-size: 12px !important
+          color: #374151 !important
+
+          .rating-link
+            color: #5A2A82 !important
+
+        .rating-display
+          .rating-value
+            font-size: 12px !important
+            color: #111827 !important
+            font-weight: 600 !important
+
+  // Maximum specificity dark mode for rating section
+  html.dark #page #project_container .project-show-redesign .analysis-grid .gradient-card.analysis-card .card-content
+    .ratings-section
+      .rating-content
+        .rating-info
+          color: #d1d5db !important
+
+          .rating-link
+            color: #FFB91A !important
+
+        .rating-display
+          .rating-value
+            color: white !important
+
+  html.dark
+    .licenses-section
+      .section-title
+        color: white
+
+      .license-card
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.24), 0 1px 2px rgba(0, 0, 0, 0.48)
+
+        &:hover
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.24), 0 1px 2px rgba(0, 0, 0, 0.48)
+
+        .license-header
+          border-bottom-color: rgba(90, 42, 130, 0.3)
+
+          .header-left
+            svg
+              color: $yellow-accent
+
+            h4
+              color: $yellow-accent
+
+          .chevron
+            color: #94a3b8
+
+        .license-content
+          border-top-color: rgba(90, 42, 130, 0.3)
+
+          .license-details-grid
+            .license-detail-card
+              &.permitted
+                background: linear-gradient(to bottom right, #3a1d6e 0%, #4a2580 100%)
+
+                h5
+                  color: $yellow-accent
+
+                  svg
+                    color: $yellow-accent
+
+                li
+                  color: $gray-300
+
+                  svg
+                    color: $yellow-accent
+
+              &.forbidden
+                background: linear-gradient(to bottom right, #4a1f1f 0%, #3a1515 100%)
+
+                h5
+                  color: #fb923c
+
+                  svg
+                    color: #fb923c
+
+                li
+                  color: $gray-300
+
+                  svg
+                    color: #fb923c
+
+              &.required
+                background: linear-gradient(to bottom right, #4a3a15 0%, #3a2a10 100%)
+
+                h5
+                  color: #facc15
+
+                  svg
+                    color: #facc15
+
+                li
+                  color: $gray-300
+
+                  svg
+                    color: #facc15
+
+          .license-disclaimer
+            border-top-color: rgba(90, 42, 130, 0.3)
+
+            p
+              color: #94a3b8
+
+          .view-all-link
+            a
+              font-weight: 500 !important
+              color: $yellow-accent !important
+
+              &:visited,
+              &:active
+                color: $yellow-accent !important
+
+              &:hover
+                text-decoration: underline
+                color: $yellow-accent !important
+
+    .security-section
+      .section-title
+        color: white !important
+
+      .card-subtitle
+        color: white !important
+
+        .security-link
+          color: white !important
+
+          &:hover
+            color: $yellow-accent !important
+
+        .subtitle-detail
+          color: #9ca3af !important
+
+      #vulnerability_version_chart
+        .chart-container
+          background: rgba(90, 42, 130, 0.15)
+
+        .no-data
+          color: #94a3b8
+
+      .index-section
+        .index-title
+          color: #9ca3af !important
+
+        .gradient-bar-container
+          .indicator-pointer
+            background: white !important
+
+            &:hover
+              background: $yellow-accent !important
+
+      .report-link-container
+        .report-link
+          color: $yellow-accent !important
+
+      .did-you-know-card
+        background: linear-gradient(135deg, #4a3a15 0%, #3a2a10 100%) !important
+
+        .did-you-know-title
+          color: #fcd34d !important
+
+          svg
+            color: #fcd34d !important
+
+        .feature-list
+          li
+            color: #fef08a !important
+
+      .security-footer-link
+        a
+          color: $yellow-accent !important
+
+      .no-data
+        color: #94a3b8
+
+    // Legacy sections rendered inside redesign page (security + analysis summary)
+    .project_row
+      color: #e2e8f0
+
+      h2, h3, h4, h5
+        color: #f8fafc !important
+
+      p, small, td, th, li, span
+        color: #cbd5e1
+
+      a
+        color: $yellow-accent
+
+      .well,
+      .activity_well,
+      .community_well,
+      #vulnerability-report .well
+        background-color: #2D1548 !important
+        border-color: rgba(159, 122, 186, 0.3) !important
+
+      .right_border
+        border-right-color: rgba(159, 122, 186, 0.3) !important
+
+    .security_blog_link
+      color: $yellow-accent !important
+
+    #did_you_know
+      background-color: transparent !important
+
+      h4
+        color: #f8fafc !important
+
+      .well
+        background-color: #1D0631 !important
+        border-color: #4b5563 !important
+
+      ul,
+      li,
+      .indent,
+      p,
+      span
+        color: #cbd5e1 !important
+
+      a
+        color: $yellow-accent !important
+
+        &:hover
+          color: $yellow-hover !important
+          text-decoration: underline
+
+    .project_row
+      #did_you_know
+        .well
+          background-color: #1D0631 !important
+          border-color: #4b5563 !important
+
+    .no_analysis_message
+      .alert.alert-info.alert-block
+        background-color: #2D1548 !important
+        border: 1px solid rgba(159, 122, 186, 0.35) !important
+        color: #cbd5e1 !important
+
+      .title
+        h3
+          color: #f8fafc !important
+
+          i,
+          [class^='icon-'],
+          [class*=' icon-']
+            color: $yellow-accent !important
+
+      p,
+      .analysis_in_progress,
+      .indent,
+      span
+        color: #60a5fa !important
+
+      a
+        color: $yellow-accent !important
+
+      .btn.btn-primary,
+      .btn.btn-large.btn-primary
+        background-color: $yellow-accent !important
+        border-color: $yellow-accent !important
+        color: $purple-dark !important
+
+        &:hover,
+        &:focus,
+        &:active
+          background-color: $yellow-hover !important
+          border-color: $yellow-hover !important
+          color: $purple-dark !important
+
+// Final cascade guard for legacy styles overriding Did You Know dark theme
+html.dark #page #project_container .project-show-redesign .project_row #did_you_know
+  background: transparent !important
+
+html.dark #page #project_container .project-show-redesign .project_row #did_you_know .well
+  background-color: #1D0631 !important
+  border: 1px solid #4b5563 !important
+  box-shadow: none !important
+
+html.dark #page #project_container .project-show-redesign .project_row #did_you_know h4
+  color: #f8fafc !important
+
+html.dark #page #project_container .project-show-redesign .project_row #did_you_know,
+html.dark #page #project_container .project-show-redesign .project_row #did_you_know p,
+html.dark #page #project_container .project-show-redesign .project_row #did_you_know li,
+html.dark #page #project_container .project-show-redesign .project_row #did_you_know .indent,
+html.dark #page #project_container .project-show-redesign .project_row #did_you_know span
+  color: #cbd5e1 !important
+
+html.dark #page #project_container .project-show-redesign .project_row #did_you_know a
+  color: $yellow-accent !important
+
+// ============================================================================
+// Final Override Layer - Ensure our styles take precedence
+// ============================================================================
+#project_container .project-show-redesign
+  .gradient-card
+    .card-content
+      h3,
+      h4
+        color: $gray-900 !important
+
+      p:not(.summary-timespan):not(.summary-stat):not(.summary-change)
+        color: $gray-700 !important
+
+  .nutshell-list li
+    color: $gray-700 !important
+
+    .content
+      color: $gray-700 !important
+
+      a
+        color: $purple-primary !important
+
+  .quick-ref-list li
+    .label
+      color: $gray-600 !important
+
+    .value
+      color: $purple-primary !important
+
+      a
+        color: $purple-primary !important
+
+// Dark mode final overrides
+html.dark #project_container .project-show-redesign
+  .gradient-card
+    .card-content
+      h3,
+      h4
+        color: white !important
+
+      p:not(.summary-timespan):not(.summary-stat):not(.summary-change)
+        color: #cbd5e1 !important
+
+  .nutshell-list li
+    color: $gray-300 !important
+
+    .content
+      color: $gray-300 !important
+
+      a
+        color: $yellow-accent !important
+
+  .quick-ref-list li
+    .label
+      color: $gray-400 !important
+
+    .value
+      color: $yellow-accent !important
+
+      a
+        color: $yellow-accent !important
+
+// ============================================================================
+// Analysis Grid (Code, Activity, Community)
+// ============================================================================
+.project-show-redesign
+  .analysis-grid
+    display: grid
+    grid-template-columns: 1fr
+    gap: 16px
+    margin-bottom: 32px
+
+    @media (min-width: 768px)
+      gap: 24px
+      margin-bottom: 48px
+
+    @media (min-width: 1024px)
+      grid-template-columns: repeat(3, 1fr)
+
+  .analysis-card
+    display: flex
+    flex-direction: column
+
+    .card-content
+      display: flex
+      flex-direction: column
+      height: 100%
+      flex: 1
+
+  .section-header
+    font-size: 18px !important
+    font-weight: 600 !important
+    color: $gray-900 !important
+    margin-bottom: 12px !important
+    padding-bottom: 8px
+    border-bottom: 1px solid $gray-200
+
+    @media (min-width: 768px)
+      font-size: 20px !important
+
+  .chart-title
+    font-size: 14px !important
+    font-weight: 600 !important
+    margin-bottom: 12px
+    display: block
+
+    a
+      color: $purple-primary !important
+      text-decoration: none
+
+      &:hover
+        text-decoration: underline
+        color: $purple-primary !important
+
+  .subsection-title
+    font-size: 14px !important
+    font-weight: 600 !important
+    color: $gray-900 !important
+    margin-top: 16px
+    margin-bottom: 8px
+
+  .chart-container
+    min-height: 160px
+    background: $gray-50
+    border-radius: 8px
+    padding: 8px
+    margin-bottom: 16px
+    overflow: hidden
+
+    @media (min-width: 768px)
+      min-height: 180px
+
+    &.activity-chart
+      background: #f3f3f5
+      padding: 12px
+
+  #code_history_chart.chart-container
+    background: transparent
+    border-radius: 0
+    padding: 0
+    min-height: 200px
+
+  #community_chart
+    margin-bottom: 16px
+
+    .highcharts-series-0
+      .highcharts-graph,
+      .highcharts-point
+        stroke: $purple-primary !important
+        fill: $purple-primary !important
+
+    .highcharts-series-1
+      .highcharts-point
+        stroke: $purple-primary !important
+        fill: $purple-primary !important
+
+  .no-data
+    text-align: center
+    padding: 40px 20px
+    color: $gray-600
+    font-size: 14px
+
+  // Chart header with zoom controls
+  .chart-header
+    display: flex
+    align-items: flex-start
+    justify-content: space-between
+    margin-bottom: 12px
+    gap: 8px
+
+    .chart-title
+      margin-bottom: 0
+
+  .zoom-controls
+    display: flex
+    align-items: center
+    gap: 4px
+    flex-shrink: 0
+
+    .zoom-label
+      font-size: 12px
+      color: $gray-400
+      margin-right: 4px
+
+    .zoom-btn
+      padding: 2px 6px
+      border-radius: 4px
+      font-size: 12px
+      border: none
+      background: transparent
+      color: $gray-500
+      cursor: pointer
+      transition: all 0.15s
+
+      &:hover
+        color: $purple-primary
+
+      &.active
+        background: $purple-primary
+        color: white
+        font-weight: 600
+
+  // Summary Grid (30 day, 12 month)
+  .summary-grid
+    display: grid
+    grid-template-columns: 1fr
+    gap: 16px
+    margin-top: 16px
+
+    @media (min-width: 768px)
+      grid-template-columns: repeat(2, 1fr)
+      gap: 20px
+
+  .summary-section
+    .summary-header
+      font-size: 12px !important
+      font-weight: 600 !important
+      color: $gray-900 !important
+      margin-bottom: 2px !important
+
+    .summary-timespan
+      font-size: 12px !important
+      color: $gray-400 !important
+      margin-bottom: 6px !important
+      line-height: 1.25
+
+    .summary-stat
+      font-size: 12px !important
+      color: $gray-700 !important
+      margin-bottom: 2px !important
+      line-height: 1.3
+
+      &:last-of-type
+        margin-bottom: 0 !important
+
+    &.thirty-day-summary
+      .summary-header
+        margin-bottom: 1px !important
+
+      .summary-timespan
+        margin-bottom: 6px !important
+
+      .summary-stat
+        margin-bottom: 1px !important
+        line-height: 1.25
+
+      .stat-number
+        font-weight: 600 !important
+        color: $gray-900 !important
+
+    .summary-change
+      font-size: 12px !important
+      margin-bottom: 8px !important
+      line-height: 1.4
+
+      &.positive
+        color: #16a34a !important
+
+      &.negative
+        color: #dc2626 !important
+
+// ============================================================================
+// Summary Cascade Guard (override generic gradient-card paragraph rules)
+// ============================================================================
+#project_container .project-show-redesign .analysis-grid .summary-section
+  .summary-header
+    margin-top: 0 !important
+
+  .summary-timespan,
+  .summary-stat,
+  .summary-change
+    margin-top: 0 !important
+
+  .summary-timespan
+    margin-bottom: 6px !important
+
+  .summary-stat
+    margin-bottom: 2px !important
+
+  .summary-change
+    margin-bottom: 8px !important
+
+html.dark #project_container .project-show-redesign .analysis-grid .summary-section
+  .summary-header
+    color: white !important
+
+  .summary-timespan
+    color: #94a3b8 !important
+
+  .summary-stat
+    color: #d1d5db !important
+
+    .stat-number
+      color: white !important
+
+// ============================================================================
+// Languages + Contributors Cascade Guard (Redesign only)
+// ============================================================================
+#project_container .project-show-redesign .analysis-grid .analysis-card .card-content
+  .languages-content
+    display: flex !important
+    align-items: flex-start !important
+    gap: 16px !important
+    margin-top: 8px !important
+
+    .language-pie-container
+      width: 90px !important
+      height: 90px !important
+      flex: 0 0 90px !important
+
+      .language-pie-chart
+        width: 90px !important
+        height: 90px !important
+        display: block !important
+
+
+
+    .language-legend
+      flex: 1 1 auto !important
+      min-width: 0 !important
+      display: flex !important
+      flex-direction: row !important
+      gap: 12px !important
+
+      .language-item
+        display: flex !important
+        align-items: center !important
+        min-width: 0 !important
+
+        .language-name
+          flex: 1 1 auto !important
+          min-width: 0 !important
+          white-space: nowrap !important
+          overflow: hidden !important
+          text-overflow: ellipsis !important
+          color: $gray-700 !important
+
+          a
+            color: $purple-primary !important
+            text-decoration: none !important
+
+            &:hover
+              text-decoration: underline !important
+
+        .language-percent
+          flex: 0 0 auto !important
+          margin-left: auto !important
+          color: $gray-500 !important
+
+  .community-chart-wrap
+    .col-md-12.manage_padding
+      padding: 0 !important
+
+  .contributors-grid
+    display: grid !important
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important
+    column-gap: 8px !important
+    row-gap: 6px !important
+    margin-top: 6px !important
+
+    .contributor-item
+      display: flex !important
+      align-items: center !important
+      gap: 6px !important
+      min-width: 0 !important
+
+      .contributor-avatar
+        width: 24px !important
+        height: 24px !important
+        border-radius: 50% !important
+        flex: 0 0 24px !important
+
+      .contributor-name
+        min-width: 0 !important
+        white-space: nowrap !important
+        overflow: hidden !important
+        text-overflow: ellipsis !important
+        color: $purple-primary !important
+        text-decoration: none !important
+
+        &:hover
+          text-decoration: underline !important
+
+html.dark #project_container .project-show-redesign .analysis-grid .analysis-card .card-content
+  .languages-content
+    .language-legend
+      .language-item
+        .language-name
+          color: $gray-300 !important
+
+          a
+            color: $yellow-accent !important
+
+        .language-percent
+          color: $gray-400 !important
+
+  .contributors-grid
+    .contributor-item
+      .contributor-name
+        color: $yellow-accent !important
+
+  // Languages Section
+  .languages-content
+    display: flex
+    align-items: flex-start
+    gap: 16px
+    margin-top: 8px
+
+    .language-pie-container
+      flex-shrink: 0
+      width: 90px
+      height: 90px
+
+      .language-pie-chart
+        width: 100%
+        height: 100%
+        display: block
+
+
+    .language-legend
+      flex: 1 1 auto !important
+      min-width: 0 !important
+      display: flex !important
+      flex-direction: row !important
+      gap: 12px !important
+
+      .language-item
+        display: flex
+        align-items: center
+        gap: 8px
+        font-size: 12px !important
+
+        .language-color-box
+          width: 10px
+          height: 10px
+          border-radius: 2px
+          flex-shrink: 0
+
+        .language-name
+          flex: 1
+          color: $gray-700 !important
+          font-size: 12px !important
+
+          a
+            color: $purple-primary !important
+            text-decoration: none
+            font-size: 12px !important
+
+            &:hover
+              text-decoration: underline
+              color: $purple-primary !important
+
+        .language-percent
+          color: $gray-500 !important
+          font-weight: 500
+          margin-left: auto
+          font-size: 12px !important
+
+  // Contributors Grid
+  .contributors-grid
+    display: grid
+    grid-template-columns: repeat(2, 1fr)
+    column-gap: 8px
+    row-gap: 6px
+    margin-top: 6px
+
+    .contributor-item
+      display: flex
+      align-items: center
+      gap: 6px
+
+      .contributor-avatar
+        width: 24px
+        height: 24px
+        border-radius: 50%
+        flex-shrink: 0
+
+      .contributor-name
+        font-size: 12px !important
+        line-height: 1.2
+        color: $purple-primary
+        text-decoration: none
+        white-space: nowrap
+        overflow: hidden
+        text-overflow: ellipsis
+
+        &:hover
+          text-decoration: underline
+
+  // Ratings Section
+  .ratings-section
+    margin-top: 12px
+    padding-top: 12px
+    border-top: 1px solid $gray-200
+
+  .rating-content
+    .rating-info
+      font-size: 12px !important
+      line-height: 1.3
+      color: $gray-700
+      margin-bottom: 2px
+
+      .rating-link
+        color: $purple-primary
+        text-decoration: none
+
+        &:hover
+          text-decoration: underline
+
+    .rating-display
+      display: flex
+      align-items: center
+      gap: 6px
+
+      .stars-container
+        display: inline-block
+        height: 23px
+        line-height: 23px
+        overflow: hidden
+
+        .rating_stars,
+        [id$='_rating_stars']
+          display: inline-block
+          height: 23px
+          line-height: 1
+
+          // Allow the rating stars helper's inline styles to work
+          span[style*='float: left']
+            float: left !important
+            display: inline !important
+            height: 23px
+
+      .rating-value
+        font-size: 12px !important
+        color: $gray-900 !important
+        font-weight: 600 !important
+
+// ============================================================================
+// Dark Mode - Analysis Grid
+// ============================================================================
+html.dark .project-show-redesign
+  .section-header
+    color: white !important
+    border-bottom-color: rgba(90, 42, 130, 0.3)
+
+  .chart-title
+    a
+      color: $yellow-accent !important
+
+      &:hover
+        color: $yellow-accent !important
+
+  .subsection-title
+    color: white !important
+
+  .chart-container
+    background: rgba(90, 42, 130, 0.15)
+
+    &.activity-chart
+      background: #1D0631
+
+  #code_history_chart.chart-container
+    background: transparent
+
+  #community_chart
+    .highcharts-series-0
+      .highcharts-graph,
+      .highcharts-point
+        stroke: $yellow-accent !important
+        fill: $yellow-accent !important
+
+    .highcharts-series-1
+      .highcharts-point
+        stroke: $yellow-accent !important
+        fill: $yellow-accent !important
+
+  .zoom-controls
+    .zoom-label
+      color: #94a3b8
+
+    .zoom-btn
+      color: #94a3b8
+
+      &:hover
+        color: $yellow-accent
+
+      &.active
+        background: $yellow-accent
+        color: #1D0631
+
+  .summary-section
+    .summary-header
+      color: white !important
+
+    .summary-timespan
+      color: $gray-500 !important
+
+    .summary-stat
+      color: $gray-300 !important
+
+      .stat-number
+        color: white !important
+
+    .summary-change
+      &.positive
+        color: #4ade80 !important
+
+      &.negative
+        color: #f87171 !important
+
+  .languages-content
+    .language-legend
+      .language-item
+        font-size: 12px !important
+
+        .language-name
+          color: $gray-300 !important
+          font-size: 12px !important
+
+          a
+            color: $yellow-accent !important
+            font-size: 12px !important
+
+            &:hover
+              color: $yellow-accent !important
+              text-decoration: underline
+
+        .language-percent
+          color: $gray-400 !important
+          font-size: 12px !important
+
+  .contributors-grid
+    .contributor-item
+      .contributor-name
+        color: $yellow-accent !important
+
+        &:hover
+          color: $yellow-accent !important
+
+  .ratings-section
+    border-top-color: rgba(90, 42, 130, 0.3)
+
+  .rating-content
+    .rating-info
+      color: $gray-300 !important
+
+      .rating-link
+        color: $yellow-accent !important
+
+        &:hover
+          color: $yellow-accent !important
+
+    .rating-display
+      .rating-value
+        color: white !important
+
+// ============================================================================
+// Ratings Final Guard (Figma parity)
+// ============================================================================
+#project_container .project-show-redesign .analysis-grid .analysis-card .card-content
+  .ratings-section
+    margin-top: 12px !important
+    padding-top: 12px !important
+    border-top: 1px solid $gray-200 !important
+
+    .subsection-title
+      margin-top: 0 !important
+      margin-bottom: 8px !important
+      font-size: 14px !important
+      font-weight: 600 !important
+      color: $gray-900 !important
+
+  .rating-content
+    display: flex !important
+    flex-direction: column !important
+    gap: 2px !important
+
+    .rating-top-row
+      display: flex !important
+      align-items: flex-start !important
+      justify-content: space-between !important
+      gap: 12px !important
+
+      .rating-main
+        flex: 1 1 auto !important
+        min-width: 0 !important
+
+      .rating-action
+        flex: 0 0 auto !important
+        text-align: right !important
+        white-space: nowrap !important
+
+        .rating-link
+          display: inline-flex !important
+          align-items: center !important
+          justify-content: flex-end !important
+          gap: 6px !important
+
+          .rating-action-icon
+            width: 12px !important
+            height: 12px !important
+            flex-shrink: 0 !important
+
+    .rating-info
+      margin: 0 !important
+      font-size: 12px !important
+      line-height: 1.35 !important
+      color: $gray-700 !important
+
+      &.rating-secondary
+        margin-top: 4px !important
+
+      .rating-link
+        color: $purple-primary !important
+        text-decoration: none !important
+        font-weight: 500 !important
+
+        &:hover
+          color: $purple-primary !important
+          text-decoration: underline !important
+
+    .rating-display
+      display: flex !important
+      align-items: center !important
+      gap: 6px !important
+      margin-top: 2px !important
+
+      .stars-container
+        display: inline-block !important
+        height: 23px !important
+        line-height: 23px !important
+        overflow: hidden !important
+
+      .rating-value
+        font-size: 12px !important
+        line-height: 1.2 !important
+        font-weight: 600 !important
+        color: $gray-900 !important
+
+html.dark #project_container .project-show-redesign .analysis-grid .analysis-card .card-content
+  .ratings-section
+    border-top-color: rgba(90, 42, 130, 0.3) !important
+
+    .subsection-title
+      color: white !important
+
+  .rating-content
+    .rating-top-row
+      .rating-action
+        .rating-info
+          color: $gray-300 !important
+
+    .rating-info
+      color: $gray-300 !important
+
+      .rating-link
+        color: $yellow-accent !important
+
+        &:hover
+          color: $yellow-accent !important
+
+    .rating-display
+      .rating-value
+        color: white !important
+
+// ============================================================================
+// Dark Theme Final Guard (Licenses + Graphs)
+// ============================================================================
+html.dark #project_container .project-show-redesign
+  .licenses-section
+    .section-title
+      color: white !important
+
+    .license-card
+      background: #2D1548 !important
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.24), 0 1px 2px rgba(0, 0, 0, 0.48) !important
+
+      .license-header
+        border-bottom-color: rgba(90, 42, 130, 0.3) !important
+
+        .header-left
+          h4
+            color: $yellow-accent !important
+
+          svg
+            color: $yellow-accent !important
+
+        .chevron
+          color: #94a3b8 !important
+
+      .license-content
+        border-top-color: rgba(90, 42, 130, 0.3) !important
+
+        .license-disclaimer
+          border-top-color: rgba(90, 42, 130, 0.3) !important
+
+          p
+            color: #94a3b8 !important
+
+        .view-all-link a
+          color: $yellow-accent !important
+
+  // Graph surfaces + chart typography
+  #activity_chart,
+  #community_chart,
+  #loc_chart,
+  #vulnerability_version_chart
+    .highcharts-background
+      fill: transparent !important
+
+    .highcharts-plot-background,
+    .highcharts-plot-border,
+    .highcharts-label-box
+      fill: none !important
+
+    .highcharts-axis-line,
+    .highcharts-tick,
+    .highcharts-grid-line
+      stroke: rgba(148, 163, 184, 0.35) !important
+
+    .highcharts-axis-labels text,
+    .highcharts-axis-title,
+    .highcharts-legend-item text,
+    .highcharts-title,
+    .highcharts-subtitle
+      fill: #cbd5e1 !important
+
+    .highcharts-tooltip-box
+      fill: #2D1548 !important
+      stroke: #5A2A82 !important
+
+    .highcharts-tooltip text
+      fill: #f8fafc !important
+
+// ============================================================================
+// Summary Typography Final Guard (Figma parity)
+// ============================================================================
+#project_container .project-show-redesign .analysis-grid .analysis-card .card-content
+  .summary-grid
+    .summary-section
+      h5.summary-header
+        font-size: 12px !important
+        font-weight: 600 !important
+        line-height: 1.25 !important
+        margin: 0 0 2px 0 !important
+        color: $gray-900 !important
+
+      p.summary-timespan,
+      p.summary-stat,
+      p.summary-change
+        font-size: 12px !important
+        line-height: 1.35 !important
+        margin-top: 0 !important
+
+      p.summary-timespan
+        color: $gray-400 !important
+        margin-bottom: 6px !important
+
+      p.summary-stat
+        color: $gray-700 !important
+        margin-bottom: 2px !important
+
+      p.summary-change
+        margin-bottom: 8px !important
+
+      .stat-number
+        font-size: 12px !important
+        font-weight: 600 !important
+        line-height: 1.25 !important
+        color: $gray-900 !important
+
+html.dark #project_container .project-show-redesign .analysis-grid .analysis-card .card-content
+  .summary-grid
+    .summary-section
+      h5.summary-header
+        color: white !important
+
+      p.summary-timespan
+        color: #94a3b8 !important
+
+      p.summary-stat
+        color: #d1d5db !important
+
+      .stat-number
+        color: white !important
+
+// ============================================================================
+// Dark Mode Compatibility Guard (html.dark + body.dark)
+// ============================================================================
+html.dark #project_container .project-show-redesign,
+body.dark #project_container .project-show-redesign,
+.dark #project_container .project-show-redesign
+  .licenses-section
+    .section-title
+      color: white !important
+
+    .license-card
+      background: #2D1548 !important
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.24), 0 1px 2px rgba(0, 0, 0, 0.48) !important
+
+      .license-header
+        border-bottom-color: rgba(90, 42, 130, 0.3) !important
+
+        .header-left
+          h4
+            color: $yellow-accent !important
+
+          svg
+            color: $yellow-accent !important
+
+        .chevron
+          color: #94a3b8 !important
+
+      .license-content
+        border-top-color: rgba(90, 42, 130, 0.3) !important
+
+        .license-detail-card
+          &.permitted,
+          &.forbidden,
+          &.required
+            border: 1px solid rgba(159, 122, 186, 0.25) !important
+
+          &.permitted
+            background: linear-gradient(to bottom right, #3a1d6e 0%, #4a2580 100%) !important
+
+            h5,
+            h5 svg,
+            li svg
+              color: $yellow-accent !important
+
+            li
+              color: $gray-300 !important
+
+          &.forbidden
+            background: linear-gradient(to bottom right, #4a1f1f 0%, #3a1515 100%) !important
+
+            h5,
+            h5 svg,
+            li svg
+              color: #fb923c !important
+
+            li
+              color: $gray-300 !important
+
+          &.required
+            background: linear-gradient(to bottom right, #4a3a15 0%, #3a2a10 100%) !important
+
+            h5,
+            h5 svg,
+            li svg
+              color: #facc15 !important
+
+            li
+              color: $gray-300 !important
+
+        .license-disclaimer
+          border-top-color: rgba(90, 42, 130, 0.3) !important
+
+          p
+            color: #94a3b8 !important
+
+        .view-all-link a
+          color: $yellow-accent !important

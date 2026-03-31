@@ -1,7 +1,6 @@
 :ruby
   content_for(:html_title) { t('.page_title', name: @project.name) }
   page_context[:select_top_menu_nav] = 'select_projects'
-  page_context[:select_footer_nav] = :project_summary
 
 - content_for :twitter_card do
   %meta{ content: 'summary', name: 'twitter:card' }
@@ -12,75 +11,308 @@
     %meta{ content: @project.logo.attachment.url(:med), name: 'twitter:image' }
   %meta{ content: 'https://www.openhub.net', name: 'twitter:domain' }
 
-%div.separator-div
-  = project_analysis_timestamp(@project)
+.project-show-redesign{ itemscope: '', itemtype: 'http://schema.org/SoftwareSourceCode' }
 
-.clear
-= render partial: 'projects/show/is_a_duplicate', locals: { project: @project }
-
-.row.row-eq-height.margin_top_two.project_row
-  .col-md-4.project_summary_container
-    .well
-      %h4.text-left= t('.project_summary')
-      - size_breach = project_description_size_breached?(@project)
-      %section#project_summary{ itemprop: 'description', class: ('vertical_scroll_bar' if size_breach) }
-        - if @project.description.present?
-          = simple_format @project.description.strip_tags
-        - else
-          = t('.no_description')
-          = link_to t('.add_description'), edit_project_path(@project)
-
-      %section#project_tags{ itemscope: '', itemtype: 'http://schema.org/CreativeWork' }
-        %h4.title= tag_icon_link(@project)
-        %p.tags
-          %span
-          - tags = @project.tag_list.split(' ')
-          - if tags.any?
-            = tag_links(tags)
+  .project-content
+    / Stats Grid - 3 columns (Lines of Code, Contributors, Total Commits)
+    .stats-grid
+      .stat-card
+        .stat-value
+          - if @analysis.present?
+            = number_with_delimiter(@analysis.code_total, delimiter: ',')
           - else
-            = t('.no_tags')
-            - if @project.edit_authorized?
-              = link_to t('.add_tags'), project_tags_path(@project)
-      - if @project.project_badges.active.present?
-        %section#project_badges
-          %h4.title= link_to t('project_badges.index.title'), project_project_badges_path(@project)
-          = show_badges
-          = more_badges_link
+            N/A
+        .stat-label= t('.lines_of_code')
 
-  .col-md-4.nutshell_container
-    .well
-      - p_name = truncate_project_name(@project.name, 40)
-      %h4.nutshell_heading!= t('.in_a_nutshell', name: @project.name.length > 40 ? p_name : p_name + '...')
-      - if @analysis.present?
-        = render 'projects/show/factoids'
-      - else
-        = render partial: 'projects/show/no_analysis_summary'
-  .col-md-4.quick_reference_container
-    .well
-      = render partial: 'projects/show/quick_reference'
+      .stat-card
+        .stat-value
+          - if @analysis.present?
+            = number_with_delimiter(@analysis.committers_all_time)
+          - else
+            0
+        .stat-label= t('.contributors')
 
-.row.mezzo
-= render partial: 'projects/show/licenses'
+      .stat-card
+        .stat-value
+          - if @analysis.present?
+            = number_with_delimiter(@analysis.commit_count)
+          - else
+            0
+        .stat-label= t('.total_commits')
 
-.row.mezzo
-.project_security
-  = render partial: 'projects/show/security'
+    / Desktop: 3-column grid (Project Summary, In a Nutshell, Quick Reference)
+    .three-col-grid
+      / Project Summary
+      .gradient-card
+        .card-content
+          %h3= t('.project_summary')
+          - if @project.description.present?
+            = simple_format(@project.description.strip_tags)
+          - else
+            %p
+              = t('.no_description')
+              = link_to t('.add_description'), edit_project_path(@project)
 
-.row.mezzo
-- if @analysis.empty?
-  .analysis_blank_container
-    .row.project_row
-      .col-md-12.blank_message_container
-        .col-md-8.analysis_alert_container
-          = render partial: 'projects/show/no_analysis_summary'
-        .col-md-4#proj_rating= render 'projects/show/community_rating', title: t('.community_rating'), score: @score
-        - if @project.enlistments.empty? && @analysis.empty?
-          = image_tag('sample_ohloh_analysis.jpg', class: 'col-md-12')
-- else
-  = render partial: 'projects/show/analysis_summary'
+          - if @project.is_a_duplicate
+            %p.note
+              = t('.note')
+              There are two distinct
+              = link_to 'Mozilla Core', '#'
+              and
+              = link_to 'Mozilla Chrome', '#'
+              projects for complete coverage.
 
-- if @scan_analytics.present?
-  .row.mezzo
-    #scan_data_row
-      .project_row= render partial: 'projects/show/scan_analytics_summary', collection: @scan_analytics, as: :scan_analytics
+          %section#project_tags
+            %h4
+              %svg{ viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", 'stroke-width': "2", style: "width: 1rem; height: 1rem; display: inline-block; vertical-align: text-top;" }
+                %path{ d: "M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z" }
+                %line{ x1: "7", y1: "7", x2: "7.01", y2: "7" }
+              = t('.tags')
+            .tags-container
+              - tags = @project.tag_list.split(' ')
+              - if tags.any?
+                - tags.each do |tag|
+                  = link_to tag, tags_path(names: tag), class: 'tag'
+              - else
+                %span.tag
+                  = t('.no_tags')
+                  - if @project.edit_authorized?
+                    = link_to t('.add_tags'), project_tags_path(@project)
 
+          - if @project.project_badges.active.any?
+            %section#project_badges
+              = show_badges
+              = more_badges_link
+
+      / In a Nutshell
+      .gradient-card
+        .card-content
+          %h3= t('.in_a_nutshell', name: truncate_project_name(@project.name, 40))
+          - if @analysis.present?
+            %ul.nutshell-list
+              %li
+                %svg{ viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", 'stroke-width': "2" }
+                  %line{ x1: "22", y1: "2", x2: "11", y2: "13" }
+                  %polygon{ points: "22 2 15 22 11 13 2 9 22 2" }
+                .content
+                  has had
+                  = link_to "#{number_with_delimiter @analysis.commit_count} commits", summary_project_commits_path(@project)
+                  made by
+                  = link_to "#{number_with_delimiter @analysis.committers_all_time} contributors", summary_project_contributors_path(@project)
+
+              %li
+                %svg{ viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", 'stroke-width': "2" }
+                  %polyline{ points: "16 18 22 12 16 6" }
+                  %polyline{ points: "8 6 2 12 8 18" }
+                .content
+                  representing
+                  = link_to "#{number_with_delimiter @analysis.code_total} lines of code", languages_summary_project_analysis_path(@project, id: 'latest')
+
+              - if @analysis.main_language
+                %li
+                  %svg{ viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", 'stroke-width': "2" }
+                    %path{ d: "M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" }
+                    %polyline{ points: "14 2 14 8 20 8" }
+                    %line{ x1: "16", y1: "13", x2: "8", y2: "13" }
+                    %line{ x1: "16", y1: "17", x2: "8", y2: "17" }
+                    %polyline{ points: "10 9 9 9 8 9" }
+                  .content
+                    is
+                    = link_to "mostly written in #{@analysis.main_language.nice_name}", languages_summary_project_analysis_path(@project, id: 'latest')
+                    with average comment density
+
+              %li
+                %svg{ viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", 'stroke-width': "2" }
+                  %polyline{ points: "23 6 13.5 15.5 8.5 10.5 1 18" }
+                  %polyline{ points: "17 6 23 6 23 12" }
+                .content
+                  has a
+                  %span.font-semibold mature codebase
+                  maintained by a
+                  %span.font-semibold very large development team
+
+              %li
+                %svg{ viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", 'stroke-width': "2" }
+                  %circle{ cx: "12", cy: "12", r: "10" }
+                  %polyline{ points: "12 6 12 12 16 14" }
+                .content
+                  took an estimated
+                  = link_to "#{number_with_delimiter @analysis.man_years.ceil} years of effort", estimated_cost_project_path(@project)
+                  (COCOMO model)
+
+              %li
+                %svg{ viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", 'stroke-width': "2" }
+                  %rect{ x: "3", y: "4", width: "18", height: "18", rx: "2", ry: "2" }
+                  %line{ x1: "16", y1: "2", x2: "16", y2: "6" }
+                  %line{ x1: "8", y1: "2", x2: "8", y2: "6" }
+                  %line{ x1: "3", y1: "10", x2: "21", y2: "10" }
+                .content
+                  - if @analysis.first_commit_time?
+                    starting
+                    %span.font-semibold= @analysis.first_commit_time.strftime('%B %Y')
+                  - if @analysis.last_commit_time?
+                    , ending
+                    %span.font-semibold= "#{time_ago_in_words(@analysis.last_commit_time)} ago"
+          - else
+            = render partial: 'projects/show/no_analysis_summary'
+
+      / Quick Reference
+      .gradient-card
+        .card-content
+          %h3= t('.quick_reference.quick_reference')
+          %ul.quick-ref-list
+            - if @project.organization
+              %li
+                %span.label= t('.organization')
+                %span.value
+                  = link_to @project.organization.name, organization_path(@project.organization)
+
+            %li
+              %span.label= t('.homepage')
+              %span.value
+                - homepage_link = @project.decorate.sorted_link_list['Homepage']&.first
+                - if homepage_link
+                  = link_to homepage_link.url, itemprop: 'url' do
+                    %svg{ viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", 'stroke-width': "2" }
+                      %path{ d: "M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" }
+                      %polyline{ points: "15 3 21 3 21 9" }
+                      %line{ x1: "10", y1: "14", x2: "21", y2: "3" }
+                    = truncate(homepage_link.url.gsub(/^https?:\/\//, ''), length: 30)
+                - else
+                  N/A
+
+            %li
+              %span.label= t('.documentation')
+              %span.value
+                - doc_link = @project.decorate.sorted_link_list['Documentation']&.first
+                - if doc_link
+                  = link_to doc_link.url do
+                    %svg{ viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", 'stroke-width': "2" }
+                      %path{ d: "M4 19.5A2.5 2.5 0 0 1 6.5 17H20" }
+                      %path{ d: "M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" }
+                    View Docs
+                - else
+                  N/A
+
+            %li
+              %span.label= t('.code_location')
+              %span.value
+                - if @project.enlistments.present?
+                  = link_to truncate(@project.enlistments.first.code_location.url, length: 40), @project.enlistments.first.code_location.url
+                - else
+                  = link_to t('.add_code_location'), project_enlistments_path(@project)
+
+            %li
+              %span.label= t('.similar_projects')
+              %span.value
+                %div#similar_projects{ data: { project_id: @project.to_param } }
+
+            %li
+              %span.label= t('.managers')
+              %span.value
+                - if @project.active_managers.present?
+                  = link_to "#{@project.active_managers.count} managers", project_managers_path(@project)
+                - else
+                  = link_to t('.become_first_manager', what: @project.name), new_project_manager_path(@project)
+
+    / Mobile: Collapsible accordion cards
+    .mobile-accordion
+      / Project Summary - Collapsible
+      .gradient-card.accordion-card
+        %button.accordion-header{ onclick: "toggleAccordion(this)" }
+          .header-left
+            %svg{ viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", 'stroke-width': "2" }
+              %circle{ cx: "12", cy: "12", r: "10" }
+              %line{ x1: "12", y1: "16", x2: "12", y2: "12" }
+              %line{ x1: "12", y1: "8", x2: "12.01", y2: "8" }
+            %h3= t('.project_summary')
+          %svg.chevron{ viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", 'stroke-width': "2" }
+            %polyline{ points: "6 9 12 15 18 9" }
+        .accordion-content{ style: "display: none;" }
+          - if @project.description.present?
+            %p= simple_format(@project.description.strip_tags, {}, wrapper_tag: 'span')
+          - else
+            %p
+              = t('.no_description')
+              = link_to t('.add_description'), edit_project_path(@project)
+
+          %section#project_tags_mobile
+            %h4
+              %svg{ viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", 'stroke-width': "2", style: "width: 1rem; height: 1rem; display: inline-block; vertical-align: text-top;" }
+                %path{ d: "M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z" }
+                %line{ x1: "7", y1: "7", x2: "7.01", y2: "7" }
+              = t('.tags')
+            .tags-container
+              - tags = @project.tag_list.split(' ')
+              - if tags.any?
+                - tags.each do |tag|
+                  = link_to tag, tags_path(names: tag), class: 'tag'
+              - else
+                %span.tag= t('.no_tags')
+
+      / In a Nutshell - Collapsible
+      .gradient-card.accordion-card
+        %button.accordion-header{ onclick: "toggleAccordion(this)" }
+          .header-left
+            %svg{ viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", 'stroke-width': "2" }
+              %line{ x1: "12", y1: "20", x2: "12", y2: "10" }
+              %line{ x1: "18", y1: "20", x2: "18", y2: "4" }
+              %line{ x1: "6", y1: "20", x2: "6", y2: "16" }
+            %h3= t('.in_a_nutshell', name: truncate_project_name(@project.name, 40))
+          %svg.chevron{ viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", 'stroke-width': "2" }
+            %polyline{ points: "6 9 12 15 18 9" }
+        .accordion-content{ style: "display: none;" }
+          - if @analysis.present?
+            %ul.nutshell-list
+              %li
+                %svg{ viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", 'stroke-width': "2" }
+                  %line{ x1: "22", y1: "2", x2: "11", y2: "13" }
+                  %polygon{ points: "22 2 15 22 11 13 2 9 22 2" }
+                .content
+                  has had
+                  = link_to "#{number_with_delimiter @analysis.commit_count} commits", summary_project_commits_path(@project)
+                  made by
+                  = link_to "#{number_with_delimiter @analysis.committers_all_time} contributors", summary_project_contributors_path(@project)
+              / Add remaining factoids as in desktop version
+          - else
+            = render partial: 'projects/show/no_analysis_summary'
+
+      / Quick Reference - Collapsible
+      .gradient-card.accordion-card
+        %button.accordion-header{ onclick: "toggleAccordion(this)" }
+          .header-left
+            %svg{ viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", 'stroke-width': "2" }
+              %path{ d: "M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" }
+              %polyline{ points: "15 3 21 3 21 9" }
+              %line{ x1: "10", y1: "14", x2: "21", y2: "3" }
+            %h3= t('.quick_reference.quick_reference')
+          %svg.chevron{ viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", 'stroke-width': "2" }
+            %polyline{ points: "6 9 12 15 18 9" }
+        .accordion-content{ style: "display: none;" }
+          %ul.quick-ref-list
+            / Same content as desktop version
+            - if @project.organization
+              %li
+                %span.label= t('.organization')
+                %span.value= link_to @project.organization.name, organization_path(@project.organization)
+            / Add remaining items
+
+    / Licenses Section
+    = render partial: 'projects/show/licenses_redesign'
+
+    / Project Security Section
+    = render partial: 'projects/show/security'
+
+    / Code, Activity, Community Grid
+    - if @analysis.present?
+      = render partial: 'projects/show/analysis_summary_redesign'
+
+:javascript
+  function toggleAccordion(button) {
+    const content = button.nextElementSibling;
+    const chevron = button.querySelector('.chevron');
+    const isExpanded = content.style.display === 'block';
+
+    content.style.display = isExpanded ? 'none' : 'block';
+    chevron.classList.toggle('expanded', !isExpanded);
+  }

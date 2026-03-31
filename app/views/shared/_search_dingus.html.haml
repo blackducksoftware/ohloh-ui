@@ -6,9 +6,9 @@
   sort_context ||= nil
   no_match_found_type ||= :message
 
-.margin_top_20#search-dingus
-  %form.form-inline
-    .row
+.search-filter-bar
+  %form
+    .search-filter-content
       = render 'shared/search_dingus/page_entries_info', collection: collection, total_count: total_count
 
       = render 'shared/search_dingus/search_bar', search_type: search_type, tags: tags

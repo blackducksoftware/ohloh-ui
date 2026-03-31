@@ -18,13 +18,17 @@ body
   color: #000
   width: 100%
   overflow-x: hidden
+  background-color: #f9fafb !important
 
 .container#page, #page
   width: 100% !important
   max-width: 100% !important
-  background-color: white
+  background-color: #f9fafb
   margin: 0 !important
   padding: 0 !important
+  transition: background-color 0.3s ease
+  html.dark &
+    background-color: #1D0631
 
 header
   // Figma design: gradient background for entire header
@@ -34,8 +38,9 @@ header
   margin: 0
   padding: 0
   width: 100%
-  position: relative
-  z-index: 1
+  position: sticky
+  top: 0
+  z-index: 1000
 
 @media only all and (min-width: 320px) and (max-width: 480px)
   body
@@ -124,10 +129,15 @@ header
     .new_main_menu
       gap: 24px
 #page_contents
+  padding: 0 32px 24px
   max-width: 100%
-  padding: 0 20px
   .separator-div
     @include site-separator-color
+  
+  // Mobile responsive padding
+  @media (max-width: 767px)
+    padding: 0 16px 16px
+  
 
 #project_container
   background-color: white
@@ -146,7 +156,6 @@ header
       padding-left: 0
       margin-left: -1rem
   .thirtyfive_project_activity_text
-    margin-top: 5.5rem
     line-height: 1.3rem
   .thirtyfive_project_activity_level_na
     top: 1rem
@@ -225,7 +234,7 @@ header
       gap: 12px
     .logo-div
       .logo_img
-        height: 40px
+        height: 32px !important
     .company-div
       .navbar_large_text
         font-size: 20px
@@ -312,7 +321,9 @@ header
 
 .navbar
   // Figma design: gradient background with purple theme
-  position: relative
+  position: sticky
+  top: 0
+  z-index: 1000
   background: linear-gradient(to right, #000000, #1D0631, #5A2A82)
   backdrop-filter: blur(12px)
   -webkit-backdrop-filter: blur(12px)
@@ -327,7 +338,7 @@ header
   align-items: flex-start
   flex-wrap: wrap
   overflow: visible
-  z-index: 100
+  z-index: 1001
   // Override global button styles for navbar
   .btn
     border: none !important
@@ -369,6 +380,11 @@ header
       text-decoration: none
       display: flex
       align-items: center
+    .logo_img
+      height: 20px
+      width: auto
+      display: block
+      object-fit: contain
   .company-div
     color: white !important
     display: flex
@@ -597,16 +613,17 @@ header
 .mobile-menu
   display: none
   width: 100%
-  flex-basis: 100%
   background: linear-gradient(to right, #1D0631, #5A2A82)
   backdrop-filter: blur(12px)
   -webkit-backdrop-filter: blur(12px)
   border-top: 1px solid rgba(255, 255, 255, 0.15)
   padding: 20px 0
-  position: relative
-  z-index: 100
+  position: absolute
+  top: 64px
+  left: 0
+  right: 0
+  z-index: 1002
   overflow: visible
-  order: 2
   box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.2)
   &.show
     display: block !important
@@ -688,7 +705,7 @@ header
       background-color: #FFB91A !important
       color: #000 !important
       border: none !important
-      border-radius: 8px
+      border-radius: 12px
       font-weight: 600
       font-size: 15px
       text-decoration: none
@@ -713,8 +730,8 @@ header
       padding: 14px 20px
       background-color: transparent !important
       color: #FFB91A !important
-      border: 2px solid #FFB91A !important
-      border-radius: 8px
+      border: 2px solid #FFB91A !important  
+      border-radius: 12px
       font-weight: 600
       font-size: 15px
       text-decoration: none
@@ -730,6 +747,13 @@ header
       &:active
         transform: translateY(0)
         box-shadow: none
+      html.dark &
+        background-color: transparent !important
+        color: #FFB91A !important
+        border-color: #FFB91A !important
+        &:hover
+          background-color: rgba(255, 185, 26, 0.15) !important
+
 
 .dropdown#logged_user_menu
   position: relative
@@ -861,7 +885,6 @@ header
 
 @media (min-width: 320px) and (max-width: 480px)
   h2
-    font-size: 12px !important
     margin-top: 5px !important
   .navbar
     .follow_btn
@@ -1117,6 +1140,148 @@ fieldset
               width: 14rem
             .language_percentage_indicator
               width: 3rem
+
+// Dark mode guards for legacy project security/no-analysis blocks
+html.dark
+  #project_container
+    .project_row
+      #did_you_know
+        .well
+          background-color: #1D0631 !important
+          border: 1px solid #4b5563 !important
+          box-shadow: none !important
+
+        h4
+          color: #f8fafc !important
+
+        p, li, span, .indent
+          color: #cbd5e1 !important
+
+        a
+          color: #60a5fa !important
+
+      .no_analysis_message
+        .alert.alert-info.alert-block
+          background-color: #2D1548 !important
+          border: 1px solid rgba(159, 122, 186, 0.35) !important
+
+        p,
+        .analysis_in_progress,
+        .indent,
+        span
+          color: #60a5fa !important
+
+// Modern Info Card Styles for No Analysis Summary
+.no_analysis_message
+  margin-bottom: 24px
+
+  .modern-info-card
+    background: #ffffff
+    border-radius: 16px
+    overflow: hidden
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.08)
+    transition: box-shadow 0.2s ease
+
+  .info-card-header
+    display: flex
+    align-items: center
+    gap: 16px
+    padding: 24px
+
+  .info-icon-wrapper
+    width: 40px
+    height: 40px
+    flex-shrink: 0
+    background: linear-gradient(135deg, #5A2A82 0%, #9F7ABA 100%)
+    border-radius: 10px
+    display: flex
+    align-items: center
+    justify-content: center
+
+    i
+      color: white
+      font-size: 20px
+
+  .info-content
+    flex: 1
+
+  .info-title
+    margin: 0
+    font-size: 20px
+    font-weight: 600
+    color: #111827
+    line-height: 1.4
+
+  .info-card-body
+    padding: 0 24px 24px 24px
+    text-align: center
+    font-size: 17px
+
+    @media (max-width: 768px)
+      padding: 0 24px 24px 24px
+
+  .info-text
+    margin: 0 0 12px 0
+    line-height: 1.6
+    color: #374151
+    text-align: center
+
+    &:last-child
+      margin-bottom: 0
+
+  .info-action
+    margin-top: 24px
+    text-align: center
+
+  .info-link
+    color: #0E4B7A
+    font-weight: 500
+    text-decoration: none
+    transition: color 0.2s ease
+
+    &:hover
+      color: #2E8B9E
+      text-decoration: underline
+
+// Dark Mode Styles for Modern Info Card
+html.dark
+  .no_analysis_message
+    .modern-info-card
+      background-color: #2D1548
+
+    .info-icon-wrapper
+      background: linear-gradient(135deg, #5A2A82 0%, #9F7ABA 100%)
+
+    .info-title
+      color: #f9fafb
+
+    .info-text
+      color: #cbd5e1
+
+    .info-link
+      color: #60a5fa
+
+      &:hover
+        color: #93c5fd
+
+body.dark
+  .no_analysis_message
+    .modern-info-card
+      background-color: #2D1548
+
+    .info-title
+      color: #f9fafb
+
+    .info-text
+      color: #cbd5e1important
+
+body.dark
+  #project_container
+    .project_row
+      #did_you_know
+        .well
+          background-color: #1D0631 !important
+          border: 1px solid #4b5563 !important
 
 // Full-width layout styles
 .page-content-wrapper
