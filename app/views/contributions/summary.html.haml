@@ -8,8 +8,7 @@
     = @project.name
 
 .project_content_title
-  %h2.pull-left= t('.contributors')
-  = project_analysis_timestamp(@project)
+  %h1.pull-left= t('.contributors')
   .clearfix
 
 - if @analysis.present?
@@ -22,21 +21,36 @@
       .chart.watermark440#committer_history_chart{ datasrc: committer_history_chart, style: 'height:320px' }
     .clearfix
 
-  .col-md-12
-    %h4= link_to t('.newest_contributors'), project_contributors_path(@project, sort: 'newest')
-    .col-md-6
-      = render partial: 'newest_contributions', locals: { contributions: @newest_contributions[0..4] }
-    - if @newest_contributions.length > 5
-      .col-md-6
-        = render partial: 'newest_contributions', locals: { contributions: @newest_contributions[5..-1] }
-    .clearfix
-  .clearfix
+  .contributors-section.newest-contributors-section
+    %h2.section-title
+      %svg.section-icon{width: "20", height: "20", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", "stroke-width" => "2"}
+        %rect{width: "18", height: "18", x: "3", y: "4", rx: "2", ry: "2"}
+        %line{x1: "16", y1: "2", x2: "16", y2: "6"}
+        %line{x1: "8", y1: "2", x2: "8", y2: "6"}
+        %line{x1: "3", y1: "10", x2: "21", y2: "10"}
+      = link_to t('.newest_contributors'), project_contributors_path(@project, sort: 'newest'), class: 'section-title-link'
+    .two-column-layout.desktop-only
+      .column-left
+        .col-md-6
+          = render partial: 'newest_contributions', locals: { contributions: @newest_contributions[0..4] }
+      - if @newest_contributions.length > 5
+        .column-right
+          .col-md-6
+            = render partial: 'newest_contributions', locals: { contributions: @newest_contributions[5..-1] }
+    .mobile-only
+      = render partial: 'newest_contributions', locals: { contributions: @newest_contributions }
 
-  .col-md-12.top-committers
-    %h4= link_to t('.top_contributions'), project_contributors_path(@project)
-    = render partial: 'contributions', locals: { contributions: @top_contributions, search_bar: false }
-    %p
-      = link_to t('.see_all'), project_contributors_path(@project), class: 'btn btn-info btn-small'
+  .contributors-section.top-contributors-section
+    %h2.section-title
+      %svg.section-icon{width: "20", height: "20", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", "stroke-width" => "2"}
+        %path{d: "M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"}
+      = link_to t('.top_contributions'), project_contributors_path(@project), class: 'section-title-link'
+    .col-md-12.top-committers
+      = render partial: 'contributions', locals: { contributions: @top_contributions }
+    %p.see-all-container
+      = link_to project_contributors_path(@project), class: 'btn' do
+        %i.fa.fa-users
+        %span= t('.see_all')
   .clearfix
 - else
   = render partial: 'projects/show/no_analysis_summary'

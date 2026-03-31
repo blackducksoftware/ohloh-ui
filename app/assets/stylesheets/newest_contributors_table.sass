@@ -1,0 +1,77 @@
+// Newest Contributors Table Styling (Figma Design)
+// This applies to all pages using _newest_contributions.html.haml partial
+
+table.table.table-striped.table-condensed
+  width: 100%
+  background: #ffffff !important
+  border-radius: 16px
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24)
+  overflow: hidden
+  transition: box-shadow 0.2s
+  padding: 0 24px
+
+  @media (min-width: 768px)
+    padding: 0 32px
+
+  html.dark &
+    background: #2D1548 !important
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.24), 0 1px 2px rgba(0, 0, 0, 0.48)
+
+  thead
+    tr
+      border-bottom: 1px solid #e5e7eb
+
+      html.dark &
+        border-bottom: 1px solid rgba(90, 42, 130, 0.4)
+
+    th
+      text-align: center
+      vertical-align: middle
+      font-size: 11px
+      font-weight: 600
+      color: #6b7280
+      padding: 8px
+      text-transform: uppercase
+      letter-spacing: 0.05em
+      border-bottom: none !important
+
+      html.dark &
+        color: #9ca3af
+
+  tbody
+    tr
+      border-bottom: 1px solid #f3f4f6
+      transition: background-color 0.2s
+      background-color: transparent !important
+
+      html.dark &
+        border-bottom: 1px solid rgba(90, 42, 130, 0.2)
+        background-color: transparent !important
+
+      &:hover
+        background-color: #f9fafb !important
+
+        html.dark &
+          background-color: rgba(255, 255, 255, 0.05) !important
+
+      // Remove alternating row colors from Bootstrap striping
+      &:nth-child(odd)
+        background-color: transparent !important
+
+        html.dark &
+          background-color: transparent !important
+
+        &:hover
+          background-color: #f9fafb !important
+
+          html.dark &
+            background-color: rgba(255, 255, 255, 0.05) !important
+
+    td
+      text-align: center
+      padding: 10px
+      vertical-align: middle
+      border-bottom: none !important
+
+      html.dark &
+        color: #e2e8f0

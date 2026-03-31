@@ -1,16 +1,46 @@
-.project_content_title
-  :height 50px
-.alias
-  .undone
-    :text-decoration line-through
-    :color #808080
-  .pending
-    :color #8B0000
-    :padding-left 18px
-    :background asset_url('icons/fact_warning.png') left center no-repeat
-  li
-    :margin-left 25px
-    :margin-bottom 8px
-    :border-bottom 1px solid #ddd
-    :padding-bottom 5px
+// Design System Variables
+$purple-primary: #5A2A82
+$gray-500: #6b7280
+$gray-200: #e5e7eb
+$yellow-accent: #FFB91A
 
+// System Font Stack
+$font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif
+
+.project_content_title
+  height: 72px
+  font-family: $font-family
+
+.alias
+  font-family: $font-family
+  
+  .undone
+    text-decoration: line-through
+    color: $gray-500
+
+  .pending
+    color: $purple-primary
+    padding-left: 18px
+    background: asset_url('icons/fact_warning.png') left center no-repeat
+    font-weight: 500
+
+  li
+    margin-left: 25px
+    margin-bottom: 12px
+    border-bottom: 1px solid $gray-200
+    padding-bottom: 8px
+    font-weight: 400
+    line-height: 1.6
+
+// Dark Mode
+html.dark,
+body.dark
+  .alias
+    .undone
+      color: #94a3b8
+
+    .pending
+      color: $yellow-accent
+
+    li
+      border-bottom-color: rgba(255, 255, 255, 0.1)

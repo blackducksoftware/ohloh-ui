@@ -1,0 +1,130 @@
+// Top Contributors Table Styling (Figma Design)
+// This applies to all pages using _contributions.html.haml partial
+// Targets tables with specific column structure (col-md-3 for Name column)
+
+// Card border styling for tables
+table.table
+  background: #ffffff
+  border-radius: 16px
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24)
+  overflow: hidden
+  transition: box-shadow 0.2s
+  padding: 0 24px
+
+  @media (min-width: 768px)
+    padding: 0 32px
+
+  html.dark &
+    background: #2D1548
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.24), 0 1px 2px rgba(0, 0, 0, 0.48)
+
+// Only apply to tables that have the contributions structure
+table.table
+  // Target only if table has thead with col-md-3 (Name column from contributions partial)
+  thead
+
+    th.col-md-3
+      text-align: center
+      vertical-align: middle
+      font-size: 11px
+      font-weight: 600
+      color: #6b7280
+      text-transform: uppercase
+      letter-spacing: 0.05em
+      border-bottom: none !important
+
+      html.dark &
+        color: #9ca3af
+
+// Apply full styling to tables with contributions columns
+table.table thead:has(th.col-md-3)
+  ~ tbody
+    tr
+      border-bottom: 1px solid #f3f4f6
+      transition: background-color 0.2s
+
+      html.dark &
+        border-bottom: 1px solid rgba(90, 42, 130, 0.2)
+
+      &:hover
+        background-color: #f9fafb
+
+        html.dark &
+          background-color: rgba(255, 255, 255, 0.05)
+
+    td
+      text-align: center
+      padding: 12px
+      vertical-align: middle
+      border-bottom: none !important
+
+      html.dark &
+        color: #e2e8f0
+
+  tr
+    border-bottom: 2px solid #e5e7eb
+
+    html.dark &
+      border-bottom: 2px solid rgba(90, 42, 130, 0.4)
+
+// Fallback for browsers that don't support :has()
+// Target tables in known contributors containers
+.top-committers,
+.col-md-12
+  table.table
+    width: 100%
+    background: #ffffff !important
+    border-radius: 16px
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24)
+    overflow: hidden
+    padding: 0 24px
+
+    @media (min-width: 768px)
+      padding: 0 32px
+
+    html.dark &
+      background: #2D1548 !important
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.24), 0 1px 2px rgba(0, 0, 0, 0.48)
+
+    thead
+      tr
+        border-bottom: 2px solid #e5e7eb
+
+        html.dark &
+          border-bottom: 2px solid rgba(90, 42, 130, 0.4)
+
+      th
+        text-align: center
+        vertical-align: middle
+        font-size: 11px
+        font-weight: 600
+        color: #6b7280
+        text-transform: uppercase
+        letter-spacing: 0.05em
+        border-bottom: none !important
+
+        html.dark &
+          color: #9ca3af
+
+    tbody
+      tr
+        border-bottom: 1px solid #f3f4f6
+        transition: background-color 0.2s
+
+        html.dark &
+          border-bottom: 1px solid rgba(90, 42, 130, 0.2)
+
+        &:hover
+          background-color: #f9fafb
+
+          html.dark &
+            background-color: rgba(255, 255, 255, 0.05)
+
+      td
+        text-align: center
+        padding: 12px
+        vertical-align: middle
+        border-bottom: none !important
+
+        html.dark &
+          color: #e2e8f0

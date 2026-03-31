@@ -1,9 +1,6 @@
 :ruby
   content_for(:html_title) { t('.page_title', name: @project.name) }
   page_context[:select_top_menu_nav] = 'select_projects'
-  page_context[:select_footer_nav] = nil  # Disable old footer navigation
-  page_context[:footer_menu_list] = nil   # Disable old footer navigation
-  page_context[:page_header] = nil  # Disable default header, using redesigned header instead
 
 - content_for :twitter_card do
   %meta{ content: 'summary', name: 'twitter:card' }
@@ -15,8 +12,6 @@
   %meta{ content: 'https://www.openhub.net', name: 'twitter:domain' }
 
 .project-show-redesign{ itemscope: '', itemtype: 'http://schema.org/SoftwareSourceCode' }
-  / Project Header with Gradient
-  = render partial: 'projects/show/header_redesign'
 
   .project-content
     / Stats Grid - 3 columns (Lines of Code, Contributors, Total Commits)
@@ -312,137 +307,8 @@
     - if @analysis.present?
       = render partial: 'projects/show/analysis_summary_redesign'
 
-    / Project Navigation Footer
-    .footer-nav-section
-      / Desktop: 4-column grid
-      .footer-nav-grid
-        .nav-column
-          .column-header
-            %svg{ viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", 'stroke-width': "2" }
-              %circle{ cx: "12", cy: "12", r: "10" }
-              %line{ x1: "12", y1: "16", x2: "12", y2: "12" }
-              %line{ x1: "12", y1: "8", x2: "12.01", y2: "8" }
-            %h4= t('.project_summary')
-          %ul
-            %li= link_to t('.news'), project_rss_subscriptions_path(@project)
-            %li= link_to t('.settings'), settings_project_path(@project)
-            %li= link_to t('.sharing_widgets'), project_widgets_path(@project)
-            %li= link_to t('.related_projects'), similar_project_path(@project)
-
-        .nav-column
-          .column-header
-            %svg{ viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", 'stroke-width': "2" }
-              %polyline{ points: "16 18 22 12 16 6" }
-              %polyline{ points: "8 6 2 12 8 18" }
-            %h4= t('.code_data')
-          %ul
-            %li= link_to t('.languages.languages'), languages_summary_project_analysis_path(@project, id: 'latest')
-            %li= link_to t('.cost_estimates'), estimated_cost_project_path(@project)
-            %li= link_to t('.security.title'), security_project_path(@project)
-
-        .nav-column
-          .column-header
-            %svg{ viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", 'stroke-width': "2" }
-              %rect{ x: "3", y: "3", width: "7", height: "7" }
-              %rect{ x: "14", y: "3", width: "7", height: "7" }
-              %rect{ x: "14", y: "14", width: "7", height: "7" }
-              %rect{ x: "3", y: "14", width: "7", height: "7" }
-            %h4= t('.scm_data')
-          %ul
-            %li= link_to t('.commits'), summary_project_commits_path(@project)
-            %li= link_to t('.contributors'), summary_project_contributors_path(@project)
-
-        .nav-column
-          .column-header
-            %svg{ viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", 'stroke-width': "2" }
-              %path{ d: "M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" }
-              %circle{ cx: "9", cy: "7", r: "4" }
-              %path{ d: "M23 21v-2a4 4 0 0 0-3-3.87" }
-              %path{ d: "M16 3.13a4 4 0 0 1 0 7.75" }
-            %h4= t('.community_data')
-          %ul
-            %li= link_to t('.users'), users_project_path(@project)
-            %li= link_to t('.ratings_reviews'), summary_project_reviews_path(@project)
-            %li= link_to t('.user_contributor_locations'), map_project_path(@project)
-
-      / Mobile: Accordion
-      .footer-nav-accordion
-        .accordion-item
-          %button.accordion-header-btn{ onclick: "toggleFooterAccordion(this)" }
-            .header-left
-              %svg{ viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", 'stroke-width': "2" }
-                %circle{ cx: "12", cy: "12", r: "10" }
-                %line{ x1: "12", y1: "16", x2: "12", y2: "12" }
-                %line{ x1: "12", y1: "8", x2: "12.01", y2: "8" }
-              %span= t('.project_summary')
-            %svg.chevron{ viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", 'stroke-width': "2" }
-              %polyline{ points: "6 9 12 15 18 9" }
-          .accordion-content-footer{ style: "display: none;" }
-            %ul
-              %li= link_to t('.news'), project_rss_subscriptions_path(@project)
-              %li= link_to t('.settings'), settings_project_path(@project)
-              %li= link_to t('.sharing_widgets'), project_widgets_path(@project)
-              %li= link_to t('.related_projects'), similar_project_path(@project)
-
-        .accordion-item
-          %button.accordion-header-btn{ onclick: "toggleFooterAccordion(this)" }
-            .header-left
-              %svg{ viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", 'stroke-width': "2" }
-                %polyline{ points: "16 18 22 12 16 6" }
-                %polyline{ points: "8 6 2 12 8 18" }
-              %span= t('.code_data')
-            %svg.chevron{ viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", 'stroke-width': "2" }
-              %polyline{ points: "6 9 12 15 18 9" }
-          .accordion-content-footer{ style: "display: none;" }
-            %ul
-              %li= link_to t('.languages.languages'), languages_summary_project_analysis_path(@project, id: 'latest')
-              %li= link_to t('.cost_estimates'), estimated_cost_project_path(@project)
-              %li= link_to t('.security.title'), security_project_path(@project)
-
-        .accordion-item
-          %button.accordion-header-btn{ onclick: "toggleFooterAccordion(this)" }
-            .header-left
-              %svg{ viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", 'stroke-width': "2" }
-                %rect{ x: "3", y: "3", width: "7", height: "7" }
-                %rect{ x: "14", y: "3", width: "7", height: "7" }
-                %rect{ x: "14", y: "14", width: "7", height: "7" }
-                %rect{ x: "3", y: "14", width: "7", height: "7" }
-              %span= t('.scm_data')
-            %svg.chevron{ viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", 'stroke-width': "2" }
-              %polyline{ points: "6 9 12 15 18 9" }
-          .accordion-content-footer{ style: "display: none;" }
-            %ul
-              %li= link_to t('.commits'), summary_project_commits_path(@project)
-              %li= link_to t('.contributors'), summary_project_contributors_path(@project)
-
-        .accordion-item
-          %button.accordion-header-btn{ onclick: "toggleFooterAccordion(this)" }
-            .header-left
-              %svg{ viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", 'stroke-width': "2" }
-                %path{ d: "M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" }
-                %circle{ cx: "9", cy: "7", r: "4" }
-                %path{ d: "M23 21v-2a4 4 0 0 0-3-3.87" }
-                %path{ d: "M16 3.13a4 4 0 0 1 0 7.75" }
-              %span= t('.community_data')
-            %svg.chevron{ viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", 'stroke-width': "2" }
-              %polyline{ points: "6 9 12 15 18 9" }
-          .accordion-content-footer{ style: "display: none;" }
-            %ul
-              %li= link_to t('.users'), users_project_path(@project)
-              %li= link_to t('.ratings_reviews'), summary_project_reviews_path(@project)
-              %li= link_to t('.user_contributor_locations'), map_project_path(@project)
-
 :javascript
   function toggleAccordion(button) {
-    const content = button.nextElementSibling;
-    const chevron = button.querySelector('.chevron');
-    const isExpanded = content.style.display === 'block';
-
-    content.style.display = isExpanded ? 'none' : 'block';
-    chevron.classList.toggle('expanded', !isExpanded);
-  }
-
-  function toggleFooterAccordion(button) {
     const content = button.nextElementSibling;
     const chevron = button.querySelector('.chevron');
     const isExpanded = content.style.display === 'block';

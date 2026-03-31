@@ -32,7 +32,10 @@
   background-color: color-gradient($SECTION_BACKGROUND, 0) !important
 
 @mixin site-link-color
-  color: color-gradient($SECONDARY_SLATE_BLUE, 120)
+  color: #5A2A82
+
+  html.dark &
+    color: #ffb91a
 
 @mixin site-placeholder-color
   color: color-gradient($PRIMARY_DARK_GRAY, 120)
@@ -444,7 +447,7 @@
   background-color: color-gradient($LIGHT_GRAY, 100) !important
 
 @mixin analysis-timestamp-color
-  color: color-gradient($LIGHT_GRAY, 120)
+  color: #ffffff
 
 @mixin licenses-permitted-color
   color: color-gradient($SECONDARY_FOREST_GREEN, 120)

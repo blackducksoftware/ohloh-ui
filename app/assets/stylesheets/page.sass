@@ -129,9 +129,15 @@ header
     .new_main_menu
       gap: 24px
 #page_contents
+  padding: 0 32px 24px
   max-width: 100%
   .separator-div
     @include site-separator-color
+  
+  // Mobile responsive padding
+  @media (max-width: 767px)
+    padding: 0 16px 16px
+  
 
 #project_container
   background-color: white
@@ -1164,6 +1170,110 @@ html.dark
         .indent,
         span
           color: #60a5fa !important
+
+// Modern Info Card Styles for No Analysis Summary
+.no_analysis_message
+  margin-bottom: 24px
+
+  .modern-info-card
+    background: #ffffff
+    border-radius: 16px
+    overflow: hidden
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.08)
+    transition: box-shadow 0.2s ease
+
+  .info-card-header
+    display: flex
+    align-items: center
+    gap: 16px
+    padding: 24px
+
+  .info-icon-wrapper
+    width: 40px
+    height: 40px
+    flex-shrink: 0
+    background: linear-gradient(135deg, #5A2A82 0%, #9F7ABA 100%)
+    border-radius: 10px
+    display: flex
+    align-items: center
+    justify-content: center
+
+    i
+      color: white
+      font-size: 20px
+
+  .info-content
+    flex: 1
+
+  .info-title
+    margin: 0
+    font-size: 20px
+    font-weight: 600
+    color: #111827
+    line-height: 1.4
+
+  .info-card-body
+    padding: 0 24px 24px 24px
+    text-align: center
+    font-size: 17px
+
+    @media (max-width: 768px)
+      padding: 0 24px 24px 24px
+
+  .info-text
+    margin: 0 0 12px 0
+    line-height: 1.6
+    color: #374151
+    text-align: center
+
+    &:last-child
+      margin-bottom: 0
+
+  .info-action
+    margin-top: 24px
+    text-align: center
+
+  .info-link
+    color: #0E4B7A
+    font-weight: 500
+    text-decoration: none
+    transition: color 0.2s ease
+
+    &:hover
+      color: #2E8B9E
+      text-decoration: underline
+
+// Dark Mode Styles for Modern Info Card
+html.dark
+  .no_analysis_message
+    .modern-info-card
+      background-color: #2D1548
+
+    .info-icon-wrapper
+      background: linear-gradient(135deg, #5A2A82 0%, #9F7ABA 100%)
+
+    .info-title
+      color: #f9fafb
+
+    .info-text
+      color: #cbd5e1
+
+    .info-link
+      color: #60a5fa
+
+      &:hover
+        color: #93c5fd
+
+body.dark
+  .no_analysis_message
+    .modern-info-card
+      background-color: #2D1548
+
+    .info-title
+      color: #f9fafb
+
+    .info-text
+      color: #cbd5e1important
 
 body.dark
   #project_container
