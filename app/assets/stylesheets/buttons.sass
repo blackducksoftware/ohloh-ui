@@ -284,44 +284,70 @@ button.btn:active, a.btn:active
       border-color: #ffb91a !important
       opacity: 0.4
 
-.i_use_this_btn
-  background-color: white !important
-  border-color: #e5e7eb !important
-  color: #374151 !important
-  font-weight: 500 !important
+// Modern "I Use This" Button Design - All variants
+.i_use_this_btn,
+.i-use-this-btn,
+.i-use-this-btn-mobile,
+.btn-use-this
+  padding: 6px 16px !important
+  background-color: #5A2A82 !important
+  color: #ffffff !important
+  border: none !important
+  border-radius: 8px !important
+  font-size: 12px !important
+  font-weight: 600 !important
+  cursor: pointer !important
   box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24) !important
-  width: 100%
-
+  transition: background-color 0.2s ease !important
+  display: inline-flex !important
+  align-items: center !important
+  justify-content: center !important
+  
   &:hover
-    border-color: #5A2A82 !important
-    background-color: white !important
-    color: #374151 !important
-
+    background-color: rgba(90, 42, 130, 0.9) !important
+    color: #ffffff !important
+  
   &:active, &:focus
-    background-color: white !important
-    border-color: #5A2A82 !important
-
+    background-color: rgba(90, 42, 130, 0.9) !important
+    color: #ffffff !important
+  
   &.disabled, &[disabled]
-    background-color: #f9fafb !important
-    color: #9ca3af !important
+    background-color: #9ca3af !important
     opacity: 0.6 !important
     cursor: not-allowed !important
-
+  
   // Dark mode
-  .dark &
-    background-color: #2D1548 !important
-    border-color: #5A2A82 !important
-    color: #d1d5db !important
+  html.dark &
+    background-color: #ffb91a !important
+    color: #1D0631 !important
     box-shadow: 0 1px 3px rgba(0,0,0,0.24), 0 1px 2px rgba(0,0,0,0.48) !important
-
+    
     &:hover
-      border-color: #ffb91a !important
-      background-color: #2D1548 !important
-
+      background-color: rgba(255, 185, 26, 0.9) !important
+      color: #1D0631 !important
+    
+    &:active, &:focus
+      background-color: rgba(255, 185, 26, 0.9) !important
+    
     &.disabled, &[disabled]
-      background-color: #1D0631 !important
-      color: #6b7280 !important
+      background-color: #6b7280 !important
+      opacity: 0.6 !important
 
+// State variants for redesigned button
+.i-use-this-btn,
+.i-use-this-btn-mobile
+  &.using
+    background-color: #5A2A82 !important
+    
+    html.dark &
+      background-color: #ffb91a !important
+  
+  &.not-using
+    background-color: #5A2A82 !important
+    
+    html.dark &
+      background-color: #ffb91a !important
+      
 .btn-header
   width: 100px
 

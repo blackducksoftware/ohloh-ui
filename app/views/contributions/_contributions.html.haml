@@ -1,57 +1,108 @@
-%table.table
-  %thead
-    %tr{ id: 'dingus-row' }
-      %td{ colspan: 10 }
-        - if search_bar
-          = render 'shared/search_dingus/commits_or_contributor_search', items: contributions, type: :contributions
-        - else
-          &nbsp;
-    %tr
-      %th.col-md-3.center= t('.name')
-      %th{ width: '45px' }= t('.kudos')
-      %th.center{ width: '80px' }= t('.12_month_commits')
-      %th{ width: '80px' }= t('.all_commits')
-      %th= t('.trend')
-      %th= t('.language')
-      %th= t('.first_commit')
-      %th= t('.last_commit')
-  %tbody
-    - contributions.each do |contribution|
-      :ruby
-        person_name = contribution.person.person_name
-        fact = contribution.contributor_fact
-        contributor_path = project_contributor_path(@project, contribution)
+// Desktop table view
+.desktop-only
+  %table.table
+    %thead
       %tr
-        %td
-          = link_to contributor_path, class: 'pull-left' do
-            = avatar_img_for(contribution.person)
+        %th.col-md-3.center= t('.name')
+        %th{ width: '45px' }= t('.kudos')
+        %th.center{ width: '80px' }= t('.12_month_commits')
+        %th{ width: '80px' }= t('.all_commits')
+        %th= t('.trend')
+        %th= t('.language')
+        %th= t('.first_commit')
+        %th= t('.last_commit')
+    %tbody
+      - contributions.each do |contribution|
+        :ruby
+          person_name = contribution.person.person_name
+          fact = contribution.contributor_fact
+          contributor_path = project_contributor_path(@project, contribution)
+        %tr
+          %td
+            = link_to contributor_path, class: 'pull-left' do
+              = avatar_img_for(contribution.person)
 
-          = link_to contributor_path, class: 'avatar_name pull-left col-md-10 padding_left_0', title: person_name do
-            = h truncate(person_name, length: 23)
-          %span.small.contribution_title.pull-left
-            - if contribution.position.title.present?
-              = t('.position_title', title: contribution.position.title)
-            - elsif contribution.position.present? && !contribution.position.active?
-              = t('.inactive')
-            - elsif @project.active_managers.include?(contribution.person.account)
-              = t('.manager')
-        %td
-          - rank = contribution.person.kudo_rank || 1
-          = image_tag "icons/sm_laurel_#{rank}.png", alt: "KudoRank #{rank}"
-        %td.center
-          = fact.twelve_month_commits
-        %td
-          = fact.commits
-        %td
-          = image_tag commits_spark_project_contributor_url(project_id: @project.to_param, id: fact.name_id),
-          width: 179, height: 32, align: 'left' if fact.name_id
-        %td
-          = fact.primary_language.nice_name
-        %td
-          - if fact.first_checkin
-            %abbr.date{ title: fact.first_checkin }= t('.ago', duration: time_ago_in_words(fact.first_checkin))
-        %td
-          - if fact.last_checkin
-            %abbr.date{ title: fact.last_checkin }= t('.ago', duration: time_ago_in_words(fact.last_checkin))
+            = link_to contributor_path, class: 'avatar_name pull-left col-md-10 padding_left_0', title: person_name do
+              = h truncate(person_name, length: 23)
+            %span.small.contribution_title.pull-left
+              - if contribution.position.title.present?
+                = t('.position_title', title: contribution.position.title)
+              - elsif contribution.position.present? && !contribution.position.active?
+                = t('.inactive')
+              - elsif @project.active_managers.include?(contribution.person.account)
+                = t('.manager')
+          %td
+            - rank = contribution.person.kudo_rank || 1
+            = image_tag "icons/sm_laurel_#{rank}.png", alt: "KudoRank #{rank}"
+          %td.center
+            = fact.twelve_month_commits
+          %td
+            = fact.commits
+          %td
+            = image_tag commits_spark_project_contributor_url(project_id: @project.to_param, id: fact.name_id),
+            width: 179, height: 32 if fact.name_id
+          %td
+            = fact.primary_language.nice_name
+          %td
+            - if fact.first_checkin
+              %abbr.date{ title: fact.first_checkin }= t('.ago', duration: time_ago_in_words(fact.first_checkin))
+          %td
+            - if fact.last_checkin
+              %abbr.date{ title: fact.last_checkin }= t('.ago', duration: time_ago_in_words(fact.last_checkin))
+
+// Mobile card view
+.contributors-cards-container.mobile-only
+  - contributions.each do |contribution|
+    :ruby
+      person_name = contribution.person.person_name
+      fact = contribution.contributor_fact
+      contributor_path = project_contributor_path(@project, contribution)
+    .contributor-card-item
+      .card-item-header
+        = link_to contributor_path, class: 'contributor-link' do
+          = avatar_img_for(contribution.person)
+          .contributor-name= h truncate(person_name, length: 30)
+        %button.expand-toggle{ type: 'button', 'aria-label' => 'Expand details' }
+          %i.fa.fa-chevron-down
+
+      .card-item-content
+        .content-row
+          .content-item
+            .label= t('.12_month_commits')
+            .value= fact.twelve_month_commits
+          .content-item
+            .label= t('.primary_language')
+            .value= fact.primary_language.nice_name
+
+        .content-row
+          .content-item
+            .label= t('.all_commits')
+            .value= fact.commits
+          .content-item
+            .label= t('.kudos')
+            .value
+              - rank = contribution.person.kudo_rank || 1
+              = image_tag "icons/sm_laurel_#{rank}.png", alt: "KudoRank #{rank}"
+              = rank
+
+        .content-row
+          .content-item
+            .label= t('.first_commit')
+            .value
+              - if fact.first_checkin
+                %abbr.date{ title: fact.first_checkin }= t('.ago', duration: time_ago_in_words(fact.first_checkin))
+          .content-item
+            .label= t('.last_commit')
+            .value
+              - if fact.last_checkin
+                %abbr.date{ title: fact.last_checkin }= t('.ago', duration: time_ago_in_words(fact.last_checkin))
+
+        - if fact.name_id
+          .content-row.full-width
+            .content-item
+              .label= t('.trend')
+              .trend-image
+                = image_tag commits_spark_project_contributor_url(project_id: @project.to_param, id: fact.name_id),
+                width: 179, height: 32
 
 = render partial: 'shared/alert', locals: { message: t('.no_data') } if contributions.empty?

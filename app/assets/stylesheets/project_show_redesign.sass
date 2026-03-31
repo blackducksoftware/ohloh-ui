@@ -95,7 +95,6 @@ body:has(.project-show-redesign)
 .project-show-redesign
   width: 100%
   min-height: 100vh
-  background-color: $gray-50
   font-family: $font-family
   -webkit-font-smoothing: antialiased
   -moz-osx-font-smoothing: grayscale
@@ -123,348 +122,14 @@ body:has(.project-show-redesign)
       color: $purple-primary
 
   // ============================================================================
-  // Project Header Section
-  // ============================================================================
-  .project-header-gradient
-    background: linear-gradient(135deg, $purple-dark 0%, $purple-primary 100%)
-    padding: 50px 16px 32px
-    position: relative
-    overflow: hidden
-
-    // Decorative gradient circle
-    &::before
-      content: ''
-      position: absolute
-      top: -192px
-      right: -192px
-      width: 384px
-      height: 384px
-      background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%)
-      border-radius: 50%
-
-    .header-content
-      margin: 0 auto
-      position: relative
-      z-index: 10
-
-    .header-main
-      display: flex
-      flex-direction: column
-      gap: 16px
-
-      @media (min-width: 768px)
-        flex-direction: row
-        align-items: flex-start
-        justify-content: space-between
-        gap: 24px
-
-    a,
-    button
-      font-family: $font-family
-
-    // Desktop: Top-right user stats and button
-    .header-top-right
-      position: absolute
-      top: 49px
-      right: 16px
-      display: none
-      align-items: center
-      gap: 12px
-      z-index: 20
-
-      @media (min-width: 640px)
-        display: flex
-        right: 24px
-
-      @media (min-width: 1024px)
-        right: 32px
-
-      .stats-card
-        background: white
-        border-radius: 8px
-        padding: 12px 16px
-        box-shadow: $shadow-md
-        min-width: 140px
-
-    .activity-indicator-wrapper
-      display: flex
-      flex-direction: column
-      align-items: center
-      justify-content: center
-      gap: 8px
-      min-width: 80px
-
-      [class^='thirtyfive_project_activity_level_']
-        position: static
-        top: auto
-        margin-left: 0
-        transform: scale(1.25)
-        transform-origin: center center
-
-      .thirtyfive_project_activity_text
-        margin: 0
-        width: auto
-        line-height: 1.2
-        font-size: 12px
-        font-weight: 600
-        color: white
-        text-align: center
-        white-space: nowrap
-
-    .stats-card
-        .stats-inner
-          display: flex
-          align-items: center
-          gap: 12px
-          margin-bottom: 12px
-
-          svg
-            width: 20px
-            height: 20px
-            color: $purple-primary
-            flex-shrink: 0
-
-          .user-count
-            font-size: 28px
-            font-weight: 700
-            color: $purple-primary
-            line-height: 1
-
-        .i-use-this-btn
-          width: 100%
-          padding: 10px 16px
-          border-radius: 6px
-          font-weight: 600
-          font-size: 14px
-          display: flex
-          align-items: center
-          justify-content: center
-          gap: 8px
-          border: none
-          cursor: pointer
-          transition: all 0.2s
-
-          &.using
-            background: $purple-primary
-            color: white
-
-            &:hover
-              background: darken($purple-primary, 8%)
-
-          &.not-using
-            background: $yellow-accent
-            color: $purple-dark
-
-            &:hover
-              background: $yellow-hover
-
-          svg
-            width: 16px
-            height: 16px
-
-    // Project title and info section
-    .project-title-section
-      flex: 1
-      min-width: 0
-      max-width: 900px
-
-      @media (min-width: 768px)
-        max-width: calc(100% - 280px)
-
-      h1
-        font-size: 32px
-        font-weight: 700
-        color: white
-        line-height: 1.2
-        letter-spacing: -0.02em
-        margin: 0 0 12px
-
-        @media (min-width: 768px)
-          font-size: 48px
-
-        @media (min-width: 1024px)
-          font-size: 48px
-
-      .action-buttons
-        display: flex
-        flex-wrap: wrap
-        gap: 8px
-        margin-bottom: 20px
-
-        .action-btn
-          display: inline-flex
-          align-items: center
-          gap: 6px
-          padding: 6px 12px
-          border-radius: 8px
-          font-size: 12px
-          font-weight: 500
-          line-height: 1.25
-          text-decoration: none !important
-          appearance: none
-          -webkit-appearance: none
-          background-image: none !important
-          box-shadow: none !important
-          border: 0
-          cursor: pointer
-          transition: all 0.2s ease
-
-          &:link,
-          &:visited,
-          &:hover,
-          &:active
-            color: white !important
-            text-decoration: none !important
-
-          @media (min-width: 768px)
-            font-size: 14px
-
-          svg
-            width: 14px
-            height: 14px
-            flex-shrink: 0
-            stroke: currentColor
-
-          // Outlined button style (for Settings and Report Duplicate)
-          &.action-btn-outline
-            background: rgba(255, 255, 255, 0.1)
-            border: 1px solid rgba(255, 255, 255, 0.2)
-            color: white !important
-            box-shadow: none
-
-            &:hover
-              background: rgba(255, 255, 255, 0.2)
-              border-color: rgba(255, 255, 255, 0.2)
-              color: white !important
-              transform: none
-
-            &:active
-              transform: none
-              background: rgba(255, 255, 255, 0.2)
-
-            &:focus-visible
-              outline: 2px solid rgba(255, 255, 255, 0.55)
-              outline-offset: 2px
-
-      .project-description
-        font-size: 16px
-        color: rgba(255, 255, 255, 0.9)
-        line-height: 1.6
-        margin-bottom: 12px
-
-        @media (min-width: 768px)
-          font-size: 17px
-
-      .timestamp
-        font-size: 14px
-        color: rgba(255, 255, 255, 0.7)
-        line-height: 1.5
-
-    // Mobile: Bottom stats card
-    .header-mobile-stats
-      display: flex
-      gap: 12px
-      margin-top: 24px
-
-      @media (min-width: 640px)
-        display: none
-
-      .activity-card-mobile
-        display: flex
-        flex-direction: column
-        align-items: center
-        justify-content: center
-        gap: 4px
-        padding: 10px 12px
-        background: rgba(255, 255, 255, 0.1)
-        backdrop-filter: blur(10px)
-        border: 1px solid rgba(255, 255, 255, 0.2)
-        border-radius: 8px
-
-        [class^='twentyfive_project_activity_level_']
-          position: static
-          top: auto
-          margin-left: 0
-
-        .twentyfive_project_activity_text
-          margin: 0
-          width: auto
-          min-height: 0
-          font-size: 10px
-          line-height: 1.2
-          font-weight: 600
-          color: white
-          text-align: center
-          white-space: nowrap
-
-      .stats-card-mobile
-        flex: 1
-        display: flex
-        flex-direction: column
-        background: rgba(255, 255, 255, 0.1)
-        backdrop-filter: blur(10px)
-        border: 1px solid rgba(255, 255, 255, 0.2)
-        border-radius: 8px
-        padding: 0
-        overflow: hidden
-
-        .stats-top
-          display: flex
-          align-items: center
-          gap: 8px
-          margin-bottom: 0
-          padding: 10px 12px 6px
-
-          svg
-            width: 16px
-            height: 16px
-            color: $yellow-accent
-
-          .user-count
-            font-size: 18px
-            font-weight: 700
-            color: $yellow-accent
-
-          .users-label
-            font-size: 12px
-            color: rgba(255, 255, 255, 0.8)
-
-        .i-use-this-btn-mobile
-          width: calc(100% - 20px)
-          margin: 0 10px 10px
-          padding: 8px 12px
-          border-radius: 8px
-          font-weight: 600
-          font-size: 14px
-          display: flex
-          align-items: center
-          justify-content: center
-          gap: 8px
-          border: none
-          cursor: pointer
-          line-height: 1.25
-
-          &.using
-            background: $purple-primary
-            color: white
-
-          &.not-using
-            background: $yellow-accent
-            color: $purple-dark
-
-          svg
-            width: 16px
-            height: 16px
-
-  // ============================================================================
   // Main Content Area
   // ============================================================================
   .project-content
     margin: 0 auto
-    padding: 24px
+    padding: 24px 0
 
     @media (min-width: 768px)
-      padding: 32px
+      padding: 32px 0
 
   // ============================================================================
   // Stats Grid (3 columns)
@@ -1344,161 +1009,27 @@ body:has(.project-show-redesign)
       font-size: 14px
 
   // ============================================================================
-  // Footer Navigation
+  // No Analysis Message (Light Mode)
   // ============================================================================
-  .footer-nav-section
-    background: white
-    border-radius: 16px
-    padding: 16px
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24)
-    margin-bottom: 24px
+  .no_analysis_message
+    .btn.btn-primary,
+    .btn.btn-large.btn-primary
+      background-color: $purple-primary !important
+      border-color: $purple-primary !important
+      color: white !important
 
-    @media (min-width: 640px)
-      padding: 32px
-      margin-bottom: 32px
-
-    a
-      &:link,
-      &:visited,
       &:hover,
+      &:focus,
       &:active
-        text-decoration: none
-
-    // Desktop: 4-column grid
-    .footer-nav-grid
-      display: none
-
-      @media (min-width: 768px)
-        display: grid
-        grid-template-columns: repeat(4, 1fr)
-        gap: 32px
-
-      .nav-column
-        .column-header
-          display: flex
-          align-items: center
-          gap: 8px
-          margin-bottom: 12px
-          padding-bottom: 8px
-          border-bottom: 1px solid $gray-200
-
-          svg
-            width: 16px
-            height: 16px
-            color: $purple-primary
-
-          h4
-            font-size: 14px
-            font-weight: 600
-            color: $gray-900
-            margin: 0
-
-        ul
-          list-style: none
-          padding: 0
-          margin: 0
-
-          li
-            margin-bottom: 8px
-
-            &:last-child
-              margin-bottom: 0
-
-            a
-              font-size: 14px
-              color: #5A2A82 !important
-              text-decoration: none
-              transition: color 0.15s
-
-              &:hover
-                text-decoration: underline
-
-              &:visited,
-              &:active
-                color: $purple-primary
-
-    // Mobile: Accordion
-    .footer-nav-accordion
-      display: flex
-      flex-direction: column
-
-      @media (min-width: 768px)
-        display: none
-
-      .accordion-item
-        border-bottom: 1px solid $gray-200
-
-        &:last-child
-          border-bottom: none
-
-        .accordion-header-btn
-          width: 100%
-          display: flex
-          align-items: center
-          justify-content: space-between
-          padding: 12px 0
-          background: none
-          border: none
-          cursor: pointer
-
-          .header-left
-            display: flex
-            align-items: center
-            gap: 10px
-
-            svg
-              width: 16px
-              height: 16px
-              color: $purple-primary
-
-            span
-              font-size: 14px
-              font-weight: 600
-              color: $gray-900
-
-          .chevron
-            width: 16px
-            height: 16px
-            color: $gray-600
-            transition: transform 0.2s
-
-            &.expanded
-              transform: rotate(180deg)
-
-        .accordion-content-footer
-          padding-bottom: 12px
-          padding-left: 24px
-          display: none
-
-          &.expanded
-            display: block
-
-          ul
-            list-style: none
-            padding: 0
-            margin: 0
-
-            li
-              margin-bottom: 6px
-
-              a
-                font-size: 14px
-                color: $purple-primary
-                text-decoration: none
-
-                &:hover
-                  text-decoration: underline
-
-                &:visited,
-                &:active
-                  color: $purple-primary
+        background-color: $purple-dark !important
+        border-color: $purple-dark !important
+        color: white !important
 
 // ============================================================================
 // Dark Theme Overrides (Project Show Redesign)
 // ============================================================================
 html.dark
   .project-show-redesign
-    background-color: $purple-dark
     color: #e2e8f0 !important
 
     // Override any legacy color styles
@@ -1555,7 +1086,7 @@ html.dark
               color: $yellow-accent
 
             h3
-              color: #f8fafc
+              color: #f8fafc !important
 
           .chevron
             color: #94a3b8
@@ -1884,55 +1415,6 @@ html.dark
 
       .no-data
         color: #94a3b8
-
-    .footer-nav-section
-      background: #2D1548
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.24), 0 1px 2px rgba(0, 0, 0, 0.48)
-
-      .footer-nav-grid
-        .nav-column
-          .column-header
-            border-bottom-color: rgba(159, 122, 186, 0.3)
-
-            svg
-              color: $yellow-accent
-
-            h4
-              color: #f8fafc
-
-          ul
-            li
-              a
-                color: $yellow-accent !important
-
-                &:visited,
-                &:active
-                  color: $yellow-accent !important
-
-      .footer-nav-accordion
-        .accordion-item
-          border-bottom-color: rgba(159, 122, 186, 0.3)
-
-          .accordion-header-btn
-            .header-left
-              svg
-                color: $yellow-accent
-
-              span
-                color: #f8fafc
-
-            .chevron
-              color: #94a3b8
-
-          .accordion-content-footer
-            ul
-              li
-                a
-                  color: $yellow-accent
-
-                  &:visited,
-                  &:active
-                    color: $yellow-accent
 
     // Legacy sections rendered inside redesign page (security + analysis summary)
     .project_row
@@ -3012,47 +2494,3 @@ body.dark #project_container .project-show-redesign,
 
         .view-all-link a
           color: $yellow-accent !important
-
-  .footer-nav-section
-    background: #2D1548 !important
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.24), 0 1px 2px rgba(0, 0, 0, 0.48) !important
-
-    .footer-nav-grid
-      .nav-column
-        .column-header
-          border-bottom-color: rgba(159, 122, 186, 0.3) !important
-
-          svg
-            color: $yellow-accent !important
-
-          h4
-            color: #f8fafc !important
-
-        ul li a
-          color: $yellow-accent !important
-
-          &:visited,
-          &:active
-            color: $yellow-accent !important
-
-    .footer-nav-accordion
-      .accordion-item
-        border-bottom-color: rgba(159, 122, 186, 0.3) !important
-
-        .accordion-header-btn
-          .header-left
-            svg
-              color: $yellow-accent !important
-
-            span
-              color: #f8fafc !important
-
-          .chevron
-            color: #94a3b8 !important
-
-        .accordion-content-footer ul li a
-          color: $yellow-accent !important
-
-          &:visited,
-          &:active
-            color: $yellow-accent !important
