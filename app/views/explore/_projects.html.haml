@@ -13,19 +13,7 @@
             = t('.add_new_project', default: 'Add New Project')
 
           / Search Bar with Filters (uses search-dingus styles)
-          %form.header-search-form{ action: projects_path, method: :get, role: 'search' }
-            .btn-group.ux-dropdown.header-search-dropdown
-              %button.search-filter-btn.dropdown-toggle{ type: 'button', 'data-toggle' => 'dropdown' }
-                %span.selection{ val: 'p' }= t('.projects', default: 'Projects')
-                %i.fa.fa-chevron-down
-              .dropdown-menu.search-dropdown-menu
-                %button.dropdown-item.active{ type: 'button', val: 'p' }= t('.projects', default: 'Projects')
-                %button.dropdown-item{ type: 'button', val: 'people' }= t('.people', default: 'People')
-                %button.dropdown-item{ type: 'button', val: 'orgs' }= t('.orgs', default: 'Organizations')
-            = text_field_tag :query, params[:query], placeholder: t('.search_placeholder', default: 'Search projects...'), class: 'header-search-input'
-            %input.search.hidden{ type: 'hidden', name: 'search_type', id: 'search_type_explore', value: 'projects' }
-            %button.header-search-btn{ type: 'submit' }
-              %i.fa.fa-search
+          = render 'shared/global_search', placeholder: t('.search_placeholder', default: 'Search projects...')
 
     / Mobile - Discover More Collapsible
     .discover-more-mobile
