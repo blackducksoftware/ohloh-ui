@@ -12,7 +12,7 @@
       current_sort = params[:sort] || "updated_at"
       selected_label = sort_options.find { |opt| opt[1] == current_sort }&.first || sort_options.first.first
     .custom-sort-dropdown
-      %button.sort-dropdown-btn.dropdown-toggle{ type: 'button', 'data-toggle' => 'dropdown' }
+      %button.sort-dropdown-btn{ type: 'button' }
         %span.selection{ data: { value: current_sort } }= selected_label
         %i.fa.fa-chevron-down
       .dropdown-menu.sort-dropdown-menu
@@ -36,7 +36,7 @@
       current_sort = params[:sort] || SORT_OPTIONS[sort_context][:default]
       selected_label = SORT_OPTIONS[sort_context][:options].find { |opt| opt[1] == current_sort }&.first || SORT_OPTIONS[sort_context][:options].first.first
     .custom-sort-dropdown
-      %button.sort-dropdown-btn.dropdown-toggle{ type: 'button', 'data-toggle' => 'dropdown' }
+      %button.sort-dropdown-btn{ type: 'button' }
         %span.selection{ data: { value: current_sort } }= selected_label
         %i.fa.fa-chevron-down
       .dropdown-menu.sort-dropdown-menu

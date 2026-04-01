@@ -41,6 +41,11 @@ en:
       analyzed: 'Analyzed'
       based_on: 'based on code collected'
       project_may_be_current: 'project data may be more current'
+    global_search:
+      projects: 'Projects'
+      people: 'People'
+      organizations: 'Organizations'
+      placeholder: 'Search...'
     api_outage:
       heading: Under Maintenance
       description_1: This feature is currently under maintenance.

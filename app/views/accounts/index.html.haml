@@ -1,10 +1,18 @@
 - content_for(:html_title) { t('.page_title') }
 - page_context[:select_top_menu_nav] = 'select_people'
 
-%h1.margin_bottom_15= t '.people'
-%h3.margin_bottom_15= t '.header'
+.people-page-container
+  = link_to people_path, class: 'accounts-back-link' do
+    ← Back to contributors
 
-= render partial: 'shared/search_dingus', locals: { collection: @people, sort_context: :people }
-= render partial: 'account', collection: @people.map(&:account)
+  .people-page-header
+    %h1.people-page-title= t '.people'
+    = render 'shared/global_search', placeholder: t('shared.global_search.placeholder')
 
-= will_paginate @people
+  %h2.people-section-title= t '.header'
+
+  = render partial: 'shared/search_dingus', locals: { collection: @people, sort_context: :people }
+
+  = render partial: 'account', collection: @people.map(&:account)
+
+  = will_paginate @people

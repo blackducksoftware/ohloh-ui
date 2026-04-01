@@ -1,0 +1,16 @@
+/ Global search bar with Projects / People / Organizations filter dropdown
+/ Usage: = render 'shared/global_search', placeholder: 'Search projects...'
+- search_placeholder = local_assigns.fetch(:placeholder, t('shared.global_search.placeholder'))
+
+%form.header-search-form{ action: projects_path, method: :get, role: 'search' }
+  .btn-group.ux-dropdown.header-search-dropdown
+    %button.search-filter-btn.dropdown-toggle{ type: 'button', 'data-toggle' => 'dropdown' }
+      %span.selection{ val: 'p' }= t('shared.global_search.projects')
+      %i.fa.fa-chevron-down
+    .dropdown-menu.search-dropdown-menu
+      %button.dropdown-item.active{ type: 'button', val: 'p' }= t('shared.global_search.projects')
+      %button.dropdown-item{ type: 'button', val: 'people' }= t('shared.global_search.people')
+      %button.dropdown-item{ type: 'button', val: 'orgs' }= t('shared.global_search.organizations')
+  = text_field_tag :query, params[:query], placeholder: search_placeholder, class: 'header-search-input'
+  %button.header-search-btn{ type: 'submit' }
+    %i.fa.fa-search
