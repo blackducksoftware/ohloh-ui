@@ -23,6 +23,7 @@ en:
       allowed_files: 'Allowed Files'
       actions: 'Actions'
       new_code_location: 'New Code Location'
+      show_unprocessable_sources: 'Show unprocessable sources'
       currently_importing: 'We are currently working on importing your GitHub Repositories. This might take some time. Please refresh the page or check back momentarily.'
     new:
       page_title: 'The %{name} Open Source Project on Open Hub : New Code Location Page'

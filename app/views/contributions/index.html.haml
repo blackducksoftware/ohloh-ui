@@ -13,7 +13,7 @@
 - if @project.best_analysis.present?
   = render 'shared/search_dingus/commits_or_contributor_search', items: @contributions, type: :contributions, total_count: @contributions.total_entries
   = render partial: 'contributions', locals: { contributions: @contributions }
-  = will_paginate @contributions
+  = render 'shared/modern_pagination', collection: @contributions
 - else
   = render partial: 'projects/show/no_analysis_summary', locals: { analysis: @project.best_analysis }
 
