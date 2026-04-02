@@ -1,12 +1,20 @@
-tbody tr.enlistment
-  &:nth-child(odd)
-    @include site-well-color
-
 .enlistment
   .last
+    display: flex
+    flex-direction: column
+    align-items: flex-start
+
     a
-      margin-bottom: 4px
+      margin-bottom: 7px !important
       width: 148px
+
+    @media (max-width: 768px)
+      flex-direction: row
+      gap: 8px
+
+      a
+        margin-bottom: 0 !important
+        flex: 1
 #dingus-row
   #search-dingus
     margin: 0px !important
@@ -239,3 +247,8 @@ tbody tr.enlistment
 
         strong
           font-weight: 600
+
+.new-code-location-container
+  display: flex
+  justify-content: center
+  margin-top: 24px
