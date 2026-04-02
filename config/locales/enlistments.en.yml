@@ -25,6 +25,16 @@ en:
       new_code_location: 'New Code Location'
       show_unprocessable_sources: 'Show unprocessable sources'
       currently_importing: 'We are currently working on importing your GitHub Repositories. This might take some time. Please refresh the page or check back momentarily.'
+      file: 'file'
+      description1: 'Open Hub ignored'
+      description2: 'during processing.'
+      description3: 'All files included.'
+      description4: 'Open Hub allowed'
+      edit_ignored: 'Edit ignored files'
+      edit_allowed: 'Edit allowed files'
+      remove: 'Remove'
+      confirm: 'Are you sure you want to delete this code location?'
+      dnf: "Error: This Code Location is flagged as Do Not Fetch. Please contact us for assistance"
     new:
       page_title: 'The %{name} Open Source Project on Open Hub : New Code Location Page'
       code_locations: 'Code Locations'
