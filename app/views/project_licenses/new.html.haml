@@ -21,6 +21,8 @@
       &nbsp;:&nbsp;#{t(:new)}
     = project_analysis_timestamp(@project)
 
+= render partial: 'layouts/partials/alert'
+
 #error{ style: 'display: none;' }
   .alert.alert-info
     %i.icon-exclamation-sign
