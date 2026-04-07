@@ -2,6 +2,8 @@
 - page_context[:select_footer_nav] = nil
 = javascript_include_tag 'permissions.js'
 
+= render partial: 'layouts/partials/alert'
+
 .project_content_title
   %h2.float_left
     = link_to t(:settings), [:settings, @parent]
