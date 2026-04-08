@@ -1,38 +1,19 @@
-// Card expand/collapse functionality (used by contributors, enlistments, and about sections)
-document.addEventListener('DOMContentLoaded', function() {
-  // Handle contributor and enlistment cards
-  var cardItems = document.querySelectorAll('.contributor-card-item, .enlistment-card-item');
-
-  cardItems.forEach(function(card) {
-    var header = card.querySelector('.card-item-header');
-
-    if (header) {
-      header.addEventListener('click', function(e) {
-        // Don't toggle if clicking on links
-        if (e.target.closest('a, .contributor-link')) {
-          return;
-        }
-
-        e.preventDefault();
-        card.classList.toggle('expanded');
-      });
+document.addEventListener('click', function(e) {
+  // Handle contributor and enlistment card headers
+  var cardHeader = e.target.closest('.contributor-card-item .card-item-header, .enlistment-card-item .card-item-header');
+  if (cardHeader) {
+    // Skip if clicking a link
+    if (e.target.closest('a, .contributor-link')) {
+      return;
     }
-  });
+    e.preventDefault();
+    cardHeader.closest('.contributor-card-item, .enlistment-card-item').classList.toggle('expanded');
+    return;
+  }
 
-  // Handle about code locations card
-  var aboutCard = document.querySelector('.about-code-locations-card');
-  if (aboutCard) {
-    var aboutHeader = aboutCard.querySelector('.card-header');
-    if (aboutHeader) {
-      aboutHeader.addEventListener('click', function(e) {
-        // Don't toggle if clicking on links
-        if (e.target.closest('a')) {
-          return;
-        }
-
-        e.preventDefault();
-        aboutCard.classList.toggle('expanded');
-      });
-    }
+  // Handle about code locations card header
+  var aboutHeader = e.target.closest('.about-code-locations-card .card-header');
+  if (aboutHeader) {
+    aboutHeader.closest('.about-code-locations-card').classList.toggle('expanded');
   }
 });
