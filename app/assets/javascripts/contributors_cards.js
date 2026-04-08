@@ -1,20 +1,19 @@
-// Contributors mobile card expand/collapse functionality
-document.addEventListener('DOMContentLoaded', function() {
-  var contributorCards = document.querySelectorAll('.contributor-card-item');
-
-  contributorCards.forEach(function(card) {
-    var header = card.querySelector('.card-item-header');
-
-    if (header) {
-      header.addEventListener('click', function(e) {
-        // Don't toggle if clicking on the avatar/name link
-        if (e.target.closest('.contributor-link')) {
-          return;
-        }
-
-        e.preventDefault();
-        card.classList.toggle('expanded');
-      });
+document.addEventListener('click', function(e) {
+  // Handle contributor and enlistment card headers
+  var cardHeader = e.target.closest('.contributor-card-item .card-item-header, .enlistment-card-item .card-item-header');
+  if (cardHeader) {
+    // Skip if clicking a link
+    if (e.target.closest('a, .contributor-link')) {
+      return;
     }
-  });
+    e.preventDefault();
+    cardHeader.closest('.contributor-card-item, .enlistment-card-item').classList.toggle('expanded');
+    return;
+  }
+
+  // Handle about code locations card header
+  var aboutHeader = e.target.closest('.about-code-locations-card .card-header');
+  if (aboutHeader) {
+    aboutHeader.closest('.about-code-locations-card').classList.toggle('expanded');
+  }
 });
