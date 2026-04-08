@@ -10,7 +10,6 @@
     - if current_user_is_admin?
       = link_to code_location_ids_admin_url(@enlistments.pluck(:code_location_id)), target: '_blank', title: 'Code locations admin for current page', rel: 'tooltip' do
         %span.glyphicon.glyphicon-link
-  = project_analysis_timestamp(@project)
 .clearfix
 
 - if sidekiq_work_in_progress?
@@ -42,59 +41,123 @@
           %li.font-1em= t(key) if I18n.exists?(key)
 
 - if @project.enlistments.exists? && api_access_available
-  %table.table.table-striped
-    %thead
-      %tr{ id: 'dingus-row' }
-        %td{ colspan: '7' }
-          .margin_top_10.margin_bottom_10
-            %form.form-inline
-              .form-group.margin_right_10.padding_left_10
-                - if @enlistments.respond_to?(:current_page) && !@enlistments.length.zero?
-                  %label.paginate= "Showing page #{number_with_delimiter(@enlistments.current_page)} of #{number_with_delimiter(@enlistments.total_pages)}"
-                - elsif @enlistments.size.zero?
-                  %label.paginate= t('.count_status', current_count: @enlistments.length,
-                    total_count: number_with_delimiter(0))
-              .form-group.margin_right_10
-                %label Search &nbsp;
-                = text_field_tag :query, params[:query]
+  .search-filter-bar
+    %form
+      .search-filter-content
+        = render 'shared/search_dingus/page_entries_info', collection: @enlistments, total_count: @enlistments.total_entries
 
-                %button.btn.btn-refresh{ type: 'Submit', style: 'height: 34px; border-top: 10px' }
-                  %i.icon-refresh
-              .form-group.margin_right_10
-                %label
-                  = check_box_tag(:dnf, '1', (params[:dnf] == '1' ? true : false), style: 'margin-top: 1px', onChange: 'submit()')
-                  = label_tag(:dnf, 'Show unprocessable sources')
+        = render 'shared/search_dingus/search_bar', search_type: :default
 
-              .form-group.pull-right.padding_right_10
-                #sort_by
-                  %label= 'Sort by'
-                  = select_tag :sort, options_for_select(SORT_OPTIONS['enlistments'][:options],
-                    params[:sort] || SORT_OPTIONS['enlistments'][:default]),
-                    class: 'chzn-select', onchange: 'this.form.submit()', style: 'width: 150px;'
+        %label.checkbox
+          = check_box_tag(:dnf, '1', (params[:dnf] == '1' ? true : false), onChange: 'this.form.submit()')
+          = t('.show_unprocessable_sources')
 
-      %tr
-        %th= t('.repository_url')
-        %th= t('.scm_type')
-        %th= t('.update_status')
-        %th= t('.ignored_files')
-        %th= t('.allowed_files')
-        %th= t('.actions')
-    %tbody
-      = render partial: 'enlistment', collection: @enlistments, locals: { has_permission: has_permission }
+        = render 'shared/search_dingus/sort', sort_context: :enlistments, filter_type: nil
+
+  // Desktop table view
+  .desktop-only
+    %table.table
+      %thead
+        %tr
+          %th= t('.repository_url')
+          %th= t('.scm_type')
+          %th= t('.update_status')
+          %th= t('.ignored_files')
+          %th= t('.allowed_files')
+          %th= t('.actions')
+      %tbody
+        = render partial: 'enlistment', collection: @enlistments, locals: { has_permission: has_permission }
+
+  // Mobile card view
+  .enlistments-cards-container.mobile-only
+    - @enlistments.each do |enlistment|
+      - url = enlistment.code_location.url
+      - job_id = enlistment.fis_code_location.last_job_id
+      - fis_job = FisJob.find_by(id: job_id)
+      - description = job_id ? FailureGroupApi.failure_group_description(job_id) : ''
+      - ass = enlistment.analysis_sloc_set
+      .enlistment-card-item
+        .card-item-header
+          .repository-url
+            = url =~ /^http/ ? link_to(url, url, target: '_blank') : url
+            - if current_user_is_admin?
+              = link_to code_location_admin_url(enlistment.code_location_id), target: '_blank' do
+                %span.glyphicon.glyphicon-link
+            - if enlistment.code_location.do_not_fetch
+              - if description.present?
+                %p.text-danger Error: #{description}
+              - else
+                %p.text-danger= t('.dnf')
+            - elsif !enlistment.code_location.do_not_fetch && fis_job && fis_job.retry_count > 1 && fis_job.wait_until != nil
+              - if description.present?
+                %p.text-danger Error: #{description}
+            %p= enlistment.code_location.branch
+          %button.expand-toggle{ type: 'button', 'aria-label' => 'Expand details' }
+            %i.fa.fa-chevron-down
+
+        .card-item-content
+          .content-row
+            .content-item
+              .label= t('.scm_type')
+              .value
+                - scm_type = enlistment.code_location.scm_name_in_english
+                - if scm_type.present?
+                  = scm_type
+
+            .content-item
+              .label= t('.update_status')
+              .value
+                - status = CodeLocationJobProgress.new(enlistment).message
+                - if status.present?
+                  = status
+
+          .content-row
+            .content-item
+              .label= t('.ignored_files')
+              .value
+                - if ass
+                  - if ass.ignored_fyle_count.to_i.zero?
+                    = t('.description3')
+                  - else
+                    = t('.description1')
+                    = pluralize(ass.ignored_fyle_count, t('.file'))
+                    = t('.description2')
+
+            .content-item
+              .label= t('.allowed_files')
+              .value
+                - if ass
+                  - if ass.allowed_fyle_count.to_i.zero?
+                    = t('.description3')
+                  - else
+                    = t('.description4')
+                    = pluralize(ass.allowed_fyle_count, t('.file'))
+                    = t('.description2')
+
+          .content-row.full-width
+            - if has_permission
+              = icon_button(edit_project_enlistment_path(@project, enlistment), icon: 'pencil', text: t('.edit_ignored'), size: 'mini', type: 'primary')
+              - if current_user_is_admin?
+                = icon_button(edit_allowed_files_project_enlistment_path(@project, enlistment), icon: 'pencil', text: t('.edit_allowed'), size: 'mini', type: 'primary')
+              = icon_button(project_enlistment_path(@project, enlistment), icon: 'trash', text: t('.remove'), size: 'mini', type: 'danger', method: :delete, data: { confirm: t('.confirm') })
+            - else
+              = disabled_button bootstrap_icon('icon-pencil', t('.edit_ignored')), class: 'btn-mini btn-primary'
+              = disabled_button bootstrap_icon('icon-trash', t('.remove')), class: 'btn-mini btn-danger pull-right'
 - elsif api_access_available
   = render '/enlistments/no_enlistment'
 - else
   = render partial: 'shared/api_outage'
 
-= will_paginate @enlistments
+= render 'shared/modern_pagination', collection: @enlistments
 
 - if @enlistments.empty? && params[:query].present?
   = render partial: 'shared/alert', locals: { message: t('.no_match') }
 
 - if @project.enlistments.exists? && api_access_available
-  - if logged_in? && @project.edit_authorized?
-    = link_to t('.new_code_location'), new_project_enlistment_path(@project), class: 'btn btn-primary'
-  - else
-    = icon_button(new_project_enlistment_url(@project), text: t('.new_code_location'), class: 'btn btn-primary')
+  .new-code-location-container
+    - if logged_in? && @project.edit_authorized?
+      = link_to t('.new_code_location'), new_project_enlistment_path(@project), class: 'btn btn-primary'
+    - else
+      = icon_button(new_project_enlistment_url(@project), text: t('.new_code_location'), class: 'btn btn-primary')
 
 = render partial: 'about_code_locations'

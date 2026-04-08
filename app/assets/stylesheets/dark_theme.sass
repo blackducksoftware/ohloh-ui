@@ -41,9 +41,9 @@ html.dark
 
   // Buttons (keep primary yellow button, update others)
   .btn
-    &:not(.btn-primary):not(.btn-success):not(.people-more-btn)
-      background-color: #334155 !important
-      color: #e2e8f0 !important
+    &:not(.btn-primary):not(.btn-success):not(.btn-danger)
+      background-color: #ffb91a !important
+      color: #1D0631 !important
       &:hover
         background-color: #ffd966 !important
 
@@ -69,13 +69,11 @@ html.dark
     color: #e2e8f0 !important
 
   // Headings
-  h1, h2, h3, h4, h5, h6
-    color: #f1f5f9 !important
+  
 
   // Alerts
   .alert
     background-color: #1D0631 !important
-    color: #e2e8f0 !important
     border-color: #4b5563 !important
 
   // Dropdown menus
@@ -274,6 +272,9 @@ html.dark
     .add-project-text
       color: #9ca3af !important
 
+  // Soft text (about/description text)
+  .soft, h1.soft, h2.soft, h3.soft, h4.soft, h5.soft, h6.soft, p.soft, li.soft, dd.soft, dt.soft, span.soft, a.soft, abbr.soft, td.soft, th.soft
+    color: #9ca3af !important
   // ── People & Accounts page ────────────────────────────────────────────────
   .accounts-back-link
     color: #9ca3af

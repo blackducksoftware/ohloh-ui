@@ -1,17 +1,159 @@
-tbody tr.enlistment
-  &:nth-child(odd)
-    @include site-well-color
-
 .enlistment
   .last
+    display: flex
+    flex-direction: column
+    align-items: flex-start
+
     a
-      margin-bottom: 4px
+      margin-bottom: 7px !important
       width: 148px
+
+    @media (max-width: 768px)
+      flex-direction: row
+      gap: 8px
+
+      a
+        margin-bottom: 0 !important
+        flex: 1
 #dingus-row
   #search-dingus
     margin: 0px !important
   .alert
     display: none
+
+.search-filter-bar
+  .alert
+    display: none
+
+  label.checkbox
+    margin-left: -12px !important
+
+    input[type="checkbox"]
+      position: relative
+
+// Mobile enlistments cards styling (based on contributions.sass pattern)
+.enlistments-cards-container
+  background: #ffffff
+  border-radius: 16px
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24)
+  overflow: hidden
+  padding: 0
+  margin-bottom: 24px
+
+  html.dark &
+    background: #2D1548
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.24), 0 1px 2px rgba(0, 0, 0, 0.48)
+
+  .enlistment-card-item
+    border-bottom: 1px solid #f3f4f6
+    transition: background-color 0.2s
+
+    html.dark &
+      border-bottom-color: rgba(90, 42, 130, 0.2)
+
+    &:last-child
+      border-bottom: none
+
+    .card-item-header
+      display: flex
+      align-items: center
+      justify-content: space-between
+      padding: 16px 24px
+      cursor: pointer
+
+      &:hover
+        background-color: #f9fafb
+
+        html.dark &
+          background-color: rgba(255, 255, 255, 0.05)
+
+      .repository-url
+        font-size: 14px
+        font-weight: 600
+        color: #111827
+        white-space: nowrap
+        overflow: hidden
+        text-overflow: ellipsis
+        flex: 1
+        min-width: 0
+
+        html.dark &
+          color: #ffffff
+
+        a
+          color: #5A2A82
+          text-decoration: none
+
+          html.dark &
+            color: #ffb91a
+
+      .expand-toggle
+        background: none
+        border: none
+        padding: 8px
+        cursor: pointer
+        color: #6b7280
+        transition: transform 0.2s
+        margin-left: 12px
+
+        html.dark &
+          color: #9ca3af
+
+        i
+          font-size: 16px
+
+    .card-item-content
+      display: none
+      padding: 0 24px 16px
+      flex-direction: column
+      gap: 12px
+
+      .content-row
+        display: grid
+        grid-template-columns: 1fr 1fr
+        gap: 12px
+
+        &.full-width
+          grid-template-columns: 1fr
+
+      .content-item
+        display: flex
+        flex-direction: column
+        gap: 4px
+        text-align: center
+
+        .label
+          font-size: 11px
+          font-weight: 600
+          color: #6b7280
+          text-transform: uppercase
+          letter-spacing: 0.05em
+
+          html.dark &
+            color: #9ca3af
+
+        .value
+          font-size: 14px
+          color: #111827
+          font-weight: 500
+
+          html.dark &
+            color: #e2e8f0
+
+          a
+            color: #5A2A82
+            text-decoration: none
+
+            html.dark &
+              color: #ffb91a
+
+    &.expanded
+      .card-item-header
+        .expand-toggle
+          transform: rotate(180deg)
+
+      .card-item-content
+        display: flex
 
 .github
   span
@@ -20,3 +162,93 @@ tbody tr.enlistment
     width: 70%
   .field_with_errors
     display: block
+
+// About Code Locations collapsible card
+.about-code-locations-card
+  background: #ffffff
+  border-radius: 16px
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24)
+  overflow: hidden
+  margin-top: 24px
+
+  html.dark &
+    background: #2D1548
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.24), 0 1px 2px rgba(0, 0, 0, 0.48)
+
+  .card-header
+    display: flex
+    align-items: center
+    justify-content: space-between
+    padding: 16px 24px
+    cursor: pointer
+    transition: background-color 0.2s
+
+    &:hover
+      background-color: #f9fafb
+
+      html.dark &
+        background-color: rgba(255, 255, 255, 0.05)
+
+    .card-title
+      margin: 0
+      font-size: 16px
+      font-weight: 600
+      color: #5A2A82
+      flex: 1
+
+      html.dark &
+        color: #ffb91a
+
+      .soft
+        margin-right: 4px
+
+    .expand-toggle
+      background: none
+      border: none
+      padding: 8px
+      cursor: pointer
+      color: #6b7280
+      transition: transform 0.2s
+      margin-left: 12px
+
+      html.dark &
+        color: #9ca3af
+
+      i
+        font-size: 16px
+
+  .card-content
+    display: none
+    padding: 0 24px 16px
+
+  &.expanded
+    .card-header
+      .expand-toggle
+        transform: rotate(180deg)
+
+    .card-content
+      display: block
+
+  .about-content-wrapper
+    display: flex
+    gap: 40px
+
+    @media (max-width: 768px)
+      flex-direction: column
+      gap: 24px
+
+    ul
+      list-style: disc
+      padding-left: 20px
+
+      li
+        margin-bottom: 8px
+        line-height: 1.6
+
+        strong
+          font-weight: 600
+
+.new-code-location-container
+  display: flex
+  justify-content: center
+  margin-top: 24px
