@@ -108,7 +108,7 @@ var OrgsFilter = {
     var filterOrgs = function(filterValue) {
       $('.busy#commit_volume_loader').removeClass('hidden')
       $.ajax({
-        url: '/explore/orgs_by_thirty_day_commit_volume?format=js&filter='+ filterValue,
+        url: '/explore/orgs_by_thirty_day_commit_volume?format=js&org_type='+ filterValue,
         type: "GET",
         success: function(){
           $('.busy#commit_volume_loader').addClass('hidden')
@@ -121,16 +121,33 @@ var OrgsFilter = {
       filterOrgs($(this).val());
     });
 
-    // New custom dropdown - trigger AJAX on dropdown item click
+    // Custom dropdown for org type filter - handle button toggle and aria-expanded
+    var $orgDropdown = $('#orgs_by_30_days_volume .custom-sort-dropdown');
+    var $orgButton = $orgDropdown.find('.sort-dropdown-btn');
+
+    $orgButton.on('click', function() {
+      var isOpen = $orgDropdown.hasClass('open');
+      $orgButton.attr('aria-expanded', !isOpen);
+    });
+
+    // Close dropdown when clicking outside
+    $(document).on('click', function(e) {
+      if (!$(e.target).closest('#orgs_by_30_days_volume .custom-sort-dropdown').length) {
+        $orgDropdown.removeClass('open');
+        $orgButton.attr('aria-expanded', 'false');
+      }
+    });
+
+    // Handle dropdown item clicks
     $('#orgs_by_30_days_volume .sort-dropdown-item').on('click', function(e) {
       e.preventDefault();
-      var $item = $(this);
-      var value = $item.data('value');
+      var value = $(this).data('value');
 
-      // Let search_dingus.js handle the UI updates, we just trigger the AJAX
-      setTimeout(function() {
-        filterOrgs(value);
-      }, 10);
+      // Close dropdown and update aria-expanded
+      $orgDropdown.removeClass('open');
+      $orgButton.attr('aria-expanded', 'false');
+
+      filterOrgs(value);
     });
   }
 }
@@ -154,5 +171,7 @@ var OrgClaimProject = {
   }
 }
 $(document).ready(function() {
-  OrgClaimProject.init()
+  GaugeProgress.init();
+  OrgsFilter.init();
+  OrgClaimProject.init();
 });

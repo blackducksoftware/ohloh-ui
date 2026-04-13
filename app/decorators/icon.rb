@@ -10,19 +10,28 @@ class Icon < Cherry::Decorator
   delegate :logo, :name, to: :object
 
   def image(with_dimensions: true, container_class: 'icon-container')
-    container_classes = "#{container_class} #{logo ? 'has-logo' : ''}"
-    content = if logo
-      width_and_height = with_dimensions ? dimensions : ''
-      css_style = "#{width_and_height} border:0 none;"
-      image_tag(logo.attachment.url(size), style: css_style, itemprop: 'image', alt: 'img avatar')
-    else
-      content_tag :span, name.first.upcase, class: 'icon-letter'
-    end
-
+    container_classes = "#{container_class} #{'has-logo' if logo}"
+    content = logo ? logo_with_fallback(with_dimensions) : letter_only
     content_tag :div, content, class: container_classes
   end
 
   private
+
+  def logo_with_fallback(with_dimensions)
+    width_and_height = with_dimensions ? dimensions : ''
+    css_style = "#{width_and_height} border:0 none;"
+    img = image_tag(logo.attachment.url(size),
+                    style: css_style,
+                    itemprop: 'image',
+                    alt: name,
+                    onerror: "this.style.display='none'; this.nextElementSibling.style.display='flex';")
+    letter = content_tag :span, name.first.upcase, class: 'icon-letter', style: 'display:none'
+    img + letter
+  end
+
+  def letter_only
+    content_tag :span, name.first.upcase, class: 'icon-letter'
+  end
 
   def size
     @context[:size] || :small

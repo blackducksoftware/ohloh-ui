@@ -9,12 +9,12 @@
           current_filter = params[:org_type] || 'all_orgs'
           selected_label = OrgThirtyDayActivity::SORT_TYPES.find { |opt| opt[1] == current_filter }&.first || OrgThirtyDayActivity::SORT_TYPES.first.first
         .custom-sort-dropdown
-          %button.sort-dropdown-btn{ type: 'button' }
+          %button.sort-dropdown-btn{ type: 'button', aria: { expanded: 'false', controls: 'org-type-menu', label: t('.filter_type_label') } }
             %span.selection{ data: { value: current_filter } }= selected_label
             %i.fa.fa-chevron-down
-          .dropdown-menu.sort-dropdown-menu
+          .dropdown-menu.sort-dropdown-menu{ id: 'org-type-menu', role: 'menu' }
             - OrgThirtyDayActivity::SORT_TYPES.each do |label, value|
-              %button.sort-dropdown-item{ type: 'button', data: { value: value }, class: (value == current_filter ? 'active' : '') }= label
+              %button.sort-dropdown-item{ type: 'button', data: { value: value }, role: 'menuitem', class: (value == current_filter ? 'active' : '') }= label
           %input{ type: 'hidden', name: 'org_type', value: current_filter, class: 'sort-value-input', id: 'org_type' }
     .clearfix
 
