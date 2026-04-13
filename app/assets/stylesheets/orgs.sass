@@ -1,11 +1,38 @@
 #explore_orgs_page
   h1
-    margin-left: -10px
+    font-size: 36px
+    font-weight: 700
+    color: #1a202c
+    margin: 0
+    letter-spacing: normal
+    line-height: 1.2
+
+    html.dark &
+      color: #ffffff
+
+  h2
+    font-weight: 700 !important
+    color: #1a202c !important
+    margin: 0 0 16px 0 !important
+    line-height: 1.2 !important
+
+    html.dark &
+      color: #ffffff !important
+
   #orgs_by_30_days_volume
     label#filter
       margin-top: 4px
+    td
+      vertical-align: middle
+      &:first-child
+        text-align: left
+        padding-left: 12px
     td a
       line-height: 29px
+      &.logo
+        display: inline-block
+        line-height: 0
+        vertical-align: middle
     .busy
       position: absolute
       top: 185px
@@ -13,58 +40,551 @@
       width: 16px
       height: 16px
     #header th
-      border-top: 1px solid #ddd
       border-bottom: 0px
-      background-color: #f9f9f9
-    tbody tr
+
+    .sort-section
+      display: flex
+      align-items: center
+      gap: 8px
+      margin-bottom: 5px
+
+      label
+        font-size: 14px
+        color: #6b7280
+        white-space: nowrap
+
+        html.dark &
+          color: #d1d5db
+
+      .custom-sort-dropdown
+        position: relative
+        display: inline-block
+
+        .sort-dropdown-btn
+          display: flex
+          align-items: center
+          gap: 8px
+          height: 40px
+          padding: 0 12px
+          background-color: #f9fafb
+          border: 1px solid #d1d5db
+          border-radius: 8px
+          color: #111827
+          font-size: 14px
+          font-weight: 400
+          min-width: 180px
+          cursor: pointer
+          transition: background 0.15s ease, border-color 0.15s ease
+          white-space: nowrap
+          box-sizing: border-box
+
+          &:hover
+            background-color: #f3f4f6
+            border-color: #5A2A82
+
+          html.dark &
+            background-color: #1D0631
+            border-color: #5A2A82
+            color: #ffffff
+
+            &:hover
+              background-color: rgba(29, 6, 49, 0.8)
+              border-color: #ffb91a
+
+          .selection
+            flex: 1
+            text-align: left
+
+          i
+            font-size: 12px
+            transition: transform 0.2s ease
+
+        &.open
+          .sort-dropdown-menu
+            display: block
+
+        .sort-dropdown-menu
+          display: none
+          position: absolute
+          top: 100%
+          padding: 0
+          left: 0
+          margin-top: 4px
+          min-width: 180px
+          background-color: #ffffff
+          border: 1px solid #d1d5db
+          border-radius: 8px
+          overflow: hidden
+          z-index: 1000
+          box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23)
+
+          html.dark &
+            background-color: #1D0631
+            border-color: #5A2A82
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.38), 0 6px 6px rgba(0, 0, 0, 0.46)
+
+          .sort-dropdown-item
+            display: block
+            width: 100%
+            padding: 8px 16px
+            color: #111827
+            font-size: 14px
+            font-weight: 400
+            text-align: left
+            text-decoration: none
+            background: transparent
+            border: none
+            box-sizing: border-box
+            transition: background 0.15s ease, color 0.15s ease
+            cursor: pointer
+
+            &:hover
+              background: #f3f4f6
+
+            &.active
+              background-color: #5A2A82 !important
+              color: #ffffff
+              font-weight: 400
+
+              &:hover
+                background-color: #5A2A82
+
+            html.dark &
+              color: #ffffff
+
+              &:hover
+                background: rgba(255, 255, 255, 0.1)
+
+    // Desktop Header (visible on both mobile and desktop)
+    .desktop-header
+      display: block
+
+    // Mobile Container
+    .mobile-org-container
+      display: block
+
+      @media (min-width: 768px)
+        display: none
+
+    .orgs-card
+      background: #ffffff
+      border-radius: 16px
+      overflow: hidden
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24)
+      transition: box-shadow 0.3s ease
+
+      html.dark &
+        background: #2D1548
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.24), 0 1px 2px rgba(0, 0, 0, 0.48)
+
+      &:hover
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23)
+
+        html.dark &
+          box-shadow: 0 3px 6px rgba(0, 0, 0, 0.32), 0 3px 6px rgba(0, 0, 0, 0.46)
+
+    .card-body-mobile
+      padding: 16px
+      display: flex
+      flex-direction: column
+      gap: 12px
+
+    .org-card
+      background: #f9fafb
+      border: 1px solid #e5e7eb
+      border-radius: 8px
+      padding: 12px
+      margin-bottom: 12px
+
+      html.dark &
+        background: rgba(29, 6, 49, 0.5)
+        border-color: rgba(90, 42, 130, 0.3)
+
       &:last-child
-        border-bottom: 1px solid #ddd
-      &:nth-child(even)
-        background-color: #f9f9f9
+        margin-bottom: 0
+
+    .org-card-header
+      display: flex
+      align-items: center
+      gap: 8px
+      margin-bottom: 12px
+
+      .org-card-icon
+        flex-shrink: 0
+        line-height: 0
+
+      .org-card-name
+        flex: 1
+        color: #5A2A82
+        font-weight: 500
+        font-size: 14px
+        text-decoration: none
+
+        html.dark &
+          color: #ffb91a
+
+        &:hover
+          text-decoration: underline
+
+      .org-card-size
+        display: inline-flex
+        align-items: center
+        justify-content: center
+        min-width: 24px
+        height: 24px
+        padding: 0 6px
+        background: #e5e7eb
+        color: #1a202c
+        font-weight: 700
+        font-size: 12px
+        border-radius: 4px
+
+        html.dark &
+          background: rgba(90, 42, 130, 0.3)
+          color: #ffffff
+
+    .org-card-body
+      display: grid
+      grid-template-columns: 1fr 1fr
+      gap: 8px 16px
+      font-size: 12px
+
+    .org-card-row
+      display: flex
+      justify-content: space-between
+      align-items: center
+
+    .org-card-label
+      color: #6b7280
+      font-size: 11px
+
+      html.dark &
+        color: #9ca3af
+
+    .org-card-value
+      color: #374151
+      font-weight: 500
+
+      html.dark &
+        color: #d1d5db
+
+    // Desktop Table View
+    .desktop-org-table
+      display: none
+
+      @media (min-width: 768px)
+        display: table
+
+  .orgs-layout
+    display: flex
+    flex-direction: column
+    gap: 20px
+    align-items: flex-start
+
+    @media (min-width: 768px)
+      flex-direction: row
+
+  .left-column
+    width: 100%
+    display: flex
+    flex-direction: column
+    gap: 20px
+
+    @media (min-width: 768px)
+      width: 32%
+
+  .right-column
+    width: 100%
+    display: flex
+    flex-direction: column
+    gap: 20px
+
+    @media (min-width: 768px)
+      width: 68%
 
   #newest-orgs
-    width: 32%
-    .row
-      margin-bottom: 15px
-      margin-left: 0px
-      padding-top: 15px
-      .col-md-3
-        margin-left: -2px
-        padding-left: 0px
-    p
-      margin-left: 5px
-    .col-md-9 a
-      @include site-link-color
-      font-weight: bold
-      font-size: 15px
+    width: 100%
+
+    .newest-orgs-card
+      background: #ffffff
+      border-radius: 16px
+      overflow: hidden
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24)
+      transition: box-shadow 0.3s ease
+
+      html.dark &
+        background: #2D1548
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.24), 0 1px 2px rgba(0, 0, 0, 0.48)
+
+      &:hover
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23)
+
+        html.dark &
+          box-shadow: 0 3px 6px rgba(0, 0, 0, 0.32), 0 3px 6px rgba(0, 0, 0, 0.46)
+
+    .card-header
+      padding: 16px
+      border-bottom: 2px solid #e2e8f0
+      background: #ffffff
+
+      html.dark &
+        border-bottom-color: rgba(90, 42, 130, 0.3)
+        background: #2D1548
+
+      h2
+        margin: 0 !important
+        padding: 0 !important
+        font-size: 16px !important
+        font-weight: 700 !important
+
+    .card-body
+      padding: 16px
+      display: flex
+      flex-direction: column
+      gap: 12px
+
+    .org-item
+      display: flex
+      align-items: flex-start
+      gap: 12px
+      padding: 8px 0
+
+    .org-logo
+      flex-shrink: 0
+      text-decoration: none
+
+      a
+        display: inline-block
+        line-height: 0
+
+    .org-info
+      flex: 1
+      min-width: 0
+
+      .org-name
+        display: block
+        color: #5A2A82
+        font-weight: 600
+        font-size: 14px
+        text-decoration: none
+        margin-bottom: 6px
+        white-space: nowrap
+        overflow: hidden
+        text-overflow: ellipsis
+
+        html.dark &
+          color: #ffb91a
+
+        &:hover
+          text-decoration: underline
+
+      .org-stats
+        display: flex
+        flex-direction: column
+        gap: 2px
+        font-size: 12px
+
+        .projects-count
+          .projects-value
+            color: #1a202c
+            font-weight: 600
+            text-decoration: none
+
+            html.dark &
+              color: #ffffff
+
+            &:hover
+              text-decoration: underline
+
+        .added-time
+          color: #718096
+          font-size: 11px
+          font-style: italic
+
+          html.dark &
+            color: #9ca3af
+
+    .card-footer
+      padding: 12px 16px
+      border-top: 2px solid #e2e8f0
+      background: #f8f9fa
+      text-align: left
+
+      html.dark &
+        border-top-color: rgba(90, 42, 130, 0.3)
+        background: #2D1548
+
+      .more-link
+        color: #5A2A82
+        font-size: 12px
+        text-decoration: none
+        font-weight: 500
+
+        html.dark &
+          color: #ffb91a
+
+        &:hover
+          text-decoration: underline
 
   #orgs_by_30_days_volume
     min-height: 260px
-    width: 64%
-    margin-left: 20px
+    width: 100%
 
   #most-active-orgs
-    width: 32%
-    padding: 0px 0px 0px 10px
-    border-radius: 0
-    margin-bottom: 0px
-    .title
-      margin-top: 7px
-      margin-bottom: 15px
-    .row
-      margin-bottom: 15px
-      .col-md-3 a
-        margin: 5px 0px 0px 0px
-      .col-md-9 a
-        @include site-link-color
-        font-weight: bold
-        font-size: 15px
-    .row#active-org-timestamp
-      font-size: 9px
-      font-style: italic
-      margin-bottom: 0px
+    width: 100%
+
+    .most-active-card
+      background: #ffffff
+      border-radius: 16px
+      overflow: hidden
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24)
+      transition: box-shadow 0.3s ease
+
+      html.dark &
+        background: #2D1548
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.24), 0 1px 2px rgba(0, 0, 0, 0.48)
+
+      &:hover
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23)
+
+        html.dark &
+          box-shadow: 0 3px 6px rgba(0, 0, 0, 0.32), 0 3px 6px rgba(0, 0, 0, 0.46)
+
+    .card-header
+      padding: 16px
+      border-bottom: 2px solid #e2e8f0
+      background: #ffffff
+
+      html.dark &
+        border-bottom-color: rgba(90, 42, 130, 0.3)
+        background: #2D1548
+
+      h2
+        margin: 0 !important
+        padding: 0 !important
+        font-size: 16px !important
+        font-weight: 700 !important
+
+    .card-body
+      padding: 16px
+      display: flex
+      flex-direction: column
+      gap: 12px
+
+    .org-item
+      display: flex
+      align-items: flex-start
+      gap: 12px
+      padding: 8px 0
+
+    .org-logo
+      flex-shrink: 0
+      text-decoration: none
+
+      a
+        display: inline-block
+        line-height: 0
+
+    .org-info
+      flex: 1
+      min-width: 0
+
+      .org-name
+        display: block
+        color: #5A2A82
+        font-weight: 600
+        font-size: 14px
+        text-decoration: none
+        margin-bottom: 6px
+        white-space: nowrap
+        overflow: hidden
+        text-overflow: ellipsis
+
+        html.dark &
+          color: #ffb91a
+
+        &:hover
+          text-decoration: underline
+
+      .org-stats
+        display: flex
+        align-items: center
+        gap: 6px
+        font-size: 12px
+
+        .commits-value
+          color: #1a202c
+          font-weight: 600
+          text-decoration: none
+
+          html.dark &
+            color: #ffffff
+
+        .stat-label
+          color: #718096
+          font-size: 11px
+
+          html.dark &
+            color: #9ca3af
+
+    .card-footer
+      display: flex
+      justify-content: space-between
+      align-items: center
+      padding: 12px 16px
+      border-top: 2px solid #e2e8f0
+      background: #f8f9fa
+      font-size: 12px
+
+      html.dark &
+        border-top-color: rgba(90, 42, 130, 0.3)
+        background: #2D1548
+
+      p
+        margin: 0
+        color: #718096
+
+        html.dark &
+          color: #9ca3af
+
+      .footer-text
+        flex: 0 0 auto
+
+        p
+          font-style: italic
+          font-size: 11px
+
+      .footer-timestamp
+        flex: 0 0 auto
+        text-align: right
+
+        p
+          font-style: italic
+          font-size: 11px
 
   #stats-by-sector
+    overflow-x: auto
+
+    table
+      font-size: 12px
+
+      @media (min-width: 768px)
+        font-size: 14px
+
+    thead th
+      padding: 8px 6px !important
+      font-size: 11px
+
+      @media (min-width: 768px)
+        padding: 12px !important
+        font-size: 14px
+
+    tbody td
+      padding: 8px 6px !important
+
+      @media (min-width: 768px)
+        padding: 12px !important
+
     .gauge-1 //commercial
       .highcharts-color-0
         fill: #7b559b
@@ -82,10 +602,35 @@
         fill: #482268
         stroke: #482268
 
+    html.dark &
+      .gauge-1 // Commercial - bright yellow
+        .highcharts-color-0
+          fill: #ffb91a !important
+          stroke: #ffb91a !important
+
+      .gauge-2 // Education - lighter yellow
+        .highcharts-color-0
+          fill: #ffd966 !important
+          stroke: #ffd966 !important
+
+      .gauge-3 // Government - light golden
+        .highcharts-color-0
+          fill: #ffd966 !important
+          stroke: #ffd966 !important
+
+      .gauge-4 // Non-Profit - deeper orange-yellow
+        .highcharts-color-0
+          fill: #e6a617 !important
+          stroke: #e6a617 !important
+
     #commit-gauge
-      width: 220px
-      height: 80px
+      width: 120px
+      height: 60px
       margin: 0 auto
+
+      @media (min-width: 768px)
+        width: 220px
+        height: 80px
 
   #org_filter_no_result
     width: 620px
@@ -98,11 +643,22 @@
       line-height: 210px
 
   .progress#progress-container
-    width: 180px
+    width: 100px
     border: 1px solid #afd5eb
     border-radius: 0
 
+    @media (min-width: 768px)
+      width: 180px
+
     #progress-bar
-      background-color: color-gradient($SECONDARY_SLATE_BLUE, 120)
+      background-color: #482268
       color: white
       padding: 0 0 0 3px
+      font-size: 11px
+
+      @media (min-width: 768px)
+        font-size: 14px
+
+      html.dark &
+        background-color: #ffb91a
+        color: #000

@@ -2,11 +2,16 @@
 - content_for :html_title do
   = t('.page_title')
 
-%h1.margin_bottom_20= t('.title')
-.row
-  = render partial: 'most_active_orgs'
-  = render partial: 'orgs_by_30_day_commit_volume'
-.margin_bottom_20
-.row
-  = render partial: 'newest_orgs'
-  = render partial: 'stats_by_sector'
+.explore-page-wrapper
+  .explore-header-top
+    %h1= t('.title')
+    = render 'shared/search'
+
+.explore-page-wrapper
+  .orgs-layout
+    .left-column
+      = render partial: 'most_active_orgs'
+      = render partial: 'newest_orgs'
+    .right-column
+      = render partial: 'orgs_by_30_day_commit_volume'
+      = render partial: 'stats_by_sector'

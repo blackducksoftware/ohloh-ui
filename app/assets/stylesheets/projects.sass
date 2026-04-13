@@ -954,47 +954,6 @@ $dark-shadow-lg: 0 8px 16px rgba(0,0,0,0.48)
         gap: 12px
         margin-bottom: 12px
 
-        .project-icon
-          flex-shrink: 0
-          width: 48px
-          height: 48px
-          border-radius: 12px
-          display: flex
-          align-items: center
-          justify-content: center
-          font-size: 24px
-          overflow: hidden
-          background-color: $bg-color
-          border: 1px solid $border-color
-          box-shadow: 0 1px 2px rgba(0,0,0,0.05)
-          html.dark &
-            background-color: $dark-bg-color
-            border-color: $dark-border-color
-          &.has-logo
-            background-color: transparent
-            border: none
-            box-shadow: none
-            html.dark &
-              background-color: transparent
-              border: none
-          img
-            width: 100%
-            height: 100%
-            object-fit: contain
-          .project-icon-letter
-            font-size: 22px
-            font-weight: 700
-            color: $primary-color
-            text-transform: uppercase
-            user-select: none
-            html.dark &
-              color: $dark-primary-color
-
-          @media (min-width: 640px)
-            width: 56px
-            height: 56px
-            font-size: 30px
-
         .project-description
           flex: 1
           font-size: 14px
@@ -1055,6 +1014,7 @@ $dark-shadow-lg: 0 8px 16px rgba(0,0,0,0.48)
         border-top: 1px solid $border-color
         padding-left: 0
         padding-top: 16px
+        margin-bottom: 16px
 
       .stats-grid
         display: grid
@@ -1187,7 +1147,7 @@ $dark-shadow-lg: 0 8px 16px rgba(0,0,0,0.48)
         background-color: rgba(255, 185, 26, 0.3)
         html.dark &
           background-color: #ffb91a
-          color: #1D0631
+          color: #1D0631 !important
 
       .more-tags
         color: $primary-color

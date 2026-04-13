@@ -9,14 +9,17 @@ class Icon < Cherry::Decorator
 
   delegate :logo, :name, to: :object
 
-  def image(with_dimensions: true)
-    if logo
+  def image(with_dimensions: true, container_class: 'icon-container')
+    container_classes = "#{container_class} #{logo ? 'has-logo' : ''}"
+    content = if logo
       width_and_height = with_dimensions ? dimensions : ''
       css_style = "#{width_and_height} border:0 none;"
       image_tag(logo.attachment.url(size), style: css_style, itemprop: 'image', alt: 'img avatar')
     else
-      content_tag :p, name.first.capitalize, style: default_style
+      content_tag :span, name.first.upcase, class: 'icon-letter'
     end
+
+    content_tag :div, content, class: container_classes
   end
 
   private
