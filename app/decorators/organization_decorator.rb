@@ -16,7 +16,7 @@ class OrganizationDecorator < Cherry::Decorator
     ]
   end
 
-  def icon(size = :small, opts = {}, container_class: 'icon-container')
+  def icon(size = :small, container_class: 'icon-container', **opts)
     Icon.new(organization, context: { size: size, options: opts }).image(with_dimensions: false,
                                                                          container_class: container_class)
   end

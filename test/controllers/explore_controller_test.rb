@@ -39,7 +39,7 @@ class ExploreControllerTest < ActionController::TestCase
 
     describe 'orgs_by_thirty_day_commit_volume' do
       it 'should return json of filtered record when filter is all_orgs' do
-        get :orgs_by_thirty_day_commit_volume, params: { filter: 'all_orgs' }, format: :js, xhr: true
+        get :orgs_by_thirty_day_commit_volume, params: { org_type: 'all_orgs' }, format: :js, xhr: true
 
         assert_response :ok
         _(assigns(:org_by_30_day_commits)).must_equal [ota5, ota4, ota3, ota2, ota1]
@@ -47,14 +47,14 @@ class ExploreControllerTest < ActionController::TestCase
 
       it 'should return json of filtered record when filter is government' do
         OrgThirtyDayActivity.where(id: [ota5.id, ota4.id, ota3.id]).update_all(org_type: 3)
-        get :orgs_by_thirty_day_commit_volume, params: { filter: 'government' }, format: 'js', xhr: true
+        get :orgs_by_thirty_day_commit_volume, params: { org_type: 'government' }, format: 'js', xhr: true
 
         assert_response :ok
         _(assigns(:org_by_30_day_commits)).must_equal [ota5, ota4, ota3]
       end
 
       it 'should return json of filtered record when filter is all' do
-        get :orgs_by_thirty_day_commit_volume, params: { filter: 'all_orgs' }, format: :js, xhr: true
+        get :orgs_by_thirty_day_commit_volume, params: { org_type: 'all_orgs' }, format: :js, xhr: true
 
         assert_response :ok
         _(assigns(:org_by_30_day_commits)).must_equal [ota5, ota4, ota3, ota2, ota1]

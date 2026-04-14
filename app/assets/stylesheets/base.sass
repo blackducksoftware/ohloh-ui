@@ -169,7 +169,8 @@ ul.unstyled, ol.unstyled
 // Override any third-party CSS that sets display: inline on icon elements
 a [class^="icon-"],
 a [class*=" icon-"]
-  display: inline-flex !important
+  &:not(.icon-letter)
+    display: inline-flex !important
 
 // Icon Container - Global Baseline Styling
 .icon-container

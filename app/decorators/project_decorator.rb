@@ -5,7 +5,7 @@ class ProjectDecorator < Cherry::Decorator
 
   delegate :main_language, :links, to: :project
 
-  def icon(size = :small, opts = {}, container_class: 'icon-container')
+  def icon(size = :small, container_class: 'icon-container', **opts)
     opts[:color] = language_text_color(main_language)
     opts[:bg]    = language_color(main_language)
 
