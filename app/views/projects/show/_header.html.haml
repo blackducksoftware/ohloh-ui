@@ -3,7 +3,7 @@
     .header-main
       .project-title-section
         %h1{ itemprop: 'name' }
-          = @project.name
+          = link_to @project.name, project_path(@project)
 
         .action-buttons
           = link_to settings_project_path(@project), class: 'action-btn action-btn-outline' do
@@ -71,12 +71,7 @@
 
           - unless @project.deleted?
             - if logged_in?
-              - if @project.stacks.where(account_id: current_user.id).any?
-                %button.i-use-this-btn.using{ 'data-project-id': @project.id }
-                  = t('.you_use_this')
-              - else
-                %button.i-use-this-btn.not-using{ 'data-project-id': @project.id, 'data-toggle': "modal", 'data-target': "#IUseThisModal" }
-                  = t('.i_use_this')
+              = render partial: 'projects/show/i_use_this', locals: { project: @project }
             - else
               %button.i-use-this-btn.not-using{ 'data-toggle': "modal", 'data-target': "#LoginModal" }
                 = t('.i_use_this')

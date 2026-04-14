@@ -182,9 +182,32 @@ $pai_levels: (('very_high',0), ('high', 1), ('moderate', 2), ('low', 3), ('very_
 
     .i-use-this-btn
       width: 100%
-      html.dark &
+      background-color: #ffb91a !important
+      color: #1D0631 !important
+
+      &:hover
+        background-color: #ffcc4d !important
+
+      &.using
         background-color: #5A2A82 !important
         color: #ffffff !important
+
+        &:hover
+          background-color: #4a1f6e !important
+
+      html.dark &
+        background-color: #ffb91a !important
+        color: #1D0631 !important
+
+        &:hover
+          background-color: #ffcc4d !important
+
+      html.dark &.using
+        background-color: #5A2A82 !important
+        color: #ffffff !important
+
+        &:hover
+          background-color: #4a1f6e !important
 
   // Project title and info section
   .project-title-section
@@ -202,6 +225,12 @@ $pai_levels: (('very_high',0), ('high', 1), ('moderate', 2), ('low', 3), ('very_
       line-height: 1.2
       letter-spacing: -0.02em
       margin: 0 0 12px
+
+      a
+        color: white !important
+        text-decoration: none
+        &:hover
+          text-decoration: none
 
       @media (min-width: 768px)
         font-size: 48px

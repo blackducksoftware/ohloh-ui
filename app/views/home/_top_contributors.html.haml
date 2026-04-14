@@ -19,7 +19,6 @@
         .contributor_info
           .contributor_name_row
             %span.contributor_name= h(contributor.name)
-            %span.contributor_rank= "Rank ##{index + 1}"
           .contributor_stats
             - commits = contributor.best_account_analysis&.account_analysis_fact&.thirty_day_commits || 0
             %span.stat_commits

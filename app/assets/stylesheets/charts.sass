@@ -6,6 +6,10 @@
   background: asset-url("charts/watermark_440.png") no-repeat center
   background-size: contain
 
+html.dark .watermark440 .highcharts-container
+  background: asset-url("charts/watermark_440_dark.png") no-repeat center
+  background-size: contain
+
 .watermark692 .highcharts-container
   background: asset-url("charts/watermark_692.png") no-repeat center
   background-size: contain
@@ -197,43 +201,6 @@
     fill: none
     stroke-width: 2px
 
-  /* Tooltip */
-  .highcharts-tooltip
-    cursor: default
-    pointer-events: none
-    white-space: nowrap
-    transition: stroke 150ms
-    /* font-size: 11pt
-    /* font-weight: normal
-    background: rgba(255,255,255,0.85)
-    border: 1px solid #000
-    border-radius: 3px
-    box-shadow: 1px 1px 2px #888
-    padding: 8px
-    tspan
-      stroke: black
-      stroke-width: 0px
-      opacity: 1.0
-      z-index: 3
-
-  .highcharts-tooltip text
-    fill: #333333
-
-  .highcharts-tooltip .highcharts-header
-    font-size: 0.85em
-
-  .highcharts-tooltip-box
-    stroke-width: 1px
-    fill: #f7f7f7
-    fill-opacity: 0.85
-
-  .highcharts-tooltip-box .highcharts-label-box
-    fill: #f7f7f7
-    fill-opacity: 0.85
-
-  div.highcharts-tooltip
-    filter: none
-
   .highcharts-point-inactive
     opacity: 1.0
 
@@ -306,6 +273,110 @@
   .highcharts-tooltip.highcharts-color-6,
   .highcharts-data-label-connector.highcharts-color-6
     stroke: #a855f7
+
+// styledMode: true means all label/legend styling must come from CSS,
+// not from Highcharts JS options (itemStyle, color, etc. are ignored).
+#demographics_chart
+  .highcharts-data-label text
+    fill: #1a202c
+
+  @media (max-width: 768px)
+    .highcharts-legend-item text
+      font-size: 11px !important
+
+  @media (max-width: 640px)
+    .highcharts-legend-item text
+      font-size: 10px !important
+
+html.dark #demographics_chart
+  .highcharts-data-label text
+    fill: #e2e8f0 !important
+
+  .highcharts-data-label-connector
+    stroke: #94a3b8 !important
+
+  .highcharts-legend-item text
+    fill: #e2e8f0 !important
+
+  .highcharts-background
+    fill: #2D1548
+
+// Demographics tooltip — rendered outside #demographics_chart via outside: true.
+// All visual styling targets the HTML span rendered by useHTML: true.
+// The SVG rect must be fully hidden to prevent double-layer background.
+.highcharts-tooltip-container
+  z-index: 9999 !important
+
+// Kill every possible SVG background layer Highcharts injects for the demographics tooltip.
+// With styledMode: true + outside: true, Highcharts creates a <svg> inside the tooltip
+// container with its own injected <style> that sets .highcharts-tooltip-box fill/#f7f7f7.
+// Our CSS must override that with maximum specificity.
+.demographics-tooltip .highcharts-tooltip-box
+  fill: transparent !important
+  stroke: none !important
+  fill-opacity: 0 !important
+  display: none !important
+
+.demographics-tooltip .highcharts-tooltip-box .highcharts-label-box
+  fill: transparent !important
+  stroke: none !important
+  fill-opacity: 0 !important
+  display: none !important
+
+.demographics-tooltip rect.highcharts-tooltip-box
+  fill: transparent !important
+  stroke: none !important
+  fill-opacity: 0 !important
+  display: none !important
+
+.demographics-tooltip rect
+  fill: transparent !important
+  stroke: none !important
+  fill-opacity: 0 !important
+
+.demographics-tooltip
+  // The Highcharts HTML content span — the only visible tooltip element
+  > span
+    background: #111827 !important
+    border: 1px solid #374151 !important
+    border-radius: 8px !important
+    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23) !important
+    padding: 12px 16px !important
+    display: block !important
+    pointer-events: auto !important
+
+    @media (max-width: 768px)
+      padding: 8px 12px !important
+
+  .hc-tooltip-name
+    display: block
+    color: #ffffff
+    font-weight: 700
+    font-size: 14px
+    margin: 0 0 4px 0
+
+    @media (max-width: 768px)
+      font-size: 12px
+      margin: 0 0 2px 0
+
+  .hc-tooltip-desc
+    display: block
+    color: #d1d5db
+    font-size: 12px
+    margin: 0 0 4px 0
+
+    @media (max-width: 768px)
+      display: none
+
+  .hc-tooltip-value
+    display: block
+    color: #ffb91a
+    font-weight: 600
+    font-size: 18px
+    margin: 0
+
+    @media (max-width: 768px)
+      font-size: 14px
 
 #vulnerability_all_version_chart
   overflow: visible !important

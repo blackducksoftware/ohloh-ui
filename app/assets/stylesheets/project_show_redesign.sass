@@ -332,6 +332,12 @@ body:has(.project-show-redesign)
         background: $purple-primary
         color: white !important
 
+      &.tag-empty
+        cursor: default
+        &:hover
+          background: $gray-100
+          color: $gray-900 !important
+
   // ============================================================================
   // Nutshell List
   // ============================================================================
@@ -443,6 +449,25 @@ body:has(.project-show-redesign)
           font-size: 14px !important
           color: $purple-primary !important
           font-weight: 600 !important
+
+        // Similar projects list inside .value
+        .similar-projects-list
+          display: flex
+          flex-direction: column
+          gap: 4px
+          width: 100%
+          text-align: right
+
+          .similar-proj-name
+            display: block
+            color: $purple-primary !important
+            font-size: 13px !important
+            font-weight: 600 !important
+            text-decoration: none
+            line-height: 1.4
+
+            &:hover
+              text-decoration: underline
 
   // Maximum specificity overrides for Quick Reference to prevent legacy interference
   #page #project_container .project-show-redesign
@@ -1078,6 +1103,15 @@ html.dark
             text-decoration: underline
             color: $yellow-accent !important
 
+        .tags-container
+          .tag
+            color: $gray-300 !important
+            background: $purple-dark
+
+            &:hover
+              color: $purple-dark !important
+              background: $yellow-accent
+
     .mobile-accordion
       .accordion-card
         .accordion-header
@@ -1102,11 +1136,17 @@ html.dark
     .tags-container
       .tag
         background: $purple-dark
-        color: $gray-300 !important
+        color: white !important
 
         &:hover
           background: $yellow-accent
           color: $purple-dark !important
+
+        &.tag-empty
+          cursor: default
+          &:hover
+            background: $purple-dark
+            color: white !important
 
     .nutshell-list
       li
@@ -1174,8 +1214,11 @@ html.dark
 
         a,
         i
-          color: $yellow-accent !important
+          color: $yellow-accent
           font-size: 14px !important
+
+        .similar-projects-list .similar-project-item .similar-proj-name
+          color: $yellow-accent !important
 
     // Languages section dark mode override
     .languages-content .language-legend .language-item
@@ -1192,344 +1235,260 @@ html.dark
         font-size: 12px !important
 
     // Summary sections dark mode override
-    .summary-section
-      .summary-header
-        color: white !important
+    // (Consolidated into Summary Typography Final Guard block below)
 
-      .summary-timespan
-        color: $gray-500 !important
+  // Rating section specificity overrides consolidated into Ratings Final Guard below
 
-      .summary-stat
-        color: $gray-300 !important
+html.dark
+  .licenses-section
+    .section-title
+      color: white
 
-        .stat-number
-          color: white !important
+    .license-card
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.24), 0 1px 2px rgba(0, 0, 0, 0.48)
 
-      .summary-change
-        &.positive
-          color: #4ade80 !important
-
-        &.negative
-          color: #f87171 !important
-
-  // Even more specific dark mode overrides for Activity card summary sections
-  html.dark #page #project_container .project-show-redesign .analysis-grid .gradient-card.analysis-card .card-content
-    .summary-grid .summary-section
-      h5.summary-header
-        color: white !important
-
-      p.summary-timespan
-        color: #6b7280 !important
-
-      p.summary-stat
-        color: #d1d5db !important
-
-        span.stat-number
-          color: white !important
-
-      p.summary-change
-        &.positive
-          color: #4ade80 !important
-
-        &.negative
-          color: #f87171 !important
-
-  // Maximum specificity for rating section
-  #page #project_container .project-show-redesign .analysis-grid .gradient-card.analysis-card .card-content
-    .ratings-section
-      .rating-content
-        .rating-info
-          font-size: 12px !important
-          color: #374151 !important
-
-          .rating-link
-            color: #5A2A82 !important
-
-        .rating-display
-          .rating-value
-            font-size: 12px !important
-            color: #111827 !important
-            font-weight: 600 !important
-
-  // Maximum specificity dark mode for rating section
-  html.dark #page #project_container .project-show-redesign .analysis-grid .gradient-card.analysis-card .card-content
-    .ratings-section
-      .rating-content
-        .rating-info
-          color: #d1d5db !important
-
-          .rating-link
-            color: #FFB91A !important
-
-        .rating-display
-          .rating-value
-            color: white !important
-
-  html.dark
-    .licenses-section
-      .section-title
-        color: white
-
-      .license-card
+      &:hover
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.24), 0 1px 2px rgba(0, 0, 0, 0.48)
 
-        &:hover
-          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.24), 0 1px 2px rgba(0, 0, 0, 0.48)
+      .license-header
+        border-bottom-color: rgba(90, 42, 130, 0.3)
 
-        .license-header
-          border-bottom-color: rgba(90, 42, 130, 0.3)
+        .header-left
+          svg
+            color: $yellow-accent
 
-          .header-left
-            svg
-              color: $yellow-accent
+          h4
+            color: $yellow-accent
 
-            h4
-              color: $yellow-accent
-
-          .chevron
-            color: #94a3b8
-
-        .license-content
-          border-top-color: rgba(90, 42, 130, 0.3)
-
-          .license-details-grid
-            .license-detail-card
-              &.permitted
-                background: linear-gradient(to bottom right, #3a1d6e 0%, #4a2580 100%)
-
-                h5
-                  color: $yellow-accent
-
-                  svg
-                    color: $yellow-accent
-
-                li
-                  color: $gray-300
-
-                  svg
-                    color: $yellow-accent
-
-              &.forbidden
-                background: linear-gradient(to bottom right, #4a1f1f 0%, #3a1515 100%)
-
-                h5
-                  color: #fb923c
-
-                  svg
-                    color: #fb923c
-
-                li
-                  color: $gray-300
-
-                  svg
-                    color: #fb923c
-
-              &.required
-                background: linear-gradient(to bottom right, #4a3a15 0%, #3a2a10 100%)
-
-                h5
-                  color: #facc15
-
-                  svg
-                    color: #facc15
-
-                li
-                  color: $gray-300
-
-                  svg
-                    color: #facc15
-
-          .license-disclaimer
-            border-top-color: rgba(90, 42, 130, 0.3)
-
-            p
-              color: #94a3b8
-
-          .view-all-link
-            a
-              font-weight: 500 !important
-              color: $yellow-accent !important
-
-              &:visited,
-              &:active
-                color: $yellow-accent !important
-
-              &:hover
-                text-decoration: underline
-                color: $yellow-accent !important
-
-    .security-section
-      .section-title
-        color: white !important
-
-      .card-subtitle
-        color: white !important
-
-        .security-link
-          color: white !important
-
-          &:hover
-            color: $yellow-accent !important
-
-        .subtitle-detail
-          color: #9ca3af !important
-
-      #vulnerability_version_chart
-        .chart-container
-          background: rgba(90, 42, 130, 0.15)
-
-        .no-data
+        .chevron
           color: #94a3b8
 
-      .index-section
-        .index-title
-          color: #9ca3af !important
+      .license-content
+        border-top-color: rgba(90, 42, 130, 0.3)
 
-        .gradient-bar-container
-          .indicator-pointer
-            background: white !important
+        .license-details-grid
+          .license-detail-card
+            &.permitted
+              background: linear-gradient(to bottom right, #3a1d6e 0%, #4a2580 100%)
+
+              h5
+                color: $yellow-accent
+
+                svg
+                  color: $yellow-accent
+
+              li
+                color: $gray-300
+
+                svg
+                  color: $yellow-accent
+
+            &.forbidden
+              background: linear-gradient(to bottom right, #4a1f1f 0%, #3a1515 100%)
+
+              h5
+                color: #fb923c
+
+                svg
+                  color: #fb923c
+
+              li
+                color: $gray-300
+
+                svg
+                  color: #fb923c
+
+            &.required
+              background: linear-gradient(to bottom right, #4a3a15 0%, #3a2a10 100%)
+
+              h5
+                color: #facc15
+
+                svg
+                  color: #facc15
+
+              li
+                color: $gray-300
+
+                svg
+                  color: #facc15
+
+        .license-disclaimer
+          border-top-color: rgba(90, 42, 130, 0.3)
+
+          p
+            color: #94a3b8
+
+        .view-all-link
+          a
+            font-weight: 500 !important
+            color: $yellow-accent !important
+
+            &:visited,
+            &:active
+              color: $yellow-accent !important
 
             &:hover
-              background: $yellow-accent !important
+              text-decoration: underline
+              color: $yellow-accent !important
 
-      .report-link-container
-        .report-link
+  .security-section
+    .section-title
+      color: white !important
+
+    .card-subtitle
+      color: white !important
+
+      .security-link
+        color: white !important
+
+        &:hover
           color: $yellow-accent !important
 
-      .did-you-know-card
-        background: linear-gradient(135deg, #4a3a15 0%, #3a2a10 100%) !important
+      .subtitle-detail
+        color: #9ca3af !important
 
-        .did-you-know-title
-          color: #fcd34d !important
-
-          svg
-            color: #fcd34d !important
-
-        .feature-list
-          li
-            color: #fef08a !important
-
-      .security-footer-link
-        a
-          color: $yellow-accent !important
+    #vulnerability_version_chart
+      .chart-container
+        background: rgba(90, 42, 130, 0.15)
 
       .no-data
         color: #94a3b8
 
-    // Legacy sections rendered inside redesign page (security + analysis summary)
-    .project_row
-      color: #e2e8f0
+    .index-section
+      .index-title
+        color: #9ca3af !important
 
-      h2, h3, h4, h5
-        color: #f8fafc !important
+      .gradient-bar-container
+        .indicator-pointer
+          background: white !important
 
-      p, small, td, th, li, span
-        color: #cbd5e1
+          &:hover
+            background: $yellow-accent !important
 
-      a
-        color: $yellow-accent
+    .report-link-container
+      .report-link
+        color: $yellow-accent !important
 
-      .well,
-      .activity_well,
-      .community_well,
-      #vulnerability-report .well
-        background-color: #2D1548 !important
-        border-color: rgba(159, 122, 186, 0.3) !important
+    .did-you-know-card
+      background: linear-gradient(135deg, #4a3a15 0%, #3a2a10 100%) !important
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.24), 0 1px 2px rgba(0, 0, 0, 0.48)
 
-      .right_border
-        border-right-color: rgba(159, 122, 186, 0.3) !important
+      .did-you-know-title
+        color: #fcd34d !important
 
-    .security_blog_link
-      color: $yellow-accent !important
+        svg
+          color: #fcd34d !important
 
-    #did_you_know
-      background-color: transparent !important
+      .feature-list
+        li
+          color: #fde68a !important
 
-      h4
-        color: #f8fafc !important
+          a
+            color: #fcd34d !important
 
-      .well
-        background-color: #1D0631 !important
-        border-color: #4b5563 !important
-
-      ul,
-      li,
-      .indent,
-      p,
-      span
-        color: #cbd5e1 !important
-
+    .security-footer-link
       a
         color: $yellow-accent !important
 
         &:hover
-          color: $yellow-hover !important
-          text-decoration: underline
+          color: $yellow-accent !important
 
-    .project_row
-      #did_you_know
-        .well
-          background-color: #1D0631 !important
-          border-color: #4b5563 !important
+    .no-data
+      color: #94a3b8
 
-    .no_analysis_message
-      .alert.alert-info.alert-block
-        background-color: #2D1548 !important
-        border: 1px solid rgba(159, 122, 186, 0.35) !important
-        color: #cbd5e1 !important
+  // Legacy sections rendered inside redesign page (security + analysis summary)
+  .project_row
+    color: #e2e8f0
 
-      .title
-        h3
-          color: #f8fafc !important
+    h2, h3, h4, h5
+      color: #f8fafc !important
 
-          i,
-          [class^='icon-'],
-          [class*=' icon-']
-            color: $yellow-accent !important
+    p, small, td, th, li, span
+      color: #cbd5e1
 
-      p,
-      .analysis_in_progress,
-      .indent,
-      span
-        color: #60a5fa !important
+    a
+      color: $yellow-accent
 
-      a
-        color: $yellow-accent !important
+    .well,
+    .activity_well,
+    .community_well,
+    #vulnerability-report .well
+      background-color: #2D1548 !important
+      border-color: rgba(159, 122, 186, 0.3) !important
 
-      .btn.btn-primary,
-      .btn.btn-large.btn-primary
-        background-color: $yellow-accent !important
-        border-color: $yellow-accent !important
+    .right_border
+      border-right-color: rgba(159, 122, 186, 0.3) !important
+
+  .security_blog_link
+    color: $yellow-accent !important
+
+  #did_you_know
+    background-color: transparent !important
+
+    h4
+      color: #f8fafc !important
+
+    .well
+      background-color: #1D0631 !important
+      border-color: #4b5563 !important
+
+    ul,
+    li,
+    .indent,
+    p,
+    span
+      color: #cbd5e1 !important
+
+    a
+      color: $yellow-accent !important
+
+      &:hover
+        color: $yellow-hover !important
+        text-decoration: underline
+
+  .project_row
+    #did_you_know
+      .well
+        background-color: #1D0631 !important
+        border-color: #4b5563 !important
+
+  .no_analysis_message
+    .alert.alert-info.alert-block
+      background-color: #2D1548 !important
+      border: 1px solid rgba(159, 122, 186, 0.35) !important
+      color: #cbd5e1 !important
+
+    .title
+      h3
+        color: #f8fafc !important
+
+        i,
+        [class^='icon-'],
+        [class*=' icon-']
+          color: $yellow-accent !important
+
+    p,
+    .analysis_in_progress,
+    .indent,
+    span
+      color: #60a5fa !important
+
+    a
+      color: $yellow-accent !important
+
+    .btn.btn-primary,
+    .btn.btn-large.btn-primary
+      background-color: $yellow-accent !important
+      border-color: $yellow-accent !important
+      color: $purple-dark !important
+
+      &:hover,
+      &:focus,
+      &:active
+        background-color: $yellow-hover !important
+        border-color: $yellow-hover !important
         color: $purple-dark !important
-
-        &:hover,
-        &:focus,
-        &:active
-          background-color: $yellow-hover !important
-          border-color: $yellow-hover !important
-          color: $purple-dark !important
-
-// Final cascade guard for legacy styles overriding Did You Know dark theme
-html.dark #page #project_container .project-show-redesign .project_row #did_you_know
-  background: transparent !important
-
-html.dark #page #project_container .project-show-redesign .project_row #did_you_know .well
-  background-color: #1D0631 !important
-  border: 1px solid #4b5563 !important
-  box-shadow: none !important
-
-html.dark #page #project_container .project-show-redesign .project_row #did_you_know h4
-  color: #f8fafc !important
-
-html.dark #page #project_container .project-show-redesign .project_row #did_you_know,
-html.dark #page #project_container .project-show-redesign .project_row #did_you_know p,
-html.dark #page #project_container .project-show-redesign .project_row #did_you_know li,
-html.dark #page #project_container .project-show-redesign .project_row #did_you_know .indent,
-html.dark #page #project_container .project-show-redesign .project_row #did_you_know span
-  color: #cbd5e1 !important
-
-html.dark #page #project_container .project-show-redesign .project_row #did_you_know a
-  color: $yellow-accent !important
 
 // ============================================================================
 // Final Override Layer - Ensure our styles take precedence
@@ -1813,18 +1772,7 @@ html.dark #project_container .project-show-redesign
   .summary-change
     margin-bottom: 8px !important
 
-html.dark #project_container .project-show-redesign .analysis-grid .summary-section
-  .summary-header
-    color: white !important
-
-  .summary-timespan
-    color: #94a3b8 !important
-
-  .summary-stat
-    color: #d1d5db !important
-
-    .stat-number
-      color: white !important
+// Summary dark mode colors consolidated into Summary Typography Final Guard below
 
 // ============================================================================
 // Languages + Contributors Cascade Guard (Redesign only)
@@ -1846,19 +1794,25 @@ html.dark #project_container .project-show-redesign .analysis-grid .summary-sect
         height: 90px !important
         display: block !important
 
-
-
     .language-legend
       flex: 1 1 auto !important
       min-width: 0 !important
       display: flex !important
-      flex-direction: row !important
-      gap: 12px !important
+      flex-direction: column !important
+      gap: 6px !important
 
       .language-item
         display: flex !important
         align-items: center !important
+        gap: 8px !important
         min-width: 0 !important
+        font-size: 12px !important
+
+        .language-color-box
+          width: 10px !important
+          height: 10px !important
+          border-radius: 2px !important
+          flex-shrink: 0 !important
 
         .language-name
           flex: 1 1 auto !important
@@ -1867,10 +1821,12 @@ html.dark #project_container .project-show-redesign .analysis-grid .summary-sect
           overflow: hidden !important
           text-overflow: ellipsis !important
           color: $gray-700 !important
+          font-size: 12px !important
 
           a
             color: $purple-primary !important
             text-decoration: none !important
+            font-size: 12px !important
 
             &:hover
               text-decoration: underline !important
@@ -1879,10 +1835,16 @@ html.dark #project_container .project-show-redesign .analysis-grid .summary-sect
           flex: 0 0 auto !important
           margin-left: auto !important
           color: $gray-500 !important
+          font-size: 12px !important
+          font-weight: 500 !important
 
   .community-chart-wrap
     .col-md-12.manage_padding
       padding: 0 !important
+    .col-md-12 
+      h4 
+        a
+          text-decoration: none !important
 
   .contributors-grid
     display: grid !important
@@ -1932,62 +1894,7 @@ html.dark #project_container .project-show-redesign .analysis-grid .analysis-car
       .contributor-name
         color: $yellow-accent !important
 
-  // Languages Section
-  .languages-content
-    display: flex
-    align-items: flex-start
-    gap: 16px
-    margin-top: 8px
-
-    .language-pie-container
-      flex-shrink: 0
-      width: 90px
-      height: 90px
-
-      .language-pie-chart
-        width: 100%
-        height: 100%
-        display: block
-
-
-    .language-legend
-      flex: 1 1 auto !important
-      min-width: 0 !important
-      display: flex !important
-      flex-direction: row !important
-      gap: 12px !important
-
-      .language-item
-        display: flex
-        align-items: center
-        gap: 8px
-        font-size: 12px !important
-
-        .language-color-box
-          width: 10px
-          height: 10px
-          border-radius: 2px
-          flex-shrink: 0
-
-        .language-name
-          flex: 1
-          color: $gray-700 !important
-          font-size: 12px !important
-
-          a
-            color: $purple-primary !important
-            text-decoration: none
-            font-size: 12px !important
-
-            &:hover
-              text-decoration: underline
-              color: $purple-primary !important
-
-        .language-percent
-          color: $gray-500 !important
-          font-weight: 500
-          margin-left: auto
-          font-size: 12px !important
+  // Languages Section (styles consolidated into Cascade Guard above)
 
   // Contributors Grid
   .contributors-grid
@@ -2068,6 +1975,51 @@ html.dark #project_container .project-show-redesign .analysis-grid .analysis-car
         color: $gray-900 !important
         font-weight: 600 !important
 
+    // SVG display stars (average)
+    .stars-display
+      display: flex
+      align-items: center
+      gap: 2px
+
+      .star-icon
+        display: inline-block
+        vertical-align: middle
+        flex-shrink: 0
+
+        &.star-filled,
+        &.star-half
+          color: #ffb91a
+
+        &.star-empty
+          color: $gray-300
+
+    // Interactive star buttons (user rating)
+    .interactive-stars
+      display: flex
+      gap: 2px
+      margin-top: 2px
+
+      .star-btn
+        background: none
+        border: none
+        padding: 0
+        cursor: pointer
+        line-height: 1
+        transition: transform 0.1s ease
+
+        &:hover
+          transform: scale(1.15)
+
+        .star-svg
+          display: block
+          color: $gray-300
+          transition: fill 0.1s ease, stroke 0.1s ease
+
+    .rating-user-score
+      font-size: 10px !important
+      color: $gray-500
+      margin-top: 2px
+
 // ============================================================================
 // Dark Mode - Analysis Grid
 // ============================================================================
@@ -2086,6 +2038,9 @@ html.dark .project-show-redesign
   .subsection-title
     color: white !important
 
+  .no-data
+    color: #94a3b8 !important
+
   .chart-container
     background: rgba(90, 42, 130, 0.15)
 
@@ -2094,18 +2049,6 @@ html.dark .project-show-redesign
 
   #code_history_chart.chart-container
     background: transparent
-
-  #community_chart
-    .highcharts-series-0
-      .highcharts-graph,
-      .highcharts-point
-        stroke: $yellow-accent !important
-        fill: $yellow-accent !important
-
-    .highcharts-series-1
-      .highcharts-point
-        stroke: $yellow-accent !important
-        fill: $yellow-accent !important
 
   .zoom-controls
     .zoom-label
@@ -2121,71 +2064,8 @@ html.dark .project-show-redesign
         background: $yellow-accent
         color: #1D0631
 
-  .summary-section
-    .summary-header
-      color: white !important
-
-    .summary-timespan
-      color: $gray-500 !important
-
-    .summary-stat
-      color: $gray-300 !important
-
-      .stat-number
-        color: white !important
-
-    .summary-change
-      &.positive
-        color: #4ade80 !important
-
-      &.negative
-        color: #f87171 !important
-
-  .languages-content
-    .language-legend
-      .language-item
-        font-size: 12px !important
-
-        .language-name
-          color: $gray-300 !important
-          font-size: 12px !important
-
-          a
-            color: $yellow-accent !important
-            font-size: 12px !important
-
-            &:hover
-              color: $yellow-accent !important
-              text-decoration: underline
-
-        .language-percent
-          color: $gray-400 !important
-          font-size: 12px !important
-
-  .contributors-grid
-    .contributor-item
-      .contributor-name
-        color: $yellow-accent !important
-
-        &:hover
-          color: $yellow-accent !important
-
-  .ratings-section
-    border-top-color: rgba(90, 42, 130, 0.3)
-
-  .rating-content
-    .rating-info
-      color: $gray-300 !important
-
-      .rating-link
-        color: $yellow-accent !important
-
-        &:hover
-          color: $yellow-accent !important
-
-    .rating-display
-      .rating-value
-        color: white !important
+  // Summary section dark colors: see Summary Typography Final Guard below
+  // Languages, contributors, ratings dark colors: see respective Final Guard blocks below
 
 // ============================================================================
 // Ratings Final Guard (Figma parity)
@@ -2208,6 +2088,18 @@ html.dark .project-show-redesign
     flex-direction: column !important
     gap: 2px !important
 
+    .community_rating_header
+      font-size: 14px !important
+      font-weight: 600 !important
+      margin: 0 0 4px 0 !important
+
+      a
+        color: $gray-900 !important
+        text-decoration: none !important
+
+        &:hover
+          text-decoration: none !important
+
     .rating-top-row
       display: flex !important
       align-items: flex-start !important
@@ -2221,7 +2113,6 @@ html.dark .project-show-redesign
       .rating-action
         flex: 0 0 auto !important
         text-align: right !important
-        white-space: nowrap !important
 
         .rating-link
           display: inline-flex !important
@@ -2233,6 +2124,10 @@ html.dark .project-show-redesign
             width: 12px !important
             height: 12px !important
             flex-shrink: 0 !important
+
+        .rating-secondary
+          margin-top: 4px !important
+          white-space: normal !important
 
     .rating-info
       margin: 0 !important
@@ -2263,6 +2158,21 @@ html.dark .project-show-redesign
         height: 23px !important
         line-height: 23px !important
         overflow: hidden !important
+        min-width: 112px !important
+        flex-shrink: 0 !important
+
+        &::after
+          content: ""
+          display: table
+          clear: both
+
+        .rating_stars,
+        [id$='_rating_stars']
+          display: inline-block !important
+          height: 23px !important
+
+          span
+            vertical-align: top !important
 
       .rating-value
         font-size: 12px !important
@@ -2278,6 +2188,10 @@ html.dark #project_container .project-show-redesign .analysis-grid .analysis-car
       color: white !important
 
   .rating-content
+    .community_rating_header
+      a
+        color: white !important
+
     .rating-top-row
       .rating-action
         .rating-info
@@ -2295,6 +2209,23 @@ html.dark #project_container .project-show-redesign .analysis-grid .analysis-car
     .rating-display
       .rating-value
         color: white !important
+
+    .stars-display
+      .star-icon
+        &.star-filled,
+        &.star-half
+          color: #ffb91a !important
+
+        &.star-empty
+          color: #4b5563 !important
+
+    .interactive-stars
+      .star-btn
+        .star-svg
+          color: #4b5563 !important
+
+    .rating-user-score
+      color: $gray-400 !important
 
 // ============================================================================
 // Dark Theme Final Guard (Licenses + Graphs)
@@ -2364,6 +2295,7 @@ html.dark #project_container .project-show-redesign
 
     .highcharts-tooltip text
       fill: #f8fafc !important
+
 
 // ============================================================================
 // Summary Typography Final Guard (Figma parity)
@@ -2494,3 +2426,90 @@ body.dark #project_container .project-show-redesign,
 
         .view-all-link a
           color: $yellow-accent !important
+
+// ============================================================================
+// Dark Mode - Login Modal & Add to Stacks Modal
+// ============================================================================
+html.dark
+  #LoginModal,
+  #stack-entries-modal
+    .modal-content
+      background-color: #1D0631
+      border: 1px solid rgba(90, 42, 130, 0.4)
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5)
+
+    .modal-header
+      border-bottom-color: rgba(90, 42, 130, 0.3)
+
+      .modal-title
+        color: white
+
+      .close
+        color: #94a3b8
+        opacity: 0.8
+        text-shadow: none
+
+        &:hover
+          color: white
+          opacity: 1
+
+    .modal-body,
+    .model-body
+      color: #d1d5db
+
+      .well
+        background-color: #2D1548
+        border-color: rgba(90, 42, 130, 0.3)
+        box-shadow: none
+
+      legend
+        color: white
+        border-bottom-color: rgba(90, 42, 130, 0.3)
+
+      .control-group
+        label,
+        .checkbox
+          color: #d1d5db
+
+      input[type="text"],
+      input[type="password"],
+      input[type="email"]
+        background-color: #2D1548
+        border-color: rgba(159, 122, 186, 0.3)
+        color: white
+
+        &::placeholder
+          color: #6b7280
+
+        &:focus
+          border-color: #FFB91A
+          box-shadow: 0 0 0 2px rgba(255, 185, 26, 0.2)
+
+      .add-on
+        background-color: #2D1548
+        border-color: rgba(159, 122, 186, 0.3)
+        color: #9ca3af
+
+        i
+          color: #9ca3af
+
+      // Stack checkbox rows
+      .stack-checkbox-container
+        border-bottom-color: rgba(90, 42, 130, 0.2)
+
+        span
+          color: #d1d5db
+
+    .modal-footer
+      border-top-color: rgba(90, 42, 130, 0.3)
+      background-color: #1D0631
+
+    .btn-primary
+      background-color: #FFB91A !important
+      border-color: #FFB91A !important
+      color: #1D0631 !important
+
+      &:hover,
+      &:focus
+        background-color: #FFCC4D !important
+        border-color: #FFCC4D !important
