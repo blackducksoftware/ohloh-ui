@@ -10,8 +10,9 @@ class Icon < Cherry::Decorator
   delegate :logo, :name, to: :object
 
   def image(with_dimensions: true, container_class: 'icon-container')
-    container_classes = "#{container_class} #{'has-logo' if logo}"
-    content = logo ? logo_with_fallback(with_dimensions) : letter_only
+    has_attachment = logo&.attachment&.present?
+    container_classes = "#{container_class} #{'has-logo' if has_attachment}"
+    content = has_attachment ? logo_with_fallback(with_dimensions) : letter_only
     content_tag :div, content, class: container_classes
   end
 
