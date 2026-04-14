@@ -23,7 +23,7 @@ class ExploreController < ApplicationController
   end
 
   def orgs_by_thirty_day_commit_volume
-    @org_by_30_day_commits = OrgThirtyDayActivity.filter(params[:filter])
+    @org_by_30_day_commits = OrgThirtyDayActivity.filter(params[:org_type])
   end
 
   def projects; end

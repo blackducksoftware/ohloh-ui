@@ -181,6 +181,35 @@ organizations:
   default:
     projects
 
+org_types:
+  options:
+    -
+      - All Organizations
+      - all_orgs
+    -
+      - Commercial
+      - commercial
+    -
+      - Education
+      - educational
+    -
+      - Government
+      - government
+    -
+      - Non-Profit
+      - non_profit
+    -
+      - Large
+      - large
+    -
+      - Medium
+      - medium
+    -
+      - Small
+      - small
+  default:
+    all_orgs
+
 claim_projects_list:
   options:
     -
