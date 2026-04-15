@@ -145,22 +145,13 @@ en:
       analysis_summary:
         code_locations_removed: "Code locations have been removed since last analysis"
         code_locations_removed_explanation: "At one point, Open Hub analyzed source code for this project based on code location(s) available at that time. Since then, the code locations have been removed."
-        activity: "Activity"
-        code: 'Code'
-        thirty_day_summary: "30 Day Summary"
-        not_available: "not available"
-        twelve_month_summary: "12 Month Summary"
-        commits_per_month: "Commits per Month"
-        add_a_code_location: "Add a code location"
-        no_code_locations: "There are no Code Locations added to this project so Open Hub cannot display the commits per month chart. %{link} to see this information."
-        community: "Community"
-      analysis_summary_redesign:
         code: "Code"
         lines_of_code: "Lines of Code"
         languages: "Languages"
-        no_code_locations: "There are no Code Locations added to this project so Open Hub cannot display this chart."
         activity: "Activity"
         commits_per_month: "Commits per Month"
+        add_a_code_location: "Add a code location"
+        no_code_locations: "There are no Code Locations added to this project so Open Hub cannot display this chart."
         zoom: "Zoom"
         no_commits: "No commit data available"
         thirty_day_summary: "30 Day Summary"
@@ -191,6 +182,7 @@ en:
       community_recent_committers:
         most_recent: "Most Recent Contributors"
         no_one_recently: "No one has contributed to this project recently"
+        no_contributors: "No contributor data available"
       header_redesign:
         i_use_this: 'I Use This!'
         you_use_this: 'You use this'
@@ -302,16 +294,15 @@ en:
         title: 'Project Security'
         title_nvd: 'This project has no vulnerabilities reported against it'
         blog_link: 'About Project Security'
-      licenses_redesign:
+      licenses:
+        title: 'Licenses'
+        all: 'All Licenses'
         licenses: 'Licenses'
         permitted: 'Permitted'
         forbidden: 'Forbidden'
         required: 'Required'
         disclaimer: 'These details are provided for information only. No information here is legal advice and should not be used as such.'
         view_all_licenses: 'View All Licenses'
-      licenses:
-        title: 'Licenses'
-        all: 'All Licenses'
       license_details:
         info: 'These details are provided for information only. No information here is legal advice and should not be used as such.'
     deleted:

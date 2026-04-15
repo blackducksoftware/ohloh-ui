@@ -62,3 +62,57 @@ App.Explore =
 
 $(document).on 'page:change', ->
   App.Explore.init()
+
+# ── PAI Tooltip ──────────────────────────────────────────────────────────────
+# Runs once at module level; uses event delegation so no re-binding needed.
+# position:fixed tooltip appended to <body> escapes overflow/transform clipping.
+$('<div id="pai-global-tooltip"></div>').appendTo('body')
+
+stripPaiTitles = ->
+  $('.pai-tooltip-wrapper [title]').each ->
+    $(this).removeAttr('title')
+
+showPaiTooltip = (wrapper) ->
+  text = wrapper.data('tooltip')
+  return unless text
+  # Strip native title to prevent browser double-tooltip
+  wrapper.find('[title]').removeAttr('title')
+  tooltip = $('#pai-global-tooltip')
+  tooltip.text(text)
+  tooltip.css(visibility: 'hidden', display: 'block')
+  tw = tooltip.outerWidth()
+  th = tooltip.outerHeight()
+  tooltip.css(visibility: '', display: 'none')
+  rect = wrapper[0].getBoundingClientRect()
+  left = rect.left + (rect.width / 2) - (tw / 2)
+  top  = rect.top - th - 10
+  left = Math.max(8, Math.min(left, window.innerWidth - tw - 8))
+  if top < 8
+    top = rect.bottom + 10
+  tooltip.css(left: left, top: top).addClass('visible')
+
+hidePaiTooltip = ->
+  $('#pai-global-tooltip').removeClass('visible')
+
+# Desktop hover
+$(document).on 'mouseenter', '.pai-tooltip-wrapper', ->
+  showPaiTooltip($(this))
+$(document).on 'mouseleave', '.pai-tooltip-wrapper', ->
+  hidePaiTooltip()
+
+# Mobile/tablet tap toggle
+$(document).on 'touchstart', '.pai-tooltip-wrapper', (e) ->
+  e.preventDefault()
+  e.stopPropagation()
+  if $('#pai-global-tooltip').hasClass('visible')
+    hidePaiTooltip()
+  else
+    showPaiTooltip($(this))
+$(document).on 'touchstart', (e) ->
+  unless $(e.target).closest('.pai-tooltip-wrapper').length
+    hidePaiTooltip()
+
+# Strip native [title] on every page load (prevents browser double-tooltip)
+document.addEventListener 'DOMContentLoaded', stripPaiTitles
+document.addEventListener 'turbolinks:load',  stripPaiTitles
+document.addEventListener 'page:change',      stripPaiTitles

@@ -198,24 +198,24 @@ $shadow-dark-hover: 0 3px 6px rgba(0, 0, 0, 0.32), 0 3px 6px rgba(0, 0, 0, 0.46)
 .tag-cloud
   display: flex
   flex-wrap: wrap
-  gap: 8px
+  gap: 6px
   margin-bottom: 16px
 
 .tag-item
   display: inline-block
-  padding: 6px 12px
-  background: $bg-light
-  border: 1px solid $border-gray
+  padding: 4px 8px
+  background: $bg-white
+  border: 1px solid #e5e7eb
   border-radius: 4px
   font-size: 12px
   color: $primary-purple
   text-decoration: none
-  transition: all 0.2s ease
+  transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease
   cursor: pointer
 
   html.dark &
     background: $bg-dark
-    border-color: #374151
+    border-color: #4b5563
     color: $primary-yellow
 
   &:hover
@@ -223,12 +223,11 @@ $shadow-dark-hover: 0 3px 6px rgba(0, 0, 0, 0.32), 0 3px 6px rgba(0, 0, 0, 0.46)
     color: $bg-white
     border-color: $primary-purple
     text-decoration: none
-    transform: translateY(-2px)
 
     html.dark &
-      background: $primary-yellow
-      color: $bg-dark
-      border-color: $primary-yellow
+      background: $primary-yellow !important
+      color: $primary-purple !important
+      border-color: $primary-yellow !important
 
 // Tag custom input with icon inside
 .tag-input-wrapper
@@ -251,7 +250,7 @@ $shadow-dark-hover: 0 3px 6px rgba(0, 0, 0, 0.32), 0 3px 6px rgba(0, 0, 0, 0.46)
 
   html.dark &
     background: $bg-dark !important
-    border-color: $primary-purple !important
+    border-color: #4b5563 !important
     color: #ffffff !important
 
   &::placeholder
@@ -289,7 +288,7 @@ $shadow-dark-hover: 0 3px 6px rgba(0, 0, 0, 0.32), 0 3px 6px rgba(0, 0, 0, 0.46)
     color: $primary-purple
 
     html.dark &
-      color: $primary-yellow
+      color: $primary-yellow !important
 
   i
     font-size: 14px
@@ -925,11 +924,23 @@ $shadow-dark-hover: 0 3px 6px rgba(0, 0, 0, 0.32), 0 3px 6px rgba(0, 0, 0, 0.46)
     text-decoration: underline
 
 .demographics-chart-wrapper
-  min-height: 480px
+  height: 480px
   margin-bottom: 24px
 
   @media (max-width: 768px)
-    min-height: 400px
+    height: 420px
+
+  @media (max-width: 640px)
+    height: 380px
+
+  @media (max-width: 480px)
+    height: 340px
+
+  // Highcharts reads offsetHeight of renderTo element.
+  // Without height: 100%, the div has offsetHeight 0 and Highcharts falls
+  // back to its 400px default, ignoring the wrapper heights above.
+  #demographics_chart
+    height: 100%
 
 // Statistics Summary
 .statistics-summary
@@ -1024,3 +1035,39 @@ $shadow-dark-hover: 0 3px 6px rgba(0, 0, 0, 0.32), 0 3px 6px rgba(0, 0, 0, 0.46)
     [class^="twentyfive_project_activity_level_"]
       top: 8px !important
       margin-left: 0 !important
+
+// PAI tooltip wrapper — click/touch target only; no CSS tooltip needed
+.pai-tooltip-wrapper
+  position: relative
+  display: inline-flex
+  align-items: center
+  justify-content: center
+  cursor: default
+
+// Global PAI tooltip — position:fixed so it escapes overflow/transform clipping
+// Injected into <body> by explore.js.coffee
+#pai-global-tooltip
+  display: none
+  position: fixed
+  background: #111827
+  color: white
+  border: 1px solid #374151
+  border-radius: 8px
+  padding: 8px 12px
+  font-size: 12px
+  font-weight: 500
+  white-space: nowrap
+  z-index: 9999
+  box-shadow: 0 20px 25px -5px rgba(0,0,0,0.25), 0 10px 10px -5px rgba(0,0,0,0.15)
+  pointer-events: none
+  // Arrow pointing down toward the PAI icon
+  &::after
+    content: ''
+    position: absolute
+    top: 100%
+    left: 50%
+    transform: translateX(-50%)
+    border: 5px solid transparent
+    border-top-color: #374151
+  &.visible
+    display: block
