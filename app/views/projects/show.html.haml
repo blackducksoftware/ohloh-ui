@@ -67,14 +67,14 @@
               %svg{ viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", 'stroke-width': "2", style: "width: 1rem; height: 1rem; display: inline-block; vertical-align: text-top;" }
                 %path{ d: "M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z" }
                 %line{ x1: "7", y1: "7", x2: "7.01", y2: "7" }
-              = t('.tags')
+              = link_to t('.tags'), project_tags_path(@project)
             .tags-container
               - tags = @project.tag_list.split(' ')
               - if tags.any?
                 - tags.each do |tag|
                   = link_to tag, tags_path(names: tag), class: 'tag'
               - else
-                %span.tag
+                %span.tag.tag-empty
                   = t('.no_tags')
                   - if @project.edit_authorized?
                     = link_to t('.add_tags'), project_tags_path(@project)
@@ -168,52 +168,50 @@
                   = link_to @project.organization.name, organization_path(@project.organization)
 
             %li
-              %span.label= t('.homepage')
+              %span.label= link_to t('.quick_reference.proj_links'), project_links_path(@project)
               %span.value
-                - homepage_link = @project.decorate.sorted_link_list['Homepage']&.first
-                - if homepage_link
-                  = link_to homepage_link.url, itemprop: 'url' do
-                    %svg{ viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", 'stroke-width': "2" }
-                      %path{ d: "M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" }
-                      %polyline{ points: "15 3 21 3 21 9" }
-                      %line{ x1: "10", y1: "14", x2: "21", y2: "3" }
-                    = truncate(homepage_link.url.gsub(/^https?:\/\//, ''), length: 30)
+                - if @project.decorate.sorted_link_list.any?
+                  - @project.decorate.sorted_link_list.each do |link_category_name, links|
+                    - if links.size > 1
+                      = link_to project_links_path(@project) do
+                        = h(link_category_name)
+                        %i= t('.quick_reference.no_of_links', count: links.size)
+                    - elsif links.size == 1
+                      - link_opts = link_category_name == 'Homepage' ? { itemprop: 'url' } : {}
+                      = link_to h(links.first.url), link_opts do
+                        %svg{ viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", 'stroke-width': "2", style: "width:12px;height:12px;vertical-align:middle;margin-right:2px;" }
+                          %path{ d: "M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" }
+                          %polyline{ points: "15 3 21 3 21 9" }
+                          %line{ x1: "10", y1: "14", x2: "21", y2: "3" }
+                        = h(link_category_name)
+                    %br
                 - else
-                  N/A
+                  = link_to t('.quick_reference.add_proj_links'), project_links_path(@project)
 
             %li
-              %span.label= t('.documentation')
+              %span.label= link_to t('.quick_reference.code_locations'), project_enlistments_path(@project)
               %span.value
-                - doc_link = @project.decorate.sorted_link_list['Documentation']&.first
-                - if doc_link
-                  = link_to doc_link.url do
-                    %svg{ viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", 'stroke-width': "2" }
-                      %path{ d: "M4 19.5A2.5 2.5 0 0 1 6.5 17H20" }
-                      %path{ d: "M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" }
-                    View Docs
+                - enlistments = @project.enlistments
+                - if enlistments.present? && ApiAccess.available?
+                  - if enlistments.size > 1
+                    = link_to t('.quick_reference.n_locations', n: enlistments.size), project_enlistments_path(@project)
+                  - else
+                    = enlistments.first.code_location.url.truncate(35)
                 - else
-                  N/A
+                  = link_to t('.quick_reference.add_code_location'), project_enlistments_path(@project)
 
             %li
-              %span.label= t('.code_location')
-              %span.value
-                - if @project.enlistments.present?
-                  = link_to truncate(@project.enlistments.first.code_location.url, length: 40), @project.enlistments.first.code_location.url
-                - else
-                  = link_to t('.add_code_location'), project_enlistments_path(@project)
-
-            %li
-              %span.label= t('.similar_projects')
+              %span.label= link_to t('.quick_reference.similar_projects'), similar_project_path(@project)
               %span.value
                 %div#similar_projects{ data: { project_id: @project.to_param } }
 
             %li
-              %span.label= t('.managers')
+              %span.label= link_to t('.quick_reference.managers'), project_managers_path(@project)
               %span.value
                 - if @project.active_managers.present?
-                  = link_to "#{@project.active_managers.count} managers", project_managers_path(@project)
+                  != project_managers_list
                 - else
-                  = link_to t('.become_first_manager', what: @project.name), new_project_manager_path(@project)
+                  = link_to t('.quick_reference.become_first', what: @project.name), new_project_manager_path(@project)
 
     / Mobile: Collapsible accordion cards
     .mobile-accordion
@@ -241,14 +239,14 @@
               %svg{ viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", 'stroke-width': "2", style: "width: 1rem; height: 1rem; display: inline-block; vertical-align: text-top;" }
                 %path{ d: "M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z" }
                 %line{ x1: "7", y1: "7", x2: "7.01", y2: "7" }
-              = t('.tags')
+              = link_to t('.tags'), project_tags_path(@project)
             .tags-container
               - tags = @project.tag_list.split(' ')
               - if tags.any?
                 - tags.each do |tag|
                   = link_to tag, tags_path(names: tag), class: 'tag'
               - else
-                %span.tag= t('.no_tags')
+                %span.tag.tag-empty= t('.no_tags')
 
       / In a Nutshell - Collapsible
       .gradient-card.accordion-card
@@ -295,17 +293,54 @@
               %li
                 %span.label= t('.organization')
                 %span.value= link_to @project.organization.name, organization_path(@project.organization)
-            / Add remaining items
+            %li
+              %span.label= link_to t('.quick_reference.proj_links'), project_links_path(@project)
+              %span.value
+                - if @project.decorate.sorted_link_list.any?
+                  - @project.decorate.sorted_link_list.each do |link_category_name, links|
+                    - if links.size > 1
+                      = link_to project_links_path(@project) do
+                        = h(link_category_name)
+                        %i= t('.quick_reference.no_of_links', count: links.size)
+                    - elsif links.size == 1
+                      - link_opts = link_category_name == 'Homepage' ? { itemprop: 'url' } : {}
+                      = link_to h(links.first.url), link_opts do
+                        = h(link_category_name)
+                    %br
+                - else
+                  = link_to t('.quick_reference.add_proj_links'), project_links_path(@project)
+            %li
+              %span.label= link_to t('.quick_reference.code_locations'), project_enlistments_path(@project)
+              %span.value
+                - enlistments = @project.enlistments
+                - if enlistments.present? && ApiAccess.available?
+                  - if enlistments.size > 1
+                    = link_to t('.quick_reference.n_locations', n: enlistments.size), project_enlistments_path(@project)
+                  - else
+                    = enlistments.first.code_location.url.truncate(35)
+                - else
+                  = link_to t('.quick_reference.add_code_location'), project_enlistments_path(@project)
+            %li
+              %span.label= link_to t('.quick_reference.similar_projects'), similar_project_path(@project)
+              %span.value
+                %div#similar_projects_mobile{ data: { project_id: @project.to_param } }
+            %li
+              %span.label= link_to t('.quick_reference.managers'), project_managers_path(@project)
+              %span.value
+                - if @project.active_managers.present?
+                  != project_managers_list
+                - else
+                  = link_to t('.quick_reference.become_first', what: @project.name), new_project_manager_path(@project)
 
     / Licenses Section
-    = render partial: 'projects/show/licenses_redesign'
+    = render partial: 'projects/show/licenses'
 
     / Project Security Section
     = render partial: 'projects/show/security'
 
     / Code, Activity, Community Grid
     - if @analysis.present?
-      = render partial: 'projects/show/analysis_summary_redesign'
+      = render partial: 'projects/show/analysis_summary'
 
 :javascript
   function toggleAccordion(button) {

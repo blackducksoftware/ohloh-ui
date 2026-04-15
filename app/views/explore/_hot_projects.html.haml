@@ -67,7 +67,8 @@
             / PAI Indicator
             .table-cell.pai-col
               .pai-indicator
-                - project_activity_level_class(project, :twentyfive)
+                .pai-tooltip-wrapper{ 'data-tooltip': project_activity_text(project, true) }
+                  - project_activity_level_class(project, :twentyfive)
 
             / Hotness Score
             .table-cell.hotness-col

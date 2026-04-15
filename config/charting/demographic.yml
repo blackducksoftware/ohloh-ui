@@ -13,9 +13,14 @@ title:
     fontSize: '10pt'
 tooltip:
   formatter: ''
-  style:
-    fontSize: '11pt'
-    padding: '8px'
+  outside: true
+  useHTML: true
+  className: 'demographics-tooltip'
+  backgroundColor: 'transparent'
+  borderWidth: 0
+  shadow: false
+  stickOnContact: true
+  followTouchMove: true
 plotOptions:
   pie:
     allowPointSelect: true
@@ -26,8 +31,7 @@ plotOptions:
     borderWidth: 2
     dataLabels:
       enabled: true
-      minSize: 1
-      color: '#000000'
+      distance: 20
       connectorColor: '#94a3b8'
       format: '{point.name}: {point.y}%'
 legend:
@@ -47,3 +51,32 @@ credits:
 series: [{type: 'pie'}]
 exporting:
   enabled: false
+responsive:
+  rules:
+    - condition:
+        maxWidth: 768
+      chartOptions:
+        plotOptions:
+          pie:
+            dataLabels:
+              enabled: true
+              distance: 15
+            innerSize: '50%'
+        legend:
+          itemStyle:
+            fontSize: '11px'
+          symbolHeight: 10
+          symbolWidth: 10
+    - condition:
+        maxWidth: 640
+      chartOptions:
+        plotOptions:
+          pie:
+            dataLabels:
+              enabled: false
+            innerSize: '45%'
+        legend:
+          itemStyle:
+            fontSize: '10px'
+          symbolHeight: 8
+          symbolWidth: 8
