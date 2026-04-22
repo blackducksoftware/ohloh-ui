@@ -321,7 +321,7 @@ $pai_levels: (('very_high',0), ('high', 1), ('moderate', 2), ('low', 3), ('very_
 
 .settings-page-header
   display: flex
-  align-items: center
+  align-items: flex-start
   gap: 16px
   margin-bottom: 32px
 
@@ -340,12 +340,14 @@ $pai_levels: (('very_high',0), ('high', 1), ('moderate', 2), ('low', 3), ('very_
     justify-content: center
     flex-shrink: 0
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1)
+    margin-top: 2px
     i
       color: #ffffff
       font-size: 18px
 
   .settings-page-title
     flex: 1
+    min-width: 0
     h2
       font-size: 32px
       font-weight: 700
@@ -361,6 +363,27 @@ $pai_levels: (('very_high',0), ('high', 1), ('moderate', 2), ('low', 3), ('very_
       font-size: 13px
       color: #6b7280
       line-height: 1.4
+
+      // Override conflicting existing styles from account.sass and fontawesome_icons.sass
+      #analysis_timestamp
+        float: none !important
+        color: #6b7280 !important
+        margin-top: 0
+        font-style: normal
+
+        > i
+          font-style: normal
+          color: inherit
+
+        i.icon-time
+          margin-right: 4px
+          color: inherit
+
+        abbr
+          color: inherit
+          border-bottom: none
+          text-decoration: none
+          cursor: default
 
 .settings-grid
   display: grid
