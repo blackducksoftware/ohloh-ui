@@ -318,41 +318,124 @@ $pai_levels: (('very_high',0), ('high', 1), ('moderate', 2), ('low', 3), ('very_
       display: none
 
 // settings page styles
+
+.settings-page-header
+  display: flex
+  align-items: center
+  gap: 16px
+  margin-bottom: 32px
+
+  @media (max-width: 767px)
+    gap: 12px
+    margin-bottom: 24px
+
+  .settings-page-icon
+    width: 40px
+    height: 40px
+    min-width: 40px
+    border-radius: 12px
+    background: linear-gradient(135deg, #5A2A82, #1D0631)
+    display: flex
+    align-items: center
+    justify-content: center
+    flex-shrink: 0
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1)
+    i
+      color: #ffffff
+      font-size: 18px
+
+  .settings-page-title
+    flex: 1
+    h2
+      font-size: 32px
+      font-weight: 700
+      color: #111827
+      margin: 0 0 8px 0
+      letter-spacing: -0.02em
+
+      @media (max-width: 767px)
+        font-size: 24px
+        margin: 0 0 4px 0
+
+    .settings-page-timestamp
+      font-size: 13px
+      color: #6b7280
+      line-height: 1.4
+
+.settings-grid
+  display: grid
+  grid-template-columns: repeat(3, 1fr)
+  gap: 24px
+  margin-bottom: 32px
+
+  @media (max-width: 1024px)
+    grid-template-columns: repeat(2, 1fr)
+    gap: 20px
+
+  @media (max-width: 768px)
+    grid-template-columns: 1fr
+    gap: 16px
+
 .settings_module
-  :cursor pointer
+  display: flex
+  align-items: flex-start
+  gap: 16px
+  padding: 24px
+  background: #ffffff
+  border-radius: 12px
+  border: 1px solid rgba(229, 231, 235, 0.8)
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04)
+  text-decoration: none
+  cursor: pointer
+  transition: all 0.2s ease
+  position: relative
+
   &:hover
+    border-color: #5A2A82
+    box-shadow: 0 8px 16px rgba(90, 42, 130, 0.12), 0 2px 4px rgba(0, 0, 0, 0.06)
+    text-decoration: none
+    transform: translateY(-2px)
+    .settings-icon-wrapper
+      transform: scale(1.05)
     h4
-      text-decoration: underline
-    .module_icon
-      &.basics
-        background-position: 0 -40px
-      &.code_locations
-        background-position: -40px -40px
-      &.aliases
-        background-position: -80px -40px
-      &.logo
-        background-position: -120px -40px
-      &.links
-        background-position: -160px -40px
-      &.orgs_manage_projects
-        background-position: -599px -40px
-      &.permissions
-        background-position: -200px -40px
-      &.licenses
-        background-position: -240px -40px
-      &.tags
-        background-position: -280px -40px
-      &.history
-        background-position: -320px -40px
-      &.managers
-        background-position: -360px -40px
-      &.news
-        background-position: -400px -40px
-      &.badges
-        background-position: -891px -40px
+      color: #4a1f6e
+      text-decoration: none
+
+  .settings-icon-wrapper
+    width: 40px
+    height: 40px
+    min-width: 40px
+    border-radius: 12px
+    background: linear-gradient(135deg, #5A2A82, #7F3FA0)
+    display: flex
+    align-items: center
+    justify-content: center
+    flex-shrink: 0
+    box-shadow: 0 2px 4px rgba(90, 42, 130, 0.15)
+    transition: all 0.2s ease
+
+  .settings-text
+    flex: 1
+    min-width: 0
+    h4
+      font-size: 15px
+      font-weight: 600
+      color: #1f2937
+      margin: 0 0 6px
+      transition: color 0.2s
+      text-decoration: none
+      a
+        color: inherit
+        text-decoration: none
+        &:hover
+          color: #5A2A82
+
   .settings_description
-    width: 240px
-    padding-left: 10px
+    font-size: 13px
+    color: #6b7280
+    line-height: 1.5
+    margin: 0
+
   // module icon sprites
   .module_icon
     background-image: asset_url('icons/ohloh-icon-sprite.png')
@@ -378,13 +461,10 @@ $pai_levels: (('very_high',0), ('high', 1), ('moderate', 2), ('low', 3), ('very_
       background-position: -240px 0px
     &.tags
       background-position: -280px 0px
-      height: 36px
-      width: 31px
     &.history
       background-position: -320px 0px
     &.managers
       background-position: -360px 0px
-      width: 36px
     &.news
       background-position: -400px 0px
     &.badges
@@ -473,8 +553,8 @@ $pai_levels: (('very_high',0), ('high', 1), ('moderate', 2), ('low', 3), ('very_
   height: 250px
 
 #vulnerability_per_version
-  padding: 19px 
-  .well
+  padding: 19px
+  .well, .oh-card
     background: white !important
 
   .title span
@@ -511,7 +591,7 @@ $pai_levels: (('very_high',0), ('high', 1), ('moderate', 2), ('low', 3), ('very_
   #permitted
     @include licenses-permitted-color
     margin-top: -20px
-    .well
+    .oh-card
       padding-bottom: 0
       padding-top: 0
       height: 85%
@@ -521,7 +601,7 @@ $pai_levels: (('very_high',0), ('high', 1), ('moderate', 2), ('low', 3), ('very_
     @include licenses-forbidden-color
     margin-top: -20px
     padding-left: 0
-    .well
+    .oh-card
       padding-bottom: 0
       padding-top: 0
       height: 85%
@@ -531,7 +611,7 @@ $pai_levels: (('very_high',0), ('high', 1), ('moderate', 2), ('low', 3), ('very_
     @include licenses-required-color
     margin-top: -5px
     padding-left: 0
-    .well
+    .oh-card
       padding-bottom: 0
       padding-top: 0
       height: 91%

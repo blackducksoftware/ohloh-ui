@@ -20,10 +20,45 @@ html.dark
     color: #e2e8f0 !important
 
   // Cards and wells
-  .well
+  .well, .oh-card
     background-color: #1D0631 !important
     color: #e2e8f0 !important
     border-color: #5A2A82 !important
+
+  // Settings page
+  .settings-page-header
+    .settings-page-icon
+      background: linear-gradient(135deg, #ffb91a, #e6a617)
+      i
+        color: #1D0631
+    .settings-page-title
+      h2
+        color: #ffffff
+      .settings-page-timestamp
+        color: #9ca3af
+
+  .settings-grid .settings_module
+    background: #2D1548
+    border-color: rgba(255, 185, 26, 0.2)
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.24), 0 1px 2px rgba(0, 0, 0, 0.48)
+    &:hover
+      border-color: #ffb91a
+      box-shadow: 0 8px 16px rgba(255, 185, 26, 0.12), 0 2px 4px rgba(0, 0, 0, 0.24)
+      transform: translateY(-2px)
+    .settings-text
+      h4
+        color: #ffffff
+        &:hover
+          color: #ffb91a
+        a
+          color: #ffffff
+          &:hover
+            color: #ffb91a
+    .settings_description
+      color: #9ca3af
+    .settings-icon-wrapper
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.24)
+      background: linear-gradient(135deg, #ffb91a, #e6a617)
 
   // Tables
   table
@@ -151,7 +186,7 @@ html.dark
   #project_container .project_row #did_you_know
     background: #1D0631 !important
 
-    .well
+    .well, .oh-card
       background-color: #1D0631 !important
       border: 1px solid #5A2A82 !important
       box-shadow: none !important
