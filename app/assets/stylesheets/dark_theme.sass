@@ -41,10 +41,15 @@ html.dark
     background: #2D1548
     border-color: rgba(255, 185, 26, 0.2)
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.24), 0 1px 2px rgba(0, 0, 0, 0.48)
+    &::after
+      color: #6b7280
     &:hover
       border-color: #ffb91a
       box-shadow: 0 8px 16px rgba(255, 185, 26, 0.12), 0 2px 4px rgba(0, 0, 0, 0.24)
       transform: translateY(-2px)
+      &::after
+        color: #ffb91a
+        transform: translateY(-50%) translateX(4px)
     .settings-text
       h4
         color: #ffffff

@@ -390,6 +390,18 @@ $pai_levels: (('very_high',0), ('high', 1), ('moderate', 2), ('low', 3), ('very_
   transition: all 0.2s ease
   position: relative
 
+  &::after
+    content: '\f054'
+    font-family: FontAwesome, sans-serif
+    font-weight: 900
+    font-size: 14px
+    color: #d1d5db
+    position: absolute
+    right: 20px
+    top: 50%
+    transform: translateY(-50%)
+    transition: all 0.2s ease
+
   &:hover
     border-color: #5A2A82
     box-shadow: 0 8px 16px rgba(90, 42, 130, 0.12), 0 2px 4px rgba(0, 0, 0, 0.06)
@@ -400,6 +412,9 @@ $pai_levels: (('very_high',0), ('high', 1), ('moderate', 2), ('low', 3), ('very_
     h4
       color: #4a1f6e
       text-decoration: none
+    &::after
+      color: #5A2A82
+      transform: translateY(-50%) translateX(4px)
 
   .settings-icon-wrapper
     width: 40px
@@ -417,6 +432,7 @@ $pai_levels: (('very_high',0), ('high', 1), ('moderate', 2), ('low', 3), ('very_
   .settings-text
     flex: 1
     min-width: 0
+    padding-right: 24px
     h4
       font-size: 15px
       font-weight: 600
