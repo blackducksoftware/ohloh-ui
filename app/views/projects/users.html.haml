@@ -30,4 +30,4 @@
         %h6.soft.margin_top_0= t('.kudo_rank')
         = avatar_small_laurels(account.person.kudo_rank)
 
-= will_paginate @accounts
+= render 'shared/modern_pagination', collection: @accounts

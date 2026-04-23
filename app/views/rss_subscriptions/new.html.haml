@@ -9,7 +9,7 @@
 
 .clearfix
 .col-md-8.col-md-offset-2
-  .well
+  .oh-card
     = form_for @rss_feed, url: project_rss_subscriptions_url(@project), html: { method: :post } do |f|
       = render partial: 'fields', locals: { f: f }
 
