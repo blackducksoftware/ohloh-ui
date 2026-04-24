@@ -1,34 +1,91 @@
 .bdsa-vulnerability
-  .navbar-inverse
-    border-radius: 0
-    margin-bottom: 0
+  min-height: 100vh
+  background-color: #f9fafb
+  transition: background-color 0.2s, color 0.2s
+  display: flex
+  flex-direction: column
 
-  .logo
-    height: 60px
-    padding: 5px 15px
-    max-width: 14em
-    min-width: 5em
-    background: linear-gradient(48deg, rgba(39, 96, 143, 1) -50%, rgba(91, 43, 130, 1) 65%)
-    float: left
-
-    img
-      width: 140px
-      height: 30px
-
-  .btn-dark
+  html.dark &
+    background-color: #1D0631
     color: #fff
-    background-color: #343a40
-    border-color: #343a40
 
-  .search
-    float: right
-    width: 20rem
-    padding: 12px 8px
+  // Modern Header Styles
+  .modern-header
+    background: linear-gradient(to right, #000000, #1D0631, #5A2A82)
+    width: 100%
+    position: sticky
+    top: 0
+    z-index: 1000
+    overflow: hidden
 
-  .separator-div
+  .modern-header-gradient
+    display: none
+
+  .modern-header-content
+    max-width: 1280px
+    margin: 0 auto
+    padding: 0 32px
     display: flex
-    color: #fff
-    padding-left: 26px
+    align-items: center
+    justify-content: space-between
+    height: 60px
+
+    @media (max-width: 540px)
+      padding: 0 16px
+
+  .logo-link
+    display: flex
+    align-items: center
+    gap: 8px
+    text-decoration: none
+    transition: opacity 0.15s
+    height: 60px
+
+    &:hover
+      opacity: 0.8
+
+  .logo-img
+    height: 30px
+    width: auto
+    object-fit: contain
+    flex-shrink: 0
+
+  .logo-text
+    font-size: 18px
+    font-weight: bold
+    color: white
+    line-height: 1.2
+    white-space: nowrap
+
+  .theme-toggle
+    padding: 8px 12px
+    background: transparent
+    border: none
+    border-radius: 8px
+    cursor: pointer
+    transition: background-color 0.15s
+    flex-shrink: 0
+    display: flex
+    align-items: center
+    justify-content: center
+    height: 40px
+
+    &:hover
+      background-color: rgba(255, 255, 255, 0.1)
+
+    .fa
+      font-size: 18px
+      color: white
+
+  .theme-icon-light,
+  .theme-icon-dark
+    display: none
+
+  html.dark & .theme-icon-light
+    display: inline-block
+
+  html.light & .theme-icon-dark
+    display: inline-block
 
   header
     background-color: #f6f6f6
@@ -106,31 +163,331 @@
      margin-bottom: 5px
     dd
      margin-left: 20px
-  .search-result
-    height: 100%
-    border: 1px solid #f7f7f7
-    border-radius: 50%
-    height: 35rem
-    width: 35rem
-    background: #fafafa
-    text-align: center
-    padding: 6em 2em
-    box-shadow: 0 0 2px 0
-
-  .landing
-    height: 100%
-    border: 1px solid #f7f7f7
-    width: 75rem
-    text-align: center
-    padding: 5em 3em
-    box-shadow: 0 0 2px 0
-
-    p
-      font-size: medium
-  .search-container
+  // Landing Page Styles
+  .bdsa-landing-page
     display: flex
+    flex-direction: column
+    align-items: center
     justify-content: center
-    margin: 5em 0
+    flex: 1
+    padding: 16px 96px
+
+    @media (max-width: 768px)
+      padding: 16px
+
+  .bdsa-hero
+    width: 100%
+    max-width: 672px
+    margin: 0 auto
+
+  .bdsa-branding
+    display: flex
+    flex-direction: column
+    align-items: center
+    margin-bottom: 40px
+    user-select: none
+
+  .cyrc-logo-link
+    display: block
+    margin-bottom: 20px
+    border-radius: 12px
+    transition: opacity 0.15s
+
+    &:hover
+      opacity: 0.8
+
+  .cyrc-logo
+    width: 96px
+    height: 96px
+    object-fit: contain
+    filter: drop-shadow(0 0 20px rgba(90, 42, 130, 0.4))
+
+  .bdsa-title
+    font-size: 40px
+    line-height: 1
+    letter-spacing: -0.025em
+    margin-bottom: 4px
+    text-align: center
+
+    @media (min-width: 640px)
+      font-size: 48px
+
+  .bdsa-title-brand
+    color: #5A2A82
+    font-weight: 900
+
+    html.dark &
+      color: #c084fc
+
+  .bdsa-title-text
+    font-weight: 360
+    color: #6b7280
+
+    html.dark &
+      color: #d1d5db
+
+  .bdsa-subtitle
+    color: #9ca3af
+    font-size: 14px
+    margin-top: 8px
+    letter-spacing: 0.05em
+    text-align: center
+
+    html.dark &
+      color: #6b7280
+
+  // Search Bar Styles
+  .bdsa-search-container
+    width: 100%
+    margin-top: 40px
+
+  .bdsa-search-bar
+    display: flex
+    align-items: center
+    background-color: white
+    border: 1px solid #e5e7eb
+    border-radius: 9999px
+    padding: 14px 20px
+    gap: 12px
+    transition: all 0.2s
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08)
+
+    &:focus-within
+      border-color: #5A2A82
+      box-shadow: 0 0 0 3px rgba(90, 42, 130, 0.15), 0 4px 24px rgba(0, 0, 0, 0.12)
+
+    &:hover:not(:focus-within)
+      border-color: #d1d5db
+
+    html.dark &
+      background-color: #2D1548
+      border-color: #2a2a2a
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.4)
+
+      &:focus-within
+        border-color: #c084fc
+        box-shadow: 0 0 0 3px rgba(192, 132, 252, 0.25), 0 4px 24px rgba(192, 132, 252, 0.2)
+
+      &:hover:not(:focus-within)
+        border-color: #3a3a3a
+
+  .bdsa-search-icon
+    width: 20px
+    height: 20px
+    color: #9ca3af
+    flex-shrink: 0
+
+    html.dark &
+      color: #6b7280
+
+  .bdsa-search-input
+    flex: 1
+    background: transparent
+    border: none
+    outline: none
+    font-size: 16px
+    color: #111827
+
+    &::placeholder
+      color: #9ca3af
+
+    html.dark &
+      color: white
+
+      &::placeholder
+        color: #6b7280
+
+  .bdsa-search-clear
+    color: #9ca3af
+    background: none
+    border: none
+    cursor: pointer
+    font-size: 24px
+    line-height: 1
+    padding: 0
+    flex-shrink: 0
+    transition: color 0.15s
+
+    &:hover
+      color: #6b7280
+
+    html.dark &
+      color: #6b7280
+
+      &:hover
+        color: #9ca3af
+
+  .bdsa-search-divider
+    width: 1px
+    height: 20px
+    background-color: #e5e7eb
+    flex-shrink: 0
+
+    html.dark &
+      background-color: #2a2a2a
+
+  .bdsa-search-button
+    flex-shrink: 0
+    background-color: #5A2A82
+    color: white
+    border-radius: 9999px
+    padding: 6px 20px
+    font-size: 14px
+    font-weight: 500
+    border: none
+    cursor: pointer
+    transition: background-color 0.15s
+
+    &:hover
+      background-color: #6d35a0
+
+  // Summary Cards
+  .bdsa-summary-cards
+    width: 100%
+    margin-top: 32px
+    display: grid
+    grid-template-columns: 1fr
+    gap: 16px
+
+    @media (min-width: 640px)
+      grid-template-columns: repeat(3, 1fr)
+
+  .bdsa-card
+    background-color: white
+    border: 1px solid #e5e7eb
+    border-radius: 16px
+    padding: 20px
+    text-align: left
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05)
+
+    html.dark &
+      background-color: rgba(45, 21, 72, 0.7)
+      border-color: rgba(90, 42, 130, 0.2)
+
+  .bdsa-card-icon
+    width: 36px
+    height: 36px
+    border-radius: 12px
+    display: flex
+    align-items: center
+    justify-content: center
+    margin-bottom: 12px
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1)
+
+    .fa
+      font-size: 20px
+      color: white
+
+  .bdsa-icon-purple
+    background-color: #7C3AED
+
+  .bdsa-icon-blue
+    background-color: #0EA5E9
+
+  .bdsa-icon-green
+    background-color: #10B981
+
+  .bdsa-card-title
+    color: #111827
+    font-size: 14px
+    font-weight: 600
+    margin-bottom: 4px
+
+    html.dark &
+      color: #f3f4f6
+
+  .bdsa-card-desc
+    color: #6b7280
+    font-size: 12px
+    line-height: 1.5
+
+    html.dark &
+      color: #9ca3af
+
+  // Learn More Section
+  .bdsa-learn-more-section
+    width: 100%
+    margin-top: 20px
+    display: flex
+    flex-direction: column
+    align-items: center
+
+  .bdsa-learn-more-toggle
+    display: flex
+    align-items: center
+    gap: 8px
+    padding: 10px 20px
+    border-radius: 9999px
+    border: 1px solid #d1d5db
+    background-color: white
+    color: #374151
+    font-size: 14px
+    font-weight: 500
+    cursor: pointer
+    transition: border-color 0.15s
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05)
+
+    &:hover
+      border-color: #5A2A82
+
+    html.dark &
+      border-color: rgba(90, 42, 130, 0.6)
+      background-color: #2D1548
+      color: #e5e7eb
+
+      &:hover
+        border-color: #c084fc
+
+  .bdsa-learn-icon
+    font-size: 16px
+    color: #5A2A82
+
+    html.dark &
+      color: #c084fc
+
+  .bdsa-chevron-down,
+  .bdsa-chevron-up
+    font-size: 16px
+
+  .bdsa-learn-more-content
+    margin-top: 24px
+    width: 100%
+
+  .bdsa-details-list
+    list-style: none
+    padding: 0
+    margin: 0
+    display: flex
+    flex-direction: column
+    gap: 16px
+
+  .bdsa-detail-item
+    display: flex
+    align-items: flex-start
+    gap: 12px
+
+  .bdsa-detail-icon
+    font-size: 16px
+    color: #5A2A82
+    flex-shrink: 0
+    margin-top: 2px
+
+    html.dark &
+      color: #c084fc
+
+  .bdsa-detail-text
+    color: #6b7280
+    font-size: 14px
+
+    html.dark &
+      color: #9ca3af
+
+  .bdsa-detail-heading
+    color: #111827
+    font-weight: 500
+
+    html.dark &
+      color: #e5e7eb
   .cybersecurity-logo
     text-align: center
     a:first-child
@@ -181,14 +538,25 @@
     .modal-content
       margin-top: 30%
 
-  footer .footer-bottom
-    color: #b3b4b3
-    margin-top: 10px
+  footer
+    margin-top: auto
+    border-top: 1px solid #e5e7eb
+    padding: 32px 16px
     text-align: center
-    width: 100%
+    background-color: white
 
-    a
+    html.dark &
+      background-color: #1D0631
+      border-top-color: rgba(255, 255, 255, 0.1)
+
+    .footer-bottom
       color: #b3b4b3
+      margin: 0
+      text-align: center
+      width: 100%
+
+      a
+        color: #b3b4b3
 
   #cve-cvss3, #cvss3
     background: asset-url("charts/watermark_340.png") no-repeat center
