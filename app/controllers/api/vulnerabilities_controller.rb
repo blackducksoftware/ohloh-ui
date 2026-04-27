@@ -13,13 +13,11 @@ class Api::VulnerabilitiesController < ApplicationController
   end
 
   def show
-    url = ENV['BDSA_VULNERABILITY_API'].gsub('BDSA_ID', params[:id].upcase)
-    code, @response = Api.get_response(url)
-    return render 'no_data' if code != '200' || @response['publishedDate'].to_datetime > 30.days.ago.to_datetime
+    return render 'no_data' unless fetch_bdsa_data
 
     fetch_cwe
     @cve = fetch_cve
-    set_seo_metadata
+    set_seo_metadata if cookies[:bdsa_cookie_disclaimer]
   end
 
   def raise_not_found!
@@ -27,6 +25,12 @@ class Api::VulnerabilitiesController < ApplicationController
   end
 
   private
+
+  def fetch_bdsa_data
+    url = ENV['BDSA_VULNERABILITY_API'].gsub('BDSA_ID', params[:id].upcase)
+    code, @response = Api.get_response(url)
+    code == '200' && @response['publishedDate'].to_datetime <= 30.days.ago.to_datetime
+  end
 
   def fetch_cwe
     cwe_urls = @response['_meta']['links'].select { |link| link['rel'] == 'cwe' }
@@ -63,7 +67,7 @@ class Api::VulnerabilitiesController < ApplicationController
                     "#{params[:id].upcase} - #{@response['title']} #{suffix}"
                   end
     @meta_description = generate_meta_description(cve_id)
-    @canonical_url = vulnerabilities_bdsa_url(params[:id].upcase)
+    @canonical_url = "#{bdsa_vulnerabilities_url}/#{params[:id].upcase}"
     @cve_id = cve_id
   end
 

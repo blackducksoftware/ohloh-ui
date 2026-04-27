@@ -77,7 +77,8 @@ class BdsaSchemaService
 
   def keywords(cve_id)
     base_keywords = t('vulnerabilities.bdsa.show.schema.keywords')
-    ([@params[:id].upcase, cve_id] + base_keywords + [@response['cvss3']['severity']]).compact.join(', ')
+    severity = @response&.dig('cvss3', 'severity')
+    ([@params[:id].upcase, cve_id] + base_keywords + [severity]).compact.join(', ')
   end
 
   def about_schema(cve_id)
