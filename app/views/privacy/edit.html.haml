@@ -7,7 +7,7 @@
 %h2= t('.settings_privacy_html', href: link_to(t('.settings'), settings_account_path(@account)))
 .row
   .col-md-6
-    .well.well-lg
+    .oh-card
       = form_for(@account, url: account_privacy_account_path) do |f|
         %fieldset
           %legend.margin_bottom_0= t('.manage_email')

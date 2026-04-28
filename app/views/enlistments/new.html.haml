@@ -9,7 +9,7 @@
 = project_analysis_timestamp(@project)
 
 .col-md-8.col-md-offset-2
-  .well.enlistment
+  .oh-card.enlistment
     = form_for CodeLocation.new, url: project_enlistments_url, html: { method: 'post' } do |f|
       = render partial: 'fields', locals: { f: f }
 .clearfix

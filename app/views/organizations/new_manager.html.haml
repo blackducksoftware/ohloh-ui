@@ -9,7 +9,7 @@
 .clearfix
 
 .row.padding_one_top
-  .well.col-md-8.col-md-offset-2
+  .oh-card.col-md-8.col-md-offset-2
     = form_for @manage, url: new_manager_organization_path(@organization), class: 'nomargin' do |_|
       - unless @manage.errors.empty?
         - errors = @manage.errors.full_messages

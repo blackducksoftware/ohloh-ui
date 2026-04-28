@@ -10,7 +10,7 @@
 
 .clear
 .col-md-8
-  .well
+  .oh-card
     = form_for(@manage, url: parent_manager_path(@parent, @manage), html: { method: :put }) do |form|
       = render partial: 'form', locals: { form: form }
 

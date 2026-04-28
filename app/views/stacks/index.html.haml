@@ -15,7 +15,7 @@
 .row
   .col-md-9
     - @stacks.each do |stack|
-      .well.piano{ id: "stack_#{stack.id}" }
+      .oh-card.piano{ id: "stack_#{stack.id}" }
         - if stack.account == current_user
           = icon_button(stack_path(stack), text: t('.remove'), size: 'mini', type: 'danger',
             icon: 'trash', data: { confirm: t('.delete_confirm', name: stack.title) },
@@ -36,10 +36,10 @@
         %p= t('.no_stack')
       &nbsp;
   .col-md-3
-    .well
+    .oh-card
       .inset.stack_definition
         %h5.soft= t('.what_is_a_stack')
         - lamp_link = link_to('LAMP', 'http://wikipedia.org/wiki/LAMP_(software_bundle)')
         %p!= t('.stack_explanation', link: lamp_link)
         %p= t('.max_stacks_desc')
-= will_paginate @stacks
+= render 'shared/modern_pagination', collection: @stacks

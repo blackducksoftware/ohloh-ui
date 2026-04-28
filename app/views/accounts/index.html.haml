@@ -15,4 +15,4 @@
 
   = render partial: 'account', collection: @people.map(&:account)
 
-  = will_paginate @people
+  = render 'shared/modern_pagination', collection: @people

@@ -6,7 +6,7 @@
 .clearfix
 
 .col-md-9.col-md-offset-1
-  .well
+  .oh-card
     -# form_for(@review, url: project_review_path(@project, @review)) do |f|
     = form_for([@project, @review]) do |f|
       = render partial: 'fields', locals: { f: f }

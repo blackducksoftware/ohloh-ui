@@ -24,4 +24,4 @@
   - if @projects.any?
     = render partial: 'projects/project_index', collection: @projects,
              locals: { compare: true, show_active_committers: true }
-    = will_paginate @projects
+    = render 'shared/modern_pagination', collection: @projects

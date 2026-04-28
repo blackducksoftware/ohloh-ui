@@ -11,7 +11,7 @@
   = project_analysis_timestamp(@project)
 
 .col-md-10.col-md-offset-1
-  .well
+  .oh-card
     %p.commit_id
       = t('.commit_id')
       = @commit.nice_id
@@ -110,7 +110,7 @@
                   - else
                     = render 'commits/code_added_removed', summary: summary, klass: ''
 
-= will_paginate @diffs
+= render 'shared/modern_pagination', collection: @diffs
 
 .clearfix
 - if @diffs.blank?

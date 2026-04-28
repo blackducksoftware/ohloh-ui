@@ -178,6 +178,8 @@ en:
       you: "(You)"
       see_all: "See All %{num} Affiliated Contributors"
     settings:
+      title: 'Settings'
+      configure_desc: 'Configure every aspect of the %{name} organization on Open Hub.'
       basics: Organization Basics
       name_description_and_url: Name, description and Open Hub URL for Organization.
       users_who_manage: Users who manage the organization settings and oversee the organization on Open Hub.

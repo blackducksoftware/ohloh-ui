@@ -60,9 +60,9 @@
               = render 'sample_stacks', stack: @stack
           - else
             %p= t('.empty_stack_msg')
-    = will_paginate @stack_entries
+    = render 'shared/modern_pagination', collection: @stack_entries
   .col-md-3
-    .well
+    .oh-card
       .inset.stack_definition
         %h5.soft= t('.what_is_a_stack')
         - lamp_link = link_to('LAMP', 'http://wikipedia.org/wiki/LAMP_(software_bundle)')

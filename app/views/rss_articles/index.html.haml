@@ -34,4 +34,4 @@
 - if @project
   %p= link_to(t('.edit'), project_rss_subscriptions_path(@project), class: "#{needs_login} btn btn-info")
 
-= will_paginate @rss_articles
+= render 'shared/modern_pagination', collection: @rss_articles

@@ -16,7 +16,7 @@
     .mezzo.padding_one_top
       - @positions.each do |position|
         = render 'commits_by_individual_projects', position: position
-      = will_paginate @positions
+      = render 'shared/modern_pagination', collection: @positions
   - else
     %p= t('.no_contributions_to_display')
 

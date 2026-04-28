@@ -7,7 +7,7 @@
 .row
   .col-md-12
     %div{ style: 'padding: 0 15px;' }
-      .well
+      .oh-card
         = form_for @project, as: :project, url: projects_path, html: { class: 'styled new_project' } do |f|
           %fieldset
             %legend= t('.create_a_new_project')

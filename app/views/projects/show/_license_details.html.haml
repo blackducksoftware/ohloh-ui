@@ -2,7 +2,7 @@
   %h5.license_title= link_to h(license.name), license_url(license.to_param)
   .row
     .col-md-4#permitted
-      .well.right_border
+      .oh-card.right_border
         %h5 Permitted
         - permissions = license.permitted_license_permissions
         - permissions.each do |p|
@@ -10,7 +10,7 @@
             %span{ 'data-tipso' => p.description }= p.name
             %i.fa.float_right{ 'aria-hidden' => 'true', class: p.icon, 'data-tipso' => p.name }
     .col-md-4#forbidden
-      .well.right_border
+      .oh-card.right_border
         %h5 Forbidden
         - permissions = license.forbidden_license_permissions
         - permissions.each do |p|
@@ -18,7 +18,7 @@
             %span{ 'data-tipso' => p.description }= p.name
             %i.fa.float_right{ 'aria-hidden' => 'true', class: p.icon, 'data-tipso' => p.name }
     .col-md-4#required
-      .well
+      .oh-card
         %h5 Required
         - permissions = license.required_license_permissions
         - permissions.each do |p|

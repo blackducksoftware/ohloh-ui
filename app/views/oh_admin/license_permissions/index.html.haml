@@ -24,9 +24,9 @@
                 %td= license_permission.name
                 %td= license_permission.status
                 %td= license_permission.updated_at.strftime('%b %d, %Y')
-      = will_paginate @license_permissions
+      = render 'shared/modern_pagination', collection: @license_permissions
     .sidebar.col-xs-5.col-sm-6.col-lg-2
-      .well
+      .oh-card
         .panel.panel-default
           .panel-heading.strong Filter
         = form_tag(oh_admin_license_permissions_path, method: 'get') do

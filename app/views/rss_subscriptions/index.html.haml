@@ -39,7 +39,7 @@
                         class: 'btn btn-danger btn-lg pull-right'
             - else
               = disabled_button bootstrap_icon('icon-trash', t('.remove')), class: 'btn btn-danger pull-right'
-  = will_paginate @rss_subscriptions
+  = render 'shared/modern_pagination', collection: @rss_subscriptions
   - if @rss_subscriptions.empty? && params[:query].present?
     = render partial: 'shared/alert', locals: { message: t('.no_match') }
 

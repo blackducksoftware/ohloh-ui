@@ -10,7 +10,7 @@
 %h2! #{settings_link} : #{account_api_keys_link} : #{@api_key.new_record? ? t(:new) : t(:edit)}
 
 = form_for [@account, @api_key] do |f|
-  .col-md-11.center-block.well.margin_left_20.padding_right_0
+  .col-md-11.center-block.oh-card.margin_left_20.padding_right_0
     %fieldset
       - @api_key.oauth_application || @api_key.build_oauth_application
       = f.fields_for :oauth_application do |ff|

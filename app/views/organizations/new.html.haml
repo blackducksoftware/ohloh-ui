@@ -5,7 +5,7 @@
 .clearfix
 
 .row
-  .well.col-md-10.col-md-offset-1
+  .oh-card.col-md-10.col-md-offset-1
     = form_for @organization, url: organizations_path, class: 'center-block' do |f|
       = render partial: 'fields', locals: { f: f }
 

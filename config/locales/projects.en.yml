@@ -69,6 +69,7 @@ en:
     settings:
       page_title: 'Settings Page'
       title: 'Settings'
+      configure_desc: 'Configure every aspect of the %{name} project on Open Hub.'
       project_basis: 'Project Basics'
       project_basis_desc: 'Project name, description, and Open Hub URL for the project.'
       code_location: 'Code Locations'

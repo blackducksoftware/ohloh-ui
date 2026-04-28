@@ -12,7 +12,7 @@
 
 .row
   .col-md-10.col-md-offset-1
-    .well
+    .oh-card
       - path = @parent.is_a?(Project) ? project_logos_path(@parent) : organization_logos_path(@parent)
       = form_for @logo, url: path, html: { multipart: true } do |f|
         = render partial: 'fields', locals: { f: f }

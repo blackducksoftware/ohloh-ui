@@ -21,7 +21,7 @@
   .links.center-block
     - Link::CATEGORIES.each do |category_name, category_id|
       - links = @links.collect { |l| l if l.link_category_id == category_id }.compact
-      .well
+      .oh-card
         %h3.strong.pull-left.margin_bottom_15.margin_top_0
           = category_name
         .clear_both
