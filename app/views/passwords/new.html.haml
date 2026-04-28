@@ -1,0 +1,38 @@
+- content_for(:html_title) { t('passwords.title') }
+- page_context[:suppress_flash] = true
+
+.signup-page
+  / ── Left Panel ──────────────────────────────────────────
+  = render 'layouts/partials/auth_left_panel',
+           hero_lines: [t('passwords.new.hero_title')],
+           hero_accent: t('passwords.new.hero_accent'),
+           tagline: t('passwords.new.tagline')
+
+  / ── Right Panel ─────────────────────────────────────────
+  .signup-right-panel
+    = render partial: 'layouts/partials/alert'
+    .signup-form-card
+      .signup-form-header
+        %h2.signup-form-title= t('passwords.new.form_title')
+        %p.signup-form-subtitle= t('passwords.new.form_subtitle')
+
+      = form_for :password, url: passwords_path do |form|
+        .signup-field-group
+          = form.label :email, class: 'signup-field-label', for: 'password_email' do
+            = t('passwords.new.email_label')
+            %span.pwd-required *
+          .signup-field-input-wrapper
+            %i.fa.fa-envelope-o.signup-field-icon
+            = form.email_field :email, class: 'signup-field-input', placeholder: t('passwords.new.email_placeholder')
+
+        .signup-field-actions
+          = form.submit t('passwords.new.submit'), class: 'signup-submit-btn'
+
+      .pwd-reset-back
+        = link_to new_session_path, class: 'signin-helper-link signin-helper-link--primary' do
+          %i.fa.fa-arrow-left
+          = t('passwords.new.back_to_sign_in')
+
+      .signup-terms-note
+        = t('passwords.new.need_help')
+        = link_to t('passwords.new.contact_support'), 'mailto:info@openhub.net', class: 'signup-terms-link'

@@ -835,8 +835,161 @@ header
   z-index: 1000
 
 
+// ── Flash alert — full design ──────────────────────────────────────────────────
+#flash-msg
+  max-width: 1024px
+  margin-left: auto
+  margin-right: auto
+  padding: 0 16px 16px
+
+  @media (min-width: 640px)
+    padding: 0 24px 16px
+
 #flash-msg .alert
-  border-radius: 0
+  border-radius: 12px !important
+  padding: 0 !important
+  display: block !important
+  overflow: hidden
+  background: #ffffff !important
+  border: 1px solid transparent
+
+  .alert-accent-strip
+    height: 4px
+    width: 100%
+
+  .alert-inner
+    display: flex
+    align-items: flex-start
+    padding: 14px 16px
+    gap: 12px
+
+  .close
+    margin-left: auto
+    align-self: flex-start
+    flex-shrink: 0
+    position: static !important
+    top: auto !important
+    right: auto !important
+    color: #9ca3af !important
+    opacity: 1 !important
+    font-size: 14px !important
+    line-height: 1 !important
+    background: none !important
+    border: none !important
+    padding: 0 !important
+    cursor: pointer
+    transition: color 0.15s
+
+    &:hover
+      color: #374151 !important
+
+    html.dark &
+      color: rgba(255, 255, 255, 0.4) !important
+
+    html.dark &:hover
+      color: rgba(255, 255, 255, 0.7) !important
+
+  .flash-alert-icon
+    flex-shrink: 0
+    width: 32px
+    height: 32px
+    border-radius: 10px
+    display: flex
+    align-items: center
+    justify-content: center
+    margin-top: 2px
+    font-size: 15px
+
+  .flash-alert-content
+    flex: 1
+    min-width: 0
+    font-size: 13px
+    font-weight: 500
+    line-height: 1.5
+
+#flash-msg .alert-danger
+  border-color: rgba(239, 68, 68, 0.4)
+  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.15)
+
+  html.dark &
+    background: #2D1548 !important
+    border-color: rgba(239, 68, 68, 0.4)
+    box-shadow: 0 2px 12px rgba(239, 68, 68, 0.25)
+
+  .alert-accent-strip
+    background: linear-gradient(to right, #ef4444, #e11d48)
+
+  .flash-alert-icon
+    background: #fee2e2
+    color: #dc2626
+
+    html.dark &
+      background: rgba(239, 68, 68, 0.15)
+      color: #f87171
+
+  .flash-alert-content
+    color: #991b1b
+
+    html.dark &
+      color: #fca5a5
+
+#flash-msg .alert-info
+  border-color: rgba(90, 42, 130, 0.3)
+  box-shadow: 0 2px 8px rgba(90, 42, 130, 0.1)
+
+  html.dark &
+    background: #2D1548 !important
+    border-color: rgba(90, 42, 130, 0.5)
+
+  .alert-accent-strip
+    background: linear-gradient(to right, #5A2A82, #6366f1)
+
+  .flash-alert-icon
+    background: rgba(90, 42, 130, 0.1)
+    color: #5A2A82
+
+    html.dark &
+      background: rgba(90, 42, 130, 0.25)
+      color: #e9d5ff
+
+  .flash-alert-content
+    color: #3d1c5a
+
+    html.dark &
+      color: #e9d5ff
+
+#flash-msg .alert-success
+  border-color: rgba(16, 185, 129, 0.35)
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.12)
+
+  html.dark &
+    background: #2D1548 !important
+    border-color: rgba(16, 185, 129, 0.35)
+
+  .alert-accent-strip
+    background: linear-gradient(to right, #10b981, #0d9488)
+
+  .flash-alert-icon
+    background: #d1fae5
+    color: #065f46
+
+    html.dark &
+      background: rgba(16, 185, 129, 0.15)
+      color: #6ee7b7
+
+  .flash-alert-content
+    color: #065f46
+
+    html.dark &
+      color: #6ee7b7
+
+// Constrain to form card width on auth pages
+.signup-right-panel
+  #flash-msg
+    max-width: 440px
+    margin: 0 0 16px
+    padding: 0
+
 
 #page-contents
   margin-left: 5px

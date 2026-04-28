@@ -1,76 +1,618 @@
-@media(min-width: 320px) and (max-width: 480px)
-  #welcome-message-container
-    padding: 0px !important
-    margin-top: 1rem !important
-    display: contents
-    h2
-     font-size: 18px !important
-     font-weight: 500 !important
-  #profile-description-1
-    margin-top: -40px
-  #sign-up-git
-    margin-left: -30px
-    margin-bottom: 15px
-  #sign-up-email
-    margin-right: 170px
-    margin-bottom: 10px
-  #sign-up-fields
-    display: contents
-  #sign-up-options
-    margin-top: -12px
-.well .fa-exclamation-triangle, .oh-card .fa-exclamation-triangle
-  color: red
+// ── Signup page full layout ────────────────────────────────────────────────────
+.signup-page
+  display: flex
+  flex-direction: column
+  min-height: calc(100vh - 72px)
+  background: #ffffff
 
-.well .fa-smile-o, .oh-card .fa-smile-o
-  color: green
+  @media (min-width: 1024px)
+    flex-direction: row
 
-#sign-up-options
-  @include sign_buttons
-  .row-first
-    height: 100px
+// ── Left panel ─────────────────────────────────────────────────────────────────
+.signup-left-panel
+  position: relative
+  overflow: hidden
+  background: linear-gradient(135deg, #0D0019 0%, #1D0631 50%, #5A2A82 100%)
+  display: flex
+  flex-direction: column
+  justify-content: space-between
+  padding: 32px 24px
+  min-height: 280px
 
+  @media (min-width: 1024px)
+    width: 46%
+    flex-shrink: 0
+    padding: 48px
+    min-height: calc(100vh - 72px)
+
+  @media (min-width: 1280px)
+    padding: 64px
+
+.signup-orb
+  position: absolute
+  border-radius: 50%
+  pointer-events: none
+
+.signup-orb--top
+  top: -96px
+  right: -96px
+  width: 320px
+  height: 320px
+  background: rgba(255, 185, 26, 0.1)
+  filter: blur(48px)
+
+.signup-orb--bottom
+  bottom: -128px
+  left: -80px
+  width: 384px
+  height: 384px
+  background: rgba(90, 42, 130, 0.4)
+  filter: blur(48px)
+
+.signup-orb--mid
+  top: 33%
+  right: 0
+  width: 256px
+  height: 256px
+  background: rgba(107, 33, 168, 0.2)
+  filter: blur(40px)
+
+.signup-left-content
+  position: relative
+  z-index: 1
+
+.signup-badge
+  display: inline-flex
+  align-items: center
+  gap: 8px
+  padding: 6px 12px
+  background: rgba(255, 255, 255, 0.1)
+  backdrop-filter: blur(4px)
+  border: 1px solid rgba(255, 255, 255, 0.1)
+  border-radius: 999px
+  color: rgba(255, 255, 255, 0.8)
+  font-size: 12px
+  margin-bottom: 20px
+
+.signup-badge__dot
+  width: 6px
+  height: 6px
+  background: #ffb91a
+  border-radius: 50%
+  flex-shrink: 0
+
+.signup-headline
+  font-size: 28px
+  font-weight: 700
+  color: #ffffff
+  line-height: 1.2
+  margin: 0 0 16px
+  letter-spacing: -0.02em
+
+  @media (min-width: 1024px)
+    font-size: 36px
+
+  @media (min-width: 1280px)
+    font-size: 44px
+
+.signup-headline__accent
+  color: #ffb91a
+
+.signup-tagline
+  color: rgba(255, 255, 255, 0.7)
+  font-size: 14px
+  line-height: 1.7
+  max-width: 340px
+  margin: 0
+
+  @media (min-width: 1024px)
+    font-size: 16px
+
+// ── Benefits list ──────────────────────────────────────────────────────────────
+.signup-benefits
+  position: relative
+  z-index: 1
+  display: none
+  flex-direction: column
+  gap: 16px
+  margin-top: 32px
+
+  @media (min-width: 1024px)
+    display: flex
+
+.signup-benefit
+  display: flex
+  align-items: center
+  gap: 16px
+
+.signup-benefit__icon
+  width: 36px
+  height: 36px
+  border-radius: 12px
+  display: flex
+  align-items: center
+  justify-content: center
+  flex-shrink: 0
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2)
+  color: #ffffff
+  font-size: 16px
+
+.signup-benefit__icon--amber
+  background: linear-gradient(135deg, #f59e0b, #f97316)
+
+.signup-benefit__icon--purple
+  background: linear-gradient(135deg, #5A2A82, #8b5cf6)
+
+.signup-benefit__icon--green
+  background: linear-gradient(135deg, #10b981, #0d9488)
+
+.signup-benefit__icon--blue
+  background: linear-gradient(135deg, #3b82f6, #6366f1)
+
+.signup-benefit__text
+  flex: 1
+
+.signup-benefit__title
+  color: #ffffff
+  font-size: 13px
+  font-weight: 600
+  margin: 0 0 2px
+  line-height: 1.3
+
+.signup-benefit__desc
+  color: rgba(255, 255, 255, 0.55)
+  font-size: 11px
+  margin: 0
+  line-height: 1.5
+
+// ── Left footer disclaimer ─────────────────────────────────────────────────────
+.signup-left-footer
+  position: relative
+  z-index: 1
+  display: none
+  margin-top: 40px
+  padding-top: 32px
+  border-top: 1px solid rgba(255, 255, 255, 0.1)
+
+  @media (min-width: 1024px)
+    display: block
+
+.signup-disclaimer
+  color: rgba(255, 255, 255, 0.45)
+  font-size: 11px
+  line-height: 1.7
+  margin: 0
+
+// ── Right panel ────────────────────────────────────────────────────────────────
+// Constrain #flash-msg to form card width inside auth right panels
+.signup-right-panel
+  #flash-msg
+    width: 100%
+    max-width: 440px
+    margin: 0 0 16px
+    padding: 0
+
+.signup-right-panel
+  flex: 1
+  display: flex
+  flex-direction: column
+  align-items: center
+  justify-content: center
+  padding: 32px 16px
+  background: #f9fafb
+
+  html.dark &
+    background: #1D0631
+
+  @media (min-width: 640px)
+    padding: 48px 24px
+
+// ── Form card ──────────────────────────────────────────────────────────────────
+.signup-form-card
+  width: 100%
+  max-width: 440px
+  background: #ffffff
+  border-radius: 20px
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08)
+  border: 1px solid #f3f4f6
+  padding: 28px 24px
+
+  html.dark &
+    background: #2D1548
+    border-color: rgba(90, 42, 130, 0.4)
+    box-shadow: 0 4px 32px rgba(0, 0, 0, 0.5)
+
+  @media (min-width: 640px)
+    padding: 36px 36px
+
+// ── GitHub button ──────────────────────────────────────────────────────────────
+.btn-github
+  display: flex
+  align-items: center
+  justify-content: center
+  gap: 10px
+  width: 100%
+  padding: 14px 20px
+  background: #24292e
+  color: #ffffff !important
+  border-radius: 12px
+  font-size: 14px
+  font-weight: 600
+  text-decoration: none !important
+  border: 1px solid transparent
+  transition: background 0.15s, box-shadow 0.15s
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15)
+  margin-bottom: 8px
+
+  &:hover
+    background: #1a1f24
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2)
+    color: #ffffff !important
+    text-decoration: none !important
+
+  html.dark &
+    background: #0D0019
+    border-color: rgba(255, 255, 255, 0.1)
+
+  html.dark &:hover
+    background: #000000
+
+  .fa
+    font-size: 18px
+
+.signup-github-note
+  font-size: 11px
+  color: #9ca3af
+  text-align: center
+  margin: 0 0 20px
+  line-height: 1.5
+
+  html.dark &
+    color: #6b7280
+
+// ── Divider ────────────────────────────────────────────────────────────────────
+.signup-divider
+  display: flex
+  align-items: center
+  gap: 12px
+  margin-bottom: 24px
+
+.signup-divider__line
+  flex: 1
+  height: 1px
+  background: #e5e7eb
+
+  html.dark &
+    background: rgba(255, 255, 255, 0.1)
+
+.signup-divider__text
+  font-size: 11px
+  color: #9ca3af
+  font-weight: 500
+  text-transform: uppercase
+  letter-spacing: 0.05em
+  white-space: nowrap
+
+  html.dark &
+    color: #6b7280
+
+// ── Form header ────────────────────────────────────────────────────────────────
+.signup-form-header
+  margin-bottom: 24px
+
+.signup-form-title
+  font-size: 22px !important
+  font-weight: 800 !important
+  color: #111827 !important
+  margin: 0 0 6px !important
+  letter-spacing: -0.02em
+
+  html.dark &
+    color: #ffffff !important
+
+.signup-form-subtitle
+  font-size: 13px
+  color: #6b7280
+  margin: 0
+
+  html.dark &
+    color: #9ca3af
+
+.signup-signin-link
+  color: #5A2A82
+  font-weight: 600
+  text-decoration: none
+  transition: color 0.15s
+
+  &:hover
+    text-decoration: underline
+    color: #5A2A82
+
+  html.dark &
+    color: #ffb91a
+
+  html.dark &:hover
+    color: #ffb91a
+
+// ── Email toggle button ────────────────────────────────────────────────────────
+.btn-email-signup
+  display: flex
+  align-items: center
+  justify-content: center
+  gap: 10px
+  width: 100%
+  padding: 14px 20px
+  background: #f9fafb
+  color: #1f2937 !important
+  border-radius: 12px
+  font-size: 14px
+  font-weight: 600
+  text-decoration: none !important
+  border: 1px solid #e5e7eb
+  transition: background 0.15s, border-color 0.15s
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05)
+  margin-bottom: 20px
+
+  &:hover
+    background: #f3f4f6
+    border-color: rgba(90, 42, 130, 0.4)
+    text-decoration: none !important
+
+  html.dark &
+    background: #1D0631
+    color: #ffffff !important
+    border-color: rgba(90, 42, 130, 0.6)
+
+  html.dark &:hover
+    background: #180529
+
+  .fa
+    color: #5A2A82
+    font-size: 16px
+
+    html.dark &
+      color: #ffb91a
+
+// ── Form fields — scoped under .signup-form-card for specificity over Bootstrap ─
 #sign-up-fields
   display: none
 
-#welcome-message-container
-  padding: 0px !important
-  margin-top: 1rem !important
-#profile-description-2
-  max-width: 400px
-  position: relative
-#profile-description-2 .text-2
-  position: relative; 
-  display: block;
-#profile-description-2 .show-more-2
-  color: #1779dd;
-  position: relative; 
-  font-size: 10px; 
-  text-align: left; 
-  cursor: pointer;
-#profile-description-2 .show-more-2:hover 
-  color: #1779dd;
-#profile-description-2 .show-more-height-2
-  height: 35px; 
-  overflow: hidden; 
-#profile-description-1
-  max-width: 400px; 
-  position: relative;
-#profile-description-1 .text-1
-  position: relative;  
-  display: block;
-#profile-description-1 .show-more-1
-  color: #1779dd;
-  position: relative; 
-  font-size: 10px; 
-  text-align: left; 
-  cursor: pointer;
-#profile-description-1 .show-more-1:hover
-  color: #1779dd;
-#profile-description-1 .show-more-height-1
-  height: 68px; 
-  overflow: hidden; 
+.signup-form-card
+  fieldset
+    border: none !important
+    padding: 0 !important
+    margin: 0 !important
 
+  legend
+    display: none !important
 
+  // Field group
+  .signup-field-group
+    margin-bottom: 18px
 
+  // Label
+  .signup-field-label
+    display: block
+    font-size: 13px
+    font-weight: 600
+    color: #374151
+    margin-bottom: 6px
+    line-height: 1.4
 
+    html.dark &
+      color: #d1d5db
 
+  // Icon wrapper — position: relative so icon sits inside
+  .signup-field-input-wrapper
+    position: relative
+    display: block
+
+    // field_with_errors adds a wrapper div on validation failure
+    .field_with_errors
+      display: block
+
+      .signup-field-input
+        border-color: #ef4444
+        background: #fff5f5
+
+        html.dark &
+          background: rgba(239, 68, 68, 0.1)
+
+  // Left icon — vertically centered, non-interactive
+  .signup-field-icon
+    position: absolute
+    left: 14px
+    top: 50%
+    transform: translateY(-50%)
+    font-size: 14px
+    color: #9ca3af
+    pointer-events: none
+    z-index: 2
+
+    html.dark &
+      color: #6b7280
+
+  // Inputs — scoped to #account_form (ID = specificity 100) beats Bootstrap's .form-control (010)
+  // Also keep !important on visual-critical properties as belt-and-suspenders
+  input.signup-field-input
+    display: block !important
+    width: 100% !important
+    padding: 12px 16px 12px 42px !important
+    border: 1px solid #e5e7eb !important
+    border-radius: 12px !important
+    font-size: 14px !important
+    font-weight: 400 !important
+    background: #f9fafb !important
+    color: #111827 !important
+    line-height: 1.5 !important
+    height: auto !important
+    box-shadow: none !important
+    box-sizing: border-box !important
+    -webkit-appearance: none !important
+    appearance: none !important
+    outline: none !important
+    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s
+
+    &::placeholder
+      color: #9ca3af !important
+      font-weight: 400 !important
+
+    &:focus,
+    &:focus-visible
+      border-color: #5A2A82 !important
+      box-shadow: 0 0 0 2px rgba(90, 42, 130, 0.25) !important
+      background: #ffffff !important
+      outline: none !important
+
+    html.dark &
+      background: #1D0631 !important
+      border-color: rgba(90, 42, 130, 0.5) !important
+      color: #ffffff !important
+
+      &::placeholder
+        color: #4b5563 !important
+
+      &:focus,
+      &:focus-visible
+        border-color: #ffb91a !important
+        box-shadow: 0 0 0 2px rgba(255, 185, 26, 0.25) !important
+        background: #180529 !important
+
+  // Error text
+  .signup-field-group
+    .error, span.error
+      display: block
+      font-size: 11px
+      color: #ef4444
+      margin: 5px 0 0
+
+  // Hint text
+  .signup-field-hint
+    font-size: 11px
+    color: #9ca3af
+    margin: 5px 0 0
+    line-height: 1.5
+
+    html.dark &
+      color: #6b7280
+
+  // Submit button row
+  .signup-field-actions
+    margin-top: 4px
+    margin-bottom: 20px
+
+  // Submit button
+  input.signup-submit-btn
+    display: block !important
+    width: 100% !important
+    padding: 13px 20px !important
+    background: linear-gradient(135deg, #5A2A82 0%, #7B3FB5 100%) !important
+    color: #ffffff !important
+    border: none !important
+    border-radius: 12px !important
+    font-size: 14px !important
+    font-weight: 700 !important
+    cursor: pointer !important
+    text-align: center !important
+    letter-spacing: 0.02em
+    -webkit-appearance: none !important
+    appearance: none !important
+    box-shadow: 0 2px 8px rgba(90, 42, 130, 0.3) !important
+    transition: background 0.15s, box-shadow 0.15s
+
+    &:hover,
+    &:focus
+      background: linear-gradient(135deg, #4a1f6e 0%, #6B35A0 100%) !important
+      box-shadow: 0 4px 16px rgba(90, 42, 130, 0.45) !important
+      color: #ffffff !important
+      outline: none !important
+
+// ── Please Note card ───────────────────────────────────────────────────────────
+.signup-note-card
+  border: 1px solid rgba(251, 191, 36, 0.4)
+  background: #fffbeb
+  border-radius: 12px
+  padding: 14px 16px
+  margin-bottom: 16px
+
+  html.dark &
+    background: rgba(120, 53, 15, 0.15)
+    border-color: rgba(251, 191, 36, 0.3)
+
+.signup-note-card__inner
+  display: flex
+  align-items: flex-start
+  gap: 10px
+
+.signup-note-card__icon
+  color: #d97706
+  font-size: 14px
+  margin-top: 2px
+  flex-shrink: 0
+
+  html.dark &
+    color: #fbbf24
+
+.signup-note-card__body
+  flex: 1
+
+.signup-note-card__title
+  font-size: 12px
+  font-weight: 600
+  color: #92400e
+  margin: 0 0 4px
+
+  html.dark &
+    color: #fcd34d
+
+.signup-note-card__text
+  font-size: 11px
+  color: #78350f
+  margin: 0
+  line-height: 1.6
+
+  html.dark &
+    color: rgba(252, 211, 77, 0.8)
+
+  a
+    color: #92400e
+    text-decoration: underline
+
+    html.dark &
+      color: #fcd34d
+
+// ── Terms note ─────────────────────────────────────────────────────────────────
+.signup-terms-note
+  font-size: 11px
+  color: #9ca3af
+  text-align: center
+  line-height: 1.6
+  margin: 0
+
+  html.dark &
+    color: #6b7280
+
+.signup-terms-link
+  color: #9ca3af
+  text-decoration: underline
+  transition: color 0.15s
+
+  &:hover
+    color: #5A2A82
+
+  html.dark &:hover
+    color: #ffb91a
+
+// ── Flash / invite ─────────────────────────────────────────────────────────────
+.signup-flash,
+.signup-invite-msg
+  font-size: 13px
+  color: #374151
+  margin-bottom: 12px
+  padding: 10px 14px
+  background: #f3f4f6
+  border-radius: 8px
+
+  html.dark &
+    background: rgba(255, 255, 255, 0.05)
+    color: #d1d5db

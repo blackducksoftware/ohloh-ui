@@ -50,7 +50,7 @@ class LinksControllerTest < ActionController::TestCase
 
     get :index, params: { project_id: project.vanity_url }
 
-    assert_select '.alert', text: '× You can view, but not change this data. Only managers may change this data.'
+    assert_select '.alert', text: 'You can view, but not change this data. Only managers may change this data.'
   end
 
   it 'index must display sanitized links' do

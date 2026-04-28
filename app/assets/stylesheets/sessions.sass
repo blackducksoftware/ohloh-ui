@@ -1,34 +1,153 @@
-#sign-in-options
-  @include sign_buttons
+// ── Signin page reuses .signup-page layout from accounts/new.sass ─────────────
+// Only signin-specific overrides are here
+
+// ── Orb positions (signin mirrors signup: top-left + bottom-right) ─────────────
+.signin-orb--top-left
+  top: -96px
+  left: -96px
+  width: 320px
+  height: 320px
+  background: rgba(90, 42, 130, 0.4)
+  filter: blur(48px)
+
+.signin-orb--bottom-right
+  bottom: -128px
+  right: -80px
+  width: 384px
+  height: 384px
+  background: rgba(255, 185, 26, 0.1)
+  filter: blur(48px)
+
+.signin-orb--center
+  top: 50%
+  left: 50%
+  transform: translate(-50%, -50%)
+  width: 500px
+  height: 500px
+  background: rgba(88, 28, 135, 0.2)
+  filter: blur(48px)
+
+// ── Badge pulsing dot ──────────────────────────────────────────────────────────
+.signin-badge__dot--pulse
+  animation: pulse-dot 2s ease-in-out infinite
+
+@keyframes pulse-dot
+  0%, 100%
+    opacity: 1
+  50%
+    opacity: 0.4
+
+// ── Feature icon variants (signin-specific colors) ────────────────────────────
+.signin-feature--purple
+  background: linear-gradient(135deg, #8b5cf6, #4f46e5) !important
+
+.signin-feature--amber
+  background: linear-gradient(135deg, #ffb91a, #f97316) !important
+
+.signin-feature--green
+  background: linear-gradient(135deg, #10b981, #0d9488) !important
+
+.signin-feature--pink
+  background: linear-gradient(135deg, #ec4899, #e11d48) !important
+
+// ── Testimonial at bottom of left panel ───────────────────────────────────────
+.signin-testimonial
+  font-size: 11px
+  color: rgba(255, 255, 255, 0.5)
+  font-style: italic
+  line-height: 1.7
+  margin: 0 0 8px
+
+.signin-testimonial-attr
+  font-size: 11px
+  color: rgba(255, 255, 255, 0.4)
+  margin: 0
+
+// ── Remember me checkbox ──────────────────────────────────────────────────────
+.signin-remember-me
+  margin-bottom: 16px
+
+.signin-checkbox-label
+  display: flex
+  align-items: center
+  gap: 8px
+  font-size: 13px
+  color: #374151
+  cursor: pointer
+  margin: 0
+  font-weight: 500
+
+  html.dark &
+    color: #d1d5db
+
+  input[type="checkbox"]
+    width: 16px
+    height: 16px
+    border: 1px solid #d1d5db
+    border-radius: 4px
+    accent-color: #5A2A82
+    cursor: pointer
+    flex-shrink: 0
+
+    html.dark &
+      accent-color: #ffb91a
+      border-color: rgba(90, 42, 130, 0.5)
+
+// ── Helper links (Forgot Password / Resend Activation) ────────────────────────
+.signin-helper-links
+  display: flex
+  flex-direction: column
+  align-items: center
+  gap: 8px
+  margin-top: 20px
+  margin-bottom: 20px
+
+.signin-helper-link
+  font-size: 13px
+  color: #6b7280
+  text-decoration: none
+  transition: color 0.15s
+
+  &:hover
+    color: #5A2A82
+    text-decoration: underline
+
+  html.dark &
+    color: #9ca3af
+
+  html.dark &:hover
+    color: #ffb91a
+
+.signin-helper-link--primary
+  color: #5A2A82
+  font-weight: 600
+
+  &:hover
+    color: #4a1f6e
+
+  html.dark &
+    color: #ffb91a
+
+  html.dark &:hover
+    color: #fbbf24
+
+// ── Signin form inputs (same scope pattern as signup) ────────────────────────
+.signup-form-card
+  #signin_form
+    fieldset
+      border: none !important
+      padding: 0 !important
+      margin: 0 !important
+
+    legend
+      display: none !important
+
+// Hide form fields until "Sign in with Email" is clicked — JS calls .show()
 #sign-in-fields
-  .github-oauth
-    padding: 2% 0 !important
-    font-size: 21px
-    margin-bottom: 2%
   display: none
 
-@media only all and (min-width: 320px) and (max-width: 340px)
-  #sign-in-options
-    width: auto
-  #sign-in-fields
-    .github-oauth
-      padding: 2% 0 !important
-      font-size: 12px
-      margin-bottom: 2%
-
-@media only all and (min-width: 341px) and (max-width: 480px)
-  #sign-in-options
-    width: auto
-  #sign-in-fields
-    .github-oauth
-      font-size: 10px
-
-@media (min-width: 768px) and (max-width: 1024px)
-  .btn-block
-    width: auto !important
-  #sign-in-fields
-    .github-oauth
-      padding: 2% 0 !important
-      font-size: 13px
-      margin-bottom: 2%
-
+@media only all and (min-width: 320px) and (max-width: 480px)
+  .signin-orb--top-left,
+  .signin-orb--bottom-right,
+  .signin-orb--center
+    display: none

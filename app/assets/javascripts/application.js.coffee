@@ -31,6 +31,10 @@
 #= require slick.min
 
 
+$(document).on 'click', '.flash-close', (e) ->
+  e.preventDefault()
+  $('#flash-msg').fadeOut 200, -> $('#flash-msg').remove()
+
 $(document).on 'page:change', ->
   StackShow.init()
   Expander.init()
