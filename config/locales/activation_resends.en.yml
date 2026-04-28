@@ -2,6 +2,9 @@ en:
   activation_resends:
     new:
       heading: 'Activation Resend'
+      hero_title: 'Activate your'
+      hero_accent: 'account'
+      tagline: 'Resend your activation email to complete your Open Hub registration.'
     fields:
       enter_email: 'Enter the email you signed up with.'
       submit: 'Resend my activation email'

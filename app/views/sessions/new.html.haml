@@ -1,40 +1,56 @@
 - content_for(:html_title) { t '.page_title' }
+- page_context[:suppress_flash] = true
 
-.sessions-new{ style: 'margin-top: 1em;' }
-  .col-xs-6.col-sm-7
-    %h2= t('.page_header')
-    %p= t('.account_help1')
-    .oh-card#sign-in-text
-      %ul 
-        %li= t('.account_help2')
-        %li= t('.account_help3')
-        %li= t('.account_help4')
-    %p
-      %a.btn.btn-success{ href: new_account_path(invite: params[:invite]) }= t('.register_today')
-      != t('.register_today_cta')
-  .col-xs-6.col-sm-5
-    - if request.get?
-      #sign-in-options
-        = link_to 'javascript:', { class: 'btn btn-primary btn-block github-oauth' }.merge(github_data_attributes) do
-          = t('.sign_in_with')
-          %br
-            %i.fa.fa-github
-              Github
+.signup-page
+  / ── Left Panel ──────────────────────────────────────────
+  = render 'layouts/partials/auth_left_panel',
+           hero_lines: [t('.hero_welcome'), t('.hero_back_to')],
+           hero_accent: t('.hero_accent'),
+           tagline: t('.tagline')
 
-        = link_to 'javascript:', id: 'sign-in-email', class: 'btn btn-primary btn-block' do
-          = t('.sign_in_with')
-          %br
-            %i.fa.fa-envelope-o
-              Email & Password
-
-    %div{ id: ('sign-in-fields' if request.get?) }
-      = link_to 'javascript:', { class: 'btn btn-primary btn-block github-oauth' }.merge(github_data_attributes) do
-        = t('.sign_in_with')
+  / ── Right Panel ─────────────────────────────────────────
+  .signup-right-panel
+    = render partial: 'layouts/partials/alert'
+    .signup-form-card
+      / GitHub button
+      %button{ { type: 'button', class: 'btn-github github-oauth' }.merge(github_data_attributes) }
         %i.fa.fa-github
-          Github
-      = render 'sessions/sign_in'
-    .inset
-      %p
-        %a.command{ href: new_password_path }= t('.forgot_password')
-        %br
-        %a.command{ href: new_activation_resend_path }= t('.resend_activation_email')
+        = t('.sign_in_with')
+        GitHub
+
+      / Divider
+      .signup-divider
+        %span.signup-divider__line
+        %span.signup-divider__text= t('.divider')
+        %span.signup-divider__line
+
+      / Heading
+      .signup-form-header
+        %h2.signup-form-title= t('.form_title')
+        %p.signup-form-subtitle
+          = t('.no_account')
+          = link_to t('.join_now'), new_account_path, class: 'signup-signin-link'
+
+      / Email toggle button (shown on GET request)
+      - if request.get?
+        #sign-in-options
+          %button#sign-in-email.btn-email-signup{ type: 'button' }
+            %i.fa.fa-envelope-o
+            = t('.sign_in_with_email')
+
+      / Form fields — hidden on GET, shown after email click or on POST errors
+      %div{ id: ('sign-in-fields' if request.get?) }
+        = render 'sessions/sign_in'
+
+      / Helper links
+      .signin-helper-links
+        = link_to t('.forgot_password'), new_password_path, class: 'signin-helper-link signin-helper-link--primary'
+        = link_to t('.resend_activation_email'), new_activation_resend_path, class: 'signin-helper-link'
+
+      / Terms
+      .signup-terms-note
+        = t('.terms_preamble')
+        = link_to t('.terms_of_service'), 'https://community.blackduck.com/s/article/Black-Duck-Open-Hub-Terms-of-Use', class: 'signup-terms-link', target: '_blank', rel: 'noopener noreferrer'
+        and
+        = link_to t('.privacy_policy'), 'https://www.blackduck.com/privacy.html', class: 'signup-terms-link', target: '_blank', rel: 'noopener noreferrer'
+        \.

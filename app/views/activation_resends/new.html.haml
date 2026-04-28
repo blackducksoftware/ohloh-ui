@@ -1,5 +1,28 @@
 - content_for(:html_title) { 'Activation Resend' }
+- page_context[:suppress_flash] = true
 
-%h3= t('.heading')
+.signup-page
+  / ── Left Panel ──────────────────────────────────────────
+  = render 'layouts/partials/auth_left_panel',
+           hero_lines: [t('activation_resends.new.hero_title')],
+           hero_accent: t('activation_resends.new.hero_accent'),
+           tagline: t('activation_resends.new.tagline')
 
-= render 'fields'
+  / ── Right Panel ─────────────────────────────────────────
+  .signup-right-panel
+    = render partial: 'layouts/partials/alert'
+    .signup-form-card
+      .signup-form-header
+        %h2.signup-form-title Activation Resend
+        %p.signup-form-subtitle= t('activation_resends.fields.enter_email')
+
+      = render 'fields'
+
+      .pwd-reset-back
+        = link_to new_session_path, class: 'signin-helper-link signin-helper-link--primary' do
+          %i.fa.fa-arrow-left
+          Back to Sign In
+
+      .signup-terms-note
+        Need help?
+        = link_to 'Contact Support', 'mailto:info@openhub.net', class: 'signup-terms-link'
