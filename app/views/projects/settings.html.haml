@@ -3,91 +3,94 @@
   page_context[:select_top_menu_nav] = 'select_projects'
   page_context[:select_footer_nav] = :settings
 
-%div
-  %h2.pull-left= t('.title')
-  = render 'shared/analysis_timestamp', analysis: @project.best_analysis, project: @project
+.settings-page-header
+  .settings-page-header-row
+    .settings-page-icon
+      %i.fa.fa-cog
+    %h2.settings-page-h2= t('.title')
+  %p.settings-page-description= t('.configure_desc', name: @project.name)
 
-.clearfix.margin_bottom_20 &nbsp;
+.settings-grid
+  %a.settings_module{ href: edit_project_path(@project) }
+    .settings-icon-wrapper.gradient-purple
+      %i.fa.fa-cog
+    .settings-text
+      %h4= t('.project_basis')
+      %span.settings_description= t('.project_basis_desc')
 
-.row.margin_bottom_30
-  .col-md-4.settings_module
-    %h4.nomargin
-      = link_to t('.project_basis'), edit_project_path(@project)
-    %span.pull-left
-      %a.module_icon.basics{ href: edit_project_path(@project) }
-    %span.pull-left.settings_description= t('.project_basis_desc')
-  .col-md-4.settings_module
-    %h4.nomargin
-      = link_to t('.code_location'), project_enlistments_path(@project)
-    %span.pull-left
-      %a.module_icon.code_locations{ href: project_enlistments_path(@project) }
-    %span.pull-left.settings_description= t('.code_location_desc')
+  %a.settings_module{ href: project_enlistments_path(@project) }
+    .settings-icon-wrapper.gradient-blue
+      %i.fa.fa-map-marker
+    .settings-text
+      %h4= t('.code_location')
+      %span.settings_description= t('.code_location_desc')
 
-  .col-md-4.settings_module
-    %h4.nomargin
-      = link_to t('.aliases'), project_aliases_path(@project)
-    %span.pull-left
-      %a.module_icon.aliases{ href: project_aliases_path(@project) }
-    %span.pull-left.settings_description= t('.aliases_desc')
+  %a.settings_module{ href: project_aliases_path(@project) }
+    .settings-icon-wrapper.gradient-teal
+      %i.fa.fa-users
+    .settings-text
+      %h4= t('.aliases')
+      %span.settings_description= t('.aliases_desc')
 
-.row.margin_bottom_35
-  .col-md-4.settings_module
-    %h4.nomargin
-      = link_to t('.logo'), new_project_logos_path(@project)
-    %span.pull-left
-      %a.module_icon.logo{ href: new_project_logos_path(@project) }
-    %span.pull-left.settings_description= t('.logo_desc')
+  %a.settings_module{ href: new_project_logos_path(@project) }
+    .settings-icon-wrapper.gradient-pink
+      %i.fa.fa-picture-o
+    .settings-text
+      %h4= t('.logo')
+      %span.settings_description= t('.logo_desc')
 
-  .col-md-4.settings_module
-    %h4.nomargin
-      = link_to t('.links'), project_links_path(@project)
-    %span.pull-left
-      %a.module_icon.links{ href: project_links_path(@project) }
-    %span.pull-left.settings_description= t('.links_desc')
-  .col-md-4.settings_module
-    %h4.nomargin
-      = link_to t('.permissions'), permissions_project_path(@project)
-    %span.pull-left
-      %a.module_icon.permissions{ href: permissions_project_path(@project) }
-    %span.pull-left.settings_description= t('.permissions_desc')
+  %a.settings_module{ href: project_links_path(@project) }
+    .settings-icon-wrapper.gradient-orange
+      %i.fa.fa-link
+    .settings-text
+      %h4= t('.links')
+      %span.settings_description= t('.links_desc')
 
-.row.margin_bottom_50
-  .col-md-4.settings_module
-    %h4.nomargin
-      = link_to t('.licenses'), project_licenses_path(@project)
-    %span.pull-left
-      %a.module_icon.licenses{ href: project_licenses_path(@project) }
-    %span.pull-left.settings_description= t('.licenses_desc')
-  .col-md-4.settings_module
-    %h4.nomargin
-      = link_to t('.tags'), project_tags_path(@project)
-    %span.pull-left
-      %a.module_icon.tags{ href: project_tags_path(@project) }
-    %span.pull-left.settings_description= t('.tags_desc')
-  .col-md-4.settings_module
-    %h4.nomargin
-      = link_to t('.edits'), project_edits_path(@project)
-    %span.pull-left
-      %a.module_icon.history{ href: project_edits_path(@project) }
-    %span.pull-left.settings_description= t('.edits_desc')
+  %a.settings_module{ href: permissions_project_path(@project) }
+    .settings-icon-wrapper.gradient-red
+      %i.fa.fa-lock
+    .settings-text
+      %h4= t('.permissions')
+      %span.settings_description= t('.permissions_desc')
 
-.row.margin_bottom_30
-  .col-md-4.settings_module
-    %h4.nomargin
-      = link_to t('.managers'), project_managers_path(@project)
-    %span.pull-left
-      %a.module_icon.managers{ href: project_managers_path(@project) }
-    %span.pull-left.settings_description= t('.managers_desc')
+  %a.settings_module{ href: project_licenses_path(@project) }
+    .settings-icon-wrapper.gradient-green
+      %i.fa.fa-shield
+    .settings-text
+      %h4= t('.licenses')
+      %span.settings_description= t('.licenses_desc')
 
-  .col-md-4.settings_module
-    %h4.nomargin
-      = link_to t('.news'), project_rss_subscriptions_path(@project)
-    %span.pull-left
-      %a.module_icon.news{ href: project_rss_subscriptions_path(@project) }
-    %span.pull-left.settings_description= t('.news_desc')
-  .col-md-4.settings_module
-    %h4.nomargin
-      = link_to t('.badges'), project_project_badges_path(@project)
-    %span.pull-left
-      %a.module_icon.badges{ href: project_project_badges_path(@project) }
-    %span.pull-left.settings_description= t('.badges_desc')
+  %a.settings_module{ href: project_tags_path(@project) }
+    .settings-icon-wrapper.gradient-yellow
+      %i.fa.fa-tag
+    .settings-text
+      %h4= t('.tags')
+      %span.settings_description= t('.tags_desc')
+
+  %a.settings_module{ href: project_edits_path(@project) }
+    .settings-icon-wrapper.gradient-violet
+      %i.fa.fa-history
+    .settings-text
+      %h4= t('.edits')
+      %span.settings_description= t('.edits_desc')
+
+  %a.settings_module{ href: project_managers_path(@project) }
+    .settings-icon-wrapper.gradient-sky
+      %i.fa.fa-user-md
+    .settings-text
+      %h4= t('.managers')
+      %span.settings_description= t('.managers_desc')
+
+  %a.settings_module{ href: project_rss_subscriptions_path(@project) }
+    .settings-icon-wrapper.gradient-indigo
+      %i.fa.fa-rss
+    .settings-text
+      %h4= t('.news')
+      %span.settings_description= t('.news_desc')
+
+  %a.settings_module{ href: project_project_badges_path(@project) }
+    .settings-icon-wrapper.gradient-amber
+      %i.fa.fa-trophy
+    .settings-text
+      %h4= t('.badges')
+      %span.settings_description= t('.badges_desc')

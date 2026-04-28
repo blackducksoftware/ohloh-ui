@@ -31,6 +31,6 @@
         %td
           %abbr.date{ title: commit.time.to_s }
             = t('time_ago', time: time_ago_in_words(commit.time))
-= will_paginate @commits if @commits.respond_to?(:total_pages)
+= render 'shared/modern_pagination', collection: @commits
 
 = render partial: 'shared/alert', locals: { message: t('.no_data') } if @commits.blank?

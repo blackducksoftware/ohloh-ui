@@ -19,7 +19,7 @@
           = button_to t('.delete'), topic_post_path(@topic, @post), method: :delete,
           data: { confirm: t('.delete_confirmation') }, class: 'btn btn-danger btn-mini'
 
-.well.col-md-12
+.oh-card.col-md-12
   .col-md-9
     = form_for([@topic, @post], url: topic_post_path(@topic, @post), html: { method: 'put' }) do |f|
       = render partial: 'fields', locals: { f: f }

@@ -22,14 +22,14 @@
       .clear &nbsp;
       .padding_one_top
         - if !@parent.active_managers.include?(current_user)
-          .well
+          .oh-card
             %h5.nomargin= t('.help_header_first1')
             %p= t('.help_body_first1')
             %br
             %h5.nomargin= t('.help_header_first2')
             %p= t('.help_body_first1')
         - elsif !@parent.manages.pending.blank?
-          .well
+          .oh-card
             %h4.nomargin= t('.help_header_existing', target: html_escape(@parent.name))
             %p.soft= t('.help_body_existing1')
             %p.soft= t('.help_body_existing2')

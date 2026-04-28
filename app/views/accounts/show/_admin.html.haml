@@ -1,4 +1,4 @@
-.well.hidden#admin_actions_opened
+.oh-card.hidden#admin_actions_opened
   %h6= t('.email')
   %p= link_to h(@account.email), "mailto:#{@account.email}"
   %h6= t('.activity')
@@ -37,5 +37,5 @@
     = render partial: 'accounts/show/mark_as_bot'
     = link_to t('.panel.close'), 'javascript:void(0);', id: 'close_admin_panel'
 
-.well#admin_actions_closed
+.oh-card#admin_actions_closed
   = link_to t('.panel.open'), 'javascript:void(0);', id: 'open_admin_panel'
