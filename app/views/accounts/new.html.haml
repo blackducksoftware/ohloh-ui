@@ -1,44 +1,101 @@
 - content_for(:html_title) { t('.html_title') }
+- page_context[:suppress_flash] = true
 
-.col-xs-6.col-sm-7#welcome-message-container
-  = render 'welcome'
+.signup-page
+  / ── Left Panel ──────────────────────────────────────────
+  .signup-left-panel
+    .signup-orb.signup-orb--top
+    .signup-orb.signup-orb--bottom
+    .signup-orb.signup-orb--mid
 
-- if @account.errors.none?
-  .col-xs-12.col-sm-5#sign-up-options
-    -if only_device?
-      .col-xs-3.pull-left#sign-up-git
-        = link_to 'javascript:', { class: 'btn btn-primary github-oauth' }.merge(github_data_attributes) do
-          = t('.sign_up_with')
-          %br
-            %i.fa.fa-github
-              Github
-    -else
-      .row-first
-      = link_to 'javascript:', { class: 'btn btn-primary btn-block github-oauth' }.merge(github_data_attributes) do
-        = t('.sign_up_with')
+    .signup-left-content
+      .signup-badge
+        .signup-badge__dot
+        Free forever — no credit card required
+
+      %h1.signup-headline
+        Join the
         %br
-          %i.fa.fa-github
-            Github
+        Open Source
+        %br
+        %span.signup-headline__accent Community
 
-      %p.help-block
-        = t('.github_disclaimer')
-    -if only_device?
-      .col-xs-3.pull-right#sign-up-email
-        = link_to 'javascript:', id: 'email-sign-up', class: 'btn btn-primary' do
-          = t('.sign_up_with')
-          %br
+      %p.signup-tagline= t('accounts.join_now.description')
+
+    .signup-benefits
+      .signup-benefit
+        .signup-benefit__icon.signup-benefit__icon--amber
+          %i.fa.fa-code-fork
+        .signup-benefit__text
+          %p.signup-benefit__title Claim All Your Commits
+          %p.signup-benefit__desc= t('accounts.join_now.welcome_bullet_1')
+
+      .signup-benefit
+        .signup-benefit__icon.signup-benefit__icon--purple
+          %i.fa.fa-trophy
+        .signup-benefit__text
+          %p.signup-benefit__title Gain Recognition
+          %p.signup-benefit__desc Build a verified developer profile with achievement badges and kudos.
+
+      .signup-benefit
+        .signup-benefit__icon.signup-benefit__icon--green
+          %i.fa.fa-bar-chart
+        .signup-benefit__text
+          %p.signup-benefit__title Create Project Stacks
+          %p.signup-benefit__desc= t('accounts.join_now.welcome_bullet_3')
+
+      .signup-benefit
+        .signup-benefit__icon.signup-benefit__icon--blue
+          %i.fa.fa-check-circle
+        .signup-benefit__text
+          %p.signup-benefit__title Manage Projects
+          %p.signup-benefit__desc Track, compare, and stay updated on the projects that matter to you.
+
+    .signup-left-footer
+      %p.signup-disclaimer
+        OpenHub will only keep your GitHub email and login. Accounts created for advertising, link generation, or SEO will be disabled.
+
+  / ── Right Panel ─────────────────────────────────────────
+  .signup-right-panel
+    = render partial: 'layouts/partials/alert'
+    .signup-form-card
+      / GitHub button
+      = link_to 'javascript:', { class: 'btn-github github-oauth' }.merge(github_data_attributes) do
+        %i.fa.fa-github
+        = t('.sign_up_with')
+        GitHub
+
+      %p.signup-github-note= t('.github_disclaimer')
+
+      / Divider
+      .signup-divider
+        %span.signup-divider__line
+        %span.signup-divider__text or sign up with email
+        %span.signup-divider__line
+
+      / Heading
+      .signup-form-header
+        %h2.signup-form-title Create your account
+        %p.signup-form-subtitle
+          Already have an account?
+          = link_to t('.login_text'), new_session_path, class: 'signup-signin-link'
+
+      / Flash / invite messages
+      - if flash[:message]
+        .signup-flash= flash[:message]
+      - unless @account.invite_code.blank?
+        .signup-invite-msg= t('.invite_code_message')
+
+      / Email toggle button (hidden when form has errors)
+      - if @account.errors.none?
+        #sign-up-options
+          = link_to 'javascript:', id: 'email-sign-up', class: 'btn-email-signup' do
             %i.fa.fa-envelope-o
-              Email
-    -else
-      = link_to 'javascript:', id: 'email-sign-up', class: 'btn btn-primary btn-block' do
-        = t('.sign_up_with')
-        %br
-          %i.fa.fa-envelope-o
-            Email
+            Sign up with Email
 
-.col-xs-12.col-sm-5.no_right_padding{ id: ('sign-up-fields' if @account.errors.none?) }
-  - if flash[:message]
-    %p= flash[:message]
-  - unless @account.invite_code.blank?
-    %p= t('.invite_code_message')
-  = render 'fields'
+      / Form fields (hidden initially, shown on email click or when errors)
+      #sign-up-fields
+        = render 'fields'
+
+      / Please Note
+      = render 'join_now'

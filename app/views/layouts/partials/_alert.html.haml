@@ -1,18 +1,13 @@
 - key, klass = { error: 'alert-danger', notice: 'alert-info', success: 'alert-success', alert: 'alert-info' }.find { |k, _v| flash[k] }
 - if key
+  - icon = key == :error ? 'exclamation-circle' : (key == :success ? 'check-circle' : 'info-circle')
   #flash-msg
     .alert{ class: klass }
-      %a.close{ href: '#', 'data-dismiss' => 'alert' }= '×'
-      :ruby
-        icon = case key
-               when :error
-                 'exclamation'
-               when :notice, :alert
-                 'info'
-               when :success
-                 'ok'
-               else
-                 'warning'
-               end
-      %i{ class: "icon-small icon-#{icon}-sign" }
-      != flash[key]
+      .alert-accent-strip
+      .alert-inner
+        .flash-alert-icon
+          %i{ class: "fa fa-#{icon}" }
+        .flash-alert-content
+          != flash[key]
+        %button.close.flash-close{ type: 'button', 'aria-label' => 'Close' }
+          %i.fa.fa-times

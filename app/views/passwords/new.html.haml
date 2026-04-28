@@ -1,4 +1,4 @@
-- content_for(:html_title) { 'Activation Resend' }
+- content_for(:html_title) { t('passwords.title') }
 - page_context[:suppress_flash] = true
 
 .signup-page
@@ -14,12 +14,12 @@
         Trusted by 890,000+ developers
 
       %h1.signup-headline
-        Activate your
+        Reset your
         %br
-        %span.signup-headline__accent account
+        %span.signup-headline__accent password
 
       %p.signup-tagline
-        Resend your activation email to complete your Open Hub registration.
+        Enter your email address and we'll send you instructions to reset your password.
 
     .signup-benefits
       .signup-benefit
@@ -61,10 +61,21 @@
     = render partial: 'layouts/partials/alert'
     .signup-form-card
       .signup-form-header
-        %h2.signup-form-title Activation Resend
-        %p.signup-form-subtitle= t('activation_resends.fields.enter_email')
+        %h2.signup-form-title Password Reset
+        %p.signup-form-subtitle
+          To be emailed a link to reset your password, please enter your email address.
 
-      = render 'fields'
+      = form_for :password, url: passwords_path do |form|
+        .signup-field-group
+          %label.signup-field-label
+            Email address
+            %span.pwd-required *
+          .signup-field-input-wrapper
+            %i.fa.fa-envelope-o.signup-field-icon
+            = form.email_field :email, class: 'signup-field-input', placeholder: 'you@example.com'
+
+        .signup-field-actions
+          = form.submit 'Reset password', class: 'signup-submit-btn'
 
       .pwd-reset-back
         = link_to new_session_path, class: 'signin-helper-link signin-helper-link--primary' do

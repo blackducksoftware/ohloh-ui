@@ -1,5 +1,7 @@
 - content_for(:html_title) { t '.page_title' }
+- page_context[:suppress_flash] = true
 
+<<<<<<< HEAD
 .sessions-new{ style: 'margin-top: 1em;' }
   .col-xs-6.col-sm-7
     %h2= t('.page_header')
@@ -20,21 +22,108 @@
           %br
             %i.fa.fa-github
               Github
+=======
+.signup-page
+  / ── Left Panel ──────────────────────────────────────────
+  .signup-left-panel
+    .signup-orb.signin-orb--top-left
+    .signup-orb.signin-orb--bottom-right
+    .signup-orb.signin-orb--center
+>>>>>>> cb7312c4 (OTWO-7631 Implement figma designs for login management)
 
-        = link_to 'javascript:', id: 'sign-in-email', class: 'btn btn-primary btn-block' do
-          = t('.sign_in_with')
-          %br
-            %i.fa.fa-envelope-o
-              Email & Password
+    .signup-left-content
+      .signup-badge
+        .signup-badge__dot.signin-badge__dot--pulse
+        Trusted by 890,000+ developers
 
-    %div{ id: ('sign-in-fields' if request.get?) }
-      = link_to 'javascript:', { class: 'btn btn-primary btn-block github-oauth' }.merge(github_data_attributes) do
-        = t('.sign_in_with')
-        %i.fa.fa-github
-          Github
-      = render 'sessions/sign_in'
-    .inset
-      %p
-        %a.command{ href: new_password_path }= t('.forgot_password')
+      %h1.signup-headline
+        Welcome
         %br
-        %a.command{ href: new_activation_resend_path }= t('.resend_activation_email')
+        back to
+        %br
+        %span.signup-headline__accent Open Hub
+
+      %p.signup-tagline
+        The world's largest directory of open source projects and contributors.
+
+    .signup-benefits
+      .signup-benefit
+        .signup-benefit__icon.signin-feature--purple
+          %i.fa.fa-code-fork
+        .signup-benefit__text
+          %p.signup-benefit__title 2.5M+ Open Source Projects
+          %p.signup-benefit__desc Comprehensive data on millions of repositories worldwide.
+
+      .signup-benefit
+        .signup-benefit__icon.signin-feature--amber
+          %i.fa.fa-users
+        .signup-benefit__text
+          %p.signup-benefit__title 890K Contributors
+          %p.signup-benefit__desc Join a global community of open source developers.
+
+      .signup-benefit
+        .signup-benefit__icon.signin-feature--green
+          %i.fa.fa-shield
+        .signup-benefit__text
+          %p.signup-benefit__title Security Intelligence
+          %p.signup-benefit__desc Track risk scores and license compliance at a glance.
+
+      .signup-benefit
+        .signup-benefit__icon.signin-feature--pink
+          %i.fa.fa-bolt
+        .signup-benefit__text
+          %p.signup-benefit__title Real-time Activity
+          %p.signup-benefit__desc Live commit streams, PR activity, and release tracking.
+
+    .signup-left-footer
+      %p.signin-testimonial
+        "Open Hub helped us assess the health of hundreds of dependencies before our major release."
+      %p.signin-testimonial-attr
+        — Engineering Lead, Fortune 500
+
+  / ── Right Panel ─────────────────────────────────────────
+  .signup-right-panel
+    = render partial: 'layouts/partials/alert'
+    .signup-form-card
+      / GitHub button
+      = link_to 'javascript:', { class: 'btn-github github-oauth' }.merge(github_data_attributes) do
+        %i.fa.fa-github
+        = t('.sign_in_with')
+        GitHub
+
+      / Divider
+      .signup-divider
+        %span.signup-divider__line
+        %span.signup-divider__text or sign in with email
+        %span.signup-divider__line
+
+      / Heading
+      .signup-form-header
+        %h2.signup-form-title Sign in to your account
+        %p.signup-form-subtitle
+          Don't have an account?
+          = link_to "Join Now — it's free", new_account_path, class: 'signup-signin-link'
+
+      / Email toggle button (shown on GET request)
+      - if request.get?
+        #sign-in-options
+          = link_to 'javascript:', id: 'sign-in-email', class: 'btn-email-signup' do
+            %i.fa.fa-envelope-o
+            Sign in with Email & Password
+
+      / Form fields — hidden on GET, shown after email click or on POST errors
+      %div{ id: ('sign-in-fields' if request.get?) }
+        = render 'sessions/sign_in'
+
+      / Helper links
+      .signin-helper-links
+        = link_to t('.forgot_password'), new_password_path, class: 'signin-helper-link signin-helper-link--primary'
+        = link_to t('.resend_activation_email'), new_activation_resend_path, class: 'signin-helper-link'
+
+      / Terms
+      .signup-terms-note
+        By signing in you agree to the
+        = link_to 'Terms of Service', 'https://community.blackduck.com/s/article/Black-Duck-Open-Hub-Terms-of-Use', class: 'signup-terms-link', target: '_blank'
+        and
+        = link_to 'Privacy Policy', 'https://www.blackduck.com/privacy.html', class: 'signup-terms-link', target: '_blank'
+        \.

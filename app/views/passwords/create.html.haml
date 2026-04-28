@@ -1,5 +1,4 @@
-- content_for(:html_title) { 'Activation Resend' }
-- page_context[:suppress_flash] = true
+- content_for(:html_title) { t('passwords.title') }
 
 .signup-page
   / ── Left Panel ──────────────────────────────────────────
@@ -14,12 +13,12 @@
         Trusted by 890,000+ developers
 
       %h1.signup-headline
-        Activate your
+        Reset your
         %br
-        %span.signup-headline__accent account
+        %span.signup-headline__accent password
 
       %p.signup-tagline
-        Resend your activation email to complete your Open Hub registration.
+        Enter your email address and we'll send you instructions to reset your password.
 
     .signup-benefits
       .signup-benefit
@@ -56,15 +55,22 @@
       %p.signin-testimonial-attr
         — Engineering Lead, Fortune 500
 
-  / ── Right Panel ─────────────────────────────────────────
+  / ── Right Panel — success state ─────────────────────────
   .signup-right-panel
-    = render partial: 'layouts/partials/alert'
     .signup-form-card
-      .signup-form-header
-        %h2.signup-form-title Activation Resend
-        %p.signup-form-subtitle= t('activation_resends.fields.enter_email')
+      .pwd-reset-success
+        .pwd-reset-success__icon
+          %i.fa.fa-check
 
-      = render 'fields'
+        %h2.signup-form-title Check your email
+
+        %p.pwd-reset-success__desc= t('.success')
+
+        .pwd-reset-success__info
+          %p
+            If you don't see the email, check your spam folder or try resending the link.
+
+        = link_to 'Try another email address', new_password_path, class: 'pwd-reset-retry-link'
 
       .pwd-reset-back
         = link_to new_session_path, class: 'signin-helper-link signin-helper-link--primary' do
