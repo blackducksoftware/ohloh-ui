@@ -2,13 +2,13 @@
 = form_for(@login, as: :login, url: oh_sessions_path, html: { method: :post, id: 'signin_form' }) do |f|
   %fieldset
     .signup-field-group
-      %label.signup-field-label= t('.login_or_email')
+      = f.label(:login, t('.login_or_email'), class: 'signup-field-label')
       .signup-field-input-wrapper
         %i.fa.fa-user.signup-field-icon
         = f.text_field(:login, class: 'signup-field-input', placeholder: t('.login_or_email'))
 
     .signup-field-group
-      %label.signup-field-label= t('.password')
+      = f.label(:password, t('.password'), class: 'signup-field-label')
       .signup-field-input-wrapper
         %i.fa.fa-lock.signup-field-icon
         = f.password_field(:password, class: 'signup-field-input', placeholder: t('.password'))

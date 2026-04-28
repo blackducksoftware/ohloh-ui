@@ -3,85 +3,36 @@
 
 .signup-page
   / ── Left Panel ──────────────────────────────────────────
-  .signup-left-panel
-    .signup-orb.signin-orb--top-left
-    .signup-orb.signin-orb--bottom-right
-    .signup-orb.signin-orb--center
-
-    .signup-left-content
-      .signup-badge
-        .signup-badge__dot.signin-badge__dot--pulse
-        Trusted by 890,000+ developers
-
-      %h1.signup-headline
-        Reset your
-        %br
-        %span.signup-headline__accent password
-
-      %p.signup-tagline
-        Enter your email address and we'll send you instructions to reset your password.
-
-    .signup-benefits
-      .signup-benefit
-        .signup-benefit__icon.signin-feature--purple
-          %i.fa.fa-code-fork
-        .signup-benefit__text
-          %p.signup-benefit__title 2.5M+ Open Source Projects
-          %p.signup-benefit__desc Comprehensive data on millions of repositories worldwide.
-
-      .signup-benefit
-        .signup-benefit__icon.signin-feature--amber
-          %i.fa.fa-users
-        .signup-benefit__text
-          %p.signup-benefit__title 890K Contributors
-          %p.signup-benefit__desc Join a global community of open source developers.
-
-      .signup-benefit
-        .signup-benefit__icon.signin-feature--green
-          %i.fa.fa-shield
-        .signup-benefit__text
-          %p.signup-benefit__title Security Intelligence
-          %p.signup-benefit__desc Track risk scores and license compliance at a glance.
-
-      .signup-benefit
-        .signup-benefit__icon.signin-feature--pink
-          %i.fa.fa-bolt
-        .signup-benefit__text
-          %p.signup-benefit__title Real-time Activity
-          %p.signup-benefit__desc Live commit streams, PR activity, and release tracking.
-
-    .signup-left-footer
-      %p.signin-testimonial
-        "Open Hub helped us assess the health of hundreds of dependencies before our major release."
-      %p.signin-testimonial-attr
-        — Engineering Lead, Fortune 500
+  = render 'layouts/partials/auth_left_panel',
+           hero_lines: [t('passwords.new.hero_title')],
+           hero_accent: t('passwords.new.hero_accent'),
+           tagline: t('passwords.new.tagline')
 
   / ── Right Panel ─────────────────────────────────────────
   .signup-right-panel
     = render partial: 'layouts/partials/alert'
     .signup-form-card
       .signup-form-header
-        %h2.signup-form-title Password Reset
-        %p.signup-form-subtitle
-          To be emailed a link to reset your password, please enter your email address.
+        %h2.signup-form-title= t('passwords.new.form_title')
+        %p.signup-form-subtitle= t('passwords.new.form_subtitle')
 
       = form_for :password, url: passwords_path do |form|
         .signup-field-group
-          %label.signup-field-label
-            Email address
+          = form.label :email, class: 'signup-field-label', for: 'password_email' do
+            = t('passwords.new.email_label')
             %span.pwd-required *
           .signup-field-input-wrapper
             %i.fa.fa-envelope-o.signup-field-icon
-            = form.email_field :email, class: 'signup-field-input', placeholder: 'you@example.com'
+            = form.email_field :email, class: 'signup-field-input', placeholder: t('passwords.new.email_placeholder')
 
         .signup-field-actions
-          = form.submit 'Reset password', class: 'signup-submit-btn'
+          = form.submit t('passwords.new.submit'), class: 'signup-submit-btn'
 
       .pwd-reset-back
         = link_to new_session_path, class: 'signin-helper-link signin-helper-link--primary' do
           %i.fa.fa-arrow-left
-          Back to Sign In
+          = t('passwords.new.back_to_sign_in')
 
       .signup-terms-note
-        Need help?
-        = link_to 'Contact Support', 'mailto:info@openhub.net', class: 'signup-terms-link'
+        = t('passwords.new.need_help')
+        = link_to t('passwords.new.contact_support'), 'mailto:info@openhub.net', class: 'signup-terms-link'

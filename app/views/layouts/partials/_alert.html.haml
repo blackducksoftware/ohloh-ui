@@ -1,8 +1,8 @@
 - key, klass = { error: 'alert-danger', notice: 'alert-info', success: 'alert-success', alert: 'alert-info' }.find { |k, _v| flash[k] }
 - if key
   - icon = key == :error ? 'exclamation-circle' : (key == :success ? 'check-circle' : 'info-circle')
-  #flash-msg
-    .alert{ class: klass }
+  #flash-msg{ role: 'status', 'aria-live' => 'polite', 'aria-atomic' => 'true' }
+    .alert{ class: klass, role: 'alert' }
       .alert-accent-strip
       .alert-inner
         .flash-alert-icon

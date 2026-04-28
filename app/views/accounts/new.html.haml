@@ -60,7 +60,7 @@
     = render partial: 'layouts/partials/alert'
     .signup-form-card
       / GitHub button
-      = link_to 'javascript:', { class: 'btn-github github-oauth' }.merge(github_data_attributes) do
+      %button{ { type: 'button', class: 'btn-github github-oauth' }.merge(github_data_attributes) }
         %i.fa.fa-github
         = t('.sign_up_with')
         GitHub
@@ -89,12 +89,12 @@
       / Email toggle button (hidden when form has errors)
       - if @account.errors.none?
         #sign-up-options
-          = link_to 'javascript:', id: 'email-sign-up', class: 'btn-email-signup' do
+          %button#email-sign-up.btn-email-signup{ type: 'button' }
             %i.fa.fa-envelope-o
             Sign up with Email
 
-      / Form fields (hidden initially, shown on email click or when errors)
-      #sign-up-fields
+      / Form fields — hidden on GET (id triggers CSS display:none), visible on POST errors (no id)
+      %div{ id: (@account.errors.none? ? 'sign-up-fields' : nil) }
         = render 'fields'
 
       / Please Note

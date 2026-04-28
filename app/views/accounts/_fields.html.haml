@@ -1,7 +1,7 @@
 = form_for @account, html: { id: :account_form } do |f|
   %fieldset
     .signup-field-group
-      %label.signup-field-label= t('.login')
+      = f.label(:login, t('.login'), class: 'signup-field-label', for: 'login')
       .signup-field-input-wrapper
         %i.fa.fa-user.signup-field-icon
         = f.text_field(:login, id: :login, class: 'signup-field-input', placeholder: 'Your login name')
@@ -9,7 +9,7 @@
       %p.signup-field-hint= t('.login_help')
 
     .signup-field-group
-      %label.signup-field-label= t('email_address')
+      = f.label(:email, t('email_address'), class: 'signup-field-label', for: 'email')
       .signup-field-input-wrapper
         %i.fa.fa-envelope-o.signup-field-icon
         = f.text_field(:email, id: :email, class: 'signup-field-input', placeholder: 'you@example.com')
@@ -18,7 +18,7 @@
         = t('.email_help_1')
 
     .signup-field-group
-      %label.signup-field-label= t('password')
+      = f.label(:password, t('password'), class: 'signup-field-label', for: 'password')
       .signup-field-input-wrapper
         %i.fa.fa-lock.signup-field-icon
         = f.password_field(:password, id: :password, class: 'signup-field-input signup-field-input--password', placeholder: 'Create a password')
@@ -36,4 +36,4 @@
       = render 'shared/captcha'
 
     .signup-field-actions
-      %input.signup-submit-btn{ type: :submit, value: 'Create Account' }
+      %input.signup-submit-btn{ type: :submit, value: t('.sign_up') }

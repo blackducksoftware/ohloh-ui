@@ -2,58 +2,10 @@
 
 .signup-page
   / ── Left Panel ──────────────────────────────────────────
-  .signup-left-panel
-    .signup-orb.signin-orb--top-left
-    .signup-orb.signin-orb--bottom-right
-    .signup-orb.signin-orb--center
-
-    .signup-left-content
-      .signup-badge
-        .signup-badge__dot.signin-badge__dot--pulse
-        Trusted by 890,000+ developers
-
-      %h1.signup-headline
-        Reset your
-        %br
-        %span.signup-headline__accent password
-
-      %p.signup-tagline
-        Enter your email address and we'll send you instructions to reset your password.
-
-    .signup-benefits
-      .signup-benefit
-        .signup-benefit__icon.signin-feature--purple
-          %i.fa.fa-code-fork
-        .signup-benefit__text
-          %p.signup-benefit__title 2.5M+ Open Source Projects
-          %p.signup-benefit__desc Comprehensive data on millions of repositories worldwide.
-
-      .signup-benefit
-        .signup-benefit__icon.signin-feature--amber
-          %i.fa.fa-users
-        .signup-benefit__text
-          %p.signup-benefit__title 890K Contributors
-          %p.signup-benefit__desc Join a global community of open source developers.
-
-      .signup-benefit
-        .signup-benefit__icon.signin-feature--green
-          %i.fa.fa-shield
-        .signup-benefit__text
-          %p.signup-benefit__title Security Intelligence
-          %p.signup-benefit__desc Track risk scores and license compliance at a glance.
-
-      .signup-benefit
-        .signup-benefit__icon.signin-feature--pink
-          %i.fa.fa-bolt
-        .signup-benefit__text
-          %p.signup-benefit__title Real-time Activity
-          %p.signup-benefit__desc Live commit streams, PR activity, and release tracking.
-
-    .signup-left-footer
-      %p.signin-testimonial
-        "Open Hub helped us assess the health of hundreds of dependencies before our major release."
-      %p.signin-testimonial-attr
-        — Engineering Lead, Fortune 500
+  = render 'layouts/partials/auth_left_panel',
+           hero_lines: [t('passwords.new.hero_title')],
+           hero_accent: t('passwords.new.hero_accent'),
+           tagline: t('passwords.new.tagline')
 
   / ── Right Panel — success state ─────────────────────────
   .signup-right-panel
