@@ -52,10 +52,20 @@ button.btn:active, a.btn:active
     border-color: #d1d5db !important
     background-color: #f9fafb !important
 
-  &:focus, &:active
+  &:active
     outline: none !important
     box-shadow: none !important
     border-color: #e5e7eb !important
+
+  &:focus:not(:focus-visible)
+    outline: none !important
+    box-shadow: none !important
+
+  &:focus-visible
+    outline: 2px solid #5A2A82 !important
+    outline-offset: 2px !important
+    box-shadow: 0 0 0 3px rgba(90, 42, 130, 0.25) !important
+    border-color: #5A2A82 !important
 
   &.active
     background-color: #f3f4f6 !important

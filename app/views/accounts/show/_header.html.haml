@@ -28,7 +28,7 @@
 
             - if @account.url.present?
               .info
-                = link_to h(@account.url), target: '_blank', title: @account.url, itemprop: 'url', rel: 'nofollow' do
+                = link_to h(@account.url), target: '_blank', title: @account.url, itemprop: 'url', rel: 'nofollow noopener noreferrer' do
                   %i.icon-external-link
                   = h(truncate(@account.url, length: 60))
 

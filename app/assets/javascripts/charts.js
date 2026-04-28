@@ -194,19 +194,15 @@ var Charts = {
 
   // Update already-rendered charts when theme toggles
   updateWatermarks: function(isDark) {
-    console.log('Charts.updateWatermarks called, isDark:', isDark);
     $('.chart[data-dark-watermark]').each(function() {
       var $chart = $(this);
       var $container = $chart.find('.highcharts-container');
-      console.log('updateWatermarks: chart id=' + $chart.attr('id') + ', container found=' + $container.length);
       if (!$container.length) return;
       if (isDark) {
         var darkUrl = $chart.data('dark-watermark');
-        console.log('updateWatermarks: setting dark URL:', darkUrl);
         if (darkUrl) $container[0].style.setProperty('background-image', 'url(' + darkUrl + ')', 'important');
       } else {
         var lightUrl = $chart.data('light-watermark');
-        console.log('updateWatermarks: setting light URL:', lightUrl);
         if (lightUrl) $container[0].style.setProperty('background-image', 'url(' + lightUrl + ')', 'important');
       }
     });
