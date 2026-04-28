@@ -10,7 +10,7 @@ module PageContextHelper
     set_page_context(footer_menu_list: @account.decorate.sidebar_for(current_user),
                      select_footer_nav: :account_summary,
                      select_top_menu_nav: :select_people,
-                     page_header: 'accounts/mini_header')
+                     page_header: 'accounts/show/header')
   end
 
   def organization_context

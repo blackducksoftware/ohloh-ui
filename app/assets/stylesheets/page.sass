@@ -835,7 +835,98 @@ header
   z-index: 1000
 
 
-// ── Flash alert — full design ──────────────────────────────────────────────────
+// ─── Maintenance banner (read_only_mode) ─────────────────────────────────────
+.maintenance-banner
+  border-radius: 16px
+  border: 1px solid rgba(251, 191, 36, 0.4)
+  background: linear-gradient(to bottom right, #fffbeb, #fff7ed)
+  box-shadow: 0 2px 8px rgba(251, 191, 36, 0.15)
+  overflow: hidden
+  margin: 8px 16px 16px
+
+  html.dark &
+    background: #2D1548
+    border-color: rgba(251, 191, 36, 0.3)
+    box-shadow: 0 2px 8px rgba(251, 191, 36, 0.1)
+
+.maintenance-banner-strip
+  height: 6px
+  width: 100%
+  background: linear-gradient(to right, #f59e0b, #f97316, #d97706)
+
+.maintenance-banner-inner
+  display: flex
+  gap: 16px
+  padding: 20px 24px
+  align-items: flex-start
+
+.maintenance-banner-icon
+  flex-shrink: 0
+  width: 44px
+  height: 44px
+  border-radius: 16px
+  background: linear-gradient(to bottom right, #f59e0b, #ea580c)
+  display: flex
+  align-items: center
+  justify-content: center
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2)
+  color: #ffffff
+  font-size: 20px
+
+.maintenance-banner-content
+  flex: 1
+  min-width: 0
+
+  h3
+    font-weight: 700
+    font-size: 15px
+    color: #92400e
+    margin: 0 0 8px
+    line-height: 1.3
+
+    html.dark &
+      color: #fcd34d
+
+  p
+    font-size: 13px
+    color: rgba(120, 53, 15, 0.85)
+    margin: 0 0 6px
+    line-height: 1.6
+
+    html.dark &
+      color: rgba(253, 230, 138, 0.9)
+
+.maintenance-banner-footer
+  margin-top: 16px
+
+.maintenance-banner-link
+  display: inline-flex
+  align-items: center
+  gap: 4px
+  padding: 7px 16px
+  border-radius: 8px
+  background: rgba(255, 255, 255, 0.8)
+  border: 1px solid #fcd34d
+  color: #92400e
+  font-size: 13px
+  font-weight: 600
+  text-decoration: none
+  transition: background 0.15s, color 0.15s
+
+  &:hover
+    background: #ffffff
+    color: #92400e
+    text-decoration: none
+
+  html.dark &
+    background: rgba(29, 6, 49, 0.4)
+    border-color: rgba(251, 191, 36, 0.4)
+    color: #fcd34d
+
+  html.dark &:hover
+    background: rgba(29, 6, 49, 0.6)
+    color: #fcd34d
+
 #flash-msg
   max-width: 1024px
   margin-left: auto
@@ -856,6 +947,7 @@ header
   .alert-accent-strip
     height: 4px
     width: 100%
+    background: linear-gradient(to right, #5A2A82, #6366f1)
 
   .alert-inner
     display: flex

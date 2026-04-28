@@ -36,6 +36,10 @@ var ThemeToggle = {
     } catch (e) {
       console.log('Could not save theme preference');
     }
+
+    if (typeof Charts !== 'undefined') {
+      Charts.updateWatermarks(theme === 'dark');
+    }
   },
 
   toggleTheme: function() {

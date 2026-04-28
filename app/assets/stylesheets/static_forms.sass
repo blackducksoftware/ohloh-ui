@@ -697,3 +697,15 @@ span.add-on
   -moz-box-sizing: content-box
   -ms-box-sizing: content-box
   box-sizing: content-box
+
+// Override Bootstrap's blue focus ring/border globally
+.form-control:focus
+  border-color: #d1d5db !important
+  outline: none !important
+  box-shadow: none !important
+
+a:focus
+  outline: none !important
+
+select:focus, input[type="file"]:focus, input[type="radio"]:focus, input[type="checkbox"]:focus
+  outline: none !important
