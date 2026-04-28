@@ -22,3 +22,76 @@ en:
       less: 'less...'
       related_record: 'Related Record'
       identifier: 'Identifier'
+    bdsa:
+      index:
+        page_title: 'Black Duck Security Advisories (BDSA) | Vulnerability Database | Open Hub'
+        meta_description: 'Search Black Duck Security Advisories (BDSA) - exclusive vulnerability data from the Cybersecurity Research Center (CyRC). Get detailed security insights, CVE cross-references, and actionable remediation guidance for open source vulnerabilities.'
+        keywords: 'Black Duck Security Advisories, BDSA, vulnerability database, security vulnerability, CVE, CyRC, Cybersecurity Research Center, open source security, software composition analysis, SCA'
+        schema:
+          name: 'Black Duck Security Advisories (BDSA)'
+          alternate_names:
+            - 'BDSA'
+            - 'Black Duck Security Advisory'
+            - 'CyRC Vulnerability Database'
+          description: 'Search Black Duck Security Advisories (BDSA) - exclusive vulnerability data from the Cybersecurity Research Center (CyRC). Get detailed security insights, CVE cross-references, and actionable remediation guidance.'
+          search_action_template: '{bdsa_id}'
+          search_action_input: 'required name=bdsa_id'
+        header:
+          logo_text: 'Open Hub'
+          theme_toggle_aria: 'Toggle theme'
+        hero:
+          logo_brand: 'Black Duck'
+          logo_text: 'Security Advisories'
+          subtitle: 'Search BDSA vulnerability reports'
+        search_bar:
+          placeholder: 'Search BDSA-yyyy-nnnn'
+          button_text: 'Search'
+          aria_label: 'Search for BDSA vulnerability by ID'
+          clear_aria_label: 'Clear search'
+        summary_cards:
+          - title: 'Exclusive Intel'
+            description: 'Proprietary vulnerability data not available in public databases'
+          - title: 'CVE Cross-Refs'
+            description: 'Seamlessly linked to official CVE identifiers when available'
+          - title: 'Actionable Guidance'
+            description: 'Clear remediation steps with version-specific recommendations'
+        learn_more:
+          button_text: 'Learn More'
+          details:
+            - heading: 'Exclusive vulnerability data feed —'
+              description: 'BDSAs are a Black Duck-exclusive vulnerability data feed sourced and curated by our Cybersecurity Research Center (CyRC), offering deeper coverage than the National Vulnerability Database (NVD).'
+            - heading: 'Richer, more timely insights —'
+              description: 'BDSAs provide more timely and detailed vulnerability insights — including severity, impact, and exploitability metrics — often updated on an hourly basis, even for new zero-day vulnerabilities.'
+            - heading: 'Actionable remediation guidance —'
+              description: 'Each BDSA includes actionable remediation details such as fixed versions, patch information, exploits, and workarounds where available, saving teams valuable triage time.'
+            - heading: 'Cross-checked against component versions —'
+              description: 'The CyRC team cross-checks and validates BDSAs against affected component versions, often resulting in additional and more accurate mappings than those found in CVE records.'
+            - heading: 'Refined scope — not just mirrored CVEs —'
+              description: 'Where a BDSA has not been mapped to a component version that is mapped to a CVE, this indicates CyRC''s research has determined that version is not actually affected by the vulnerability.'
+            - heading: 'Complement to, not a replacement for, CVEs —'
+              description: 'BDSA records should not be considered separate vulnerabilities from CVE records. Instead, view them as additional research and insights that help you make better, faster decisions about open source security.'
+            - heading: 'NVD limitations addressed —'
+              description: 'The NVD does not cross-check or verify vulnerability data provided by third parties and is typically slower to update records. BDSAs fill that gap with verified, frequently reviewed data.'
+      show:
+        page_title_suffix: 'BDSA Security Advisory'
+        schema:
+          report_name: 'Security Vulnerability Report'
+          report_description: 'BDSA (Black Duck Security Advisory) - Security vulnerability report tracked by Black Duck CyRC'
+          description_prefix: 'Security vulnerability report tracked by Black Duck.'
+          description_suffix: 'For more detailed vulnerability reports and remediation guidance, purchase'
+          keywords:
+            - 'BDSA'
+            - 'security advisory'
+            - 'vulnerability'
+            - 'Black Duck SCA'
+      shared:
+        cyrc_name: 'Black Duck Cybersecurity Research Center (CyRC)'
+        cyrc_url: 'https://www.blackduck.com/resources/cybersecurity-research-center.html'
+        cyrc_title: 'Black Duck Cybersecurity Research Center (CyRC)'
+        cyrc_alt_text: 'CyRC — Cybersecurity Research Center'
+        publisher_name: 'Black Duck Software, Inc.'
+        publisher_url: 'https://www.blackduck.com'
+        sca_name: 'Black Duck Software Composition Analysis (SCA)'
+        sca_description: 'Get detailed vulnerability reports, remediation guidance, and comprehensive open source security analysis'
+        sca_url: 'https://www.blackduck.com/software-composition-analysis-tools/black-duck-sca.html'
+        security_vulnerability_report: 'Security Vulnerability Report'
