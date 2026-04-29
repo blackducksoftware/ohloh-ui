@@ -375,11 +375,40 @@ en:
   project_experiences:
     no_matching_project: No matching open source project with this name.
 
+  auth:
+    shared:
+      trusted_by: 'Trusted by 890,000+ developers'
+      testimonial: '"Open Hub helped us assess the health of hundreds of dependencies before our major release."'
+      testimonial_attr: '— Engineering Lead, Fortune 500'
+      benefits:
+        projects:
+          title: '2.5M+ Open Source Projects'
+          desc: 'Comprehensive data on millions of repositories worldwide.'
+        contributors:
+          title: '890K Contributors'
+          desc: 'Join a global community of open source developers.'
+        security:
+          title: 'Security Intelligence'
+          desc: 'Track risk scores and license compliance at a glance.'
+        activity:
+          title: 'Real-time Activity'
+          desc: 'Live commit streams, PR activity, and release tracking.'
   passwords:
     title: 'Password Reset - Open Hub'
     new:
       enter_email_address: Enter the email you signed up with.
       submit_text: Send me a password reset link
+      hero_title: 'Reset your'
+      hero_accent: 'password'
+      tagline: "Enter your email address and we'll send you instructions to reset your password."
+      form_title: 'Password Reset'
+      form_subtitle: 'To be emailed a link to reset your password, please enter your email address.'
+      email_label: 'Email address'
+      email_placeholder: 'you@example.com'
+      submit: 'Reset password'
+      back_to_sign_in: 'Back to Sign In'
+      need_help: 'Need help?'
+      contact_support: 'Contact Support'
     create:
       success: A link to reset your password was sent to your email address.
     reset:
@@ -398,7 +427,12 @@ en:
 
   session_projects:
     menu:
-      compare_projects: 'Compare Projects:'
+      compare_projects: 'Compare Projects (%{count}/3)'
+      select_project: 'Select Project'
+      lines: '%{count} lines'
+      contributors: '%{count} contributors'
+      compare_n_projects: 'Compare %{count} Projects'
+      compare_select_at_least: 'Compare (Select at least 2)'
       limit_reached: limit reached
     create:
       limit_exceeded: Project count limit exceeded

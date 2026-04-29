@@ -2,20 +2,32 @@
 - content_for(:html_title) { @query ? t('.page_title_query', query: @query) : t('.page_title') }
 - page_context[:select_top_menu_nav] = 'select_projects'
 - content_for :session_projects_banner do
-  .navbar.container#sp_menu
+  #sp_menu
     = render 'session_projects/menu'
 
-#projects_index_header
-  %h1.pull-left= t('.projects')
-  .pull-right.margin_top_20
-    = link_to t('.browse_projects'), tags_path, class: 'btn btn-light btn-mini'
-    = link_to t('.add_new_project'), new_project_path, class: 'btn btn-light btn-mini'
+#projects_index_page
+  .projects-container
+    / Header Section with Actions
+    .projects-header
+      %h1= t('.projects')
+      .header-actions
+        = link_to tags_path, class: 'btn-browse-tags' do
+          %i.fa.fa-tag
+          = t('.browse_projects')
+        = link_to new_project_path, class: 'btn-add-project' do
+          %i.fa.fa-plus
+          = t('.add_new_project')
 
-.clearfix &nbsp;
+        / Header Search with Dropdown
+        = render 'shared/search'
 
-= render partial: 'shared/search_dingus', locals: { collection: @projects, sort_context: :projects }
-.clear
+    / Search and Filter Bar
+    = render 'shared/search_dingus', collection: @projects, sort_context: :projects
 
-#projects_index_list
-  = render partial: 'project_index', collection: @projects, locals: { compare: true, show_active_committers: true }
-  = will_paginate @projects
+    / Projects List
+    #projects_index_list
+      = render partial: 'project_index', collection: @projects, locals: { compare: true, show_active_committers: true }
+
+    / Modern Pagination
+    = render 'shared/modern_pagination', collection: @projects
+    

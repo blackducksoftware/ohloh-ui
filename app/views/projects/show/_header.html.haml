@@ -1,57 +1,89 @@
-#project_masthead
-  .col-md-1.no_padding#project_icon
-    %a{ href: project_path(@project), itemprop: 'url' }
-      = @project.decorate.icon(:med)
+.project-header-gradient
+  .header-content
+    .header-main
+      .project-title-section
+        %h1{ itemprop: 'name' }
+          = link_to @project.name, project_path(@project)
 
-  .col-md-11#project_header
-    .pull-left.project_title
-      %h1.float_left{ itemprop: 'name' }
-        = link_to h(@project.name), project_path(@project), style: 'color: black', itemprop: 'url'
-      %small.pull-left.clear_both
-        != link_to bootstrap_icon('icon-cogs', t('projects.header.settings')), settings_project_path(@project)
-        - if @project.is_a_duplicate
-          - if current_user_is_admin? || (@current_account && @project.is_a_duplicate.account == @current_account)
-            |
-            != link_to bootstrap_icon('icon-flag', t('projects.header.edit_duplicate')),
-                       edit_project_duplicate_path(@project, @project.is_a_duplicate)
-        - else
-          |
-          = link_to bootstrap_icon('icon-flag', t('projects.header.duplicate')), new_project_duplicate_path(@project)
-        - if current_user_is_admin?
-          |
-          = link_to bootstrap_icon('icon-legal', t('projects.header.job')), oh_admin_project_jobs_path(@project)
-        - if current_user.present? && @project.analysis_updated_or_project_created_time < 1.week.ago
-          |
-          = link_to bootstrap_icon('icon-lock', t('projects.header.outdated')), report_outdated_project_path(@project), method: :put
-    .pull-right.no_padding#widgets
-      .pull-left
-        #add_this{ 'data-analytics-id' => ENV['ADDTHIS_ANALYTICS_ID'] }
-          %p
-            .addthis_custom_sharing.addthis
-              %script{ src: '//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-500da8c658f6dda7' }
-      .pull-right{ itemtype: 'CreativeWork', itemprop: 'interactionCount' }
-        #i_use_this_container
-          .use_count
-            = link_to number_with_delimiter(@project.user_count), users_project_path(@project)
-        - unless @project.deleted?
-          - if logged_in?
-            = render partial: 'projects/show/i_use_this', locals: { project: @project }
+        .action-buttons
+          = link_to settings_project_path(@project), class: 'action-btn action-btn-outline' do
+            %svg{ viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", 'stroke-width': "2", 'stroke-linecap': "round", 'stroke-linejoin': "round" }
+              %circle{ cx: "12", cy: "12", r: "3" }
+              %path{ d: "M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" }
+            = t('.settings')
+
+          - if @project.is_a_duplicate
+            - if current_user_is_admin? || (@current_account && @project.is_a_duplicate.account == @current_account)
+              = link_to edit_project_duplicate_path(@project, @project.is_a_duplicate), class: 'action-btn action-btn-outline' do
+                %svg{ viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", 'stroke-width': "2", 'stroke-linecap': "round", 'stroke-linejoin': "round" }
+                  %path{ d: "M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" }
+                  %polyline{ points: "14 2 14 8 20 8" }
+                  %line{ x1: "16", y1: "13", x2: "8", y2: "13" }
+                  %line{ x1: "16", y1: "17", x2: "8", y2: "17" }
+                  %polyline{ points: "10 9 9 9 8 9" }
+                = t('.edit_duplicate')
           - else
-            .btn.btn-mini.i_use_this_btn{ 'data-target' => '#LoginModal', 'data-toggle' => 'modal' }= t('.i_use_this')
-            .modal.fade#LoginModal{ 'aria-hidden' => 'true', 'aria-labelledby' => 'LoginModalLabel', :role => 'dialog' }
-              .modal-dialog.modal-sm
-                .modal-content{ style: 'width: 398px' }
-                  .modal-header
-                    %button.close{ 'aria-label' => 'Close', 'data-dismiss' => 'modal', :type => 'button' }
-                      %span{ 'aria-hidden' => 'true' } &times;
-                    %h4.modal-title#LoginModalLabel= t('.login_required')
-                  .model-body
-                    = render 'sessions/sign_in'
-      #project_header_activity_indicator
-        - project_activity_level_class(@project, :thirtyfive)
-        - project_activity_level_text(@project, :thirtyfive)
+            = link_to new_project_duplicate_path(@project), class: 'action-btn action-btn-outline' do
+              %svg{ viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", 'stroke-width': "2", 'stroke-linecap': "round", 'stroke-linejoin': "round" }
+                %path{ d: "M4 15s1-1 4-1 5 2 9 2V3s-4 0-6-2-9-1-3 1-4 1-4 1z" }
+                %line{ x1: "4", y1: "22", x2: "4", y2: "15" }
+              = t('.report_duplicate')
 
-.clearfix
-.row.mezzo
-= yield :header_title if content_for?(:header_title)
-= render partial: 'layouts/partials/alert'
+          - if current_user_is_admin?
+            = link_to oh_admin_project_jobs_path(@project), class: 'action-btn action-btn-outline' do
+              %svg{ viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", 'stroke-width': "2", 'stroke-linecap': "round", 'stroke-linejoin': "round" }
+                %rect{ x: "3", y: "7", width: "18", height: "13", rx: "2", ry: "2" }
+                %path{ d: "M16 3v4M8 3v4M3 11h18" }
+              = t('projects.header.job')
+
+          - if current_user.present? && @project.analysis_updated_or_project_created_time < 1.week.ago
+            = link_to report_outdated_project_path(@project), method: :put, class: 'action-btn action-btn-outline' do
+              %svg{ viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", 'stroke-width': "2", 'stroke-linecap': "round", 'stroke-linejoin': "round" }
+                %circle{ cx: "12", cy: "12", r: "10" }
+                %polyline{ points: "12 6 12 12 16 14" }
+              = t('projects.header.outdated')
+
+        .project-description{ itemprop: 'description' }
+          - if @project.description.present?
+            = truncate(@project.description.strip_tags, length: 200)
+          - else
+            = t('.no_description')
+
+        = project_analysis_timestamp(@project)
+
+      / Stats and button (shown below on mobile, top-right on desktop)
+      .header-top-right
+        .activity-indicator-wrapper
+          / Activity indicator will be rendered here
+          - project_activity_level_class(@project, :thirtyfive)
+          - project_activity_level_text(@project, :thirtyfive)
+
+        .stats-card
+          .stats-inner
+            / Users icon
+            %svg{ viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", 'stroke-width': "2" }
+              %path{ d: "M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" }
+              %circle{ cx: "9", cy: "7", r: "4" }
+              %path{ d: "M23 21v-2a4 4 0 0 0-3-3.87" }
+              %path{ d: "M16 3.13a4 4 0 0 1 0 7.75" }
+            .user-count
+              = number_with_delimiter(@project.user_count)
+
+          - unless @project.deleted?
+            - if logged_in?
+              = render partial: 'projects/show/i_use_this', locals: { project: @project }
+            - else
+              %button.i-use-this-btn.not-using{ 'data-toggle': "modal", 'data-target': "#LoginModal" }
+                = t('.i_use_this')
+
+/ Login Modal for non-logged in users
+- unless logged_in?
+  .modal.fade#LoginModal{ 'aria-hidden': 'true', 'aria-labelledby': 'LoginModalLabel', role: 'dialog' }
+    .modal-dialog.modal-sm
+      .modal-content
+        .modal-header
+          %button.close{ 'aria-label': 'Close', 'data-dismiss': 'modal', type: 'button' }
+            %span{ 'aria-hidden': 'true' } &times;
+          %h4.modal-title#LoginModalLabel= t('.login_required')
+        .model-body
+          = render 'sessions/sign_in'

@@ -1,8 +1,11 @@
+
 :ruby
   has_permission = logged_in? && @project.edit_authorized?
   content_for(:html_title) { t('.page_title', name: @project.name) }
   page_context[:select_top_menu_nav] = 'select_projects'
   page_context[:select_footer_nav] = nil
+
+= render partial: 'layouts/partials/alert'
 
 .project_content_title
   %h2.pull-left
@@ -18,7 +21,7 @@
   .links.center-block
     - Link::CATEGORIES.each do |category_name, category_id|
       - links = @links.collect { |l| l if l.link_category_id == category_id }.compact
-      .well
+      .oh-card
         %h3.strong.pull-left.margin_bottom_15.margin_top_0
           = category_name
         .clear_both

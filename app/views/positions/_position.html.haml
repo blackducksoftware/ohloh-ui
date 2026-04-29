@@ -1,6 +1,6 @@
 .row
   .col-md-7
-    .well
+    .oh-card
       - unless params_id_is_total?
         - if current_user == position.account || current_user_is_admin?
           %span.pull-right

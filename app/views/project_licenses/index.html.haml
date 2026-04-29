@@ -16,7 +16,7 @@
 
 - if @project_licenses.any?
   .declared_licenses
-    .col-md-7.well.col-md-offset-2
+    .col-md-7.oh-card.col-md-offset-2
       %h4= t('.declared_licenses')
       %table{ style: 'width: 100%;' }
         %tbody
@@ -40,3 +40,4 @@
 
 = yield page_context[:header_title] if page_context[:header_title]
 = render partial: 'project_licenses/about'
+= render partial: 'layouts/partials/alert'

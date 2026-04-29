@@ -23,44 +23,44 @@
     .row.vuln-summary
       .col-lg-3.col-xs-6.summary-info
         .row.overflow-hidden
-          .col-lg-8.col-xs-10
+          .col-lg-8.col-xs-8
             %span= cvss3_severity(@response['cvss3']) || 'Temporal score not available'
             %br
             %span BDSA
-          .col-lg-4.col-xs-2
+          .col-lg-4.col-xs-4
             %i.fa.fa-3x.fa-light.fa-thermometer-full
       .col-lg-3.col-xs-6.summary-info
         .row.overflow-hidden
-          .col-lg-8.col-xs-10
+          .col-lg-8.col-xs-8
             - if @response['vendorFixDate']
               %span Fix Available
               %br
               %span= humanize_datetime(@response['vendorFixDate'])
             - else
               %span No Fix Available
-          .col-lg-4.col-xs-2
+          .col-lg-4.col-xs-4
             %i.fa.fa-3x.fa-light.fa-gift
       .col-lg-3.col-xs-6.summary-info
         .row.overflow-hidden
-          .col-lg-8.col-xs-10
+          .col-lg-8.col-xs-8
             - if @response['exploitAvailableDate']
               %span Exploit Available
               %br
               %span= humanize_datetime(@response['exploitAvailableDate'])
             - else
               %span No Exploit
-          .col-lg-4.col-xs-2
+          .col-lg-4.col-xs-4
             %i.fa.fa-3x.fa-light.fa-exclamation-circle
       .col-lg-3.col-xs-6.summary-info
         .row.overflow-hidden
-          .col-lg-8.col-xs-10
+          .col-lg-8.col-xs-8
             - if @response['disclosureDate']
               %span= bdsa_vulnerability_age(@response['disclosureDate'])
               %br
               %span Vulnerability Age
             - else
               %span No Exploit
-          .col-lg-4.col-xs-2
+          .col-lg-4.col-xs-4
             %i.fa.fa-3x.fa-light.fa-calendar
     %p= find_and_preserve(markdown_format(@response['description']))
     %span.bold.date Severity:

@@ -1,284 +1,777 @@
-/** buttons **/
+/** buttons - Updated to match Black Duck / OpenHub redesign system **/
 
 .btn
-  font-family: 'Roboto' !important
-  font-weight: bold !important
-  display: inline-block
-  color: #FFF !important
+  font-family: 'Roboto', sans-serif !important
+  font-weight: 500 !important
+  display: inline-flex !important
+  align-items: center !important
+  justify-content: center !important
+  gap: 8px !important
+  color: #374151 !important
   background-image: none !important
-  border: 5px solid
-  border-radius: 0
-  box-shadow: none !important
-  -webkit-transition: all ease .15s
-  -moz-transition: all ease .15s
-  -o-transition: all ease .15s
-  transition: all ease .15s
-  cursor: pointer
-  vertical-align: middle
-  margin: 0
-  position: relative
-  padding: 0 12px 1px
-  line-height: 32px
-  font-size: 14px
+  border: 1px solid !important
+  border-radius: 6px !important
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24) !important
+  transition: all 0.2s ease !important
+  cursor: pointer !important
+  vertical-align: middle !important
+  margin: 0 !important
+  position: relative !important
+  padding: 8px 16px !important
+  line-height: normal !important
+  font-size: 14px !important
+  text-decoration: none !important
+  white-space: nowrap !important
 
-.btn-large
-  padding: 0 14px 1px
-  line-height: 38px
-  border-width: 6px
-  font-size: 16px
+.btn-large, .btn-lg
+  padding: 10px 24px !important
+  font-size: 16px !important
 
-.btn-small
-  padding: 0 5.5px
-  line-height: 24px
-  border-width: 4px
-  font-size: 15px
-  /*margin: 2.5px;
+.btn-small, .btn-sm
+  padding: 6px 12px !important
+  font-size: 13px !important
 
 .btn-mini
-  padding: 0 5px
-  line-height: 22px
-  border-width: 2px
-  font-size: 12px
+  padding: 4px 8px !important
+  font-size: 12px !important
 
 .btn-minier
-  padding: 0 4px
-  line-height: 18px
-  border-width: 1px
-  font-size: 11px
+  padding: 2px 6px !important
+  font-size: 11px !important
 
-button.btn:active
-  top: 1px
-  left: 1px
+button.btn:active, a.btn:active
+  top: 0 !important
+  left: 0 !important
 
 .btn, .btn-default
-  @include default-button-colors
+  background-color: white !important
+  border-color: #e5e7eb !important
+  color: #374151 !important
 
-.btn.active, .btn-default.active
-  background-color: #9baab3 !important
-  border-color: #8a9ba6
+  &:hover
+    border-color: #d1d5db !important
+    background-color: #f9fafb !important
 
-.btn.no-border.active, .btn-default.no-border.active
-  background-color: #92a3ac !important
-  border-color: #92a3ac
+  &:active
+    outline: none !important
+    box-shadow: none !important
+    border-color: #e5e7eb !important
 
-.btn.disabled, .btn-default.disabled, .btn[disabled], .btn-default[disabled]
-  background-color: #abbac3 !important
+  &:focus:not(:focus-visible)
+    outline: none !important
+    box-shadow: none !important
 
+  &:focus-visible
+    outline: 2px solid #5A2A82 !important
+    outline-offset: 2px !important
+    box-shadow: 0 0 0 3px rgba(90, 42, 130, 0.25) !important
+    border-color: #5A2A82 !important
+
+  &.active
+    background-color: #f3f4f6 !important
+    border-color: #d1d5db !important
+
+  &.disabled, &[disabled]
+    background-color: #f9fafb !important
+    color: #9ca3af !important
+    opacity: 0.6 !important
+    cursor: not-allowed !important
+
+  // Dark mode
+  .dark &
+    background-color: #2D1548 !important
+    border-color: #5A2A82 !important
+    color: #d1d5db !important
+
+    &:hover
+      border-color: #ffb91a !important
+      background-color: #2D1548 !important
+
+    &.active
+      background-color: #1D0631 !important
+      border-color: #ffb91a !important
+
+    &.disabled, &[disabled]
+      background-color: #1D0631 !important
+      color: #6b7280 !important
+      opacity: 0.6 !important
+
+.btn-primary
+  background-color: #5A2A82 !important
+  border-color: #5A2A82 !important
+  color: white !important
+  font-weight: 600 !important
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23) !important
+
+  &:hover
+    opacity: 0.9 !important
+    background-color: #5A2A82 !important
+    border-color: #5A2A82 !important
+    color: white !important
+
+  &:active, &:focus
+    background-color: #4A1A72 !important
+    border-color: #4A1A72 !important
+    color: white !important
+
+  &.active
+    background-color: #4A1A72 !important
+    border-color: #4A1A72 !important
+
+  &.disabled, &[disabled]
+    background-color: #8A5AAA !important
+    border-color: #8A5AAA !important
+    opacity: 0.6 !important
+    cursor: not-allowed !important
+
+  // Dark mode
+  .dark &
+    background-color: #ffb91a !important
+    border-color: #ffb91a !important
+    color: #1D0631 !important
+    box-shadow: 0 3px 6px rgba(0,0,0,0.32), 0 3px 6px rgba(0,0,0,0.46) !important
+
+    &:hover
+      opacity: 0.9 !important
+      background-color: #ffb91a !important
+      border-color: #ffb91a !important
+      color: #1D0631 !important
+
+    &:active, &:focus
+      background-color: #e6a617 !important
+      border-color: #e6a617 !important
+      color: #1D0631 !important
+
+    &.active
+      background-color: #e6a617 !important
+      border-color: #e6a617 !important
+
+    &.disabled, &[disabled]
+      background-color: #ffb91a !important
+      border-color: #ffb91a !important
+      opacity: 0.4 !important
+
+.btn-secondary
+  background-color: white !important
+  border-color: #e5e7eb !important
+  color: #374151 !important
+  font-weight: 500 !important
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24) !important
+
+  &:hover
+    border-color: #5A2A82 !important
+    background-color: white !important
+    color: #374151 !important
+
+  &:active, &:focus
+    background-color: white !important
+    border-color: #5A2A82 !important
+    color: #374151 !important
+
+  &.active
+    background-color: #f9fafb !important
+    border-color: #5A2A82 !important
+
+  &.disabled, &[disabled]
+    background-color: #f9fafb !important
+    color: #9ca3af !important
+    opacity: 0.6 !important
+    cursor: not-allowed !important
+
+  // Dark mode
+  .dark &
+    background-color: #2D1548 !important
+    border-color: #5A2A82 !important
+    color: #d1d5db !important
+    box-shadow: 0 1px 3px rgba(0,0,0,0.24), 0 1px 2px rgba(0,0,0,0.48) !important
+
+    &:hover
+      border-color: #ffb91a !important
+      background-color: #2D1548 !important
+      color: #d1d5db !important
+
+    &:active, &:focus
+      background-color: #2D1548 !important
+      border-color: #ffb91a !important
+
+    &.active
+      background-color: #1D0631 !important
+      border-color: #ffb91a !important
+
+    &.disabled, &[disabled]
+      background-color: #1D0631 !important
+      color: #6b7280 !important
+      opacity: 0.6 !important
+
+.btn-outline
+  background-color: transparent !important
+  border-color: #e5e7eb !important
+  color: #374151 !important
+  font-weight: 500 !important
+
+  &:hover
+    background-color: #f9fafb !important
+    border-color: #d1d5db !important
+
+  &:active, &:focus
+    background-color: #f3f4f6 !important
+
+  &.disabled, &[disabled]
+    background-color: transparent !important
+    color: #9ca3af !important
+    opacity: 0.6 !important
+    cursor: not-allowed !important
+
+  // Dark mode
+  .dark &
+    background-color: transparent !important
+    border-color: #5A2A82 !important
+    color: #d1d5db !important
+
+    &:hover
+      background-color: rgba(90, 42, 130, 0.15) !important
+      border-color: #ffb91a !important
+
+    &:active, &:focus
+      background-color: rgba(90, 42, 130, 0.25) !important
+
+    &.disabled, &[disabled]
+      background-color: transparent !important
+      color: #6b7280 !important
+      opacity: 0.6 !important
+
+.btn-refresh
+  color: white !important
+  background-color: #5A2A82 !important
+  border-color: #5A2A82 !important
+  border-radius: 0 12px 12px 0
+  margin-left: -1px
+  padding: 10px 18px
+  min-width: 48px
+  transition: all 0.15s ease-in-out
+
+  &:hover
+    background-color: rgba(90, 42, 130, 0.9) !important
+    border-color: #5A2A82 !important
+    transform: none
+
+  &:active
+    background-color: #4A1A72 !important
+    border-color: #4A1A72 !important
+
+  &.no-hover:hover
+    background-color: #5A2A82 !important
+
+  &.active, &.no-border.active
+    background-color: #4A1A72 !important
+    border-color: #4A1A72
+
+  &.disabled, &[disabled]
+    background-color: #8A5AAA !important
+    border-color: #8A5AAA !important
+    opacity: 0.6
+    cursor: not-allowed
+
+  i
+    font-size: 16px
+    line-height: 1
+
+  // Dark mode
+  .dark &
+    background-color: #ffb91a !important
+    border-color: #ffb91a !important
+    color: #1D0631 !important
+
+    &:hover
+      background-color: rgba(255, 185, 26, 0.9) !important
+      border-color: #ffb91a !important
+
+    &:active
+      background-color: #e6a617 !important
+      border-color: #e6a617 !important
+
+    &.active, &.no-border.active
+      background-color: #e6a617 !important
+      border-color: #e6a617
+
+    &.disabled, &[disabled]
+      background-color: #ffb91a !important
+      border-color: #ffb91a !important
+      opacity: 0.4
+
+// Modern "I Use This" Button Design - All variants
+.i_use_this_btn,
+.i-use-this-btn,
+.i-use-this-btn-mobile,
+.btn-use-this
+  padding: 6px 16px !important
+  background-color: #5A2A82 !important
+  color: #ffffff !important
+  border: none !important
+  border-radius: 8px !important
+  font-size: 12px !important
+  font-weight: 600 !important
+  cursor: pointer !important
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24) !important
+  transition: background-color 0.2s ease !important
+  display: inline-flex !important
+  align-items: center !important
+  justify-content: center !important
+  
+  &:hover
+    background-color: rgba(90, 42, 130, 0.9) !important
+    color: #ffffff !important
+  
+  &:active, &:focus
+    background-color: rgba(90, 42, 130, 0.9) !important
+    color: #ffffff !important
+  
+  &.disabled, &[disabled]
+    background-color: #9ca3af !important
+    opacity: 0.6 !important
+    cursor: not-allowed !important
+  
+  // Dark mode
+  html.dark &
+    background-color: #ffb91a !important
+    color: #1D0631 !important
+    box-shadow: 0 1px 3px rgba(0,0,0,0.24), 0 1px 2px rgba(0,0,0,0.48) !important
+    
+    &:hover
+      background-color: rgba(255, 185, 26, 0.9) !important
+      color: #1D0631 !important
+    
+    &:active, &:focus
+      background-color: rgba(255, 185, 26, 0.9) !important
+    
+    &.disabled, &[disabled]
+      background-color: #6b7280 !important
+      opacity: 0.6 !important
+
+// State variants for redesigned button
+.i-use-this-btn,
+.i-use-this-btn-mobile
+  &.using
+    background-color: #5A2A82 !important
+    color: #ffffff !important
+
+    &:hover
+      background-color: #4a1f6e !important
+
+    html.dark &
+      background-color: #5A2A82 !important
+      color: #ffffff !important
+
+      &:hover
+        background-color: #4a1f6e !important
+
+  &.not-using
+    background-color: #ffb91a !important
+    color: #1D0631 !important
+
+    &:hover
+      background-color: #ffcc4d !important
+
+    html.dark &
+      background-color: #ffb91a !important
+      color: #1D0631 !important
+
+      &:hover
+        background-color: #ffcc4d !important
+      
 .btn-header
   width: 100px
 
-.i_use_this_btn
-  @include secondary-button-colors
-  width: 100%
-
 .btn-info
-  @include info-button-colors
-  &.no-hover:hover
-    background-color: #0082C6 !important
-  &.active, &.no-border.active
-    background-color: #66B7E8 !important
-    border-color: #66B7E8
-  &.disabled, &[disabled]
-    background-color: #66CEF6 !important
+  background-color: #3b82f6 !important
+  border-color: #3b82f6 !important
+  color: white !important
+  font-weight: 600 !important
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24) !important
 
-.btn-primary
-  @include primary-button-colors
-  &.no-hover:hover
-    background-color: #005481 !important
-  &.active, &.no-border.active
-    background-color: #0082C6 !important
-    border-color: #005481
+  &:hover
+    opacity: 0.9 !important
+    background-color: #3b82f6 !important
+    border-color: #3b82f6 !important
+    color: white !important
 
-.btn-refresh
-  @include secondary-button-colors
-  &.no-hover:hover
-    background-color: #0082C6 !important
-  &.active, &.no-border.active
-    background-color: #66B7E8 !important
-    border-color: #66B7E8
+  &:active, &:focus
+    background-color: #2563eb !important
+    border-color: #2563eb !important
+
+  &.active
+    background-color: #2563eb !important
+    border-color: #2563eb !important
+
   &.disabled, &[disabled]
-    background-color: #66CEF6 !important
+    background-color: #93c5fd !important
+    border-color: #93c5fd !important
+    opacity: 0.6 !important
+    cursor: not-allowed !important
+
+  // Dark mode
+  .dark &
+    background-color: #3b82f6 !important
+    border-color: #3b82f6 !important
+    box-shadow: 0 1px 3px rgba(0,0,0,0.24), 0 1px 2px rgba(0,0,0,0.48) !important
+
+    &:hover
+      background-color: #2563eb !important
+      border-color: #2563eb !important
+
+    &.disabled, &[disabled]
+      background-color: #3b82f6 !important
+      opacity: 0.4 !important
 
 .btn-success
-  @include join-now-button-colors
-  &.no-border:hover
-    border-color: #659965
-  &.no-hover:hover
-    background-color: #437417 !important
-  &.active, &.no-border.active
-    background-color: #79B247 !important
-    border-color: #79B247
-  &.disabled, &[disabled]
-    background-color: #79B247 !important
-  background-color: #FFB819 !important
+  background-color: #10b981 !important
+  border-color: #10b981 !important
+  color: white !important
+  font-weight: 600 !important
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24) !important
+
   &:hover
-    background-color: #E07C05 !important
-    border-color: #E07C05 !important
+    opacity: 0.9 !important
+    background-color: #10b981 !important
+    border-color: #10b981 !important
+    color: white !important
+
+  &:active, &:focus
+    background-color: #059669 !important
+    border-color: #059669 !important
+
+  &.active
+    background-color: #059669 !important
+    border-color: #059669 !important
+
+  &.disabled, &[disabled]
+    background-color: #6ee7b7 !important
+    border-color: #6ee7b7 !important
+    opacity: 0.6 !important
+    cursor: not-allowed !important
+
+  // Dark mode
+  .dark &
+    background-color: #10b981 !important
+    border-color: #10b981 !important
+    box-shadow: 0 1px 3px rgba(0,0,0,0.24), 0 1px 2px rgba(0,0,0,0.48) !important
+
+    &:hover
+      background-color: #059669 !important
+      border-color: #059669 !important
+
+    &.disabled, &[disabled]
+      background-color: #10b981 !important
+      opacity: 0.4 !important
+
 .btn-warning
-  @include warning-button-colors
-  &.no-hover:hover
-    background-color: #9F4F0A !important
-  &.active, &.no-border.active
-    background-color: #F58220 !important
-    border-color: #F58220
+  background-color: #f59e0b !important
+  border-color: #f59e0b !important
+  color: white !important
+  font-weight: 600 !important
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24) !important
+
+  &:hover
+    opacity: 0.9 !important
+    background-color: #f59e0b !important
+    border-color: #f59e0b !important
+    color: white !important
+
+  &:active, &:focus
+    background-color: #d97706 !important
+    border-color: #d97706 !important
+
+  &.active
+    background-color: #d97706 !important
+    border-color: #d97706 !important
+
+  &.disabled, &[disabled]
+    background-color: #fbbf24 !important
+    border-color: #fbbf24 !important
+    opacity: 0.6 !important
+    cursor: not-allowed !important
+
+  // Dark mode
+  .dark &
+    background-color: #f59e0b !important
+    border-color: #f59e0b !important
+    box-shadow: 0 1px 3px rgba(0,0,0,0.24), 0 1px 2px rgba(0,0,0,0.48) !important
+
+    &:hover
+      background-color: #d97706 !important
+      border-color: #d97706 !important
+
+    &.disabled, &[disabled]
+      background-color: #f59e0b !important
+      opacity: 0.4 !important
 
 .btn-danger
-  @include danger-button-colors
-  &.no-hover:hover
-    background-color: #9F2609 !important
-  &.active, &.no-border.active
-    background-color: #F5471D !important
-    border-color: #F5471D
-  &.disabled, &[disabled]
-    background-color: #F5471D !important
+  background-color: #ef4444 !important
+  border-color: #ef4444 !important
+  color: white !important
+  font-weight: 600 !important
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24) !important
 
+  &:hover
+    opacity: 0.9 !important
+    background-color: #ef4444 !important
+    border-color: #ef4444 !important
+    color: white !important
+
+  &:active, &:focus
+    background-color: #dc2626 !important
+    border-color: #dc2626 !important
+
+  &.active
+    background-color: #dc2626 !important
+    border-color: #dc2626 !important
+
+  &.disabled, &[disabled]
+    background-color: #fca5a5 !important
+    border-color: #fca5a5 !important
+    opacity: 0.6 !important
+    cursor: not-allowed !important
+
+  // Dark mode
+  .dark &
+    background-color: #ef4444 !important
+    border-color: #ef4444 !important
+    box-shadow: 0 1px 3px rgba(0,0,0,0.24), 0 1px 2px rgba(0,0,0,0.48) !important
+
+    &:hover
+      background-color: #dc2626 !important
+      border-color: #dc2626 !important
+
+    &.disabled, &[disabled]
+      background-color: #ef4444 !important
+      opacity: 0.4 !important
+
+// Dark neutral (unchanged - still works with branding)
 .btn-inverse
   background-color: #575757 !important
-  border-color: #575757
+  border-color: #575757 !important
+  color: white !important
+  font-weight: 600 !important
+
   &:hover
     background-color: #303030 !important
-  &.no-border:hover
-    border-color: #303030
-  &.no-hover:hover
-    background-color: #555555 !important
-  &.active
+    border-color: #303030 !important
+
+  &.active, &.no-border.active
     background-color: #434343 !important
     border-color: #333333
-  &.no-border.active
-    background-color: #3b3b3b !important
-    border-color: #3b3b3b
+
   &.disabled, &[disabled]
     background-color: #555555 !important
+    opacity: 0.6 !important
+    cursor: not-allowed !important
 
+  // Dark mode
+  .dark &
+    background-color: #4b5563 !important
+    border-color: #4b5563 !important
+    color: white !important
+
+    &:hover
+      background-color: #374151 !important
+      border-color: #374151 !important
+
+    &.disabled, &[disabled]
+      opacity: 0.4 !important
+
+// Muted purple accent (renamed intent: subtle brand accent)
 .btn-pink
   background-color: #7E7392 !important
-  border-color: #7E7392
+  border-color: #7E7392 !important
+  color: white !important
+  font-weight: 600 !important
+
   &:hover
     background-color: #53456D !important
-  &.no-border:hover
-    border-color: #b73766
-  &.no-hover:hover
-    background-color: #d6487e !important
-  &.active
-    background-color: #c74072 !important
-    border-color: #b33564
-  &.no-border.active
-    background-color: #be386a !important
-    border-color: #be386a
-  &.disabled, &[disabled]
-    background-color: #d6487e !important
+    border-color: #53456D !important
 
+  &.active, &.no-border.active
+    background-color: #53456D !important
+    border-color: #53456D
+
+  &.disabled, &[disabled]
+    background-color: #7E7392 !important
+    opacity: 0.6 !important
+    cursor: not-allowed !important
+
+  // Dark mode
+  .dark &
+    background-color: #7E7392 !important
+    border-color: #7E7392 !important
+    color: white !important
+
+    &:hover
+      background-color: #53456D !important
+      border-color: #53456D !important
+
+    &.disabled, &[disabled]
+      opacity: 0.4 !important
+
+// Teal accent (renamed intent: secondary brand color)
 .btn-purple
   background-color: #45867A !important
-  border-color: #45867A
+  border-color: #45867A !important
+  color: white !important
+  font-weight: 600 !important
+
   &:hover
     background-color: #166859 !important
-  &.no-border:hover
-    border-color: #281649
-  &.no-hover:hover
-    background-color: #281649 !important
-  &.active, &.no-border.active
-    background-color: #7865A4 !important
-    border-color: #7865A4
-  &.disabled, &[disabled]
-    background-color: #7865A4 !important
+    border-color: #166859 !important
 
+  &.active, &.no-border.active
+    background-color: #166859 !important
+    border-color: #166859
+
+  &.disabled, &[disabled]
+    background-color: #45867A !important
+    opacity: 0.6 !important
+    cursor: not-allowed !important
+
+  // Dark mode
+  .dark &
+    background-color: #45867A !important
+    border-color: #45867A !important
+    color: white !important
+
+    &:hover
+      background-color: #166859 !important
+      border-color: #166859 !important
+
+    &.disabled, &[disabled]
+      opacity: 0.4 !important
+
+// Neutral grey
 .btn-grey
   background-color: #797979 !important
-  border-color: #797979
+  border-color: #797979 !important
+  color: white !important
+  font-weight: 600 !important
+
   &:hover
     background-color: #575757 !important
-  &.no-border:hover
-    border-color: #575757
-  &.no-hover:hover
-    background-color: #575757 !important
+    border-color: #575757 !important
+
   &.active, &.no-border.active
-    background-color: #797979 !important
-    border-color: #797979
+    background-color: #575757 !important
+    border-color: #575757
+
   &.disabled, &[disabled]
     background-color: #9A9A9A !important
+    opacity: 0.6 !important
+    cursor: not-allowed !important
 
+  // Dark mode
+  .dark &
+    background-color: #6b7280 !important
+    border-color: #6b7280 !important
+    color: white !important
+
+    &:hover
+      background-color: #4b5563 !important
+      border-color: #4b5563 !important
+
+    &.disabled, &[disabled]
+      opacity: 0.4 !important
+
+// Soft accent (green-ish, used for subtle highlights)
 .btn-yellow
   background-color: #B3D084 !important
-  border-color: #B3D084
-  color: #996633 !important
+  border-color: #B3D084 !important
+  color: #374151 !important
+  font-weight: 600 !important
+
   &:hover
     background-color: #A0C465 !important
-  &.no-border:hover
-    border-color: #A0C465
-  &.no-hover:hover
-    background-color: #A0C465 !important
+    border-color: #A0C465 !important
+
   &.active, &.no-border.active
-    background-color: #B3D084 !important
-    border-color: #B3D084
+    background-color: #A0C465 !important
+    border-color: #A0C465
+
   &.disabled, &[disabled]
     background-color: #B3D084 !important
+    opacity: 0.6 !important
+    cursor: not-allowed !important
 
+  // Dark mode
+  .dark &
+    background-color: #B3D084 !important
+    border-color: #B3D084 !important
+    color: #1D0631 !important
+
+    &:hover
+      background-color: #A0C465 !important
+      border-color: #A0C465 !important
+
+    &.disabled, &[disabled]
+      opacity: 0.4 !important
+
+// Light / muted (used for de-emphasized actions)
 .btn-light
   background-color: #DDD !important
-  border-color: #DDD
+  border-color: #DDD !important
   color: #888888 !important
+  font-weight: 500 !important
+
   &:hover
     background-color: #BCBCBC !important
-  &.no-border:hover
-    border-color: #BCBCBC
-  &.no-hover:hover
-    background-color: #BCBCBC !important
+    border-color: #BCBCBC !important
+
   &.active, &.no-border.active
-    background-color: #DDD !important
-    border-color: #DDD
+    background-color: #BCBCBC !important
+    border-color: #BCBCBC
+
   &.disabled, &[disabled]
     background-color: #DDD !important
+    opacity: 0.6 !important
+    cursor: not-allowed !important
+
   &.btn-mini:after
     left: -2px
     right: -2px
     top: -2px
     bottom: -2px
+
   &.btn-small:after
     left: -4px
     right: -4px
     top: -4px
     bottom: -4px
+
   &.btn-large:after
     left: -6px
     right: -6px
     top: -6px
     bottom: -6px
 
+  // Dark mode
+  .dark &
+    background-color: #374151 !important
+    border-color: #374151 !important
+    color: #9ca3af !important
+
+    &:hover
+      background-color: #4b5563 !important
+      border-color: #4b5563 !important
+
+    &.disabled, &[disabled]
+      opacity: 0.4 !important
+
 .btn
   &.disabled.active, &[disabled].active, &.disabled:focus, &[disabled]:focus, &.disabled:active, &[disabled]:active
-    outline: none
+    outline: none !important
+    top: 0 !important
+    left: 0 !important
+
   &.disabled:active, &[disabled]:active
-    top: 0
-    left: 0
-  &.active
-    color: #efe5b5
-    &:after
-      display: inline-block
-      content: ""
-      position: absolute
-      border-bottom: 1px solid #efe5b5
-      left: -4px
-      right: -4px
-      bottom: -4px
-    &.btn-small:after
-      left: -3px
-      right: -3px
-      bottom: -3px
-      border-bottom-width: 1px
-    &.btn-large:after
-      left: -5px
-      right: -5px
-      bottom: -5px
-      border-bottom-width: 1px
-    &.btn-mini:after, &.btn-minier:after
-      left: -1px
-      right: -1px
-      bottom: -1px
-      border-bottom-width: 1px
-    &.btn-yellow:after
-      border-bottom-color: #c96338
-    &.btn-light
-      color: #515151
-      &:after
-        border-bottom-color: #B5B5B5
+    top: 0 !important
+    left: 0 !important
+
+  &:hover
+    top: 0 !important
+    left: 0 !important

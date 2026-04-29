@@ -2,6 +2,8 @@
 - page_context[:select_footer_nav] = nil
 = javascript_include_tag 'permissions.js'
 
+= render partial: 'layouts/partials/alert'
+
 .project_content_title
   %h2.float_left
     = link_to t(:settings), [:settings, @parent]
@@ -10,7 +12,7 @@
 
 .row
   .col-sm-6.col-sm-offset-2
-    .well
+    .oh-card
       - url = polymorphic_path([:permissions, @parent])
       = form_for @permission, as: :permission, url: url, html: { method: :put, id: 'permission_show' } do |f|
         %fieldset

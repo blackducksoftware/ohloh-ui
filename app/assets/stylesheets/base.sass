@@ -1,14 +1,6 @@
 @import oh-styles
 
 // base mixins
-=sans_font
-  font-family: 'Roboto'
-=serif_font
-  font-family: 'Roboto'
-=arial_font
-  font-family: 'Roboto'
-=lucida_font
-  font-family: 'Roboto'
 =small_font
   font-size: .91667em
 =tiny_font
@@ -16,15 +8,9 @@
 =link_blue
   @include site-link-color
 
-// font awesome custom styles
-#commits_index_page,
-#commits_summary_page,
-#mini_account_row
-  [class^="icon-"], [class*=" icon-"]
-    font-family: Roboto !important
-
 body
   text-rendering: optimizeLegibility
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol" !important
   a
     @include site-link-color
 
@@ -174,5 +160,61 @@ ul.unstyled, ol.unstyled
 .pagination
   @include site-pagination-colors
 
+.modern-pagination
+  @include modern-pagination-styles
+
 .font-1em
   font-size: 1em
+
+// Override any third-party CSS that sets display: inline on icon elements
+a [class^="icon-"],
+a [class*=" icon-"]
+  &:not(.icon-letter)
+    display: inline-flex !important
+
+// Icon Container - Global Baseline Styling
+.icon-container
+  display: inline-flex !important
+  align-items: center
+  justify-content: center
+  width: 48px
+  height: 48px
+  border-radius: 12px
+  overflow: hidden
+  background-color: #f9fafb
+  border: 1px solid rgba(229, 231, 235, 0.8)
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05)
+  flex-shrink: 0
+
+  html.dark &
+    background-color: #1D0631
+    border-color: rgba(255, 255, 255, 0.1)
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.24)
+
+  &.has-logo
+    background-color: transparent
+    border: none
+    box-shadow: none
+
+  img
+    width: 100%
+    height: 100%
+    object-fit: contain
+    display: block
+
+  @media (min-width: 640px)
+    width: 56px
+    height: 56px
+    .icon-letter
+      font-size: 26px
+
+// Icon Letter Fallback - Global Styling
+.icon-letter
+  font-size: 22px
+  font-weight: 700
+  color: #5A2A82
+  text-transform: uppercase
+  user-select: none
+
+  html.dark &
+    color: #ffb91a

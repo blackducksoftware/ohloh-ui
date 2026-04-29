@@ -1,9 +1,9 @@
 - if @analysis
   - committers_url = committer_history_project_analysis_url(project_id: @project.to_param, id: 'latest')
-  %h4= link_to t('.contributors_per_month'), summary_project_contributors_path(@project)
+  %h4.chart-title= link_to t('.contributors_per_month'), summary_project_contributors_path(@project)
   .col-md-12.manage_padding
     #community_chart.chart.watermark440{ 'datasrc' => committers_url, style: 'width: 100%; height: 200px' }
 - else
-  %h4= t('.contributors_per_month')
+  %h4.chart-title= t('.contributors_per_month')
   - add_code_link = link_to t('.add_a_code_location'), new_project_enlistment_path(@project)
   %p= t('.no_code_locations', link: add_code_link)

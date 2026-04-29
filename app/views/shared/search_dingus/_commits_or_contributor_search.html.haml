@@ -9,15 +9,20 @@
       = (@project.best_analysis.oldest_code_set_time - 12.months).to_s(:mdy)
     &mdash;
     = @project.best_analysis.oldest_code_set_time.to_s(:mdy)
-.margin_top_20#search-dingus
-  %form.form-inline
-    .row
+.search-filter-bar
+  %form
+    .search-filter-content
       = render 'shared/search_dingus/page_entries_info', collection: items, total_count: total_count
-      .col-md-5.no_padding
-        %label #{t('shared.search_dingus.search_bar.search_text')} &nbsp;
-        = text_field_tag :query, params[:query]
-        = hidden_field_tag :time_span, params[:time_span]
-        %button.btn.btn-refresh{ type: 'Submit' }
-          %i.icon-refresh
+
+      .search-section
+        %label{for: 'query'}= t('shared.search_dingus.search_bar.search_text')
+        .search-input-wrapper
+          %input#query{type: 'text', name: 'query', placeholder: t('shared.search_dingus.search_bar.search_text'), value: params[:query]}
+          = hidden_field_tag :time_span, params[:time_span]
+          %button.search-cancel-btn{ type: 'button', style: (params[:query].blank? ? 'display: none;' : '') }
+            %i.fa.fa-times
+        %button.search-refresh-btn{ type: 'submit' }
+          %i.fa.fa-refresh
+
       - if type == :contributions
         = render 'shared/search_dingus/sort', sort_context: :contributions, filter_type: nil

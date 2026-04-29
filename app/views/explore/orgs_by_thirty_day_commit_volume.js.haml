@@ -1,12 +1,37 @@
 - if @org_by_30_day_commits.empty?
   :plain
     $('#org_filter_no_result').removeClass('hidden');
-    $('#30_day_commit_volume').addClass('hidden');
-    $('#header').addClass('hidden');
+    $('#orgs_by_30_days_volume .desktop-org-table').addClass('hidden');
+    $('.mobile-org-container').addClass('hidden');
 - else
+  - mobile_cards_html = capture do
+    - @org_by_30_day_commits.each do |org_30_day_activity|
+      - org = org_30_day_activity.organization
+      .org-card
+        .org-card-header
+          = link_to org.decorate.icon(:small), organization_path(org), title: org.name, class: 'org-card-icon'
+          = link_to h(truncate(org.name, length: 24)), organization_path(org), title: org.name, class: 'org-card-name'
+          %span.org-card-size= org_30_day_activity.decorate.project_count_text
+        .org-card-body
+          .org-card-row
+            .org-card-label= t '.type'
+            .org-card-value= org.org_type_label
+          .org-card-row
+            .org-card-label= t '.projects'
+            .org-card-value= org_30_day_activity.project_count
+          .org-card-row
+            .org-card-label= t '.affiliates'
+            .org-card-value= org_30_day_activity.affiliate_count
+          .org-card-row
+            .org-card-label= t '30_day_commits'
+            .org-card-value= org_30_day_activity.thirty_day_commit_count
+
   :plain
-    $('#header').removeClass('hidden');
     $('#org_filter_no_result').addClass('hidden');
-    $('#30_day_commit_volume').removeClass('hidden');
+    $('#orgs_by_30_days_volume .desktop-org-table').removeClass('hidden');
     var partial = "#{ j render(partial: 'org_30_day_activity', collection: @org_by_30_day_commits) }"
     $('#30_day_commit_volume').html(partial);
+
+    $('.mobile-org-container').removeClass('hidden');
+    var mobileCards = "#{ j mobile_cards_html }";
+    $('.card-body-mobile').html(mobileCards);

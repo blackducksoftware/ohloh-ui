@@ -3,30 +3,38 @@
 - account_context
 - page_context[:select_footer_nav] = :settings
 
-.full-width.margin_left_20.margin_right_20
-.clear_left
-.col-md-12
-  %h3= t('.settings')
-  .account_settings_options
-    .account_setting_row
-      .pull-left.span5.settings_specifications
-        %h4= link_to t('.account_basics'), edit_account_path(@account)
-        %span.pull-left
-          %a.account_settings_icon.settings_account_basics{ href: edit_account_path(@account) }
-        %span= t('.account_basics_settings')
-      .pull-right.span5.settings_specifications
-        %h4= link_to t('.password'), alter_password_edit_account_path(@account)
-        %span.pull-left
-          %a.account_settings_icon.settings_account_password{ href: alter_password_edit_account_path(@account) }
-        %span= t('.change_passwords')
-    .account_setting_row
-      .pull-left.span5.settings_specifications
-        %h4= link_to t('.api_keys'), account_api_keys_path(@account)
-        %span.pull-left
-          %a.account_settings_icon.settings_api_keys{ href: account_api_keys_path(@account) }
-        %span= t('.api_key_settings')
-      .pull-right.span5.settings_specifications
-        %h4= link_to t('.privacy'), edit_account_privacy_account_path
-        %span.pull-left
-          %a.account_settings_icon.settings_privacy{ href: edit_account_privacy_account_path }
-        %span= t('.email_settings')
+.settings-page-header
+  .settings-page-header-row
+    .settings-page-icon
+      %i.fa.fa-cog
+    %h2.settings-page-h2= t('.settings')
+  %p.settings-page-description= t('.configure_desc', name: @account.name)
+
+.settings-grid
+  %a.settings_module{ href: edit_account_path(@account) }
+    .settings-icon-wrapper.gradient-purple
+      %i.fa.fa-user
+    .settings-text
+      %h4= t('.account_basics')
+      %span.settings_description= t('.account_basics_settings')
+
+  %a.settings_module{ href: alter_password_edit_account_path(@account) }
+    .settings-icon-wrapper.gradient-red
+      %i.fa.fa-lock
+    .settings-text
+      %h4= t('.password')
+      %span.settings_description= t('.change_passwords')
+
+  %a.settings_module{ href: account_api_keys_path(@account) }
+    .settings-icon-wrapper.gradient-blue
+      %i.fa.fa-key
+    .settings-text
+      %h4= t('.api_keys')
+      %span.settings_description= t('.api_key_settings')
+
+  %a.settings_module{ href: edit_account_privacy_account_path }
+    .settings-icon-wrapper.gradient-green
+      %i.fa.fa-shield
+    .settings-text
+      %h4= t('.privacy')
+      %span.settings_description= t('.email_settings')

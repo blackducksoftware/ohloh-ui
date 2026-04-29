@@ -1,6 +1,8 @@
 !!!
 %html
   %head
+    :javascript
+      try { if (localStorage.getItem('theme') === 'dark') document.documentElement.classList.add('dark'); } catch(e) {}
     - if Rails.env.production?
       = render partial: 'layouts/tracking_scripts/google_analytics'
     - page_title = content_for?(:html_title) ? yield(:html_title).to_s : t('.openhub')
@@ -18,8 +20,8 @@
 
   %body{ zoom: 1 }
     = yield :session_projects_banner
+    %header= render partial: 'layouts/partials/header'
     .container#page
-      %header= render partial: 'layouts/partials/header'
       = render partial: 'layouts/partials/page', locals: { responsive_layout: true }
       .clear
       %footer= render partial: 'layouts/partials/footer'

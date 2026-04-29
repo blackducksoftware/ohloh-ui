@@ -5,12 +5,14 @@
 .pull-left.soft.margin_top_10.margin_left_20
   = chart_default_time_span
 .clearfix
+- light_wm = asset_url('charts/watermark_692.png')
+- dark_wm  = asset_url('charts/watermark_692_dark.png')
 - if only_device?
   %div{ style: 'height:250px;' }
-    .chart#project_contributions{ style: 'width:450px; height:200px; margin-left:-26px;', 'datasrc' => chart_url }
+    .chart#project_contributions{ style: 'width:450px; height:200px; margin-left:-26px;', 'datasrc' => chart_url, 'data-light-watermark' => light_wm, 'data-dark-watermark' => dark_wm }
 - elsif only_tab?
   %div{ style: 'height:350px;' }
-    .chart#project_contributions{ style: 'width:750px; height:300px; margin-left:-28px;', 'datasrc' => chart_url }
+    .chart#project_contributions{ style: 'width:750px; height:300px; margin-left:-28px;', 'datasrc' => chart_url, 'data-light-watermark' => light_wm, 'data-dark-watermark' => dark_wm }
 - else
   %div{ style: 'height:350px;' }
-    .chart#project_contributions{ style: 'width:950px; height:300px; margin-left:-28px;', 'datasrc' => chart_url }
+    .chart#project_contributions{ style: 'width:950px; height:300px; margin-left:-28px;', 'datasrc' => chart_url, 'data-light-watermark' => light_wm, 'data-dark-watermark' => dark_wm }

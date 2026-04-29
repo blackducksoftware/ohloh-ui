@@ -14,4 +14,4 @@
   = t('.no_matches')
 - else
   = render partial: 'organization', collection: @organizations
-  = will_paginate @organizations
+  = render 'shared/modern_pagination', collection: @organizations

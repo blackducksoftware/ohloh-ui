@@ -6,8 +6,16 @@
   background: asset-url("charts/watermark_440.png") no-repeat center
   background-size: contain
 
-.watermark692 .highcharts-container
-  background: asset-url("charts/watermark_692.png") no-repeat center
+html.dark .watermark440 .highcharts-container
+  background: asset-url("charts/watermark_440_dark.png") no-repeat center
+  background-size: contain
+
+#project_contributions .highcharts-container
+  background: asset-url("charts/watermark_692.png") no-repeat 18% 50%
+  background-size: contain
+
+html.dark #project_contributions .highcharts-container
+  background: asset-url("charts/watermark_692_dark.png") no-repeat 18% 50%
   background-size: contain
 
 .watermark860 .highcharts-container
@@ -197,133 +205,182 @@
     fill: none
     stroke-width: 2px
 
-  /* Tooltip */
-  .highcharts-tooltip
-    cursor: default
-    pointer-events: none
-    white-space: nowrap
-    transition: stroke 150ms
-    /* font-size: 11pt
-    /* font-weight: normal
-    background: rgba(255,255,255,0.85)
-    border: 1px solid #000
-    border-radius: 3px
-    box-shadow: 1px 1px 2px #888
-    padding: 8px
-    tspan
-      stroke: black
-      stroke-width: 0px
-      opacity: 1.0
-      z-index: 3
-
-  .highcharts-tooltip text
-    fill: #333333
-
-  .highcharts-tooltip .highcharts-header
-    font-size: 0.85em
-
-  .highcharts-tooltip-box
-    stroke-width: 1px
-    fill: #f7f7f7
-    fill-opacity: 0.85
-
-  .highcharts-tooltip-box .highcharts-label-box
-    fill: #f7f7f7
-    fill-opacity: 0.85
-
-  div.highcharts-tooltip
-    filter: none
-
   .highcharts-point-inactive
     opacity: 1.0
+
+  .highcharts-series .highcharts-point
+    stroke: rgba(255, 255, 255, 0.6)
+
+  .highcharts-legend-item .highcharts-point
+    stroke-width: 0
 
   .highcharts-point.highcharts-color-0,
   .highcharts-legend-item.highcharts-color-0 .highcharts-point,
   .highcharts-tooltip .highcharts-color-0
   .highcharts-color-0, .highcharts-pointhighcharts-color-0
-    @include projects-demographics-inactive-fill
+    fill: #64748b
 
   .highcharts-tooltip.highcharts-color-0,
   .highcharts-data-label-connector.highcharts-color-0
-    @include projects-demographics-inactive-stroke
+    stroke: #64748b
 
   .highcharts-point.highcharts-color-1,
   .highcharts-legend-item.highcharts-color-1 .highcharts-point,
   .highcharts-tooltip .highcharts-color-1
-    @include projects-demographics-very-low-fill
-
-  .highcharts-halo.highcharts-color-1
-    @include projects-demographics-very-low-fill
-    opacity: 0.3
+    fill: #06b6d4
 
   .highcharts-tooltip.highcharts-color-1,
   .highcharts-data-label-connector.highcharts-color-1
-    @include projects-demographics-very-low-stroke
+    stroke: #06b6d4
 
   .highcharts-point.highcharts-color-2,
   .highcharts-legend-item.highcharts-color-2 .highcharts-point,
   .highcharts-tooltip .highcharts-color-2
-    @include projects-demographics-low-fill
-
-  .highcharts-halo.highcharts-color-2
-    @include projects-demographics-low-fill
-    opacity: 0.3
+    fill: #3b82f6
 
   .highcharts-tooltip.highcharts-color-2,
   .highcharts-data-label-connector.highcharts-color-2
-    @include projects-demographics-low-stroke
+    stroke: #3b82f6
 
   .highcharts-point.highcharts-color-3,
   .highcharts-legend-item.highcharts-color-3 .highcharts-point,
   .highcharts-tooltip .highcharts-color-3
-    @include projects-demographics-moderate-fill
-
-  .highcharts-halo.highcharts-color-3
-    @include projects-demographics-moderate-fill
-    opacity: 0.3
+    fill: #10b981
 
   .highcharts-tooltip.highcharts-color-3,
   .highcharts-data-label-connector.highcharts-color-3
-    @include projects-demographics-moderate-stroke
+    stroke: #10b981
 
   .highcharts-point.highcharts-color-4,
   .highcharts-legend-item.highcharts-color-4 .highcharts-point,
   .highcharts-tooltip .highcharts-color-4
-    @include projects-demographics-high-fill
-
-  .highcharts-halo.highcharts-color-4
-    @include projects-demographics-high-fill
-    opacity: 0.3
+    fill: #f59e0b
 
   .highcharts-tooltip.highcharts-color-4,
   .highcharts-data-label-connector.highcharts-color-4
-    @include projects-demographics-high-stroke
+    stroke: #f59e0b
 
   .highcharts-point.highcharts-color-5,
   .highcharts-legend-item.highcharts-color-5 .highcharts-point,
   .highcharts-tooltip .highcharts-color-5
-    @include projects-demographics-very-high-fill
-
-  .highcharts-halo.highcharts-color-5
-    @include projects-demographics-very-high-fill
-    opacity: 0.3
+    fill: #ef4444
 
   .highcharts-tooltip.highcharts-color-5,
   .highcharts-data-label-connector.highcharts-color-5
-    @include projects-demographics-very-high-stroke
+    stroke: #ef4444
 
   .highcharts-point.highcharts-color-6,
   .highcharts-legend-item.highcharts-color-6 .highcharts-point,
   .highcharts-tooltip .highcharts-color-6
-    @include projects-demographics-new-fill
-
-  .highcharts-halo.highcharts-color-6
-    @include projects-demographics-new-fill
-    opacity: 0.3
+    fill: #a855f7
 
   .highcharts-tooltip.highcharts-color-6,
   .highcharts-data-label-connector.highcharts-color-6
-    @include projects-demographics-new-stroke
+    stroke: #a855f7
+
+// styledMode: true means all label/legend styling must come from CSS,
+// not from Highcharts JS options (itemStyle, color, etc. are ignored).
+#demographics_chart
+  .highcharts-data-label text
+    fill: #1a202c
+
+  @media (max-width: 768px)
+    .highcharts-legend-item text
+      font-size: 11px !important
+
+  @media (max-width: 640px)
+    .highcharts-legend-item text
+      font-size: 10px !important
+
+html.dark #demographics_chart
+  .highcharts-data-label text
+    fill: #e2e8f0 !important
+
+  .highcharts-data-label-connector
+    stroke: #94a3b8 !important
+
+  .highcharts-legend-item text
+    fill: #e2e8f0 !important
+
+  .highcharts-background
+    fill: #2D1548
+
+// Demographics tooltip — rendered outside #demographics_chart via outside: true.
+// All visual styling targets the HTML span rendered by useHTML: true.
+// The SVG rect must be fully hidden to prevent double-layer background.
+.highcharts-tooltip-container
+  z-index: 9999 !important
+
+// Kill every possible SVG background layer Highcharts injects for the demographics tooltip.
+// With styledMode: true + outside: true, Highcharts creates a <svg> inside the tooltip
+// container with its own injected <style> that sets .highcharts-tooltip-box fill/#f7f7f7.
+// Our CSS must override that with maximum specificity.
+.demographics-tooltip .highcharts-tooltip-box
+  fill: transparent !important
+  stroke: none !important
+  fill-opacity: 0 !important
+  display: none !important
+
+.demographics-tooltip .highcharts-tooltip-box .highcharts-label-box
+  fill: transparent !important
+  stroke: none !important
+  fill-opacity: 0 !important
+  display: none !important
+
+.demographics-tooltip rect.highcharts-tooltip-box
+  fill: transparent !important
+  stroke: none !important
+  fill-opacity: 0 !important
+  display: none !important
+
+.demographics-tooltip rect
+  fill: transparent !important
+  stroke: none !important
+  fill-opacity: 0 !important
+
+.demographics-tooltip
+  // The Highcharts HTML content span — the only visible tooltip element
+  > span
+    background: #111827 !important
+    border: 1px solid #374151 !important
+    border-radius: 8px !important
+    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23) !important
+    padding: 12px 16px !important
+    display: block !important
+    pointer-events: auto !important
+
+    @media (max-width: 768px)
+      padding: 8px 12px !important
+
+  .hc-tooltip-name
+    display: block
+    color: #ffffff
+    font-weight: 700
+    font-size: 14px
+    margin: 0 0 4px 0
+
+    @media (max-width: 768px)
+      font-size: 12px
+      margin: 0 0 2px 0
+
+  .hc-tooltip-desc
+    display: block
+    color: #d1d5db
+    font-size: 12px
+    margin: 0 0 4px 0
+
+    @media (max-width: 768px)
+      display: none
+
+  .hc-tooltip-value
+    display: block
+    color: #ffb91a
+    font-weight: 600
+    font-size: 18px
+    margin: 0
+
+    @media (max-width: 768px)
+      font-size: 14px
 
 #vulnerability_all_version_chart
   overflow: visible !important
@@ -398,11 +455,54 @@
   .highcharts-tooltip .highcharts-color-9
     @include project-contributions-color-9-fill
 
-#code_analysis_chart, #activity_chart, #community_chart
+#code_analysis_chart, #community_chart
   .highcharts-graph
     @include code-analysis-chart-color-0-stroke
+
+#activity_chart
+  .highcharts-graph,
+  .highcharts-point
+    stroke: #5A2A82
+    fill: #5A2A82
 
 #committer_history_chart
   .highcharts-graph
     @include code-analysis-chart-color-0-stroke
 
+// Dark mode chart axis styling
+html.dark
+  #top_commit_volume_chart,
+  #committer_history_chart,
+  .committers_chart,
+  #project_contributions
+    .highcharts-axis-title
+      fill: #e2e8f0 !important
+
+    .highcharts-axis-labels text
+      fill: #e2e8f0 !important
+
+    .highcharts-xaxis-labels text,
+    .highcharts-yaxis-labels text
+      fill: #e2e8f0 !important
+
+    .highcharts-legend-item text
+      fill: #e2e8f0 !important
+
+    .highcharts-legend-box
+      fill: #2D1548 !important
+
+    .highcharts-button text,
+    g.highcharts-button text
+      fill: #e2e8f0 !important
+
+    // Target all text in button groups
+    .highcharts-exporting-group text
+      fill: #e2e8f0 !important
+
+    .highcharts-button-box
+      fill: #2D1548 !important
+      stroke: #5A2A82 !important
+
+  #committer_history_chart
+    .highcharts-graph
+      stroke: #60a5fa !important
