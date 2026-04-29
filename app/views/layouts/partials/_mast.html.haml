@@ -100,10 +100,16 @@
             Join Now
 
 - if read_only_mode?
-  %div
-    .clear
-      &nbsp;
-    .alert.alert-info
-      %h3= t 'header.maintenance_in_progress_title'
-      %p= t 'header.maintenance_in_progress_body_1'
-      %p= t 'header.maintenance_in_progress_body_2'
+  .maintenance-banner
+    .maintenance-banner-strip
+    .maintenance-banner-inner
+      .maintenance-banner-icon
+        %i.icon-warning-sign
+      .maintenance-banner-content
+        %h3= t 'header.maintenance_in_progress_title'
+        %p= t 'header.maintenance_in_progress_body_1'
+        %p= t 'header.maintenance_in_progress_body_2'
+        .maintenance-banner-footer
+          = link_to forums_path, class: 'maintenance-banner-link' do
+            Help Forum
+            %i.icon-chevron-right

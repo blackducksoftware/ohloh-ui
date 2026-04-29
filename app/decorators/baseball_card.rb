@@ -41,7 +41,8 @@ class BaseballCard < Cherry::Decorator
   def commits
     return if best_account_analysis.nil?
 
-    { label: i18n('commits.label'),
+    { css: { class: 'statistic--commits' },
+      label: i18n('commits.label'),
       value: i18n('commits.value', count: account_analysis_fact.commits) }
   end
 
@@ -62,7 +63,7 @@ class BaseballCard < Cherry::Decorator
     orgs_for_positions = organization_core.orgs_for_my_positions
     return if orgs_for_positions.empty?
 
-    { css: { style: 'min-height:38px;' },
+    { css: { class: 'statistic--orgs', style: 'min-height:38px;' },
       label: i18n('contributed_to'),
       partial: 'accounts/show/orgs',
       locals: { orgs: orgs_for_positions } }
@@ -72,7 +73,7 @@ class BaseballCard < Cherry::Decorator
     affiliated_orgs = organization_core.affiliations_for_my_positions
     return if affiliated_orgs.empty?
 
-    { css: { style: 'min-height:38px;' },
+    { css: { class: 'statistic--orgs', style: 'min-height:38px;' },
       label: i18n('contributed_for'),
       partial: 'accounts/show/orgs',
       locals: { orgs: affiliated_orgs } }

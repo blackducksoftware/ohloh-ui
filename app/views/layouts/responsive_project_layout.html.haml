@@ -1,6 +1,8 @@
 !!!5
 %html
   %head
+    :javascript
+      try { if (localStorage.getItem('theme') === 'dark') document.documentElement.classList.add('dark'); } catch(e) {}
     - page_title = content_for?(:html_title) ? yield(:html_title).to_s : t('layouts.application.openhub')
     %title= sanitize(page_title)
     %meta{ name: 'viewport', content: 'width=device-width, initial-scale=1.0' }

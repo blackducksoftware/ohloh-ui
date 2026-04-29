@@ -181,11 +181,14 @@ Streamgraph = {
         });
     },
   populate_legends: function(legends, colors){
-    legend_height = Math.min(legends.length * 18 + 5, 300);
-    $('#ohloh_streamgraph').after('<div id="streamgraph_legend" style="height:' + legend_height + 'px;"></div>');
-    legends.map( function(l, i) {
-      div = "<div class='streamgraph_legend_color' style='background-color: #"+colors[i]+"'></div><p>"+legends[i]+"</p>";
-      $("#streamgraph_legend").append(div);
+    $('#streamgraph_legend').remove();
+    $('#ohloh_streamgraph').after('<div id="streamgraph_legend"></div>');
+    legends.map(function(l, i) {
+      var item = "<span class='streamgraph_legend_item'>" +
+                 "<span class='streamgraph_legend_color' style='background-color: #" + colors[i] + "'></span>" +
+                 "<span class='streamgraph_legend_label'>" + l + "</span>" +
+                 "</span>";
+      $("#streamgraph_legend").append(item);
     });
   },
 

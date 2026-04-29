@@ -76,12 +76,33 @@ html.dark
       color: #ffd966 !important
 
   // Buttons (keep primary yellow button, update others)
+  // Exclude custom CTA buttons (.btn_join_cta) that have their own gradient styling
   .btn
-    &:not(.btn-primary):not(.btn-success):not(.btn-danger)
+    &:not(.btn-primary):not(.btn-success):not(.btn-danger):not(.btn_join_cta)
       background-color: #ffb91a !important
       color: #1D0631 !important
+      border-color: #ffb91a !important
+      outline: none !important
       &:hover
         background-color: #ffd966 !important
+      &:focus, &:active
+        outline: none !important
+        box-shadow: none !important
+
+  // password-reset submit input uses @extend .btn + @extend .btn-primary in SASS
+  // but @extend only duplicates CSS selectors — it does NOT add the literal .btn-primary
+  // class to the HTML element. So :not(.btn-primary) above still matches this input.
+  // Explicitly restore primary-button appearance for it in dark mode.
+  .password-reset form .submit-field input
+    background-color: #5A2A82 !important
+    color: #ffffff !important
+    border-color: #5A2A82 !important
+    outline: none !important
+    &:hover
+      background-color: #7b3fa8 !important
+    &:focus, &:active
+      outline: none !important
+      box-shadow: none !important
 
   // Forms
   input, textarea, select

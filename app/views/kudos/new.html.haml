@@ -1,20 +1,45 @@
-.row{ style: 'margin-top: 1em;' }
-  .col-md-11
-    .oh-card
-      = form_for @kudo, as: :kudo, url: kudos_path, html: { method: :post } do |f|
-        %fieldset
-          .control-group
-            %label.control-label= t('.include_message', who: @kudo.person_name)
-            .controls
-              = f.text_field :message, size: 80
-              - error_tag @kudo, :message
-              %p.help-block= t('.maximum')
-
-          - if @kudo.account
-            = f.hidden_field :account_id, value: @kudo.account_id
-          - else
-            = f.hidden_field :contribution_id, value: @contribution.id
-            = f.hidden_field :name_id, value: @kudo.name_id
-
-          .actions
-            %input.btn.btn-mini.btn-primary{ type: 'submit', value: t('.submit') }
+.kudo-form
+  = form_for @kudo, as: :kudo, url: kudos_path, html: { method: :post } do |f|
+    .kudo-modal-header
+      .kudo-modal-icon-wrap
+        %svg{ xmlns: 'http://www.w3.org/2000/svg', viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', 'stroke-width': '2', 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }
+          %path{ d: 'M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3z' }
+          %path{ d: 'M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3' }
+      .kudo-modal-header-text
+        %h2= t('kudos.give_kudos_to', name: @kudo.person_name)
+        %p= t('.show_appreciation')
+    .kudo-modal-body
+      .kudo-modal-card
+        %label.kudo-message-label
+          %span= t('.include_message', who: @kudo.person_name)
+          = f.text_area :message, maxlength: 80, rows: 3, placeholder: t('.message_placeholder'), class: 'kudo-textarea', id: 'kudo_message_ta'
+          - error_tag @kudo, :message
+        .kudo-char-counter
+          %span= t('.maximum')
+          %span.kudo-count
+            %span#kudo_char_num 0
+            | / 80
+    - if @kudo.account
+      = f.hidden_field :account_id, value: @kudo.account_id
+    - else
+      = f.hidden_field :contribution_id, value: @contribution.id
+      = f.hidden_field :name_id, value: @kudo.name_id
+    .kudo-modal-footer
+      %button.kudo-btn-cancel{ type: 'button', onclick: 'tb_remove(); return false;' }= t('cancel')
+      %button.kudo-btn-submit{ type: 'submit' }
+        %svg.kudo-submit-icon{ xmlns: 'http://www.w3.org/2000/svg', viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', 'stroke-width': '2', 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }
+          %path{ d: 'M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3z' }
+          %path{ d: 'M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3' }
+        = t('.submit')
+  :javascript
+    (function() {
+      var win = document.getElementById('TB_window');
+      if (win) win.classList.add('kudo-active');
+      var ta = document.getElementById('kudo_message_ta');
+      var num = document.getElementById('kudo_char_num');
+      if (ta && num) {
+        var updateCount = function() { num.textContent = ta.value.length; };
+        updateCount();
+        ta.addEventListener('input', updateCount);
+      }
+    })();

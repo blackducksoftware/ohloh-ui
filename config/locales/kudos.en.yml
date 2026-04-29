@@ -20,7 +20,9 @@ en:
       aka: "aka"
     new:
       include_message: "Include an optional message with your kudos to %{who}"
+      message_placeholder: "Write a kind message... (optional)"
       maximum: "Maximum 80 characters."
+      show_appreciation: "Show your appreciation"
       submit: "Give Kudos"
     create:
       success_account: "You have given kudos to %{name}."

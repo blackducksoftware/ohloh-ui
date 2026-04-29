@@ -1,98 +1,1346 @@
+// ═════════════════════════════════════════════════════════════════════
+// ACCOUNT SHOW PAGE - FIGMA DESIGN STYLING
+// Palette: #5A2A82 primary, #1D0631 dark bg, #2D1548 dark card,
+//          #c084fc dark accent, #ffb91a yellow, #f97316 lang badge
+// ═════════════════════════════════════════════════════════════════════
+
 #accounts_show_page
-  color: black
-  margin-top: -5px
+  background-color: #f9fafb
+  color: #111827
+  margin: 0 !important
+  padding: 0 0 32px
+  min-height: 100vh
+  transition: background-color 0.3s ease, color 0.3s ease
+
+  html.dark &
+    background-color: #1D0631
+    color: #e5e7eb
+
   .link_no_underline
     &:hover
       text-decoration: none !important
-  .primary_language_bg
-    text-align: center
-    width: 128px
-    line-height: 20px
-  .stacked_projects
-    img
-      margin-bottom: 10px !important
-      padding: 3px
-    p
-      margin-bottom: 10px !important
-.dev_history
-  padding-top: 1em
+
+// ═════════════════════════════════════════════════════════════════════
+// HERO HEADER — full-width white section, inner content max-width constrained
+// ═════════════════════════════════════════════════════════════════════
+.account_header
+  background: #ffffff
+  border-bottom: 1px solid #e5e7eb
+  padding: 0 !important
+  margin: 0 0 24px !important
+  max-width: none !important
+  width: 100%
+  position: static
+
+  html.dark &
+    background: #1D0631
+    border-bottom-color: rgba(42, 18, 69, 1)
+
+// ─── Inner constrained container ─────────────────────────────────────
+.account_header_inner
+  max-width: 1024px
+  margin: 0 auto
+  padding: 24px 16px 20px
+  display: flex
+  flex-direction: column
+  gap: 16px
+
+  @media (min-width: 640px)
+    padding: 24px 24px 20px
+
+// ─── Back link row ────────────────────────────────────────────────────
+.header_back_row
+  margin-bottom: -4px
+
+.header-back-link
+  display: inline-flex
+  align-items: center
+  gap: 4px
+  font-size: 12px
+  font-weight: 500
+  color: #6b7280
+  text-decoration: none
+  transition: color 0.15s
+
+  &:hover
+    color: #5A2A82
+    text-decoration: none
+
+  html.dark &
+    color: #9ca3af
+
+  html.dark &:hover
+    color: #ffb91a
+
+  i
+    font-size: 11px
+
+// ─── Header Flex Container (Avatar + Name content) ──────────────────
+.header_flex_container
+  display: flex
+  gap: 16px
+  align-items: flex-start
+  width: 100%
+
+  @media (min-width: 768px)
+    gap: 20px
+
+// ─── Avatar Section (80px mobile / 96px sm+, rounded-2xl) ──────────────────────────
 #account_icon
-  width: 130px
-  margin-bottom: 18px
-  margin-top: 15px
-  margin-left: -15px
+  width: 80px !important
+  height: 80px !important
+  margin: 0 !important
+  padding: 0 !important
+  position: relative
+  flex-shrink: 0
+  border-radius: 16px
+  overflow: hidden
+  border: 2px solid rgba(90, 42, 130, 0.3)
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)
+
+  html.dark &
+    border-color: rgba(192, 132, 252, 0.25)
+
   a
     display: block
+    width: 100%
+    height: 100%
+
+  img
+    width: 100% !important
+    height: 100% !important
+    object-fit: cover
+    display: block
+    padding: 0 !important
+    margin: 0 !important
+
+  @media (min-width: 640px)
+    width: 96px !important
+    height: 96px !important
+
+// ─── Primary Language Badge (overlay on avatar — Figma: -bottom-2 -right-2) ─────
+.primary_language_bg
+  position: absolute
+  bottom: -8px
+  right: -8px
+  width: 24px !important
+  height: 24px !important
+  border-radius: 6px
+  font-size: 10px !important
+  font-weight: 700
+  border: 2px solid #ffffff
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15)
+  text-transform: uppercase
+  display: flex
+  align-items: center
+  justify-content: center
+  margin: 0 !important
+  padding: 0 !important
+
+  html.dark &
+    border-color: #1D0631
+
+// ═════════════════════════════════════════════════════════════════════
+// HEADER MAIN COLUMN (#account_header — name, info, kudos)
+// ═════════════════════════════════════════════════════════════════════
 #account_header
-  margin-top: -15px
-  margin-left: 20px
-  width: 790px
-  position: relative
-  min-height: 145px
-  .info
-    margin-top: 3px
+  flex: 1
+  margin: 0 !important
+  padding: 0 !important
+  width: auto !important
+  min-height: 0
+  position: static
+  display: flex
+  flex-direction: column
+  gap: 8px
+
+// ─── Name Block ──────────────────────────────────────────────────
+#account_name
+  margin: 0
+  padding: 0
+  width: 100%
+  float: none !important
+
   h1
-    @include site-link-color
-    width: 350px
-  .social-connect
-    padding-top: 5px
-    font-size: 22px
-#kudo_section
-  position: inherit
-  form
-    margin-bottom: 0px
-    display: inline
-@media only all and (min-width: 320px) and (max-width: 480px)
-  #account_header
-    width: auto
-    .social-connect
-      .btn-info
-       font-size: 10px !important
-  #account_name
-    margin-top: -134px
-    margin-left: 64px
-    h1
+    font-size: 20px !important
+    font-weight: 600 !important
+    color: #111827 !important
+    line-height: 1.25 !important
+    margin: 0 0 4px !important
+    width: auto !important
+    border: none !important
+    letter-spacing: 0
+    word-break: break-word
+
+    @media (min-width: 640px)
+      font-size: 30px !important
+
+    html.dark &
+      color: #ffffff !important
+
+    a
+      color: inherit !important
+      text-decoration: none !important
+      &:hover
+        text-decoration: none !important
+
+// ─── Info row wrapper (location + website — stacks mobile, row sm+) ─
+#account_header .info_row
+  display: flex
+  flex-direction: column
+  gap: 2px
+  margin: 4px 0 8px !important
+
+  @media (min-width: 640px)
+    flex-direction: row
+    flex-wrap: wrap
+    align-items: center
+    column-gap: 12px
+    row-gap: 2px
+
+// ─── Individual info item (location / website / affiliation) ─────────
+#account_header .info
+  font-size: 12px
+  color: #6b7280
+  line-height: 1.4
+  margin: 0 !important
+  padding: 0
+  display: flex
+  align-items: center
+  gap: 4px
+
+  @media (min-width: 640px)
+    font-size: 14px
+
+  html.dark &
+    color: #9ca3af
+
+  i
+    flex-shrink: 0
+    font-size: 12px !important
+    color: inherit
+
+    @media (min-width: 640px)
       font-size: 14px !important
-      width: auto
-  #account_icon
-    img
-      width: 90px
-      height: 90px
-  #accounts_show_page
-    .primary_language_bg
-      width: 90px
-  #accounts_show
-    h2
-     font-size: 15px !important
-  .projects_used
+
+  a
+    color: #5A2A82
+    text-decoration: none
+    display: inline-flex
+    align-items: center
+    gap: 4px
+    transition: color 0.15s ease
+    min-width: 0
+
+    &:hover
+      text-decoration: underline
+
+    html.dark &
+      color: #c084fc
+
+// ─── Action Buttons + Analyzed Timestamp (Figma: mt-4 flex-col gap-2) ─
+.header_actions
+  display: flex
+  flex-direction: column
+  gap: 8px
+  margin: 0
+  padding: 0
+  width: 100%
+
+// ─── Buttons row (flex-wrap row) ─────────────────────────────────────
+.header_buttons
+  display: flex
+  gap: 8px
+  flex-wrap: wrap
+  align-items: center
+
+  .action_button
+    padding: 6px 12px !important
+    border-radius: 8px !important
+    border: 1px solid #e5e7eb !important
+    background: #f3f4f6 !important
+    font-size: 12px !important
+    font-weight: 500 !important
+    color: #374151 !important
+    text-decoration: none !important
+    display: inline-flex
+    align-items: center
+    gap: 6px
+    transition: all 0.2s ease
+    height: auto !important
+    line-height: 1.2 !important
+    margin: 0 !important
+
+    @media (min-width: 640px)
+      font-size: 14px !important
+      padding: 6px 14px !important
+
+    &:hover
+      background: #e5e7eb !important
+      border-color: #d1d5db !important
+      text-decoration: none !important
+
+    html.dark &
+      background: rgba(255, 255, 255, 0.1) !important
+      border-color: rgba(255, 255, 255, 0.2) !important
+      color: #ffffff !important
+
+      &:hover
+        background: rgba(255, 255, 255, 0.2) !important
+        border-color: rgba(255, 255, 255, 0.3) !important
+
+    i
+      font-size: 14px
+      flex-shrink: 0
+
+  .kudo_button_wrapper
+    display: inline-flex
+    margin: 0 !important
+    padding: 0 !important
+
+    button, .btn, a
+      padding: 6px 16px !important
+      border-radius: 9999px !important
+      border: 1px solid rgba(90, 42, 130, 0.5) !important
+      background: #ffffff !important
+      font-size: 14px !important
+      font-weight: 500 !important
+      color: #5A2A82 !important
+      text-decoration: none !important
+      display: inline-flex
+      align-items: center
+      gap: 8px
+      transition: all 0.2s ease
+      height: auto !important
+      line-height: 1 !important
+      margin: 0 !important
+      cursor: pointer
+
+      &:hover
+        border-color: #5A2A82 !important
+        background: #ffffff !important
+        text-decoration: none !important
+
+      &.active, &.given
+        background: #5A2A82 !important
+        border-color: #5A2A82 !important
+        color: #ffffff !important
+
+        &:hover
+          background: #4a1f6e !important
+          border-color: #4a1f6e !important
+
+      html.dark &
+        background: #2D1548 !important
+        border-color: rgba(192, 132, 252, 0.5) !important
+        color: #c084fc !important
+
+        &:hover
+          border-color: #c084fc !important
+
+        &.active, &.given
+          background: #5A2A82 !important
+          border-color: #5A2A82 !important
+          color: #ffffff !important
+
+// ─── Kudo badges — right side of header flex row, original 48px sprite shape
+.header_flex_container .mini-badges-section
+  flex-shrink: 0
+  align-self: flex-start
+  margin: 0 0 0 auto !important
+  padding: 0 !important
+  position: relative !important
+  float: none !important
+  display: flex
+  flex-wrap: wrap
+  align-items: flex-start
+  gap: 0
+  overflow: visible
+
+  // Restore original 48×48 badge sprite sizing
+  .account-badge
+    height: 48px !important
+    width: 48px !important
+    margin: 0 8px 31px 0 !important
+    display: inline-block !important
+    float: none !important
+    flex-shrink: 0
+    transition: transform 0.15s ease
+
+    &:hover
+      transform: scale(1.05)
+
+    &.last
+      margin-right: 0 !important
+
+  // 53px top margin positions pips BELOW the 48px badge (original badges.sass trick)
+  .pips
+    margin: 53px 5px 0 6px !important
+
+  // Hide badges section on very small screens to avoid layout breaking
+  @media (max-width: 480px)
+    display: none
+
+// ─── Kudo Button Override (strong specificity to override Bootstrap) ──────────────────────────
+.kudo_button_wrapper form,
+.kudo_button_wrapper button,
+.kudo_button_wrapper .btn,
+.kudo_action_button
+  all: revert !important
+  padding: 6px 16px !important
+  border-radius: 9999px !important
+  border: 1px solid rgba(90, 42, 130, 0.5) !important
+  background: #ffffff !important
+  font-size: 14px !important
+  font-weight: 500 !important
+  color: #5A2A82 !important
+  text-decoration: none !important
+  display: inline-flex !important
+  align-items: center !important
+  gap: 8px !important
+  transition: all 0.2s ease !important
+  height: auto !important
+  line-height: 1 !important
+  margin: 0 !important
+  cursor: pointer !important
+
+  &:hover
+    border-color: #5A2A82 !important
+    background: #ffffff !important
+    text-decoration: none !important
+
+  html.dark &
+    background: #2D1548 !important
+    border-color: rgba(192, 132, 252, 0.5) !important
+    color: #c084fc !important
+
+    &:hover
+      border-color: #c084fc !important
+      background: #2D1548 !important
+
+  i
     font-size: 14px !important
-  #admin_actions_opened
+
+// ═════════════════════════════════════════════════════════════════════
+// SECTION HEADING (Figma SectionHeading) — h2/h3 with horizontal divider
+// ═════════════════════════════════════════════════════════════════════
+#accounts_show_page #accounts_show > h2
+  font-size: 16px !important
+  font-weight: 600 !important
+  color: #111827 !important
+  line-height: 1.3 !important
+  margin: 0 0 16px !important
+  padding: 0 !important
+  letter-spacing: 0
+  float: none !important
+  width: 100% !important
+  display: flex !important
+  align-items: center
+  gap: 12px
+  white-space: nowrap
+
+  html.dark &
+    color: #ffffff !important
+
+  &::after
+    content: ''
+    flex: 1
+    height: 1px
+    background: #e5e7eb
+    min-width: 40px
+
+    html.dark &
+      background: rgba(90, 42, 130, 0.2)
+
+#accounts_show_page .mezzo.padding_one_top > h3
+  font-size: 16px !important
+  font-weight: 600 !important
+  color: #111827 !important
+  line-height: 1.3 !important
+  margin: 0 0 16px !important
+  padding: 0 !important
+  letter-spacing: 0
+  float: none !important
+  width: 100% !important
+  display: flex !important
+  align-items: center
+  gap: 12px
+  white-space: nowrap
+
+  html.dark &
+    color: #ffffff !important
+
+  &::after
+    content: ''
+    flex: 1
+    height: 1px
+    background: #e5e7eb
+    min-width: 40px
+
+    html.dark &
+      background: rgba(90, 42, 130, 0.25)
+
+// ═════════════════════════════════════════════════════════════════════
+// ACCOUNT SUMMARY — single white card with proper layout
+// ═════════════════════════════════════════════════════════════════════
+#accounts_show_page #accounts_show
+  background: transparent
+  border: none
+  box-shadow: none
+  padding: 0 16px
+  margin: 0 auto 24px
+  max-width: 1024px
+  width: 100%
+
+  @media (min-width: 640px)
+    padding: 0 24px
+
+// Summary Card wrapper (white bg, rounded, border, shadow)
+.summary_card_wrapper
+  background: #ffffff
+  border: 1px solid #e5e7eb
+  border-radius: 16px
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08)
+  overflow: hidden
+  width: 100%
+
+  html.dark &
+    background: #2D1548
+    border-color: rgba(90, 42, 130, 0.2)
+
+// Grid layout: stacks on mobile (1 column), 2 columns on md+
+.summary_grid
+  display: grid
+  grid-template-columns: 1fr
+  gap: 0
+  width: 100%
+
+  @media (min-width: 768px)
+    grid-template-columns: 1fr 1fr
+
+// Left column: Description + Projects Used
+.summary_column_left
+  padding: 16px !important
+  border-bottom: 1px solid #f3f4f6
+  margin: 0 !important
+
+  @media (min-width: 640px)
+    padding: 24px !important
+
+  @media (min-width: 768px)
+    border-bottom: none
+    border-right: 1px solid #f3f4f6
+    padding: 24px !important
+
+  html.dark &
+    border-bottom-color: rgba(90, 42, 130, 0.2)
+
+    @media (min-width: 768px)
+      border-right-color: rgba(90, 42, 130, 0.2)
+
+// Right column: Baseball Card stats
+.summary_column_right
+  padding: 16px !important
+  margin: 0 !important
+
+  @media (min-width: 640px)
+    padding: 24px !important
+
+// Account analysis timestamp — now in header below action buttons
+.header_actions #account_analysis_timestamp,
+.header_actions #analysis_timestamp
+  float: none !important
+  color: #9ca3af !important
+  font-size: 12px
+  font-style: normal
+  margin: 0 !important
+  padding: 0 !important
+  display: flex
+  align-items: center
+  gap: 6px
+
+  html.dark &
+    color: #6b7280 !important
+
+  i
+    font-style: normal
+    color: inherit
+    font-size: 12px
+
+  abbr
+    border-bottom: none
+    text-decoration: none
+    cursor: default
+
+  abbr
+    border-bottom: none
+    text-decoration: none
+    cursor: default
+
+// Description body
+#accounts_show_page #accounts_show .margin_bottom_10px
+  font-size: 14px
+  color: #4b5563
+  line-height: 1.6
+  margin-bottom: 16px !important
+
+  html.dark &
+    color: #d1d5db
+
+// "Projects Used" subheading — purple uppercase tracked (Figma: mb-3 = 12px, no top margin)
+#accounts_show_page #accounts_show .projects_used
+  font-size: 12px !important
+  font-weight: 600 !important
+  color: #5A2A82 !important
+  text-transform: uppercase
+  letter-spacing: 0.1em
+  margin: 0 0 12px !important
+
+  html.dark &
+    color: #c084fc !important
+
+  a
+    color: inherit !important
+    text-decoration: none
+
+// Stacked project icons
+#accounts_show_page #accounts_show .stacked_projects
+  display: flex !important
+  flex-wrap: wrap
+  gap: 6px
+  margin-bottom: 16px
+
+  a
+    border: 0 !important
+    display: inline-flex
+
+  img
+    width: 36px !important
+    height: 36px !important
+    border-radius: 8px
+    border: 1px solid #e5e7eb
+    padding: 0 !important
+    margin: 0 !important
+    transition: transform 0.15s ease
+    object-fit: cover
+
+    &:hover
+      transform: scale(1.05)
+
+    html.dark &
+      border-color: rgba(90, 42, 130, 0.3)
+
+  p
+    margin: 0 !important
+    display: inline-flex
+    color: #5A2A82
+    font-size: 12px
+    align-items: center
+    padding-left: 4px
+
+    a
+      color: inherit
+      text-decoration: none
+
+// ═════════════════════════════════════════════════════════════════════
+// BASEBALL CARD — clean stats list (label / value rows)
+// ═════════════════════════════════════════════════════════════════════
+#accounts_show_page .baseball_card
+  width: 100% !important
+  float: none !important
+  display: flex
+  flex-direction: column
+  gap: 10px
+
+  .col-md-3, .col-md-4, .col-md-7,
+  .col-xs-7, .col-sm-7, .col-xs-3, .col-sm-3, .col-xs-4, .col-sm-4
+    padding: 0 !important
+    float: none !important
+    width: auto !important
+
+  .statistic
+    width: 100% !important
+    min-height: auto
+    margin: 0 !important
+    padding: 0 !important
+    border-bottom: none !important
+
+  .inner
+    width: 100% !important
+    line-height: 1.4
+    display: flex
+    align-items: flex-start
+    justify-content: space-between
+    gap: 12px
+
+  // Figma: flex-shrink-0 w-[42%] sm:w-44 text-xs sm:text-sm text-gray-500
+  .name
+    width: 42% !important
+    font-size: 12px
+    font-weight: 400
+    color: #6b7280
+    text-align: left !important
+    margin: 0 !important
+    flex-shrink: 0
+    line-height: 1.4
+
+    @media (min-width: 640px)
+      width: 176px !important
+      font-size: 14px
+
+    html.dark &
+      color: #9ca3af
+
+  // Figma: text-gray-700 text-right text-xs sm:text-sm
+  .value
+    font-size: 12px
+    font-weight: 500
+    color: #374151
+    margin: 0 !important
+    text-align: right
+    flex: 1
+    line-height: 1.4
+    min-width: 0
+
+    @media (min-width: 640px)
+      font-size: 14px
+
+    html.dark &
+      color: #e5e7eb
+
+    a
+      color: #5A2A82
+      text-decoration: none
+      font-weight: 600
+
+      &:hover
+        text-decoration: underline
+
+      html.dark &
+        color: #c084fc
+
+  .language-box
+    font-size: 12px !important
+    font-weight: 700 !important
+    margin: 0 !important
+    padding: 2px 8px !important
+    border-radius: 4px !important
+    display: inline-block !important
+    min-width: auto !important
+    line-height: 1.4 !important
+    background-color: #f97316 !important
+    color: #ffffff !important
+    text-transform: none
+
+  .right_sm
+    font-size: 11px
+    margin-left: 0
+    margin-top: 2px
+    line-height: 1.4
+    color: #9ca3af
+    display: block
+    width: 100%
+    font-weight: 400
+
+    html.dark &
+      color: #6b7280
+
+  // ─── Figma: commits count and org count are bold ──────────────────
+  .statistic--commits .value
+    font-weight: 700 !important
+    color: #111827 !important
+
+    html.dark &
+      color: #ffffff !important
+
+  .statistic--orgs .value
+    font-weight: 700 !important
+    color: #111827 !important
+
+    html.dark &
+      color: #ffffff !important
+
+    .right_sm
+      font-weight: 400 !important
+      color: #9ca3af !important
+
+      html.dark &
+        color: #6b7280 !important
+
+// ═════════════════════════════════════════════════════════════════════
+// DEV HISTORY — section heading + chart cards
+// ═════════════════════════════════════════════════════════════════════
+#accounts_show_page .mezzo.padding_one_top
+  border-top: none !important
+  margin: 24px auto 0 !important
+  padding: 0 16px !important
+  max-width: 1024px
+
+  @media (min-width: 640px)
+    padding: 0 24px !important
+
+  // ─── .dev_chart_section IS the card — wraps title + chart + JS-injected legend
+  .dev_chart_section
+    background: #ffffff
+    border: 1px solid #e5e7eb
+    border-radius: 16px
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08)
+    padding: 16px
+    margin-bottom: 24px
+    overflow: hidden
+
+    @media (min-width: 640px)
+      padding: 20px
+
+    html.dark &
+      background: #2D1548
+      border-color: rgba(90, 42, 130, 0.2)
+
+    &:last-child
+      margin-bottom: 0
+
+  // ─── Section headings (card header with horizontal divider) ─────────────
+  .dev_chart_section #commit_projects,
+  .dev_chart_section #commits_lang
+    float: none !important
+    clear: both
+    display: flex !important
+    align-items: center
+    gap: 12px
+    margin: 0 0 16px !important
+    padding: 0 0 12px !important
+    border-bottom: 1px solid #f3f4f6 !important
+
+    html.dark &
+      border-bottom-color: rgba(90, 42, 130, 0.15) !important
+
+    h4
+      font-size: 15px !important
+      font-weight: 600 !important
+      color: #111827 !important
+      margin: 0 !important
+      padding: 0
+      line-height: 1.3 !important
+      white-space: nowrap
+      border: none !important
+
+      html.dark &
+        color: #ffffff !important
+
+      a
+        color: inherit !important
+        text-decoration: none !important
+
+        &:hover
+          text-decoration: underline !important
+
+  // ─── Date range label ────────────────────────────────────────────────────
+  .dev_chart_section .soft.margin_top_10.margin_left_20,
+  .dev_chart_section .soft.margin_left_20
+    float: none !important
+    clear: both
+    color: #9ca3af !important
+    font-style: normal
+    font-size: 12px !important
+    margin: -4px 0 12px !important
+    display: block
+
+    html.dark &
+      color: #6b7280 !important
+
+  // ─── .margin_top_10 wrapper inside commits_by_language — reset margin ────
+  .dev_chart_section > .margin_top_10
+    margin-top: 0 !important
+
+  // ─── Override fixed widths from streamgraph.sass ─────────────────────────
+  // #ohloh_streamgraph has width:715px float:left margin-left:15px
+  // #ohloh_stream (child SVG) has width:940px !important
+  // #streamgraph_legend is injected AFTER #ohloh_streamgraph by JS as a sibling
+  // Both end up inside .dev_chart_section, so card contains everything
+  .dev_chart_section #ohloh_streamgraph
+    width: 100% !important
+    float: none !important
+    margin-left: 0 !important
+    margin-right: 0 !important
+    overflow: visible
+
+    svg, #ohloh_stream
+      width: 100% !important
+      max-width: 100% !important
+
+  .dev_chart_section #streamgraph_legend
+    float: none !important
+    width: 100% !important
+    white-space: normal !important
+    margin-right: 0 !important
+    margin-top: 12px
+    border: none !important
+    overflow: visible
+
+  // ─── Constrain all chart canvases to card width ──────────────────────────
+  .dev_chart_section .chart,
+  .dev_chart_section #project_contributions
+    max-width: 100% !important
+    width: 100% !important
+    margin-left: 0 !important
+
+// ═════════════════════════════════════════════════════════════════════
+// ADMIN PANEL — page wrapper aligns with summary card (same padding)
+// ═════════════════════════════════════════════════════════════════════
+.admin_panel_page_wrapper
+  max-width: 1024px
+  margin: 0 auto 24px
+  padding: 0 16px
+
+  @media (min-width: 640px)
+    padding: 0 24px
+
+// ─── Admin card container (inside wrapper — full width within padding) ─
+#admin_actions_opened, #admin_actions_closed
+  border-radius: 16px !important
+  border: 1px solid rgba(251, 191, 36, 0.4) !important
+  background: #ffffff !important
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08) !important
+  padding: 0 !important
+  margin: 0 !important
+  overflow: hidden
+  width: 100%
+
+  html.dark &
+    background: #1a0e2e !important
+    border-color: rgba(251, 191, 36, 0.3) !important
+
+// ─── Shared amber header bar (used in both open/closed states) ────
+.admin_panel_header
+  display: flex !important
+  align-items: center !important
+  justify-content: space-between !important
+  width: 100% !important
+  padding: 12px 16px !important
+  background: #fffbeb !important
+  border-bottom: 1px solid rgba(251, 191, 36, 0.3) !important
+  text-decoration: none !important
+  cursor: pointer
+  box-sizing: border-box
+
+  html.dark &
+    background: rgba(120, 53, 15, 0.25) !important
+    border-bottom-color: rgba(251, 191, 36, 0.2) !important
+
+  @media (min-width: 640px)
+    padding: 14px 20px !important
+
+// When collapsed, no border-bottom (nothing below the header)
+#admin_actions_closed .admin_panel_header
+  border-bottom: none !important
+
+.admin_header_left
+  display: flex
+  align-items: center
+  gap: 10px
+
+.admin_lock_badge
+  width: 28px
+  height: 28px
+  border-radius: 8px
+  background: rgba(251, 191, 36, 0.2)
+  display: flex
+  align-items: center
+  justify-content: center
+  flex-shrink: 0
+
+  html.dark &
+    background: rgba(251, 191, 36, 0.3)
+
+  i
+    font-size: 13px !important
+    color: #b45309 !important
+    margin: 0 !important
+    line-height: 1
+
+    html.dark &
+      color: #fbbf24 !important
+
+.admin_panel_title
+  font-size: 12px !important
+  font-weight: 700 !important
+  color: #92400e !important
+  text-transform: uppercase
+  letter-spacing: 0.08em
+  line-height: 1
+
+  html.dark &
+    color: #fcd34d !important
+
+.admin_chevron_btn
+  display: flex !important
+  align-items: center
+  color: #b45309 !important
+  text-decoration: none !important
+  background: transparent !important
+  border: none !important
+  box-shadow: none !important
+  padding: 2px 4px !important
+  margin: 0 !important
+  height: auto !important
+  line-height: 1 !important
+  cursor: pointer !important
+
+  html.dark &
+    color: #fbbf24 !important
+
+  i
+    font-size: 14px !important
+    margin: 0 !important
+
+// ─── Panel body (expanded content) ───────────────────────────────
+.admin_panel_body
+  background: #ffffff
+  display: flex
+  flex-direction: column
+
+  html.dark &
+    background: #1a0e2e
+
+// ─── Info section (Figma: px-4 sm:px-5 py-4 space-y-4) ─────────────
+.admin_info_section
+  padding: 16px !important
+  border-bottom: 1px solid #f3f4f6
+  display: flex
+  flex-direction: column
+  gap: 16px
+
+  html.dark &
+    border-bottom-color: rgba(90, 42, 130, 0.15)
+
+  @media (min-width: 640px)
+    padding: 16px 20px !important
+
+  p
+    margin: 0 !important
+    padding: 0
+    color: #4b5563
+    font-size: 13px
+    line-height: 1.5
+
+    html.dark &
+      color: #d1d5db
+
+// ─── Shared label with icon (Email Address / Open Hub Activity / Admin Actions)
+.admin_info_label
+  display: flex
+  align-items: center
+  gap: 6px
+  margin: 0 0 8px !important
+
+  i
+    font-size: 12px !important
+    color: #9ca3af !important
+    flex-shrink: 0
+
+    html.dark &
+      color: #6b7280 !important
+
+  span
+    font-size: 11px !important
+    font-weight: 700 !important
+    color: #9ca3af !important
+    text-transform: uppercase
+    letter-spacing: 0.1em
+    line-height: 1.4
+
+    html.dark &
+      color: #6b7280 !important
+
+.admin_danger_label
+  i, span
+    color: #f87171 !important
+
+    html.dark &
+      color: rgba(248, 113, 113, 0.8) !important
+
+// ─── Email link ──────────────────────────────────────────────────────
+.admin_email_link
+  margin: 0 !important
+
+  a
+    font-size: 13px !important
+    color: #5A2A82 !important
+    text-decoration: none
+    display: inline-flex
+    align-items: center
+    gap: 4px
+    word-break: break-all
+
+    &:hover
+      text-decoration: underline
+
+    html.dark &
+      color: #c084fc !important
+
+// ─── Activity mini-cards (Figma: grid grid-cols-1 sm:grid-cols-3) ────
+.admin_activity_cards
+  display: grid
+  grid-template-columns: 1fr
+  gap: 8px
+
+  @media (min-width: 640px)
+    grid-template-columns: repeat(3, 1fr)
+
+.admin_activity_card
+  display: flex
+  align-items: center
+  gap: 10px
+  border: 1px solid #e5e7eb
+  border-radius: 12px
+  padding: 10px 12px
+
+  html.dark &
+    background: #2D1548
+    border-color: rgba(90, 42, 130, 0.2)
+
+  > i
+    font-size: 16px !important
+    color: #5A2A82 !important
+    flex-shrink: 0
+
+    html.dark &
+      color: #c084fc !important
+
+.admin_activity_card_body
+  min-width: 0
+  flex: 1
+
+  p.admin_activity_card_title
+    font-size: 11px !important
+    color: #9ca3af !important
+    margin: 0 0 2px !important
+    padding: 0
+
+    html.dark &
+      color: #6b7280 !important
+
+  a
+    font-size: 13px !important
+    font-weight: 600 !important
+    color: #5A2A82 !important
+    text-decoration: none
+    display: block
+
+    &:hover
+      text-decoration: underline
+
+    html.dark &
+      color: #c084fc !important
+
+// ─── Actions section (Figma: px-4 sm:px-5 py-4 bg-red-50/40) ────────
+.admin_actions_section
+  padding: 16px !important
+  background: rgba(254, 242, 242, 0.4)
+
+  html.dark &
+    background: rgba(127, 29, 29, 0.08)
+
+  @media (min-width: 640px)
+    padding: 16px 20px !important
+
+// ─── Action buttons grid (Figma: grid-cols-2 sm:flex sm:flex-wrap) ──
+.admin_btns_grid
+  display: grid
+  grid-template-columns: repeat(2, 1fr)
+  gap: 8px
+
+  @media (min-width: 640px)
+    display: flex
+    flex-wrap: wrap
+
+  .admin_disabled_btn
+    display: contents
+
+.admin_actions_section p
+  margin: 0 !important
+  padding: 0
+
+// ─── Color-coded action buttons (inside grid/flex) ──────────────────
+.admin_btns_grid .btn,
+.admin_btns_grid a.btn,
+.admin_btns_grid button.btn
+  border-radius: 10px !important
+  padding: 8px 12px !important
+  font-size: 12px !important
+  font-weight: 600 !important
+  margin: 0 !important
+  border: 1px solid !important
+  line-height: 1 !important
+  height: auto !important
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) !important
+  transition: all 0.15s ease
+  color: #ffffff !important
+  display: flex !important
+  align-items: center
+  justify-content: center
+  gap: 6px
+  text-align: center
+
+  i
+    font-size: 12px
+
+  &:hover
+    transform: scale(0.98)
+    text-decoration: none !important
+    color: #ffffff !important
+
+  &.btn-primary
+    background-color: #5A2A82 !important
+    border-color: #5A2A82 !important
+    &:hover
+      background-color: #4a1f6e !important
+
+  &.btn-warning
+    background-color: #f97316 !important
+    border-color: #ea580c !important
+    &:hover
+      background-color: #ea580c !important
+
+  &.btn-success
+    background-color: #059669 !important
+    border-color: #047857 !important
+    &:hover
+      background-color: #047857 !important
+
+  &.btn-danger
+    background-color: #dc2626 !important
+    border-color: #b91c1c !important
+    &:hover
+      background-color: #b91c1c !important
+
+  &.btn-info
+    background-color: #1e3a8a !important
+    border-color: #1e40af !important
+    &:hover
+      background-color: #1e40af !important
+
+  &.btn-default[disabled], &[disabled]
+    background-color: #e5e7eb !important
+    border-color: #d1d5db !important
+    color: #9ca3af !important
+    cursor: not-allowed
+
+// ─── Close admin panel text button (Figma: col-span-2 ghost button) ──
+.admin_close_text_btn
+  grid-column: 1 / -1
+  display: flex !important
+  align-items: center
+  justify-content: center
+  gap: 6px
+  padding: 8px 12px !important
+  border-radius: 10px !important
+  border: 1px solid transparent !important
+  background: transparent !important
+  font-size: 12px !important
+  font-weight: 500 !important
+  color: #6b7280 !important
+  text-decoration: none !important
+  cursor: pointer
+  transition: all 0.15s ease
+  box-shadow: none !important
+  height: auto !important
+  margin: 0 !important
+  line-height: 1 !important
+
+  i
+    font-size: 11px !important
+
+  &:hover
+    color: #374151 !important
+    border-color: #e5e7eb !important
+    background: transparent !important
+    text-decoration: none !important
+
+  html.dark &
+    color: #9ca3af !important
+
+    &:hover
+      color: #e5e7eb !important
+      border-color: rgba(90, 42, 130, 0.3) !important
+
+.dev_history
+  padding-top: 1em
+
+// ═════════════════════════════════════════════════════════════════════
+// RESPONSIVE OVERRIDES — Mobile & Tablet
+// ═════════════════════════════════════════════════════════════════════
+@media only all and (min-width: 320px) and (max-width: 480px)
+  .account_header_inner
+    padding: 16px 12px 14px !important
+    gap: 12px
+
+  .header_flex_container
+    gap: 12px
+
+  #account_icon
+    width: 64px !important
+    height: 64px !important
+
+  #account_name h1
+    font-size: 18px !important
+
+  .header_buttons
+    gap: 6px
+
+    .action_button
+      padding: 5px 10px !important
+      font-size: 11px !important
+
+  #kudo_section
+    gap: 8px
+
+    .social-connect
+      gap: 6px
+
+      .btn-info, .btn-mini, .btn
+        padding: 5px 12px !important
+        font-size: 12px !important
+
+  #accounts_show_page
+    #accounts_show > h2
+      font-size: 14px !important
+
+    .baseball_card
+      .name
+        font-size: 11px
+
+      .value
+        font-size: 12px
+
+  .admin_actions_section
+    padding: 12px !important
+
     .btn
-      font-size: 10px
-  .mezzo
-    h3
-     font-size: 15px
-  #commit_projects
-    h4
-     font-size: 13px
-  #commits_lang
-    h4
-     font-size: 13px
-  #project_contributions
-    svg.highcharts-root
-      font-size: 10px !important
-    .highcharts-axis-labels
-      text
+      padding: 6px 10px !important
+      font-size: 11px !important
+
+  #accounts_show_page .mezzo.padding_one_top
+    > h3
+      font-size: 14px !important
+
+    > .col-sm-12, > .col-md-12
+      padding: 14px !important
+
+    #commit_projects h4, #commits_lang h4
+      font-size: 13px !important
+
+    #project_contributions
+      svg.highcharts-root
         font-size: 10px !important
-    .highcharts-legend-item
-      text
+      .highcharts-axis-labels text
+        font-size: 10px !important
+      .highcharts-legend-item text
         font-size: 6px !important
+
 @media (min-width: 540px) and (max-width: 1024px)
-  #account_header
-    width: 83.33333333%;
-    margin-left: 8px
-  #account_name
-    h1
-      font-size: 24px !important
-      width: auto
-      margin-top: 30px
+  .account_header_inner
+    padding: 20px 20px 18px !important
+
+  #account_name h1
+    font-size: 24px !important
