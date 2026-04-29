@@ -80,6 +80,23 @@ module KudosHelper
 
   private
 
+  def kudos_button_path(target)
+    if target.is_a?(Account)
+      new_kudo_path(account_id: target.to_param)
+    else
+      new_kudo_path(contribution_id: target.id)
+    end
+  end
+
+  def thumbs_up_svg_icon
+    svg_attrs = 'class="kudo-btn-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" ' \
+                'fill="none" stroke="currentColor" stroke-width="2" ' \
+                'stroke-linecap="round" stroke-linejoin="round"'
+    path1 = 'M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3z'
+    path2 = 'M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3'
+    "<svg #{svg_attrs}><path d=\"#{path1}\"/><path d=\"#{path2}\"/></svg>".html_safe
+  end
+
   def kudo_button_target_account(target)
     case target
     when Account
@@ -106,14 +123,13 @@ module KudosHelper
 
   def give_kudos_button(target)
     label = I18n.t('kudos.give_kudos_to', name: kudo_target_name(target))
-    path = if target.is_a?(Account)
-             new_kudo_path(account_id: target.to_param)
-           else
-             new_kudo_path(contribution_id: target.id)
-           end
+    path = kudos_button_path(target)
     haml_tag :div do
-      haml_tag :a, I18n.t('kudos.give_kudos'), href: '#', class: 'btn kudo-btn btn-primary btn-mini',
-                                               onclick: "tb_show('#{label}', '#{path}', false); return false;"
+      haml_tag :a, href: '#', class: 'btn kudo-btn btn-primary btn-mini',
+                   onclick: "tb_show('#{label}', '#{path}', false); return false;" do
+        haml_concat thumbs_up_svg_icon
+        haml_concat I18n.t('kudos.give_kudos')
+      end
     end
   end
 

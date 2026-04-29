@@ -1,20 +1,279 @@
 table#kudo_mantle
-  :margin-left 30%
-  :margin-right auto
+  margin-left: 30%
+  margin-right: auto
   td
     .arrow_up, .arrow_down
-      :background asset_url('kudos/arrows.png') 0 0 no-repeat
-      :width 111px
-      :position absolute
+      background: asset-url('kudos/arrows.png') 0 0 no-repeat
+      width: 111px
+      position: absolute
     .arrow_up
-      :margin 15px 0px 0px -5px
-      :height 42px
-      :background-position 0px 0px
+      margin: 15px 0 0 -5px
+      height: 42px
+      background-position: 0 0
     .arrow_down
-      :height 36px
-      :background-position 0px -42px
-      :margin 23px 0px 0px 3px
+      height: 36px
+      background-position: 0 -42px
+      margin: 23px 0 0 3px
   td.rank
-    :font-size 10px
-    :text-align center
-    :font-family arial,sans-serif
+    font-size: 10px
+    text-align: center
+    font-family: arial, sans-serif
+
+// ── Give Kudo button (account header) ────────────────────────────────────────
+.btn.kudo-btn
+  display: inline-flex
+  align-items: center
+  gap: 5px
+
+.kudo-btn-icon
+  width: 14px
+  height: 14px
+  stroke: currentColor
+  vertical-align: middle
+  flex-shrink: 0
+
+// ── Kudo Modal: ThickBox container overrides ────────────────────────────────
+// .kudo-active is added via JS (fallback for browsers without :has() support)
+#TB_window.kudo-active,
+#TB_window:has(.kudo-form)
+  border: none !important
+  border-radius: 24px !important
+  overflow: hidden !important
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35) !important
+  width: 520px !important
+  left: 50% !important
+  top: 50% !important
+  margin: 0 !important
+  transform: translate(-50%, -50%) !important
+
+#TB_window.kudo-active #TB_title,
+#TB_window:has(.kudo-form) #TB_title
+  height: 8px !important
+  background: linear-gradient(to right, #5A2A82, #9333ea, #ffb91a) !important
+  overflow: visible
+  position: relative
+
+#TB_window.kudo-active #TB_ajaxWindowTitle,
+#TB_window:has(.kudo-form) #TB_ajaxWindowTitle
+  display: none !important
+
+#TB_window.kudo-active #TB_closeAjaxWindow,
+#TB_window:has(.kudo-form) #TB_closeAjaxWindow
+  float: none !important
+  position: absolute !important
+  top: 20px !important
+  right: 16px !important
+  padding: 0 !important
+  margin: 0 !important
+  height: auto !important
+  z-index: 10
+  a
+    color: #9ca3af !important
+    font-size: 12px
+    text-decoration: none
+    transition: color 0.15s
+  a:hover
+    color: #4b5563 !important
+
+  #TB_ajaxContent
+    height: auto !important
+    max-height: 80vh
+    overflow-y: auto !important
+    padding: 0 !important
+    width: 100% !important
+    background: #ffffff
+
+// ── Kudo form inner styles ───────────────────────────────────────────────────
+.kudo-form
+  background: #ffffff
+  font-family: inherit
+
+  .kudo-modal-header
+    display: flex
+    align-items: flex-start
+    gap: 12px
+    padding: 20px 80px 16px 24px
+    border-bottom: 1px solid #e5e7eb
+
+  .kudo-modal-icon-wrap
+    width: 48px
+    height: 48px
+    min-width: 48px
+    border-radius: 16px
+    background: linear-gradient(135deg, #5A2A82, #9333ea)
+    display: flex
+    align-items: center
+    justify-content: center
+    box-shadow: 0 4px 12px rgba(90, 42, 130, 0.3)
+    svg
+      width: 24px
+      height: 24px
+      stroke: #ffffff
+
+  .kudo-modal-header-text
+    h2
+      font-size: 17px
+      font-weight: 700
+      color: #111827
+      margin: 0 0 4px 0
+      line-height: 1.3
+    p
+      font-size: 12px
+      color: #6b7280
+      margin: 0
+
+  .kudo-modal-body
+    padding: 20px 24px
+
+  .kudo-modal-card
+    background: linear-gradient(135deg, #faf5ff, #fffbeb)
+    border: 1px solid rgba(167, 139, 250, 0.3)
+    border-radius: 16px
+    padding: 20px
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05)
+
+  .kudo-message-label
+    display: block
+    > span:first-child
+      display: block
+      font-size: 13px
+      font-weight: 600
+      color: #111827
+      margin-bottom: 10px
+
+  .kudo-textarea
+    width: 100%
+    box-sizing: border-box
+    padding: 12px 16px
+    border: 2px solid #e5e7eb
+    border-radius: 12px
+    background: #ffffff
+    color: #111827
+    font-size: 13px
+    resize: none
+    outline: none
+    transition: border-color 0.2s
+    line-height: 1.5
+    font-family: inherit
+    display: block
+    margin-top: 0
+    &:focus
+      border-color: #5A2A82 !important
+      outline: none !important
+      box-shadow: none !important
+
+  .kudo-char-counter
+    display: flex
+    justify-content: space-between
+    align-items: center
+    margin-top: 8px
+    > span:first-child
+      font-size: 11px
+      color: #9ca3af
+
+  .kudo-count
+    font-size: 11px
+    font-weight: 500
+    color: #5A2A82
+
+  .kudo-modal-footer
+    padding: 0 24px 24px
+    display: flex
+    gap: 12px
+    align-items: center
+
+  .kudo-btn-cancel
+    flex: 1
+    background: transparent
+    border: 2px solid #e5e7eb
+    color: #374151
+    padding: 12px 20px
+    border-radius: 12px
+    font-size: 13px
+    font-weight: 600
+    cursor: pointer
+    transition: background-color 0.2s, border-color 0.2s
+    line-height: 1
+    &:hover
+      background-color: #f9fafb
+      border-color: #d1d5db
+
+  .kudo-btn-submit
+    flex: 1
+    display: flex
+    align-items: center
+    justify-content: center
+    gap: 8px
+    background: linear-gradient(to right, #5A2A82, #9333ea)
+    border: none
+    color: #ffffff
+    padding: 12px 20px
+    border-radius: 12px
+    font-size: 13px
+    font-weight: 700
+    cursor: pointer
+    box-shadow: 0 10px 15px -3px rgba(168, 85, 247, 0.3)
+    transition: background 0.2s, box-shadow 0.2s
+    line-height: 1
+    &:hover
+      background: linear-gradient(to right, #4a1f6e, #7c3aed)
+      box-shadow: 0 10px 15px -3px rgba(168, 85, 247, 0.4)
+
+  .kudo-submit-icon
+    width: 16px
+    height: 16px
+    stroke: #ffffff
+
+// ── Dark mode ────────────────────────────────────────────────────────────────
+html.dark #TB_window:has(.kudo-form)
+  #TB_ajaxContent
+    background: #1D0631
+  #TB_closeAjaxWindow
+    a
+      color: #6b7280 !important
+    a:hover
+      color: #d1d5db !important
+
+html.dark .kudo-form
+  background: #1D0631
+
+  .kudo-modal-header
+    border-bottom-color: rgba(90, 42, 130, 0.2)
+
+  .kudo-modal-header-text
+    h2
+      color: #ffffff
+    p
+      color: #9ca3af
+
+  .kudo-modal-card
+    background: linear-gradient(135deg, #2D1548, #2D1548)
+    border-color: rgba(90, 42, 130, 0.3)
+
+  .kudo-message-label
+    > span:first-child
+      color: #ffffff
+
+  .kudo-textarea
+    background: rgba(29, 6, 49, 0.6)
+    border-color: rgba(90, 42, 130, 0.3)
+    color: #ffffff
+    &::placeholder
+      color: #6b7280
+    &:focus
+      border-color: #ffb91a !important
+
+  .kudo-count
+    color: #ffb91a
+
+  .kudo-btn-cancel
+    border-color: rgba(90, 42, 130, 0.3)
+    color: #d1d5db
+    &:hover
+      background-color: rgba(45, 21, 72, 0.5)
+      border-color: rgba(90, 42, 130, 0.5)
+
+  .kudo-btn-submit
+    background: linear-gradient(to right, #5A2A82, #9333ea)
+    &:hover
+      background: linear-gradient(to right, #4a1f6e, #7c3aed)

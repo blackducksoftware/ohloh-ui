@@ -252,3 +252,140 @@
   display: flex
   justify-content: center
   margin-top: 24px
+
+// ─── Enlistment page banners ──────────────────────────────────────────────────
+.enlistment-banner
+  border-radius: 16px
+  overflow: hidden
+  margin-bottom: 16px
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08)
+
+  &__strip
+    height: 6px
+    width: 100%
+
+  &__inner
+    display: flex
+    gap: 16px
+    padding: 18px 20px
+    align-items: flex-start
+
+  &__icon
+    flex-shrink: 0
+    width: 44px
+    height: 44px
+    border-radius: 14px
+    display: flex
+    align-items: center
+    justify-content: center
+    font-size: 20px
+    color: #ffffff
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2)
+
+  &__content
+    flex: 1
+    min-width: 0
+
+    h4
+      font-weight: 700
+      font-size: 14px
+      margin: 0 0 6px
+      line-height: 1.4
+
+    p
+      font-size: 13px
+      margin: 0 0 6px
+      line-height: 1.6
+
+    ul
+      margin: 4px 0 0 0
+      padding-left: 18px
+      font-size: 13px
+      line-height: 1.6
+
+  &__link
+    font-weight: 600
+    text-decoration: underline
+
+// Warning variant (amber) — stale jobs / help forum
+.enlistment-banner--warning
+  border: 1px solid rgba(251, 191, 36, 0.4)
+  background: linear-gradient(to bottom right, #fffbeb, #fff7ed)
+  box-shadow: 0 2px 8px rgba(251, 191, 36, 0.15)
+
+  html.dark &
+    background: #2D1548
+    border-color: rgba(251, 191, 36, 0.3)
+
+  .enlistment-banner__strip
+    background: linear-gradient(to right, #f59e0b, #f97316, #d97706)
+
+  .enlistment-banner__icon
+    background: linear-gradient(to bottom right, #f59e0b, #ea580c)
+
+  .enlistment-banner__content
+    h4
+      color: #92400e
+      html.dark &
+        color: #fcd34d
+    p
+      color: rgba(120, 53, 15, 0.85)
+      html.dark &
+        color: rgba(253, 230, 138, 0.9)
+
+  .enlistment-banner__link
+    color: #b45309
+    html.dark &
+      color: #fcd34d
+
+// Info variant (purple) — importing / first enlistment
+.enlistment-banner--info
+  border: 1px solid rgba(90, 42, 130, 0.3)
+  background: linear-gradient(to bottom right, #faf5ff, #f5f3ff)
+  box-shadow: 0 2px 8px rgba(90, 42, 130, 0.1)
+
+  html.dark &
+    background: #2D1548
+    border-color: rgba(90, 42, 130, 0.5)
+
+  .enlistment-banner__strip
+    background: linear-gradient(to right, #5A2A82, #6366f1)
+
+  .enlistment-banner__icon
+    background: linear-gradient(to bottom right, #5A2A82, #6366f1)
+
+  .enlistment-banner__content
+    h4
+      color: #3d1c5a
+      html.dark &
+        color: #e9d5ff
+    p
+      color: rgba(61, 28, 90, 0.85)
+      html.dark &
+        color: rgba(233, 213, 255, 0.9)
+
+// Danger variant (red) — failure groups
+.enlistment-banner--danger
+  border: 1px solid rgba(220, 38, 38, 0.3)
+  background: linear-gradient(to bottom right, #fff5f5, #fff1f2)
+  box-shadow: 0 2px 8px rgba(220, 38, 38, 0.1)
+
+  html.dark &
+    background: #2D1548
+    border-color: rgba(220, 38, 38, 0.4)
+
+  .enlistment-banner__strip
+    background: linear-gradient(to right, #dc2626, #ef4444)
+
+  .enlistment-banner__icon
+    background: linear-gradient(to bottom right, #dc2626, #ef4444)
+
+  .enlistment-banner__content
+    h4
+      color: #991b1b
+      html.dark &
+        color: #fca5a5
+    p, li
+      color: rgba(153, 27, 27, 0.85)
+      html.dark &
+        color: rgba(252, 165, 165, 0.9)
