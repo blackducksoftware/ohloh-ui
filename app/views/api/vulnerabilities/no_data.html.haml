@@ -1,9 +1,11 @@
 .search-container
   .search-result
-    %span.fa.fa-2x.fa-light.fa-search
+    %i.fa.fa-4x.fa-inbox.search-result-icon
     - if @response && @response['error'].nil? && @response['publishedDate'] && @response['publishedDate'].to_datetime > 30.days.ago.to_datetime
-      %h3 The details of this vulnerability are not yet available.
-      %p Please come back soon to view the information.
+      %h2.search-result-title The details of this vulnerability are not yet available.
+      %p.search-result-text Please come back soon to view the information.
+      %p.search-result-hint This security advisory is being processed and will be published shortly.
     - else
-      %h3 No matching results found
-      %p You can try again by changing the search term.
+      %h2.search-result-title No matching results found
+      %p.search-result-text You can try again by changing the search term.
+      %p.search-result-hint Make sure you've entered a valid BDSA ID
