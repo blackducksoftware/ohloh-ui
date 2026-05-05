@@ -48,6 +48,7 @@ en:
           button_text: 'Search'
           aria_label: 'Search for BDSA vulnerability by ID'
           clear_aria_label: 'Clear search'
+          toggle_aria_label: 'Toggle search'
         summary_cards:
           - title: 'Exclusive Intel'
             description: 'Proprietary vulnerability data not available in public databases'

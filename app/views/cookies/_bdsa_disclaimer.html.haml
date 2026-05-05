@@ -14,7 +14,7 @@
               %span.checkmark
               %span.checkbox-label
                 I have read and accept the
-                = link_to "API & Data License Agreement", asset_url("docs/API_License_Agreement.pdf"), download: 'API_License_Agreement.pdf', class: 'agreement-link', target: '_blank'
+                = link_to "API & Data License Agreement", asset_url("docs/API_License_Agreement.pdf"), download: 'API_License_Agreement.pdf', class: 'agreement-link', target: '_blank', rel: 'noopener noreferrer'
       .modal-footer
         = button_tag type: 'reset', disabled: true, class: 'btn btn-primary bdsa_disclaimer_accept' do
           %span Continue

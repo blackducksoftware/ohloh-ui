@@ -152,9 +152,17 @@
         border-color: transparent
 
   .header-search-icon
+    background: none
+    border: none
+    cursor: pointer
     color: rgba(255, 255, 255, 0.7)
     font-size: 16px
+    padding: 0
     flex-shrink: 0
+    transition: color 0.15s
+
+    &:hover
+      color: rgba(255, 255, 255, 0.9)
 
   .header-search-input
     flex: 1
@@ -237,12 +245,23 @@
           border-color: #ffc543
 
   .mobile-search-icon
+    background: none
+    border: none
+    cursor: pointer
     color: rgba(0, 0, 0, 0.7)
     font-size: 16px
+    padding: 0
     flex-shrink: 0
+    transition: color 0.15s
+
+    &:hover
+      color: rgba(0, 0, 0, 0.9)
 
     html.dark &
       color: rgba(255, 255, 255, 0.7)
+
+      &:hover
+        color: rgba(255, 255, 255, 0.9)
 
   .mobile-search-input
     flex: 1
