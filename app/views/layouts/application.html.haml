@@ -1,6 +1,8 @@
 !!!
 %html
   %head
+    :javascript
+      try { if (localStorage.getItem('theme') === 'dark') document.documentElement.classList.add('dark'); } catch(e) {}
     - if Rails.env.production?
       = render partial: 'layouts/tracking_scripts/google_analytics'
     - page_title = content_for?(:html_title) ? yield(:html_title).to_s : t('.openhub')

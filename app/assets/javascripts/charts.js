@@ -167,6 +167,7 @@ var Charts = {
 
             success: function(data, textStatus) {
               if(options.pname) data.series.name = options.pname;
+              Charts.applyDarkModeWatermark($chart, data);
               setTimeout(function(){
                 Charts.renderChart(chart, data, textStatus, options);
               }, 100);
@@ -182,6 +183,41 @@ var Charts = {
     }
 
   },
+  // Only swap background-image when dark mode is active — never touch it in light mode
+  applyDarkModeWatermark: function($chart, data) {
+    if (!$('html').hasClass('dark')) return;
+    var darkUrl = $chart.data('dark-watermark');
+    if (darkUrl && data.chart && data.chart.style && data.chart.style['background-image']) {
+      data.chart.style['background-image'] = 'url(' + darkUrl + ')';
+    }
+  },
+
+  // Update already-rendered charts when theme toggles
+  updateWatermarks: function(isDark) {
+    $('.chart[data-dark-watermark]').each(function() {
+      var $chart = $(this);
+      var $container = $chart.find('.highcharts-container');
+      if (!$container.length) return;
+      if (isDark) {
+        var darkUrl = $chart.data('dark-watermark');
+        if (darkUrl) $container[0].style.setProperty('background-image', 'url(' + darkUrl + ')', 'important');
+      } else {
+        var lightUrl = $chart.data('light-watermark');
+        if (lightUrl) $container[0].style.setProperty('background-image', 'url(' + lightUrl + ')', 'important');
+      }
+    });
+
+    // Handle streamgraph (D3 SVG) watermark — CSS alone won't update on dynamic class change
+    var $streamgraph = $('#ohloh_streamgraph[data-dark-watermark]');
+    if ($streamgraph.length) {
+      var $svg = $streamgraph.find('svg.background-watermark');
+      if ($svg.length) {
+        var url = isDark ? $streamgraph.data('dark-watermark') : $streamgraph.data('light-watermark');
+        if (url) $svg[0].style.backgroundImage = 'url(' + url + ')';
+      }
+    }
+  },
+
   commit_volume_formatter: function() {
     return '<strong>' + this.series.name + '</strong><br/>' + this.y + ' Commits (' + Math.floor(this.percentage) + '%)';
   }

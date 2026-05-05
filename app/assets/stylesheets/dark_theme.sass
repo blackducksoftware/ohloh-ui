@@ -20,10 +20,46 @@ html.dark
     color: #e2e8f0 !important
 
   // Cards and wells
-  .well
+  .well, .oh-card
     background-color: #1D0631 !important
     color: #e2e8f0 !important
     border-color: #5A2A82 !important
+
+  // Settings page — matches Figma ProjectSettingsView dark mode
+  .settings-page-header
+    .settings-page-icon
+      background: linear-gradient(135deg, #5A2A82, #1D0631)
+      i
+        color: #ffffff !important
+    h2.settings-page-h2
+      color: #ffffff !important
+    .settings-page-description
+      color: #9ca3af
+
+  .settings-grid .settings_module
+    background: #2D1548
+    border-color: rgba(90, 42, 130, 0.3)
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.24)
+    &::after
+      color: #6b7280
+    &:hover
+      border-color: rgba(255, 185, 26, 0.4)
+      box-shadow: 0 4px 12px rgba(255, 185, 26, 0.08)
+      &::after
+        color: #ffb91a
+        transform: translateX(2px)
+      .settings-text h4
+        color: #ffd166
+    .settings-text
+      h4
+        color: #ffb91a
+        a
+          color: #ffb91a
+      .settings_description
+        color: #9ca3af
+    .settings-icon-wrapper
+      background: linear-gradient(135deg, #5A2A82, #7F3FA0)
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.24)
 
   // Tables
   table
@@ -40,12 +76,33 @@ html.dark
       color: #ffd966 !important
 
   // Buttons (keep primary yellow button, update others)
+  // Exclude custom CTA buttons (.btn_join_cta) that have their own gradient styling
   .btn
-    &:not(.btn-primary):not(.btn-success):not(.btn-danger)
+    &:not(.btn-primary):not(.btn-success):not(.btn-danger):not(.btn_join_cta)
       background-color: #ffb91a !important
       color: #1D0631 !important
+      border-color: #ffb91a !important
+      outline: none !important
       &:hover
         background-color: #ffd966 !important
+      &:focus, &:active
+        outline: none !important
+        box-shadow: none !important
+
+  // password-reset submit input uses @extend .btn + @extend .btn-primary in SASS
+  // but @extend only duplicates CSS selectors — it does NOT add the literal .btn-primary
+  // class to the HTML element. So :not(.btn-primary) above still matches this input.
+  // Explicitly restore primary-button appearance for it in dark mode.
+  .password-reset form .submit-field input
+    background-color: #5A2A82 !important
+    color: #ffffff !important
+    border-color: #5A2A82 !important
+    outline: none !important
+    &:hover
+      background-color: #7b3fa8 !important
+    &:focus, &:active
+      outline: none !important
+      box-shadow: none !important
 
   // Forms
   input, textarea, select
@@ -151,7 +208,7 @@ html.dark
   #project_container .project_row #did_you_know
     background: #1D0631 !important
 
-    .well
+    .well, .oh-card
       background-color: #1D0631 !important
       border: 1px solid #5A2A82 !important
       box-shadow: none !important

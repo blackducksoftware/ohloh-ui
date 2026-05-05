@@ -11,6 +11,6 @@
     = render partial: 'shared/search_dingus', locals: { collection: @reviews, sort_context: :reviews,
       no_match_found_type: :flash }
     = render partial: 'review_list', collection: @reviews
-    = will_paginate @reviews
+    = render 'shared/modern_pagination', collection: @reviews
   - else
     %h3= t('.no_reviews_yet')

@@ -13,32 +13,52 @@
 .clearfix
 
 - if sidekiq_work_in_progress?
-  .alert.alert-info.alert-block
-    %h5.alert-heading.nomargin= t('.currently_importing')
+  .enlistment-banner.enlistment-banner--info
+    .enlistment-banner__strip
+    .enlistment-banner__inner
+      .enlistment-banner__icon
+        %i.icon-time
+      .enlistment-banner__content
+        %h4= t('.currently_importing')
 
 - if flash[:show_first_enlistment_alert]
-  .alert.alert-info.alert-block
-    %h4.alert-heading.nomargin= t('.alert_info_heading', name: @project.name)
-    %p= t('.alert_info_description')
+  .enlistment-banner.enlistment-banner--info
+    .enlistment-banner__strip
+    .enlistment-banner__inner
+      .enlistment-banner__icon
+        %i.icon-ok-circle
+      .enlistment-banner__content
+        %h4= t('.alert_info_heading', name: @project.name)
+        %p= t('.alert_info_description')
 
 - if @stale_jobs_report.any?
-  .alert.alert-warning.alert-block
-    %h4.alert-heading.nomargin= t('.alert_warn_heading')
-    %p= t('.alert_warn_description1')
-    = t('.alert_warn_description2')
-    = link_to t('.help_forum'), 'https://community.blackduck.com/s/topic/0TO2H000000gHS1WAM/black-duck-open-hub-help'
-    \.
-    %p
-    = t('.alert_warn_description3_html')
+  .enlistment-banner.enlistment-banner--warning
+    .enlistment-banner__strip
+    .enlistment-banner__inner
+      .enlistment-banner__icon
+        %i.icon-warning-sign
+      .enlistment-banner__content
+        %h4= t('.alert_warn_heading')
+        %p= t('.alert_warn_description1')
+        %p
+          = t('.alert_warn_description2')
+          = link_to t('.help_forum'), 'https://community.blackduck.com/s/topic/0TO2H000000gHS1WAM/black-duck-open-hub-help', class: 'enlistment-banner__link'
+          = '.'
+        %p= t('.alert_warn_description3_html')
 
   - reportable_group_names = @stale_jobs_report.keys.map(&:to_s) & FailureGroup::REPORTABLE
   - if reportable_group_names.any?
-    .alert.alert-info.alert-block
-      %h5.alert-heading.nomargin= t('.failure.heading')
-      %ul.padding_left_10
-        - reportable_group_names.each do |failure_group_name|
-          - key = "enlistments.index.failure.#{failure_group_name}"
-          %li.font-1em= t(key) if I18n.exists?(key)
+    .enlistment-banner.enlistment-banner--danger
+      .enlistment-banner__strip
+      .enlistment-banner__inner
+        .enlistment-banner__icon
+          %i.icon-exclamation-sign
+        .enlistment-banner__content
+          %h4= t('.failure.heading')
+          %ul
+            - reportable_group_names.each do |failure_group_name|
+              - key = "enlistments.index.failure.#{failure_group_name}"
+              %li= t(key) if I18n.exists?(key)
 
 - if @project.enlistments.exists? && api_access_available
   .search-filter-bar

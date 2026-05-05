@@ -12,12 +12,12 @@
 %h4= t '.header', target: @parent.name
 
 .col-md-7
-  .well{ style: 'margin-left:22px;' }
+  .oh-card{ style: 'margin-left:22px;' }
     = form_for(@manage, url: parent_managers_path(@parent), html: { method: :post }) do |form|
       = render partial: 'form', locals: { form: form }
 
 .col-md-4
-  .well
+  .oh-card
     %h5.nomargin= t '.explain_header'
     %p= @parent.active_managers.blank? ? t('.explainer_first') : t('.explainer_existing')
 

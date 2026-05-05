@@ -190,6 +190,7 @@ en:
     settings:
       settings_title: '%{name} : Settings - Open Hub'
       settings: 'Settings'
+      configure_desc: 'Configure every aspect of the %{name} account on Open Hub.'
       account_basics: 'Account Basics'
       password: 'Password'
       api_keys: 'API Keys'
@@ -229,7 +230,7 @@ en:
 
     fields:
       new_account: 'New Account'
-      sign_up: 'Sign Up'
+      sign_up: 'Create Account'
       login_help: 'Your login is your public name on Open Hub and will be associated with all of your contributions.'
       login: 'Login'
       email_help_1: 'You must provide a valid email to activate your account.'

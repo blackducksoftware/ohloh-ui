@@ -5,7 +5,7 @@
 
 .clearfix
 .col-md-8.col-md-offset-2
-  .well
+  .oh-card
     = form_for @duplicate, url: project_duplicates_path(@project) do |form|
       = render partial: 'fields', locals: { form: form, button_text: t('.button_text') }
 

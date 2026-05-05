@@ -21,7 +21,7 @@
               = render partial: 'active_remove_project_button', locals: { p: p }
             - else
               = disabled_button(bootstrap_icon('icon-trash', t('.remove')), class: 'btn-danger btn-mini')
-  = will_paginate @projects
+  = render 'shared/modern_pagination', collection: @projects
 
 .clearfix
 

@@ -14,7 +14,10 @@ class ProjectTagsController < SettingsController
   def index; end
 
   def create
-    @project.update!(tag_list: "#{@project.tag_list} #{params[:tag_name]}")
+    tag_name = params[:tag_name].to_s.strip
+    return render plain: custom_description_error, status: :unprocessable_entity if duplicate_tag?(tag_name)
+
+    @project.update!(tag_list: "#{@project.tag_list} #{tag_name}")
     render plain: ERB::Util.html_escape(@project.tag_list).split.sort.join("\n")
   rescue StandardError
     render_create_error
@@ -36,6 +39,10 @@ class ProjectTagsController < SettingsController
   end
 
   private
+
+  def duplicate_tag?(tag_name)
+    @project.tag_list.split.include?(tag_name)
+  end
 
   def find_tagging
     tag = Tag.find_by(name: params[:id])

@@ -1,4 +1,4 @@
-- if collection.total_pages > 1
+- if collection.respond_to?(:total_pages) && collection.total_pages > 1
   .modern-pagination
     - current_page = collection.current_page
     - total_pages = collection.total_pages

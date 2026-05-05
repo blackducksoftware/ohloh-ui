@@ -10,7 +10,7 @@
     &nbsp;:&nbsp;#{t('.tags')}
 .row#settings_tags
   .col-md-6
-    .well
+    .oh-card
       %h4= t('.tags_for', name: truncate_project_name(@project.name, 43))
       %div
         %p.tags_left!= tags_left(remaining_tags)

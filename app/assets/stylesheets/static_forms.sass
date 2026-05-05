@@ -697,3 +697,31 @@ span.add-on
   -moz-box-sizing: content-box
   -ms-box-sizing: content-box
   box-sizing: content-box
+
+// Focus styles — remove Bootstrap's blue ring for mouse users, keep visible indicator for keyboard users
+.form-control:focus
+  border-color: #d1d5db !important
+  box-shadow: none !important
+
+.form-control:focus-visible
+  border-color: #5A2A82 !important
+  outline: 2px solid #5A2A82 !important
+  outline-offset: 2px
+  box-shadow: none !important
+
+.form-control:focus:not(:focus-visible)
+  outline: none !important
+
+a:focus-visible
+  outline: 2px solid #5A2A82 !important
+  outline-offset: 2px
+
+a:focus:not(:focus-visible)
+  outline: none !important
+
+select:focus-visible, input[type="file"]:focus-visible, input[type="radio"]:focus-visible, input[type="checkbox"]:focus-visible
+  outline: 2px solid #5A2A82 !important
+  outline-offset: 2px
+
+select:focus:not(:focus-visible), input[type="file"]:focus:not(:focus-visible), input[type="radio"]:focus:not(:focus-visible), input[type="checkbox"]:focus:not(:focus-visible)
+  outline: none !important

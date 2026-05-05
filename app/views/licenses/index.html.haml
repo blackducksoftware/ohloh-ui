@@ -32,4 +32,4 @@
 = render partial: 'shared/alert',
   locals: { message: t('shared.search_dingus.no_match_found.no_match') } if @licenses.blank? && params[:query].present?
 
-= will_paginate @licenses
+= render 'shared/modern_pagination', collection: @licenses
