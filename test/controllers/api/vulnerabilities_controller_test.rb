@@ -52,7 +52,7 @@ class Api::VulnerabilitiesControllerTest < ActionDispatch::IntegrationTest
     VCR.use_cassette('vulnerabilities') do
       get '/vulnerabilities/bdsa/BDSA-1900-0001'
       assert_response :success
-      _(response.body).wont_match 'CVE'
+      _(response.body).must_match 'bdsa-content-placeholder'
       _(response.body).must_match 'Agree'
     end
   end

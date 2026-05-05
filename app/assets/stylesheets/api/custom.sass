@@ -7,9 +7,29 @@
   overflow-x: hidden
   width: 100%
 
+  a:not(.btn):not(.logo-link)
+    color: #1e40af
+    text-decoration: underline
+
+    &:hover
+      color: #1e3a8a
+
+    &:visited
+      color: #1e40af
+
   html.dark &
     background-color: #1D0631
     color: #fff
+
+    a:not(.btn):not(.logo-link)
+      color: #60a5fa !important
+      text-decoration: underline !important
+
+      &:hover
+        color: #93c5fd !important
+
+      &:visited
+        color: #60a5fa !important
 
   // Modern Header Styles
   .modern-header
@@ -24,12 +44,11 @@
     display: none
 
   .modern-header-content
-    max-width: 1280px
+    max-width: 100%
     margin: 0 auto
     padding: 0 32px
     display: flex
     align-items: center
-    justify-content: space-between
     height: 60px
 
     @media (max-width: 540px)
@@ -42,6 +61,7 @@
     text-decoration: none
     transition: opacity 0.15s
     height: 60px
+    flex: 1
 
     &:hover
       opacity: 0.8
@@ -71,6 +91,7 @@
     align-items: center
     justify-content: center
     height: 40px
+    margin-right: 8px
 
     &:hover
       background-color: rgba(255, 255, 255, 0.1)
@@ -88,6 +109,197 @@
 
   html.light & .theme-icon-dark
     display: inline-block
+
+  // Header Search Bar
+  .header-search-bar
+    display: flex
+    align-items: center
+    gap: 8px
+    max-width: 400px
+    background-color: rgba(255, 255, 255, 0.1)
+    border: 1px solid rgba(255, 255, 255, 0.2)
+    border-radius: 8px
+    padding: 8px 12px
+    transition: all 0.15s
+    flex-shrink: 0
+    order: 3
+
+    @media (max-width: 768px)
+      max-width: 300px
+      margin: 0 8px
+
+    @media (max-width: 576px)
+      max-width: none
+      margin: 0
+      gap: 4px
+      padding: 6px 8px
+      background-color: transparent
+      border: none
+
+      .header-search-input,
+      .header-search-clear,
+      .header-search-divider,
+      .header-search-button
+        display: none
+
+    &:focus-within
+      background-color: rgba(255, 255, 255, 0.15)
+      border-color: rgba(255, 255, 255, 0.4)
+
+    @media (max-width: 576px)
+      &:focus-within
+        background-color: transparent
+        border-color: transparent
+
+  .header-search-icon
+    color: rgba(255, 255, 255, 0.7)
+    font-size: 16px
+    flex-shrink: 0
+
+  .header-search-input
+    flex: 1
+    background: transparent
+    border: none
+    outline: none
+    color: white
+    font-size: 14px
+    min-width: 0
+
+    &::placeholder
+      color: rgba(255, 255, 255, 0.6)
+
+  .header-search-clear
+    background: none
+    border: none
+    cursor: pointer
+    color: rgba(255, 255, 255, 0.7)
+    font-size: 20px
+    padding: 0
+    flex-shrink: 0
+    transition: color 0.15s
+
+    &:hover
+      color: rgba(255, 255, 255, 0.9)
+
+  .header-search-divider
+    width: 1px
+    height: 16px
+    background-color: rgba(255, 255, 255, 0.2)
+    flex-shrink: 0
+
+  .header-search-button
+    background: transparent
+    color: rgba(255, 255, 255, 0.8)
+    border: none
+    cursor: pointer
+    font-size: 13px
+    font-weight: 500
+    padding: 4px 12px
+    flex-shrink: 0
+    transition: color 0.15s
+
+    &:hover
+      color: rgba(255, 255, 255, 0.95)
+
+  // Mobile Search Bar
+  .header-mobile-search
+    position: absolute
+    top: 60px
+    left: 0
+    right: 0
+    background-color: transparent
+    padding: 0
+    z-index: 100
+
+    @media (min-width: 577px)
+      display: none !important
+
+    .mobile-search-bar
+      display: flex
+      align-items: center
+      gap: 8px
+      background-color: #FFFFFF
+      border: 2px solid #5A2A82
+      border-radius: 8px
+      margin: 12px 16px
+      padding: 10px 12px
+
+      &:focus-within
+        background-color: #FFFFFF
+        border-color: #5A2A82
+
+      html.dark &
+        background-color: #1D0631
+        border-color: #ffb91a
+
+        &:focus-within
+          background-color: #2D1447
+          border-color: #ffc543
+
+  .mobile-search-icon
+    color: rgba(0, 0, 0, 0.7)
+    font-size: 16px
+    flex-shrink: 0
+
+    html.dark &
+      color: rgba(255, 255, 255, 0.7)
+
+  .mobile-search-input
+    flex: 1
+    background: transparent
+    border: none
+    outline: none
+    color: rgba(0, 0, 0, 0.8)
+    font-size: 14px
+    min-width: 0
+
+    &::placeholder
+      color: rgba(0, 0, 0, 0.4)
+
+    html.dark &
+      color: white
+
+      &::placeholder
+        color: rgba(255, 255, 255, 0.6)
+
+  .mobile-search-clear
+    background: none
+    border: none
+    cursor: pointer
+    color: rgba(0, 0, 0, 0.7)
+    font-size: 20px
+    padding: 0
+    flex-shrink: 0
+    transition: color 0.15s
+
+    &:hover
+      color: rgba(0, 0, 0, 0.9)
+
+    html.dark &
+      color: rgba(255, 255, 255, 0.7)
+
+      &:hover
+        color: rgba(255, 255, 255, 0.9)
+
+  .mobile-search-button
+    background: transparent
+    color: rgba(0, 0, 0, 0.8)
+    border: none
+    cursor: pointer
+    font-size: 13px
+    font-weight: 500
+    padding: 4px 12px
+    flex-shrink: 0
+    transition: color 0.15s
+
+    &:hover
+      color: rgba(0, 0, 0, 0.95)
+
+    html.dark &
+      color: rgba(255, 255, 255, 0.8)
+
+      &:hover
+        color: rgba(255, 255, 255, 0.95)
 
   .container-fluid
     max-width: 100%
@@ -120,11 +332,10 @@
         border-right: 1px solid #d1d5db
 
         @media (max-width: 576px)
-          border-right: none
           padding: 2px 4px
 
         html.dark &
-          border-right-color: rgba(90, 42, 130, 0.5)
+          border-right-color: rgba(255, 255, 255, 0.3)
 
       span
         padding: 0 8px
@@ -177,6 +388,12 @@
       html.dark &
         color: #f3f4f6
 
+      a
+        color: #1e40af !important
+
+        html.dark &
+          color: #60a5fa
+
     span.date
       padding: 0 8px 0 0
       color: #6b7280
@@ -200,19 +417,19 @@
         color: #d1d5db
 
     span.medium
-      color: #fff
+      color: #000 !important
       background: rgb(231,140,135) !important
 
     span.low
-      color: #000
+      color: #000 !important
       background: rgb(154,155,156) !important
 
     span.high
-      color: #fff
+      color: #fff !important
       background: rgb(156,37,31) !important
 
     span.critical
-      color: #fff
+      color: #fff !important
       background: rgb(90,16,12) !important
   .bd-logo
     width: 50px
@@ -303,8 +520,16 @@
       @media (max-width: 576px)
         font-size: 14px
 
+      a
+        color: #1e40af !important
+        text-decoration: underline
+
       html.dark &
         color: #9ca3af
+
+        a
+          color: #60a5fa !important
+          text-decoration: underline
 
     dt
       margin-top: 5px
@@ -415,14 +640,14 @@
       color: #d1d5db
 
   .bdsa-subtitle
-    color: #9ca3af
+    color: #6b7280
     font-size: 14px
     margin-top: 8px
     letter-spacing: 0.05em
     text-align: center
 
     html.dark &
-      color: #6b7280
+      color: #d1d5db
 
   // Search Bar Styles
   .bdsa-search-container
@@ -772,19 +997,260 @@
     padding-left: 0
   #bdsa_disclaimer_cookies
     display: block
-    background-color: rgba(0,0,0,0.8)
+    background-color: transparent
+    backdrop-filter: blur(10px)
+    -webkit-backdrop-filter: blur(10px)
+
+    .modal-dialog
+      max-width: 540px
 
     .modal-content
       margin-top: 30%
+      border-radius: 16px
+      border: none
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2)
+      background-color: white
+      overflow: hidden
 
       @media (max-width: 768px)
         margin-top: 20%
         margin-left: 5%
         margin-right: 5%
         width: 90%
+        border-radius: 12px
 
       @media (max-width: 576px)
         margin-top: 10%
+
+      html.dark &
+        background-color: #2D1A4A
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5)
+
+    .modal-header
+      background-color: #6B46C1
+      padding: 32px
+      text-align: center
+      border-bottom: none
+      position: relative
+
+      @media (max-width: 576px)
+        padding: 24px 20px
+
+      html.dark &
+        background-color: #4C1D95
+
+      .disclaimer-icon
+        font-size: 48px
+        color: rgba(255, 255, 255, 0.9)
+        margin-bottom: 16px
+        display: block
+
+        @media (max-width: 576px)
+          font-size: 40px
+          margin-bottom: 12px
+
+      .modal-title
+        color: white
+        font-size: 24px
+        font-weight: 600
+        margin: 0 0 8px 0
+        letter-spacing: -0.5px
+
+        @media (max-width: 576px)
+          font-size: 20px
+
+      .modal-subtitle
+        color: rgba(255, 255, 255, 0.85)
+        font-size: 14px
+        margin: 0
+        font-weight: 400
+
+        @media (max-width: 576px)
+          font-size: 13px
+
+    .modal-body
+      padding: 32px
+      background-color: white
+
+      @media (max-width: 576px)
+        padding: 24px 20px
+
+      html.dark &
+        background-color: #2D1A4A
+
+      .agreement-box
+        background: linear-gradient(135deg, #F3F4F6 0%, #E5E7EB 100%)
+        border-radius: 12px
+        padding: 24px
+        display: flex
+        gap: 16px
+        align-items: flex-start
+
+        @media (max-width: 576px)
+          padding: 20px
+          gap: 12px
+          flex-direction: column
+          align-items: center
+          text-align: center
+
+        html.dark &
+          background: linear-gradient(135deg, rgba(75, 85, 99, 0.2) 0%, rgba(55, 65, 81, 0.3) 100%)
+
+        .agreement-icon
+          font-size: 32px
+          color: #6B46C1
+          flex-shrink: 0
+          margin-top: 4px
+
+          @media (max-width: 576px)
+            margin-top: 0
+            font-size: 28px
+
+          html.dark &
+            color: #9333EA
+
+        .agreement-text
+          flex: 1
+
+          .custom-checkbox
+            display: flex
+            align-items: flex-start
+            gap: 12px
+            cursor: pointer
+            user-select: none
+            position: relative
+
+            @media (max-width: 576px)
+              flex-direction: column
+              align-items: center
+              gap: 8px
+
+            input[type="checkbox"]
+              position: absolute
+              opacity: 0
+              cursor: pointer
+              height: 0
+              width: 0
+
+              &:checked ~ .checkmark
+                background-color: #6B46C1
+                border-color: #6B46C1
+
+                &::after
+                  display: block
+
+              &:disabled ~ .checkmark
+                background-color: #E5E7EB
+                border-color: #D1D5DB
+                cursor: not-allowed
+
+            .checkmark
+              position: relative
+              height: 24px
+              width: 24px
+              background-color: white
+              border: 2px solid #D1D5DB
+              border-radius: 6px
+              flex-shrink: 0
+              transition: all 0.2s ease
+
+              html.dark &
+                background-color: #1F1433
+                border-color: #4B5563
+
+              &::after
+                content: ""
+                position: absolute
+                display: none
+                left: 7px
+                top: 3px
+                width: 6px
+                height: 10px
+                border: solid white
+                border-width: 0 2px 2px 0
+                transform: rotate(45deg)
+
+            .checkbox-label
+              color: #374151
+              font-size: 15px
+              line-height: 1.6
+              padding-top: 2px
+
+              @media (max-width: 576px)
+                font-size: 14px
+
+              html.dark &
+                color: #E5E7EB
+
+              .agreement-link
+                color: #6B46C1
+                text-decoration: none
+                font-weight: 600
+                border-bottom: 1px solid transparent
+                transition: border-color 0.2s ease
+
+                &:hover
+                  border-bottom-color: #6B46C1
+
+                html.dark &
+                  color: #9333EA
+
+                  &:hover
+                    border-bottom-color: #9333EA
+
+    .modal-footer
+      padding: 24px 32px
+      border-top: 1px solid #E5E7EB
+      background-color: #F9FAFB
+      display: flex
+      justify-content: center
+
+      @media (max-width: 576px)
+        padding: 20px
+
+      html.dark &
+        background-color: #1F1433
+        border-top-color: rgba(255, 255, 255, 0.1)
+
+      .bdsa_disclaimer_accept
+        background: linear-gradient(135deg, #6B46C1 0%, #9333EA 100%)
+        color: white
+        border: none
+        border-radius: 8px
+        padding: 14px 32px
+        font-size: 16px
+        font-weight: 600
+        cursor: pointer
+        transition: all 0.3s ease
+        box-shadow: 0 4px 12px rgba(107, 70, 193, 0.3)
+        display: flex
+        align-items: center
+        gap: 8px
+
+        @media (max-width: 576px)
+          padding: 12px 24px
+          font-size: 15px
+          width: 100%
+          justify-content: center
+
+        &:hover:not(:disabled)
+          transform: translateY(-2px)
+          box-shadow: 0 6px 20px rgba(107, 70, 193, 0.4)
+
+        &:active:not(:disabled)
+          transform: translateY(0)
+
+        &:disabled
+          background: linear-gradient(135deg, #9CA3AF 0%, #6B7280 100%)
+          cursor: not-allowed
+          box-shadow: none
+
+        .fa-arrow-right
+          font-size: 14px
+          transition: transform 0.3s ease
+
+        &:hover:not(:disabled) .fa-arrow-right
+          transform: translateX(4px)
 
   footer
     margin-top: auto
@@ -804,7 +1270,7 @@
       border-top-color: rgba(255, 255, 255, 0.1)
 
     .footer-bottom
-      color: #b3b4b3
+      color: #4b5563
       margin: 0
       text-align: center
       width: 100%
@@ -813,9 +1279,103 @@
       @media (max-width: 576px)
         font-size: 12px
 
+      html.dark &
+        color: #9ca3af
+
       a
-        color: #b3b4b3
+        color: #4b5563
+
+        html.dark &
+          color: #9ca3af
 
   #cve-cvss3, #cvss3
     background: asset-url("charts/watermark_340.png") no-repeat center
     background-size: contain
+    position: relative
+
+    html.dark &
+      background-image: none
+
+      &::before
+        content: ''
+        position: absolute
+        top: 0
+        left: 0
+        right: 0
+        bottom: 0
+        background: asset-url("charts/watermark_340.png") no-repeat center
+        background-size: contain
+        filter: hue-rotate(260deg) saturate(1.2) brightness(0.3)
+        opacity: 0.2
+        pointer-events: none
+
+.search-container
+  display: flex
+  align-items: center
+  justify-content: center
+  min-height: calc(100vh - 200px)
+  padding: 40px 20px
+
+.search-result
+  text-align: center
+  max-width: 600px
+  padding: 60px 40px
+  background-color: white
+  border-radius: 12px
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1)
+
+  @media (max-width: 768px)
+    padding: 40px 24px
+    max-width: 100%
+
+  @media (max-width: 576px)
+    padding: 32px 16px
+
+  .search-result-icon
+    color: #d1d5db
+    margin-bottom: 20px
+    transition: color 0.2s
+
+  .search-result-title
+    font-size: 24px
+    font-weight: 600
+    color: #1f2937
+    margin: 0 0 16px 0
+    line-height: 1.4
+
+    @media (max-width: 576px)
+      font-size: 20px
+
+  .search-result-text
+    font-size: 16px
+    color: #6b7280
+    margin: 0 0 12px 0
+    line-height: 1.6
+
+    @media (max-width: 576px)
+      font-size: 14px
+
+  .search-result-hint
+    font-size: 14px
+    color: #6b7280
+    margin: 0 0 30px 0
+    line-height: 1.5
+
+    @media (max-width: 576px)
+      font-size: 12px
+
+  html.dark &
+    background-color: #2D1548
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3)
+
+    .search-result-icon
+      color: #6b7280
+
+    .search-result-title
+      color: #f3f4f6
+
+    .search-result-text
+      color: #d1d5db
+
+    .search-result-hint
+      color: #9ca3af

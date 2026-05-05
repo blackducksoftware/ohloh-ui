@@ -1,11 +1,9 @@
 %header.row
-  .bd-logo.col-lg-2.col-xs-2
-    %img{ itemprop: 'image', src: image_path('logo/BD_logo.png'), alt: 'Black Duck' }
-  .header-info.col-lg-8.col-xs-7
+  .header-info.col-lg-10.col-xs-9
     .header-title
       %small Black Duck Security Advisory
       %span BDSA
-      %h4= @response['title'] 
+      %h4= @response['title']
     .header-details
       %span.right-border.date= params[:id]
       - if @cve_data

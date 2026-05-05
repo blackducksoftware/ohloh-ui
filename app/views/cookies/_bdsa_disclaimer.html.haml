@@ -1,10 +1,21 @@
 #bdsa_disclaimer_cookies.modal{:role => "dialog"}
   .modal-dialog.modal-dialog-centered{:role => "document"}
     .modal-content
+      .modal-header
+        %i.fa.fa-file-text-o.disclaimer-icon
+        %h4.modal-title Terms of Use
+        %p.modal-subtitle Please review and accept our terms to continue
       .modal-body.bdsa_disclaimer
-        = check_box_tag 'bdsa_disclaimer_check', 0, false
-        Yes, I have read the&nbsp
-        = link_to "API & Data License Agreement", asset_url("docs/API_License_Agreement.pdf"), download: 'API_License_Agreement.pdf'
-        &nbspand accept it.
+        .agreement-box
+          %i.fa.fa-shield.agreement-icon
+          .agreement-text
+            %label.custom-checkbox
+              = check_box_tag 'bdsa_disclaimer_check', 0, false
+              %span.checkmark
+              %span.checkbox-label
+                I have read and accept the
+                = link_to "API & Data License Agreement", asset_url("docs/API_License_Agreement.pdf"), download: 'API_License_Agreement.pdf', class: 'agreement-link', target: '_blank'
       .modal-footer
-        = button_tag 'Continue', type: 'reset', disabled: true, class: 'btn btn-default bdsa_disclaimer_accept'
+        = button_tag type: 'reset', disabled: true, class: 'btn btn-primary bdsa_disclaimer_accept' do
+          %span Continue
+          %i.fa.fa-arrow-right
