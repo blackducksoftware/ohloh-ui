@@ -1580,7 +1580,42 @@
       padding: 16px
       min-height: 300px
 
-  #cve-cvss3, #cvss3
+  // Combined charts container - desktop only
+  .charts-combined-desktop
+    display: block
+
+    @media (max-width: 991px)
+      display: none
+
+  // Mobile charts - mobile only
+  .charts-mobile-only
+    display: none
+
+    @media (max-width: 991px)
+      display: block
+
+  // Row for combined charts
+  .charts-row
+    margin-left: 0
+    margin-right: 0
+    display: flex
+    flex-wrap: nowrap
+    gap: 12px
+
+  // Individual chart within combined container
+  .chart-half
+    padding-left: 0
+    padding-right: 0
+    flex: 1
+
+    .highchart-header
+      padding: 8px
+
+    .chart-wrapper
+      padding: 10px
+      min-height: 350px
+
+  #cve-cvss3, #cvss3, #cve-cvss3-mobile, #cvss3-mobile
     background: asset-url("charts/watermark_340.png") no-repeat center
     background-size: contain
     position: relative

@@ -1,5 +1,8 @@
-.text-center.border-right.no-right-padding{class: "#{@cve ? 'col-lg-3 col-xs-12' : 'col-lg-6 col-xs-12'}"}
-  .chart-container
+- combined ||= false
+- mobile ||= false
+- chart_id = mobile ? 'cvss3-mobile' : 'cvss3'
+- if combined
+  .col-lg-6.col-xs-12.text-center.chart-half
     .highchart-header.border-left
       %span This record
       %br
@@ -7,5 +10,17 @@
       %br
       %span CVSS v3.x
     .chart-wrapper
-      #cvss3{ 'data-cvss' => "#{bdsa_cvss(@response['cvss3'])}", 'data-severity' => "#{@response['cvss3']['severity']}" }
+      %div{ id: chart_id, 'data-cvss' => "#{bdsa_cvss(@response['cvss3'])}", 'data-severity' => "#{@response['cvss3']['severity']}" }
     = render partial: 'severity', locals: { cvss: @response['cvss3'], type: 'BDSA' }
+- else
+  .text-center.border-right.no-right-padding{class: "#{@cve ? 'col-lg-3 col-xs-12' : 'col-lg-6 col-xs-12'}"}
+    .chart-container
+      .highchart-header.border-left
+        %span This record
+        %br
+        %span.bold= params[:id]
+        %br
+        %span CVSS v3.x
+      .chart-wrapper
+        %div{ id: chart_id, 'data-cvss' => "#{bdsa_cvss(@response['cvss3'])}", 'data-severity' => "#{@response['cvss3']['severity']}" }
+      = render partial: 'severity', locals: { cvss: @response['cvss3'], type: 'BDSA' }

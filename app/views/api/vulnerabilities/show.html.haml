@@ -73,5 +73,14 @@
     - if @cwe_data
       .content-container.cwe-container
         = render partial: 'cwe'
-  = render partial: 'bdsa'
-  = render partial: 'cve'
+  - if @cve
+    .col-lg-6.col-xs-12.charts-combined-desktop
+      .chart-container
+        .row.charts-row
+          = render partial: 'bdsa', locals: { combined: true, mobile: false }
+          = render partial: 'cve', locals: { combined: true, mobile: false }
+    .charts-mobile-only
+      = render partial: 'bdsa', locals: { combined: false, mobile: true }
+      = render partial: 'cve', locals: { combined: false, mobile: true }
+  - else
+    = render partial: 'bdsa', locals: { combined: false, mobile: false }
