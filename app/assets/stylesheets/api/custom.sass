@@ -1,146 +1,1198 @@
 .bdsa-vulnerability
-  .navbar-inverse
-    border-radius: 0
-    margin-bottom: 0
+  min-height: 100vh
+  background-color: #f9fafb
+  transition: background-color 0.2s, color 0.2s
+  display: flex
+  flex-direction: column
+  overflow-x: hidden
+  width: 100%
 
-  .logo
-    height: 60px
-    padding: 5px 15px
-    max-width: 14em
-    min-width: 5em
-    background: linear-gradient(48deg, rgba(39, 96, 143, 1) -50%, rgba(91, 43, 130, 1) 65%)
-    float: left
+  a:not(.btn):not(.logo-link)
+    color: #1e40af
+    text-decoration: underline
 
-    img
-      width: 140px
-      height: 30px
+    &:hover
+      color: #1e3a8a
 
-  .btn-dark
+    &:visited
+      color: #1e40af
+
+  html.dark &
+    background-color: #000
     color: #fff
-    background-color: #343a40
-    border-color: #343a40
 
-  .search
-    float: right
-    width: 20rem
-    padding: 12px 8px
+    a:not(.btn):not(.logo-link)
+      color: #60a5fa !important
+      text-decoration: underline !important
 
-  .separator-div
+      &:hover
+        color: #93c5fd !important
+
+      &:visited
+        color: #60a5fa !important
+
+  // Modern Header Styles
+  .modern-header
+    background: linear-gradient(to right, #000000, #1D0631, #5A2A82)
+    width: 100%
+    position: sticky
+    top: 0
+    z-index: 1000
+    overflow: hidden
+
+  .modern-header-gradient
+    display: none
+
+  .modern-header-content
+    max-width: 100%
+    margin: 0 auto
+    padding: 0 32px
     display: flex
-    color: #fff
-    padding-left: 26px
+    align-items: center
+    height: 60px
 
-  header
-    background-color: #f6f6f6
-    padding: 10px
+    @media (max-width: 540px)
+      padding: 0 16px
 
-    .header-details
-      span.right-border
-        border-right: 1px solid #999
-      span
-        padding: 0 8px
+  .logo-link
+    display: flex
+    align-items: center
+    gap: 8px
+    text-decoration: none
+    transition: opacity 0.15s
+    height: 60px
+    flex: 1
 
-    .header-title
-      span
-        color: #000
-        background: #fff
-        border: 1px groove #ddd
-        border-radius: 10%
-        padding: 4px
-        font-size: x-small
+    &:hover
+      opacity: 0.8
+
+  .logo-img
+    height: 30px
+    width: auto
+    object-fit: contain
+    flex-shrink: 0
+
+  .logo-text
+    font-size: 18px
+    font-weight: bold
+    color: white
+    line-height: 1.2
+    white-space: nowrap
+
+  .theme-toggle
+    padding: 8px 12px
+    background: transparent
+    border: none
+    border-radius: 8px
+    cursor: pointer
+    transition: background-color 0.15s
+    flex-shrink: 0
+    display: flex
+    align-items: center
+    justify-content: center
+    height: 40px
+    margin-right: 8px
+
+    &:hover
+      background-color: rgba(255, 255, 255, 0.1)
+
+    .fa
+      font-size: 18px
+      color: white
+
+  .theme-icon-light,
+  .theme-icon-dark
+    display: none
+
+  .theme-icon-light
+    width: 18px
+    height: 18px
+
+  html.dark & .theme-icon-light
+    display: inline-block
+
+  html.light & .theme-icon-dark
+    display: inline-block
+
+  // Header Search Bar
+  .header-search-bar
+    display: flex
+    align-items: center
+    gap: 8px
+    max-width: 400px
+    background-color: rgba(255, 255, 255, 0.1)
+    border: 1px solid rgba(255, 255, 255, 0.2)
+    border-radius: 8px
+    padding: 8px 12px
+    transition: all 0.15s
+    flex-shrink: 0
+    order: 3
+
+    @media (max-width: 768px)
+      max-width: 300px
+      margin: 0 8px
+
+    @media (max-width: 576px)
+      max-width: none
+      margin: 0
+      gap: 4px
+      padding: 6px 8px
+      background-color: transparent
+      border: none
+
+      .header-search-input,
+      .header-search-clear,
+      .header-search-divider,
+      .header-search-button
+        display: none
+
+    &:focus-within
+      background-color: rgba(255, 255, 255, 0.15)
+      border-color: rgba(255, 255, 255, 0.4)
+
+    @media (max-width: 576px)
+      &:focus-within
+        background-color: transparent
+        border-color: transparent
+
+  .header-search-icon
+    background: none
+    border: none
+    cursor: pointer
+    color: rgba(255, 255, 255, 0.7)
+    font-size: 16px
+    padding: 0
+    flex-shrink: 0
+    transition: color 0.15s
+
+    &:hover
+      color: rgba(255, 255, 255, 0.9)
+
+  .header-search-input
+    flex: 1
+    background: transparent
+    border: none
+    outline: none
+    color: white
+    font-size: 14px
+    min-width: 0
+
+    &::placeholder
+      color: rgba(255, 255, 255, 0.6)
+
+  .header-search-clear
+    background: none
+    border: none
+    cursor: pointer
+    color: rgba(255, 255, 255, 0.7)
+    font-size: 20px
+    padding: 0
+    flex-shrink: 0
+    transition: color 0.15s
+
+    &:hover
+      color: rgba(255, 255, 255, 0.9)
+
+  .header-search-divider
+    width: 1px
+    height: 16px
+    background-color: rgba(255, 255, 255, 0.2)
+    flex-shrink: 0
+
+  .header-search-button
+    background: transparent
+    color: rgba(255, 255, 255, 0.8)
+    border: none
+    cursor: pointer
+    font-size: 13px
+    font-weight: 500
+    padding: 4px 12px
+    flex-shrink: 0
+    transition: color 0.15s
+
+    &:hover
+      color: rgba(255, 255, 255, 0.95)
+
+  // Mobile Search Bar
+  .header-mobile-search
+    position: absolute
+    top: 60px
+    left: 0
+    right: 0
+    background-color: transparent
+    padding: 0
+    z-index: 100
+
+    @media (min-width: 577px)
+      display: none !important
+
+    .mobile-search-bar
+      display: flex
+      align-items: center
+      gap: 8px
+      background-color: #FFFFFF
+      border: 2px solid #5A2A82
+      border-radius: 8px
+      margin: 12px 16px
+      padding: 10px 12px
+
+      &:focus-within
+        background-color: #FFFFFF
+        border-color: #5A2A82
+
+      html.dark &
+        background-color: #1D0631
+        border-color: #ffb91a
+
+        &:focus-within
+          background-color: #2D1447
+          border-color: #ffc543
+
+  .mobile-search-icon
+    background: none
+    border: none
+    cursor: pointer
+    color: rgba(0, 0, 0, 0.7)
+    font-size: 16px
+    padding: 0
+    flex-shrink: 0
+    transition: color 0.15s
+
+    &:hover
+      color: rgba(0, 0, 0, 0.9)
+
+    html.dark &
+      color: rgba(255, 255, 255, 0.7)
+
+      &:hover
+        color: rgba(255, 255, 255, 0.9)
+
+  .mobile-search-input
+    flex: 1
+    background: transparent
+    border: none
+    outline: none
+    color: rgba(0, 0, 0, 0.8)
+    font-size: 14px
+    min-width: 0
+
+    &::placeholder
+      color: rgba(0, 0, 0, 0.4)
+
+    html.dark &
+      color: white
+
+      &::placeholder
+        color: rgba(255, 255, 255, 0.6)
+
+  .mobile-search-clear
+    background: none
+    border: none
+    cursor: pointer
+    color: rgba(0, 0, 0, 0.7)
+    font-size: 20px
+    padding: 0
+    flex-shrink: 0
+    transition: color 0.15s
+
+    &:hover
+      color: rgba(0, 0, 0, 0.9)
+
+    html.dark &
+      color: rgba(255, 255, 255, 0.7)
+
+      &:hover
+        color: rgba(255, 255, 255, 0.9)
+
+  .mobile-search-button
+    background: transparent
+    color: rgba(0, 0, 0, 0.8)
+    border: none
+    cursor: pointer
+    font-size: 13px
+    font-weight: 500
+    padding: 4px 12px
+    flex-shrink: 0
+    transition: color 0.15s
+
+    &:hover
+      color: rgba(0, 0, 0, 0.95)
+
+    html.dark &
+      color: rgba(255, 255, 255, 0.8)
+
+      &:hover
+        color: rgba(255, 255, 255, 0.95)
+
+  .container-fluid
+    max-width: 100%
+    overflow-x: hidden
+    padding-left: 15px
+    padding-right: 15px
+
+    @media (max-width: 768px)
+      padding-left: 10px
+      padding-right: 10px
+
+  // Remove column padding on mobile to improve spacing
+  [class*="col-"]
+    @media (max-width: 768px)
+      padding-left: 0 !important
+      padding-right: 0 !important
+
+  .row.details
+    @media (max-width: 768px)
+      margin-left: 0
+      margin-right: 0
+
+      [class*="col-"]
+        margin-bottom: 12px
+
+  header:not(.modern-header)
+    background-color: #ffffff
+    padding: 20px
+    border-bottom: 1px solid #e5e7eb
+    transition: background-color 0.2s, border-color 0.2s
+
+    @media (max-width: 768px)
+      padding: 16px 14px
+
+    @media (max-width: 576px)
+      padding: 14px 14px
+
+    html.dark &
+      background-color: #151b23
+      border-bottom-color: rgba(139, 122, 168, 0.2)
+
+    .row
+      @media (max-width: 576px)
+        display: flex
+        flex-direction: column
+        align-items: stretch
+
+    > [class*="col-"]
+      @media (max-width: 576px)
+        width: 100% !important
+        margin-bottom: 0
+
+    .header-ids
+      display: flex
+      align-items: center
+      gap: 12px
+      margin-bottom: 16px
+      flex-wrap: wrap
+
+      @media (max-width: 768px)
+        gap: 8px
+        margin-bottom: 12px
+
+      @media (max-width: 576px)
+        gap: 6px
+        margin-bottom: 10px
+
+      small
+        color: #6b7280
+        font-size: 13px
+        font-weight: 500
+        background: #f3f4f6
+        padding: 6px 12px
+        border-radius: 6px
+        white-space: nowrap
+        display: inline-block
+
+        @media (max-width: 768px)
+          font-size: 12px
+          padding: 5px 10px
+
+        @media (max-width: 576px)
+          font-size: 11px
+          padding: 4px 8px
+
+        html.dark &
+          color: #9ca3af
+          background: rgba(139, 122, 168, 0.15)
+
+      .badge-bdsa, .badge-cve
+        border-radius: 6px
+        padding: 6px 12px
+        font-size: 13px
+        font-weight: 600
+        transition: background-color 0.2s
+        display: inline-block
+
+        @media (max-width: 768px)
+          font-size: 12px
+          padding: 5px 10px
+
+        @media (max-width: 576px)
+          font-size: 11px
+          padding: 4px 8px
+
+      .badge-bdsa
+        color: #fff
+        background: #5d1dc3
+
+      .badge-cve
+        color: #6b7280
+        border: 1px solid #d1d5db
+        background: #f3f4f6
+        display: inline-flex
+        align-items: center
+        gap: 6px
+        white-space: nowrap
+
+        @media (max-width: 576px)
+          gap: 4px
+          font-size: 12px
+
+        html.dark &
+          color: #9ca3af
+          border-color: rgba(139, 122, 168, 0.3)
+          background: rgba(139, 122, 168, 0.1)
+
+        i
+          font-size: 11px
+          flex-shrink: 0
+
+          @media (max-width: 576px)
+            font-size: 10px
+
+    .header-title-main
+      font-size: 28px
+      font-weight: 700
+      margin: 0 0 16px 0
+      line-height: 1.4
+      color: #111827
+      word-break: break-word
+      overflow-wrap: break-word
+
+      @media (max-width: 768px)
+        font-size: 22px
+        margin-bottom: 14px
+        line-height: 1.35
+
+      @media (max-width: 576px)
+        font-size: 18px
+        margin-bottom: 12px
+        line-height: 1.3
+
+      html.dark &
+        color: #f3f4f6
+
+    .header-meta
+      display: flex
+      align-items: center
+      gap: 0
+      flex-wrap: wrap
+      font-size: 14px
+      line-height: 1.6
+
+      @media (max-width: 768px)
+        font-size: 13px
+        gap: 2px
+
+      @media (max-width: 576px)
+        font-size: 12px
+        gap: 2px
+
+      .meta-icon
+        color: #6b7280
+        font-size: 12px
+        margin-right: 6px
+        flex-shrink: 0
+
+        @media (max-width: 576px)
+          font-size: 11px
+          margin-right: 4px
+
+        html.dark &
+          color: #9ca3af
+
+      .meta-label
+        color: #6b7280
+        font-weight: 600
+        margin-right: 6px
+        white-space: nowrap
+
+        @media (max-width: 576px)
+          margin-right: 4px
+
+        html.dark &
+          color: #9ca3af
+
+      .meta-value
+        color: #374151
+        margin-right: 14px
+        word-break: break-word
+
+        @media (max-width: 576px)
+          margin-right: 0
+          margin-bottom: 6px
+          flex-basis: 100%
+
+        html.dark &
+          color: #d1d5db
+
+      .meta-label:nth-child(5)
+        margin-left: 0
+        margin-right: 6px
+
+        @media (max-width: 576px)
+          margin-right: 4px
   .row
+    color: #374151
+
+    html.dark &
+      color: #d1d5db
+
     span.bold
-      font-weight: bold
+      font-weight: 600
+      color: #111827
+
+      html.dark &
+        color: #f3f4f6
+
+      a
+        color: #1e40af !important
+
+        html.dark &
+          color: #60a5fa
+
     span.date
       padding: 0 8px 0 0
+      color: #6b7280
+
+      html.dark &
+        color: #9ca3af
+
     span.bordered
-      border: 1px groove #ddd
-      border-radius: 10%
-      padding: 4px
-      font-size: small
-      font-weight: bold
+      border: 1px solid #d1d5db
+      border-radius: 8px
+      padding: 4px 8px
+      font-size: 12px
+      font-weight: 500
+      color: #374151
+      background: #f9fafb
+      transition: all 0.2s
+
+      html.dark &
+        border-color: rgba(90, 42, 130, 0.4)
+        background: rgba(90, 42, 130, 0.1)
+        color: #d1d5db
+
     span.medium
-      color: #000
-      background: rgb(231,140,135)
+      color: #000 !important
+      background: rgb(231,140,135) !important
+
     span.low
-      color: #000
-      background: rgb(154,155,156)
+      color: #000 !important
+      background: rgb(154,155,156) !important
+
     span.high
-      color: #fff
-      background: rgb(156,37,31)
+      color: #fff !important
+      background: rgb(156,37,31) !important
+
     span.critical
-      color: #fff
-      background: rgb(90,16,12)
+      color: #fff !important
+      background: rgb(90,16,12) !important
   .bd-logo
     width: 50px
     height: 50px
     padding: 8px
-    border: 1px solid #dddddd
+    border: 1px solid #e5e7eb
     border-radius: 50%
-    background-color: #fff
+    background-color: #ffffff
     display: inline-block
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05)
+    transition: all 0.2s
+
+    @media (max-width: 576px)
+      width: 40px
+      height: 40px
+      padding: 6px
+
+    html.dark &
+      background-color: rgba(45, 21, 72, 0.3)
+      border-color: rgba(90, 42, 130, 0.4)
+
     img
       width: 100%
 
   .row.details
     margin: 20px 0
-    .vuln-summary
-      margin-bottom: 15px
+
+    > [class*="col-"]:first-child
+      @media (max-width: 768px)
+        padding-left: 10px !important
+        padding-right: 10px !important
+
+      @media (max-width: 480px)
+        padding-left: 8px !important
+        padding-right: 8px !important
+
       display: flex
       flex-wrap: wrap
-      .summary-info
-        background-color: #f6f6f6
-        border: 1px solid #ddd
-        min-height: 55px
-        padding-top: 4px
-      .overflow-hidden
-        overflow: hidden
+      gap: 12px
+
+    .summary-info
+      background-color: #ffffff
+      border: 1px solid #e5e7eb
+      padding: 16px
+      border-radius: 8px
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1)
+      transition: all 0.2s
+      flex: 1 1 calc(25% - 9px)
+      display: flex
+      align-items: center
+      gap: 16px
+
+      @media (max-width: 1024px)
+        flex: 1 1 calc(50% - 6px)
+
+      @media (max-width: 768px)
+        flex: 1 1 100%
+        padding: 14px
+        font-size: 14px
+        gap: 12px
+
+      @media (max-width: 480px)
+        padding: 12px
+        font-size: 13px
+
+      &:hover
+        transform: translateY(-2px)
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1)
+
+      html.dark &
+        background-color: #151b23
+        border-color: rgba(139, 122, 168, 0.2)
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3)
+
+        &:hover
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5)
+
+      .summary-icon
+        display: flex
+        align-items: center
+        justify-content: center
+        flex-shrink: 0
+
+        i
+          font-size: 32px
+          color: #9ca3af
+
+          html.dark &
+            color: #6b7280
+
+      .summary-content
+        display: flex
+        flex-direction: column
+        gap: 4px
+        flex: 1
+
+      .summary-title
+        font-size: 14px
+        font-weight: 600
+        color: #111827
+        line-height: 1.3
+
+        html.dark &
+          color: #f3f4f6
+
+      .summary-label
+        font-size: 12px
+        color: #6b7280
+        line-height: 1.3
+
+        html.dark &
+          color: #9ca3af
+
+    .content-container
+      flex: 0 0 100%
+
+      @media (max-width: 576px)
+        padding: 16px
+
+      .row
+        margin-left: 0
+        margin-right: 0
+
+      .row > [class*="col-"]
+        padding-left: 0
+        padding-right: 0
+
+      .workaround-container
+        p
+          margin-bottom: 12px
+          line-height: 1.5
+
+        span.bold
+          display: block
+          margin-top: 12px
+          margin-bottom: 6px
+
+      .cwe-container
+        p
+          margin-bottom: 12px
+          line-height: 1.5
+
+        p.cwe-title
+          font-weight: 600
+          margin-top: 16px
+          margin-bottom: 8px
+
+        p:first-of-type.cwe-title
+          margin-top: 0
+
+      .fa-3x
+        @media (max-width: 576px)
+          font-size: 1.5em !important
+
+      &:hover
+        transform: translateY(-2px)
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1)
+
+      html.dark &
+        background-color: #151b23
+        border-color: rgba(139, 122, 168, 0.2)
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3)
+
+        &:hover
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5)
+
+    .overflow-hidden
+      overflow: hidden
+
     .vector, dd
       overflow-wrap: break-word
+
+      @media (max-width: 576px)
+        font-size: 14px
+
+      a
+        color: #1e40af !important
+        text-decoration: underline
+
+      html.dark &
+        color: #9ca3af
+
+        a
+          color: #60a5fa !important
+          text-decoration: underline
+
     dt
       margin-top: 5px
       font-weight: 500
+
+      @media (max-width: 576px)
+        font-size: 14px
+        margin-top: 8px
+
+      html.dark &
+        color: #f3f4f6
+
     dl
-      padding: 0 1em
+      padding: 0 16px
+
+      @media (max-width: 576px)
+        padding: 0 8px
+
     dd:not(:last-child)
-     margin-bottom: 5px
+      margin-bottom: 5px
+
     dd
-     margin-left: 20px
-  .search-result
-    height: 100%
-    border: 1px solid #f7f7f7
-    border-radius: 50%
-    height: 35rem
-    width: 35rem
-    background: #fafafa
-    text-align: center
-    padding: 6em 2em
-    box-shadow: 0 0 2px 0
+      margin-left: 20px
 
-  .landing
-    height: 100%
-    border: 1px solid #f7f7f7
-    width: 75rem
-    text-align: center
-    padding: 5em 3em
-    box-shadow: 0 0 2px 0
+      @media (max-width: 576px)
+        margin-left: 12px
+        font-size: 14px
 
-    p
-      font-size: medium
-  .search-container
+      html.dark &
+        color: #9ca3af
+  // Landing Page Styles
+  .bdsa-landing-page
     display: flex
+    flex-direction: column
+    align-items: center
     justify-content: center
-    margin: 5em 0
+    flex: 1
+    padding: 16px 96px
+
+    @media (max-width: 768px)
+      padding: 16px
+
+  .bdsa-hero
+    width: 100%
+    max-width: 672px
+    margin: 0 auto
+
+    @media (max-width: 768px)
+      max-width: 100%
+
+  .bdsa-branding
+    display: flex
+    flex-direction: column
+    align-items: center
+    margin-bottom: 40px
+    user-select: none
+
+    @media (max-width: 576px)
+      margin-bottom: 24px
+
+  .cyrc-logo-link
+    display: block
+    margin-bottom: 20px
+    border-radius: 12px
+    transition: opacity 0.15s
+
+    @media (max-width: 576px)
+      margin-bottom: 16px
+
+    &:hover
+      opacity: 0.8
+
+  .cyrc-logo
+    width: 96px
+    height: 96px
+    object-fit: contain
+    filter: drop-shadow(0 0 20px rgba(90, 42, 130, 0.4))
+
+    @media (max-width: 576px)
+      width: 72px
+      height: 72px
+
+  .bdsa-title
+    font-size: 40px
+    line-height: 1
+    letter-spacing: -0.025em
+    margin-bottom: 4px
+    text-align: center
+
+    @media (min-width: 640px)
+      font-size: 48px
+
+    @media (max-width: 576px)
+      font-size: 32px
+
+  .bdsa-title-brand
+    color: #5A2A82
+    font-weight: 900
+
+    html.dark &
+      color: #c084fc
+
+  .bdsa-title-text
+    font-weight: 360
+    color: #6b7280
+
+    html.dark &
+      color: #d1d5db
+
+  .bdsa-subtitle
+    color: #6b7280
+    font-size: 14px
+    margin-top: 8px
+    letter-spacing: 0.05em
+    text-align: center
+
+    html.dark &
+      color: #d1d5db
+
+  // Search Bar Styles
+  .bdsa-search-container
+    width: 100%
+    margin-top: 40px
+
+    @media (max-width: 576px)
+      margin-top: 24px
+
+  .bdsa-search-bar
+    display: flex
+    align-items: center
+    background-color: white
+    border: 1px solid #e5e7eb
+    border-radius: 9999px
+    padding: 14px 20px
+    gap: 12px
+    transition: all 0.2s
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08)
+
+    @media (max-width: 576px)
+      padding: 10px 16px
+      gap: 8px
+
+    &:focus-within
+      border-color: #5A2A82
+      box-shadow: 0 0 0 3px rgba(90, 42, 130, 0.15), 0 4px 24px rgba(0, 0, 0, 0.12)
+
+    &:hover:not(:focus-within)
+      border-color: #d1d5db
+
+    html.dark &
+      background-color: #151b23
+      border-color: #2a2a2a
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.4)
+
+      &:focus-within
+        border-color: #c084fc
+        box-shadow: 0 0 0 3px rgba(192, 132, 252, 0.25), 0 4px 24px rgba(192, 132, 252, 0.2)
+
+      &:hover:not(:focus-within)
+        border-color: #3a3a3a
+
+  .bdsa-search-icon
+    width: 20px
+    height: 20px
+    color: #9ca3af
+    flex-shrink: 0
+
+    html.dark &
+      color: #6b7280
+
+  .bdsa-search-input
+    flex: 1
+    background: transparent
+    border: none
+    outline: none
+    font-size: 16px
+    color: #111827
+    padding-right: 0
+    min-width: 0
+    transition: padding-right 0.15s
+
+    &::placeholder
+      color: #9ca3af
+
+    html.dark &
+      color: white
+
+      &::placeholder
+        color: #6b7280
+
+  .bdsa-search-clear
+    color: #9ca3af
+    background: none
+    border: none
+    cursor: pointer
+    font-size: 24px
+    line-height: 1
+    padding: 0
+    flex-shrink: 0
+    transition: color 0.15s
+
+    &:hover
+      color: #6b7280
+
+    html.dark &
+      color: #6b7280
+
+      &:hover
+        color: #9ca3af
+
+  .bdsa-search-divider
+    width: 1px
+    height: 20px
+    background-color: #e5e7eb
+    flex-shrink: 0
+
+    html.dark &
+      background-color: #2a2a2a
+
+  .bdsa-search-button
+    flex-shrink: 0
+    background-color: #5A2A82
+    color: white
+    border-radius: 9999px
+    padding: 6px 20px
+    font-size: 14px
+    font-weight: 500
+    border: none
+    cursor: pointer
+    transition: background-color 0.15s
+
+    &:hover
+      background-color: #6d35a0
+
+  // Summary Cards
+  .bdsa-summary-cards
+    width: 100%
+    margin-top: 32px
+    display: grid
+    grid-template-columns: 1fr
+    gap: 16px
+
+    @media (min-width: 640px)
+      grid-template-columns: repeat(3, 1fr)
+
+  .bdsa-card
+    background-color: white
+    border: 1px solid #e5e7eb
+    border-radius: 16px
+    padding: 20px
+    text-align: left
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05)
+
+    html.dark &
+      background-color: #151b23
+      border-color: rgba(139, 122, 168, 0.2)
+
+  .bdsa-card-icon
+    width: 36px
+    height: 36px
+    border-radius: 12px
+    display: flex
+    align-items: center
+    justify-content: center
+    margin-bottom: 12px
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1)
+
+    .fa
+      font-size: 20px
+      color: white
+
+  .bdsa-icon-purple
+    background-color: #7C3AED
+
+  .bdsa-icon-blue
+    background-color: #0EA5E9
+
+  .bdsa-icon-green
+    background-color: #10B981
+
+  .bdsa-card-title
+    color: #111827
+    font-size: 14px
+    font-weight: 600
+    margin-bottom: 4px
+
+    html.dark &
+      color: #f3f4f6
+
+  .bdsa-card-desc
+    color: #6b7280
+    font-size: 12px
+    line-height: 1.5
+
+    html.dark &
+      color: #9ca3af
+
+  // Learn More Section
+  .bdsa-learn-more-section
+    width: 100%
+    margin-top: 20px
+    display: flex
+    flex-direction: column
+    align-items: center
+
+  .bdsa-learn-more-toggle
+    display: flex
+    align-items: center
+    gap: 8px
+    padding: 10px 20px
+    border-radius: 9999px
+    border: 1px solid #d1d5db
+    background-color: white
+    color: #374151
+    font-size: 14px
+    font-weight: 500
+    cursor: pointer
+    transition: border-color 0.15s
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05)
+
+    &:hover
+      border-color: #5A2A82
+
+    html.dark &
+      border-color: rgba(90, 42, 130, 0.6)
+      background-color: #151b23
+      color: #e5e7eb
+
+      &:hover
+        border-color: #c084fc
+
+  .bdsa-learn-icon
+    font-size: 16px
+    color: #5A2A82
+
+    html.dark &
+      color: #c084fc
+
+  .bdsa-chevron-down,
+  .bdsa-chevron-up
+    font-size: 16px
+
+  .bdsa-learn-more-content
+    margin-top: 24px
+    width: 100%
+
+  .bdsa-details-list
+    list-style: none
+    padding: 0
+    margin: 0
+    display: flex
+    flex-direction: column
+    gap: 16px
+
+  .bdsa-detail-item
+    display: flex
+    align-items: flex-start
+    gap: 12px
+
+  .bdsa-detail-icon
+    font-size: 16px
+    color: #5A2A82
+    flex-shrink: 0
+    margin-top: 2px
+
+    html.dark &
+      color: #c084fc
+
+  .bdsa-detail-text
+    color: #6b7280
+    font-size: 14px
+
+    html.dark &
+      color: #9ca3af
+
+  .bdsa-detail-heading
+    color: #111827
+    font-weight: 500
+
+    html.dark &
+      color: #e5e7eb
   .cybersecurity-logo
     text-align: center
     a:first-child
       display: block
+
+    @media (max-width: 768px)
+      margin-top: 10px
+
+    @media (max-width: 576px)
+      display: none
+
   .cybersecurity-logo img
     height: 65px
+
+    @media (max-width: 768px)
+      height: 50px
+
   .learn-more
     white-space: break-spaces
+
+    @media (max-width: 768px)
+      font-size: 12px
+      padding: 6px 10px
+
+    @media (max-width: 576px)
+      font-size: 11px
+      padding: 4px 8px
   .fa-light
     color: #ddd
+
+    html.dark &
+      color: darkgray
+
   .fa-custom
     color: gray
     font-size: 15px
@@ -160,36 +1212,531 @@
   .fix-section
     pre
       background-color: #d6f4ff
+
+      html.dark &
+        background-color: rgba(45, 21, 72, 0.5)
+        color: #d1d5db
   .highchart-header
     background: #f7f7f7
+    border-radius: 8px
     padding: 8px
-    border-top: 1px solid #ddd
-    border-bottom: 1px solid #ddd
-    margin-bottom: 20px
+    border-top: none
+    border-bottom: none
+
+    html.dark &
+      background: #000
+      border-top-color: transparent
+      border-bottom-color: transparent
+
   .border-left
-    border-left: 1px solid #ddd
+    border-left: none
+
+    html.dark &
+      border-left-color: transparent
+
   .border-right
-    border-right: 1px solid #ddd
+    border-right: none
+
+    html.dark &
+      border-right-color: transparent
+
   .no-right-padding
     padding-right: 0
   .no-left-padding
     padding-left: 0
   #bdsa_disclaimer_cookies
     display: block
-    background-color: rgba(0,0,0,0.8)
+    background-color: transparent
+    backdrop-filter: blur(10px)
+    -webkit-backdrop-filter: blur(10px)
+
+    .modal-dialog
+      max-width: 540px
 
     .modal-content
       margin-top: 30%
+      border-radius: 16px
+      border: none
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2)
+      background-color: white
+      overflow: hidden
 
-  footer .footer-bottom
-    color: #b3b4b3
-    margin-top: 10px
+      @media (max-width: 768px)
+        margin-top: 20%
+        margin-left: 5%
+        margin-right: 5%
+        width: 90%
+        border-radius: 12px
+
+      @media (max-width: 576px)
+        margin-top: 10%
+
+      html.dark &
+        background-color: #151b23
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5)
+        border: 1px solid rgba(139, 122, 168, 0.2)
+
+    .modal-header
+      background-color: #6B46C1
+      padding: 32px
+      text-align: center
+      border-bottom: none
+      position: relative
+
+      @media (max-width: 576px)
+        padding: 24px 20px
+
+      html.dark &
+        background-color: #4C1D95
+
+      .disclaimer-icon
+        font-size: 48px
+        color: rgba(255, 255, 255, 0.9)
+        margin-bottom: 16px
+        display: block
+
+        @media (max-width: 576px)
+          font-size: 40px
+          margin-bottom: 12px
+
+      .modal-title
+        color: white
+        font-size: 24px
+        font-weight: 600
+        margin: 0 0 8px 0
+        letter-spacing: -0.5px
+
+        @media (max-width: 576px)
+          font-size: 20px
+
+      .modal-subtitle
+        color: rgba(255, 255, 255, 0.85)
+        font-size: 14px
+        margin: 0
+        font-weight: 400
+
+        @media (max-width: 576px)
+          font-size: 13px
+
+    .modal-body
+      padding: 32px
+      background-color: white
+
+      @media (max-width: 576px)
+        padding: 24px 20px
+
+      html.dark &
+        background-color: #151b23
+
+      .agreement-box
+        background: linear-gradient(135deg, #F3F4F6 0%, #E5E7EB 100%)
+        border-radius: 12px
+        padding: 24px
+        display: flex
+        gap: 16px
+        align-items: flex-start
+
+        @media (max-width: 576px)
+          padding: 20px
+          gap: 12px
+          flex-direction: column
+          align-items: center
+          text-align: center
+
+        html.dark &
+          background: rgba(139, 122, 168, 0.08)
+
+        .agreement-icon
+          font-size: 32px
+          color: #6B46C1
+          flex-shrink: 0
+          margin-top: 4px
+
+          @media (max-width: 576px)
+            margin-top: 0
+            font-size: 28px
+
+          html.dark &
+            color: #9333EA
+
+        .agreement-text
+          flex: 1
+
+          .custom-checkbox
+            display: flex
+            align-items: flex-start
+            gap: 12px
+            cursor: pointer
+            user-select: none
+            position: relative
+
+            @media (max-width: 576px)
+              flex-direction: column
+              align-items: center
+              gap: 8px
+
+            input[type="checkbox"]
+              position: absolute
+              opacity: 0
+              cursor: pointer
+              height: 0
+              width: 0
+
+              &:checked ~ .checkmark
+                background-color: #6B46C1
+                border-color: #6B46C1
+
+                &::after
+                  display: block
+
+              &:disabled ~ .checkmark
+                background-color: #E5E7EB
+                border-color: #D1D5DB
+                cursor: not-allowed
+
+            .checkmark
+              position: relative
+              height: 24px
+              width: 24px
+              background-color: white
+              border: 2px solid #D1D5DB
+              border-radius: 6px
+              flex-shrink: 0
+              transition: all 0.2s ease
+
+              html.dark &
+                background-color: #0f1219
+                border-color: #3a4551
+
+              &::after
+                content: ""
+                position: absolute
+                display: none
+                left: 7px
+                top: 3px
+                width: 6px
+                height: 10px
+                border: solid white
+                border-width: 0 2px 2px 0
+                transform: rotate(45deg)
+
+            .checkbox-label
+              color: #374151
+              font-size: 15px
+              line-height: 1.6
+              padding-top: 2px
+
+              @media (max-width: 576px)
+                font-size: 14px
+
+              html.dark &
+                color: #E5E7EB
+
+              .agreement-link
+                color: #6B46C1
+                text-decoration: none
+                font-weight: 600
+                border-bottom: 1px solid transparent
+                transition: border-color 0.2s ease
+
+                &:hover
+                  border-bottom-color: #6B46C1
+
+                html.dark &
+                  color: #9333EA
+
+                  &:hover
+                    border-bottom-color: #9333EA
+
+    .modal-footer
+      padding: 24px 32px
+      border-top: 1px solid #E5E7EB
+      background-color: #F9FAFB
+      display: flex
+      justify-content: center
+
+      @media (max-width: 576px)
+        padding: 20px
+
+      html.dark &
+        background-color: #0f1219
+        border-top-color: rgba(139, 122, 168, 0.2)
+
+      .bdsa_disclaimer_accept
+        background: linear-gradient(135deg, #6B46C1 0%, #9333EA 100%)
+        color: white
+        border: none
+        border-radius: 8px
+        padding: 14px 32px
+        font-size: 16px
+        font-weight: 600
+        cursor: pointer
+        transition: all 0.3s ease
+        box-shadow: 0 4px 12px rgba(107, 70, 193, 0.3)
+        display: flex
+        align-items: center
+        gap: 8px
+
+        @media (max-width: 576px)
+          padding: 12px 24px
+          font-size: 15px
+          width: 100%
+          justify-content: center
+
+        &:hover:not(:disabled)
+          transform: translateY(-2px)
+          box-shadow: 0 6px 20px rgba(107, 70, 193, 0.4)
+
+        &:active:not(:disabled)
+          transform: translateY(0)
+
+        &:disabled
+          background: linear-gradient(135deg, #9CA3AF 0%, #6B7280 100%)
+          cursor: not-allowed
+          box-shadow: none
+
+        .fa-arrow-right
+          font-size: 14px
+          transition: transform 0.3s ease
+
+        &:hover:not(:disabled) .fa-arrow-right
+          transform: translateX(4px)
+
+  footer
+    margin-top: auto
+    border-top: 1px solid #e5e7eb
+    padding: 32px 16px
     text-align: center
-    width: 100%
+    background-color: white
 
-    a
-      color: #b3b4b3
+    @media (max-width: 768px)
+      padding: 24px 12px
 
-  #cve-cvss3, #cvss3
+    @media (max-width: 576px)
+      padding: 20px 10px
+
+    html.dark &
+      background-color: #000
+      border-top-color: rgba(139, 122, 168, 0.2)
+
+    .footer-bottom
+      color: #4b5563
+      margin: 0
+      text-align: center
+      width: 100%
+      font-size: 14px
+
+      @media (max-width: 576px)
+        font-size: 12px
+
+      html.dark &
+        color: #9ca3af
+
+      a
+        color: #4b5563
+
+        html.dark &
+          color: #9ca3af
+
+  .chart-container,
+  .content-container
+    border-radius: 12px
+    overflow: hidden
+    background-color: white
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1)
+    transition: all 0.2s
+    padding: 20px
+
+    @media (max-width: 576px)
+      padding: 16px
+
+    html.dark &
+      background-color: #151b23
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3)
+      border: 1px solid rgba(139, 122, 168, 0.2)
+
+  .chart-container
+    padding-bottom: 10px
+
+  .content-container
+
+    .bold.date, .bold.fix-text
+      font-size: 18px
+      font-weight: 700
+      display: block
+      margin-bottom: 12px
+
+      @media (max-width: 576px)
+        font-size: 16px
+
+  .chart-wrapper
+    padding: 20px
+    min-height: 400px
+    display: flex
+    align-items: center
+    justify-content: center
+
+    @media (max-width: 576px)
+      padding: 16px
+      min-height: 300px
+
+  // Combined charts container - desktop only
+  .charts-combined-desktop
+    display: block
+
+    @media (max-width: 991px)
+      display: none
+
+  // Mobile charts - mobile only
+  .charts-mobile-only
+    display: none
+
+    @media (max-width: 991px)
+      display: block
+
+  // Row for combined charts
+  .charts-row
+    margin-left: 0
+    margin-right: 0
+    display: flex
+    flex-wrap: nowrap
+    gap: 12px
+
+  // Individual chart within combined container
+  .chart-half
+    padding-left: 0
+    padding-right: 0
+    flex: 1
+
+    .highchart-header
+      padding: 8px
+
+    .chart-wrapper
+      padding: 10px
+      min-height: 350px
+
+  #cve-cvss3, #cvss3, #cve-cvss3-mobile, #cvss3-mobile
     background: asset-url("charts/watermark_340.png") no-repeat center
     background-size: contain
+    position: relative
+    width: 100%
+    height: 100%
+
+    html.dark &
+      background-image: none
+
+      &::before
+        content: ''
+        position: absolute
+        top: 0
+        left: 0
+        right: 0
+        bottom: 0
+        background: asset-url("charts/watermark_340.png") no-repeat center
+        background-size: contain
+        filter: hue-rotate(260deg) saturate(1.2) brightness(0.3)
+        opacity: 0.2
+        pointer-events: none
+
+      .highcharts-axis-labels text,
+      .highcharts-axis-title text
+        fill: #d1d5db !important
+        stroke: none !important
+        stroke-width: 0 !important
+        -webkit-text-stroke: 0 !important
+        paint-order: stroke fill !important
+
+      .highcharts-legend text
+        fill: #d1d5db !important
+        stroke: none !important
+        stroke-width: 0 !important
+        -webkit-text-stroke: 0 !important
+        paint-order: stroke fill !important
+
+      svg text
+        stroke: none !important
+        stroke-width: 0 !important
+        -webkit-text-stroke: 0 !important
+
+      text[stroke]
+        stroke: none !important
+        stroke-width: 0 !important
+        -webkit-text-stroke: 0 !important
+
+      .highcharts-axis-line
+        stroke: #6b7280 !important
+
+      .highcharts-grid-line
+        stroke: #374151 !important
+        opacity: 0.3
+
+.search-container
+  display: flex
+  align-items: center
+  justify-content: center
+  min-height: calc(100vh - 200px)
+  padding: 40px 20px
+
+.search-result
+  text-align: center
+  max-width: 600px
+  padding: 60px 40px
+  background-color: white
+  border-radius: 12px
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1)
+
+  @media (max-width: 768px)
+    padding: 40px 24px
+    max-width: 100%
+
+  @media (max-width: 576px)
+    padding: 32px 16px
+
+  .search-result-icon
+    color: #d1d5db
+    margin-bottom: 20px
+    transition: color 0.2s
+
+  .search-result-title
+    font-size: 24px
+    font-weight: 600
+    color: #1f2937
+    margin: 0 0 16px 0
+    line-height: 1.4
+
+    @media (max-width: 576px)
+      font-size: 20px
+
+  .search-result-text
+    font-size: 16px
+    color: #6b7280
+    margin: 0 0 12px 0
+    line-height: 1.6
+
+    @media (max-width: 576px)
+      font-size: 14px
+
+  .search-result-hint
+    font-size: 14px
+    color: #6b7280
+    margin: 0 0 30px 0
+    line-height: 1.5
+
+    @media (max-width: 576px)
+      font-size: 12px
+
+  html.dark &
+    background-color: #2D1548
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3)
+
+    .search-result-icon
+      color: #6b7280
+
+    .search-result-title
+      color: #f3f4f6
+
+    .search-result-text
+      color: #d1d5db
+
+    .search-result-hint
+      color: #9ca3af
