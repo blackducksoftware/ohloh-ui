@@ -18,7 +18,7 @@
       color: #1e40af
 
   html.dark &
-    background-color: #1D0631
+    background-color: #000
     color: #fff
 
     a:not(.btn):not(.logo-link)
@@ -103,6 +103,10 @@
   .theme-icon-light,
   .theme-icon-dark
     display: none
+
+  .theme-icon-light
+    width: 18px
+    height: 18px
 
   html.dark & .theme-icon-light
     display: inline-block
@@ -330,6 +334,20 @@
       padding-left: 10px
       padding-right: 10px
 
+  // Remove column padding on mobile to improve spacing
+  [class*="col-"]
+    @media (max-width: 768px)
+      padding-left: 0 !important
+      padding-right: 0 !important
+
+  .row.details
+    @media (max-width: 768px)
+      margin-left: 0
+      margin-right: 0
+
+      [class*="col-"]
+        margin-bottom: 12px
+
   header:not(.modern-header)
     background-color: #ffffff
     padding: 20px
@@ -337,63 +355,190 @@
     transition: background-color 0.2s, border-color 0.2s
 
     @media (max-width: 768px)
-      padding: 12px 10px
+      padding: 16px 14px
+
+    @media (max-width: 576px)
+      padding: 14px 14px
 
     html.dark &
-      background-color: #2D1548
-      border-bottom-color: rgba(90, 42, 130, 0.3)
+      background-color: #151b23
+      border-bottom-color: rgba(139, 122, 168, 0.2)
 
-    .header-details
+    .row
+      @media (max-width: 576px)
+        display: flex
+        flex-direction: column
+        align-items: stretch
+
+    > [class*="col-"]
+      @media (max-width: 576px)
+        width: 100% !important
+        margin-bottom: 0
+
+    .header-ids
+      display: flex
+      align-items: center
+      gap: 12px
+      margin-bottom: 16px
+      flex-wrap: wrap
+
       @media (max-width: 768px)
-        font-size: 13px
+        gap: 8px
+        margin-bottom: 12px
 
-      span.right-border
-        border-right: 1px solid #d1d5db
+      @media (max-width: 576px)
+        gap: 6px
+        margin-bottom: 10px
+
+      small
+        color: #6b7280
+        font-size: 13px
+        font-weight: 500
+        background: #f3f4f6
+        padding: 6px 12px
+        border-radius: 6px
+        white-space: nowrap
+        display: inline-block
+
+        @media (max-width: 768px)
+          font-size: 12px
+          padding: 5px 10px
 
         @media (max-width: 576px)
-          padding: 2px 4px
+          font-size: 11px
+          padding: 4px 8px
 
         html.dark &
-          border-right-color: rgba(255, 255, 255, 0.3)
+          color: #9ca3af
+          background: rgba(139, 122, 168, 0.15)
 
-      span
-        padding: 0 8px
-        color: #374151
+      .badge-bdsa, .badge-cve
+        border-radius: 6px
+        padding: 6px 12px
+        font-size: 13px
+        font-weight: 600
+        transition: background-color 0.2s
+        display: inline-block
+
+        @media (max-width: 768px)
+          font-size: 12px
+          padding: 5px 10px
 
         @media (max-width: 576px)
-          padding: 2px 4px
+          font-size: 11px
+          padding: 4px 8px
+
+      .badge-bdsa
+        color: #fff
+        background: #5d1dc3
+
+      .badge-cve
+        color: #6b7280
+        border: 1px solid #d1d5db
+        background: #f3f4f6
+        display: inline-flex
+        align-items: center
+        gap: 6px
+        white-space: nowrap
+
+        @media (max-width: 576px)
+          gap: 4px
           font-size: 12px
+
+        html.dark &
+          color: #9ca3af
+          border-color: rgba(139, 122, 168, 0.3)
+          background: rgba(139, 122, 168, 0.1)
+
+        i
+          font-size: 11px
+          flex-shrink: 0
+
+          @media (max-width: 576px)
+            font-size: 10px
+
+    .header-title-main
+      font-size: 28px
+      font-weight: 700
+      margin: 0 0 16px 0
+      line-height: 1.4
+      color: #111827
+      word-break: break-word
+      overflow-wrap: break-word
+
+      @media (max-width: 768px)
+        font-size: 22px
+        margin-bottom: 14px
+        line-height: 1.35
+
+      @media (max-width: 576px)
+        font-size: 18px
+        margin-bottom: 12px
+        line-height: 1.3
+
+      html.dark &
+        color: #f3f4f6
+
+    .header-meta
+      display: flex
+      align-items: center
+      gap: 0
+      flex-wrap: wrap
+      font-size: 14px
+      line-height: 1.6
+
+      @media (max-width: 768px)
+        font-size: 13px
+        gap: 2px
+
+      @media (max-width: 576px)
+        font-size: 12px
+        gap: 2px
+
+      .meta-icon
+        color: #6b7280
+        font-size: 12px
+        margin-right: 6px
+        flex-shrink: 0
+
+        @media (max-width: 576px)
+          font-size: 11px
+          margin-right: 4px
+
+        html.dark &
+          color: #9ca3af
+
+      .meta-label
+        color: #6b7280
+        font-weight: 600
+        margin-right: 6px
+        white-space: nowrap
+
+        @media (max-width: 576px)
+          margin-right: 4px
+
+        html.dark &
+          color: #9ca3af
+
+      .meta-value
+        color: #374151
+        margin-right: 14px
+        word-break: break-word
+
+        @media (max-width: 576px)
+          margin-right: 0
+          margin-bottom: 6px
+          flex-basis: 100%
 
         html.dark &
           color: #d1d5db
 
-    .header-title
-      @media (max-width: 768px)
-        margin-bottom: 6px
-
-      h4
-        @media (max-width: 576px)
-          font-size: 16px
-          margin: 6px 0
-
-      span
-        color: #111827
-        background: #f3f4f6
-        border: 1px solid #d1d5db
-        border-radius: 8px
-        padding: 4px 8px
-        font-size: 12px
-        font-weight: 500
-        transition: background-color 0.2s, border-color 0.2s
+      .meta-label:nth-child(5)
+        margin-left: 0
+        margin-right: 6px
 
         @media (max-width: 576px)
-          font-size: 11px
-          padding: 3px 6px
-
-        html.dark &
-          color: #f3f4f6
-          background: rgba(90, 42, 130, 0.2)
-          border-color: rgba(90, 42, 130, 0.4)
+          margin-right: 4px
   .row
     color: #374151
 
@@ -476,62 +621,147 @@
   .row.details
     margin: 20px 0
 
-    .vuln-summary
-      margin-bottom: 15px
+    > [class*="col-"]:first-child
+      @media (max-width: 768px)
+        padding-left: 10px !important
+        padding-right: 10px !important
+
+      @media (max-width: 480px)
+        padding-left: 8px !important
+        padding-right: 8px !important
+
       display: flex
       flex-wrap: wrap
       gap: 12px
 
+    .summary-info
+      background-color: #ffffff
+      border: 1px solid #e5e7eb
+      padding: 16px
+      border-radius: 8px
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1)
+      transition: all 0.2s
+      flex: 1 1 calc(25% - 9px)
+      display: flex
+      align-items: center
+      gap: 16px
+
+      @media (max-width: 1024px)
+        flex: 1 1 calc(50% - 6px)
+
       @media (max-width: 768px)
-        gap: 10px
+        flex: 1 1 100%
+        padding: 14px
+        font-size: 14px
+        gap: 12px
 
-      .summary-info
-        background-color: #ffffff
-        border: 1px solid #e5e7eb
-        min-height: 55px
+      @media (max-width: 480px)
         padding: 12px
-        border-radius: 8px
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1)
-        transition: all 0.2s
-        flex: 1 1 calc(25% - 12px)
-        min-width: 140px
+        font-size: 13px
 
-        @media (max-width: 768px)
-          flex: 1 1 calc(50% - 10px)
-          min-width: 0
-          padding: 10px
-          font-size: 14px
+      &:hover
+        transform: translateY(-2px)
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1)
 
-        @media (max-width: 480px)
-          padding: 8px
-          font-size: 13px
-
-        .row
-          margin-left: 0
-          margin-right: 0
-
-        .row > [class*="col-"]
-          padding-left: 0
-          padding-right: 0
-
-        .fa-3x
-          @media (max-width: 576px)
-            font-size: 1.5em !important
+      html.dark &
+        background-color: #151b23
+        border-color: rgba(139, 122, 168, 0.2)
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3)
 
         &:hover
-          transform: translateY(-2px)
-          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1)
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5)
+
+      .summary-icon
+        display: flex
+        align-items: center
+        justify-content: center
+        flex-shrink: 0
+
+        i
+          font-size: 32px
+          color: #9ca3af
+
+          html.dark &
+            color: #6b7280
+
+      .summary-content
+        display: flex
+        flex-direction: column
+        gap: 4px
+        flex: 1
+
+      .summary-title
+        font-size: 14px
+        font-weight: 600
+        color: #111827
+        line-height: 1.3
 
         html.dark &
-          background-color: rgba(45, 21, 72, 0.5)
-          border-color: rgba(90, 42, 130, 0.3)
-          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3)
+          color: #f3f4f6
 
-          &:hover
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5)
+      .summary-label
+        font-size: 12px
+        color: #6b7280
+        line-height: 1.3
 
-      .overflow-hidden
-        overflow: hidden
+        html.dark &
+          color: #9ca3af
+
+    .content-container
+      flex: 0 0 100%
+
+      @media (max-width: 576px)
+        padding: 16px
+
+      .row
+        margin-left: 0
+        margin-right: 0
+
+      .row > [class*="col-"]
+        padding-left: 0
+        padding-right: 0
+
+      .workaround-container
+        p
+          margin-bottom: 12px
+          line-height: 1.5
+
+        span.bold
+          display: block
+          margin-top: 12px
+          margin-bottom: 6px
+
+      .cwe-container
+        p
+          margin-bottom: 12px
+          line-height: 1.5
+
+        p.cwe-title
+          font-weight: 600
+          margin-top: 16px
+          margin-bottom: 8px
+
+        p:first-of-type.cwe-title
+          margin-top: 0
+
+      .fa-3x
+        @media (max-width: 576px)
+          font-size: 1.5em !important
+
+      &:hover
+        transform: translateY(-2px)
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1)
+
+      html.dark &
+        background-color: #151b23
+        border-color: rgba(139, 122, 168, 0.2)
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3)
+
+        &:hover
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5)
+
+    .overflow-hidden
+      overflow: hidden
 
     .vector, dd
       overflow-wrap: break-word
@@ -699,7 +929,7 @@
       border-color: #d1d5db
 
     html.dark &
-      background-color: #2D1548
+      background-color: #151b23
       border-color: #2a2a2a
       box-shadow: 0 2px 12px rgba(0, 0, 0, 0.4)
 
@@ -803,8 +1033,8 @@
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05)
 
     html.dark &
-      background-color: rgba(45, 21, 72, 0.7)
-      border-color: rgba(90, 42, 130, 0.2)
+      background-color: #151b23
+      border-color: rgba(139, 122, 168, 0.2)
 
   .bdsa-card-icon
     width: 36px
@@ -874,7 +1104,7 @@
 
     html.dark &
       border-color: rgba(90, 42, 130, 0.6)
-      background-color: #2D1548
+      background-color: #151b23
       color: #e5e7eb
 
       &:hover
@@ -961,7 +1191,7 @@
     color: #ddd
 
     html.dark &
-      color: rgba(90, 42, 130, 0.6)
+      color: darkgray
 
   .fa-custom
     color: gray
@@ -988,27 +1218,27 @@
         color: #d1d5db
   .highchart-header
     background: #f7f7f7
+    border-radius: 8px
     padding: 8px
-    border-top: 1px solid #ddd
-    border-bottom: 1px solid #ddd
-    margin-bottom: 20px
+    border-top: none
+    border-bottom: none
 
     html.dark &
-      background: rgba(45, 21, 72, 0.5)
-      border-top-color: rgba(90, 42, 130, 0.3)
-      border-bottom-color: rgba(90, 42, 130, 0.3)
+      background: #000
+      border-top-color: transparent
+      border-bottom-color: transparent
 
   .border-left
-    border-left: 1px solid #ddd
+    border-left: none
 
     html.dark &
-      border-left-color: rgba(90, 42, 130, 0.3)
+      border-left-color: transparent
 
   .border-right
-    border-right: 1px solid #ddd
+    border-right: none
 
     html.dark &
-      border-right-color: rgba(90, 42, 130, 0.3)
+      border-right-color: transparent
 
   .no-right-padding
     padding-right: 0
@@ -1042,8 +1272,9 @@
         margin-top: 10%
 
       html.dark &
-        background-color: #2D1A4A
+        background-color: #151b23
         box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5)
+        border: 1px solid rgba(139, 122, 168, 0.2)
 
     .modal-header
       background-color: #6B46C1
@@ -1095,7 +1326,7 @@
         padding: 24px 20px
 
       html.dark &
-        background-color: #2D1A4A
+        background-color: #151b23
 
       .agreement-box
         background: linear-gradient(135deg, #F3F4F6 0%, #E5E7EB 100%)
@@ -1113,7 +1344,7 @@
           text-align: center
 
         html.dark &
-          background: linear-gradient(135deg, rgba(75, 85, 99, 0.2) 0%, rgba(55, 65, 81, 0.3) 100%)
+          background: rgba(139, 122, 168, 0.08)
 
         .agreement-icon
           font-size: 32px
@@ -1174,8 +1405,8 @@
               transition: all 0.2s ease
 
               html.dark &
-                background-color: #1F1433
-                border-color: #4B5563
+                background-color: #0f1219
+                border-color: #3a4551
 
               &::after
                 content: ""
@@ -1228,8 +1459,8 @@
         padding: 20px
 
       html.dark &
-        background-color: #1F1433
-        border-top-color: rgba(255, 255, 255, 0.1)
+        background-color: #0f1219
+        border-top-color: rgba(139, 122, 168, 0.2)
 
       .bdsa_disclaimer_accept
         background: linear-gradient(135deg, #6B46C1 0%, #9333EA 100%)
@@ -1285,8 +1516,8 @@
       padding: 20px 10px
 
     html.dark &
-      background-color: #1D0631
-      border-top-color: rgba(255, 255, 255, 0.1)
+      background-color: #000
+      border-top-color: rgba(139, 122, 168, 0.2)
 
     .footer-bottom
       color: #4b5563
@@ -1307,10 +1538,54 @@
         html.dark &
           color: #9ca3af
 
+  .chart-container,
+  .content-container
+    border-radius: 12px
+    overflow: hidden
+    background-color: white
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1)
+    transition: all 0.2s
+    padding: 20px
+
+    @media (max-width: 576px)
+      padding: 16px
+
+    html.dark &
+      background-color: #151b23
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3)
+      border: 1px solid rgba(139, 122, 168, 0.2)
+
+  .chart-container
+    padding-bottom: 10px
+
+  .content-container
+
+    .bold.date, .bold.fix-text
+      font-size: 18px
+      font-weight: 700
+      display: block
+      margin-bottom: 12px
+
+      @media (max-width: 576px)
+        font-size: 16px
+
+  .chart-wrapper
+    padding: 20px
+    min-height: 400px
+    display: flex
+    align-items: center
+    justify-content: center
+
+    @media (max-width: 576px)
+      padding: 16px
+      min-height: 300px
+
   #cve-cvss3, #cvss3
     background: asset-url("charts/watermark_340.png") no-repeat center
     background-size: contain
     position: relative
+    width: 100%
+    height: 100%
 
     html.dark &
       background-image: none
@@ -1327,6 +1602,38 @@
         filter: hue-rotate(260deg) saturate(1.2) brightness(0.3)
         opacity: 0.2
         pointer-events: none
+
+      .highcharts-axis-labels text,
+      .highcharts-axis-title text
+        fill: #d1d5db !important
+        stroke: none !important
+        stroke-width: 0 !important
+        -webkit-text-stroke: 0 !important
+        paint-order: stroke fill !important
+
+      .highcharts-legend text
+        fill: #d1d5db !important
+        stroke: none !important
+        stroke-width: 0 !important
+        -webkit-text-stroke: 0 !important
+        paint-order: stroke fill !important
+
+      svg text
+        stroke: none !important
+        stroke-width: 0 !important
+        -webkit-text-stroke: 0 !important
+
+      text[stroke]
+        stroke: none !important
+        stroke-width: 0 !important
+        -webkit-text-stroke: 0 !important
+
+      .highcharts-axis-line
+        stroke: #6b7280 !important
+
+      .highcharts-grid-line
+        stroke: #374151 !important
+        opacity: 0.3
 
 .search-container
   display: flex
