@@ -9,4 +9,7 @@ Rails.application.config.content_security_policy do |policy|
   policy.object_src :none
   policy.script_src :self, :https, :unsafe_inline, :unsafe_eval, *allowed_script_sources
   policy.style_src :self, :https, :unsafe_inline
+  # Keep adding the domain urls for the clients who are using the openhub widgets.
+  # and having issue due to Cross-Origin-Resource-Policy or X-Frame-Options headers (widgets not loading).
+  policy.frame_ancestors :self, "https://gitlab.gnome.org", "https://proxy.gitlab.gnome.org", "https://www.gimp.org", "https://testing.gimp.org"
 end
