@@ -44,6 +44,65 @@ class SettingTest < ActiveSupport::TestCase
     end
   end
 
+  describe 'Theme Preference Settings' do
+    let(:account) { create(:account) }
+    let(:setting_key) { "account_#{account.id}_theme_preference" }
+
+    it 'should store theme preference with account id key' do
+      setting = Setting.create(key: setting_key, value: 'dark')
+
+      _(setting).wont_be_nil
+      _(setting.key).must_equal(setting_key)
+      _(setting.value).must_equal('dark')
+    end
+
+    it 'should retrieve theme preference by key' do
+      Setting.create(key: setting_key, value: 'light')
+
+      preference = Setting.get_value(setting_key)
+
+      _(preference).must_equal('light')
+    end
+
+    it 'should return nil for non-existent preference' do
+      preference = Setting.get_value("non_existent_key_#{account.id}")
+
+      _(preference).must_be_nil
+    end
+
+    it 'should support system, light, and dark theme values' do
+      themes = %w[system light dark]
+
+      themes.each do |theme|
+        setting = Setting.create(key: "test_theme_#{theme}", value: theme)
+        _(setting.value).must_equal(theme)
+      end
+    end
+
+    it 'should update existing preference without creating duplicate' do
+      Setting.create(key: setting_key, value: 'light')
+      assert_equal(1, Setting.where(key: setting_key).count)
+
+      Setting.find_by(key: setting_key).update(value: 'dark')
+
+      assert_equal(1, Setting.where(key: setting_key).count)
+      _(Setting.get_value(setting_key)).must_equal('dark')
+    end
+
+    it 'should support find_or_create_by for preferences' do
+      initial_count = Setting.count
+
+      setting1 = Setting.find_or_create_by(key: setting_key)
+      setting1.update(value: 'dark')
+
+      setting2 = Setting.find_or_create_by(key: setting_key)
+      setting2.update(value: 'light')
+
+      _(Setting.count).must_equal(initial_count + 1)
+      _(Setting.get_value(setting_key)).must_equal('light')
+    end
+  end
+
   private
 
   def create_worker(worker_id, url)

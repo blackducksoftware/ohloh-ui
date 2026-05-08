@@ -8,8 +8,11 @@ class AccountsController < ApplicationController
   helper MapHelper
 
   skip_before_action :store_location, only: %i[new create]
-  before_action :session_required, only: %i[edit destroy confirm_delete me]
-  before_action :set_account, only: %i[destroy show update edit confirm_delete disabled settings]
+  before_action :session_required,
+                only: %i[edit destroy confirm_delete me theme_preference set_theme_preference]
+  before_action :set_account,
+                only: %i[destroy show update edit confirm_delete disabled settings theme_preference
+                         set_theme_preference]
   before_action :redirect_if_disabled, only: %i[show update edit]
   before_action :redirect_unverified_account, only: %i[edit update me]
   before_action :disabled_during_read_only_mode, only: %i[edit update]
@@ -90,6 +93,23 @@ class AccountsController < ApplicationController
   def disabled; end
 
   def settings; end
+
+  def theme_preference
+    return render json: { error: 'Not authenticated' }, status: :unauthorized unless current_user
+
+    respond_to do |format|
+      format.json { render json: { theme_preference: @account.theme_preference } }
+    end
+  end
+
+  def set_theme_preference
+    return render json: { error: 'Not authenticated' }, status: :unauthorized unless current_user
+
+    @account.theme_preference = params[:theme]
+    render json: { success: true, theme: @account.theme_preference }
+  rescue StandardError => e
+    render json: { error: e.message }, status: :unprocessable_entity
+  end
 
   private
 
