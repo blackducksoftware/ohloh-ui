@@ -6,7 +6,7 @@ class ThemePreferenceTest < ActionDispatch::IntegrationTest
   let(:user_account) { create(:account, password: TEST_PASSWORD) }
 
   describe 'Theme Preference API' do
-    it 'returns system as default theme for unauthenticated users' do
+    it 'denies access to unauthenticated users' do
       other_account = create(:account)
 
       get "/accounts/#{other_account.id}/theme_preference.json"

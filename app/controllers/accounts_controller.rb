@@ -17,7 +17,7 @@ class AccountsController < ApplicationController
   before_action :redirect_unverified_account, only: %i[edit update me]
   before_action :disabled_during_read_only_mode, only: %i[edit update]
   before_action :account_context, only: %i[edit update confirm_delete]
-  before_action :must_own_account, only: %i[edit update destroy confirm_delete]
+  before_action :must_own_account, only: %i[edit update destroy confirm_delete theme_preference set_theme_preference]
   before_action :find_claimed_people, only: :index
   before_action :redirect_if_logged_in, only: :new
   before_action :check_honeypot, only: :create
@@ -95,20 +95,16 @@ class AccountsController < ApplicationController
   def settings; end
 
   def theme_preference
-    return render json: { error: 'Not authenticated' }, status: :unauthorized unless current_user
-
     respond_to do |format|
       format.json { render json: { theme_preference: @account.theme_preference } }
     end
   end
 
   def set_theme_preference
-    return render json: { error: 'Not authenticated' }, status: :unauthorized unless current_user
-
     @account.theme_preference = params[:theme]
     render json: { success: true, theme: @account.theme_preference }
-  rescue StandardError => e
-    render json: { error: e.message }, status: :unprocessable_entity
+  rescue ArgumentError
+    render json: { error: 'Invalid theme preference' }, status: :unprocessable_entity
   end
 
   private

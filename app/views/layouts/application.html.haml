@@ -40,7 +40,7 @@
     = yield :custom_head
     = stylesheet_link_tag 'application', media: 'all'
     = csrf_meta_tags
-    - if current_user
+    - unless current_user.nil?
       %meta{ name: 'current-user', content: current_user.id }
 
   %body{ zoom: 1 }

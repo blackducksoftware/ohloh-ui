@@ -623,7 +623,7 @@ class AccountsControllerTest < ActionController::TestCase
         _(Setting.find_by(key: "account_#{theme_account.id}_theme_preference")).must_be_nil
       end
 
-      it 'must delete entry when setting to light or system (falls back to OS preference)' do
+      it 'must delete entry when setting to light (falls back to OS preference)' do
         login_as theme_account
         theme_account.theme_preference = 'dark'
 

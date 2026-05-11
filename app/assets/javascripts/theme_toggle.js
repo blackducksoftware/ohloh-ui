@@ -54,13 +54,7 @@ var ThemeToggle = {
       if (data && data.theme_preference) {
         callback(data.theme_preference);
       } else {
-        // No server preference, check cookie as fallback
-        var cookieTheme = self.getCookie(self.COOKIE_NAME);
-        if (cookieTheme && (cookieTheme === 'light' || cookieTheme === 'dark')) {
-          callback(cookieTheme);
-        } else {
-          callback(self.getSystemTheme());
-        }
+        callback(self.getSystemTheme());
       }
     })
     .catch(function(error) {
