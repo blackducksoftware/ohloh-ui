@@ -14,7 +14,7 @@
         %div{ id: chart_id, 'data-cvss' => "#{bdsa_cvss(@cve)}", 'data-severity' => "#{@cve['severity']}" }
       = render partial: 'severity', locals: { cvss: @cve, type: 'CVE' }
   - else
-    .col-lg-3.col-xs-12.text-center.no-left-padding
+    .col-lg-3.col-xs-12.text-center
       .chart-container
         .highchart-header.border-right
           %span Related record
