@@ -33,7 +33,7 @@ class SessionsController < Clearance::SessionsController
   end
 
   def captcha_verify
-    return if Rails.env.development? || verify_recaptcha
+    return if verify_recaptcha
 
     statsd_increment('Openhub.Session.fail')
     @ask_for_recaptcha = true
