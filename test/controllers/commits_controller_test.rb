@@ -198,6 +198,38 @@ class CommitsControllerTest < ActionController::TestCase
     end
   end
 
+  describe 'individual_named_commits' do
+    it 'should set commits to empty array when commit_contributor is nil' do
+      Project.any_instance.stubs(:commit_contributors).returns(stub(find_by: nil))
+      get :index, params: { project_id: @project.id, contributor_id: 0 }
+      _(assigns(:commits)).must_equal []
+    end
+  end
+
+  describe 'events and event_details with no analysis' do
+    it 'should return not_found xml when project has no analysis for events' do
+      Project.any_instance.stubs(:best_analysis).returns(NilAnalysis.new)
+      get :events, params: { project_id: @project.id, id: @commit1.id, contributor_id: @name1.id }, format: :xml
+      assert_response :not_found
+    end
+
+    it 'should render 404 when contributor fact not found for event_details' do
+      ContributorFact.stubs(:find_by).returns(nil)
+      Airbrake.stubs(:notify)
+      get :event_details, params: { contributor_id: 0, id: @commit1.id,
+                                    project_id: @project.id, time: "commit_#{@commit1.time.to_i}" }
+      assert_response :not_found
+    end
+  end
+
+  describe 'redirect_to_message_if_oversized_project' do
+    it 'should redirect to root when project is oversized' do
+      CommitsController.any_instance.stubs(:oversized_project?).returns(true)
+      get :index, params: { project_id: @project.id }
+      assert_redirected_to root_path
+    end
+  end
+
   private
 
   def create_commits
