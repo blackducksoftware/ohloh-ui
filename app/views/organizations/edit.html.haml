@@ -9,7 +9,7 @@
 .clearfix
 
 .row
-  .oh-card.col-md-10.col-md-offset-1
+  .oh-card.col-md-10.col-md-offset-1.org-form
     = form_for @current_object, url: organization_path(@organization),
       class: 'center-block', style: 'width:650px' do |f|
       = render partial: 'fields', locals: { f: f }

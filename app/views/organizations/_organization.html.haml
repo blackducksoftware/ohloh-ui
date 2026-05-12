@@ -12,21 +12,22 @@
         = link_to organization.decorate.icon(:med), organization_path(organization)
 
         .organization-description
-          - if organization.description && organization.description.strip.size > 220
-            = expander(h(organization.description), 220, 300)
-          - elsif organization.description
-            = h(organization.description)
+          - description = organization.description.to_s.strip
+          - if description.size > 220
+            = expander(h(description), 220, 300)
+          - elsif description.present?
+            = h(description)
           - else
-            %span.text-muted= t('organizations.index.no_matches')
+            %span.text-muted= t('organizations.show.no_desc')
 
     .organization-stats
       .stat-item
         %span.stat-value
           - if organization.projects_count > 0
-            = link_to organization.projects_count, projects_organization_path(organization)
+            = link_to number_with_delimiter(organization.projects_count), projects_organization_path(organization)
           - else
-            = organization.projects_count
-        %span.stat-label Projects
+            = number_with_delimiter(organization.projects_count)
+        %span.stat-label= t('.projects')
       .stat-item
         %span.stat-value= number_with_delimiter(organization.affiliators_count)
-        %span.stat-label Affiliated Committers
+        %span.stat-label= t('.affiliated_committers')
