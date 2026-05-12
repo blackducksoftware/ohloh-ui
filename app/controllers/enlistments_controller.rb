@@ -47,9 +47,12 @@ class EnlistmentsController < SettingsController
   end
 
   def update
-    @enlistment.update(enlistment_params)
-    @enlistment.project.schedule_delayed_analysis(3.minutes)
-    redirect_to project_enlistments_path(@project), flash: { success: t('.success') }
+    if @enlistment.update(enlistment_params)
+      @enlistment.project.schedule_delayed_analysis(3.minutes)
+      redirect_to project_enlistments_path(@project), flash: { success: t('.success') }
+    else
+      render :edit
+    end
   end
 
   def destroy

@@ -89,6 +89,45 @@ class EnlistmentTest < ActiveSupport::TestCase
     end
     _(KnowledgeBaseStatus.find_by(project_id: enlistment.project_id).in_sync).must_equal false
   end
+
+  describe 'ignore field validation' do
+    it 'should allow nil value' do
+      enlistment = create(:enlistment, ignore: nil)
+      _(enlistment.valid?).must_equal true
+    end
+
+    it 'should allow empty string' do
+      enlistment = create(:enlistment, ignore: '')
+      _(enlistment.valid?).must_equal true
+    end
+
+    it 'should allow strings under 1000 characters' do
+      enlistment = create(:enlistment, ignore: 'a' * 500)
+      _(enlistment.valid?).must_equal true
+    end
+
+    it 'should allow strings exactly 1000 characters' do
+      enlistment = create(:enlistment, ignore: 'a' * 1000)
+      _(enlistment.valid?).must_equal true
+    end
+
+    it 'should reject strings exceeding 1000 characters' do
+      enlistment = build(:enlistment, ignore: 'a' * 1001)
+      _(enlistment.valid?).must_equal false
+      _(enlistment.errors[:ignore]).must_include 'cannot exceed 1000 characters'
+    end
+
+    it 'should reject strings with 1001 characters with error message' do
+      enlistment = build(:enlistment, ignore: 'x' * 1001)
+      enlistment.validate
+      _(enlistment.errors.full_messages).must_include 'Ignore cannot exceed 1000 characters'
+    end
+
+    it 'should reject very long strings' do
+      enlistment = build(:enlistment, ignore: 'a' * 5000)
+      _(enlistment.valid?).must_equal false
+    end
+  end
 end
 
 # TODO: Replace this once we remove code_locations table dependency from enlistments_controller.
