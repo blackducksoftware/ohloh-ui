@@ -19,7 +19,7 @@ class Enlistment < ApplicationRecord
   acts_as_editable editable_attributes: [:ignore]
   acts_as_protected parent: :project
 
-  validates :ignore, length: { maximum: 1000, message: 'cannot exceed 1000 characters' }, allow_nil: true
+  validates :ignore, length: { maximum: 1000, message: :too_long_ignore }, allow_nil: true
   validates :allowed_fyles, length: { maximum: 1000 }, allow_nil: true
   validate :validate_code_location, if: -> { @nested_code_location }
 

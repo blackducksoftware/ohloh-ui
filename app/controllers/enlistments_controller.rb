@@ -51,7 +51,7 @@ class EnlistmentsController < SettingsController
       @enlistment.project.schedule_delayed_analysis(3.minutes)
       redirect_to project_enlistments_path(@project), flash: { success: t('.success') }
     else
-      render :edit
+      render :edit, status: :unprocessable_entity
     end
   end
 

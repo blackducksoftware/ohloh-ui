@@ -111,15 +111,10 @@ class EnlistmentTest < ActiveSupport::TestCase
       _(enlistment.valid?).must_equal true
     end
 
-    it 'should reject strings exceeding 1000 characters' do
+    it 'should reject strings exceeding 1000 characters with appropriate error messages' do
       enlistment = build(:enlistment, ignore: 'a' * 1001)
       _(enlistment.valid?).must_equal false
       _(enlistment.errors[:ignore]).must_include 'cannot exceed 1000 characters'
-    end
-
-    it 'should reject strings with 1001 characters with error message' do
-      enlistment = build(:enlistment, ignore: 'x' * 1001)
-      enlistment.validate
       _(enlistment.errors.full_messages).must_include 'Ignore cannot exceed 1000 characters'
     end
 
