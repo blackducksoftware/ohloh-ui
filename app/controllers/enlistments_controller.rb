@@ -51,7 +51,8 @@ class EnlistmentsController < SettingsController
       @enlistment.project.schedule_delayed_analysis(3.minutes)
       redirect_to project_enlistments_path(@project), flash: { success: t('.success') }
     else
-      render :edit, status: :unprocessable_entity
+      template = params[:enlistment].key?(:allowed_fyles) ? :edit_allowed_files : :edit
+      render template, status: :unprocessable_entity
     end
   end
 
