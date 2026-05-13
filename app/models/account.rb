@@ -135,6 +135,19 @@ class Account < ApplicationRecord # rubocop:disable Metrics/ClassLength
     @project_core ||= Account::ProjectCore.new(self)
   end
 
+  def theme_preference
+    setting = Setting.find_by(key: "account_#{id}_theme_preference")
+    setting&.value
+  end
+
+  def theme_preference=(theme)
+    if theme == 'dark'
+      Setting.find_or_create_by(key: "account_#{id}_theme_preference").update(value: 'dark')
+    else
+      Setting.find_by(key: "account_#{id}_theme_preference")&.destroy
+    end
+  end
+
   class << self
     def resolve_login(login)
       Account.find_by('lower(login) = ?', login.to_s.downcase)
