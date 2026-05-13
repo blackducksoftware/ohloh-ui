@@ -8,13 +8,16 @@ class AccountsController < ApplicationController
   helper MapHelper
 
   skip_before_action :store_location, only: %i[new create]
-  before_action :session_required, only: %i[edit destroy confirm_delete me]
-  before_action :set_account, only: %i[destroy show update edit confirm_delete disabled settings]
+  before_action :session_required,
+                only: %i[edit destroy confirm_delete me theme_preference set_theme_preference]
+  before_action :set_account,
+                only: %i[destroy show update edit confirm_delete disabled settings theme_preference
+                         set_theme_preference]
   before_action :redirect_if_disabled, only: %i[show update edit]
   before_action :redirect_unverified_account, only: %i[edit update me]
   before_action :disabled_during_read_only_mode, only: %i[edit update]
   before_action :account_context, only: %i[edit update confirm_delete]
-  before_action :must_own_account, only: %i[edit update destroy confirm_delete]
+  before_action :must_own_account, only: %i[edit update destroy confirm_delete theme_preference set_theme_preference]
   before_action :find_claimed_people, only: :index
   before_action :redirect_if_logged_in, only: :new
   before_action :check_honeypot, only: :create
@@ -90,6 +93,19 @@ class AccountsController < ApplicationController
   def disabled; end
 
   def settings; end
+
+  def theme_preference
+    respond_to do |format|
+      format.json { render json: { theme_preference: @account.theme_preference } }
+    end
+  end
+
+  def set_theme_preference
+    @account.theme_preference = params[:theme]
+    render json: { success: true, theme: @account.theme_preference }
+  rescue ArgumentError
+    render json: { error: 'Invalid theme preference' }, status: :unprocessable_entity
+  end
 
   private
 

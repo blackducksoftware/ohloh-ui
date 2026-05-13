@@ -138,5 +138,29 @@ class FactoidsHelperTest < ActionView::TestCase
       stubs(:concat)
       get_factoid_display(:comments)
     end
+
+    it 'should pass text, type and url from factiod_info to haml_tag and concat for existing factoid' do
+      factoid = create(:factoid, analysis: @analysis, type: 'FactoidCommentsVeryHigh')
+      factoid = Factoid.find(factoid.id)
+      @analysis.stubs(:factoids).returns([factoid])
+
+      expected_text = factoid.inline
+      expected_type = factoid.category.to_s
+      expected_url  = project_factoids_path(@project, anchor: factoid.type)
+
+      expects(:haml_tag).with(:span, class: expected_type).yields
+      expects(:haml_tag).with(:a, href: expected_url).yields
+      expects(:concat).with(expected_text)
+      get_factoid_display(:comments)
+    end
+
+    it 'should pass text, type and url from factiod_info to haml_tag and concat for unknown factoid' do
+      @analysis.stubs(:factoids).returns([])
+
+      expects(:haml_tag).with(:span, class: 'warning').yields
+      expects(:haml_tag).with(:a, href: nil).yields
+      expects(:concat).with(I18n.t('factoids.comments_unknown_inline'))
+      get_factoid_display(:comments)
+    end
   end
 end
