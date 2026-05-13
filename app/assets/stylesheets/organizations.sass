@@ -1,5 +1,236 @@
+// SASS Variables (mirrors projects index design system)
+$org-primary-color: #5A2A82
+$org-primary-hover: rgba(90, 42, 130, 0.9)
+$org-bg-color: #f9fafb
+$org-card-bg: #ffffff
+$org-text-primary: #1f2937
+$org-text-secondary: #6b7280
+$org-border-color: rgba(229, 231, 235, 0.8)
+$org-shadow-sm: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)
+$org-shadow-md: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)
+$org-dark-primary: #ffb91a
+$org-dark-bg: #1D0631
+$org-dark-card: #2D1548
+$org-dark-text-primary: #ffffff
+$org-dark-text-secondary: #d1d5db
+$org-dark-border: rgba(255, 255, 255, 0.1)
+$org-dark-shadow-sm: 0 1px 3px rgba(0,0,0,0.24), 0 1px 2px rgba(0,0,0,0.48)
+$org-dark-shadow-md: 0 3px 6px rgba(0,0,0,0.32), 0 3px 6px rgba(0,0,0,0.46)
+
+// Organizations Index Page
+#organizations_index_page
+  background-color: $org-bg-color
+  min-height: 100vh
+  padding: 32px 0
+  transition: background-color 0.3s ease, color 0.3s ease
+  html.dark &
+    background-color: $org-dark-bg
+
+  .organizations-container
+    max-width: 1280px
+    margin: 0 auto
+    padding: 0 16px
+
+  .organizations-header
+    display: flex
+    justify-content: space-between
+    align-items: center
+    margin-bottom: 24px
+    flex-wrap: wrap
+    gap: 16px
+
+    h1
+      font-size: 30px
+      font-weight: bold
+      color: $org-text-primary
+      margin: 0
+      html.dark &
+        color: $org-dark-text-primary
+
+      @media (min-width: 640px)
+        font-size: 36px
+
+    .header-actions
+      display: flex
+      gap: 12px
+      align-items: center
+      flex-wrap: wrap
+
+      .btn-add-organization
+        padding: 8px 16px
+        border-radius: 8px
+        font-weight: 600
+        font-size: 14px
+        transition: all 0.2s ease
+        text-decoration: none
+        display: inline-flex
+        align-items: center
+        gap: 8px
+        white-space: nowrap
+        background-color: $org-primary-color
+        color: #ffffff
+        border: none
+        box-shadow: $org-shadow-md
+        &:hover
+          background-color: $org-primary-hover
+          color: #ffffff
+        html.dark &
+          background-color: $org-dark-primary
+          color: #1D0631 !important
+          &:hover
+            background-color: rgba(255, 185, 26, 0.9)
+
+  .no-results
+    color: $org-text-secondary
+    padding: 24px 0
+    html.dark &
+      color: $org-dark-text-secondary
+
+// Organization Card
+.organization-card
+  background-color: $org-card-bg
+  border-radius: 12px
+  border: 1px solid $org-border-color
+  padding: 20px 24px
+  margin-bottom: 16px
+  box-shadow: $org-shadow-sm
+  transition: all 0.3s ease
+  html.dark &
+    background-color: $org-dark-card
+    border-color: $org-dark-border
+    box-shadow: $org-dark-shadow-sm
+
+  &:hover
+    border-color: $org-primary-color
+    box-shadow: $org-shadow-md
+    html.dark &
+      border-color: $org-dark-primary
+      box-shadow: $org-dark-shadow-md
+
+  .organization-header
+    margin-bottom: 16px
+
+    .organization-title-section
+      h2
+        margin: 0 0 4px 0
+        font-size: 18px
+        font-weight: 600
+
+        @media (min-width: 640px)
+          font-size: 20px
+
+        a
+          color: $org-primary-color
+          text-decoration: none
+          &:hover
+            text-decoration: underline
+          html.dark &
+            color: $org-dark-primary !important
+
+  .organization-content
+    display: grid
+    grid-template-columns: 1fr auto
+    column-gap: 24px
+
+    @media (max-width: 768px)
+      grid-template-columns: 1fr
+
+    .organization-main
+      .organization-icon-desc
+        display: flex
+        gap: 12px
+
+        .organization-description
+          flex: 1
+          font-size: 14px
+          color: $org-text-secondary
+          line-height: 1.5
+          word-wrap: break-word
+          html.dark &
+            color: $org-dark-text-secondary
+
+    .organization-stats
+      min-width: 200px
+      border-left: 1px solid $org-border-color
+      padding-left: 24px
+      display: flex
+      flex-direction: column
+      gap: 12px
+      html.dark &
+        border-color: $org-dark-border
+
+      @media (max-width: 768px)
+        border-left: none
+        border-top: 1px solid $org-border-color
+        padding-left: 0
+        padding-top: 16px
+        margin-top: 16px
+        flex-direction: row
+        flex-wrap: wrap
+
+      .stat-item
+        display: flex
+        align-items: center
+        gap: 10px
+
+        .stat-value
+          font-size: 16px
+          font-weight: bold
+          color: $org-primary-color
+          html.dark &
+            color: $org-dark-primary
+
+          a
+            color: inherit
+            text-decoration: none
+            &:hover
+              text-decoration: underline
+
+          @media (min-width: 640px)
+            font-size: 18px
+
+        .stat-label
+          font-size: 12px
+          color: $org-text-secondary
+          html.dark &
+            color: $org-dark-text-secondary
+
+          @media (min-width: 640px)
+            font-size: 14px
+
+// New Organization page styles — radio button alignment
+.oh-card .radio-inline
+  display: inline-flex
+  align-items: center
+  gap: 6px
+  padding-left: 0
+  vertical-align: middle
+  cursor: pointer
+
+  input[type="radio"]
+    position: static
+    margin: 0
+    flex-shrink: 0
+    vertical-align: middle
+
+.org-new-title
+  font-weight: bold !important
+  margin-top: 24px
+  margin-bottom: 16px
+  color: $org-text-primary
+  html.dark &
+    color: $org-dark-text-primary
+
+// URL prefix add-on (http://www.openhub.net/orgs/) — scoped to org new/edit form only
+.org-form .input-prepend .add-on
+  html.dark &
+    background-color: #2D1548 !important
+    border-color: rgba(255, 255, 255, 0.15) !important
+    color: #ffb91a !important
+
 .project_activity_margin_top
   margin-top: -8px
+
 
 tbody.portfolio-projects-table
   td

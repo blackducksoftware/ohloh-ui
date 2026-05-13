@@ -22,6 +22,9 @@ en:
       rating: 'Community Rating'
       reviews: 'Reviews'
       description: 'Description'
+    organization:
+      projects: 'Projects'
+      affiliated_committers: 'Affiliated Committers'
     index:
       no_matches: 'No matches with this filter.'
       title: 'Organizations'

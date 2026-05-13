@@ -1,17 +1,29 @@
 - content_for(:html_title) { t('.page_title') }
 - page_context[:select_top_menu_nav] = 'select_organizations'
 
-.row
-  .col-md-2.pull-left
-    %h1= t('.title')
-  - if current_user_is_admin?
-    .col-md-3.pull-right
-      = link_to t('.add'), new_organization_path, class: 'btn btn-small btn-info margin_top_20 margin_left_15'
+#organizations_index_page
+  .organizations-container
+    / Header Section with Actions
+    .organizations-header
+      %h1= t('.title')
+      .header-actions
+        - if current_user_is_admin?
+          = link_to new_organization_path, class: 'btn-add-organization' do
+            %i.fa.fa-plus
+            = t('.add')
 
-= render partial: 'shared/search_dingus', locals: { collection: @organizations, sort_context: :organizations }
+        / Header Search with Dropdown
+        = render 'shared/search'
 
-- if @organizations.empty?
-  = t('.no_matches')
-- else
-  = render partial: 'organization', collection: @organizations
-  = render 'shared/modern_pagination', collection: @organizations
+    / Search and Filter Bar
+    = render partial: 'shared/search_dingus', locals: { collection: @organizations, sort_context: :organizations }
+
+    / Organizations List
+    #organizations_index_list
+      - if @organizations.empty?
+        .no-results= t('.no_matches')
+      - else
+        = render partial: 'organization', collection: @organizations
+
+    / Modern Pagination
+    = render 'shared/modern_pagination', collection: @organizations
