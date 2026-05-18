@@ -2,7 +2,30 @@
 %html{ lang: I18n.locale.to_s }
   %head
     :javascript
-      try { if (localStorage.getItem('theme') === 'dark') document.documentElement.classList.add('dark'); } catch(e) {}
+      (function() {
+        var COOKIE_NAME = 'theme_preference';
+        var getCookie = function(name) {
+          var nameEQ = name + '=';
+          var cookies = document.cookie.split(';');
+          for (var i = 0; i < cookies.length; i++) {
+            var cookie = cookies[i].trim();
+            if (cookie.indexOf(nameEQ) === 0) {
+              return cookie.substring(nameEQ.length);
+            }
+          }
+          return null;
+        };
+        var cookieTheme = getCookie(COOKIE_NAME);
+        var theme = 'light';
+        if (cookieTheme && (cookieTheme === 'light' || cookieTheme === 'dark')) {
+          theme = cookieTheme;
+        } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          theme = 'dark';
+        }
+        if (theme === 'dark') {
+          document.documentElement.classList.add('dark');
+        }
+      })();
     - if Rails.env.production?
       = render partial: 'layouts/tracking_scripts/google_analytics'
     - page_title = content_for?(:html_title) ? yield(:html_title).to_s : t('.openhub')
@@ -17,6 +40,8 @@
     = yield :custom_head
     = stylesheet_link_tag 'application', media: 'all'
     = csrf_meta_tags
+    - unless current_user.nil?
+      %meta{ name: 'current-user', content: current_user.id }
 
   %body{ zoom: 1 }
     = yield :session_projects_banner
