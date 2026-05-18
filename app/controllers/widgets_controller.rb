@@ -9,8 +9,13 @@ class WidgetsController < ApplicationController
   layout false, except: :index
   before_action :handle_xml_format, except: :index
   skip_before_action :verify_authenticity_token
+  before_action :skip_session
 
   private
+
+  def skip_session
+    request.session_options[:skip] = true
+  end
 
   def record_not_found
     render plain: I18n.t('widgets.not_found')
