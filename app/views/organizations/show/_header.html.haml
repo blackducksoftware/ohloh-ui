@@ -12,11 +12,11 @@
           - if @organization.projects_count
             %span.stat-item
               %icon.icon-code-fork
-              = pluralize(@organization.projects_count, 'portfolio project')
+              = pluralize(@organization.projects_count, t('.portfolio_project'))
           - if @organization.affiliators_count
             %span.stat-item
               %icon.icon-user
-              = pluralize(@organization.affiliators_count, 'affiliated committer')
+              = pluralize(@organization.affiliators_count, t('.affiliated_committer'))
 
       .org-header-actions
         = link_to settings_organization_path(@organization), class: 'org-header-settings-btn' do

@@ -34,33 +34,33 @@
                   != rating_stars('rating_star', project.rating_average, mini: true)
           .use-this-count
             .count-value= project.user_count
-            .count-label I Use This
+            .count-label= t('organizations.projects.i_use_this')
 
         .card-stats
           .stat-box
-            .stat-title Contributors
+            .stat-title= t('organizations.projects.contributors')
             .stat-rows
               .stat-row
-                %span.stat-label Affiliated
+                %span.stat-label= t('organizations.projects.affiliated')
                 = render partial: 'project_commit_status', locals: { diff: affiliated_committers_diff,
                   commit_count: twelve_month_summary.affiliated_committers_count,
                   prev_commit_count: previous_twelve_month_summary.affiliated_committers_count }
               .stat-row
-                %span.stat-label Outside
+                %span.stat-label= t('organizations.projects.outside')
                 = render partial: 'project_commit_status', locals: { diff: outside_committers_diff,
                   commit_count: twelve_month_summary.outside_committers_count,
                   prev_commit_count: previous_twelve_month_summary.outside_committers_count }
 
           .stat-box
-            .stat-title Commits
+            .stat-title= t('organizations.projects.commits')
             .stat-rows
               .stat-row
-                %span.stat-label Affiliated
+                %span.stat-label= t('organizations.projects.affiliated')
                 = render partial: 'project_commit_status', locals: { diff: affiliated_commits_diff,
                   commit_count: twelve_month_summary.affiliated_commits_count,
                   prev_commit_count: previous_twelve_month_summary.affiliated_commits_count }
               .stat-row
-                %span.stat-label Outside
+                %span.stat-label= t('organizations.projects.outside')
                 = render partial: 'project_commit_status', locals: { diff: outside_commits_diff,
                   commit_count: twelve_month_summary.outside_commits_count,
                   prev_commit_count: previous_twelve_month_summary.outside_commits_count }
@@ -103,7 +103,7 @@
               - project_activity_level_class(project, :twenty)
           %td.center{ rowspan: 3 }
             - if language.nil?
-              N/A
+              = t('organizations.projects.not_available')
             - else
               .lang_bg{ style: "background-color: ##{language_color(language.name)};" }
                 = link_to language.nice_name, language_path(language), class: 'language_name',
@@ -112,7 +112,7 @@
             = project.user_count
           %td.center{ rowspan: 3 }
             - if project.rating_average.to_i.zero?
-              none
+              = t('organizations.projects.none')
             - else
               %span.org_project_rating
                 != rating_stars('rating_star', project.rating_average, mini: true)

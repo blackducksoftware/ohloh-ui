@@ -6,31 +6,44 @@ module RatingsHelper
               'a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 ' \
               '8.72c-.783-.57-.381-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z'
 
-  def rating_stars(id, score)
+  def rating_stars(id, score, mini: false)
     "<span id=\"#{id}\"> \
       #{rating_star_schema(score)} \
-      #{svg_star_rating(score)} \
+      #{svg_star_rating(score, mini: mini)} \
     </span>"
   end
 
   private
 
-  def svg_star_rating(score)
-    stars_html = (1..5).map do |star|
-      star_filled = star <= score.to_f
-      half_filled = !star_filled && (star - 0.5) <= score.to_f
-
-      color = star_filled || half_filled ? '#ffb91a' : '#d1d5db'
-      build_star_svg(color)
-    end.join
-
+  def svg_star_rating(score, mini: false)
+    stars_html = (1..5).map { |star| build_star_for_rating(star, score, mini) }.join
     "<span style=\"display: flex; align-items: center; gap: 2px;\">#{stars_html}</span>"
   end
 
-  def build_star_svg(color)
-    '<svg style="width: 14px; height: 14px; display: inline; margin-right: 2px; ' \
-      "color: #{color}; fill: currentColor;\" viewBox=\"0 0 20 20\"> " \
-      "<path d=\"#{STAR_PATH}\"></path> </svg>"
+  def build_star_for_rating(star, score, mini)
+    if star <= score.to_f
+      build_star_svg('#ffb91a', mini: mini)
+    elsif (star - 0.5) <= score.to_f
+      build_half_star_svg(mini: mini)
+    else
+      build_star_svg('#d1d5db', mini: mini)
+    end
+  end
+
+  def build_star_svg(color, mini: false)
+    size = mini ? '12px' : '14px'
+    %(<svg style="width: #{size}; height: #{size}; display: inline; margin-right: 2px; fill: #{color};" ) +
+      %(viewBox="0 0 20 20"> <path d="#{STAR_PATH}"></path> </svg>)
+  end
+
+  def build_half_star_svg(mini: false)
+    size = mini ? '12px' : '14px'
+    gradient_id = "half-star-#{SecureRandom.hex(4)}"
+    "<svg style=\"width: #{size}; height: #{size}; display: inline; margin-right: 2px;\" " \
+      "viewBox=\"0 0 20 20\"> <defs> <linearGradient id=\"#{gradient_id}\"> " \
+      '<stop offset="50%" stop-color="#ffb91a"/> ' \
+      '<stop offset="50%" stop-color="#d1d5db"/> </linearGradient> </defs> ' \
+      "<path d=\"#{STAR_PATH}\" fill=\"url(##{gradient_id})\"></path> </svg>"
   end
 
   def rating_star_schema(score)

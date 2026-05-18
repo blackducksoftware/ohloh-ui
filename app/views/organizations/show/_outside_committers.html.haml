@@ -2,10 +2,14 @@
 - if @outside_committers.empty?
   %p= t('organizations.outside_committers.no_committers')
 - else
+  -# Preload all projects to avoid N+1 queries
+  - project_ids = @outside_committers.flat_map { |account| Array(account.projs) }.compact.uniq
+  - projects_by_id = Project.where(id: project_ids).index_by(&:id)
+
   -# Mobile card view
   .outside-committers-mobile-view
     - @outside_committers.each do |account|
-      - projects = Project.where(id: account.projs)
+      - projects = Array(account.projs).map { |project_id| projects_by_id[project_id] }.compact
 
       .committer-card
         .card-header
@@ -16,7 +20,7 @@
               %a.committer-name{ href: account_path(account), title: h(account.name) }
                 = truncate(account.name, length: 25)
                 - if current_user.id == account.id
-                  %span.you-badge (You)
+                  %span.you-badge= t('organizations.outside_committers.you')
               .committer-badges
                 .badge-item
                   %span.badge-label= t('organizations.outside_committers.kudos')
@@ -41,12 +45,12 @@
             .stat-label= t('organizations.outside_committers.contribution_to_portfolio')
             .stat-subgroup
               .stat-item
-                %span.stat-sublabel Projects:
+                %span.stat-sublabel= t('organizations.outside_committers.projects')
                 .project-list
                   - project_links = projects.map { |p| link_to h(truncate(p.name, length: 30)), project_path(p), title: p.name, class: 'project-link' }
                   != expander(project_links.join(', '), 100, 250, /<\/a>/, 3)
               .stat-item
-                %span.stat-sublabel 12 Mo Commits:
+                %span.stat-sublabel= t('organizations.outside_committers.twelve_month_commits')
                 %span.stat-value= account.twelve_mo_commits
 
   -# Desktop table view
@@ -69,7 +73,7 @@
 
     %tbody
       - @outside_committers.each do |account|
-        - projects = Project.where(id: account.projs)
+        - projects = Array(account.projs).map { |project_id| projects_by_id[project_id] }.compact
         %tr
           %td.name
             %a.pull-left{ href: account_path(account), title: h(account.name) }
@@ -77,7 +81,7 @@
             %a{ href: account_path(account), title: h(account.name) }
               = truncate(account.name, length: 20)
               - if current_user.id == account.id
-                %span (You)
+                %span= t('organizations.outside_committers.you')
           %td.kudo_rank_column.center!= avatar_small_laurels(account.person.kudo_rank)
           %td.center
             .mini-badges-section{ style: 'margin:0; position:relative;height: 0px' }
