@@ -148,7 +148,21 @@ ul.unstyled, ol.unstyled
   font-size: 12px
   thead
     th
-      border-bottom: 1px solid #ddd !important
+      color: #000 !important
+      background-color: #5b5d6237 !important
+      border-bottom: 1px solid #888 !important
+
+      html.dark &
+        background-color: #3A1D58 !important
+        border-bottom-color: #5A2A82 !important
+
+.table.table-striped.table-condensed
+  tbody
+    tr:nth-child(odd) td,
+    tr:nth-child(even) td
+      html.dark &
+        background-color: #2D1548 !important
+        color: #ffffff !important
 
 .pre-line
   white-space: pre-line

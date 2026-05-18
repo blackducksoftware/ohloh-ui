@@ -2,15 +2,61 @@
 - if @outside_committers.empty?
   %p= t('organizations.outside_committers.no_committers')
 - else
-  %table.table.table-striped.table-condensed#outside_committers_list
+  -# Mobile card view
+  .outside-committers-mobile-view
+    - @outside_committers.each do |account|
+      - projects = Project.where(id: account.projs)
+
+      .committer-card
+        .card-header
+          .committer-info
+            %a{ href: account_path(account) }
+              = image_tag avatar_img_path(account, 48), size: '48x48', class: 'committer-avatar', alt: h(account.name)
+            .committer-details
+              %a.committer-name{ href: account_path(account), title: h(account.name) }
+                = truncate(account.name, length: 25)
+                - if current_user.id == account.id
+                  %span.you-badge (You)
+              .committer-badges
+                .badge-item
+                  %span.badge-label= t('organizations.outside_committers.kudos')
+                  != avatar_small_laurels(account.person.kudo_rank)
+                .badge-item
+                  %span.badge-label= t('organizations.outside_committers.level')
+                  .mini-badges-section
+                    = render 'accounts/badges_row',
+                      badges: [Badge::FosserBadge.new(account, positions_count: account.positions.count)],
+                      hide_foss_logo: true
+
+        .card-stats
+          .stat-group
+            .stat-label= t('organizations.outside_committers.affiliated_with')
+            .stat-value
+              - if account.organization_id.nil?
+                = t('organizations.outside_committers.unaffiliated')
+              - else
+                %a{ href: organization_path(account.organization) }= h(account.organization.name)
+
+          .stat-group
+            .stat-label= t('organizations.outside_committers.contribution_to_portfolio')
+            .stat-subgroup
+              .stat-item
+                %span.stat-sublabel Projects:
+                .project-list
+                  - project_links = projects.map { |p| link_to h(truncate(p.name, length: 30)), project_path(p), title: p.name, class: 'project-link' }
+                  != expander(project_links.join(', '), 100, 250, /<\/a>/, 3)
+              .stat-item
+                %span.stat-sublabel 12 Mo Commits:
+                %span.stat-value= account.twelve_mo_commits
+
+  -# Desktop table view
+  %table.table.table-striped.table-condensed.outside-committers-desktop-view#outside_committers_list
     %thead
-      %tr{ id: 'dingus-row' }
-        %td{ colspan: '10' } &nbsp;
       %tr
         %th{ rowspan: 2, style: 'width: 160px;' }= t('.contributor_name')
         %th.center{ rowspan: 2, style: 'width: 70px;' }= t('.kudos')
         %th.foss_level_title{ rowspan: 2, style: 'width: 85px;' }
-          = image_tag('icons/foss-no-bg.png')
+          = image_tag('icons/foss-no-bg.png', alt: t('organizations.outside_committers.level'))
           = t('organizations.outside_committers.level')
         %th.center{ rowspan: 2, style: 'width:150px' }
           %strong= t('organizations.outside_committers.affiliated_with')
@@ -26,8 +72,8 @@
         - projects = Project.where(id: account.projs)
         %tr
           %td.name
-            %a.pull-left{ href: account_path(account) }
-              = image_tag avatar_img_path(account, 32), size: '32x32', style: 'margin-right:8px;'
+            %a.pull-left{ href: account_path(account), title: h(account.name) }
+              = image_tag avatar_img_path(account, 32), size: '32x32', style: 'margin-right:8px;', alt: h(account.name)
             %a{ href: account_path(account), title: h(account.name) }
               = truncate(account.name, length: 20)
               - if current_user.id == account.id
