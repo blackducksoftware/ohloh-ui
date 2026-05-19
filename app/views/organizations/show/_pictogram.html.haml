@@ -8,10 +8,11 @@
     #section1
       .col1
         = render partial: "#{partial_dir}/outside_committers", locals: @graphics.outside_committers
-      .col2{ @graphics.other_attributes('out_commits', positioning: true) }
-        .svg-arrow{ @graphics.arrow_attributes('out_commits', 'right') }
         .commits-text
           = render partial: "#{partial_dir}/outside_committers_commits", locals: @graphics.outside_committers
+      .col2{ @graphics.other_attributes('out_commits', positioning: true) }
+        .svg-arrow{ @graphics.arrow_attributes('out_commits', 'right') }
+        
 
     #infographic_box{ default_view: @view }
       .content
@@ -28,10 +29,11 @@
     #section2
       .col1{ @graphics.other_attributes('affl_commits_out', positioning: true) }
         .svg-arrow{ @graphics.arrow_attributes('affl_commits_out', 'right', 140) }
-        .commits-text
-          = render partial: "#{partial_dir}/outside_project_commits", locals: @graphics.outside_project_commits
+        
       .col2
         = render partial: "#{partial_dir}/outside_projects", locals: @graphics.outside_project_commits
+        .commits-text
+          = render partial: "#{partial_dir}/outside_project_commits", locals: @graphics.outside_project_commits
 
   .infographic-footer
     .footer-col1

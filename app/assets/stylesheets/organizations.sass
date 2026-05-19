@@ -2,7 +2,7 @@
 .org-summary-container
   max-width: 1280px
   margin: 0 auto
-  padding: 24px
+  padding: 24px 24px 0
 
   @media (max-width: 640px)
     padding: 0
@@ -214,6 +214,7 @@
 
   icon
     font-size: 16px
+    
 // SASS Variables (mirrors projects index design system)
 $org-primary-color: #5A2A82
 $org-primary-hover: rgba(90, 42, 130, 0.9)
@@ -483,6 +484,11 @@ tbody.portfolio-projects-table
       html.dark &
         border-top-color: #5A2A82 !important
 
+// Portfolio Projects List
+#portfolio_projects_list
+  max-width: 1280px
+  margin: 0 auto
+
 // Portfolio Projects Mobile Card View
 .portfolio-mobile-view
   display: block
@@ -723,17 +729,24 @@ tbody.portfolio-projects-table
 
         .stat-item
           display: flex
-          align-items: center
-          gap: 8px
+          flex-direction: column
+          gap: 4px
           font-size: 12px
 
           .stat-sublabel
-            color: #6b7280
-            font-size: 11px
+            color: #374151
+            font-size: 12px
+            font-weight: 700
+            text-transform: uppercase
+            letter-spacing: 0.5px
+
+            html.dark &
+              color: #e5e7eb
 
           .stat-value
             color: #1f2937
-            font-weight: 600
+            font-weight: 700
+            font-size: 15px
 
             html.dark &
               color: white
@@ -798,11 +811,14 @@ tbody.portfolio-projects-table
       gap: 4px
 
       .stat-sublabel
-        font-size: 11px
-        color: #6b7280
+        font-size: 12px
+        font-weight: 700
+        color: #374151
+        text-transform: uppercase
+        letter-spacing: 0.5px
 
         html.dark &
-          color: #9ca3af
+          color: #e5e7eb
 
       .project-list
         .project-link
@@ -818,8 +834,8 @@ tbody.portfolio-projects-table
 
       .stat-value
         color: #1f2937
-        font-weight: 600
-        font-size: 12px
+        font-weight: 700
+        font-size: 15px
 
         html.dark &
           color: white
@@ -953,6 +969,7 @@ tbody.portfolio-projects-table
 
 .language_name
   line-height: 28px
+  padding: 0 8px
 
   html.dark &
     color: white !important
@@ -1103,7 +1120,7 @@ tbody.portfolio-projects-table
     flex-direction: row
     justify-content: center
     align-items: center
-    gap: 32px
+    gap: 0
     padding: 32px 16px
 
   & > *
@@ -1125,7 +1142,7 @@ tbody.portfolio-projects-table
     @media (min-width: 992px)
       flex-direction: row
       align-items: center
-      gap: 16px
+      gap: 0
       max-width: none
 
     .col1
@@ -1135,6 +1152,10 @@ tbody.portfolio-projects-table
       font-size: 12px
       line-height: 1.4
       min-width: 70px
+      display: flex
+      flex-direction: column
+      align-items: center
+      gap: 8px
 
       @media (min-width: 992px)
         font-size: 14px
@@ -1169,21 +1190,10 @@ tbody.portfolio-projects-table
         html.dark &
           color: #ffffff !important
 
-    .col2
-      text-align: center
-      line-height: 1.5
-      display: flex
-      flex-direction: column
-      align-items: center
-      gap: 12px
-      padding-top: 0 !important
-
-      .svg-arrow
-        flex-shrink: 0
-
       .commits-text
         text-align: center
         line-height: 1.5
+        margin-bottom: 8px
         background: white
         border: 1px solid #e5e7eb
         border-radius: 8px
@@ -1219,6 +1229,18 @@ tbody.portfolio-projects-table
 
           html.dark &
             color: #d1d5db
+
+    .col2
+      text-align: center
+      line-height: 1.5
+      display: flex
+      flex-direction: column
+      align-items: center
+      gap: 12px
+      padding-top: 0 !important
+
+      .svg-arrow
+        flex-shrink: 0
 
   #section2
     display: flex
@@ -1232,7 +1254,7 @@ tbody.portfolio-projects-table
     @media (min-width: 992px)
       flex-direction: row
       align-items: center
-      gap: 16px
+      gap: 0
       max-width: none
 
     .col1
@@ -1246,6 +1268,51 @@ tbody.portfolio-projects-table
 
       .svg-arrow
         flex-shrink: 0
+
+    .col2
+      text-align: center
+      font-weight: 700
+      color: #000000 !important
+      font-size: 12px
+      line-height: 1.4
+      min-width: 70px
+      display: flex
+      flex-direction: column
+      align-items: center
+      gap: 8px
+
+      @media (min-width: 992px)
+        font-size: 14px
+        min-width: 80px
+
+      html.dark &
+        color: #ffffff !important
+
+      a
+        color: #000000 !important
+        text-decoration: none
+
+        &:hover
+          color: #5A2A82 !important
+          text-decoration: underline
+
+        html.dark &
+          color: #ffffff !important
+
+          &:hover
+            color: #ffb91a !important
+
+      .icon-group
+        font-size: 40px
+        margin-bottom: 8px
+        display: block
+        color: #000000 !important
+
+        @media (min-width: 992px)
+          font-size: 48px
+
+        html.dark &
+          color: #ffffff !important
 
       .commits-text
         text-align: center
@@ -1286,47 +1353,6 @@ tbody.portfolio-projects-table
           html.dark &
             color: #d1d5db
 
-    .col2
-      text-align: center
-      font-weight: 700
-      color: #000000 !important
-      font-size: 12px
-      line-height: 1.4
-      min-width: 70px
-
-      @media (min-width: 992px)
-        font-size: 14px
-        min-width: 80px
-
-      html.dark &
-        color: #ffffff !important
-
-      a
-        color: #000000 !important
-        text-decoration: none
-
-        &:hover
-          color: #5A2A82 !important
-          text-decoration: underline
-
-        html.dark &
-          color: #ffffff !important
-
-          &:hover
-            color: #ffb91a !important
-
-      .icon-group
-        font-size: 40px
-        margin-bottom: 8px
-        display: block
-        color: #000000 !important
-
-        @media (min-width: 992px)
-          font-size: 48px
-
-        html.dark &
-          color: #ffffff !important
-
       span
         line-height: 1.4
         font-size: 13px
@@ -1336,7 +1362,7 @@ tbody.portfolio-projects-table
 #infographic_box
   flex: 1
   min-width: 0
-  display: flex
+  display: inline-table
   flex-direction: column
   background: white
   border-radius: 12px
@@ -1637,6 +1663,42 @@ form#new_logo
 
     html.dark &
       color: white
+
+// Pagination button for "See All" links
+.pagination-button-container
+  text-align: center
+
+.btn-see-all-org
+  display: inline-flex
+  align-items: center
+  justify-content: center
+  gap: 8px
+  padding: 12px 32px
+  background: $org-primary-color
+  color: white !important
+  border: none
+  border-radius: 8px
+  font-size: 14px
+  font-weight: 600
+  text-decoration: none
+  transition: all 0.2s ease
+  box-shadow: $org-shadow-sm
+  min-width: 200px
+
+  &:hover
+    background: $org-primary-hover
+    color: white !important
+    box-shadow: $org-shadow-md
+    text-decoration: none
+    transform: translateY(-1px)
+
+  html.dark &
+    background: $org-dark-primary
+    color: #1D0631 !important
+
+    &:hover
+      background: rgba(255, 185, 26, 0.9)
+      color: #1D0631 !important
 
 @media print
   a[href]:after
