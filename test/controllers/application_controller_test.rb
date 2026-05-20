@@ -106,9 +106,9 @@ class ApplicationControllerTest < ActionController::TestCase
       Rails.application.config.unstub(:consider_all_requests_local)
     end
 
-    it 'reports to Datadog on FisbotApiError' do
+    it 'reports to AppLogger on FisbotApiError' do
       Rails.application.config.stubs(:consider_all_requests_local)
-      DataDogReport.expects(:error).once
+      AppLogger.expects(:error).once
       get :throws_fisbot_api_error
       assert_redirected_to session[:return_to]
       Rails.application.config.unstub(:consider_all_requests_local)

@@ -14,9 +14,9 @@ class DeleteGoogleCodeProjects
 
   # rubocop:disable Metrics/MethodLength
   def execute
-    DataDogReport.info 'starting script'
+    AppLogger.info 'starting script'
     @project_ids = fetch_googlecode_projects_array
-    DataDogReport.info "Attempting to delete #{@project_ids.length} google code projects"
+    AppLogger.info "Attempting to delete #{@project_ids.length} google code projects"
 
     # update project deleted field for all googlecode projects in batches of 1000
     until (projects = Project.find(@project_ids.slice!(0..999))).empty?
@@ -24,7 +24,7 @@ class DeleteGoogleCodeProjects
         undo_project(project)
       end
     end
-    DataDogReport.info(
+    AppLogger.info(
       'Successfully completed script - Please check deleted_googlecode_log_file.log to view any exceptions'
     )
   end
@@ -43,7 +43,7 @@ class DeleteGoogleCodeProjects
   end
 
   def undo_project(project)
-    DataDogReport.info "Processing project #{project.id}"
+    AppLogger.info "Processing project #{project.id}"
     begin
       project.tags.delete_all
       project.create_edit.undo!(@editor) if project.create_edit.allow_undo?

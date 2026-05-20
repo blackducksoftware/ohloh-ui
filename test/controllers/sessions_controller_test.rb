@@ -71,7 +71,7 @@ class SessionsControllerTest < ActionController::TestCase
         auth_fail_count = max_login_retries - 1
         account.update!(auth_fail_count: auth_fail_count, updated_at: Time.current)
 
-        DataDogReport.expects(:info)
+        AppLogger.expects(:info)
         AccountMailer.expects(:notify_disabled_account_for_login_failure).returns(stub(deliver_now: nil))
         @controller.expects(:verify_recaptcha).returns(true)
 

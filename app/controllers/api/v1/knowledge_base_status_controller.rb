@@ -11,7 +11,7 @@ class Api::V1::KnowledgeBaseStatusController < ApplicationController
     exchange = KnowledgeBaseQueue.get_exchange(conn)
     display_kb_message(exchange)
   rescue StandardError => e
-    Rails.logger.info(e.message)
+    AppLogger.info(e.message)
     Airbrake.notify(e)
     render json: { message: e.message }, status: :bad_request
   ensure

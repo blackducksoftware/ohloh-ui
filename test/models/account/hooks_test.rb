@@ -186,7 +186,7 @@ class Account::HooksTest < ActiveSupport::TestCase
       # Simulate undo! raising an error
       edit.stubs(:undo!).raises(StandardError, 'Undo failed')
 
-      Rails.logger.expects(:info).with(regexp_matches(/Spam undo failed:.*Undo failed.*edit/m))
+      AppLogger.expects(:info).with(regexp_matches(/Spam undo failed:.*Undo failed.*edit/m))
 
       hooks.send(:safe_undo, edit)
     end

@@ -50,7 +50,7 @@ class ApplicationController < ActionController::Base
     request.env[:user_agent] = request.user_agent
     case exception
     when SocketError, Errno::ECONNREFUSED, FisbotApiError
-      DataDogReport.error(exception.backtrace.to_s)
+      AppLogger.error(exception.backtrace.to_s)
       flash[:notice] = t(:api_exception)
       redirect_to_saved_path
     else

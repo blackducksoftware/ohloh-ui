@@ -16,7 +16,7 @@ namespace :kb_updater do
     puts "#{count} projects updated"
     conn.close
   rescue StandardError => e
-    Rails.logger.info(e.message)
+    AppLogger.info(e.message)
     Airbrake.notify(e)
     conn.close
     raise StandardError, e.message # trigger healthchecks.io ping.
