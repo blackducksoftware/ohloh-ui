@@ -11,8 +11,11 @@
             = link_to h(truncate(org.name, length: 24)), organization_path(org), title: org.name, class: 'org-name'
             .org-stats
               %span.projects-count
-                = link_to t('.projects_count', count: org.projects_count),
-                  organization_path(org, view: 'portfolio_projects'), class: 'projects-value'
+                - if org.projects_count > 0
+                  = link_to t('.projects_count', count: org.projects_count),
+                    organization_path(org, view: 'portfolio_projects'), class: 'projects-value'
+                - else
+                  %span.projects-value= t('.projects_count', count: org.projects_count)
               %span.added-time= t('.added', duration: time_ago_in_words(org.updated_at))
     .card-footer
       = link_to t('.more_html'), organizations_path(sort: 'newest'), class: 'more-link'
