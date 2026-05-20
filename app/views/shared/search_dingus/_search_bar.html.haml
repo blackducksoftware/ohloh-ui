@@ -11,7 +11,7 @@
     %label{for: 'query'}= t('.search_text')
     .search-input-wrapper
       %input#query{type: 'text', name: 'query', placeholder: t('.search_text'), value: params[:query]}
-      %button.search-cancel-btn{ type: 'button', style: (params[:query].blank? ? 'display: none;' : '') }
+      %button.search-cancel-btn{ type: 'button', 'aria-label': t('.clear_search'), style: (params[:query].blank? ? 'display: none;' : '') }
         %i.fa.fa-times
-    %button.search-refresh-btn{ type: 'submit' }
+    %button.search-refresh-btn{ type: 'submit', 'aria-label': t('.search') }
       %i.fa.fa-refresh

@@ -15,6 +15,7 @@
       %form.search_form#search_form{ action: projects_path }
         %input{ type: :hidden, name: 'ref', value: 'homepage' }
         .search_input_wrapper
+          %label.sr-only{ for: 'text' }= t('.search_projects')
           .search_icon_wrapper
             %i.fa.fa-search.search_icon
           %input.search_input{ type: :text, name: 'query', placeholder: t('.search_projects'), id: 'text', autocomplete: 'off' }
