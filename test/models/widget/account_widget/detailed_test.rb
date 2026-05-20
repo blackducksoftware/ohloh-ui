@@ -7,8 +7,8 @@ class DetailedTest < ActiveSupport::TestCase
   let(:widget) { Widget::AccountWidget::Detailed.new(account_id: account.id) }
 
   describe 'width' do
-    it 'should return 230' do
-      _(widget.width).must_equal 230
+    it 'should return 232' do
+      _(widget.width).must_equal 232
     end
   end
 

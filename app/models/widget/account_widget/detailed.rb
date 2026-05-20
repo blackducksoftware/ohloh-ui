@@ -2,7 +2,7 @@
 
 class Widget::AccountWidget::Detailed < Widget::AccountWidget
   def width
-    230
+    232
   end
 
   def height
