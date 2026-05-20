@@ -41,7 +41,7 @@
                           'data-show' => 'projects/show/community_rating' }
         - (1..5).each do |i|
           - filled = i <= user_score
-          %button.star-btn{ type: 'button', 'data-rating' => i, title: "Rate #{i} out of 5" }
+          %button.star-btn{ type: 'button', 'data-rating' => i, title: "Rate #{i} out of 5", 'aria-label': "Rate #{i} out of 5" }
             %svg.star-svg{ viewBox: '0 0 24 24', fill: filled ? '#ffb91a' : 'none', stroke: filled ? '#ffb91a' : '#d1d5db', 'stroke-width': '2', 'stroke-linecap': 'round', 'stroke-linejoin': 'round', width: '16', height: '16', xmlns: 'http://www.w3.org/2000/svg' }
               %polygon{ points: '12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2' }
       - if @rating

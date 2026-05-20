@@ -26,6 +26,8 @@ en:
       search_bar:
         filter_by_tags: 'Filter by Related Tags:'
         search_text: 'Search / Filter on:'
+        clear_search: 'Clear search'
+        search: 'Search'
       no_match_found:
         no_match: 'No Matches with this filter'
         no_match_1_html: "Your search - <strong>%{query}</strong> - did not match anything."
@@ -36,6 +38,7 @@ en:
         no_match_6: 'Try fewer keywords.'
     search:
       search_text: 'Search...'
+      search: 'Search'
     analysis_timestamp:
       ago: 'ago.'
       analyzed: 'Analyzed'
@@ -46,6 +49,7 @@ en:
       people: 'People'
       organizations: 'Organizations'
       placeholder: 'Search...'
+      search: 'Search'
     api_outage:
       heading: Under Maintenance
       description_1: This feature is currently under maintenance.

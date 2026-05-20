@@ -215,6 +215,7 @@ en:
       languages:
         no_source: "No source code was found in any of the code locations"
         languages: "Languages"
+        pie_chart_alt: "Language distribution pie chart for %{project}"
         add_a_code_location: "Add a code location"
         no_code_locations: "There are no Code Locations added to this project so Open Hub cannot display the language breakdown. %{link} to see this information."
       lines_of_code_chart:
