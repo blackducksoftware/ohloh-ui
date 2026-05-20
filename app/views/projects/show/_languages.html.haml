@@ -6,7 +6,7 @@
   - if language_data.any?
     .languages-content
       .language-pie-container
-        = image_tag languages_project_analysis_url(languages_image_options), class: 'language-pie-chart'
+        = image_tag languages_project_analysis_url(languages_image_options), class: 'language-pie-chart', alt: t('.pie_chart_alt', project: @project.name)
 
       .language-legend
         - language_data.take(5).each do |id, name, attr|

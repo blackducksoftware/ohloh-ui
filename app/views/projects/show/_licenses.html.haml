@@ -68,7 +68,7 @@
             %p= t('.disclaimer')
 
           .view-all-link
-            = link_to "#{t('.view_all_licenses')} →", project_licenses_path(@project)
+            = link_to "#{t('.view_all_licenses')} →", licenses_path, target: '_blank'
 
 :javascript
   function toggleLicense(button) {

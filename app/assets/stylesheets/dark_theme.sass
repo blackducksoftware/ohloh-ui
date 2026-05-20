@@ -442,3 +442,28 @@ button.unclaimed-card__btn
 
   .people-card__kudos
     border-color: rgba(90, 42, 130, 0.3) !important
+
+// Charts — dark mode watermark (CSS-filter approach, applies to all watermark classes)
+// NOTE: kept as a separate html.dark block to avoid SASS indentation nesting issues
+html.dark
+  .watermark340,
+  .watermark440,
+  .watermark860,
+  .watermark900white,
+  .watermark914,
+  #project_contributions
+    .highcharts-container
+      background-image: none
+      position: relative
+      &::before
+        content: ''
+        position: absolute
+        top: 0
+        left: 0
+        right: 0
+        bottom: 0
+        background: asset-url("charts/watermark_340.png") no-repeat center
+        background-size: contain
+        filter: hue-rotate(260deg) saturate(1.2) brightness(0.3)
+        opacity: 0.2
+        pointer-events: none

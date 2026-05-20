@@ -11,6 +11,6 @@
       %button.dropdown-item.active{ type: 'button', val: 'p' }= t('shared.global_search.projects')
       %button.dropdown-item{ type: 'button', val: 'people' }= t('shared.global_search.people')
       %button.dropdown-item{ type: 'button', val: 'orgs' }= t('shared.global_search.organizations')
-  = text_field_tag :query, params[:query], placeholder: search_placeholder, class: 'header-search-input'
-  %button.header-search-btn{ type: 'submit' }
+  = text_field_tag :query, params[:query], placeholder: search_placeholder, class: 'header-search-input', 'aria-label': t('shared.global_search.search')
+  %button.header-search-btn{ type: 'submit', 'aria-label': t('shared.global_search.search') }
     %i.fa.fa-search
