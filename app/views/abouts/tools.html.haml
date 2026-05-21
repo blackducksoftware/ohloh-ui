@@ -1,53 +1,118 @@
 - content_for(:html_title) do
   = t('.openhub_tools')
 
-.col-md-12
-  %h1= t('.tools')
-  %br
-  .row
-    .col-md-4
-      %h3= link_to t('.compare_projects'), compare_projects_path
-      %p= t('.compare_stats')
-      = link_to((image_tag 'tools/compare_projects_preview_graph.png', alt: t('.compare_projects')),
-        compare_projects_path)
+.tools-page
+  / Header
+  .tools-header
+    .container
+      %h1.tools-title= t('.tools')
 
-    .col-md-4
-      %h3= link_to t('.compare_languages'), compare_languages_path
-      %p= t('.compare_languages_stats')
-      = link_to((image_tag 'tools/compare_languages_preview_graph.png', alt: t('.compare_languages')),
-        compare_languages_path)
+  / Main Content
+  .tools-content
+    .container
+      / Comparison Tools Grid
+      .tools-grid
+        / Compare Projects Card
+        .tool-card.tool-card-projects
+          .tool-card-header
+            .tool-icon.tool-icon-orange
+              %i.icon-code-fork
+            %h2.tool-card-title
+              = link_to t('.compare_projects'), compare_projects_path
+          .tool-card-body
+            %p.tool-description= t('.compare_stats')
+            = link_to(image_tag('tools/compare_projects_preview_graph.png', alt: t('.compare_projects'), class: 'chart-image'), compare_projects_path)
 
-    .col-md-4
-      %h3= link_to t('.compare_repositories'), compare_repositories_path
-      %p= t('.compare_repositories_stats')
-      = link_to((image_tag 'tools/compare_repositories_preview_graph.png', alt: t('.compare_repositories')),
-        compare_repositories_path)
+        / Compare Languages Card
+        .tool-card.tool-card-languages
+          .tool-card-header
+            .tool-icon.tool-icon-blue
+              %i.icon-code
+            %h2.tool-card-title
+              = link_to t('.compare_languages'), compare_languages_path
+          .tool-card-body
+            %p.tool-description= t('.compare_languages_stats')
+            = link_to(image_tag('tools/compare_languages_preview_graph.png', alt: t('.compare_languages'), class: 'chart-image'), compare_languages_path)
 
-  .row
-    %p &nbsp;
-  .row
-    .col-md-8
-      %h3= link_to t('.language_stats'), languages_path
-      %p= t('.view_stats_per_language')
-      %p= t('.font_size')
-      %p.language-list-lineheight
-        - @languages.each do |language|
-          = link_to language.nice_name, language_path(language), style: compute_style_for_language_tag(language)
-      %p= t('.view_stats_for_all_languages_html', href: link_to(t('.all_languages'), languages_path))
-    .col-md-4
-      %h3= t('.additional_info')
-      %h4= t('.api')
-      %ul.margin_left_30
-        %li
-          = link_to t('.getting_started'), 'https://github.com/blackducksoftware/ohloh_api#ohloh-api-documentation'
-        %li
-          = link_to t('.examples'),
-            'https://github.com/blackducksoftware/ohloh_api/tree/main/examples#ohloh-api-examples'
-      %h4= t('.open_source_projects')
-      %ul.margin_left_30
-        %li
-          = link_to t('.ohcount'), 'https://github.com/blackducksoftware/ohcount'
-          %span= t('.line_counter_metrics')
-        %li
-          = link_to t('.ohloh_scm'), 'https://github.com/blackducksoftware/ohloh_scm'
-          %span= t('.source_code_abstraction')
+        / Compare Repositories Card
+        .tool-card.tool-card-repositories
+          .tool-card-header
+            .tool-icon.tool-icon-green
+              %i.icon-bar-chart
+            %h2.tool-card-title
+              = link_to t('.compare_repositories'), compare_repositories_path
+          .tool-card-body
+            %p.tool-description= t('.compare_repositories_stats')
+            = link_to(image_tag('tools/compare_repositories_preview_graph.png', alt: t('.compare_repositories'), class: 'chart-image'), compare_repositories_path)
+
+      / Two Column Layout
+      .tools-bottom-grid
+        / Language Statistics (Left Column)
+        .language-stats-section
+          .section-header
+            .section-header-content
+              %h2.section-title
+                = link_to t('.language_stats'), languages_path
+              %p.section-subtitle Explore programming language metrics across the open source ecosystem
+            %i.icon-bar-chart.section-icon
+
+          .section-content
+            .info-box
+              %p.info-text
+                = t('.view_stats_per_language')
+              .info-badge
+                %i.icon-signal
+                %span= t('.font_size')
+
+            / Language Cloud
+            .language-cloud-wrapper
+              .language-cloud
+                - @languages.each do |language|
+                  = link_to language.nice_name, language_path(language), style: compute_style_for_language_tag(language), class: 'language-tag'
+
+            / Footer CTA
+            .language-cta
+              .cta-text
+                %i.icon-code
+                %span Explore detailed metrics for every language
+              = link_to languages_path, class: 'cta-button' do
+                View All Languages
+                %i.icon-arrow-right
+
+        / Additional Information (Right Column)
+        .additional-info-section
+          .section-header-simple
+            %h2.section-title= t('.additional_info')
+
+          .section-content
+            / API Section
+            .info-card.info-card-api
+              .info-card-header
+                .info-card-icon.info-icon-blue
+                  %i.icon-code
+                %h3.info-card-title= t('.api')
+              %ul.info-list
+                %li
+                  %span.list-bullet •
+                  = link_to t('.getting_started'), 'https://github.com/blackducksoftware/ohloh_api#ohloh-api-documentation', target: '_blank', rel: 'noopener noreferrer'
+                %li
+                  %span.list-bullet •
+                  = link_to t('.examples'), 'https://github.com/blackducksoftware/ohloh_api/tree/main/examples#ohloh-api-examples', target: '_blank', rel: 'noopener noreferrer'
+
+            / Open Source Projects Section
+            .info-card.info-card-projects
+              .info-card-header
+                .info-card-icon.info-icon-green
+                  %i.icon-code-fork
+                %h3.info-card-title= t('.open_source_projects')
+              %ul.info-list
+                %li
+                  %span.list-bullet •
+                  .list-content
+                    = link_to t('.ohcount'), 'https://github.com/blackducksoftware/ohcount', target: '_blank', rel: 'noopener noreferrer', class: 'list-link'
+                    %span= t('.line_counter_metrics')
+                %li
+                  %span.list-bullet •
+                  .list-content
+                    = link_to t('.ohloh_scm'), 'https://github.com/blackducksoftware/ohloh_scm', target: '_blank', rel: 'noopener noreferrer', class: 'list-link'
+                    %span= t('.source_code_abstraction')
