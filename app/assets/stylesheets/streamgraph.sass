@@ -71,8 +71,10 @@
     background-size: contain
 
 html.dark .regular .background-watermark
-  background: asset_url('charts/watermark_692_dark.png') no-repeat center left
+  background: asset_url('charts/watermark_692.png') no-repeat center left
   background-size: contain
+  filter: hue-rotate(260deg) saturate(1.2) brightness(0.3)
+  opacity: 0.2
 @media only all and (min-width: 320px) and (max-width: 480px)
   #ohloh_streamgraph
     &.languages
