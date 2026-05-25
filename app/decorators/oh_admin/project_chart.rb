@@ -53,11 +53,21 @@ class OhAdmin::ProjectChart
   end
 
   def fill_monthly_gaps
-    (@from..@to).map { |date| date.strftime('%b %Y') }.uniq.each do |date|
-      @analyzed[date] = 0 if @analyzed[date].nil?
-      @non_analyzed[date] = 0 if @non_analyzed[date].nil?
-      monthly_count = total_projects(date) == {} ? 0 : total_projects(date).values
-      @total_count << monthly_count
+    months = (@from..@to).map { |date| date.strftime('%b %Y') }.uniq
+
+    monthly_totals = Project
+      .where(created_at: @from.beginning_of_month..@to.end_of_month)
+      .group("DATE_TRUNC('month', projects.created_at)")
+      .count
+
+    base_count = Project.where('created_at < ?', @from.beginning_of_month.beginning_of_day).count
+
+    months.each do |date|
+      @analyzed[date] ||= 0
+      @non_analyzed[date] ||= 0
+      month_key = Date.strptime(date, '%b %Y')
+      base_count += monthly_totals[month_key] || 0
+      @total_count << base_count
       @x_axis << date
     end
   end
@@ -74,25 +84,24 @@ class OhAdmin::ProjectChart
 
   def best_analysis_project
     if @filter == 'monthly'
-      Project.left_joins(:best_analysis).group("DATE_TRUNC('month', projects.created_at)")
+      Project.group("DATE_TRUNC('month', projects.created_at)")
              .where(projects: { created_at: @from.beginning_of_month..@to.end_of_month })
-             .references(:best_analysis).count
+             .count
     else
-      Project.left_joins(:best_analysis).group('date(projects.created_at)')
+      Project.group('date(projects.created_at)')
              .where(projects: { created_at: @from..@to })
-             .references(:best_analysis).count
+             .count
     end
   end
 
   def no_analysis_project
     if @filter == 'monthly'
-      Project.active.left_joins(:best_analysis).group("DATE_TRUNC('month', projects.created_at)")
-             .where('projects.created_at >= ? AND projects.created_at <= ? AND projects.best_analysis_id is NULL',
-                    @from.beginning_of_month, @to.end_of_month).references(:best_analysis).count
+      Project.active.group("DATE_TRUNC('month', projects.created_at)")
+             .where(projects: { created_at: @from.beginning_of_month..@to.end_of_month,
+                                best_analysis_id: nil }).count
     else
-      Project.active.left_joins(:best_analysis).group('date(projects.created_at)')
-             .where('projects.created_at >= ? AND projects.created_at <= ? AND projects.best_analysis_id is NULL',
-                    @from, @to).references(:best_analysis).count
+      Project.active.group('date(projects.created_at)')
+             .where(projects: { created_at: @from..@to, best_analysis_id: nil }).count
     end
   end
 
@@ -102,7 +111,7 @@ class OhAdmin::ProjectChart
              .where(projects: { created_at: date.to_date.all_month })
              .count
     else
-      Project.where('DATE(created_at) < ?', date).count
+      Project.where('created_at < ?', date.to_date.beginning_of_day).count
     end
   end
 end
