@@ -53,7 +53,7 @@
             .section-header-content
               %h2.section-title
                 = link_to t('.language_stats'), languages_path
-              %p.section-subtitle Explore programming language metrics across the open source ecosystem
+              %p.section-subtitle= t('.language_stats_subtitle')
             %i.icon-bar-chart.section-icon
 
           .section-content
@@ -74,9 +74,9 @@
             .language-cta
               .cta-text
                 %i.icon-code
-                %span Explore detailed metrics for every language
+                %span= t('.explore_language_metrics')
               = link_to languages_path, class: 'cta-button' do
-                View All Languages
+                = t('.view_all_languages')
                 %i.icon-arrow-right
 
         / Additional Information (Right Column)

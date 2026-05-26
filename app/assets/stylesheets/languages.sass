@@ -143,36 +143,37 @@ $gray-900: #111827
     background-color: $purple-card-dark
     border-color: rgba(255, 255, 255, 0.1)
 
-.section-heading
-  font-size: 16px !important
-  font-weight: 600
-  color: $gray-900
-  margin: 0 0 12px 0
+.languages-compare-container
+  .section-heading
+    font-size: 16px !important
+    font-weight: 600
+    color: $gray-900
+    margin: 0 0 12px 0
 
-  html.dark &
-    color: white
+    html.dark &
+      color: white
 
-.info-text
-  font-size: 12px !important
-  color: $gray-600
-  line-height: 1.6
-  margin: 0
+  .info-text
+    font-size: 12px
+    color: $gray-600
+    line-height: 1.6
+    margin: 0
 
-  html.dark &
-    color: $gray-400
+    html.dark &
+      color: $gray-400
 
-.info-link
-  color: $purple-primary
-  text-decoration: none
-  font-weight: 500
-  margin-left: 4px
-  transition: color 0.2s ease
+  .info-link
+    color: $purple-primary
+    text-decoration: none
+    font-weight: 500
+    margin-left: 4px
+    transition: color 0.2s ease
 
-  &:hover
-    text-decoration: underline
+    &:hover
+      text-decoration: underline
 
-  html.dark &
-    color: $yellow-accent
+    html.dark &
+      color: $yellow-accent
 
 // Content Card
 .languages-content-card
@@ -419,8 +420,8 @@ $gray-900: #111827
   .content-grid
     gap: 16px
 
-  .section-heading
-    font-size: 15px !important
+  .languages-compare-container .section-heading
+    font-size: 15px
 
   .language-dropdown-trigger
     font-size: 13px
@@ -478,12 +479,12 @@ $gray-900: #111827
     padding: 12px
     margin-bottom: 12px
 
-  .section-heading
-    font-size: 14px !important
+  .languages-compare-container .section-heading
+    font-size: 14px
     margin-bottom: 10px
 
-  .info-text
-    font-size: 13px
+  .languages-compare-container .info-text
+    font-size: 12px
 
   .languages-content-card
     padding: 12px
@@ -561,10 +562,10 @@ $gray-900: #111827
     padding: 10px
     margin-bottom: 10px
 
-  .section-heading
-    font-size: 13px !important
+  .languages-compare-container .section-heading
+    font-size: 13px
 
-  .info-text
+  .languages-compare-container .info-text
     font-size: 12px
 
   .languages-content-card

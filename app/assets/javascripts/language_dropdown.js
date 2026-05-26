@@ -66,7 +66,7 @@ $(document).on('click', function(e) {
 });
 
 // Initialize active item styling on page load
-$(document).on('page:change ready', function() {
+$(document).on('page:change', function() {
   $('.language-dropdown-wrapper').each(function() {
     var $wrapper = $(this);
     var $input = $wrapper.find('.language-input');

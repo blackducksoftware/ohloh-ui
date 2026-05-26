@@ -21,6 +21,7 @@ en:
       more: 'More'
       tools: 'Tools'
       measure_heading: "%{measure} (Percent of Total)"
+      select_language: 'Select language'
       update: 'Update'
     show:
       title: "%{title} Programming Language Statistics - Open Hub"

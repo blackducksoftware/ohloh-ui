@@ -25,29 +25,31 @@
 
         .selector-section
           .language-selectors
-            - @language_names.each do |name|
+            - @language_names.each_with_index do |name, index|
               .language-selector-item
                 .lang-color-dot{ style: "background-color: ##{language_color(name)}" }
                 .select-wrapper
                   .language-dropdown-wrapper
-                    %button.language-dropdown-trigger{ type: 'button', data: { value: name } }
+                    - menu_id = "lang-dropdown-#{index}"
+                    %button.language-dropdown-trigger{ type: 'button', data: { value: name }, aria: { haspopup: 'listbox', expanded: 'false', controls: menu_id } }
                       %span.selection= name
                       %i.icon-chevron-down
-                    .language-dropdown-menu
+                    .language-dropdown-menu{ id: menu_id, role: 'listbox' }
                       - @languages.each do |lang_name, lang_value|
-                        %a.dropdown-item{ href: '#', data: { value: lang_value } }= lang_name
+                        %button.dropdown-item{ type: 'button', role: 'option', data: { value: lang_value } }= lang_name
                     %input.language-input{ type: 'hidden', name: 'language_name[]', value: name }
 
             .language-selector-item
               .lang-color-dot.empty
               .select-wrapper
                 .language-dropdown-wrapper
-                  %button.language-dropdown-trigger{ type: 'button' }
-                    %span.selection= 'Select language'
+                  - menu_id = 'lang-dropdown-empty'
+                  %button.language-dropdown-trigger{ type: 'button', aria: { haspopup: 'listbox', expanded: 'false', controls: menu_id } }
+                    %span.selection= t('.select_language')
                     %i.icon-chevron-down
-                  .language-dropdown-menu
+                  .language-dropdown-menu{ id: menu_id, role: 'listbox' }
                     - @languages.each do |lang_name, lang_value|
-                      %a.dropdown-item{ href: '#', data: { value: lang_value } }= lang_name
+                      %button.dropdown-item{ type: 'button', role: 'option', data: { value: lang_value } }= lang_name
                   %input.language-input{ type: 'hidden', name: 'language_name[]' }
 
           .update-button-wrapper

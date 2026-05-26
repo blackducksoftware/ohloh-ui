@@ -17,8 +17,8 @@
             - @projects.each_with_index do |proj, i|
               - next if project == proj
               %input{ type: 'hidden', name: "project_#{i}", value: proj ? proj.name : '' }
-            - key = "project_#{index}"
-            %input.autocompletable{ type: 'text', id: key, name: key, "aria-label": t('compares.project_section.project_input_label', number: index + 1),
+            - key = "mobile_project_#{index}"
+            %input.autocompletable{ type: 'text', id: key, name: "project_#{index}", "aria-label": t('compares.project_section.project_input_label', number: index + 1),
               placeholder: t('compares.project_section.add_project'), data: { source: '/autocompletes/project', select: 'submitForm' } }
 
   -# Accordion Sections
@@ -26,11 +26,11 @@
     -# General Section
     .accordion-section
       %button.accordion-header{ type: 'button', 'data-section': 'general' }
-        %span= t('.general')
+        %span= t('compares.projects.general')
         %i.icon-chevron-down
       .accordion-content
         .metric-row
-          .metric-label= t('.compare_table_activity_level')
+          .metric-label= t('compares.projects.compare_table_activity_level')
           .metric-values
             - @projects.each do |project|
               .metric-value
@@ -40,7 +40,7 @@
                   .empty –
 
         .metric-row
-          .metric-label= t('.compare_table_data_quality')
+          .metric-label= t('compares.projects.compare_table_data_quality')
           .metric-values
             - @projects.each do |project|
               .metric-value
@@ -50,7 +50,7 @@
                   .empty –
 
         .metric-row
-          .metric-label= t('.compare_table_homepage')
+          .metric-label= t('compares.projects.compare_table_homepage')
           .metric-values
             - @projects.each do |project|
               .metric-value
@@ -60,7 +60,7 @@
                   .empty –
 
         .metric-row
-          .metric-label= t('.compare_table_license')
+          .metric-label= t('compares.projects.compare_table_license')
           .metric-values
             - @projects.each do |project|
               .metric-value
@@ -70,7 +70,7 @@
                   .empty –
 
         .metric-row
-          .metric-label= t('.compare_table_cocomo')
+          .metric-label= t('compares.projects.compare_table_cocomo')
           .metric-values
             - @projects.each do |project|
               .metric-value
@@ -82,11 +82,11 @@
     -# All Time Statistics Section
     .accordion-section
       %button.accordion-header{ type: 'button', 'data-section': 'all-time' }
-        %span= t('.all_time_statistics')
+        %span= t('compares.projects.all_time_statistics')
         %i.icon-chevron-down
       .accordion-content
         .metric-row
-          .metric-label= t('.compare_table_committers_all_time')
+          .metric-label= t('compares.projects.compare_table_committers_all_time')
           .metric-values
             - @projects.each do |project|
               .metric-value
@@ -96,7 +96,7 @@
                   .empty –
 
         .metric-row
-          .metric-label= t('.compare_table_commit_count')
+          .metric-label= t('compares.projects.compare_table_commit_count')
           .metric-values
             - @projects.each do |project|
               .metric-value
@@ -106,7 +106,7 @@
                   .empty –
 
         .metric-row
-          .metric-label= t('.compare_table_initial_commit')
+          .metric-label= t('compares.projects.compare_table_initial_commit')
           .metric-values
             - @projects.each do |project|
               .metric-value
@@ -116,7 +116,7 @@
                   .empty –
 
         .metric-row
-          .metric-label= t('.compare_table_most_recent_commit')
+          .metric-label= t('compares.projects.compare_table_most_recent_commit')
           .metric-values
             - @projects.each do |project|
               .metric-value
@@ -128,11 +128,11 @@
     -# 12 Month Statistics Section
     .accordion-section
       %button.accordion-header{ type: 'button', 'data-section': 'twelve-month' }
-        %span= t('.twelve_month_statistics')
+        %span= t('compares.projects.twelve_month_statistics')
         %i.icon-chevron-down
       .accordion-content
         .metric-row
-          .metric-label= t('.compare_table_twelve_months_committers')
+          .metric-label= t('compares.projects.compare_table_twelve_months_committers')
           .metric-values
             - @projects.each do |project|
               .metric-value
@@ -142,7 +142,7 @@
                   .empty –
 
         .metric-row
-          .metric-label= t('.compare_table_twelve_months_commits')
+          .metric-label= t('compares.projects.compare_table_twelve_months_commits')
           .metric-values
             - @projects.each do |project|
               .metric-value
@@ -152,7 +152,7 @@
                   .empty –
 
         .metric-row
-          .metric-label= t('.compare_table_twelve_months_files_modified')
+          .metric-label= t('compares.projects.compare_table_twelve_months_files_modified')
           .metric-values
             - @projects.each do |project|
               .metric-value
@@ -162,7 +162,7 @@
                   .empty –
 
         .metric-row
-          .metric-label= t('.compare_table_twelve_months_lines_added')
+          .metric-label= t('compares.projects.compare_table_twelve_months_lines_added')
           .metric-values
             - @projects.each do |project|
               .metric-value
@@ -172,7 +172,7 @@
                   .empty –
 
         .metric-row
-          .metric-label= t('.compare_table_twelve_months_lines_removed')
+          .metric-label= t('compares.projects.compare_table_twelve_months_lines_removed')
           .metric-values
             - @projects.each do |project|
               .metric-value
@@ -182,7 +182,7 @@
                   .empty –
 
         .metric-row
-          .metric-label= t('.compare_table_year_over_year_commits')
+          .metric-label= t('compares.projects.compare_table_year_over_year_commits')
           .metric-values
             - @projects.each do |project|
               .metric-value
@@ -194,11 +194,11 @@
     -# 30 Day Statistics Section
     .accordion-section
       %button.accordion-header{ type: 'button', 'data-section': 'thirty-day' }
-        %span= t('.thirty_day_statistics')
+        %span= t('compares.projects.thirty_day_statistics')
         %i.icon-chevron-down
       .accordion-content
         .metric-row
-          .metric-label= t('.compare_table_thirty_day_committers')
+          .metric-label= t('compares.projects.compare_table_thirty_day_committers')
           .metric-values
             - @projects.each do |project|
               .metric-value
@@ -208,7 +208,7 @@
                   .empty –
 
         .metric-row
-          .metric-label= t('.compare_table_thirty_day_commits')
+          .metric-label= t('compares.projects.compare_table_thirty_day_commits')
           .metric-values
             - @projects.each do |project|
               .metric-value
@@ -218,7 +218,7 @@
                   .empty –
 
         .metric-row
-          .metric-label= t('.compare_table_thirty_day_files_modified')
+          .metric-label= t('compares.projects.compare_table_thirty_day_files_modified')
           .metric-values
             - @projects.each do |project|
               .metric-value
@@ -228,7 +228,7 @@
                   .empty –
 
         .metric-row
-          .metric-label= t('.compare_table_thirty_day_lines_added')
+          .metric-label= t('compares.projects.compare_table_thirty_day_lines_added')
           .metric-values
             - @projects.each do |project|
               .metric-value
@@ -238,7 +238,7 @@
                   .empty –
 
         .metric-row
-          .metric-label= t('.compare_table_thirty_day_lines_removed')
+          .metric-label= t('compares.projects.compare_table_thirty_day_lines_removed')
           .metric-values
             - @projects.each do |project|
               .metric-value
@@ -250,11 +250,11 @@
     -# Code Analysis Section
     .accordion-section
       %button.accordion-header{ type: 'button', 'data-section': 'code-analysis' }
-        %span= t('.code_analysis')
+        %span= t('compares.projects.code_analysis')
         %i.icon-chevron-down
       .accordion-content
         .metric-row
-          .metric-label= t('.compare_table_mostly_written_in')
+          .metric-label= t('compares.projects.compare_table_mostly_written_in')
           .metric-values
             - @projects.each do |project|
               .metric-value
@@ -264,7 +264,7 @@
                   .empty –
 
         .metric-row
-          .metric-label= t('.compare_table_comments')
+          .metric-label= t('compares.projects.compare_table_comments')
           .metric-values
             - @projects.each do |project|
               .metric-value
@@ -274,7 +274,7 @@
                   .empty –
 
         .metric-row
-          .metric-label= t('.compare_table_lines_of_code')
+          .metric-label= t('compares.projects.compare_table_lines_of_code')
           .metric-values
             - @projects.each do |project|
               .metric-value
@@ -286,11 +286,11 @@
     -# People Section
     .accordion-section
       %button.accordion-header{ type: 'button', 'data-section': 'people' }
-        %span= t('.people')
+        %span= t('compares.projects.people')
         %i.icon-chevron-down
       .accordion-content
         .metric-row
-          .metric-label= t('.compare_table_managers')
+          .metric-label= t('compares.projects.compare_table_managers')
           .metric-values
             - @projects.each do |project|
               .metric-value
@@ -300,7 +300,7 @@
                   .empty –
 
         .metric-row
-          .metric-label= t('.compare_table_users')
+          .metric-label= t('compares.projects.compare_table_users')
           .metric-values
             - @projects.each do |project|
               .metric-value
@@ -310,7 +310,7 @@
                   .empty –
 
         .metric-row
-          .metric-label= t('.compare_table_rating')
+          .metric-label= t('compares.projects.compare_table_rating')
           .metric-values
             - @projects.each do |project|
               .metric-value
