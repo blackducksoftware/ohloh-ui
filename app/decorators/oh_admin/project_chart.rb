@@ -53,8 +53,8 @@ class OhAdmin::ProjectChart
   end
 
   def fill_monthly_gaps
-    monthly_totals = Project.where(created_at: @from.beginning_of_month..@to.end_of_month)
-                            .group("DATE_TRUNC('month', projects.created_at)")
+    monthly_totals = Project.where(created_at: @from.beginning_of_month..@to.end_of_month.end_of_day)
+                            .group("DATE_TRUNC('month', projects.created_at)::date")
                             .count
     base_count = Project.where(created_at: ...@from.beginning_of_month.beginning_of_day).count
 

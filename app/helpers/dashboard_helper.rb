@@ -33,24 +33,27 @@ module DashboardHelper
   end
 
   def days_projects_count
-    return 'N/A' if active_projects_count.zero?
+    active = active_projects_count
+    return 'N/A' if active.zero?
 
     projects_count = Rails.cache.fetch('Admin-updated-project-count-cache').to_i
-    number_to_percentage((projects_count.to_f / active_projects_count) * 100, precision: 2)
+    number_to_percentage((projects_count.to_f / active) * 100, precision: 2)
   end
 
   def weeks_projects_count
-    return 'N/A' if active_projects_count.zero?
+    active = active_projects_count
+    return 'N/A' if active.zero?
 
     projects_count = Rails.cache.fetch('Admin-weeks-updated-project-count-cache').to_i
-    number_to_percentage((projects_count.to_f / active_projects_count) * 100, precision: 2)
+    number_to_percentage((projects_count.to_f / active) * 100, precision: 2)
   end
 
   def outdated_projects
-    return 'N/A' if active_projects_count.zero?
+    active = active_projects_count
+    return 'N/A' if active.zero?
 
     projects_count = Rails.cache.fetch('Admin-outdated-project-count-cache') || 0
-    number_to_percentage((projects_count.to_f / active_projects_count) * 100, precision: 2)
+    number_to_percentage((projects_count.to_f / active) * 100, precision: 2)
   end
 
   def active_projects_count
@@ -66,12 +69,13 @@ module DashboardHelper
   end
 
   def without_analysis_projects_count
-    return 'N/A' if active_projects_count.zero?
+    active = active_projects_count
+    return 'N/A' if active.zero?
 
     without_analysis_count = Project.active.where(
       Enlistment.where('enlistments.project_id = projects.id').arel.exists
     ).where(best_analysis_id: nil).count
-    number_to_percentage((without_analysis_count.to_f / active_projects_count) * 100, precision: 2)
+    number_to_percentage((without_analysis_count.to_f / active) * 100, precision: 2)
   end
 
   def project_count
