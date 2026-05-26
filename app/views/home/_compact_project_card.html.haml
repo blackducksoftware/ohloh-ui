@@ -7,7 +7,7 @@
       .project_logo
         = link_to project_url do
           - if is_account
-            = image_tag(avatar_img_path(project), class: 'account-avatar')
+            = image_tag(avatar_img_path(project), class: 'account-avatar', alt: h(project.name))
           - elsif project.logo.present?
             = image_tag(project.logo.attachment.url(:small), alt: project.name, onerror: "this.style.display='none'; this.nextElementSibling.style.display='flex';")
             .project-icon-placeholder{ style: 'display:none' }

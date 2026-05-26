@@ -15,5 +15,12 @@ document.addEventListener('click', function(e) {
   var aboutHeader = e.target.closest('.about-code-locations-card .card-header');
   if (aboutHeader) {
     aboutHeader.closest('.about-code-locations-card').classList.toggle('expanded');
+    return;
+  }
+
+  // Handle about account basics card header
+  var basicsHeader = e.target.closest('.about-account-basics-card .card-header');
+  if (basicsHeader) {
+    basicsHeader.closest('.about-account-basics-card').classList.toggle('expanded');
   }
 });

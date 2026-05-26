@@ -1,13 +1,18 @@
-.col-md-12.margin_top_20
-  %h4.nomargin
-    %span.soft.margin_left_20= t('.about')
-    = t('.managers')
-  .col-md-6.margin_left_20
-    = t('.ability')
-    %ul.margin_left_30
-      %li= t('.limit')
-      %li= t('.edit')
-      %li= t('.approve')
-    %ul.margin_left_30
-      %li= t('.edit_info')
-
+.col-md-11.about-account-basics-card
+  .card-header
+    %h4.card-title
+      %span.soft= t('.about')
+      = t('.managers')
+    %button.expand-toggle{ type: 'button', 'aria-label' => 'Expand about section' }
+      %i.fa.fa-chevron-down
+  .card-content
+    .about-content-wrapper
+      .col-md-5
+        %p= t('.ability')
+        %ul
+          %li= t('.limit')
+          %li= t('.edit')
+          %li= t('.approve')
+      .col-md-5
+        %ul
+          %li= t('.edit_info')

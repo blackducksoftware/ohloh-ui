@@ -1,40 +1,64 @@
 #privacy_edit_page
   .admin_email_notice
-    :margin-left 15px
-    :margin-top -10px
+    margin-left: 15px
+    margin-top: -10px
 
   .email_opt_status
-    :line-height 25px
-    .email_opt_status span
-      :margin-left 20px
+    line-height: 25px
     #account_email_master_false
       width: 24px
       height: 18px
     #account_email_master_true
       width: 24px
       height: 18px
-    span
+    label
       position: relative
       top: -4px
+      font-weight: normal
+      margin-bottom: 0
 
   .email_opted_out
-    :color #900D16
-    :font-weight bold
+    color: #900D16
+    font-weight: bold
+    html.dark &
+      color: #f87171
 
   .email_opted_in
-    :color #0F781C
-    :font-weight bold
+    color: #0F781C
+    font-weight: bold
+    html.dark &
+      color: #4ade80
 
   .select_box
-    :margin-top 8px
-    :width 80px
+    margin-top: 8px
+    width: 80px
 
   #account_email_posts_chzn,
   #account_email_kudos_chzn
     a
-      :height 30px
-      :background-color #fff
+      height: 30px
+      background-color: #fff
 
   #email_status
     li
       list-style-type: none
+
+  html.dark &
+    legend
+      color: #e5e7eb !important
+      border-bottom-color: #4b5563 !important
+    h4
+      color: #e5e7eb
+    p
+      color: #d1d5db
+    label
+      color: #d1d5db
+    span
+      color: #d1d5db
+    .help-inline
+      color: #9ca3af
+    .select_box
+      background: #374151
+      color: #e5e7eb
+      border: 1px solid #5A2A82
+      border-radius: 4px

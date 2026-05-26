@@ -71,10 +71,40 @@
     background-size: contain
 
 html.dark .regular .background-watermark
-  background: asset_url('charts/watermark_692.png') no-repeat center left
-  background-size: contain
-  filter: hue-rotate(260deg) saturate(1.2) brightness(0.3)
-  opacity: 0.2
+  background: none
+
+html.dark #ohloh_streamgraph.regular
+  position: relative
+  &::before
+    content: ''
+    position: absolute
+    top: 0
+    left: 0
+    right: 0
+    bottom: 0
+    background: asset_url('charts/watermark_692.png') no-repeat center left
+    background-size: auto
+    filter: hue-rotate(260deg) saturate(1.2) brightness(0.3)
+    opacity: 0.2
+    pointer-events: none
+
+html.dark .full .background-watermark
+  background: none
+
+html.dark #ohloh_streamgraph.full
+  position: relative
+  &::before
+    content: ''
+    position: absolute
+    top: 0
+    left: 0
+    right: 0
+    bottom: 0
+    background: asset_url('charts/watermark_860.png') no-repeat center
+    background-size: auto
+    filter: hue-rotate(260deg) saturate(1.2) brightness(0.3)
+    opacity: 0.2
+    pointer-events: none
 @media only all and (min-width: 320px) and (max-width: 480px)
   #ohloh_streamgraph
     &.languages

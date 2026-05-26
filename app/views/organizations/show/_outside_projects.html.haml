@@ -49,7 +49,7 @@
     %thead
       %tr
         %th{ style: 'width: 190px;' }= t('organizations.outside_projects.header_name')
-        %th.center{ style: 'width: 50px;' } &nbsp;
+        %th.center{ style: 'width: 50px;', scope: 'col', aria: { label: t('organizations.outside_projects.header_activity') } }
         %th.center{ style: 'width: 150px;' }= t('organizations.outside_projects.header_claimed_by')
         %th.center{ style: 'width: 90px;' }= t('organizations.outside_projects.header_i_use_this')
         %th.center{ style: 'width: 110px;' }= t('organizations.outside_projects.header_community_rating')

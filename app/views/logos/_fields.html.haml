@@ -11,9 +11,9 @@
         .col-md-10.no_margin_left{ style: 'padding: 0;' }
           .col-md-8.no_margin_left.ace-file-input.margin_bottom_5{ style: 'padding: 0;' }
             = f.file_field :attachment, class: 'new_file_upload', accept: 'image/*',
-              'data_max_size' => Logo::FILE_SIZE_LIMIT.max
+              'data_max_size' => Logo::FILE_SIZE_LIMIT.max, 'aria-label' => t('.head.first')
           %p.margin_bottom_5
-            = f.text_field :url, value: @logo.url, placeholder: t('.placeholder'), class: 'col-md-5'
+            = f.text_field :url, value: @logo.url, placeholder: t('.placeholder'), class: 'col-md-5', 'aria-label' => t('.placeholder')
             - error_tag @logo, :url
             - error_tag @logo, :attachment_content_type if @logo.url.present? && @logo.errors[:url].blank?
             - error_tag @logo, :attachment_file_size
@@ -47,19 +47,19 @@
           .col-md-2
             - unless logo.nil?
               %label{ for: 'logo_' + logo.id.to_s }
-                %img{ src: logo.attachment.url(:small) }
+                %img{ src: logo.attachment.url(:small), alt: label }
               %label{ for: 'logo_' + logo.id.to_s }= label
 
 .row.margin_top_30
   .col-md-12
-    .actions
+    .actions.margin_left_15
       - if logged_in? && @parent.edit_authorized?
-        %input.btn.btn-sm.btn-primary{ type: 'submit', value: t('.button.save') }
+        = button_tag t('.button.save'), type: 'submit', class: 'btn btn-medium btn-primary'
         - if @parent.logo
           - path = @parent.is_a?(Project) ? project_logos_path(@parent) : organization_logos_path(@parent)
-          = link_to t('.link.blank'), path, method: :delete, class: 'btn btn-sm btn-refresh'
+          = link_to t('.link.blank'), path, method: :delete, class: 'btn btn-md btn-refresh'
         - else
-          = disabled_button t('.link.blank'), class: 'btn-sm btn-refresh'
+          = disabled_button t('.link.blank'), class: 'btn-md btn-refresh'
       - else
-        = disabled_button t('.button.save'), class: 'btn-sm btn-primary'
-        = disabled_button t('.link.blank'), class: 'btn-sm btn-refresh'
+        = disabled_button t('.button.save'), class: 'btn-md btn-primary'
+        = disabled_button t('.link.blank'), class: 'btn-md btn-refresh'

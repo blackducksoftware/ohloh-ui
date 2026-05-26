@@ -1,15 +1,9 @@
 .account_header
   .account_header_inner
-    / Back link — top left per Figma
-    .header_back_row
-      = link_to people_path, class: 'header-back-link' do
-        %i.icon-chevron-left
-        People
-
     / Avatar + name + badges row
     .header_flex_container
       #account_icon
-        = image_tag avatar_img_path(@account, 128), size: '128x128', itemprop: 'image'
+        = image_tag avatar_img_path(@account, 128), size: '128x128', itemprop: 'image', alt: h(@account.name)
         - lang = @account.most_experienced_language
         - if lang
           - lang_style = "background-color: ##{language_color(lang.name)}; color:##{language_text_color(lang.name)};"

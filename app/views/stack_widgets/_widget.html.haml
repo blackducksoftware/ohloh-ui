@@ -13,11 +13,11 @@
         .control-group
           %label.control-label= t('.icon_size')
           %label.radio{ for: :small_icon }
-            = t('.small')
             %input#small_icon{ type: 'radio', checked: 'checked', value: 16, name: 'icon_size' }
+            = t('.small')
           %label.radio{ for: :medium_icon }
-            = t('.medium')
             %input#medium_icon{ type: 'radio', name: 'icon_size', value: 24 }
+            = t('.medium')
         .control-group
           %label.control-label= t('.badge_width')
           .controls
@@ -39,5 +39,5 @@
     %p &nbsp;
     %h4.margin_bottom_5= t('.embed')
     %span.help-block= t('.hint')
-    %pre{ id: normal_stack_widgets_url(widget.stack) }
+    %pre.oh-card{ id: normal_stack_widgets_url(widget.stack) }
       = script

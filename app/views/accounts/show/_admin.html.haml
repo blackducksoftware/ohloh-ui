@@ -5,8 +5,8 @@
       .admin_lock_badge
         %i.icon-lock
       %span.admin_panel_title Admin Panel
-    = link_to 'javascript:void(0);', id: 'close_admin_panel', class: 'admin_chevron_btn' do
-      %i.icon-chevron-up
+    = link_to 'javascript:void(0);', id: 'close_admin_panel', class: 'admin_chevron_btn', aria: { label: 'Close admin panel' } do
+      %i.icon-chevron-up{ aria: { hidden: 'true' } }
 
   .admin_panel_body
     .admin_info_section

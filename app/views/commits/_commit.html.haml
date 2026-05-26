@@ -27,7 +27,7 @@
             = link_to t('.more'), '#', class: 'commit-details',
               commit_id: commit.to_param, project_id: @project.to_param
           %span.spinner.hidden{ id: "spinner_#{commit.to_param}" }
-            = image_tag 'spinner.gif'
+            = image_tag 'spinner.gif', alt: ''
         %td
           %abbr.date{ title: commit.time.to_s }
             = t('time_ago', time: time_ago_in_words(commit.time))

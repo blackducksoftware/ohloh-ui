@@ -1,4 +1,6 @@
 - chart_url = commits_by_language_account_charts_url(@account, scope: 'full').to_s
+- light_wm = asset_url('charts/watermark_860.png')
+- dark_wm  = light_wm
 
 .margin_top_10
   %h2.nomargin.col-md-2= t('.title')
@@ -12,4 +14,4 @@
       %option{ value: '1' }= t('.sort_option.one')
       %option{ value: '0' }= t('.sort_option.zero')
   .clearfix
-.stream_graph.full.languages#ohloh_streamgraph{ 'datascope' => 'full', 'datasrc' => chart_url }
+.stream_graph.full.languages#ohloh_streamgraph{ 'datascope' => 'full', 'datasrc' => chart_url, 'data-light-watermark' => light_wm, 'data-dark-watermark' => dark_wm }

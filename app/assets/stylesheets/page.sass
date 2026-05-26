@@ -936,7 +936,8 @@ header
   @media (min-width: 640px)
     padding: 0 24px 16px
 
-#flash-msg .alert
+#flash-msg .alert,
+.modern-alert
   border-radius: 12px !important
   padding: 0 !important
   display: block !important
@@ -951,7 +952,7 @@ header
 
   .alert-inner
     display: flex
-    align-items: flex-start
+    align-items: center
     padding: 14px 16px
     gap: 12px
 
@@ -989,7 +990,6 @@ header
     display: flex
     align-items: center
     justify-content: center
-    margin-top: 2px
     font-size: 15px
 
   .flash-alert-content
@@ -1025,7 +1025,8 @@ header
     html.dark &
       color: #fca5a5
 
-#flash-msg .alert-info
+#flash-msg .alert-info,
+.modern-alert.alert-info
   border-color: rgba(90, 42, 130, 0.3)
   box-shadow: 0 2px 8px rgba(90, 42, 130, 0.1)
 
