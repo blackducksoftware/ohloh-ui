@@ -58,10 +58,9 @@ class ProjectTagsControllerTest < ActionController::TestCase
     it 'should gracefully handle attempting to add the same tag twice' do
       project = create(:project)
       project.tag_list = 'zesty'
-      project.save!
       login_as create(:account)
       post :create, params: { project_id: project.to_param, tag_name: 'zesty' }
-      assert_response :success
+      assert_response :unprocessable_entity
       _(project.reload.tag_list).must_equal 'zesty'
     end
 
