@@ -1,58 +1,70 @@
 .ui-autocomplete
-  :padding 0px
-  :border 1px solid #0082C6
-  :background-color white
-  :overflow-y auto
-  :overflow-x hidden
-  :max-height 16.0em
-  :z-index 99999
+  width: 160px
+  padding: 0
+  margin: 0
+  background-color: #ffffff
+  border: 1px solid #d1d5db
+  border-radius: 8px
+  overflow: hidden
+  overflow-y: auto
+  overflow-x: hidden
+  max-height: 16.0em
+  z-index: 99999
+  list-style-position: outside
+  list-style: none
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23)
+  transition: all 0.2s ease
 
-  :width 15.0em
-  :list-style-position outside
-  :list-style none
-  :padding 0
-  :margin 0
+  html.dark &
+    background-color: #1D0631
+    border-color: #5A2A82
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.38), 0 6px 6px rgba(0, 0, 0, 0.46)
 
   li
-    :margin 0px
-    :padding 2px 5px
-    :cursor default
-    :display block
-    // COMMENT
-      if width will be 100% horizontal scrollbar will apear
-      when scroll mode will be used
-      width 100%
-    :font menu
-    :font-size 12px
-    // COMMENT
-      it is very important, if line-height not setted or setted
-      in relative units scroll will be broken in firefox
-    :line-height 16px
-    :overflow hidden
+    margin: 0
+    padding: 8px 16px
+    cursor: default
+    display: block
+    font-size: 14px
+    font-weight: 400
+    line-height: 20px
+    overflow: hidden
+    background: transparent
+    transition: background 0.15s ease, color 0.15s ease
+
+    &:hover
+      background-color: #f3f4f6
+      cursor: pointer
+
+      html.dark &
+        background: #374151
 
     a
-      :color black
-      :text-decoration none
-      :border 0
-      :display block
+      color: #111827
+      text-decoration: none
+      border: 0
+      display: block
 
-  li:hover
-    :background-color $c2_light
-    :cursor pointer
+      html.dark &
+        color: #ffffff
 
 .ui-state-hover
-  :background-color $c2_light
+  background-color: #5A2A82 !important
+  color: #ffffff
+
+  html.dark &
+    background-color: #ffb91a !important
+    color: #5A2A82
 
 .ui-autocomplete-loading
-  :background Window asset_url('icons/auto_complete_spinner.gif') right center no-repeat
+  background: window asset_url('icons/auto_complete_spinner.gif') right center no-repeat
 
 .ui-autocomplete-moreItems
-  :text-align center
-  :margin 0px
-  :padding 0px 5px
-  :cursor default
-  :display block
-  :width 100%
-  :overflow hidden
-  :-moz-user-select none
-  :-khtml-user-select none
+  text-align: center
+  margin: 0
+  padding: 8px 16px
+  cursor: default
+  display: block
+  width: 100%
+  overflow: hidden
+  user-select: none

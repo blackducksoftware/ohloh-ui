@@ -1,62 +1,473 @@
 .projects_compare
-  #addthis_sharing
-    h4
-      :display inline-block
-      :float left
-    .addthis_toolbox
-      :float right
-      :padding 10px
+  padding: 40px 16px
+
+  html.dark &
+    background-color: #1D0631
+
+  .container
+    max-width: 1280px
+    margin: 0 auto
+
+  .header-wrapper
+    display: flex
+    justify-content: space-between
+    align-items: center
+    margin-bottom: 24px
+
+  h1
+    font-size: 36px
+    font-weight: 700
+    color: #5A2A82
+    margin: 0
+
+    html.dark &
+      color: white
+
   .csv
-    :margin 15px 0 0 25px
-  .social_share_compare_projects
-    :margin-top 10px
+    background: linear-gradient(to bottom right, #5A2A82, #7C3AED)
+    color: white
+    border: none
+    padding: 10px 20px
+    border-radius: 8px
+    font-weight: 600
+    font-size: 14px
+    transition: all 0.2s ease
+    text-decoration: none
+    display: inline-block
+
+    html.dark &
+      background: linear-gradient(to bottom right, #ffb91a, #f59e0b)
+      color: #1D0631
+
+    &:hover
+      transform: translateY(-2px)
+      box-shadow: 0 4px 12px rgba(90, 42, 130, 0.3)
+      color: white
+
+      html.dark &
+        color: #1D0631
+
   table.side_by_side
-    :width 100%
+    width: 100%
+    border-collapse: separate
+    border-spacing: 0
+
     td, th
+      padding: 16px 20px
+      font-size: 14px
+
       .label_1
-        :font-weight normal
-        :text-align left
-        :padding 7px 4px 4px 20px
+        font-weight: 500
+        text-align: left
+        padding: 0
+
     td
-      :text-align left
-      :border-left 1px solid #ddd
-      :padding-left 17px
+      text-align: left
+      border-left: 1px solid rgba(255, 255, 255, 0.05)
+      background-color: rgba(255, 255, 255, 0.02)
+
+      html.dark &
+        background-color: rgba(255, 255, 255, 0.02)
+        color: #e2e8f0
+
+      &:first-child
+        border-left: none
+        background-color: transparent
+        font-weight: 500
+
       .rating
-        :padding-left 2em /* Not actually centered, but looks like it */
+        padding-left: 0
+
       .managers
-        :padding-left 1em /* Not actually centered, but looks like it */
+        padding-left: 0
         .avatar
-          :margin-right 8px
-          :margin-bottom 8px
+          margin-right: 8px
+          margin-bottom: 8px
+
       .pai
-        :position relative
-        :height 30px
+        position: relative
+        height: 30px
         .twenty_project_activity_text
-          :width 180px
+          width: 180px
         a
-          :top 0 !important
-    th.label
-      :padding-left 2em
+          top: 0 !important
+
+    th
+      text-align: center
+      font-weight: 600
+      font-size: 16px
+      color: #1a202c
+      padding: 16px 20px
+      vertical-align: middle
+
+      html.dark &
+        color: #e2e8f0
+
+      &.label
+        text-align: left
+        padding-left: 20px
+        font-weight: 500
+        color: #4a5568
+
+        html.dark &
+          color: #94a3b8
+
+      &.head
+        padding: 12px 20px
+
     tr.section
       td, th
-        :font-size large
-        :color #222
-        :border-bottom 1px solid #ddd
+        font-size: 18px
+        font-weight: 700
+        color: #ffb91a
+        border-bottom: 2px solid rgba(255, 185, 26, 0.3)
+        padding: 16px 20px
+        background: linear-gradient(to right, rgba(255, 185, 26, 0.1), transparent)
+
+        html.dark &
+          color: #ffb91a
+          background: linear-gradient(to right, rgba(255, 185, 26, 0.1), transparent)
+
       th.head
-        :font-size inherit
-        :text-align left
-        :font-weight normal
+        font-size: 16px
+        text-align: center
+        font-weight: 600
+        color: #1a202c
+        background: transparent
+        border-bottom: 2px solid rgba(255, 255, 255, 0.1)
+        padding: 12px 20px
+        vertical-align: middle
+
+        html.dark &
+          color: #e2e8f0
+          background: transparent
+
         big
-          :font-size 15px
-          :line-height 28px
-          :font-weight normal
+          font-size: 16px
+          line-height: 28px
+          font-weight: 600
+
+        // Ensure input fields in header align properly
+        input
+          margin: 0
+
     tr.section.first
       td, th
-        :padding-top 0
+        padding-top: 16px
+
+    tr:not(.section)
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05)
+
+      &:hover
+        td
+          background-color: rgba(255, 185, 26, 0.05)
+
+    // Input fields for project names
+    th input[type="text"],
+    th input[type="search"]
+      width: 100%
+      max-width: 100%
+      padding: 14px 12px
+      border: 2px solid #e5e7eb
+      border-radius: 14px !important
+      font-size: 14px
+      background-color: white
+      color: #1a202c
+      transition: all 0.2s ease
+      box-sizing: border-box
+      margin: 0
+
+      html.dark &
+        background-color: rgba(255, 255, 255, 0.05)
+        border-color: rgba(255, 255, 255, 0.1)
+        color: #e2e8f0
+
+      &:focus
+        outline: none
+        border-color: #5A2A82
+        box-shadow: 0 0 0 3px rgba(90, 42, 130, 0.1)
+
+        html.dark &
+          border-color: #ffb91a
+          box-shadow: 0 0 0 3px rgba(255, 185, 26, 0.1)
+
+      &::placeholder
+        color: #9ca3af
+
+        html.dark &
+          color: #6b7280
 
   .legend, p.flash
-    :margin-left 84px
+    margin-left: 0
+    margin-top: 16px
+
+// Override inline color styles for WCAG AA contrast compliance in dark mode
+html.dark
+  .projects_compare
+    span[style*="color: green"]
+      color: #4ade80 !important
+
+    span[style*="color: red"]
+      color: #f87171 !important
+
+// Compare Card
+.compare-card
+  background-color: white
+  border-radius: 12px
+  border: 1px solid #e5e7eb
+  overflow: hidden
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05)
+  padding: 24px
+
+  html.dark &
+    background-color: #2D1548
+    border-color: rgba(255, 255, 255, 0.1)
+
+  table.side_by_side
+    margin: 0
+
+// Compare Repositories Page
+.compare_repositories
+  .container
+    max-width: 1280px
+    margin: 0 auto
+
+// Dark mode styling for compare repositories chart
+html.dark
+  .compare_repositories.watermark440
+    .highcharts-container
+      background-color: #2D1548
+      filter: brightness(0.9) contrast(1.1)
 
 .modal.fade#graphModal
   margin-top: 100px
   position: fixed
+
+// Mobile Accordion View
+.mobile-compare-view
+  display: none
+
+  html.dark &
+    background-color: #1D0631
+
+.mobile-project-cards
+  display: flex
+  gap: 12px
+  padding: 16px 0
+  margin-bottom: 16px
+
+.mobile-project-card
+  flex: 1
+  min-width: 0
+  background: white
+  border: 1px solid #e5e7eb
+  border-radius: 12px
+  padding: 12px
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05)
+
+  html.dark &
+    background: #2D1548
+    border-color: rgba(255, 255, 255, 0.1)
+
+  &.empty-slot
+    display: flex
+    align-items: center
+    justify-content: center
+
+    form
+      width: 100%
+
+    input[type="text"]
+      width: 100%
+      padding: 12px
+      border: 2px solid #e5e7eb
+      border-radius: 8px
+      font-size: 14px
+      background-color: white
+      color: #1a202c
+      box-sizing: border-box
+      margin: 0
+
+      html.dark &
+        background-color: rgba(255, 255, 255, 0.05)
+        border-color: rgba(255, 255, 255, 0.1)
+        color: #e2e8f0
+
+      &:focus
+        outline: none
+        border-color: #5A2A82
+        box-shadow: 0 0 0 3px rgba(90, 42, 130, 0.1)
+
+        html.dark &
+          border-color: #ffb91a
+          box-shadow: 0 0 0 3px rgba(255, 185, 26, 0.1)
+
+      &::placeholder
+        color: #9ca3af
+
+        html.dark &
+          color: #6b7280
+
+  .project-card-header
+    display: flex
+    justify-content: space-between
+    align-items: flex-start
+
+  .project-info
+    flex: 1
+
+    .project-name
+      font-size: 14px
+      font-weight: 600
+      margin-top: 8px
+      color: #5A2A82
+
+      html.dark &
+        color: #ffb91a
+
+      a
+        color: inherit
+        text-decoration: none
+
+  .remove-project
+    color: #ef4444
+    cursor: pointer
+    padding: 4px
+    font-size: 16px
+
+    &:hover
+      color: #dc2626
+
+.mobile-accordion
+  padding: 0
+
+.accordion-section
+  background: white
+  border: 1px solid #e5e7eb
+  border-radius: 12px
+  margin-bottom: 12px
+  overflow: hidden
+
+  html.dark &
+    background: #2D1548
+    border-color: rgba(255, 255, 255, 0.1)
+
+.accordion-header
+  width: 100%
+  display: flex
+  justify-content: space-between
+  align-items: center
+  padding: 16px
+  background: transparent
+  border: none
+  font-size: 16px
+  font-weight: 600
+  color: #1a202c
+  cursor: pointer
+  transition: background 0.2s ease
+
+  html.dark &
+    color: #e2e8f0
+
+  &:hover
+    background: rgba(255, 185, 26, 0.05)
+
+  i
+    transition: transform 0.3s ease
+    color: #5A2A82
+
+    html.dark &
+      color: #ffb91a
+
+.accordion-section.active
+  background: white !important
+
+  html.dark &
+    background: #2D1548 !important
+
+.accordion-content
+  max-height: 0
+  overflow: hidden
+  transition: max-height 0.3s ease
+
+.metric-row
+  padding: 16px
+  border-top: 1px solid #e5e7eb
+
+  html.dark &
+    border-top-color: rgba(255, 255, 255, 0.05)
+
+  &:first-child
+    border-top: none
+
+.metric-label
+  font-size: 14px
+  font-weight: 600
+  color: #4a5568
+  margin-bottom: 12px
+
+  html.dark &
+    color: #94a3b8
+
+.metric-values
+  display: flex
+  gap: 12px
+  flex-wrap: wrap
+
+.metric-value
+  flex: 1
+  min-width: 80px
+  font-size: 13px
+  color: #1a202c
+
+  html.dark &
+    color: #e2e8f0
+
+  &.empty
+    color: #9ca3af
+
+  // Fix activity level indicator positioning
+  .pai
+    position: static
+    height: auto
+    display: flex
+    align-items: center
+    gap: 12px
+
+    a[class*='twenty_project_activity_level']
+      position: static !important
+      display: inline-flex !important
+      margin-left: 0 !important
+      min-width: 22px
+      justify-content: center
+      align-items: center
+
+    .twenty_project_activity_text
+      width: auto
+      position: static !important
+      display: inline-block !important
+      margin-left: 0 !important
+
+// Mobile Responsive Styles
+@media (max-width: 768px)
+  .projects_compare
+    padding: 16px 0
+
+    .header-wrapper
+      margin-bottom: 16px
+      padding: 0
+
+    h1
+      font-size: 24px
+
+    .csv
+      font-size: 13px
+      padding: 8px 16px
+
+    // Hide desktop table on mobile
+    .compare-card
+      display: none
+
+  // Show mobile accordion view
+  .mobile-compare-view
+    display: block

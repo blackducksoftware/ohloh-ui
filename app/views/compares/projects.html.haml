@@ -4,15 +4,15 @@
   proj_names = params.select { |k, _| k.to_s.match(/project/) }.permit(:project_0, :project_1, :project_2)
 
 .projects_compare
-  %h1.float_left.margin_left_10= t('.compare_projects')
-  - if @projects.any?
-    %a.btn.btn-mini.btn-primary.csv{ href: compare_projects_path(proj_names.merge(format: 'csv')) }= t('.export_to_csv')
-  .pull-right.col-md-6.social_share_compare_projects
-    = render partial: '/shared/add_this', locals: { full_text: t('.i_just_compared') }
-  .clearfix
+  .container
+    .header-wrapper
+      %h1= t('.compare_projects')
+      - if @projects.any?
+        %a.btn.btn-mini.btn-primary.csv{ href: compare_projects_path(proj_names.merge(format: 'csv')) }= t('.export_to_csv')
+    .clearfix
 
-  .margin_left_10
-    .projects_compare
+    -# Desktop Table View
+    .compare-card
       %table.side_by_side
         = compare_section t('.general'), class: 'first', include_header: true
         = compare_row t('.compare_table_activity_level'), :activity_level
@@ -52,3 +52,6 @@
         = compare_row t('.compare_table_managers'), :managers
         = compare_row t('.compare_table_users'), :users
         = compare_row t('.compare_table_rating'), :rating
+
+    -# Mobile Accordion View
+    = render partial: 'compares/mobile_view', locals: { proj_names: proj_names }

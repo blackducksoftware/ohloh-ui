@@ -1,0 +1,833 @@
+// Languages Compare Page - Modern Card-Based Design
+
+// Colors (matching design system)
+$purple-primary: #5A2A82
+$purple-dark: #1D0631
+$purple-card-dark: #2D1548
+$yellow-accent: #ffb91a
+$gray-50: #f9fafb
+$gray-100: #f3f4f6
+$gray-200: #e5e7eb
+$gray-400: #9ca3af
+$gray-600: #4b5563
+$gray-700: #374151
+$gray-900: #111827
+
+// Page Container
+.languages-compare-container
+  max-width: 1280px
+  margin: 0 auto
+  padding: 24px 16px
+
+  @media (max-width: 768px)
+    padding: 16px 12px
+
+// Languages Index Page Container
+.languages-index-container
+  max-width: 1280px
+  margin: 0 auto
+  padding: 24px 16px
+
+  @media (max-width: 768px)
+    padding: 16px 0
+
+// Languages Show Page Container
+.languages-show-container
+  max-width: 1280px
+  margin: 0 auto
+  padding: 24px 16px
+
+  @media (max-width: 768px)
+    padding: 16px 0
+
+.languages-index-title
+  font-size: 36px
+  font-weight: bold
+  color: $purple-primary
+  margin: 0 0 24px 0
+
+  html.dark &
+    color: white
+
+  @media (max-width: 640px)
+    font-size: 30px
+
+// Header Section
+.languages-header
+  margin-bottom: 24px
+
+.languages-title
+  font-size: 36px
+  font-weight: bold
+  color: $purple-primary
+  margin: 0 0 8px 0
+
+  html.dark &
+    color: white
+
+  @media (max-width: 640px)
+    font-size: 30px
+
+// Measure Buttons Card
+.languages-measures-card
+  background-color: white
+  border-radius: 12px
+  border: 1px solid $gray-200
+  padding: 16px
+  margin-bottom: 24px
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24)
+
+  html.dark &
+    background-color: $purple-card-dark
+    border-color: rgba(255, 255, 255, 0.1)
+
+.measure-buttons-group
+  display: flex
+  gap: 8px
+  flex-wrap: wrap
+
+.measure-btn
+  padding: 8px 16px
+  background-color: white
+  color: $gray-700
+  border: 1px solid $gray-200
+  border-radius: 8px
+  font-size: 13px
+  font-weight: 500
+  text-decoration: none
+  transition: all 0.2s ease
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05)
+  cursor: pointer
+
+  &:hover
+    border-color: $purple-primary
+    color: $purple-primary
+    transform: translateY(-1px)
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1)
+
+  &.active
+    background-color: $purple-primary
+    color: white
+    border-color: $purple-primary
+    box-shadow: 0 2px 4px rgba(90, 42, 130, 0.3)
+    background-color: #5A2A82 !important
+
+  html.dark &
+    background-color: $purple-dark
+    color: $gray-200
+    border-color: rgba(255, 255, 255, 0.1)
+
+    &:hover
+      border-color: $yellow-accent
+      color: $yellow-accent
+
+    &.active
+      background-color: $yellow-accent !important
+      color: $purple-dark !important
+      border-color: $yellow-accent !important
+
+  @media (max-width: 640px)
+    font-size: 12px
+    padding: 6px 12px
+
+// Info Card
+.languages-info-card
+  background-color: white
+  border-radius: 12px
+  border: 1px solid $gray-200
+  padding: 20px
+  margin-bottom: 24px
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24)
+
+  html.dark &
+    background-color: $purple-card-dark
+    border-color: rgba(255, 255, 255, 0.1)
+
+.section-heading
+  font-size: 16px !important
+  font-weight: 600
+  color: $gray-900
+  margin: 0 0 12px 0
+
+  html.dark &
+    color: white
+
+.info-text
+  font-size: 12px !important
+  color: $gray-600
+  line-height: 1.6
+  margin: 0
+
+  html.dark &
+    color: $gray-400
+
+.info-link
+  color: $purple-primary
+  text-decoration: none
+  font-weight: 500
+  margin-left: 4px
+  transition: color 0.2s ease
+
+  &:hover
+    text-decoration: underline
+
+  html.dark &
+    color: $yellow-accent
+
+// Content Card
+.languages-content-card
+  background-color: white
+  border-radius: 12px
+  border: 1px solid $gray-200
+  padding: 24px
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24)
+
+  html.dark &
+    background-color: $purple-card-dark
+    border-color: rgba(255, 255, 255, 0.1)
+
+.content-grid
+  display: grid
+  grid-template-columns: 1fr 280px
+  gap: 24px
+  align-items: start
+
+  @media (max-width: 1024px)
+    grid-template-columns: 1fr
+    gap: 20px
+
+// Chart Section
+.chart-section
+  min-height: 300px
+
+.chart-wrapper,
+.chart.watermark440
+  background-color: $gray-50
+  border-radius: 8px
+  border: 1px solid $gray-200
+  padding: 16px
+  height: 300px
+  display: flex
+  align-items: center
+  justify-content: center
+
+  html.dark &
+    background-color: rgba(0, 0, 0, 0.2)
+    border-color: rgba(255, 255, 255, 0.05)
+
+// Selector Section
+.selector-section
+  display: flex
+  flex-direction: column
+  gap: 16px
+
+.language-selectors
+  display: flex
+  flex-direction: column
+  gap: 12px
+
+.language-selector-item
+  display: flex
+  align-items: center
+  gap: 12px
+
+.lang-color-dot
+  width: 16px
+  height: 16px
+  border-radius: 50%
+  flex-shrink: 0
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2)
+
+  &.empty
+    background-color: $gray-200
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1)
+
+    html.dark &
+      background-color: rgba(255, 255, 255, 0.1)
+
+.select-wrapper
+  flex: 1
+
+// Language Dropdown Styles
+.language-dropdown-wrapper
+  position: relative
+  display: flex
+
+.language-dropdown-trigger
+  display: flex
+  align-items: center
+  gap: 8px
+  height: 40px
+  padding: 0 12px
+  width: 100%
+  background-color: white
+  border: 1px solid $gray-200
+  border-radius: 8px
+  color: $gray-900
+  font-size: 14px
+  font-weight: 400
+  white-space: nowrap
+  transition: all 0.2s ease
+  cursor: pointer
+  box-sizing: border-box
+  line-height: normal
+
+  &:hover
+    border-color: $purple-primary
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1)
+
+  &:focus
+    outline: none
+    border-color: $purple-primary
+    box-shadow: 0 0 0 3px rgba(90, 42, 130, 0.1)
+
+  html.dark &
+    background-color: rgba(255, 255, 255, 0.05)
+    border-color: rgba(255, 255, 255, 0.1)
+    color: white
+
+    &:hover
+      border-color: $yellow-accent
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2)
+
+    &:focus
+      border-color: $yellow-accent
+      box-shadow: 0 0 0 3px rgba(255, 185, 26, 0.1)
+
+  i
+    font-size: 12px
+    transition: transform 0.2s ease
+
+  .selection
+    display: block
+    flex: 1
+    text-align: left
+    overflow: hidden
+    text-overflow: ellipsis
+
+.language-dropdown-menu
+  position: absolute
+  top: 100%
+  left: 0
+  right: 0
+  width: 100%
+  margin-top: 4px
+  padding: 0
+  background-color: white !important
+  border: 1px solid $gray-200
+  border-radius: 8px
+  overflow: hidden
+  z-index: 1000
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23)
+  max-height: 300px
+  overflow-y: auto
+  display: none
+
+  html.dark &
+    background-color: #1D0631 !important
+    border-color: #5A2A82
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.38), 0 6px 6px rgba(0, 0, 0, 0.46)
+
+  &.active
+    display: block
+
+  .dropdown-item
+    display: block
+    width: 100%
+    padding: 8px 16px
+    color: #111827
+    font-size: 14px
+    font-weight: 400
+    text-align: left
+    text-decoration: none
+    background: transparent
+    border: none
+    box-sizing: border-box
+    transition: background 0.15s ease, color 0.15s ease
+    cursor: pointer
+
+    &:hover
+      background: #f3f4f6
+
+    &.active
+      background-color: $purple-primary !important
+      color: #ffffff
+      font-weight: 400
+
+      &:hover
+        background-color: $purple-primary
+
+    html.dark &
+      color: #ffffff
+
+      &:hover
+        background: #374151
+
+      &.active
+        background-color: $yellow-accent !important
+        color: #5A2A82 !important
+        font-weight: 400
+
+        &:hover
+          background-color: $yellow-accent
+
+.language-input
+  display: none
+
+// Update Button
+.update-button-wrapper
+  margin-top: 8px
+  display: flex
+  justify-content: center
+
+.update-btn
+  padding: 12px 24px
+  font-size: 14px
+  font-weight: 600
+  border-radius: 8px
+  width: auto
+
+  @media (max-width: 768px)
+    width: 100%
+
+// Responsive adjustments - Tablet (768px and below)
+@media (max-width: 768px)
+  .languages-compare-container
+    padding: 16px 12px
+
+  .languages-index-container
+    padding: 16px 12px
+
+  .languages-title
+    font-size: 28px
+    margin-bottom: 16px
+
+  .languages-index-title
+    font-size: 28px
+
+  .languages-measures-card
+    padding: 12px
+    margin-bottom: 16px
+
+  .languages-info-card
+    padding: 16px
+    margin-bottom: 16px
+
+  .languages-content-card
+    padding: 16px
+
+  .content-grid
+    gap: 16px
+
+  .section-heading
+    font-size: 15px !important
+
+  .language-dropdown-trigger
+    font-size: 13px
+    padding: 0 10px
+    height: 36px
+
+  .language-selectors
+    gap: 10px
+
+  .language-selector-item
+    gap: 10px
+
+  .update-btn
+    width: 100%
+    margin-left: 0
+
+  .measure-buttons-group
+    gap: 6px
+
+  .measure-btn
+    font-size: 11px
+    padding: 6px 10px
+
+// Responsive adjustments - Small devices (480px and below)
+@media (max-width: 480px)
+  .languages-compare-container
+    padding: 12px 8px
+
+  .languages-index-container
+    padding: 12px 8px
+
+  .languages-title
+    font-size: 24px
+    margin-bottom: 12px
+
+  .languages-index-title
+    font-size: 24px
+    margin-bottom: 16px
+
+  .languages-header
+    margin-bottom: 16px
+
+  .languages-measures-card
+    padding: 8px
+    margin-bottom: 12px
+
+  .measure-buttons-group
+    gap: 4px
+
+  .measure-btn
+    font-size: 10px
+    padding: 4px 8px
+
+  .languages-info-card
+    padding: 12px
+    margin-bottom: 12px
+
+  .section-heading
+    font-size: 14px !important
+    margin-bottom: 10px
+
+  .info-text
+    font-size: 13px
+
+  .languages-content-card
+    padding: 12px
+
+  .content-grid
+    gap: 12px
+
+  .chart-section
+    min-height: 200px
+
+  .chart-wrapper,
+  .chart.watermark440
+    height: 200px
+    padding: 12px
+
+  .language-selectors
+    gap: 8px
+
+  .language-selector-item
+    gap: 8px
+
+  .lang-color-dot
+    width: 14px
+    height: 14px
+
+  .language-dropdown-trigger
+    font-size: 12px
+    padding: 0 8px
+    height: 32px
+
+    i
+      font-size: 10px
+
+    .selection
+      font-size: 12px
+
+  .language-dropdown-menu
+    margin-top: 2px
+    max-height: 200px
+
+    .dropdown-item
+      padding: 6px 12px
+      font-size: 13px
+
+  .update-button-wrapper
+    margin-top: 4px
+
+  .update-btn
+    padding: 10px 16px
+    font-size: 13px
+    width: 100%
+
+// Very small screens (under 360px)
+@media (max-width: 360px)
+
+  .languages-title
+    font-size: 20px
+    margin-bottom: 10px
+
+  .languages-index-title
+    font-size: 20px
+
+  .languages-measures-card
+    padding: 6px
+    margin-bottom: 8px
+
+  .measure-buttons-group
+    gap: 2px
+
+  .measure-btn
+    font-size: 10px
+    padding: 4px 6px
+
+  .languages-info-card
+    padding: 10px
+    margin-bottom: 10px
+
+  .section-heading
+    font-size: 13px !important
+
+  .info-text
+    font-size: 12px
+
+  .languages-content-card
+    padding: 10px
+
+  .content-grid
+    gap: 10px
+
+  .chart-section
+    min-height: 160px
+
+  .chart-wrapper,
+  .chart.watermark440
+    height: 160px
+    padding: 8px
+
+  .language-selectors
+    gap: 6px
+
+  .language-selector-item
+    gap: 6px
+
+  .language-dropdown-trigger
+    font-size: 11px
+    padding: 0 6px
+    height: 28px
+
+    i
+      font-size: 9px
+
+  .language-dropdown-menu
+    .dropdown-item
+      padding: 5px 10px
+      font-size: 12px
+
+  .update-btn
+    padding: 8px 12px
+    font-size: 12px
+
+// Language Index Page - Card Table Responsive Styles
+.oh-card
+  background-color: white
+  border-radius: 12px
+  border: 1px solid $gray-200
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24)
+  margin-bottom: 16px
+  overflow: hidden
+
+  html.dark &
+    background-color: $purple-card-dark
+    border-color: rgba(255, 255, 255, 0.1)
+
+  h4
+    margin: 0
+    padding: 10px 16px
+    font-size: 18px
+
+    @media (max-width: 768px)
+      font-size: 16px
+      padding: 8px 12px
+
+    @media (max-width: 480px)
+      font-size: 15px
+      padding: 6px 10px
+
+  // Table styling for language stats
+  .table
+    margin: 16px 0 0 0
+    border-collapse: collapse
+    box-shadow: none !important
+
+    @media (max-width: 768px)
+      margin: 12px 0 0 0
+
+    @media (max-width: 480px)
+      margin: 10px 0 0 0
+
+    // Desktop: horizontal layout with columns
+    @media (min-width: 481px)
+      tbody
+        tr
+          display: table-row
+
+          td
+            padding: 16px
+            border-right: 1px solid $gray-200
+            border-bottom: 1px solid $gray-200
+
+            html.dark &
+              border-color: rgba(255, 255, 255, 0.1)
+
+            &:last-child
+              border-right: none
+
+            strong
+              display: block
+              font-size: 12px
+              color: $gray-600
+              margin-bottom: 8px
+              text-transform: uppercase
+              letter-spacing: 0.5px
+
+              html.dark &
+                color: $gray-400
+
+            p
+              margin: 0
+              font-size: 16px
+              font-weight: 600
+              color: $gray-900
+
+              html.dark &
+                color: white
+
+            .badge
+              margin-top: 8px
+              padding: 4px 12px
+              font-size: 14px
+
+    // Tablet: stacked layout
+    @media (max-width: 768px)
+      tbody
+        tr
+          display: block
+          border-bottom: 1px solid $gray-200
+
+          html.dark &
+            border-color: rgba(255, 255, 255, 0.1)
+
+          td
+            display: block
+            width: 100%
+            padding: 12px 16px
+            border: none
+            border-bottom: 1px solid $gray-100
+
+            html.dark &
+              border-color: rgba(255, 255, 255, 0.05)
+
+            &:last-child
+              border-bottom: none
+
+            strong
+              display: inline-block
+              font-size: 11px
+              color: $gray-600
+              margin-right: 8px
+              text-transform: uppercase
+              letter-spacing: 0.5px
+              min-width: 80px
+
+              html.dark &
+                color: $gray-400
+
+            p
+              display: inline
+              margin: 0
+              font-size: 15px
+              font-weight: 600
+              color: $gray-900
+
+              html.dark &
+                color: white
+
+            .badge
+              display: inline-block
+              margin-left: 8px
+              padding: 3px 10px
+              font-size: 12px
+
+    // Mobile: more compact stacked layout
+    @media (max-width: 480px)
+      tbody
+        tr
+          display: block
+          border-bottom: 1px solid $gray-200
+
+          html.dark &
+            border-color: rgba(255, 255, 255, 0.1)
+
+          td
+            display: flex
+            align-items: center
+            justify-content: space-between
+            width: 100%
+            padding: 10px 12px
+            border: none
+            border-bottom: 1px solid $gray-100
+
+            html.dark &
+              border-color: rgba(255, 255, 255, 0.05)
+
+            &:last-child
+              border-bottom: none
+
+            strong
+              display: block
+              font-size: 10px
+              color: $gray-600
+              text-transform: uppercase
+              letter-spacing: 0.5px
+              margin-bottom: 2px
+
+              html.dark &
+                color: $gray-400
+
+            > div:first-child
+              flex: 1
+
+            p
+              display: inline
+              margin: 0
+              font-size: 14px
+              font-weight: 600
+              color: $gray-900
+
+              html.dark &
+                color: white
+
+            .badge
+              display: inline-block
+              margin-left: 8px
+              padding: 2px 8px
+              font-size: 11px
+
+    // Very small screens
+    @media (max-width: 360px)
+      tbody
+        tr
+          td
+            padding: 8px 10px
+
+            strong
+              font-size: 9px
+              margin-bottom: 2px
+
+            p
+              font-size: 13px
+
+            .badge
+              padding: 2px 6px
+              font-size: 10px
+
+  .margin_top_15
+    text-align: center
+    display: flex
+    justify-content: center
+    align-items: center
+
+  // Hide mini charts on mobile
+  @media (max-width: 768px)
+    svg
+      max-width: 100%
+      height: auto
+
+  @media (max-width: 480px)
+    .mini_chart
+      margin-top: 6px !important
+
+      svg
+        max-height: 40px
+
+    .margin_top_15
+      display: flex
+      justify-content: center
+      align-items: center

@@ -1,34 +1,54 @@
 - content_for(:html_title) { t('.title') }
 
-%h3= t('.heading')
+.languages-compare-container
+  .languages-header
+    %h1.languages-title= t('.heading')
 
-- measures.each do |key, value|
-  = link_to h(value), compare_languages_path(measure: key, language_name: params[:language_name]),
-    class: "btn btn-mini #{@measure == key ? 'btn-primary' : 'btn-info'}"
+  .languages-measures-card
+    .measure-buttons-group
+      - measures.each do |key, value|
+        = link_to h(value), compare_languages_path(measure: key, language_name: params[:language_name]),
+          class: "measure-btn #{@measure == key ? 'active' : ''}"
 
-%h5
-  = t('.measure_heading', measure: measures[@measure])
-%p
-  = measure_description[@measure]
-  = link_to t('.more'), 'https://community.blackduck.com/s/article/Black-Duck-Open-Hub-Language-Comparison-Page', target: '_blank'
+  .languages-info-card
+    %h2.section-heading= t('.measure_heading', measure: measures[@measure])
+    %p.info-text
+      = measure_description[@measure]
+      = link_to t('.more'), 'https://community.blackduck.com/s/article/Black-Duck-Open-Hub-Language-Comparison-Page', target: '_blank', class: 'info-link'
 
-= form_tag(compare_languages_path(measure: @measure), method: :get) do
-  = hidden_field_tag :measure, @measure
-  .col-md-8
-    .chart.watermark440#language{ datasrc: chart_languages_path(measure: @measure, language_name: @language_names),
-      style: 'height: 270px;width: 480px' }
-  .col-md-4
-    - @language_names.each do |name|
-      .col-md-3{ style: "height: 28px;background-color: ##{language_color(name)}" }
-        &nbsp;
-      .col-md-9.margin_bottom_10
-        #sort_by
-          = select_tag 'language_name[]', options_for_select(@languages, name), class: 'chzn-select col-md-9'
-      .clearfix
-    .language
-      .col-md-3 &nbsp;
-      .col-md-9.margin_bottom_10.last_language
-        #sort_by
-          = select_tag 'language_name[]', options_for_select(@languages), class: 'chzn-select col-md-9'
+  .languages-content-card
+    = form_tag(compare_languages_path(measure: @measure), method: :get) do
+      = hidden_field_tag :measure, @measure
+      .content-grid
+        .chart-section
+          .chart.watermark440#language{ datasrc: chart_languages_path(measure: @measure, language_name: @language_names) }
 
-    = submit_tag t('.update'), class: 'btn btn-small btn-primary pull-right'
+        .selector-section
+          .language-selectors
+            - @language_names.each do |name|
+              .language-selector-item
+                .lang-color-dot{ style: "background-color: ##{language_color(name)}" }
+                .select-wrapper
+                  .language-dropdown-wrapper
+                    %button.language-dropdown-trigger{ type: 'button', data: { value: name } }
+                      %span.selection= name
+                      %i.icon-chevron-down
+                    .language-dropdown-menu
+                      - @languages.each do |lang_name, lang_value|
+                        %a.dropdown-item{ href: '#', data: { value: lang_value } }= lang_name
+                    %input.language-input{ type: 'hidden', name: 'language_name[]', value: name }
+
+            .language-selector-item
+              .lang-color-dot.empty
+              .select-wrapper
+                .language-dropdown-wrapper
+                  %button.language-dropdown-trigger{ type: 'button' }
+                    %span.selection= 'Select language'
+                    %i.icon-chevron-down
+                  .language-dropdown-menu
+                    - @languages.each do |lang_name, lang_value|
+                      %a.dropdown-item{ href: '#', data: { value: lang_value } }= lang_name
+                  %input.language-input{ type: 'hidden', name: 'language_name[]' }
+
+          .update-button-wrapper
+            = submit_tag t('.update'), class: 'btn btn-primary update-btn'
