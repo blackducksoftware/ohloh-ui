@@ -53,23 +53,25 @@ class OhAdmin::ProjectChart
   end
 
   def fill_monthly_gaps
-    months = (@from..@to).map { |date| date.strftime('%b %Y') }.uniq
+    monthly_totals = Project.where(created_at: @from.beginning_of_month..@to.end_of_month)
+                            .group("DATE_TRUNC('month', projects.created_at)")
+                            .count
+    base_count = Project.where(created_at: ...@from.beginning_of_month.beginning_of_day).count
 
-    monthly_totals = Project
-      .where(created_at: @from.beginning_of_month..@to.end_of_month)
-      .group("DATE_TRUNC('month', projects.created_at)")
-      .count
-
-    base_count = Project.where('created_at < ?', @from.beginning_of_month.beginning_of_day).count
-
-    months.each do |date|
-      @analyzed[date] ||= 0
-      @non_analyzed[date] ||= 0
-      month_key = Date.strptime(date, '%b %Y')
-      base_count += monthly_totals[month_key] || 0
-      @total_count << base_count
-      @x_axis << date
+    (@from..@to).map { |month| month.strftime('%b %Y') }.uniq.each do |date|
+      base_count = append_monthly_point(date, monthly_totals, base_count)
     end
+  end
+
+  def append_monthly_point(date, monthly_totals, base_count)
+    @analyzed[date] ||= 0
+    @non_analyzed[date] ||= 0
+
+    month_key = Date.strptime(date, '%b %Y')
+    current_total = base_count + (monthly_totals[month_key] || 0)
+    @total_count << current_total
+    @x_axis << date
+    current_total
   end
 
   def sort_by_date
@@ -111,7 +113,7 @@ class OhAdmin::ProjectChart
              .where(projects: { created_at: date.to_date.all_month })
              .count
     else
-      Project.where('created_at < ?', date.to_date.beginning_of_day).count
+      Project.where(created_at: ...date.to_date.beginning_of_day).count
     end
   end
 end
