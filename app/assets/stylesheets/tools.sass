@@ -1,2 +1,660 @@
-.language-list-lineheight
-  line-height: 55px
+// Colors
+$purple-primary: #5A2A82
+$purple-dark: #1D0631
+$purple-card-dark: #2D1548
+$yellow-accent: #ffb91a
+$yellow-dark: #b8860b
+$orange-accent: #FF6B35
+$blue-primary: #0E4B7A
+$blue-light: #3b82f6
+$cyan: #61dafb
+$green: #41b883
+$green-light: #22c55e
+
+// Grays
+$gray-50: #f9fafb
+$gray-100: #f3f4f6
+$gray-200: #e5e7eb
+$gray-300: #d1d5db
+$gray-400: #9ca3af
+$gray-500: #6b7280
+$gray-600: #4b5563
+$gray-700: #374151
+$gray-900: #111827
+
+// Tools Page Container - All selectors scoped to .tools-page to prevent CSS collisions
+.tools-page
+  min-height: 100vh
+  background-color: white
+
+  html.dark &
+    background-color: $purple-dark
+
+  // Header
+  .tools-header
+    padding: 0 16px 10px
+    background-color: white
+
+    html.dark &
+      background-color: $purple-dark
+
+    .container
+      max-width: 1280px
+      margin: 0 auto
+
+  .tools-title
+    font-size: 36px
+    font-weight: bold
+    color: $purple-primary
+
+    html.dark &
+      color: white
+
+    @media (max-width: 640px)
+      font-size: 30px
+
+  // Main Content
+  .tools-content
+    padding: 0 0 48px
+
+    .container
+      max-width: 1280px
+      margin: 0 auto
+
+  // Tools Grid (3 columns)
+  .tools-grid
+    display: grid
+    grid-template-columns: 1fr
+    gap: 24px
+    margin-bottom: 48px
+
+    @media (min-width: 768px)
+      grid-template-columns: repeat(3, 1fr)
+
+  // Tool Card
+  .tool-card
+    background-color: white
+    border-radius: 12px
+    border: 1px solid $gray-200
+    overflow: hidden
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05)
+    transition: all 0.3s ease
+
+    html.dark &
+      background-color: $purple-card-dark
+      border-color: rgba(255, 255, 255, 0.1)
+
+    &:hover
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)
+      transform: scale(1.02)
+
+  .tool-card-header
+    padding: 16px
+    border-bottom: 1px solid $gray-200
+    display: flex
+    align-items: center
+    gap: 12px
+
+    html.dark &
+      border-bottom-color: rgba(255, 255, 255, 0.1)
+
+  .tool-icon
+    width: 40px
+    height: 40px
+    border-radius: 8px
+    display: flex
+    align-items: center
+    justify-content: center
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1)
+
+    i
+      font-size: 20px
+      color: white
+
+  .tool-icon-orange
+    background: linear-gradient(to bottom right, #fbbf24, #f97316)
+
+  .tool-icon-blue
+    background: linear-gradient(to bottom right, #3b82f6, #4f46e5)
+
+  .tool-icon-green
+    background: linear-gradient(to bottom right, #22c55e, #14b8a6)
+
+  .tool-card-title
+    margin: 0
+    font-size: 18px
+    font-weight: 600
+
+    a
+      color: $gray-900
+      text-decoration: none
+      transition: color 0.2s
+
+      html.dark &
+        color: white
+
+      &:hover
+        color: $purple-primary
+
+        html.dark &
+          color: $yellow-accent
+
+  .tool-card-body
+    padding: 24px
+
+  .tool-description
+    font-size: 14px
+    color: $gray-600
+    margin-bottom: 16px
+    line-height: 1.5
+
+    html.dark &
+      color: $gray-400
+
+  // Stats Grid - now scoped to .tools-page
+  .stats-grid
+    display: grid
+    grid-template-columns: repeat(2, 1fr)
+    gap: 12px
+    margin-bottom: 16px
+
+  .stat-item
+    display: flex
+    align-items: center
+    gap: 8px
+    font-size: 14px
+
+    span
+      color: $gray-600
+
+      html.dark &
+        color: $gray-400
+
+  .stat-dot
+    width: 12px
+    height: 12px
+    border-radius: 50%
+
+  .stat-dot-cyan
+    background-color: $cyan
+
+  .stat-dot-green
+    background-color: $green
+
+  // Language Indicators
+  .language-indicators
+    margin-bottom: 16px
+
+  .language-indicator
+    display: flex
+    align-items: center
+    gap: 8px
+    margin-bottom: 12px
+
+    span
+      color: $gray-600
+
+      html.dark &
+        color: $gray-400
+
+  .lang-dot
+    width: 12px
+    height: 12px
+    border-radius: 50%
+
+  .lang-dot-blue
+    background-color: #3b82f6
+
+  .lang-dot-green
+    background-color: #22c55e
+
+  // Stat Badges
+  .stat-badges
+    margin-bottom: 16px
+
+  .stat-badge
+    display: flex
+    align-items: center
+    gap: 8px
+    color: $gray-500
+    margin-bottom: 8px
+    font-size: 14px
+
+    html.dark &
+      color: $gray-400
+
+    i
+      width: 12px
+      height: 12px
+
+  // Stat Times
+  .stat-times
+    margin-bottom: 16px
+
+  .stat-time
+    display: flex
+    align-items: center
+    gap: 8px
+    color: $gray-600
+    margin-bottom: 8px
+    font-size: 14px
+
+    html.dark &
+      color: $gray-400
+
+    i
+      width: 12px
+      height: 12px
+      color: $gray-400
+
+  // Chart Image
+  .chart-image
+    display: block
+    width: 100%
+    height: auto
+    margin-top: 24px
+    border-radius: 8px
+    object-fit: contain
+
+    html.dark &
+      filter: brightness(0.9) contrast(1.1)
+
+  // Chart Legend
+  .chart-legend
+    display: grid
+    grid-template-columns: repeat(2, 1fr)
+    gap: 8px
+    margin-top: 16px
+
+  .legend-item
+    display: flex
+    align-items: center
+    gap: 8px
+    font-size: 14px
+
+    span
+      color: $gray-600
+
+      html.dark &
+        color: $gray-400
+
+  .legend-color
+    width: 12px
+    height: 12px
+    border-radius: 50%
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05)
+
+  // Bottom Grid (2 columns)
+  .tools-bottom-grid
+    display: grid
+    grid-template-columns: 1fr
+    gap: 24px
+
+    @media (min-width: 1024px)
+      grid-template-columns: 2fr 1fr
+
+  // Section Cards
+  .language-stats-section,
+  .additional-info-section
+    background-color: white
+    border-radius: 12px
+    border: 1px solid $gray-200
+    overflow: hidden
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05)
+
+    html.dark &
+      background-color: $purple-card-dark
+      border-color: rgba(255, 255, 255, 0.1)
+
+  .additional-info-section
+    align-self: start
+
+  // Section Headers
+  .section-header
+    padding: 14px 24px
+    border-bottom: 1px solid $gray-200
+    display: flex
+    align-items: center
+    justify-content: space-between
+
+    html.dark &
+      border-bottom-color: rgba(255, 255, 255, 0.1)
+
+  .section-header-simple
+    padding: 24px
+    border-bottom: 1px solid $gray-200
+
+    html.dark &
+      border-bottom-color: rgba(255, 255, 255, 0.1)
+
+  .section-title
+    font-size: 24px
+    font-weight: 600
+    color: $gray-900
+    margin-bottom: 8px
+    margin-top: 8px !important
+
+    html.dark &
+      color: white
+
+    a
+      color: inherit
+      text-decoration: none
+      transition: color 0.2s
+
+      &:hover
+        color: $purple-primary
+
+        html.dark &
+          color: $yellow-accent
+
+  .section-subtitle
+    font-size: 14px
+    color: $gray-600
+
+    html.dark &
+      color: $gray-400
+
+  .section-icon
+    width: auto
+    height: 100%
+    color: $purple-primary
+    opacity: 0.5
+    font-size: 32px
+    display: flex
+    align-items: center
+    justify-content: center
+
+    html.dark &
+      color: $yellow-accent
+
+  // Section Content
+  .section-content
+    padding: 24px
+
+  // Info Box
+  .info-box
+    background: linear-gradient(to bottom right, $gray-50, white)
+    border-radius: 8px
+    padding: 24px
+    margin-bottom: 24px
+    border: 1px solid $gray-200
+
+    html.dark &
+      background: linear-gradient(to bottom right, $purple-dark, $purple-card-dark)
+      border-color: rgba(255, 255, 255, 0.05)
+
+  .info-text
+    font-size: 14px
+    color: $gray-700
+    margin-bottom: 12px
+    line-height: 1.5
+
+    html.dark &
+      color: $gray-300
+
+  .info-badge
+    display: flex
+    align-items: center
+    gap: 8px
+    font-size: 12px
+    color: $gray-500
+    background-color: white
+    border-radius: 6px
+    padding: 8px 12px
+    border: 1px solid $gray-200
+
+    html.dark &
+      background-color: $purple-dark
+      color: $gray-400
+      border-color: rgba(255, 255, 255, 0.1)
+
+    i
+      width: 14px
+      height: 14px
+      color: $purple-primary
+
+      html.dark &
+        color: $yellow-accent
+
+  // Language Cloud
+  .language-cloud-wrapper
+    position: relative
+
+    &::before
+      content: ''
+      position: absolute
+      inset: 0
+      background: linear-gradient(to right, rgba($purple-primary, 0.05), transparent, rgba($blue-primary, 0.05))
+      border-radius: 8px
+      pointer-events: none
+
+      html.dark &
+        background: linear-gradient(to right, rgba($purple-primary, 0.1), transparent, rgba($blue-primary, 0.1))
+
+  .language-cloud
+    position: relative
+    background-color: white
+    border-radius: 8px
+    padding: 24px
+    border: 1px solid $gray-200
+    backdrop-filter: blur(4px)
+
+    html.dark &
+      background-color: rgba($purple-dark, 0.5)
+      border-color: rgba(255, 255, 255, 0.1)
+
+    display: flex
+    flex-wrap: wrap
+    gap: 12px 8px
+    justify-content: space-between
+    align-items: center
+    line-height: 55px
+    margin-bottom: 24px
+
+  .language-tag
+    position: relative
+    text-decoration: none
+    transition: all 0.2s ease
+    color: $purple-primary
+
+    html.dark &
+      color: $yellow-accent
+
+    &:hover
+      color: $orange-accent
+      transform: scale(1.1)
+
+      html.dark &
+        color: $yellow-accent
+
+  // Language CTA
+  .language-cta
+    display: flex
+    align-items: center
+    justify-content: space-between
+    background: linear-gradient(to right, rgba($purple-primary, 0.05), rgba($blue-primary, 0.05))
+    border-radius: 8px
+    padding: 16px
+    border: 1px solid $gray-200
+
+    html.dark &
+      background: linear-gradient(to right, rgba($purple-primary, 0.1), rgba($blue-primary, 0.1))
+      border-color: rgba(255, 255, 255, 0.1)
+
+  .cta-text
+    display: flex
+    align-items: center
+    gap: 8px
+    font-size: 14px
+    color: $gray-700
+
+    html.dark &
+      color: $gray-300
+
+    i
+      width: 16px
+      height: 16px
+      color: $purple-primary
+
+      html.dark &
+        color: $yellow-accent
+
+  .cta-button
+    display: inline-flex
+    align-items: center
+    gap: 8px
+    padding: 8px 16px
+    background-color: $purple-primary
+    color: white
+    border-radius: 8px
+    text-decoration: none
+    font-weight: 600
+    font-size: 14px
+    transition: all 0.2s ease
+
+    html.dark &
+      background-color: $yellow-accent
+      color: #1D0631 !important
+
+    &:hover
+      background-color: rgba($purple-primary, 0.9)
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1)
+      color: #ffffff
+
+      html.dark &
+        background-color: rgba($yellow-accent, 0.9)
+        color: #1D0631 !important
+
+      i
+        transform: translateX(4px)
+
+    i
+      transition: transform 0.2s ease
+
+  // Info Cards
+  .info-card
+    border-radius: 8px
+    padding: 20px
+    border: 1px solid $gray-200
+    margin-bottom: 24px
+
+    html.dark &
+      border-color: rgba(255, 255, 255, 0.1)
+
+  .info-card-api
+    background: linear-gradient(to bottom right, #eff6ff, white)
+
+    html.dark &
+      background: linear-gradient(to bottom right, $purple-dark, $purple-card-dark)
+
+  .info-card-projects
+    background: linear-gradient(to bottom right, #f0fdf4, white)
+
+    html.dark &
+      background: linear-gradient(to bottom right, $purple-dark, $purple-card-dark)
+
+  .info-card-header
+    display: flex
+    align-items: center
+    gap: 8px
+    margin-bottom: 16px
+
+  .info-card-icon
+    width: 32px
+    height: 32px
+    border-radius: 8px
+    display: flex
+    align-items: center
+    justify-content: center
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05)
+
+    i
+      width: 16px
+      height: 16px
+      color: white
+
+  .info-icon-blue
+    background: linear-gradient(to bottom right, #3b82f6, #4f46e5)
+
+  .info-icon-green
+    background: linear-gradient(to bottom right, #22c55e, #14b8a6)
+
+  .info-card-title
+    font-size: 16px
+    font-weight: 600
+    color: $gray-900
+    margin: 0
+
+    html.dark &
+      color: white
+
+  // Info List
+  .info-list
+    list-style: none
+    padding: 0
+    margin: 0
+
+    li
+      display: flex
+      align-items: flex-start
+      gap: 8px
+      margin-bottom: 12px
+      color: $gray-600
+
+      html.dark &
+        color: $gray-400
+
+      &:last-child
+        margin-bottom: 0
+
+  .list-bullet
+    color: $purple-primary
+    margin-top: 4px
+
+    html.dark &
+      color: $yellow-accent
+
+  .list-content
+    display: flex
+    flex-direction: column
+    gap: 4px
+
+    span
+      font-size: 14px
+
+  .list-link
+    color: #2563eb
+    text-decoration: none
+    font-weight: 500
+    transition: color 0.2s
+
+    html.dark &
+      color: #60a5fa
+
+    &:hover
+      color: $purple-primary
+      text-decoration: underline
+
+      html.dark &
+        color: $yellow-accent
+
+  // Responsive adjustments
+  @media (max-width: 768px)
+    .tools-header
+      padding: 16px 0
+
+    .tools-grid
+      gap: 16px
+
+    .section-title
+      font-size: 20px
+
+    .language-cta
+      flex-direction: column
+      gap: 16px
+      text-align: center
+
+    .cta-button
+      width: 100%
+      justify-content: center

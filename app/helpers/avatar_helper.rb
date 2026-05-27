@@ -20,7 +20,8 @@ module AvatarHelper
   def avatar_img_for(who, size = 32)
     return '' unless who
 
-    image_tag avatar_img_path(who, size), style: "width: #{size}px; height: #{size}px;", class: 'avatar'
+    image_tag avatar_img_path(who, size), style: "width: #{size}px; height: #{size}px;", class: 'avatar',
+                                          alt: avatar_title(who)
   end
 
   def avatar_path(who)
