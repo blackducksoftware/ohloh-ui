@@ -89,7 +89,7 @@ class Account::Hooks
   def safe_undo(edit)
     Edit.transaction(requires_new: true) { edit.undo!(Account.hamster) if edit.allow_undo? }
   rescue StandardError
-    Rails.logger.info "Spam undo failed: #{$ERROR_INFO.inspect}\n#{edit.inspect}"
+    AppLogger.info "Spam undo failed: #{$ERROR_INFO.inspect}\n#{edit.inspect}"
   end
 
   def dependent_destroy(account)
