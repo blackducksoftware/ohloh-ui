@@ -1,77 +1,86 @@
 %header.row
-  .bd-logo.col-lg-2.col-xs-2
-    %img{ itemprop: 'image', src: image_path('logo/BD_logo.png'), alt: 'Black Duck' }
-  .header-info.col-lg-8.col-xs-7
-    .header-title
+  .header-info.col-lg-10.col-xs-9
+    .header-ids
       %small Black Duck Security Advisory
-      %span BDSA
-      %h4= @response['title'] 
-    .header-details
-      %span.right-border.date= params[:id]
+      %span.badge-bdsa= params[:id]
       - if @cve_data
-        %span.right-border= bdsa_cve_id(@cve_data)
-      %span.bold Published:
-      %span.right-border.date= humanize_datetime(@response['publishedDate'])
-      %span.bold Last Modified:
-      %span.date= humanize_datetime(@response['lastModifiedDate'])
+        %span.badge-cve
+          = bdsa_cve_id(@cve_data)
+          %i.fa.fa-external-link
+    %h1.header-title-main= @response['title']
+    .header-meta
+      %i.fa.fa-clock-o.meta-icon
+      %span.meta-label Published:
+      %span.meta-value= humanize_datetime(@response['publishedDate'])
+      %i.fa.fa-clock-o.meta-icon
+      %span.meta-label Last Modified:
+      %span.meta-value= humanize_datetime(@response['lastModifiedDate'])
   .col-lg-2.col-xs-3.cybersecurity-logo.pull-right
     %a{ href: "https://www.blackduck.com/resources/cybersecurity-research-center.html", target: '_blank' }
       %img{ itemprop: 'image', src: image_path('logo/cyrc-500.png'), alt: 'Black Duck Cybersecurity' }
     = link_to 'Learn more about BDSAs', 'https://www.blackduck.com/blog/black-duck-security-advisories-benefits.html', class: 'btn btn-primary learn-more btn-sm', target: '_blank'
 .row.details
   .col-lg-6.col-xs-12
-    .row.vuln-summary
-      .col-lg-3.col-xs-6.summary-info
-        .row.overflow-hidden
-          .col-lg-8.col-xs-10
-            %span= cvss3_severity(@response['cvss3']) || 'Temporal score not available'
-            %br
-            %span BDSA
-          .col-lg-4.col-xs-2
-            %i.fa.fa-3x.fa-light.fa-thermometer-full
-      .col-lg-3.col-xs-6.summary-info
-        .row.overflow-hidden
-          .col-lg-8.col-xs-10
-            - if @response['vendorFixDate']
-              %span Fix Available
-              %br
-              %span= humanize_datetime(@response['vendorFixDate'])
-            - else
-              %span No Fix Available
-          .col-lg-4.col-xs-2
-            %i.fa.fa-3x.fa-light.fa-gift
-      .col-lg-3.col-xs-6.summary-info
-        .row.overflow-hidden
-          .col-lg-8.col-xs-10
-            - if @response['exploitAvailableDate']
-              %span Exploit Available
-              %br
-              %span= humanize_datetime(@response['exploitAvailableDate'])
-            - else
-              %span No Exploit
-          .col-lg-4.col-xs-2
-            %i.fa.fa-3x.fa-light.fa-exclamation-circle
-      .col-lg-3.col-xs-6.summary-info
-        .row.overflow-hidden
-          .col-lg-8.col-xs-10
-            - if @response['disclosureDate']
-              %span= bdsa_vulnerability_age(@response['disclosureDate'])
-              %br
-              %span Vulnerability Age
-            - else
-              %span No Exploit
-          .col-lg-4.col-xs-2
-            %i.fa.fa-3x.fa-light.fa-calendar
-    %p= find_and_preserve(markdown_format(@response['description']))
-    %span.bold.date Severity:
-    %span.bordered{class: "#{@response['cvss3']['severity'].downcase}"}= @response['cvss3']['severity'].titleize
-    - if @response['credit'].present?
-      %br
-      %br
-      %span.bold.date Credit:
-      %span= @response['credit']
-    = render partial: 'workaround'
-    = render partial: 'references'
-    = render partial: 'cwe'
-  = render partial: 'bdsa'
-  = render partial: 'cve'
+    .summary-info
+      .summary-icon
+        %i.fa.fa-3x.fa-light.fa-thermometer-full
+      .summary-content
+        %span.summary-title= cvss3_severity(@response['cvss3']) || 'Temporal score not available'
+        %span.summary-label BDSA
+    .summary-info
+      .summary-icon
+        %i.fa.fa-3x.fa-light.fa-gift
+      .summary-content
+        - if @response['vendorFixDate']
+          %span.summary-title Fix Available
+          %span.summary-label= humanize_datetime(@response['vendorFixDate'])
+        - else
+          %span.summary-title No Fix Available
+    .summary-info
+      .summary-icon
+        %i.fa.fa-3x.fa-light.fa-exclamation-circle
+      .summary-content
+        - if @response['exploitAvailableDate']
+          %span.summary-title Exploit Available
+          %span.summary-label= humanize_datetime(@response['exploitAvailableDate'])
+        - else
+          %span.summary-title No Exploit
+    .summary-info
+      .summary-icon
+        %i.fa.fa-3x.fa-light.fa-calendar
+      .summary-content
+        - if @response['disclosureDate']
+          %span.summary-title= bdsa_vulnerability_age(@response['disclosureDate'])
+          %span.summary-label Vulnerability Age
+        - else
+          %span.summary-title No Data
+    - if @response['description'].present?
+      .content-container.description-container
+        %p= find_and_preserve(markdown_format(@response['description']))
+        %span.bold.date Severity:
+        %span.bordered{class: "#{@response['cvss3']['severity'].downcase}"}= @response['cvss3']['severity'].titleize
+        - if @response['credit'].present?
+          %br
+          %br
+          %span.bold.date Credit:
+          %span= @response['credit']
+    - if @response['workaround'].present? || @response['solution'].present?
+      .content-container.workaround-container
+        = render partial: 'workaround'
+    - if bdsa_references(@response['references'])
+      .content-container.references-container
+        = render partial: 'references'
+    - if @cwe_data
+      .content-container.cwe-container
+        = render partial: 'cwe'
+  - if @cve
+    .col-lg-6.col-xs-12.charts-combined-desktop
+      .chart-container
+        .row.charts-row
+          = render partial: 'bdsa', locals: { combined: true, mobile: false }
+          = render partial: 'cve', locals: { combined: true, mobile: false }
+    .charts-mobile-only
+      = render partial: 'bdsa', locals: { combined: false, mobile: true }
+      = render partial: 'cve', locals: { combined: false, mobile: true }
+  - else
+    = render partial: 'bdsa', locals: { combined: false, mobile: false }

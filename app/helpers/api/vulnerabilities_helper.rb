@@ -70,4 +70,14 @@ module Api::VulnerabilitiesHelper
     _cvss_text, vector = vector.split("#{version}/") if version
     "https://nvd.nist.gov/vuln-metrics/cvss/v3-calculator?vector=#{vector}&version=#{version}"
   end
+
+  def render_vulnerability_schema_markup
+    BdsaSchemaService.new(
+      response: @response, cve_data: @cve_data, canonical_url: @canonical_url, params: params
+    ).vulnerability_schema_json
+  end
+
+  def render_landing_page_schema_markup
+    BdsaSchemaService.landing_page_schema_json(canonical_url: @canonical_url)
+  end
 end
