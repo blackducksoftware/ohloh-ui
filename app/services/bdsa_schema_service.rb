@@ -99,9 +99,8 @@ class BdsaSchemaService
   end
 
   def search_action_schema
-    url_template = "#{@canonical_url}/#{t('vulnerabilities.bdsa.index.schema.search_action_template')}"
     { '@type' => 'SearchAction',
-      'target' => { '@type' => 'EntryPoint', 'urlTemplate' => url_template },
+      'target' => { '@type' => 'EntryPoint' },
       'query-input' => t('vulnerabilities.bdsa.index.schema.search_action_input') }
   end
 end

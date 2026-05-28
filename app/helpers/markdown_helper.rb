@@ -9,7 +9,7 @@ module MarkdownHelper
     markdown = Redcarpet::Markdown.new(renderer, extensions)
     markdown.render(text).html_safe
   rescue StandardError
-    Rails.logger.error "Redcarpet failed to convert:\n#{text}."
+    AppLogger.error "Redcarpet failed to convert:\n#{text}."
     text.to_s
   end
 end

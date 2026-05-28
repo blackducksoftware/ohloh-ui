@@ -17,7 +17,7 @@ class Api::VulnerabilitiesController < ApplicationController
 
     fetch_cwe
     @cve = fetch_cve
-    set_seo_metadata if cookies[:bdsa_cookie_disclaimer]
+    set_seo_metadata
   end
 
   def raise_not_found!

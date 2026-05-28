@@ -1,5 +1,4 @@
 -if bdsa_references(@response['references'])
-  %hr
   %span.bold.date References and Related Links
   %dl
     - bdsa_references(@response['references']).each do |type, links|

@@ -24,6 +24,6 @@ task cleanup_vulnerabilities: :environment do
     puts "Iteration ##{i} completed."
     i += 1
   rescue StandardError => e
-    Rails.logger.info(e.message)
+    AppLogger.info(e.message)
   end
 end

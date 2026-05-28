@@ -1803,13 +1803,6 @@ GEM
       activerecord (>= 5.a)
       database_cleaner-core (~> 2.0.0)
     database_cleaner-core (2.0.1)
-    datadog (2.19.0)
-      datadog-ruby_core_source (~> 3.4, >= 3.4.1)
-      libdatadog (~> 18.1.0.1.0)
-      libddwaf (~> 1.24.1.0.3)
-      logger
-      msgpack
-    datadog-ruby_core_source (3.4.1)
     date (3.4.1)
     docile (1.4.1)
     doorkeeper (5.8.2)
@@ -1922,19 +1915,6 @@ GEM
       letter_opener (~> 1.9)
       railties (>= 6.1)
       rexml
-    libdatadog (18.1.0.1.0)
-    libdatadog (18.1.0.1.0-aarch64-linux)
-    libdatadog (18.1.0.1.0-x86_64-linux)
-    libddwaf (1.24.1.0.3)
-      ffi (~> 1.0)
-    libddwaf (1.24.1.0.3-aarch64-linux)
-      ffi (~> 1.0)
-    libddwaf (1.24.1.0.3-arm64-darwin)
-      ffi (~> 1.0)
-    libddwaf (1.24.1.0.3-x86_64-darwin)
-      ffi (~> 1.0)
-    libddwaf (1.24.1.0.3-x86_64-linux)
-      ffi (~> 1.0)
     lint_roller (1.1.0)
     listen (3.9.0)
       rb-fsevent (~> 0.10, >= 0.10.3)
@@ -2209,7 +2189,6 @@ DEPENDENCIES
   coffee-rails
   coffee-script-source (~> 1.8.0)
   database_cleaner
-  datadog (~> 2.2)
   doorkeeper (~> 5.5)
   dotenv-rails
   factory_bot_rails

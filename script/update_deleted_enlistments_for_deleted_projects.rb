@@ -13,20 +13,20 @@ class UpdateEnlistmentsForDeletedProjects
   end
 
   def execute
-    DataDogReport.info('starting script')
+    AppLogger.info('starting script')
     # update enlistments deleted field for all deleted projects
     Project.where(deleted: true).find_in_batches do |projects|
       projects.each do |project|
         update_project_enlistments(project)
       end
     end
-    DataDogReport.info(
+    AppLogger.info(
       'Successfully completed script - Please check update_deleted_enlistments_log_file.log to view any exceptions'
     )
   end
 
   def update_project_enlistments(project)
-    DataDogReport.info("Processing project #{project.id}")
+    AppLogger.info("Processing project #{project.id}")
     begin
       project.enlistments.each do |enlistment|
         enlistment.create_edit.undo!(@editor) if enlistment.create_edit.allow_undo?

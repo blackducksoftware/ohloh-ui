@@ -37,7 +37,7 @@ class SetCodeLocationStatus
   end
 
   def load_temp_table_data
-    DataDogReport.info '  loading temp table..'
+    AppLogger.info '  loading temp table..'
     @conn.execute("CREATE temp table kbLocations
         (id integer);")
 
@@ -53,7 +53,7 @@ class SetCodeLocationStatus
   end
 
   def index_temp_table
-    DataDogReport.info '    indexing temp table....'
+    AppLogger.info '    indexing temp table....'
     @conn.execute('CREATE INDEX ON kbLocations (id)')
   end
 
@@ -66,11 +66,11 @@ class SetCodeLocationStatus
                         NOT EXISTS
                         (SELECT id FROM kbLocations kb WHERE kb.id = cl.id);")
     message = "   updating #{code_location_count} code location records"
-    DataDogReport.info message
+    AppLogger.info message
   end
 
   def update_code_location_status
-    DataDogReport.info '      updating code location status.....'
+    AppLogger.info '      updating code location status.....'
     get_possible_selection
     @conn.execute("UPDATE Code_Locations cl SET status = #{CodeLocation::STATUS_UNDEFINED}
       WHERE status !=  #{CodeLocation::STATUS_DELETED} AND
@@ -79,7 +79,7 @@ class SetCodeLocationStatus
   end
 
   def rollback_code_location_status
-    DataDogReport.info '      rolling back code location status.....'
+    AppLogger.info '      rolling back code location status.....'
     get_possible_selection
     @conn.execute("UPDATE Code_Locations cl SET status = #{CodeLocation::STATUS_ACTIVE}
       WHERE status = #{CodeLocation::STATUS_UNDEFINED} AND
@@ -88,8 +88,8 @@ class SetCodeLocationStatus
   end
 
   def drop_temp_table
-    DataDogReport.info '    dropping temp table.......'
+    AppLogger.info '    dropping temp table.......'
     @conn.execute('DROP table kbLocations;')
-    DataDogReport.info 'completed'
+    AppLogger.info 'completed'
   end
 end
