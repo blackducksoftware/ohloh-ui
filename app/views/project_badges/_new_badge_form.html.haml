@@ -21,7 +21,7 @@
       = text_field_tag('travis_url', @project_badge.identifier, class: 'badge_url_holder')
     - error_tag(@project_badge, :identifier) unless @project_badge.errors[:type].present?
   %td.col-xs-3.badge_image_container
-    = image_tag @project_badge.try(:badge_url) if @project_badge.identifier
+    = image_tag @project_badge.try(:badge_url), alt: '' if @project_badge.identifier
   %td.col-xs-2
     %btn.icon-edit.btn.btn-mini.btn-primary.col-xs-12#save_badge= t('project_badges.save_badge')
     %btn.icon-edit.btn.btn-mini.btn-refresh.col-xs-12#cancel_badge= t('project_badges.cancel')

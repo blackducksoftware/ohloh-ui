@@ -21,7 +21,7 @@
               &nbsp;
               %i.icon-remove
             %span.hidden{ tagname: tag.name }
-              = image_tag 'spinner.gif'
+              = image_tag 'spinner.gif', alt: ''
         .clear &nbsp;
         %form#edit_tags{ project_id: @project.id, project: @project.to_param,
                          style: remaining_tags > 0 ? '' : 'display: none;', rel: 'tag_edit' }
@@ -38,13 +38,13 @@
             - else
               = disabled_button t('.save_tag'), class: 'btn-primary'
 
-            %span.spinner.hidden= image_tag 'spinner.gif'
+            %span.spinner.hidden= image_tag 'spinner.gif', alt: ''
 
   .col-md-6
     %h4= t('.projects_with_similar_tags')
     #related_projects
       = render partial: 'related_projects'
-    .hidden#related_spinner= image_tag 'spinner.gif'
+    .hidden#related_spinner= image_tag 'spinner.gif', alt: ''
 
 %h4.nomargin
   %span.soft= t(:about)

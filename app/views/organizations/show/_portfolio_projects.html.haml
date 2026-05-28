@@ -70,11 +70,11 @@
     %thead
       %tr
         %th{ rowspan: 2, style: 'width: 190px;' }= t('organizations.projects.name')
-        %th.center{ rowspan: 2, style: 'width: 50px;' } &nbsp;
+        %th.center{ rowspan: 2, style: 'width: 50px;', scope: 'col', aria: { label: t('organizations.projects.activity') } }
         %th.center{ rowspan: 2, style: 'width: 120px;' }= t('organizations.projects.primary_language')
         %th.center{ rowspan: 2, style: 'width: 90px;' }= t('organizations.projects.i_use_this')
         %th.center{ rowspan: 2, style: 'width: 110px;' }= t('organizations.projects.community_rating')
-        %th.center{ rowspan: 2, style: 'width: 15px;' }
+        %th{ rowspan: 2, style: 'width: 15px;', aria: { hidden: 'true' } }
         %th.center{ colspan: 2, style: 'width:250px' }
           %strong= t('organizations.projects.twelve_month_activity')
       %tr

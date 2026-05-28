@@ -12,7 +12,7 @@
           data: { remote: true, url: project_scan_analytics_path(@project), method: 'get' }
       %h5.title 1 of #{@analytics.size} enlistments
     .overlay-loader
-      %img.loader{ src: image_path('ui/loadingAnimation.gif') }
+      %img.loader{ src: image_path('ui/loadingAnimation.gif'), alt: '' }
   .row.row-eq-height.project_row#scan_display
     %h5#scan_analytic.text-left Coverity Scan Analysis (<a class='meta' href="#{scan_data.project_url}" target='_blank'>view project here</a>)
   .row.project_row

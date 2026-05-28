@@ -33,7 +33,10 @@
 
 $(document).on 'click', '.flash-close', (e) ->
   e.preventDefault()
-  $('#flash-msg').fadeOut 200, -> $('#flash-msg').remove()
+  $alert = $(e.currentTarget).closest('.alert')
+  $flashMsg = $alert.closest('#flash-msg')
+  $target = if $flashMsg.length then $flashMsg else $alert
+  $target.fadeOut 200, -> $target.remove()
 
 $(document).on 'page:change', ->
   StackShow.init()

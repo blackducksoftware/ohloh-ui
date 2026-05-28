@@ -40,7 +40,7 @@
             = fact.commits
           %td
             = image_tag commits_spark_project_contributor_url(project_id: @project.to_param, id: fact.name_id),
-            width: 179, height: 32 if fact.name_id
+            width: 179, height: 32, alt: '' if fact.name_id
           %td
             = fact.primary_language.nice_name
           %td
@@ -103,6 +103,6 @@
               .label= t('.trend')
               .trend-image
                 = image_tag commits_spark_project_contributor_url(project_id: @project.to_param, id: fact.name_id),
-                width: 179, height: 32
+                width: 179, height: 32, alt: ''
 
 = render partial: 'shared/alert', locals: { message: t('.no_data') } if contributions.empty?

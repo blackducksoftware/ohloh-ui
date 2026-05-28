@@ -1,16 +1,14 @@
 - kudo = received
-%table.table.table-condensed.unstyled.nomargin
-  %tbody
-    %tr
-      %td{ width: '23', style: 'vertical-align: text-top !important;' }
-        = avatar_tiny_laurels(kudo.sender.kudo_rank)
-      %td{ id: "kudo_received_#{kudo.sender.login}" }
-        = link_to h(kudo.sender.name), account_url(kudo.sender), id: "kudo_received_link_#{kudo.sender.login}"
-        - if kudo_is_new?(kudo.account_id, kudo.created_at)
-          %span.signature_color{ style: 'margin-left: 20px;' }= t('kudos.new_link')
-        %span{ style: 'margin-left: 50px;' }
-          - kudo_delete_link(kudo) if logged_in?
-        - if kudo.project_id
-          .project= t('kudos.for', what: kudo.project.name)
-        - unless kudo.message.blank?
-          .message &ldquo;#{kudo.message}&rdquo;
+.kudos-item{ id: "kudo_received_#{kudo.sender.login}" }
+  .kudos-item__avatar
+    = avatar_tiny_laurels(kudo.sender.kudo_rank)
+  .kudos-item__body
+    .kudos-item__name-row
+      = link_to h(kudo.sender.name), account_url(kudo.sender), id: "kudo_received_link_#{kudo.sender.login}", class: 'kudos-item__name'
+      - if kudo_is_new?(kudo.account_id, kudo.created_at)
+        %span.kudos-item__new= t('kudos.new_link')
+      - kudo_delete_link(kudo) if logged_in?
+    - if kudo.project_id
+      .kudos-item__project= t('kudos.for', what: kudo.project.name)
+    - unless kudo.message.blank?
+      .kudos-item__message &ldquo;#{kudo.message}&rdquo;

@@ -4,14 +4,15 @@
 
 = render partial: 'layouts/partials/alert'
 
-.project_content_title
-  %h2.float_left
-    = link_to t(:settings), [:settings, @parent]
-    &#58; #{t('permissions.permissions')}
-  = project_analysis_timestamp(@project) if @project
+.row
+  .col-md-6.col-md-offset-1
+    %h2.float_left
+      = link_to t(:settings), [:settings, @parent]
+      &#58; #{t('permissions.permissions')}
+    = project_analysis_timestamp(@project) if @project
 
 .row
-  .col-sm-6.col-sm-offset-2
+  .col-md-6.col-md-offset-1
     .oh-card
       - url = polymorphic_path([:permissions, @parent])
       = form_for @permission, as: :permission, url: url, html: { method: :put, id: 'permission_show' } do |f|
@@ -35,16 +36,23 @@
 
           .actions
             - if current_user_can_manage?
-              = submit_tag t(:save_changes), id: 'submit', class: 'btn-sm btn-primary', style: 'display: none'
+              = button_tag t(:save_changes), type: 'submit', id: 'submit', class: 'btn btn-sm btn-primary', style: 'display: none'
             - else
-              = disabled_button t(:save_changes), class: 'btn-primary'
-
-%h4.nomargin
-  %span.soft= t 'permissions.show.about_permissions_1'
-  = t 'permissions.show.about_permissions_2'
-.col-sm-6
-  %ul
-    - parent_name = @parent.class.name
-    %li= t 'permissions.show.help_1', name: parent_name
-    %li= t 'permissions.show.help_2', name: parent_name.downcase
-    %li= t 'permissions.show.help_3', upper_name: parent_name, name: parent_name.downcase
+              = disabled_button t(:save_changes), class: 'btn-sm btn-primary'
+.row
+  .col-md-6.col-md-offset-1
+    .about-account-basics-card
+      .card-header
+        %h4.card-title
+          %span.soft= t 'permissions.show.about_permissions_1'
+          = t 'permissions.show.about_permissions_2'
+        %button.expand-toggle{ type: 'button', 'aria-label' => 'Expand about section' }
+          %i.fa.fa-chevron-down
+      .card-content
+        .about-content-wrapper
+          .col-md-10
+            - parent_name = @parent.class.name
+            %ul
+              %li= t 'permissions.show.help_1', name: parent_name
+              %li= t 'permissions.show.help_2', name: parent_name.downcase
+              %li= t 'permissions.show.help_3', upper_name: parent_name, name: parent_name.downcase

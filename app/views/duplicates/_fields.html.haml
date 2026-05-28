@@ -7,7 +7,7 @@
     .controls
       = text_field_tag :good_project, good.try(:name), class: 'autocompletable', style: 'width: 95%;',
       data: { source: '/autocompletes/project_duplicates', select: 'duplicatesSelect' }
-      .hidden#new_duplicate_spinner= image_tag 'spinner.gif'
+      .hidden#new_duplicate_spinner= image_tag 'spinner.gif', alt: ''
       - error_tag @duplicate, :good_project
 
   .control-group.clearfix#good_project_url_label{ class: good ? '' : ' hidden' }

@@ -1,12 +1,18 @@
-%h4.nomargin
-  %col-md.soft= t('about')
-  = t('.title')
-.col-md-5
-  %ul.margin_left_20.margin_top_10
-    %li= t('.first')
-    %li= t('.second')
-    %li= t('.third')
-.col-md-5
-  %ul.margin_left_20.margin_top_10
-    %li= t('.fourth')
-    %li= t('.fifth')
+.about-account-basics-card
+  .card-header
+    %h4.card-title
+      %span.soft= t('about')
+      = t('.title')
+    %button.expand-toggle{ type: 'button', 'aria-label' => 'Expand about section' }
+      %i.fa.fa-chevron-down
+  .card-content
+    .about-content-wrapper
+      .col-md-5
+        %ul
+          %li= t('.first')
+          %li= t('.second')
+          %li= t('.third')
+      .col-md-5
+        %ul
+          %li= t('.fourth')
+          %li= t('.fifth')

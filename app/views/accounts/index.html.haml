@@ -13,6 +13,8 @@
 
   = render partial: 'shared/search_dingus', locals: { collection: @people, sort_context: :people }
 
+  
   = render partial: 'account', collection: @people.map(&:account)
 
-  = render 'shared/modern_pagination', collection: @people
+  .people-pagination
+    = render 'shared/modern_pagination', collection: @people

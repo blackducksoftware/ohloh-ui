@@ -72,10 +72,10 @@
           = t('organizations.affiliated_committers.level')
         %th.center{ colspan: 2, style: 'width:200px' }
           %strong= t('organizations.affiliated_committers.projects_committed_to')
-        %th{ rowspan: 2, style: 'width: 20px;' } &nbsp;
+        %th{ rowspan: 2, style: 'width: 20px;', aria: { hidden: 'true' } }
         %th.center{ colspan: 2, style: 'width:200px' }
           %strong= t('organizations.affiliated_committers.most_commits_to')
-        %th{ rowspan: 2, style: 'width: 20px;' } &nbsp;
+        %th{ rowspan: 2, style: 'width: 20px;', aria: { hidden: 'true' } }
         %th.center{ colspan: 2, style: 'width:200px' }
           %strong= t('organizations.affiliated_committers.most_recent_commits_on')
       %tr

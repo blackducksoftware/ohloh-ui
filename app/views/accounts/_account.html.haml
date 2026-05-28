@@ -56,7 +56,7 @@
               = link_to langs_link, account_languages_path(account), class: 'people-card__link'
             - else
               = link_to t('.langs_link_text2'), account_languages_path(account), class: 'people-card__link'
-            %span.people-card__link-dot •
+            %span.people-card__link-dot{ aria: { hidden: 'true' } }
             - if more_pos_count > 0
               - pluaral_term1 = pluralize_without_count(more_pos_count, 'project')
               = link_to t('.positions_link_text1', more_pos_count: more_pos_count, pluaral_term: pluaral_term1), account_positions_path(account), class: 'people-card__link'

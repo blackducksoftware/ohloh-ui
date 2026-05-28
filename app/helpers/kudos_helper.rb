@@ -43,9 +43,11 @@ module KudosHelper
     confirm = kudo_delete_link_confirm(kudo)
     return nil unless confirm
 
-    haml_tag :a, href: kudo_path(kudo), class: 'command btn btn-minier btn-primary',
+    haml_tag :a, href: kudo_path(kudo), class: 'btn kudo-btn btn-mini',
                  data: { method: :delete, confirm: confirm } do
-      haml_tag :i, '', class: 'icon-undo rescind-kudos'
+      haml_tag :i, class: 'rescind-kudos' do
+        haml_concat undo_svg_icon
+      end
       haml_tag :span, I18n.t('kudos.undo')
     end
   end
@@ -86,6 +88,14 @@ module KudosHelper
     else
       new_kudo_path(contribution_id: target.id)
     end
+  end
+
+  def undo_svg_icon
+    svg_attrs = 'class="kudo-btn-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" ' \
+                'fill="none" stroke="currentColor" stroke-width="2" ' \
+                'stroke-linecap="round" stroke-linejoin="round"'
+    "<svg #{svg_attrs}><polyline points=\"1 4 1 10 7 10\"/>" \
+    '<path d="M3.51 15a9 9 0 1 0 .49-3.2"/></svg>'.html_safe
   end
 
   def thumbs_up_svg_icon

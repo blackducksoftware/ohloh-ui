@@ -20,7 +20,7 @@
           - project = unclaimed_person.project
           .unclaimed-card__item
             = render 'committers/unclaimed_tile', project: project, name_fact: unclaimed_person.name_fact
-            %input.hidden{ type: 'checkbox', name: 'project_ids[]', value: project.id, checked: 'checked' }
+            %input{ type: 'hidden', name: 'project_ids[]', value: project.id }
         - if people.length > UNCLAIMED_TILE_LIMIT && !from_show_page
           .unclaimed-card__more
             = link_to t('.and_more', length: people.length - UNCLAIMED_TILE_LIMIT), committer_path(name_id)
