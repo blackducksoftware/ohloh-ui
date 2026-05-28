@@ -3,7 +3,8 @@
   page_context[:select_footer_nav] = :kudos
   position = @person ? kudo_position_for_person(@person.id, @person.kudo_position.to_i) : kudo_position_for_person(nil)
 .col-md-12
-  %h2= t('.title')
+  %h2
+    %strong{ style: 'font-size: 26px' }= t('.title')
   != position
   %table#kudo_mantle
     %tr
@@ -19,15 +20,30 @@
         .arrow_down &nbsp;
   .row &nbsp;
   .row &nbsp;
-.col-md-2.no-margin
-  &nbsp;
-.col-md-5
-  %h5= t('.kudos_received')
-  = render partial: 'kudos/received', collection: @received_kudos
-  - if @received_kudos.empty?
-    %p= t('.no_kudos_received_yet')
-.col-md-5
-  %h5= t('.kudos_given')
-  = render partial: 'kudos/given', collection: kudos_grouped_sent(@sent_kudos)
-  - if @sent_kudos.empty?
-    %p= t('.no_kudos_given_yet')
+.col-md-12
+  .kudos-grid
+    .oh-card.oh-card--flush.kudos-card
+      .kudos-card__header
+        .kudos-card__icon.kudos-card__icon--received
+          %svg{ xmlns: 'http://www.w3.org/2000/svg', viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', 'stroke-width': '2', 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }
+            %path{ d: 'M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3z' }
+            %path{ d: 'M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3' }
+        %h2.kudos-card__title= t('.kudos_received')
+      .kudos-card__list
+        = render partial: 'kudos/received', collection: @received_kudos
+        - if @received_kudos.empty?
+          %p.kudos-card__empty= t('.no_kudos_received_yet')
+    .oh-card.oh-card--flush.kudos-card
+      .kudos-card__header
+        .kudos-card__icon.kudos-card__icon--given
+          %svg{ xmlns: 'http://www.w3.org/2000/svg', viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', 'stroke-width': '2', 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }
+            %polyline{ points: '20 12 20 22 4 22 4 12' }
+            %rect{ x: '2', y: '7', width: '20', height: '5' }
+            %path{ d: 'M12 22V7' }
+            %path{ d: 'M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z' }
+            %path{ d: 'M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z' }
+        %h2.kudos-card__title= t('.kudos_given')
+      .kudos-card__list
+        = render partial: 'kudos/given', collection: kudos_grouped_sent(@sent_kudos)
+        - if @sent_kudos.empty?
+          %p.kudos-card__empty= t('.no_kudos_given_yet')

@@ -303,5 +303,79 @@ class ProjectsHelperTest < ActionView::TestCase
       stubs(:concat)
       project_compare_button(@project)
     end
+
+    it 'renders sp_label span with project name as title' do
+      @project = create(:project)
+      @session_projects = []
+      label = @project.name
+      expects(:haml_tag).with(:form, class: 'sp_form styled form-inline ', style: 'min-width: 94px;',
+                                     id: "sp_form_#{@project.to_param}").yields
+      expects(:haml_tag).with(:span, class: 'sp_label', title: label).yields
+      expects(:concat).with(label.truncate(35))
+      expects(:haml_tag).with(:input, style: 'margin-top: 2px;', type: 'checkbox',
+                                      id: "sp_chk_#{@project.to_param}", checked: false,
+                                      project_id: @project.to_param, class: 'sp_input')
+      expects(:haml_tag).with(:div, class: 'clear_both')
+      project_compare_button(@project)
+    end
+
+    it 'renders sp_label span with custom label as title' do
+      @project = create(:project)
+      @session_projects = []
+      custom_label = 'My Custom Label'
+      expects(:haml_tag).with(:form, class: 'sp_form styled form-inline ', style: 'min-width: 94px;',
+                                     id: "sp_form_#{@project.to_param}").yields
+      expects(:haml_tag).with(:span, class: 'sp_label', title: custom_label).yields
+      expects(:concat).with(custom_label.truncate(35))
+      expects(:haml_tag).with(:input, style: 'margin-top: 2px;', type: 'checkbox',
+                                      id: "sp_chk_#{@project.to_param}", checked: false,
+                                      project_id: @project.to_param, class: 'sp_input')
+      expects(:haml_tag).with(:div, class: 'clear_both')
+      project_compare_button(@project, custom_label)
+    end
+
+    it 'truncates label longer than 35 chars in span concat' do
+      @project = create(:project)
+      @session_projects = []
+      long_label = 'A' * 40
+      expects(:haml_tag).with(:form, class: 'sp_form styled form-inline ', style: 'min-width: 94px;',
+                                     id: "sp_form_#{@project.to_param}").yields
+      expects(:haml_tag).with(:span, class: 'sp_label', title: long_label).yields
+      expects(:concat).with(long_label.truncate(35))
+      expects(:haml_tag).with(:input, style: 'margin-top: 2px;', type: 'checkbox',
+                                      id: "sp_chk_#{@project.to_param}", checked: false,
+                                      project_id: @project.to_param, class: 'sp_input')
+      expects(:haml_tag).with(:div, class: 'clear_both')
+      project_compare_button(@project, long_label)
+    end
+
+    it 'renders checkbox with checked: true when project is selected' do
+      @project = create(:project)
+      @session_projects = [@project]
+      label = @project.name
+      expects(:haml_tag).with(:form, class: 'sp_form styled form-inline selected', style: 'min-width: 94px;',
+                                     id: "sp_form_#{@project.to_param}").yields
+      expects(:haml_tag).with(:span, class: 'sp_label', title: label).yields
+      expects(:concat).with(label.truncate(35))
+      expects(:haml_tag).with(:input, style: 'margin-top: 2px;', type: 'checkbox',
+                                      id: "sp_chk_#{@project.to_param}", checked: true,
+                                      project_id: @project.to_param, class: 'sp_input')
+      expects(:haml_tag).with(:div, class: 'clear_both')
+      project_compare_button(@project)
+    end
+
+    it 'renders clear_both div after checkbox' do
+      @project = create(:project)
+      @session_projects = []
+      expects(:haml_tag).with(:form, class: 'sp_form styled form-inline ', style: 'min-width: 94px;',
+                                     id: "sp_form_#{@project.to_param}").yields
+      expects(:haml_tag).with(:span, class: 'sp_label', title: @project.name).yields
+      expects(:concat).with(@project.name.truncate(35))
+      expects(:haml_tag).with(:input, style: 'margin-top: 2px;', type: 'checkbox',
+                                      id: "sp_chk_#{@project.to_param}", checked: false,
+                                      project_id: @project.to_param, class: 'sp_input')
+      expects(:haml_tag).with(:div, class: 'clear_both')
+      project_compare_button(@project)
+    end
   end
 end

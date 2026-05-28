@@ -2,7 +2,7 @@
 .margin_top_5#mini_account_row
   .col-md-1
     = link_to account_path(@account) do
-      = image_tag avatar_img_path(@account, 62), size: '62x62', itemprop: 'image'
+      = image_tag avatar_img_path(@account, 62), size: '62x62', itemprop: 'image', alt: h(@account.name)
     - if lang
       - bg_color = language_color(lang.name)
       - text_color = language_text_color(lang.name)

@@ -1,17 +1,31 @@
+h2.pull-left
+  font-weight: 700 !important
+  font-size: 24px !important
+
 a.promo
   display: block
   border: medium none
-  background-color: #F2F2F2
   h6
     color: #369
   .widget_preview
     margin: 0px auto
-    width: 110px
     .stack
       border: 1px solid #BBB
-      width: 80px
       padding: 8px
       background-color: #FFF
+      overflow: hidden
+      .icons
+        display: flex
+        flex-wrap: wrap
+        gap: 4px
+        .icon-container
+          width: 20px
+          height: 20px
+          border-radius: 3px
+          overflow: hidden
+          box-shadow: none
+          .icon-letter
+            font-size: 12px
     .ohloh
       margin: 0.8em 0px 0px
       text-align: center
@@ -24,6 +38,52 @@ a.promo
 
 .inset
   padding: 0.5em 6px 0px
+
+.recommendations
+  a#show
+    text-decoration: none
+    &:hover
+      text-decoration: none
+
+#add_project_form
+  margin-bottom: 20px
+  .form-control
+    border: 2px solid #e5e7eb !important
+    border-radius: 16px !important
+    -webkit-border-radius: 16px !important
+    -moz-border-radius: 16px !important
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important
+    background: #ffffff !important
+    color: #111827 !important
+    padding: 10px 16px !important
+    height: auto !important
+    transition: border-color 0.3s ease, box-shadow 0.3s ease
+    &::placeholder
+      color: #9ca3af !important
+      opacity: 1
+    &:hover
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important
+      border-color: #d1d5db !important
+    &:focus, &:focus-visible
+      border-color: #5A2A82 !important
+      outline: none !important
+      box-shadow: 0 0 0 4px rgba(14, 75, 122, 0.1) !important
+      background: #ffffff !important
+    html.dark &
+      background: #1D0631 !important
+      color: #ffffff !important
+      border-color: #5A2A82 !important
+      &::placeholder
+        color: #6b7280 !important
+        opacity: 1
+      &:hover
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -1px rgba(0, 0, 0, 0.1) !important
+        border-color: #6b7280 !important
+      &:focus, &:focus-visible
+        border-color: #ffb91a !important
+        background: #1D0631 !important
+        box-shadow: 0 0 0 4px rgba(255, 185, 26, 0.1) !important
+        outline: none !important
 
 #stacks_show_page
   .promo-more-link

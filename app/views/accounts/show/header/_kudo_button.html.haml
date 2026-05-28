@@ -7,8 +7,10 @@
   - if kudo
     = form_for kudo, action: account_kudo_path(current_user, kudo), method: :delete do
       = button_tag class: "btn kudo-btn #{css}" do
-        %i.icon.icon-undo
-        #{t('undo')} Kudo
+        %svg.kudo-btn-icon{ xmlns: 'http://www.w3.org/2000/svg', viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', 'stroke-width': '2', 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }
+          %polyline{ points: '1 4 1 10 7 10' }
+          %path{ d: 'M3.51 15a9 9 0 1 0 .49-3.2' }
+        = "#{t('undo')} Kudo"
   - else
     = link_to 'javascript:', class: "btn kudo-btn #{css}", onclick: "tb_show('#{t('give')} Kudos #{t('to')} #{name}', '#{action}', false); return false;" do
       %svg.kudo-btn-icon{ xmlns: 'http://www.w3.org/2000/svg', viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', 'stroke-width': '2', 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }

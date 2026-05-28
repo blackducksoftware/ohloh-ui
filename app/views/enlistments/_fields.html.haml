@@ -96,7 +96,7 @@
     - if logged_in? && @project.edit_authorized?
       = submit_tag t('.save_code_location'), class: 'btn btn-primary submit'
       %p.spinner{ style: 'display: none;' }
-        = image_tag 'spinner.gif'
+        = image_tag 'spinner.gif', alt: ''
         = t('.check_server_connection')
     - else
       = disabled_button t('.save_code_location'), class: 'btn-primary'

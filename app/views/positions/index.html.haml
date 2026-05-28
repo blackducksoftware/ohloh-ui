@@ -21,7 +21,7 @@
     %p= t('.no_contributions_to_display')
 
 - if current_user == @account
-  = link_to new_account_position_path(@account), class: 'btn btn-small btn-primary' do
+  = link_to new_account_position_path(@account), class: 'btn btn-medium btn-primary' do
     %i.icon-plus-sign
       &nbsp;
     = t('.claim_contribution')

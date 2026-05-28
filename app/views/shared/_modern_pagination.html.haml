@@ -2,8 +2,8 @@
   .modern-pagination
     - current_page = collection.current_page
     - total_pages = collection.total_pages
-    %button.page-btn{disabled: current_page == 1, onclick: "window.location.href='?#{request.query_parameters.merge(page: (current_page - 1)).to_query}'"}
-      %i.fa.fa-chevron-left
+    %button.page-btn{disabled: current_page == 1, onclick: "window.location.href='?#{request.query_parameters.merge(page: (current_page - 1)).to_query}'", aria: { label: 'Previous page' }}
+      %i.fa.fa-chevron-left{ aria: { hidden: 'true' } }
     - visible_pages = []
     - window_size = 2
     - visible_pages << 1
@@ -20,5 +20,5 @@
       - else
         %button.page-btn{class: ('active' if page == current_page), onclick: "window.location.href='?#{request.query_parameters.merge(page: page).to_query}'"}
           = page
-    %button.page-btn{disabled: current_page == total_pages, onclick: "window.location.href='?#{request.query_parameters.merge(page: (current_page + 1)).to_query}'"}
-      %i.fa.fa-chevron-right
+    %button.page-btn{disabled: current_page == total_pages, onclick: "window.location.href='?#{request.query_parameters.merge(page: (current_page + 1)).to_query}'", aria: { label: 'Next page' }}
+      %i.fa.fa-chevron-right{ aria: { hidden: 'true' } }

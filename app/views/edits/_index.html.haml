@@ -1,11 +1,10 @@
 .clearfix
 
+= render 'shared/search_dingus', collection: @edits, filter_type: :checkbox, no_match_found_type: :flash
+
 #edits_list
   %table.table.table-striped.alt.table-condensed
     %tbody
-      %tr{ id: 'dingus-row' }
-        %td
-          = render 'shared/search_dingus', collection: @edits, filter_type: :checkbox, no_match_found_type: :flash
       = render partial: 'edit', collection: @edits if @edits.present?
 
 - if params[:query].present? && @edits.blank?
@@ -18,4 +17,4 @@
 
 .modal.fade#edit-details{ role: 'dialog', tabindex: -1 }
   .modal-dialog{ role: 'document' }
-    .edit_spinner= image_tag 'spinner.gif'
+    .edit_spinner= image_tag 'spinner.gif', alt: ''

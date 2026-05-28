@@ -1,15 +1,16 @@
 - page_context[:select_footer_nav] = nil
 - content_for(:html_title) { t('.page_title', name: @organization.name) }
 
-%h2.pull-left
-  = link_to t('.settings'), settings_organization_path(@organization)
-  \:
-  = link_to t('.managers'), list_managers_organization_path(@organization)
-  = t('.new')
-.clearfix
+.row
+  .col-md-offset-1
+    %h2
+      = link_to t('.settings'), settings_organization_path(@organization)
+      \:
+      = link_to t('.managers'), list_managers_organization_path(@organization)
+      %strong= t('.new')
 
 .row.padding_one_top
-  .oh-card.col-md-8.col-md-offset-2
+  .oh-card.col-md-8.col-md-offset-1#account-edit-form
     = form_for @manage, url: new_manager_organization_path(@organization), class: 'nomargin' do |_|
       - unless @manage.errors.empty?
         - errors = @manage.errors.full_messages
@@ -18,14 +19,13 @@
           %p.error= errors.join('. ')
 
       %fieldset
-        .control-group
-          %label.control-label.required= t('.new_manager')
+        .form-group
+          %label.control-label.required{ for: 'org_new_manager' }= t('.new_manager')
           .controls
             = text_field_tag :account_name, params[:account_name],
-            id: 'org_new_manager', class: 'autocompletable col-md-7', placeholder: t('.enter_name'),
+            id: 'org_new_manager', class: 'autocompletable form-control', placeholder: t('.enter_name'),
             data: { source: '/autocompletes/account', select: 'new_manager' }
             = hidden_field_tag :account_id
-          .clearfix
           .actions.margin_top_15
             - if logged_in? && @organization.edit_authorized?
               %input.btn.btn-primary{ type: 'submit', value: t('.add'), id: 'org_new_manager_submit' }

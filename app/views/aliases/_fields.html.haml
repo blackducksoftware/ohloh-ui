@@ -12,7 +12,7 @@
       #preferred_name= render partial: 'preferred_names'
 
     .pull-left.margin_right_5
-      %span.spinner= image_tag 'spinner.gif'
+      %span.spinner= image_tag 'spinner.gif', alt: ''
     .clearfix
   .act.margin_top_5
     - if logged_in? && @project.edit_authorized?

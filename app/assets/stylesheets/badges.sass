@@ -108,9 +108,9 @@
 #account_header
   .mini-badges-section
     position: relative
-    margin: 27px 4px 0 0
+    margin: 0
     .account-badge
-      margin: 0 20px 31px 0
+      margin: 0 8px 31px 0
       height: 48px
       width: 48px
       &.last
@@ -118,9 +118,21 @@
 @media only all and (min-width: 320px) and (max-width: 480px)
   #account_header
     .mini-badges-section
-      margin: 5px 43px 0 0
+      margin: 0
       .account-badge
-        margin: 0 20px 20px 0
+        margin: 0 4px 20px 0
+        height: 32px
+        width: 32px
+        background-size: auto 32px !important
+@media only all and (min-width: 481px) and (max-width: 767px)
+  #account_header
+    .mini-badges-section
+      margin: 0
+      .account-badge
+        margin: 0 6px 26px 0
+        height: 40px
+        width: 40px
+        background-size: auto 40px !important
 
 #outside_committers_list .pips, #orgs_affiliated_list .pips
   margin: 0px 0px 0px 22px !important

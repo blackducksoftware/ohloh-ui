@@ -7,7 +7,7 @@
   .col-md-9
     %h2.pull-left= t('.stacks')
     - if current_user == @account
-      %a.btn.btn-mini.btn-primary{ href: stacks_path, data: { method: :post },
+      %a.btn.btn-medium.btn-primary{ href: stacks_path, data: { method: :post },
                                    style: 'margin:8px 19px 0 0; float: right;' }
         %i.icon-plus-sign= t '.new_stack'
     .clear
@@ -17,7 +17,7 @@
     - @stacks.each do |stack|
       .oh-card.piano{ id: "stack_#{stack.id}" }
         - if stack.account == current_user
-          = icon_button(stack_path(stack), text: t('.remove'), size: 'mini', type: 'danger',
+          = icon_button(stack_path(stack), text: t('.remove'), size: 'medium', type: 'danger',
             icon: 'trash', data: { confirm: t('.delete_confirm', name: stack.title) },
             method: :delete, style: 'float: right; display: block; margin-top: 10px;')
         %h4.nomargin

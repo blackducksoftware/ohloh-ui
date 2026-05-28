@@ -16,7 +16,7 @@
   - grad_style = widget.vars[:style].to_sym == :rainbow ? 'rainbow' : ''
   .users_with_style
     = link_to href, { title: title, target: '_blank' }.merge(link) do
-      = image_tag widget_ohloh_logo_url
+      = image_tag widget_ohloh_logo_url, alt: 'Open Hub'
       .info{ class: grad_style, style: "background-color: #{background_color}" }
         %p.count= project.user_count
         %p.user= t('.users')
@@ -30,4 +30,4 @@
         %span.user= t('.users')
       .non_css_used_link#iuseit= t('.i_use_it')
       %span.last &nbsp;
-      = image_tag widget_ohloh_logo_url
+      = image_tag widget_ohloh_logo_url, alt: 'Open Hub'

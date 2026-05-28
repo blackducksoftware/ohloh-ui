@@ -25,6 +25,7 @@ var Charts = {
       var options = chart.data();
       var data = $.parseJSON(chart.attr('data-value'));
       if(options.pname) data.series.name = options.pname;
+      Charts.applyDarkModeWatermark(chart, data);
       Charts.renderChart(this, data, '200', options);
     });
   },
@@ -187,33 +188,50 @@ var Charts = {
   applyDarkModeWatermark: function($chart, data) {
     if (!$('html').hasClass('dark')) return;
     var darkUrl = $chart.data('dark-watermark');
+    var lightUrl = $chart.data('light-watermark');
     if (darkUrl && data.chart && data.chart.style && data.chart.style['background-image']) {
-      data.chart.style['background-image'] = 'url(' + darkUrl + ')';
+      if (darkUrl === lightUrl) {
+        // CSS ::before handles dark appearance — remove background-image so inline style doesn't block CSS
+        delete data.chart.style['background-image'];
+      } else {
+        data.chart.style['background-image'] = 'url(' + darkUrl + ')';
+      }
     }
   },
 
   // Update already-rendered charts when theme toggles
   updateWatermarks: function(isDark) {
-    $('.chart[data-dark-watermark]').each(function() {
+    $('.chart[data-dark-watermark], .chart-with-data[data-dark-watermark]').each(function() {
       var $chart = $(this);
       var $container = $chart.find('.highcharts-container');
       if (!$container.length) return;
+      var darkUrl = $chart.data('dark-watermark');
+      var lightUrl = $chart.data('light-watermark');
       if (isDark) {
-        var darkUrl = $chart.data('dark-watermark');
-        if (darkUrl) $container[0].style.setProperty('background-image', 'url(' + darkUrl + ')', 'important');
+        if (darkUrl === lightUrl) {
+          // CSS ::before handles dark appearance — clear inline style so CSS background-image: none applies
+          $container[0].style.removeProperty('background-image');
+        } else {
+          if (darkUrl) $container[0].style.setProperty('background-image', 'url(' + darkUrl + ')', 'important');
+        }
       } else {
-        var lightUrl = $chart.data('light-watermark');
         if (lightUrl) $container[0].style.setProperty('background-image', 'url(' + lightUrl + ')', 'important');
       }
     });
 
-    // Handle streamgraph (D3 SVG) watermark — CSS alone won't update on dynamic class change
+    // Handle streamgraph (D3 SVG) watermark
+    // Dark mode: CSS ::before on #ohloh_streamgraph handles watermark — clear SVG inline style
+    // Light mode: restore watermark on SVG since html.dark class is gone
     var $streamgraph = $('#ohloh_streamgraph[data-dark-watermark]');
     if ($streamgraph.length) {
       var $svg = $streamgraph.find('svg.background-watermark');
       if ($svg.length) {
-        var url = isDark ? $streamgraph.data('dark-watermark') : $streamgraph.data('light-watermark');
-        if (url) $svg[0].style.backgroundImage = 'url(' + url + ')';
+        if (isDark) {
+          $svg[0].style.removeProperty('background-image');
+        } else {
+          var lightUrl = $streamgraph.data('light-watermark');
+          if (lightUrl) $svg[0].style.backgroundImage = 'url(' + lightUrl + ')';
+        }
       }
     }
   },

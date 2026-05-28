@@ -83,7 +83,7 @@ class OrganizationsControllerTest < ActionController::TestCase
 
     get :show, params: { id: @organization.vanity_url }
 
-    _(assert_select('p')[0].text).must_include "foo \n "
+    _(assert_select('#org_summary p').first.text).must_equal "foo \n "
   end
 
   it 'should support show page via xml api' do

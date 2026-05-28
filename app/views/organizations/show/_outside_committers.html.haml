@@ -64,7 +64,7 @@
           = t('organizations.outside_committers.level')
         %th.center{ rowspan: 2, style: 'width:150px' }
           %strong= t('organizations.outside_committers.affiliated_with')
-        %th{ rowspan: 2, style: 'width: 20px;' } &nbsp;
+        %th{ rowspan: 2, style: 'width: 20px;', aria: { hidden: 'true' } }
         %th.center{ colspan: 2 }
           %strong= t('organizations.outside_committers.contribution_to_portfolio')
       %tr

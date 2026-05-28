@@ -22,6 +22,9 @@ en:
       rating: 'Community Rating'
       reviews: 'Reviews'
       description: 'Description'
+      logo: 'Logo'
+      activity: 'Activity'
+      actions: 'Actions'
     organization:
       projects: 'Projects'
       affiliated_committers: 'Affiliated Committers'
@@ -144,6 +147,7 @@ en:
       not_available: 'N/A'
       none: 'none'
       see_all_projects: 'See All %{num} Portfolio Projects'
+      activity: 'Activity'
     outside_projects:
       outside_projects: 'Outside Projects'
       no_outside_projects: "There are no outside projects to display."
@@ -153,6 +157,7 @@ en:
       header_community_rating: "Community Rating"
       header_num_of_affiliates: "# of Affiliates Contributing"
       header_all_time_commits: "All-time Commits"
+      header_activity: "Activity"
       header_by_current_affiliates: "(by Current Affiliates)"
       see_all_num_outside_projs: "See All %{num} Outside Projects"
     outside_committers:

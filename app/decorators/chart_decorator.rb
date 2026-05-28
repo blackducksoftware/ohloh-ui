@@ -53,8 +53,15 @@ class ChartDecorator
 
   def build_chart_with_background_style_and_commit_history
     chart = CHART_DEFAULTS.clone
-
     chart.deep_merge!(background_style('watermark_white_900'))
     chart.deep_merge! YAML.load_file Rails.root.join('config', 'charting', 'project_commit_history.yml')
+    strip_background_styles(chart)
+    chart
+  end
+
+  def strip_background_styles(chart)
+    %w[background-image background-repeat background-position backgroundColor].each do |key|
+      chart['chart']['style'].delete(key)
+    end
   end
 end

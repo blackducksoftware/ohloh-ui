@@ -11,11 +11,11 @@
         = @stack.title
       - stack_edit_in_place if editable
     - if editable
-      = icon_button(stack_path(@stack), text: t('.remove'), size: 'mini', type: 'danger', icon: 'trash',
+      = icon_button(stack_path(@stack), text: t('.remove'), size: 'medium', type: 'danger', icon: 'trash',
         data: { confirm: t('.delete_confirm') }, method: :delete,
         style: 'float: right; display: block; margin-top: 10px;')
 .clear
-.row{ id: "stack_#{@stack.id}" }
+.row.oh-card{ id: "stack_#{@stack.id}" }
   .col-md-9
     %p.description.nomargin
       %span{ class: editable ? 'rest_in_place' : '', attribute: 'description', col: 35, max_length: 120, rows: 3 }
@@ -24,30 +24,35 @@
     - if editable
       - show_them = @stack.project_count == 0
       .padding_one_top
-        .recommendations
+        .recommendations.oh-card
           .clear{ style: ('display:none' if show_them) }
             %h4.soft.nomargin.show
-              %a.link_no_underline#show= t('.show_recommends')
+              %a.link_no_underline#show
+                = t('.show_recommends')
+                %i.fa.fa-chevron-down.pull-right
           .clear#recommendations{ style: ('display:none' unless show_them) }
             %h4.soft{ style: 'margin-bottom: 0.3em;' }
               = t('.recommends_for_this_stack')
               &nbsp;
-              %a.command#hide= t('.hide')
+              %a.command#hide
+                %i.fa.fa-chevron-up.pull-right
           .list
             %ul.stack_sm_suggestions
               - if show_them
                 = render partial: 'small_suggestion', collection: @stack.suggest_projects(5)
           .controls{ style: ('display:none' unless show_them) }
-            %a.btn.btn-mini.command#skip_all= t('.skip_all')
-            %a.command.btn.btn-mini#more{ style: 'display:none' }= t('.show_me_more')
-            %a.btn.btn-mini.clear_ignores.command{ title: t('.unignore_all') }= t('.show_all_projects')
+            %a.btn.btn-mini.btn-primary.command#skip_all= t('.skip_all')
+            %a.command.btn.btn-mini.btn-primary#more{ style: 'display:none' }= t('.show_me_more')
+            %a.btn.btn-mini.btn-primary.clear_ignores.command{ title: t('.unignore_all') }= t('.show_all_projects')
       .clear &nbsp;
       = form_for StackEntry.new, as: :stack_entry, url: stack_stack_entries_path(@stack),
                                  html: { class: 'form-inline', id: 'add_project_form' } do |f|
         - source_url = "/accounts/#{current_user.id}/autocompletes/#{@stack.id}/projects_for_stack"
-        = f.text_field :project_name, size: 20, class: 'autocompletable',
-                                      data: { source: source_url, select: 'submitForm' }
-        %input.btn.btn-small.btn-primary{ type: 'submit', id: 'new_stack_entry', value: 'Add Project to Stack' }
+        .form-group
+          = f.label :project_name, 'Add Project to Stack', class: 'control-label'
+          = f.text_field :project_name, class: 'autocompletable form-control',
+                                        data: { source: source_url, select: 'submitForm' }
+        %input.btn.btn-primary{ type: 'submit', id: 'new_stack_entry', value: 'Add Project to Stack' }
         = f.hidden_field :stack_id, value: @stack.id
     .stack_item_list
       %table.table.table-bordered.stack_list{ id: "stack_list_#{@stack.id}" }

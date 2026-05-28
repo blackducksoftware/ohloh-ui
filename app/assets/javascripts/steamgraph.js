@@ -120,7 +120,9 @@ Streamgraph = {
 
       var svg = d3.select("#ohloh_streamgraph").append("svg")
           .attr("id", "ohloh_stream")
-          .attr("width", width)
+          .attr("viewBox", "0 0 " + width + " " + height)
+          .attr("preserveAspectRatio", "xMidYMid meet")
+          .attr("width", "100%")
           .attr("height", height)
           .attr('class', 'background-watermark');
 
