@@ -1,4 +1,11 @@
 en:
+  activerecord:
+    errors:
+      models:
+        enlistment:
+          attributes:
+            ignore:
+              too_long_ignore: 'cannot exceed 1000 characters'
   enlistments:
     index:
       title: 'The %{name} Open Source Project on Open Hub : Code Locations Page'
