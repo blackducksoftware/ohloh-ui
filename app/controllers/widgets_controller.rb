@@ -27,19 +27,25 @@ class WidgetsController < ApplicationController
                     .new(permitted_params)
   end
 
-  def render_image_for_gif_format
-    return unless request.format.gif?
+  def render_image_for_image_format
+    return unless request.format.gif? || request.format.png?
 
     cache_key = "#{@widget.parent.class.name}/#{@widget.parent.id}/#{@widget.name}"
     image = Rails.cache.fetch(cache_key, expires_in: 4.hours) { @widget.image }
-    send_data(image, disposition: 'inline', type: 'image/gif', filename: 'widget.gif', status: 200)
+    if request.format.png?
+      send_data(image, disposition: 'inline', type: 'image/png', filename: 'widget.png', status: 200)
+    else
+      send_data(image, disposition: 'inline', type: 'image/gif', filename: 'widget.gif', status: 200)
+    end
   end
 
-  def render_not_supported_for_gif_format
-    return unless request.format.gif?
+  def render_not_supported_for_image_format
+    return unless request.format.gif? || request.format.png?
 
     image = Rails.cache.fetch('not_supported_widget') { WidgetBadge::Thin.create([text: 'Not supported']) }
-    send_data(image, disposition: 'inline', type: 'image/gif', filename: 'widget.gif', status: 406)
+    mime_type = request.format.png? ? 'image/png' : 'image/gif'
+    filename = request.format.png? ? 'widget.png' : 'widget.gif'
+    send_data(image, disposition: 'inline', type: mime_type, filename: filename, status: 406)
   end
 
   def render_iframe_for_js_format
