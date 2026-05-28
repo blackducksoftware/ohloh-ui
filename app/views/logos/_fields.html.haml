@@ -5,7 +5,8 @@
       = @parent.decorate.icon(:med)
 
     .col-md-9.col
-      - if logged_in? && @parent.edit_authorized?
+      - can_edit = logged_in? && @parent.edit_authorized?
+      - if can_edit
         %h6= t('.head.first')
         %p= t('.body.first')
         .col-md-10.no_margin_left{ style: 'padding: 0;' }
@@ -53,7 +54,7 @@
 .row.margin_top_30
   .col-md-12
     .actions
-      - if logged_in? && @parent.edit_authorized?
+      - if can_edit
         %input.btn.btn-sm.btn-primary{ type: 'submit', value: t('.button.save') }
         - if @parent.logo
           - path = @parent.is_a?(Project) ? project_logos_path(@parent) : organization_logos_path(@parent)
