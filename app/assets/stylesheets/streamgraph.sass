@@ -109,12 +109,30 @@ html.dark #ohloh_streamgraph.full
   #ohloh_streamgraph
     &.languages
       height: 150px !important
+    width: 100% !important
+    overflow-x: auto !important
+    -webkit-overflow-scrolling: touch
     #ohloh_stream
-      width: auto !important
-    width: auto !important
+      width: 100% !important
+      max-width: 100% !important
+    svg#ohloh_stream
+      width: 100% !important
+      max-width: 100% !important
+      height: 150px !important
   #streamgraph_legend
     font-size: 11px !important
     gap: 4px 10px !important
+@media (min-width: 481px) and (max-width: 767px)
+  #ohloh_streamgraph
+    width: 100% !important
+    overflow-x: auto !important
+    -webkit-overflow-scrolling: touch
+    #ohloh_stream
+      width: 100% !important
+      max-width: 100% !important
+    svg#ohloh_stream
+      width: 100% !important
+      max-width: 100% !important
 @media (min-width: 540px) and (max-width: 1024px)
   #ohloh_streamgraph
     #ohloh_stream

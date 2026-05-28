@@ -49,8 +49,7 @@ module OhlohUi
     redis_config[:password] = ENV.fetch('REDIS_PASSWORD', nil) unless Rails.env.test?
     config.cache_store = :redis_store, redis_config
     config.action_dispatch.default_headers = {
-      'X-Content-Type-Options' => 'nosniff',
-      'Access-Control-Allow-Private-Network' => 'true'
+      'X-Content-Type-Options' => 'nosniff'
     }
     config.active_record.dump_schemas = :all
 

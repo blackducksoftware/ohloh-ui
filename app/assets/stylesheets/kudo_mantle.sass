@@ -19,6 +19,30 @@ table#kudo_mantle
     text-align: center
     font-family: arial, sans-serif
 
+@media (max-width: 767px)
+  table#kudo_mantle
+    margin-left: auto !important
+    margin-right: auto !important
+    width: 100% !important
+    max-width: 340px
+
+    td[width]
+      width: 80px !important
+      padding: 0 !important
+
+    td
+      position: relative
+
+      .arrow_up, .arrow_down
+        width: 80px !important
+        background-size: 80px auto !important
+
+      .arrow_up
+        margin: 10px 0 0 0 !important
+
+      .arrow_down
+        margin: 16px 0 0 0 !important
+
 // ── Give / Undo Kudo buttons ────────────────────────────────────────────────
 .btn.kudo-btn
   display: inline-flex
@@ -302,6 +326,50 @@ html.dark .kudo-form
     background: linear-gradient(to right, #5A2A82, #9333ea)
     &:hover
       background: linear-gradient(to right, #4a1f6e, #7c3aed)
+
+// ── Mobile responsive ────────────────────────────────────────────────────────
+@media (max-width: 540px)
+  #TB_window.kudo-active,
+  #TB_window:has(.kudo-form)
+    width: calc(100vw - 24px) !important
+    border-radius: 16px !important
+    left: 50% !important
+    top: 50% !important
+
+  .kudo-form
+    .kudo-modal-header
+      padding: 16px 48px 14px 16px !important
+      gap: 10px
+
+    .kudo-modal-icon-wrap
+      width: 40px !important
+      height: 40px !important
+      min-width: 40px !important
+      border-radius: 12px !important
+      svg
+        width: 20px !important
+        height: 20px !important
+
+    .kudo-modal-header-text
+      h2
+        font-size: 15px !important
+      p
+        font-size: 11px !important
+
+    .kudo-modal-body
+      padding: 16px !important
+
+    .kudo-modal-card
+      padding: 14px !important
+
+    .kudo-modal-footer
+      padding: 0 16px 16px !important
+      gap: 8px !important
+
+    .kudo-btn-cancel,
+    .kudo-btn-submit
+      padding: 10px 14px !important
+      font-size: 12px !important
 
 // ── Kudos index: two-column card layout ─────────────────────────────────────
 .kudos-grid

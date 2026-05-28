@@ -16,10 +16,11 @@
       .kudos-item__project= t('kudos.for', what: first_kudo.project.name)
     - unless first_kudo.message.blank?
       .kudos-item__message &ldquo;#{first_kudo.message}&rdquo;
-    - other_kudos.each do |kudo|
+    - if other_kudos.any?
       .kudos-item__aka{ id: (first_kudo.account.nil? ? '' : "kudo_given_alternates_#{first_kudo.account.login}") }
-        %span= t('.aka')
-        = kudos_aka_name(kudo)
-        - unless kudo.message.blank?
-          .kudos-item__message &ldquo;#{kudo.message}&rdquo;
-        - kudo_delete_link(kudo) if logged_in?
+        - other_kudos.each do |kudo|
+          %span= t('.aka')
+          = kudos_aka_name(kudo)
+          - unless kudo.message.blank?
+            .kudos-item__message &ldquo;#{kudo.message}&rdquo;
+          - kudo_delete_link(kudo) if logged_in?
