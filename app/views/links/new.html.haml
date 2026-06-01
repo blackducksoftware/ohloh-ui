@@ -7,12 +7,10 @@
     \:
     = link_to t('links.title').pluralize, project_links_path(@project)
     \:
-    = t('new')
-  = project_analysis_timestamp(@project)
-
+    %strong= t('new')
 .clear
 
-.oh-card.col-md-8.col-md-offset-1
+.oh-card.col-md-8
   = form_for([@project, @link]) do |f|
     = render 'fields', f: f
 

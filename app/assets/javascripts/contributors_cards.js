@@ -22,5 +22,12 @@ document.addEventListener('click', function(e) {
   var basicsHeader = e.target.closest('.about-account-basics-card .card-header');
   if (basicsHeader) {
     basicsHeader.closest('.about-account-basics-card').classList.toggle('expanded');
+    return;
+  }
+
+  // Handle about project basics card header
+  var projectBasicsHeader = e.target.closest('.about-project-basics-card .card-header');
+  if (projectBasicsHeader) {
+    projectBasicsHeader.closest('.about-project-basics-card').classList.toggle('expanded');
   }
 });

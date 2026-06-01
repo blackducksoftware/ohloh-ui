@@ -16,7 +16,7 @@
 
 - if @project_licenses.any?
   .declared_licenses
-    .col-md-7.oh-card.col-md-offset-2
+    .col-md-7.oh-card.margin_top_15
       %h4= t('.declared_licenses')
       %table{ style: 'width: 100%;' }
         %tbody
@@ -26,11 +26,11 @@
               %td.col-md-4.padding_one_top.last
                 .pull-right
                   - if @project.edit_authorized?
-                    %a.btn.btn-small.btn-danger{ href: project_license_path(@project, project_license),
+                    %a.btn.btn-md.btn-danger{ href: project_license_path(@project, project_license),
                                                 data: { method: :delete, confirm: t('.remove_confirm') } }
                       %i.icon-trash= t '.remove'
                   - else
-                    = disabled_button bootstrap_icon('icon-trash', t('.remove')), class: 'btn-small btn-danger'
+                    = disabled_button bootstrap_icon('icon-trash', t('.remove')), class: 'btn-md btn-danger'
           %tr
             %td.padding_one_top{ colspan: '2' }= show_license_button(@project)
     .clear

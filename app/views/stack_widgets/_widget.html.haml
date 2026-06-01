@@ -7,9 +7,9 @@
     %form.styled.customized_stack_badge
       %fieldset
         .control-group
-          %label.control-label.required= t('.badge_title')
+          %label.control-label.required{ for: 'badge_title_input' }= t('.badge_title')
           .controls
-            %input.title{ type: 'text', value: widget.stack.friendly_name }
+            %input.title#badge_title_input{ type: 'text', value: widget.stack.friendly_name }
         .control-group
           %label.control-label= t('.icon_size')
           %label.radio{ for: :small_icon }
@@ -23,12 +23,12 @@
           .controls
             %label.radio
               %input.radio_button#pixels{ type: 'radio', name: 'badge_width_unit' }
-              %input.input-mini-num.pull-left{ type: 'text', size: 4, disabled: 'disabled', value: '214' }
+              %input.input-mini-num.pull-left{ type: 'text', size: 4, disabled: 'disabled', value: '214', 'aria-label' => t('.wide') }
               %span.help-inline= t('.wide')
               .clearfix
             %label.radio
               %input.radio_button#icons{ type: 'radio', checked: 'checked', name: 'badge_width_unit' }
-              %input.input-mini-num.pull-left.icons{ type: 'text', size: 4, value: widget.initial_icons_width }
+              %input.input-mini-num.pull-left.icons{ type: 'text', size: 4, value: widget.initial_icons_width, 'aria-label' => t('.icons') }
               %span.help-inline= t('.icons')
               .clearfix
   .col-md-6.margin_left_10

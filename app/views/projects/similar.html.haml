@@ -3,7 +3,6 @@
 
 .project_content_title
   %h2.pull-left= t('.title')
-  = project_analysis_timestamp(@project)
 
 %div
   %h3
@@ -12,7 +11,7 @@
     = @project.name
 
   - @similar_by_tags.in_groups_of(3, false) do |columns|
-    .col-md-12
+    .col-md-12.oh-card
       - columns.each do |project|
         = render partial: 'similar_project', locals: { project: project }
 
@@ -27,7 +26,7 @@
     %h3= t('.also_use', name: @project.name)
 
     - @similar_by_stacks.in_groups_of(3, false) do |columns|
-      .col-md-12
+      .col-md-12.oh-card
         - columns.each do |project|
           = render partial: 'similar_project', locals: { project: project }
 

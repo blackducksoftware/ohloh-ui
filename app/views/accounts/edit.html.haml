@@ -17,7 +17,7 @@
       = form_for @account do |f|
         %fieldset.row-fluid
           .col-md-5
-            .form-group
+            .control-group
               = f.label :login, t('login'), class: 'control-label required'
               .controls
                 = f.text_field :login, class: 'form-control check-availability',
@@ -27,13 +27,13 @@
                 = render 'shared/availability_preview'
                 - error_tag @account, :login
 
-            .form-group
+            .control-group
               = f.label :name, t('name'), class: 'control-label'
               .controls
                 = f.text_field :name, class: 'form-control'
                 - error_tag @account, :name
 
-            .form-group
+            .control-group
               = f.label :email, t('email_address'), class: 'control-label required'
               .controls
                 = f.text_field :email, class: 'form-control'
@@ -42,19 +42,19 @@
                   = t('.email_help')
                   = link_to t('gravatar'), 'https://gravatar.com', target: '_blank'
 
-            .form-group
+            .control-group
               = f.label :url, t('.homepage_url'), class: 'control-label'
               .controls
                 = f.text_field :url, class: 'form-control', value: @account.url
                 - error_tag @account, :url
 
-            .form-group
+            .control-group
               = f.label :twitter_account, t('twitter_id'), class: 'control-label'
               .controls
                 = f.text_field :twitter_account, class: 'form-control'
                 - error_tag @account, :twitter_account
 
-            .form-group
+            .control-group
               = f.label :organization_id, t('affiliation'), class: 'control-label'
               .controls.chosen#value_select
                 = f.select :organization_id, OrganizationDecorator.select_options, {},
@@ -66,7 +66,7 @@
                 %p.help-block{ style: 'margin-top: 6px' }= t('.affiliation_help')
 
           .col-md-5.col-md-push-1
-            .form-group
+            .control-group
               %label.control-label{ for: 'location_scratch' }!= t('.city_and_country')
               .controls
                 %p.enabled
@@ -82,7 +82,7 @@
 
           .clearfix
 
-          .form-group.margin_left_15
+          .control-group.margin_left_15
             = f.label :about_raw, t('bio'), class: 'control-label'
             .control
               - about_raw = @account.markup ? @account.markup.raw : ''

@@ -27,23 +27,23 @@
         .recommendations.oh-card
           .clear{ style: ('display:none' if show_them) }
             %h4.soft.nomargin.show
-              %a.link_no_underline#show
+              %a.link_no_underline#show{ href: 'javascript:void(0)', role: 'button' }
                 = t('.show_recommends')
                 %i.fa.fa-chevron-down.pull-right
           .clear#recommendations{ style: ('display:none' unless show_them) }
             %h4.soft{ style: 'margin-bottom: 0.3em;' }
               = t('.recommends_for_this_stack')
               &nbsp;
-              %a.command#hide
+              %a.command#hide{ href: 'javascript:void(0)', role: 'button', 'aria-label' => t('.recommends_for_this_stack') }
                 %i.fa.fa-chevron-up.pull-right
           .list
             %ul.stack_sm_suggestions
               - if show_them
                 = render partial: 'small_suggestion', collection: @stack.suggest_projects(5)
           .controls{ style: ('display:none' unless show_them) }
-            %a.btn.btn-mini.btn-primary.command#skip_all= t('.skip_all')
-            %a.command.btn.btn-mini.btn-primary#more{ style: 'display:none' }= t('.show_me_more')
-            %a.btn.btn-mini.btn-primary.clear_ignores.command{ title: t('.unignore_all') }= t('.show_all_projects')
+            %a.btn.btn-mini.btn-primary.command#skip_all{ href: 'javascript:void(0)', role: 'button' }= t('.skip_all')
+            %a.command.btn.btn-mini.btn-primary#more{ style: 'display:none', href: 'javascript:void(0)', role: 'button' }= t('.show_me_more')
+            %a.btn.btn-mini.btn-primary.clear_ignores.command{ title: t('.unignore_all'), href: 'javascript:void(0)', role: 'button' }= t('.show_all_projects')
       .clear &nbsp;
       = form_for StackEntry.new, as: :stack_entry, url: stack_stack_entries_path(@stack),
                                  html: { class: 'form-inline', id: 'add_project_form' } do |f|

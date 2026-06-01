@@ -1,9 +1,9 @@
 - has_permission = logged_in? && @project.edit_authorized?
-%fieldset
+%fieldset.rss-form
   .control-group
-    %label.control-label.required= t('.url')
+    %label.control-label.required{ for: 'rss_feed_url' }= t('.url')
     .controls
-      = f.text_field :url, class: 'col-md-11'
+      = f.text_field :url, class: 'form-control'
       - error_tag @rss_feed, :url
 %p= t('.examples')
 %ul.margin_left_25

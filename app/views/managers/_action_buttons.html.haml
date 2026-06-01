@@ -1,7 +1,7 @@
 - if current_user_can_manage? || current_user == account
   - unless manage.message.blank?
-    %p.soft.nomargin #{t('.message_label')} #{expander(html_escape(manage.message), 20, 100)}
-  %p.nomargin
+    %p.soft <strong>#{t('managers.manage.message_label')}</strong> #{expander(html_escape(manage.message), 20, 100)}
+  %p
     - if current_user == account
       = edit_manages_button(@parent, account)
       - if manage.pending?

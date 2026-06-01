@@ -8,7 +8,6 @@
     = link_to t('settings'), settings_project_path(@project)
     &nbsp;:&nbsp;
     = t('aliases.aliases')
-  = project_analysis_timestamp(@project)
 .clearfix
 .alias
   - if @aliases.length + @best_analysis_aliases.length > 0
