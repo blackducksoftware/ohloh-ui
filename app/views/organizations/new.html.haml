@@ -1,11 +1,13 @@
 - content_for(:html_title) { t('.page_title') }
 - page_context[:select_top_menu_nav] = 'select_organizations'
 
-%h2= t('.title')
+.row
+  .col-md-10.col-md-offset-1
+    %h2.org-new-title= t('.title')
 .clearfix
 
 .row
-  .well.col-md-10.col-md-offset-1
+  .oh-card.col-md-10.col-md-offset-1.org-form
     = form_for @organization, url: organizations_path, class: 'center-block' do |f|
       = render partial: 'fields', locals: { f: f }
 

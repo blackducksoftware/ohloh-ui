@@ -2,7 +2,7 @@
   h2
     @extend .strong
   form
-    @extend .well
+    @extend .oh-card
     @extend .col-md-5
     label
       @extend .strong
@@ -12,3 +12,89 @@
       input
         @extend .btn
         @extend .btn-primary
+
+// ── Password reset page (Figma design) ────────────────────────────────────────
+.pwd-required
+  color: #ef4444
+  margin-left: 2px
+  font-weight: 600
+
+.pwd-reset-back
+  display: flex
+  justify-content: center
+  align-items: center
+  gap: 6px
+  margin-top: 20px
+  padding-top: 20px
+  border-top: 1px solid #f3f4f6
+
+  html.dark &
+    border-top-color: rgba(90, 42, 130, 0.2)
+
+// ── Success state ──────────────────────────────────────────────────────────────
+.pwd-reset-success
+  text-align: center
+  padding: 8px 0 16px
+
+.pwd-reset-success__icon
+  width: 64px
+  height: 64px
+  background: linear-gradient(135deg, #10b981, #0d9488)
+  border-radius: 50%
+  display: flex
+  align-items: center
+  justify-content: center
+  margin: 0 auto 20px
+  box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3)
+  font-size: 26px
+  color: #ffffff
+
+.pwd-reset-success__desc
+  font-size: 13px
+  color: #4b5563
+  line-height: 1.6
+  margin: 0 0 20px
+
+  html.dark &
+    color: #9ca3af
+
+.pwd-reset-success__info
+  background: #f9fafb
+  border: 1px solid #e5e7eb
+  border-radius: 12px
+  padding: 14px 16px
+  margin-bottom: 20px
+  text-align: left
+
+  html.dark &
+    background: #1D0631
+    border-color: rgba(90, 42, 130, 0.4)
+
+  p
+    font-size: 12px
+    color: #6b7280
+    line-height: 1.6
+    margin: 0
+
+    html.dark &
+      color: #9ca3af
+
+.pwd-reset-retry-link
+  display: block
+  font-size: 13px
+  color: #5A2A82
+  text-align: center
+  margin-bottom: 16px
+  text-decoration: none
+  font-weight: 500
+  transition: color 0.15s
+
+  &:hover
+    text-decoration: underline
+    color: #4a1f6e
+
+  html.dark &
+    color: #ffb91a
+
+  html.dark &:hover
+    color: #fbbf24

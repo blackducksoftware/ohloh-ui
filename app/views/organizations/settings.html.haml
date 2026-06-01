@@ -3,45 +3,52 @@
   page_context[:select_top_menu_nav] = 'select_organizations'
   page_context[:select_footer_nav] = :settings
 
-%h2.pull-left= t('settings')
-.clearfix
+.settings-page-header
+  .settings-page-header-row
+    .settings-page-icon
+      %i.fa.fa-cog
+    %h2.settings-page-h2= t('.title')
+  %p.settings-page-description= t('.configure_desc', name: @organization.name)
 
-.row.margin_bottom_20
-  .col-md-4.settings_module
-    %h4.nomargin
-      = link_to t('.basics'), edit_organization_path(@organization)
-    %span.pull-left
-      %a.module_icon.basics{ href: edit_organization_path(@organization) }
-    %span.pull-left.settings_description= t('.name_description_and_url')
-  .col-md-4.settings_module
-    %h4.nomargin
-      = link_to t('managers_link_name'), list_managers_organization_path(@organization)
-    %span.pull-left
-      %a.module_icon.managers{ href: list_managers_organization_path(@organization) }
-    %span.pull-left.settings_description= t('.users_who_manage')
-  .col-md-4.settings_module
-    %h4.nomargin
-      = link_to t('.edit_history'), organization_edits_path(@organization)
-    %span.pull-left
-      %a.module_icon.history{ href: organization_edits_path(@organization) }
-    %span.pull-left.settings_description= t('.list_of_recent_activity')
+.settings-grid
+  %a.settings_module{ href: edit_organization_path(@organization) }
+    .settings-icon-wrapper.gradient-purple
+      %i.fa.fa-building
+    .settings-text
+      %h4= t('.basics')
+      %span.settings_description= t('.name_description_and_url')
 
-.row.margin_bottom_20
-  .col-md-4.settings_module
-    %h4.nomargin
-      = link_to t('logo'), new_organization_logos_path(@organization)
-    %span.pull-left
-      %a.module_icon.logo{ href: new_organization_logos_path(@organization) }
-    %span.pull-left.settings_description= t('.logo_displayed_for_org')
-  .col-md-4.settings_module
-    %h4.nomargin
-      = link_to t('.manage_projects'), manage_projects_organization_path(@organization)
-    %span.pull-left
-      %a.module_icon.orgs_manage_projects{ href: manage_projects_organization_path(@organization) }
-    %span.pull-left.settings_description= t('.held_projects')
-  .col-md-4.settings_module
-    %h4.nomargin
-      = link_to t('.permissions'), permissions_organization_path(@organization)
-    %span.pull-left
-      %a.module_icon.permissions{ href: permissions_organization_path(@organization) }
-    %span.pull-left.settings_description= t('.permissions_desc')
+  %a.settings_module{ href: list_managers_organization_path(@organization) }
+    .settings-icon-wrapper.gradient-sky
+      %i.fa.fa-user-md
+    .settings-text
+      %h4= t('managers_link_name')
+      %span.settings_description= t('.users_who_manage')
+
+  %a.settings_module{ href: organization_edits_path(@organization) }
+    .settings-icon-wrapper.gradient-violet
+      %i.fa.fa-history
+    .settings-text
+      %h4= t('.edit_history')
+      %span.settings_description= t('.list_of_recent_activity')
+
+  %a.settings_module{ href: new_organization_logos_path(@organization) }
+    .settings-icon-wrapper.gradient-pink
+      %i.fa.fa-picture-o
+    .settings-text
+      %h4= t('logo')
+      %span.settings_description= t('.logo_displayed_for_org')
+
+  %a.settings_module{ href: manage_projects_organization_path(@organization) }
+    .settings-icon-wrapper.gradient-orange
+      %i.fa.fa-briefcase
+    .settings-text
+      %h4= t('.manage_projects')
+      %span.settings_description= t('.held_projects')
+
+  %a.settings_module{ href: permissions_organization_path(@organization) }
+    .settings-icon-wrapper.gradient-red
+      %i.fa.fa-lock
+    .settings-text
+      %h4= t('.permissions')
+      %span.settings_description= t('.permissions_desc')

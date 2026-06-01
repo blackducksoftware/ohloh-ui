@@ -1,0 +1,320 @@
+.mobile-compare-view
+  -# Project Cards (Horizontal Scroll)
+  .mobile-project-cards
+    - @projects.each_with_index do |project, index|
+      - if project
+        .mobile-project-card
+          .project-card-header
+            .project-info
+              - project_icon(project)
+              .project-name= link_to(h(truncate_project_name(project.name, 20, link: true)), project_path(project))
+            - link = compare_projects_path(proj_names.except("project_#{index}"))
+            %a.remove-project{ href: link, 'aria-label': t('compares.project_section.remove_project') }
+              %i.icon-remove
+      - else
+        .mobile-project-card.empty-slot
+          %form.autocomplete-submit{ action: compare_projects_path }
+            - @projects.each_with_index do |proj, i|
+              - next if project == proj
+              %input{ type: 'hidden', name: "project_#{i}", value: proj ? proj.name : '' }
+            - key = "mobile_project_#{index}"
+            %input.autocompletable{ type: 'text', id: key, name: "project_#{index}", "aria-label": t('compares.project_section.project_input_label', number: index + 1),
+              placeholder: t('compares.project_section.add_project'), data: { source: '/autocompletes/project', select: 'submitForm' } }
+
+  -# Accordion Sections
+  .mobile-accordion
+    -# General Section
+    .accordion-section
+      %button.accordion-header{ type: 'button', 'data-section': 'general' }
+        %span= t('compares.projects.general')
+        %i.icon-chevron-down
+      .accordion-content
+        .metric-row
+          .metric-label= t('compares.projects.compare_table_activity_level')
+          .metric-values
+            - @projects.each do |project|
+              .metric-value
+                - if project
+                  != render partial: "compares/project_cells/activity_level", locals: { project: project }
+                - else
+                  .empty –
+
+        .metric-row
+          .metric-label= t('compares.projects.compare_table_data_quality')
+          .metric-values
+            - @projects.each do |project|
+              .metric-value
+                - if project
+                  != render partial: "compares/project_cells/data_quality", locals: { project: project }
+                - else
+                  .empty –
+
+        .metric-row
+          .metric-label= t('compares.projects.compare_table_homepage')
+          .metric-values
+            - @projects.each do |project|
+              .metric-value
+                - if project
+                  != render partial: "compares/project_cells/homepage", locals: { project: project }
+                - else
+                  .empty –
+
+        .metric-row
+          .metric-label= t('compares.projects.compare_table_license')
+          .metric-values
+            - @projects.each do |project|
+              .metric-value
+                - if project
+                  != render partial: "compares/project_cells/license", locals: { project: project }
+                - else
+                  .empty –
+
+        .metric-row
+          .metric-label= t('compares.projects.compare_table_cocomo')
+          .metric-values
+            - @projects.each do |project|
+              .metric-value
+                - if project
+                  != render partial: "compares/project_cells/cocomo", locals: { project: project }
+                - else
+                  .empty –
+
+    -# All Time Statistics Section
+    .accordion-section
+      %button.accordion-header{ type: 'button', 'data-section': 'all-time' }
+        %span= t('compares.projects.all_time_statistics')
+        %i.icon-chevron-down
+      .accordion-content
+        .metric-row
+          .metric-label= t('compares.projects.compare_table_committers_all_time')
+          .metric-values
+            - @projects.each do |project|
+              .metric-value
+                - if project
+                  != render partial: "compares/project_cells/committers_all_time", locals: { project: project }
+                - else
+                  .empty –
+
+        .metric-row
+          .metric-label= t('compares.projects.compare_table_commit_count')
+          .metric-values
+            - @projects.each do |project|
+              .metric-value
+                - if project
+                  != render partial: "compares/project_cells/commit_count", locals: { project: project }
+                - else
+                  .empty –
+
+        .metric-row
+          .metric-label= t('compares.projects.compare_table_initial_commit')
+          .metric-values
+            - @projects.each do |project|
+              .metric-value
+                - if project
+                  != render partial: "compares/project_cells/initial_commit", locals: { project: project }
+                - else
+                  .empty –
+
+        .metric-row
+          .metric-label= t('compares.projects.compare_table_most_recent_commit')
+          .metric-values
+            - @projects.each do |project|
+              .metric-value
+                - if project
+                  != render partial: "compares/project_cells/most_recent_commit", locals: { project: project }
+                - else
+                  .empty –
+
+    -# 12 Month Statistics Section
+    .accordion-section
+      %button.accordion-header{ type: 'button', 'data-section': 'twelve-month' }
+        %span= t('compares.projects.twelve_month_statistics')
+        %i.icon-chevron-down
+      .accordion-content
+        .metric-row
+          .metric-label= t('compares.projects.compare_table_twelve_months_committers')
+          .metric-values
+            - @projects.each do |project|
+              .metric-value
+                - if project
+                  != render partial: "compares/project_cells/twelve_months_committers", locals: { project: project }
+                - else
+                  .empty –
+
+        .metric-row
+          .metric-label= t('compares.projects.compare_table_twelve_months_commits')
+          .metric-values
+            - @projects.each do |project|
+              .metric-value
+                - if project
+                  != render partial: "compares/project_cells/twelve_months_commits", locals: { project: project }
+                - else
+                  .empty –
+
+        .metric-row
+          .metric-label= t('compares.projects.compare_table_twelve_months_files_modified')
+          .metric-values
+            - @projects.each do |project|
+              .metric-value
+                - if project
+                  != render partial: "compares/project_cells/twelve_months_files_modified", locals: { project: project }
+                - else
+                  .empty –
+
+        .metric-row
+          .metric-label= t('compares.projects.compare_table_twelve_months_lines_added')
+          .metric-values
+            - @projects.each do |project|
+              .metric-value
+                - if project
+                  != render partial: "compares/project_cells/twelve_months_lines_added", locals: { project: project }
+                - else
+                  .empty –
+
+        .metric-row
+          .metric-label= t('compares.projects.compare_table_twelve_months_lines_removed')
+          .metric-values
+            - @projects.each do |project|
+              .metric-value
+                - if project
+                  != render partial: "compares/project_cells/twelve_months_lines_removed", locals: { project: project }
+                - else
+                  .empty –
+
+        .metric-row
+          .metric-label= t('compares.projects.compare_table_year_over_year_commits')
+          .metric-values
+            - @projects.each do |project|
+              .metric-value
+                - if project
+                  != render partial: "compares/project_cells/year_over_year_commits", locals: { project: project }
+                - else
+                  .empty –
+
+    -# 30 Day Statistics Section
+    .accordion-section
+      %button.accordion-header{ type: 'button', 'data-section': 'thirty-day' }
+        %span= t('compares.projects.thirty_day_statistics')
+        %i.icon-chevron-down
+      .accordion-content
+        .metric-row
+          .metric-label= t('compares.projects.compare_table_thirty_day_committers')
+          .metric-values
+            - @projects.each do |project|
+              .metric-value
+                - if project
+                  != render partial: "compares/project_cells/thirty_day_committers", locals: { project: project }
+                - else
+                  .empty –
+
+        .metric-row
+          .metric-label= t('compares.projects.compare_table_thirty_day_commits')
+          .metric-values
+            - @projects.each do |project|
+              .metric-value
+                - if project
+                  != render partial: "compares/project_cells/thirty_day_commits", locals: { project: project }
+                - else
+                  .empty –
+
+        .metric-row
+          .metric-label= t('compares.projects.compare_table_thirty_day_files_modified')
+          .metric-values
+            - @projects.each do |project|
+              .metric-value
+                - if project
+                  != render partial: "compares/project_cells/thirty_day_files_modified", locals: { project: project }
+                - else
+                  .empty –
+
+        .metric-row
+          .metric-label= t('compares.projects.compare_table_thirty_day_lines_added')
+          .metric-values
+            - @projects.each do |project|
+              .metric-value
+                - if project
+                  != render partial: "compares/project_cells/thirty_day_lines_added", locals: { project: project }
+                - else
+                  .empty –
+
+        .metric-row
+          .metric-label= t('compares.projects.compare_table_thirty_day_lines_removed')
+          .metric-values
+            - @projects.each do |project|
+              .metric-value
+                - if project
+                  != render partial: "compares/project_cells/thirty_day_lines_removed", locals: { project: project }
+                - else
+                  .empty –
+
+    -# Code Analysis Section
+    .accordion-section
+      %button.accordion-header{ type: 'button', 'data-section': 'code-analysis' }
+        %span= t('compares.projects.code_analysis')
+        %i.icon-chevron-down
+      .accordion-content
+        .metric-row
+          .metric-label= t('compares.projects.compare_table_mostly_written_in')
+          .metric-values
+            - @projects.each do |project|
+              .metric-value
+                - if project
+                  != render partial: "compares/project_cells/mostly_written_in", locals: { project: project }
+                - else
+                  .empty –
+
+        .metric-row
+          .metric-label= t('compares.projects.compare_table_comments')
+          .metric-values
+            - @projects.each do |project|
+              .metric-value
+                - if project
+                  != render partial: "compares/project_cells/comments", locals: { project: project }
+                - else
+                  .empty –
+
+        .metric-row
+          .metric-label= t('compares.projects.compare_table_lines_of_code')
+          .metric-values
+            - @projects.each do |project|
+              .metric-value
+                - if project
+                  != render partial: "compares/project_cells/lines_of_code", locals: { project: project }
+                - else
+                  .empty –
+
+    -# People Section
+    .accordion-section
+      %button.accordion-header{ type: 'button', 'data-section': 'people' }
+        %span= t('compares.projects.people')
+        %i.icon-chevron-down
+      .accordion-content
+        .metric-row
+          .metric-label= t('compares.projects.compare_table_managers')
+          .metric-values
+            - @projects.each do |project|
+              .metric-value
+                - if project
+                  != render partial: "compares/project_cells/managers", locals: { project: project }
+                - else
+                  .empty –
+
+        .metric-row
+          .metric-label= t('compares.projects.compare_table_users')
+          .metric-values
+            - @projects.each do |project|
+              .metric-value
+                - if project
+                  != render partial: "compares/project_cells/users", locals: { project: project }
+                - else
+                  .empty –
+
+        .metric-row
+          .metric-label= t('compares.projects.compare_table_rating')
+          .metric-values
+            - @projects.each do |project|
+              .metric-value
+                - if project
+                  != render partial: "compares/project_cells/rating", locals: { project: project }
+                - else
+                  .empty –

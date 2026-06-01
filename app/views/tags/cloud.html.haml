@@ -24,4 +24,4 @@
     - @tags.each do |tag|
       %span.col-md-2
         %a.tag.add{ href: tags_path(names: tag.name) } #{tag.name}&nbsp;(#{tag.taggings_count})
-    = will_paginate @tags
+    = render 'shared/modern_pagination', collection: @tags

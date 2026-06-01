@@ -1,6 +1,6 @@
-.well.review_container{ id: "review_list_#{review_list.id}" }
+.oh-card.oh-card--hoverable.review_container{ id: "review_list_#{review_list.id}" }
   .row
-    .col-md-2
+    .col-md-4
       - if @project
         - account = review_list.account
         .padding_right_0
@@ -11,13 +11,13 @@
             = avatar_for(review_list.account, size: 58)
       - elsif @account
         - project = review_list.project
-        .margin_left_20
+        .margin_left_20{ style: 'margin-bottom: 8px' }
           - project_icon(project, :med)
         .clearfix
         .margin_left_20
           = link_to h(truncate(project.name, length: 20)), project_path(project), title: project.name
 
-    .col-md-10.padding_left_30
+    .col-md-8.padding_left_30
       %strong.pull-left
         - if review_list.title
           = truncate(review_list.title.camelize, length: 38)

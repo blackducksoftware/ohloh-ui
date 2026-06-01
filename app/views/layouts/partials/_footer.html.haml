@@ -1,40 +1,51 @@
 - raw_email = '%69%6Efo%40O%70en%48u%62.%6E%65t'
 
-.footer-left
-  %a.logo_link{ href: 'https://www.blackduck.com' }
-    %img.logo_img{ itemprop: 'image', src: image_path('logo/BlackDuckLogo.svg'), alt: 'Open Hub' }
+.footer-container
+  .footer-grid
+    .footer-left
+      %a.logo_link{ href: 'https://www.blackduck.com' }
+        %img.logo_img{ itemprop: 'image', src: image_path('logo/BlackDuckLogo-OnDark.svg'), alt: 'Black Duck' }
 
-.footer-mid
-  = "ABOUT BLACK DUCK"
-  %p
-  %p
-    %a{ href: 'https://www.blackduck.com/solutions/application-security-testing.html' }= 'Application Security Testing'
-  %p
-    %a{ href: 'https://www.blackduck.com/services.html' }= 'Application Security Services'
-  %p
-    %a{ href: 'https://www.blackduck.com/services/security-program/strategy-planning.html' }= 'AppSec Program Development'
-  %p
-    %a{ href: 'https://www.blackduck.com/training.html', target: '_blank' }= 'Training'
+    .footer-mid
+      %h3 ABOUT BLACK DUCK
+      %ul
+        %li
+          %a{ href: 'https://www.blackduck.com/solutions/application-security-testing.html' }= 'Application Security Testing'
+        %li
+          %a{ href: 'https://www.blackduck.com/services.html' }= 'Application Security Services'
+        %li
+          %a{ href: 'https://www.blackduck.com/services/security-program/strategy-planning.html' }= 'AppSec Program Development'
+        %li
+          %a{ href: 'https://www.blackduck.com/training.html', target: '_blank' }= 'Training'
 
-.footer-right
-  = "ABOUT OPEN HUB"
-  %p
-  %p
-    %a{ href: 'https://community.blackduck.com/s/black-duck-open-hub' }= t :forum
-  %p
-    %a{ href: 'https://community.blackduck.com/s/article/Black-Duck-Open-Hub-Terms-of-Use' }= t :terms
-  %p
-    %a{ href: 'https://community.blackduck.com/s/article/Black-Duck-Open-Hub-Open-Hub-Privacy-Policy' }= t :privacy_blog
-  %p
-    %a{ href: 'https://github.com/blackducksoftware/ohloh-ui', target: '_blank' }= t('copyright.source_code')
-  %p
-    %a{ href: "mailto:#{raw_email}".html_safe }= t :contact_us
+    .footer-right
+      %h3 ABOUT OPEN HUB
+      %ul
+        %li
+          %a{ href: 'https://community.blackduck.com/s/black-duck-open-hub' }= t :forum
+        %li
+          %a{ href: 'https://community.blackduck.com/s/article/Black-Duck-Open-Hub-Terms-of-Use' }= t :terms
+        %li
+          %a{ href: 'https://community.blackduck.com/s/article/Black-Duck-Open-Hub-Open-Hub-Privacy-Policy' }= t :privacy_blog
+        %li
+          %a{ href: 'https://github.com/blackducksoftware/ohloh-ui', target: '_blank' }= t('copyright.source_code')
+        %li
+          %a{ href: "mailto:#{raw_email}".html_safe }= t :contact_us
 
-
-.footer-bottom
-  %sup &copy;
-  = Time.current.year
-  %span{ itemscope: '', itemtype: 'http://schema.org/CreativeWork' }
-    %span{ itemprop: 'publisher' }
-      %a{ href: 'http://www.blackduck.com', target: '_blank' }= "Black Duck Software, Inc."
-      = t('copyright.rights_text')
+  .footer-bottom
+    .footer-bottom-content
+      .copyright
+        %sup &copy;
+        = Time.current.year
+        %span{ itemscope: '', itemtype: 'http://schema.org/CreativeWork' }
+          %span{ itemprop: 'publisher' }
+            %a{ href: 'http://www.blackduck.com', target: '_blank' }= "Black Duck Software, Inc."
+            = t('copyright.rights_text')
+      .follow-us
+        %span Follow us:
+        :ruby
+          twitter_url = 'https://x.com/intent/follow?original_referer='
+          twitter_url += CGI.escape request.url
+          twitter_url += '&region=follow_link&screen_name=bdopenhub&source=followbutton&variant=2.0'
+        %a{ href: twitter_url, target: '_blank', 'aria-label' => 'Follow us on Twitter' }
+          %i.icon-twitter

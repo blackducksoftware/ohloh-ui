@@ -1,53 +1,49 @@
-.col-md-offset-1
-  %fieldset
-    .control-group
-      %label.control-label.required= t('.name')
+%fieldset.row-fluid
+  .col-md-10
+    .form-group
+      = f.label :name, t('.name'), class: 'control-label required'
       .controls
-        = f.text_field :name, class: 'col-md-10'
+        = f.text_field :name, class: 'form-control'
         - error_tag @organization, :name
-    .clearfix
 
-    .control-group
-      %label.control-label.required= t('.url')
+    .form-group
+      = f.label :vanity_url, t('.url'), class: 'control-label required'
       .controls
-        .input-prepend
-          %span.add-on= 'http://www.openhub.net/orgs/'
-          = f.text_field :vanity_url, class: 'check-availability',
-            'data-original-value' => Organization.find_by(id: @organization).try(:vanity_url),
+        .input-group
+          %span.input-group-addon= 'http://www.openhub.net/orgs/'
+          = f.text_field :vanity_url, class: 'form-control check-availability',
+            'data-original-value' => f.object.vanity_url,
             'data-ajax-path' => organization_check_availabilities_path,
             'data-preview-base-url' => organizations_url,
-            autocomplete: 'off', style: 'width: 375px'
+            autocomplete: 'off'
           = render 'shared/availability_preview'
-      - error_tag @organization, :vanity_url, class: 'error vanity_url'
+        - error_tag @organization, :vanity_url, class: 'error vanity_url'
 
-    .control-group
-      %label.control-label.required= t('.type')
+    .form-group
+      = f.label :org_type, t('.type'), class: 'control-label required'
       .controls
         - Organization::ORG_TYPES.each do |label, val|
           %label.radio-inline
             = f.radio_button :org_type, val
             = label
-    %p.margin_top_15
-      - error_tag @organization, :org_type, class: 'error margin_top_25'
-    .clearfix
+        - error_tag @organization, :org_type, class: 'error margin_top_25'
 
-    .control-group
-      %label.control-label= t('.description')
+    .form-group
+      = f.label :description, t('.description'), class: 'control-label'
       .controls
-        = find_and_preserve f.text_area(:description, max_length: 800, style: 'width: 83%', rows: '10')
+        = find_and_preserve f.text_area(:description, max_length: 800, class: 'form-control edit-description', rows: '10')
         - error_tag @organization, :description
-    .clearfix
 
-    .control-group
-      %label.control-label= t('.home')
+    .form-group
+      = f.label :homepage_url, t('.home'), class: 'control-label'
       .controls
-        = f.text_field :homepage_url, class: 'col-md-10'
+        = f.text_field :homepage_url, class: 'form-control'
         - error_tag @organization, :homepage_url
-    .clearfix
-      = f.hidden_field :id unless @organization.new_record?
-    .actions.pull-left.margin_top_20
-      - if logged_in? && @organization.edit_authorized?
-        %input.btn.btn-primary{ type: 'submit', value: t('.save_changes'), 'data-disable-with' => t('.processing') }
-      - else
-        = disabled_button(t('.save_changes'), class: 'btn-primary')
-    .clearfix
+
+    = f.hidden_field :id unless @organization.new_record?
+
+  .actions.col-md-10
+    - if logged_in? && @organization.edit_authorized?
+      = submit_tag t('.save_changes'), class: 'btn btn-primary pull-left margin_right_10', 'data-disable-with' => t('.processing')
+    - else
+      = disabled_button(t('.save_changes'), class: 'btn-primary')

@@ -2,19 +2,23 @@
 - content_for(:html_title) { t('.page_title') }
 - page_context[:select_footer_nav] = nil
 
-%h2.pull-left
+%h2.float-left
   = link_to t(:settings), settings_organization_path(@parent)
-  &nbsp;:&nbsp;#{t('.openhub_edit_history')}
+  &nbsp;:&nbsp;<strong>#{t('.openhub_edit_history')}</strong>
 
 = render partial: 'index'
 
-.margin_left_20
-  %h4.margin_bottom_0
-    .soft.inline= t(:about)
-    = t('.openhub_edit_history')
-
-  .margin_left_25.col-md-6
-    %ul
-      %li= t('.help_1')
-      %li= t('.help_2')
-      %li= t('.help_3')
+.col-md-12
+  .about-account-basics-card
+    .card-header
+      %h4.card-title
+        %span.soft= t(:about)
+        = t('.openhub_edit_history')
+      %button.expand-toggle{ type: 'button', 'aria-label' => 'Expand about section' }
+        %i.fa.fa-chevron-down
+    .card-content
+      .about-content-wrapper
+        %ul
+          %li= t('.help_1')
+          %li= t('.help_2')
+          %li= t('.help_3')

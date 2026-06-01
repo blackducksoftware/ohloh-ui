@@ -8,4 +8,4 @@
   = render partial: 'shared/search_dingus', locals: { collection: @projects, sort_context: :projects }
   = render partial: 'project_index', collection: @projects, locals: { i_use_this: true, compare: false,
                                                                       show_active_committers: false }
-  = will_paginate @projects
+  = render 'shared/modern_pagination', collection: @projects

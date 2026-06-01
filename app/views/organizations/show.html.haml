@@ -1,27 +1,32 @@
 - page_context[:select_top_menu_nav] = 'select_organizations'
 - content_for(:html_title) { t('.page_title', organization_name: @organization.name) }
 
+.org-summary-container
+  .org-summary-grid
+    .org-summary-box
+      %h4= t('.title')
+      #org_summary
+        - if @organization.description.blank?
+          = t('.no_desc')
+          = link_to t('.add_desc'), edit_organization_path(@organization)
+        - else
+          = simple_format @organization.description
 
-%h2= t('.title')
-.col-md-5.pull_left#org_summary
-  - if @organization.description.blank?
-    = t('.no_desc')
-    = link_to t('.add_desc'), edit_organization_path(@organization)
-  - else
-    = simple_format @organization.description.strip_tags
-  = render partial: '/shared/add_this', locals: { text: "#{@organization.name} organization" }
-.col-md-6.col-md-offset-1
-  = render partial: 'organizations/show/quick_reference'
+    = render partial: 'organizations/show/quick_reference'
 
-.col-md-12
-  .mezzo.padding_one_top
-    = render partial: '/organizations/show/pictogram', locals: { print_icon: true }
-  .mezzo.padding_one_top
-    .org-data-table.margin_left_10.margin_right_10
+  .org-content-container
+    .org-page-section
+      = render partial: '/shared/add_this', locals: { text: "#{@organization.name} organization" }
+
+    .org-page-section
+      = render partial: '/organizations/show/pictogram', locals: { print_icon: true }
+
+  .org-page-section
+    .org-data-table
       - case @view
         - when :affiliated_committers
         = render partial: 'organizations/show/affiliated_committers',
-                 affiliated_committers: @affiliated_committers, stats_map: @stats_map
+                affiliated_committers: @affiliated_committers, stats_map: @stats_map
         - when :portfolio_projects
         = render partial: 'organizations/show/portfolio_projects', affiliated_projects: @affiliated_projects
         - when :outside_committers
@@ -29,7 +34,7 @@
         - when :outside_projects
         = render partial: 'organizations/show/outside_projects', projects: @projects
 
-.spinner.hidden
-  %h4
-    %img{ src: image_path('spinner.gif') }
-    = t('.loading')
+  .spinner.hidden
+    %h4
+      %img{ src: image_path('spinner.gif'), alt: '' }
+      = t('.loading')

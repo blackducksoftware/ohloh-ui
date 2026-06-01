@@ -98,6 +98,8 @@ Rails.application.routes.draw do
       get :confirm_delete
       get :disabled
       get :settings
+      get :theme_preference, defaults: { format: :json }
+      post :set_theme_preference
       get 'alter_password/edit', to: 'alter_passwords#edit'
       patch 'alter_password/edit', to: 'alter_passwords#update'
       get :edit_privacy, to: 'privacy#edit', as: :edit_account_privacy

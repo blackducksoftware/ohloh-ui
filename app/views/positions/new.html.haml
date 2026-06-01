@@ -9,7 +9,7 @@
       = precede ' : ' do
         = t('new')
 
-    .well.center-block.margin_left_15
+    .oh-card.center-block.margin_left_15
       - if params[:invite].present?
         %p= t('.provide_extra_information')
       = form_for [@account, @position], html: { id: :position_form } do |f|

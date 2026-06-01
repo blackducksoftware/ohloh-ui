@@ -13,7 +13,7 @@
 .clearfix
 
 - if @positions.present?
-  .well.col-md-12.unclaimed_committers_box
+  .oh-card.col-md-12.unclaimed_committers_box
     = form_tag(save_claim_committer_path(@name.id), method: :post) do
       = render partial: 'position', collection: @positions
       .clearfix

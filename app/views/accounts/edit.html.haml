@@ -10,15 +10,15 @@
 
 #accounts_edits
   .margin_left_15
-    %h2
+    %h2.margin_left_15
       = link_to t('settings'), settings_account_path(@account)
-      = t('.account_basics')
-    .well.margin_left_15#account-edit-form
+      %span.account-basics-title= t('.account_basics')
+    .oh-card.margin_left_15#account-edit-form
       = form_for @account do |f|
         %fieldset.row-fluid
           .col-md-5
-            .form-group
-              %label.control-label.required= t('login')
+            .control-group
+              = f.label :login, t('login'), class: 'control-label required'
               .controls
                 = f.text_field :login, class: 'form-control check-availability',
                                        'data-original-value' => Account.find_by(id: @account).try(:login),
@@ -27,14 +27,14 @@
                 = render 'shared/availability_preview'
                 - error_tag @account, :login
 
-            .form-group
-              %label.control-label= t('name')
+            .control-group
+              = f.label :name, t('name'), class: 'control-label'
               .controls
                 = f.text_field :name, class: 'form-control'
                 - error_tag @account, :name
 
-            .form-group
-              %label.control-label.require= t('email_address')
+            .control-group
+              = f.label :email, t('email_address'), class: 'control-label required'
               .controls
                 = f.text_field :email, class: 'form-control'
                 - error_tag @account, :email
@@ -42,32 +42,32 @@
                   = t('.email_help')
                   = link_to t('gravatar'), 'https://gravatar.com', target: '_blank'
 
-            .form-group
-              %label.control-label= t('.homepage_url')
+            .control-group
+              = f.label :url, t('.homepage_url'), class: 'control-label'
               .controls
                 = f.text_field :url, class: 'form-control', value: @account.url
                 - error_tag @account, :url
 
-            .form-group
-              %label.control-label= t('twitter_id')
+            .control-group
+              = f.label :twitter_account, t('twitter_id'), class: 'control-label'
               .controls
                 = f.text_field :twitter_account, class: 'form-control'
                 - error_tag @account, :twitter_account
 
-            .form-group
-              %label.control-label= t('affiliation')
+            .control-group
+              = f.label :organization_id, t('affiliation'), class: 'control-label'
               .controls.chosen#value_select
                 = f.select :organization_id, OrganizationDecorator.select_options, {},
                   class: 'value-select chzn-select form-control'
                 - error_tag @account, :organization_id
-                = f.text_field :organization_name, class: 'hidden margin_top_10 form-control'
-                = f.hidden_field :affiliation_type
+                = f.text_field :organization_name, class: 'hidden margin_top_10 form-control', aria: { label: t('affiliation') }
+                = f.hidden_field :affiliation_type, aria: { label: t('affiliation') }
                 - error_tag @account, :organization_name
                 %p.help-block{ style: 'margin-top: 6px' }= t('.affiliation_help')
 
           .col-md-5.col-md-push-1
-            .form-group
-              %label.control-label!= t('.city_and_country')
+            .control-group
+              %label.control-label{ for: 'location_scratch' }!= t('.city_and_country')
               .controls
                 %p.enabled
                   %input.form-control#location_scratch{ type: :text, autocomplete: :off, value: @account.location }
@@ -82,8 +82,8 @@
 
           .clearfix
 
-          .form-group.margin_left_15
-            %label.control-label= t('bio')
+          .control-group.margin_left_15
+            = f.label :about_raw, t('bio'), class: 'control-label'
             .control
               - about_raw = @account.markup ? @account.markup.raw : ''
               = f.text_area :about_raw, value: about_raw, class: 'edit-description', rows: '10'
@@ -92,24 +92,27 @@
 
           .actions.col-md-10
             = submit_tag t('save_changes'), class: 'btn btn-primary pull-left margin_right_10'
-            = link_to t('.delete_account'), confirm_delete_account_path(@account), class: 'btn btn-danger pull-left'
+            = link_to t('.delete_account'), confirm_delete_account_path(@account), class: 'btn btn-danger pull-left', style: 'height: 43px;'
 
-%h4.nomargin.margin_left_15
-  %span.soft= t('about')
-  = t('basics')
+.about-account-basics-card
+  .card-header
+    %h4.card-title
+      %span.soft= t('about')
+      = t('basics')
+    %button.expand-toggle{ type: 'button', 'aria-label' => 'Expand about section' }
+      %i.fa.fa-chevron-down
 
-.col-md-5
-  %ul
-    %li
-      = t('.help_1')
-    %li
-      = t('.help_2')
-      %b= t('.help_3')
-.col-md-5
-  %ul
-    %li
-      = t('.help_4')
-    %li
-      = t('.help_5')
+  .card-content
+    .about-content-wrapper
+      .col-md-5
+        %ul
+          %li= t('.help_1')
+          %li
+            = t('.help_2')
+            %b= t('.help_3')
+      .col-md-5
+        %ul
+          %li= t('.help_4')
+          %li= t('.help_5')
 
 != map_init('map', @account.latitude ? 7 : 0)

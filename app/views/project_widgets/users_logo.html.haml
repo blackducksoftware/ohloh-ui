@@ -8,6 +8,6 @@
 
 .users_logo
   = link_to href, title: t('.support', name: project.name), target: '_blank' do
-    %img.logo{ src: widget_ohloh_logo_url }
+    %img.logo{ src: widget_ohloh_logo_url, alt: 'Open Hub' }
     %span{ onmouseover: 'usersLogoMouseOver(this);', onmouseout: 'usersLogoMouseOut(this);' }
       = t('.i_use_it')

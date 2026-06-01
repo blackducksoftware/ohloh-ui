@@ -1,7 +1,7 @@
 - content_for(:html_title) { t('.page_title') }
 %h1.float_left.margin_bottom_15 Invite User
 
-.col-md-11.well
+.col-md-11.oh-card
   = form_for(@invite, url: contributor_invites_path(@contribution), html: { method: :post }) do |f|
     %fieldset
       %legend= t('.invite_to_join', email: h(obfuscate_email(@invite.name.name)))

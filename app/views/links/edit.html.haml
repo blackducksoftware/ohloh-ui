@@ -8,9 +8,8 @@
     = link_to t('links.title').pluralize, project_links_path(@project)
     \:
     = t(:edit)
-  = project_analysis_timestamp(@project)
 
-.well.col-md-offset-1.col-md-8
+.oh-card.col-md-8
   = form_for([@project, @link]) do |f|
     = render partial: 'fields', locals: { f: f }
 

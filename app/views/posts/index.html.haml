@@ -11,7 +11,7 @@
     = render partial: '/forums/notice'
     = render partial: 'shared/search_dingus', locals: { collection: @posts, sort_context: :posts }
     = render partial: 'posts/posts', collection: @posts
-    = will_paginate @posts
+    = render 'shared/modern_pagination', collection: @posts
 - else
   %h1
     = link_to t('.forums'), forums_path
@@ -20,4 +20,4 @@
   = render partial: '/forums/notice'
   = render partial: 'shared/search_dingus', locals: { collection: @posts, sort_context: :posts }
   = render partial: 'posts/posts', collection: @posts
-  = will_paginate @posts
+  = render 'shared/modern_pagination', collection: @posts

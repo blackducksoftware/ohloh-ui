@@ -8,6 +8,6 @@
   = precede ' : ' do
     = t('edit')
 
-.well.col-md-11.center-block
+.oh-card.col-md-11.center-block
   = form_for [@account, @position], html: { id: :position_form } do |f|
     = render 'fields', f: f, position: @position, allow_delete: true

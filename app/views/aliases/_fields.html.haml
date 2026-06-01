@@ -1,4 +1,4 @@
-.well.col-md-10.col-md-offset-1
+.oh-card.col-md-10.col-md-offset-1
   .wrapper
     .pull-left.margin_right_5.margin_top_5
       = t('aliases.contributions_by')
@@ -12,7 +12,7 @@
       #preferred_name= render partial: 'preferred_names'
 
     .pull-left.margin_right_5
-      %span.spinner= image_tag 'spinner.gif'
+      %span.spinner= image_tag 'spinner.gif', alt: ''
     .clearfix
   .act.margin_top_5
     - if logged_in? && @project.edit_authorized?

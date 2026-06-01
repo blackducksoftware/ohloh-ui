@@ -24,7 +24,7 @@
               %br
               $
               %input.right#cocomo_salary{ type: 'text', value: widget.salary, size: 7,
-              onChange: 'update_cocomo();', onKeyUp: 'update_cocomo();' }>
+              onChange: 'update_cocomo();', onKeyUp: 'update_cocomo();', 'aria-label' => t('.avg') }>
               = t('.year')
       %tr.second_row
         %td.first

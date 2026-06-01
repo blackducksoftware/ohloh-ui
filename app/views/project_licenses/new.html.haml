@@ -21,20 +21,22 @@
       &nbsp;:&nbsp;#{t(:new)}
     = project_analysis_timestamp(@project)
 
+= render partial: 'layouts/partials/alert'
+
 #error{ style: 'display: none;' }
   .alert.alert-info
     %i.icon-exclamation-sign
     = t('.at_least_one')
 
-.well.col-md-7.col-md-offset-2
+.oh-card.col-md-7.margin_top_15
   = form_for ProjectLicense.new, url: project_licenses_path(@project),
                                  html: { class: 'edit_project', id: 'edit_project_license' } do
-    %fieldset
+    %fieldset.license-form
       %legend= t('.new_declared_license')
       .control-group
-        %label.control-label.required= t('.license')
+        %label.control-label.required{ for: 'value_selector' }= t('.license')
         .controls.chosen#value_select
-          %select.chzn-select.value-select#value_selector{ name: 'license_id', style: 'width: 524px;',
+          %select.chzn-select.value-select#value_selector{ name: 'license_id',
                                                            data: { placeholder: t('.select_placeholder') } }
             %option{ value: 'blank' }
             - @licenses.each do |license|

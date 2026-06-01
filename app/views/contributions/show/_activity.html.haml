@@ -1,9 +1,9 @@
-.well.pull-left.col-md-9{ style: 'padding: 10px 0px 19px 19px' }
+.oh-card.pull-left.col-md-9{ style: 'padding: 10px 0px 19px 19px' }
   %h4
     = t('.activity_on', name: @project.name, committer: committer)
     = link_to h(t('.see_full_profile', name: committer)), account_path(account) if account
   .committer-summary
-    = image_tag avatar_img_path(@contribution.person, 64), class: 'pull-left avatar', style: 'margin-bottom:65px;'
+    = image_tag avatar_img_path(@contribution.person, 64), class: 'pull-left avatar', style: 'margin-bottom:65px;', alt: h(@contribution.person.try(:name).to_s)
     - unless fact.nil?
       - spark_url = commits_compound_spark_project_contributor_url(project_id: @project.to_param, id: fact.name_id)
       .col-md-3
@@ -43,6 +43,6 @@
       .padding_one_top.col-md-10
         %span= t('.history')
         .col-md-10.pull-right{ style: 'width: 80%' }
-          = image_tag spark_url, width: 430, height: 39
+          = image_tag spark_url, width: 430, height: 39, alt: ''
         .clearfix
       .clearfix

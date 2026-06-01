@@ -6,11 +6,10 @@
   = link_to t(:managers_link_name), parent_managers_path(@parent)
   &#58;
   = t(:edit)
-= project_analysis_timestamp(@project)
 
 .clear
 .col-md-8
-  .well
+  .oh-card
     = form_for(@manage, url: parent_manager_path(@parent, @manage), html: { method: :put }) do |form|
       = render partial: 'form', locals: { form: form }
 

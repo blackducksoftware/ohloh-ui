@@ -2,12 +2,263 @@
   #settings a
     margin: 0 0 0.2em 0
 
+#accounts_edits
+  .margin_left_15 > h2
+    font-size: 24px
+    font-weight: 400
+    margin-bottom: 24px
+    a
+      font-size: 24px
+    .account-basics-title
+      font-size: 24px
+      font-weight: 700
+
 #account-edit-form
+  .help-block
+    color: #595959 !important
+    html.dark &
+      color: #9ca3af !important
   .chzn-container, .chosen p
     width: 347px !important
 
   #location
     width: 85%
 
-  .edit-description
+  textarea.edit-description
     width: 90%
+    border: 2px solid #e5e7eb !important
+    border-radius: 16px !important
+    -webkit-border-radius: 16px !important
+    -moz-border-radius: 16px !important
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important
+    background: #ffffff !important
+    color: #111827 !important
+    padding: 10px 16px !important
+    transition: border-color 0.3s ease, box-shadow 0.3s ease
+    &::placeholder
+      color: #9ca3af !important
+      opacity: 1
+    &:hover
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important
+      border-color: #d1d5db !important
+    &:focus, &:focus-visible
+      border-color: #5A2A82 !important
+      outline: none !important
+      box-shadow: 0 0 0 4px rgba(14, 75, 122, 0.1) !important
+      background: #ffffff !important
+    html.dark &
+      background: #1D0631 !important
+      color: #ffffff !important
+      border-color: #5A2A82 !important
+      &::placeholder
+        color: #6b7280 !important
+      &:hover
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -1px rgba(0, 0, 0, 0.1) !important
+        border-color: #6b7280 !important
+      &:focus, &:focus-visible
+        border-color: #ffb91a !important
+        background: #1D0631 !important
+        box-shadow: 0 0 0 4px rgba(255, 185, 26, 0.1) !important
+        outline: none !important
+
+  // Affiliation — override chosen-overrides.sass (#value_select specificity 100+20=120, ours 200+20=220)
+  #value_select
+    .chosen-container-single .chosen-single
+      border: 2px solid #e5e7eb !important
+      border-radius: 16px !important
+      -webkit-border-radius: 16px !important
+      background: #ffffff !important
+      background-image: none !important
+      height: auto !important
+      padding: 10px 16px !important
+      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important
+      color: #111827 !important
+      line-height: 1.5 !important
+      &:hover
+        border-color: #d1d5db !important
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important
+    .chosen-container-active > .chosen-single,
+    .chosen-container-active.chosen-with-drop .chosen-single
+      border-color: #5A2A82 !important
+      box-shadow: 0 0 0 4px rgba(14, 75, 122, 0.1) !important
+    .chosen-container .chosen-drop
+      border-radius: 0 0 16px 16px !important
+      border-left: 2px solid #5A2A82 !important
+      border-right: 2px solid #5A2A82 !important
+      border-bottom: 2px solid #5A2A82 !important
+      border-top: none !important
+    html.dark &
+      .chosen-container-single .chosen-single
+        background: #1D0631 !important
+        border-color: #5A2A82 !important
+        color: #ffffff !important
+        &:hover
+          border-color: #6b7280 !important
+      .chosen-container-active > .chosen-single,
+      .chosen-container-active.chosen-with-drop .chosen-single
+        border-color: #ffb91a !important
+        box-shadow: 0 0 0 4px rgba(255, 185, 26, 0.1) !important
+      .chosen-container .chosen-drop
+        border-left: 2px solid #ffb91a !important
+        border-right: 2px solid #ffb91a !important
+        border-bottom: 2px solid #ffb91a !important
+
+  .form-control
+    box-sizing: border-box !important
+    border: 2px solid #e5e7eb !important
+    border-radius: 16px !important
+    -webkit-border-radius: 16px !important
+    -moz-border-radius: 16px !important
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important
+    background: #ffffff !important
+    color: #111827 !important
+    padding: 10px 16px !important
+    height: auto !important
+    transition: border-color 0.3s ease, box-shadow 0.3s ease
+    &::placeholder
+      color: #9ca3af !important
+      opacity: 1
+    &:hover
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important
+      border-color: #d1d5db !important
+    &:focus, &:focus-visible
+      border-color: #5A2A82 !important
+      outline: none !important
+      box-shadow: 0 0 0 4px rgba(14, 75, 122, 0.1) !important
+      background: #ffffff !important
+    html.dark &
+      background: #1D0631 !important
+      color: #ffffff !important
+      border-color: #5A2A82 !important
+      &::placeholder
+        color: #6b7280 !important
+        opacity: 1
+      &:hover
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -1px rgba(0, 0, 0, 0.1) !important
+        border-color: #6b7280 !important
+      &:focus, &:focus-visible
+        border-color: #ffb91a !important
+        background: #1D0631 !important
+        box-shadow: 0 0 0 4px rgba(255, 185, 26, 0.1) !important
+        outline: none !important
+
+@media (max-width: 767px)
+  #accounts_edits
+    .margin_left_15 > h2
+      font-size: 18px !important
+      margin-left: 0 !important
+
+    .oh-card.margin_left_15
+      margin-left: 0 !important
+      margin-right: 0 !important
+      padding: 16px 12px !important
+
+  #account-edit-form
+    .form-group.margin_left_15
+      margin-left: 0 !important
+      padding: 0
+
+      textarea.edit-description
+        width: 100% !important
+        box-sizing: border-box !important
+        font-size: 14px !important
+
+      .help-block
+        font-size: 12px !important
+
+@media (min-width: 768px) and (max-width: 1024px)
+  #accounts_edits
+    .oh-card.margin_left_15
+      margin-left: 8px !important
+      margin-right: 8px !important
+
+  #account-edit-form
+    .form-group.margin_left_15
+      margin-left: 8px !important
+      padding-right: 8px
+
+      textarea.edit-description
+        width: 100% !important
+        box-sizing: border-box !important
+
+.about-account-basics-card
+  background: #ffffff
+  border-radius: 16px
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24)
+  overflow: hidden
+  margin-top: 24px
+  margin-bottom: 24px
+
+  html.dark &
+    background: #2D1548
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.24), 0 1px 2px rgba(0, 0, 0, 0.48)
+
+  .card-header
+    display: flex
+    align-items: center
+    justify-content: space-between
+    padding: 16px 24px
+    cursor: pointer
+    transition: background-color 0.2s
+
+    &:hover
+      background-color: #f9fafb
+
+      html.dark &
+        background-color: rgba(255, 255, 255, 0.05)
+
+    .card-title
+      margin: 0
+      font-size: 16px
+      font-weight: 600
+      color: #5A2A82
+      flex: 1
+
+      html.dark &
+        color: #ffb91a
+
+      .soft
+        margin-right: 4px
+
+    .expand-toggle
+      background: none
+      border: none
+      padding: 8px
+      cursor: pointer
+      color: #6b7280
+      transition: transform 0.2s
+      margin-left: 12px
+
+      html.dark &
+        color: #9ca3af
+
+      i
+        font-size: 16px
+
+  .card-content
+    display: none
+    padding: 0 24px 16px
+
+  &.expanded
+    .card-header
+      .expand-toggle
+        transform: rotate(180deg)
+
+    .card-content
+      display: block
+
+  .about-content-wrapper
+    display: flex
+    gap: 40px
+
+    @media (max-width: 768px)
+      flex-direction: column
+      gap: 24px
+
+    ul
+      list-style: disc
+      padding-left: 20px
+
+      li
+        margin-bottom: 8px
+        line-height: 1.6

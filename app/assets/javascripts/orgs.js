@@ -1,4 +1,6 @@
 var GaugeProgress = {
+  themeListenerAttached: false,
+
   init: function(){
     var scope = this;
     var page_ids = ['explore_orgs_page'];
@@ -14,12 +16,29 @@ var GaugeProgress = {
         scope.orgs_progress_bar()
       }
     })
+
+    if (!this.themeListenerAttached) {
+      var themeToggleBtn = document.getElementById('theme-toggle');
+      if (themeToggleBtn) {
+        themeToggleBtn.addEventListener('click', function() {
+          setTimeout(function() {
+            scope.init();
+          }, 1);
+        });
+        this.themeListenerAttached = true;
+      }
+    }
   },
 
   config: function(data){
+    var isDarkTheme = $('html').hasClass('dark');
+    var bgColor = isDarkTheme ? '#2D1548' : '#FFF';
+    var labelColor = isDarkTheme ? '#FFF' : '#000';
+
     return {
       chart: {
         type: 'solidgauge',
+        backgroundColor: bgColor,
       },
       title: null,
       pane: {
@@ -28,7 +47,7 @@ var GaugeProgress = {
         startAngle: -90,
         endAngle: 90,
         background: {
-          backgroundColor: '#FFF',
+          backgroundColor: bgColor,
           innerRadius: '100%',
           outerRadius: '45%',
           shape: 'arc'
@@ -65,7 +84,7 @@ var GaugeProgress = {
           }
         }
       },
-      series: [{data: [data], dataLabels: { format: '<p style="text-align:center;">{y}</p>'} }],
+      series: [{data: [data], dataLabels: { format: '<p style="text-align:center;color:' + labelColor + ';">{y}</p>'} }],
       exporting: {
         enabled: false
       }
@@ -86,18 +105,50 @@ var GaugeProgress = {
 
 var OrgsFilter = {
   init: function(){
-    $('#explore_orgs_page .chzn-select').chosen().change(function(){
-      $('.busy#commit_volume_loader').toggleClass('hidden')
-      $('#orgs_by_30_days_volume table').toggleClass('hidden')
+    var filterOrgs = function(filterValue) {
+      $('.busy#commit_volume_loader').removeClass('hidden')
       $.ajax({
-        url: '/explore/orgs_by_thirty_day_commit_volume?format=js&filter='+ $(this).val(),
+        url: '/explore/orgs_by_thirty_day_commit_volume?format=js&org_type='+ filterValue,
         type: "GET",
         success: function(){
-          $('#orgs_by_30_days_volume table').toggleClass('hidden')
-          $('.busy#commit_volume_loader').toggleClass('hidden')
+          $('.busy#commit_volume_loader').addClass('hidden')
         }
       })
-    })
+    };
+
+    // Legacy chosen dropdown support
+    $('#explore_orgs_page .chzn-select').chosen().change(function(){
+      filterOrgs($(this).val());
+    });
+
+    // Custom dropdown for org type filter - handle button toggle and aria-expanded
+    var $orgDropdown = $('#orgs_by_30_days_volume .custom-sort-dropdown');
+    var $orgButton = $orgDropdown.find('.sort-dropdown-btn');
+
+    $orgButton.on('click', function() {
+      var isOpen = $orgDropdown.hasClass('open');
+      $orgButton.attr('aria-expanded', !isOpen);
+    });
+
+    // Close dropdown when clicking outside
+    $(document).on('click', function(e) {
+      if (!$(e.target).closest('#orgs_by_30_days_volume .custom-sort-dropdown').length) {
+        $orgDropdown.removeClass('open');
+        $orgButton.attr('aria-expanded', 'false');
+      }
+    });
+
+    // Handle dropdown item clicks
+    $('#orgs_by_30_days_volume .sort-dropdown-item').on('click', function(e) {
+      e.preventDefault();
+      var value = $(this).data('value');
+
+      // Close dropdown and update aria-expanded
+      $orgDropdown.removeClass('open');
+      $orgButton.attr('aria-expanded', 'false');
+
+      filterOrgs(value);
+    });
   }
 }
 
@@ -120,5 +171,7 @@ var OrgClaimProject = {
   }
 }
 $(document).ready(function() {
-  OrgClaimProject.init()
+  GaugeProgress.init();
+  OrgsFilter.init();
+  OrgClaimProject.init();
 });

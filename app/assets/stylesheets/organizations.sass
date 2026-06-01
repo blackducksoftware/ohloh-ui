@@ -1,5 +1,470 @@
+// Organization Summary Container
+.org-summary-container
+  max-width: 1280px
+  margin: 0 auto
+  padding: 24px 24px 0
+
+  @media (max-width: 640px)
+    padding: 0
+
+// Organization Content Container
+.org-content-container
+  max-width: 1280px
+  margin: auto 0
+  padding: 24px
+  background: white
+  border-radius: 16px
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24)
+  border: 1px solid #f3f4f6
+
+  @media (max-width: 640px)
+    padding: 16px
+
+  html.dark &
+    background: #2D1548
+    border-color: rgba(90, 42, 130, 0.3)
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.24), 0 1px 2px rgba(0, 0, 0, 0.48)
+
+  h4
+    margin-top: 0 !important
+    margin-bottom: 16px
+    font-size: 16px
+    font-weight: 700
+    color: #1f2937
+
+    html.dark &
+      color: white
+
+.org-page-section
+  margin-bottom: 24px
+
+.org-summary-grid
+  display: grid
+  grid-template-columns: 2fr 1fr
+  gap: 24px
+  margin-bottom: 16px
+
+  @media (max-width: 768px)
+    grid-template-columns: 1fr
+    gap: 12px
+    margin-bottom: 12px
+
+.org-summary-box
+  background: white
+  border-radius: 16px
+  margin: 0 0 16px
+  padding: 24px
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24)
+  border: 1px solid #f3f4f6
+
+  html.dark &
+    background: #2D1548
+    border-color: rgba(90, 42, 130, 0.3)
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.24), 0 1px 2px rgba(0, 0, 0, 0.48)
+
+  h4
+    margin-top: 0 !important
+    margin-bottom: 16px
+    font-size: 16px
+    font-weight: 700
+    color: #1f2937
+
+    html.dark &
+      color: white
+
+  #org_summary
+    line-height: 1.6
+    color: #374151
+
+    html.dark &
+      color: #d1d5db
+
+    a
+      color: #5A2A82
+      text-decoration: underline
+
+      &:hover
+        color: #5A2A82
+
+      html.dark &
+        color: white
+        text-decoration: underline
+
+        &:hover
+          color: #ffb91a
+
+// Organization Header Banner
+.org-header-banner
+  background: white
+  border-bottom: 1px solid #e5e7eb
+  padding: 16px 0
+
+  html.dark &
+    background: linear-gradient(to bottom, #1a0d2e, #0D0019)
+    border-bottom-color: rgba(90, 42, 130, 0.4)
+
+.org-header-container
+  max-width: 1280px
+  margin: 0 auto
+  padding: 0 16px
+
+.org-header-content
+  display: flex
+  align-items: center
+  gap: 24px
+  flex-wrap: wrap
+
+  @media (max-width: 640px)
+    flex-direction: column
+    align-items: flex-start
+
+.org-header-logo-section
+  flex-shrink: 0
+
+  img
+    width: 80px
+    height: 80px
+    border-radius: 16px
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1)
+
+    @media (min-width: 640px)
+      width: 88px
+      height: 88px
+
+    html.dark &
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3)
+
+.org-header-info
+  flex: 1
+  min-width: 0
+
+.org-header-title
+  margin-bottom: 8px
+
+  h1
+    margin: 0
+    font-size: 30px
+    font-weight: 700
+    color: #1f2937
+
+    @media (min-width: 640px)
+      font-size: 36px
+
+    a
+      color: inherit
+      text-decoration: none
+
+      &:hover
+        color: #5A2A82
+
+    html.dark &
+      color: white
+
+      a:hover
+        color: #ffb91a
+
+.org-header-stats
+  display: flex
+  flex-wrap: wrap
+  gap: 16px
+  font-size: 14px
+  color: #6b7280
+
+  html.dark &
+    color: #9ca3af
+
+  .stat-item
+    display: flex
+    align-items: center
+    gap: 2px
+
+    icon
+      font-size: 14px
+      opacity: 0.75
+
+.org-header-actions
+  flex-shrink: 0
+
+.org-header-settings-btn
+  display: inline-flex
+  align-items: center
+  gap: 8px
+  padding: 8px 16px
+  background: #f3f4f6
+  color: #374151
+  border: 1px solid #d1d5db
+  border-radius: 8px
+  font-size: 14px
+  font-weight: 500
+  text-decoration: none
+  transition: all 0.2s
+
+  &:hover
+    background: #e5e7eb
+    color: #1f2937
+
+  html.dark &
+    background: #2D1548
+    color: #d1d5db
+    border-color: rgba(90, 42, 130, 0.4)
+
+    &:hover
+      background: #3a1a5e
+      color: #f3f4f6
+
+  icon
+    font-size: 16px
+    
+// SASS Variables (mirrors projects index design system)
+$org-primary-color: #5A2A82
+$org-primary-hover: rgba(90, 42, 130, 0.9)
+$org-bg-color: #f9fafb
+$org-card-bg: #ffffff
+$org-text-primary: #1f2937
+$org-text-secondary: #6b7280
+$org-border-color: rgba(229, 231, 235, 0.8)
+$org-shadow-sm: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)
+$org-shadow-md: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)
+$org-dark-primary: #ffb91a
+$org-dark-bg: #1D0631
+$org-dark-card: #2D1548
+$org-dark-text-primary: #ffffff
+$org-dark-text-secondary: #d1d5db
+$org-dark-border: rgba(255, 255, 255, 0.1)
+$org-dark-shadow-sm: 0 1px 3px rgba(0,0,0,0.24), 0 1px 2px rgba(0,0,0,0.48)
+$org-dark-shadow-md: 0 3px 6px rgba(0,0,0,0.32), 0 3px 6px rgba(0,0,0,0.46)
+
+// Organizations Index Page
+#organizations_index_page
+  background-color: $org-bg-color
+  min-height: 100vh
+  padding: 32px 0
+  transition: background-color 0.3s ease, color 0.3s ease
+  html.dark &
+    background-color: $org-dark-bg
+
+  .organizations-container
+    max-width: 1280px
+    margin: 0 auto
+    padding: 0 16px
+
+  .organizations-header
+    display: flex
+    justify-content: space-between
+    align-items: center
+    margin-bottom: 24px
+    flex-wrap: wrap
+    gap: 16px
+
+    h1
+      font-size: 30px
+      font-weight: bold
+      color: $org-text-primary
+      margin: 0
+      html.dark &
+        color: $org-dark-text-primary
+
+      @media (min-width: 640px)
+        font-size: 36px
+
+    .header-actions
+      display: flex
+      gap: 12px
+      align-items: center
+      flex-wrap: wrap
+
+      .btn-add-organization
+        padding: 8px 16px
+        border-radius: 8px
+        font-weight: 600
+        font-size: 14px
+        transition: all 0.2s ease
+        text-decoration: none
+        display: inline-flex
+        align-items: center
+        gap: 8px
+        white-space: nowrap
+        background-color: $org-primary-color
+        color: #ffffff
+        border: none
+        box-shadow: $org-shadow-md
+        &:hover
+          background-color: $org-primary-hover
+          color: #ffffff
+        html.dark &
+          background-color: $org-dark-primary
+          color: #1D0631 !important
+          &:hover
+            background-color: rgba(255, 185, 26, 0.9)
+
+  .no-results
+    color: $org-text-secondary
+    padding: 24px 0
+    html.dark &
+      color: $org-dark-text-secondary
+
+// Organization Card
+.organization-card
+  background-color: $org-card-bg
+  border-radius: 12px
+  border: 1px solid $org-border-color
+  padding: 20px 24px
+  margin-bottom: 16px
+  box-shadow: $org-shadow-sm
+  transition: all 0.3s ease
+  html.dark &
+    background-color: $org-dark-card
+    border-color: $org-dark-border
+    box-shadow: $org-dark-shadow-sm
+
+  &:hover
+    border-color: $org-primary-color
+    box-shadow: $org-shadow-md
+    html.dark &
+      border-color: $org-dark-primary
+      box-shadow: $org-dark-shadow-md
+
+  .organization-header
+    margin-bottom: 16px
+
+    .organization-title-section
+      h2
+        margin: 0 0 4px 0
+        font-size: 18px
+        font-weight: 600
+
+        @media (min-width: 640px)
+          font-size: 20px
+
+        a
+          color: $org-primary-color
+          text-decoration: none
+          &:hover
+            text-decoration: underline
+          html.dark &
+            color: $org-dark-primary !important
+
+  .organization-content
+    display: grid
+    grid-template-columns: 1fr auto
+    column-gap: 24px
+
+    @media (max-width: 768px)
+      grid-template-columns: 1fr
+
+    .organization-main
+      .organization-icon-desc
+        display: flex
+        gap: 12px
+
+        .organization-description
+          flex: 1
+          font-size: 14px
+          color: $org-text-secondary
+          line-height: 1.5
+          word-wrap: break-word
+          html.dark &
+            color: $org-dark-text-secondary
+
+    .organization-stats
+      min-width: 200px
+      border-left: 1px solid $org-border-color
+      padding-left: 24px
+      display: flex
+      flex-direction: column
+      gap: 12px
+      html.dark &
+        border-color: $org-dark-border
+
+      @media (max-width: 768px)
+        border-left: none
+        border-top: 1px solid $org-border-color
+        padding-left: 0
+        padding-top: 16px
+        margin-top: 16px
+        flex-direction: row
+        flex-wrap: wrap
+
+      .stat-item
+        display: flex
+        align-items: center
+        gap: 10px
+
+        .stat-value
+          font-size: 16px
+          font-weight: bold
+          color: $org-primary-color
+          html.dark &
+            color: $org-dark-primary
+
+          a
+            color: inherit
+            text-decoration: none
+            &:hover
+              text-decoration: underline
+
+          @media (min-width: 640px)
+            font-size: 18px
+
+        .stat-label
+          font-size: 12px
+          color: $org-text-secondary
+          html.dark &
+            color: $org-dark-text-secondary
+
+          @media (min-width: 640px)
+            font-size: 14px
+
+// New Organization page styles — radio button alignment
+.oh-card .radio-inline
+  display: inline-flex
+  align-items: center
+  gap: 6px
+  padding-left: 0
+  vertical-align: middle
+  cursor: pointer
+
+  input[type="radio"]
+    position: static
+    margin: 0
+    flex-shrink: 0
+    vertical-align: middle
+
+.org-new-title
+  font-weight: bold !important
+  margin-top: 24px
+  margin-bottom: 16px
+  color: $org-text-primary
+  html.dark &
+    color: $org-dark-text-primary
+
+// URL prefix add-on (http://www.openhub.net/orgs/) — scoped to org new/edit form only
+.org-form .input-prepend .add-on
+  html.dark &
+    background-color: #2D1548 !important
+    border-color: rgba(255, 255, 255, 0.15) !important
+    color: #ffb91a !important
+
 .project_activity_margin_top
   margin-top: -8px
+
+.org-data-table
+  table.table.table-striped.table-condensed
+    thead th
+      border-bottom: 1px solid #888 !important
+
+      html.dark &
+        border-bottom-color: #5A2A82 !important
+
+table.table.table-striped.table-condensed
+  thead th
+    border-bottom: 1px solid #888 !important
+
+    html.dark &
+      border-bottom-color: #5A2A82 !important
+
+  td:first-child
+    text-align: left
 
 tbody.portfolio-projects-table
   td
@@ -8,13 +473,487 @@ tbody.portfolio-projects-table
   tr:nth-child(odd), tr:nth-child(even)
     td
       background-color: white
+
+      html.dark &
+        background-color: #2D1548
   tr:nth-child(3n+1)
     td
       border-top: solid 1px #ddd !important
       border-bottom: solid 1px #ddd !important
+
+      html.dark &
+        border-top-color: #5A2A82 !important
+
+// Portfolio Projects List
+#portfolio_projects_list
+  max-width: 1280px
+  margin: 0 auto
+
+// Portfolio Projects Mobile Card View
+.portfolio-mobile-view
+  display: block
+
+  @media (min-width: 768px)
+    display: none
+
+.portfolio-desktop-view
+  display: none
+
+  @media (min-width: 768px)
+    display: table
+
+.portfolio-project-card
+  background: white
+  border-radius: 12px
+  padding: 16px
+  margin-bottom: 16px
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1)
+
+  html.dark &
+    background: #2D1548
+    border: 1px solid rgba(90, 42, 130, 0.3)
+
+  .card-header
+    display: flex
+    align-items: flex-start
+    justify-content: space-between
+    gap: 12px
+    margin-bottom: 16px
+
+    .project-info
+      flex: 1
+
+      .project-name
+        font-size: 14px
+        font-weight: 600
+        color: #5A2A82
+        text-decoration: none
+        display: block
+        margin-bottom: 6px
+
+        html.dark &
+          color: #ffb91a
+
+        &:hover
+          text-decoration: underline
+
+      .project-meta
+        display: flex
+        align-items: center
+        gap: 8px
+
+        a[class*='twenty_project_activity_level']
+          position: static !important
+          display: inline-block !important
+          margin-left: 0 !important
+          top: auto !important
+          vertical-align: middle
+          flex-shrink: 0
+
+        .activity-indicator
+          display: flex
+          align-items: center
+
+    .use-this-count
+      text-align: center
+
+      .count-value
+        font-size: 16px
+        font-weight: 700
+        color: #1f2937
+
+        html.dark &
+          color: white
+
+      .count-label
+        font-size: 10px
+        color: #6b7280
+
+        html.dark &
+          color: #9ca3af
+
+  .card-stats
+    display: grid
+    grid-template-columns: 1fr 1fr
+    gap: 8px
+
+    .stat-box
+      background: #f9fafb
+      border-radius: 8px
+      padding: 12px
+
+      html.dark &
+        background: rgba(29, 6, 49, 0.4)
+
+      .stat-title
+        font-size: 11px
+        font-weight: 600
+        color: #6b7280
+        margin-bottom: 8px
+
+        html.dark &
+          color: #d1d5db
+
+      .stat-rows
+        display: flex
+        flex-direction: column
+        gap: 4px
+
+      .stat-row
+        display: flex
+        justify-content: space-between
+        align-items: center
+        font-size: 12px
+
+        .stat-label
+          color: #6b7280
+          font-size: 11px
+
+          html.dark &
+            color: #9ca3af
+
+// Affiliated Committers Mobile View
+.affiliated-committers-mobile-view
+  display: block
+
+  @media (min-width: 768px)
+    display: none
+
+.affiliated-committers-desktop-view
+  display: none
+
+  @media (min-width: 768px)
+    display: table
+
+.committer-card
+  background: white
+  border-radius: 12px
+  padding: 16px
+  margin-bottom: 16px
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1)
+
+  html.dark &
+    background: #2D1548
+    border: 1px solid rgba(90, 42, 130, 0.3)
+
+  .card-header
+    display: flex
+    align-items: flex-start
+    gap: 12px
+    margin-bottom: 16px
+    padding-bottom: 12px
+    border-bottom: 1px solid #e5e7eb
+
+    html.dark &
+      border-bottom-color: rgba(90, 42, 130, 0.3)
+
+    .committer-info
+      display: flex
+      gap: 12px
+      flex: 1
+
+      .committer-avatar
+        border-radius: 50%
+        flex-shrink: 0
+
+      .committer-details
+        flex: 1
+
+        .committer-name
+          font-size: 14px
+          font-weight: 600
+          color: #5A2A82
+          text-decoration: none
+          display: block
+          margin-bottom: 6px
+
+          html.dark &
+            color: #ffb91a
+
+          &:hover
+            text-decoration: underline
+
+          .you-badge
+            font-size: 11px
+            color: #6b7280
+            margin-left: 4px
+
+        .committer-badges
+          display: flex
+          flex-direction: column
+          gap: 6px
+
+          .badge-item
+            display: flex
+            align-items: center
+            gap: 6px
+
+            .badge-label
+              font-size: 10px
+              color: #6b7280
+              font-weight: 600
+              text-transform: uppercase
+              min-width: 50px
+
+              html.dark &
+                color: #9ca3af
+
+            .pips
+              margin: 0 !important
+
+          .mini-badges-section
+            margin: 0
+            position: relative
+            height: auto
+
+  .card-stats
+    display: flex
+    flex-direction: column
+    gap: 16px
+
+    .stat-group
+      .stat-label
+        font-size: 11px
+        font-weight: 600
+        color: #6b7280
+        margin-bottom: 8px
+        display: block
+
+        html.dark &
+          color: #9ca3af
+
+      .stat-values
+        display: flex
+        flex-direction: column
+        gap: 8px
+
+        .stat-item
+          display: flex
+          flex-direction: column
+          gap: 4px
+          font-size: 12px
+
+          .stat-sublabel
+            color: #374151
+            font-size: 12px
+            font-weight: 700
+            text-transform: uppercase
+            letter-spacing: 0.5px
+
+            html.dark &
+              color: #e5e7eb
+
+          .stat-value
+            color: #1f2937
+            font-weight: 700
+            font-size: 15px
+
+            html.dark &
+              color: white
+
+      .stat-project-info
+        display: flex
+        align-items: center
+        gap: 20px
+        padding: 8px
+        border-radius: 8px
+        margin-top: 4px
+
+        .project-icon
+          flex-shrink: 0
+
+        .project-details
+          flex: 1
+          display: flex
+          flex-direction: column
+          gap: 2px
+
+          .project-name
+            font-size: 12px
+            color: #5A2A82
+            text-decoration: none
+            font-weight: 500
+
+            html.dark &
+              color: #ffb91a
+
+            &:hover
+              text-decoration: underline
+
+          .commit-count, .commit-date
+            font-size: 11px
+            color: #6b7280
+
+            html.dark &
+              color: #9ca3af
+
+// Outside Committers Mobile View
+.outside-committers-mobile-view
+  display: block
+
+  @media (min-width: 768px)
+    display: none
+
+.outside-committers-desktop-view
+  display: none
+
+  @media (min-width: 768px)
+    display: table
+
+  .stat-subgroup
+    display: flex
+    flex-direction: column
+    gap: 8px
+
+    .stat-item
+      display: flex
+      flex-direction: column
+      gap: 4px
+
+      .stat-sublabel
+        font-size: 12px
+        font-weight: 700
+        color: #374151
+        text-transform: uppercase
+        letter-spacing: 0.5px
+
+        html.dark &
+          color: #e5e7eb
+
+      .project-list
+        .project-link
+          color: #5A2A82
+          text-decoration: none
+          font-size: 12px
+
+          html.dark &
+            color: #ffb91a
+
+          &:hover
+            text-decoration: underline
+
+      .stat-value
+        color: #1f2937
+        font-weight: 700
+        font-size: 15px
+
+        html.dark &
+          color: white
+
+// Outside Projects Mobile View
+.outside-projects-mobile-view
+  display: block
+
+  @media (min-width: 768px)
+    display: none
+
+.outside-projects-desktop-view
+  display: none
+
+  @media (min-width: 768px)
+    display: table
+
+.outside-project-card
+  background: white
+  border-radius: 12px
+  padding: 16px
+  margin-bottom: 16px
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1)
+
+  html.dark &
+    background: #2D1548
+    border: 1px solid rgba(90, 42, 130, 0.3)
+
+  .card-header
+    margin-bottom: 16px
+    padding-bottom: 12px
+    border-bottom: 1px solid #e5e7eb
+
+    html.dark &
+      border-bottom-color: rgba(90, 42, 130, 0.3)
+
+    .project-info
+      .project-name
+        font-size: 14px
+        font-weight: 600
+        color: #5A2A82
+        text-decoration: none
+        display: block
+        margin-bottom: 8px
+
+        html.dark &
+          color: #ffb91a
+
+        &:hover
+          text-decoration: underline
+
+      .project-meta
+        display: flex
+        align-items: center
+        gap: 8px
+
+        a[class*='twenty_project_activity_level']
+          position: static !important
+          display: inline-block !important
+          margin-left: 0 !important
+          top: auto !important
+          vertical-align: middle
+          flex-shrink: 0
+
+  .card-stats
+    display: flex
+    flex-direction: column
+    gap: 12px
+
+    .stat-box
+      display: flex
+      flex-direction: column
+      gap: 8px
+
+      .stat-item
+        display: flex
+        flex-direction: column
+        gap: 4px
+
+        .stat-label
+          font-size: 11px
+          font-weight: 600
+          color: #6b7280
+
+          html.dark &
+            color: #9ca3af
+
+        .stat-sublabel
+          font-size: 10px
+          color: #6b7280
+
+          html.dark &
+            color: #9ca3af
+
+        .stat-value
+          font-size: 12px
+          color: #1f2937
+          font-weight: 600
+
+          html.dark &
+            color: white
+
+          a
+            color: #5A2A82
+            text-decoration: none
+
+            html.dark &
+              color: #ffb91a
+
+            &:hover
+              text-decoration: underline
+        border-bottom-color: #5A2A82 !important
   tr:nth-child(6n+1), tr:nth-child(6n+2), tr:nth-child(6n+3)
     td
       background-color: #f9f9f9 !important
+
+      html.dark &
+        background-color: #2D1548 !important
 
 .org_project_rating
   margin-left: 18px
@@ -30,155 +969,673 @@ tbody.portfolio-projects-table
 
 .language_name
   line-height: 28px
+  padding: 0 8px
+
+  html.dark &
+    color: white !important
 
 #org_icon
   margin-bottom: 15px
   margin-top: 10px
 .org-summary-quick-ref
   line-height: 20px
-  margin-top: -20px !important
+  margin-top: 0 !important
+
   h4
-    margin-top: 0px !important
+    margin-top: 0 !important
+    margin-bottom: 16px
+    font-size: 16px
+    font-weight: 700
+    color: #1f2937
+
+    html.dark &
+      color: white
+
   dl
-    margin-bottom: 0px !important
+    margin-bottom: 0 !important
+
+  dt
+    color: #6b7280
+    font-size: 12px
+    font-weight: 600
+    text-transform: uppercase
+    margin-bottom: 4px
+
+    html.dark &
+      color: #9ca3af
+
+  dd
+    color: #374151
+    margin-bottom: 12px
+
+    html.dark &
+      color: #d1d5db
+
+    a
+      color: #5A2A82
+      text-decoration: none
+
+      &:hover
+        text-decoration: underline
+
+      html.dark &
+        color: #ffb91a
+
+@media (min-width: 768px) and (max-width: 1024px)
+  .org-summary-quick-ref
+    .dl-horizontal
+      dt
+        width: 90px !important
+        font-size: 11px !important
+      dd
+        margin-left: 110px !important
+        word-break: break-word
 
 /* ORG -- Infographics -- START */
+// Organization Infographic - Modern Design
 #org_infographic
-  position: relative
-  height: 290px
+  background: linear-gradient(to bottom right, #f9fafb, #f3f4f6)
+  border-radius: 12px
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.06)
+  overflow: hidden
+
+  html.dark &
+    background: linear-gradient(to bottom right, #1a1632, #0f0b1f)
+
+  img
+    html.dark &
+      filter: invert(1)
+
+  // All links in infographic
+  a
+    color: #5A2A82
+    text-decoration: none
+
+    &:hover
+      text-decoration: underline
+
+    html.dark &
+      color: #ffb91a
+
   .about
     font-size: 12px
-    color: #80539C
+    color: #5A2A82
+    font-weight: 500
+
+    html.dark &
+      color: #ffb91a
+
   .pictogram_link_active
-    color: #000 !important
+    color: #5A2A82 !important
     pointer-events: none
     cursor: default
     text-decoration: none !important
+
+    html.dark &
+      color: #ffb91a !important
+
   .disabled
-    color: #DDDAD9 !important
+    color: #000 !important
+
+    html.dark &
+      color: #ffffff !important
+
   .active
-    color: #2a2a2c !important
+    color: #374151 !important
     background-color: transparent !important
+
+    html.dark &
+      color: #d1d5db !important
+
   .inactive
-    color: #646E81 !important
+    color: #6b7280 !important
+
+    html.dark &
+      color: #9ca3af !important
+
   .icon-group
-    font-size: 45px
-    color: #595A5D
+    font-size: 48px
+    color: #000000
+
+    html.dark &
+      color: #ffffff
+
+// Full-width header bar
+.infographic-header
+  background: linear-gradient(to right, #7B68A6, #6B5896)
+  color: white
+  text-align: center
+  font-size: 18px
+  font-weight: 700
+  padding: 12px 16px
+  letter-spacing: 0.5px
+
+  @media (min-width: 640px)
+    font-size: 20px
+    padding: 16px 24px
+
+// Main content area with 3 columns
+.infographic-main
+  display: flex
+  flex-direction: column
+  align-items: center
+  gap: 16px
+  padding: 20px 16px
+
+  @media (min-width: 640px)
+    gap: 24px
+    padding: 24px 20px
+
+  @media (min-width: 992px)
+    flex-direction: row
+    justify-content: center
+    align-items: center
+    gap: 0
+    padding: 32px 16px
+
+  & > *
+    @media (min-width: 992px)
+      display: flex
+      align-items: center
+      flex-shrink: 0
+
+#org_infographic
   #section1
-    position: absolute
-    width: 250px
-    left: 20px
-    height: 215px
+    display: flex
+    flex-direction: column
+    align-items: center
+    gap: 8px
+    text-align: center
+    flex-shrink: 0
+    max-width: 280px
+
+    @media (min-width: 992px)
+      flex-direction: row
+      align-items: center
+      gap: 0
+      max-width: none
+
     .col1
-      width: 30%
       text-align: center
-      margin-top: 65px
-      font-weight: bold
-      color: #195887
+      font-weight: 700
+      color: #000000 !important
+      font-size: 12px
+      line-height: 1.4
+      min-width: 70px
+      display: flex
+      flex-direction: column
+      align-items: center
+      gap: 8px
+
+      @media (min-width: 992px)
+        font-size: 14px
+        min-width: 80px
+
+      html.dark &
+        color: #ffffff !important
+
+      a
+        color: #000000 !important
+        text-decoration: none
+
+        &:hover
+          color: #5A2A82 !important
+          text-decoration: underline
+
+        html.dark &
+          color: #ffffff !important
+
+          &:hover
+            color: #ffb91a !important
+
+      .icon-group
+        font-size: 40px
+        margin-bottom: 8px
+        display: block
+        color: #000000 !important
+
+        @media (min-width: 992px)
+          font-size: 48px
+
+        html.dark &
+          color: #ffffff !important
+
+      .commits-text
+        text-align: center
+        line-height: 1.5
+        margin-bottom: 8px
+        background: white
+        border: 1px solid #e5e7eb
+        border-radius: 8px
+        padding: 10px 12px
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05)
+
+        @media (min-width: 992px)
+          padding: 12px 16px
+
+        html.dark &
+          background: #1D0631
+          border-color: rgba(90, 42, 130, 0.3)
+
+        .commits
+          font-size: 12px
+          font-weight: 700
+          margin-bottom: 4px
+          color: #000000
+
+          @media (min-width: 992px)
+            font-size: 14px
+
+          html.dark &
+            color: #ffffff
+
+        .projects
+          font-size: 10px
+          color: #4b5563
+          line-height: 1.4
+
+          @media (min-width: 992px)
+            font-size: 12px
+
+          html.dark &
+            color: #d1d5db
+
     .col2
-      width: 70%
-      padding-top: 120px
-      line-height: 13px
       text-align: center
-      .commits
-        font-size: 13px
-      .projects
-        font-size: 11px
+      line-height: 1.5
+      display: flex
+      flex-direction: column
+      align-items: center
+      gap: 12px
+      padding-top: 0 !important
+
+      .svg-arrow
+        flex-shrink: 0
 
   #section2
-    position: absolute
-    width: 270px
-    right: 20px
-    height: 215px
-    top: 0
+    display: flex
+    flex-direction: column
+    align-items: center
+    gap: 8px
+    text-align: center
+    flex-shrink: 0
+    max-width: 280px
+
+    @media (min-width: 992px)
+      flex-direction: row
+      align-items: center
+      gap: 0
+      max-width: none
+
     .col1
-      width: 65%
-      padding-top: 121px
-      line-height: 13px
       text-align: center
-      .commits
-        font-size: 13px
-      .projects
-        font-size: 11px
+      line-height: 1.5
+      display: flex
+      flex-direction: column
+      align-items: center
+      gap: 12px
+      padding-top: 0 !important
+
+      .svg-arrow
+        flex-shrink: 0
+
     .col2
-      width: 30%
       text-align: center
-      margin-top: 65px
-      font-weight: bold
-      color: #000
+      font-weight: 700
+      color: #000000 !important
+      font-size: 12px
+      line-height: 1.4
+      min-width: 70px
+      display: flex
+      flex-direction: column
+      align-items: center
+      gap: 8px
+
+      @media (min-width: 992px)
+        font-size: 14px
+        min-width: 80px
+
+      html.dark &
+        color: #ffffff !important
+
+      a
+        color: #000000 !important
+        text-decoration: none
+
+        &:hover
+          color: #5A2A82 !important
+          text-decoration: underline
+
+        html.dark &
+          color: #ffffff !important
+
+          &:hover
+            color: #ffb91a !important
+
+      .icon-group
+        font-size: 40px
+        margin-bottom: 8px
+        display: block
+        color: #000000 !important
+
+        @media (min-width: 992px)
+          font-size: 48px
+
+        html.dark &
+          color: #ffffff !important
+
+      .commits-text
+        text-align: center
+        line-height: 1.5
+        background: white
+        border: 1px solid #e5e7eb
+        border-radius: 8px
+        padding: 10px 12px
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05)
+
+        @media (min-width: 992px)
+          padding: 12px 16px
+
+        html.dark &
+          background: #1D0631
+          border-color: rgba(90, 42, 130, 0.3)
+
+        .commits
+          font-size: 12px
+          font-weight: 700
+          margin-bottom: 4px
+          color: #000000
+
+          @media (min-width: 992px)
+            font-size: 14px
+
+          html.dark &
+            color: #ffffff
+
+        .projects
+          font-size: 10px
+          color: #4b5563
+          line-height: 1.4
+
+          @media (min-width: 992px)
+            font-size: 12px
+
+          html.dark &
+            color: #d1d5db
+
       span
-        line-height: 15px
+        line-height: 1.4
         font-size: 13px
+        display: block
 
-
+// Infographic Box - Center Component
 #infographic_box
-  width: 500px
-  margin: 0 auto
-  letter-spacing: -0.5px
+  flex: 1
+  min-width: 0
+  display: inline-table
+  flex-direction: column
+  background: white
+  border-radius: 12px
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.06)
+  border: 2px solid #e5e7eb
+  width: 100%
+  max-width: 420px
+
+  @media (min-width: 992px)
+    flex: 1
+    max-width: none
+
+  html.dark &
+    background: #1D0631
+    border-color: rgba(90, 42, 130, 0.4)
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3), 0 2px 4px rgba(0, 0, 0, 0.2)
+
   a.print_infographic
     font-style: normal !important
-    font-size: 11px
-  .header
-    @include infographic-box-header-background-color
-    -webkit-print-color-adjust: exact
-    height: 33px
-    color: white !important
-    -webkit-print-color-adjust: exact
-    display: table-cell
-    vertical-align: middle
-    text-align: center
-    font-size: 18px
-    width: inherit
+    font-size: 12px
+    color: #5A2A82
+    font-weight: 500
+    display: inline-flex
+    align-items: center
+    gap: 6px
+
+    &:hover
+      text-decoration: underline
+
+    html.dark &
+      color: #ffb91a
+
   .content
-    background-color: #d2dae6 !important
-    -webkit-print-color-adjust: exact
-    height: 185px
-    padding: 15px 50px
+    padding: 16px 12px
+    display: flex
+    flex-direction: column
+    align-items: center
+    justify-content: center
+    gap: 12px
+
+    @media (min-width: 640px)
+      padding: 20px 16px
+      gap: 14px
+
+    @media (min-width: 992px)
+      flex-direction: row
+      justify-content: space-between
+      padding: 24px 16px
+      gap: 16px
+
+    .col1, .col3
+      display: flex
+      flex-direction: column
+      align-items: center
+      gap: 8px
+      text-align: center
+      flex: 1
+
+    .col2
+      display: flex
+      align-items: center
+      justify-content: center
+      padding: 0 8px
+      flex: 0 0 auto
+
+    .count
+      font-size: 28px
+      font-weight: 700
+      color: #5A2A82
+      line-height: 1.2
+
+      @media (min-width: 992px)
+        font-size: 32px
+
+      html.dark &
+        color: #ffb91a
+
+      a
+        color: inherit
+        text-decoration: none
+        display: flex
+        flex-direction: column
+        align-items: center
+        gap: 4px
+
+        &:hover
+          text-decoration: underline
+
+        .portfolio_label
+          color: inherit
+          font-size: 11px
+          font-weight: 600
+          white-space: nowrap
+
+    .portfolio_label
+      font-size: 10px
+      font-weight: 600
+      color: #000000
+      white-space: nowrap
+
+      @media (min-width: 992px)
+        font-size: 11px
+
+      html.dark &
+        color: #ffffff
+
+    .icon-group
+      font-size: 36px
+      color: #000000
+      display: block
+      margin-bottom: 4px
+
+      @media (min-width: 992px)
+        font-size: 40px
+
+      html.dark &
+        color: #ffffff
+
+  .portfolio-stats
+    text-align: center
+    padding: 12px 16px
+
+    @media (min-width: 992px)
+      padding: 16px 24px
+
+    border-top: 1px solid #e5e7eb
+
+    html.dark &
+      border-top-color: rgba(90, 42, 130, 0.3)
+
     .commits
-      font-size: 13px
+      font-size: 12px
+      font-weight: 700
+      color: #000000
+      margin-bottom: 4px
+
+      @media (min-width: 992px)
+        font-size: 14px
+
+      html.dark &
+        color: #ffffff
+
     .projects
       font-size: 11px
-    .col1
-      width: 30%
-    .col2
-      width: 33%
-      padding-top: 64px
-      line-height: 13px
-    .col3
-      width: 34%
-      text-align: center
-      .icon-group
-        font-size: 55px
-        display: inline-block
-        margin-top: 17px
-    .count
-      @include site-link-color
-      font-size: 22px
-      text-align: center
-      a
-        @include site-link-color
-    .portfolio_label
-      @include site-link-color
-      font-size: 12px
-      white-space: nowrap
-      margin-top: -5px
+      color: #4b5563
+
+      @media (min-width: 992px)
+        font-size: 12px
+
+      html.dark &
+        color: #d1d5db
+
   .footer_line
-    @include site-link-color
-    font-size: 1px
-    height: 7px !important
-  .bottom_links
-    .col1
-      width: 63px !important
-      img
-        max-width: 100%
-    .col2
-      margin-left: 60px
-      width: 217px
+    height: 4px
+    background: linear-gradient(to right, #7B68A6, #5A2A82)
+
+// Infographic Footer - Full Width
+.infographic-footer
+  display: grid
+  grid-template-columns: 1fr
+  gap: 12px
+  padding: 12px 16px
+  border-top: 1px solid #d1d5db
+  align-items: center
+  text-align: center
+
+  @media (min-width: 640px)
+    grid-template-columns: auto 1fr auto
+    text-align: left
+    gap: 16px
+    padding: 12px 24px
+
+  html.dark &
+    border-top-color: rgba(90, 42, 130, 0.3)
+
+  .footer-col1
+    display: flex
+    justify-content: center
+
+    @media (min-width: 640px)
+      justify-content: flex-start
+
+    img
+      max-width: 88px
+      height: 31px
+
+  .footer-col2
+    font-size: 12px
+    text-align: center
+
+    a
+      color: #5A2A82
+      font-weight: 500
+
+      &:hover
+        text-decoration: underline
+
+      html.dark &
+        color: #ffb91a
+
+  .footer-col3
+    display: flex
+    flex-direction: column
+    align-items: center
+    gap: 8px
+
+    @media (min-width: 640px)
+      align-items: flex-end
+
+    .about
       font-size: 12px
-    .col3
-      width: 160px
-  .hub_icon
-    margin-top: 7px
+      color: #6b7280
+      font-weight: 500
+
+      html.dark &
+        color: #9ca3af
+
+    a.print_infographic
+      font-size: 12px
+      color: #5A2A82
+      font-weight: 500
+      display: inline-flex
+      align-items: center
+      gap: 6px
+
+      &:hover
+        text-decoration: underline
+
+      html.dark &
+        color: #ffb91a
+
+// SVG Arrow Styling
+.svg-arrow
+  display: flex
+  align-items: center
+  justify-content: center
+  min-height: 40px
+
+  // Mobile: Rotate arrows to vertical for stacked layout
+  @media (max-width: 991px)
+    min-height: 90px
+
+    svg
+      transform: rotate(90deg) scale(0.7)
+      transform-origin: center
+
+  svg
+    fill: #000000 !important
+    stroke: #000000 !important
+    color: #000000 !important
+
+    path
+      fill: #000000 !important
+      stroke: #000000 !important
+
+    html.dark &
+      fill: #ffffff !important
+      stroke: #000 !important
+      color: #ffffff !important
+
+      path
+        fill: #ffffff !important
+        stroke: #000 !important
 
 .infographic_links_in_print
   text-decoration: none !important
@@ -205,6 +1662,53 @@ form#new_logo
 #org_summary
   p
     word-wrap: break-word
+
+#addthis_sharing
+  h4
+    margin-top: 0 !important
+    margin-bottom: 16px
+    font-size: 16px
+    font-weight: 700
+    color: #1f2937
+
+    html.dark &
+      color: white
+
+// Pagination button for "See All" links
+.pagination-button-container
+  text-align: center
+
+.btn-see-all-org
+  display: inline-flex
+  align-items: center
+  justify-content: center
+  gap: 8px
+  padding: 12px 32px
+  background: $org-primary-color
+  color: white !important
+  border: none
+  border-radius: 8px
+  font-size: 14px
+  font-weight: 600
+  text-decoration: none
+  transition: all 0.2s ease
+  box-shadow: $org-shadow-sm
+  min-width: 200px
+
+  &:hover
+    background: $org-primary-hover
+    color: white !important
+    box-shadow: $org-shadow-md
+    text-decoration: none
+    transform: translateY(-1px)
+
+  html.dark &
+    background: $org-dark-primary
+    color: #1D0631 !important
+
+    &:hover
+      background: rgba(255, 185, 26, 0.9)
+      color: #1D0631 !important
 
 @media print
   a[href]:after

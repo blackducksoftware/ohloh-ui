@@ -12,14 +12,11 @@
 #cocomo_page
   .project_content_title
     %h2.float_left= t('.estimated_cost')
-    = project_analysis_timestamp(@project)
 
   .clearfix
   .col-md-12
     - if !analysis.empty?
       .center-block
-        .col-md-1
-          &nbsp;
         .col-md-6
           - js = "var project_analysis = #{man_years.to_json};"
           %script{ type: 'text/javascript' }
@@ -27,37 +24,37 @@
             \ #{js.html_safe}
             \ //]]>
 
-          %form.cocomo-form.nomargin
+          %form.cocomo-form.oh-card
             %fieldset{ style: 'margin-top: -10px;' }
-              %h4.caption= t('.project_cost_calculator')
-              .control-group.col-md-4
-                %label.control-label= t('.include')
+              %h4= t('.project_cost_calculator')
+              .control-group.col-md-6.col-sm-6
+                %label.control-label{ for: 'cocomo_loc_dropdown' }= t('.include')
                 .controls.chosen#value_select
-                  %select.col-md-8.chzn-select.value-select#cocomo_loc_dropdown
+                  %select.col-md-8.col-sm-8.chzn-select.value-select#cocomo_loc_dropdown
                     %option.selected{ value: analysis.code_total + analysis.markup_total + analysis.build_total }
                       = t('.all_code')
                     %option{ value: analysis.logic_total }= t('.logic_code_only')
                     %option{ value: analysis.markup_total }= t('.markup_only')
                     %option{ value: analysis.build_total }= t('.build_scripts_only')
-              .control-group.col-md-8
-                %label.control-label= t('.average_salary')
+              .control-group.col-md-8.col-sm-8
+                %label.control-label{ for: 'cocomo_salary' }= t('.average_salary')
                 .controls
                   .input-prepend.input-append
                     %span.add-on $
                     %input.margin-hack.span2#cocomo_salary{ type: 'text', value: Analysis::AVG_SALARY }
                     %span.add-on .00
 
-              .control-group.col-md-4
+              .control-group.col-md-4.col-sm-4
                 %label.control-label= t('.codebase_size')
                 .controls
                   %span#cocomo_loc= number_with_delimiter(analysis.code_total)
                   = t('.lines')
-              .control-group.col-md-8
+              .control-group.col-md-8.col-sm-8
                 %label.control-label= t('.estimated_effort')
                 .controls
                   %span#cocomo_years= analysis.man_years.round
                   = t('.person_years')
-              .control-group.col-md-4
+              .control-group.col-md-4.col-sm-4
                 %label.control-label= t('.estimated_cost')
                 .controls
                   $
@@ -67,29 +64,37 @@
           %span{ style: 'margin-left:20px;' }
             *Using the #{cocomo_link}
       /.well.float_right.estimated_cost_well
-      .well.col-md-4
-        %h4{ style: 'margin-bottom:0.8em;' }= t('.too_high')
-        %p!= t('.help1')
-        - code_location_link = link_to t('.code_locations'), project_enlistments_path(@project)
-        %p!= t('.help2', link: code_location_link)
-        %ul.nomargin
-          %li= t('.help3')
-          %li= t('.help4')
+      .oh-card.col-md-6
+        %h4= t('.too_high')
+        .margin_left_15
+          %p!= t('.help1')
+          - code_location_link = link_to t('.code_locations'), project_enlistments_path(@project)
+          %p!= t('.help2', link: code_location_link)
+          %ul.nomargin
+            %li= t('.help3')
+            %li= t('.help4')
     - else
       = render partial: 'projects/show/no_analysis_summary'
 
-  .col-md-12.about
-    %h4.nomargin
-      %span.soft= t('.about')
-      = t('.cost_estimates')
-    .row
-      .col-md-5
-        %ul
-          %li= t('.about1')
-          %li!= t('.about2', link: cocomo_link)
-          %li.coefficients= t('.about3')
-      .col-md-5
-        %ul
-          %li= t('.about4')
-          %li= t('.about5')
-          %li= t('.about6')
+  .col-md-12
+    .about-project-basics-card
+      .card-header
+        %h4.card-title
+          %span.soft= t('.about')
+          = t('.cost_estimates')
+        %button.expand-toggle{ type: 'button', 'aria-label' => 'Expand about section' }
+          %i.fa.fa-chevron-down
+
+      .card-content
+        .about-content-wrapper
+          .col-md-5
+            %ul
+              %li= t('.about1')
+              %li!= t('.about2', link: cocomo_link)
+              %li.coefficients= t('.about3')
+          .col-md-5
+            %ul
+              %li= t('.about4')
+              %li= t('.about5')
+              %li= t('.about6')
+

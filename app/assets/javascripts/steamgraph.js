@@ -120,7 +120,9 @@ Streamgraph = {
 
       var svg = d3.select("#ohloh_streamgraph").append("svg")
           .attr("id", "ohloh_stream")
-          .attr("width", width)
+          .attr("viewBox", "0 0 " + width + " " + height)
+          .attr("preserveAspectRatio", "xMidYMid meet")
+          .attr("width", "100%")
           .attr("height", height)
           .attr('class', 'background-watermark');
 
@@ -181,11 +183,14 @@ Streamgraph = {
         });
     },
   populate_legends: function(legends, colors){
-    legend_height = Math.min(legends.length * 18 + 5, 300);
-    $('#ohloh_streamgraph').after('<div id="streamgraph_legend" style="height:' + legend_height + 'px;"></div>');
-    legends.map( function(l, i) {
-      div = "<div class='streamgraph_legend_color' style='background-color: #"+colors[i]+"'></div><p>"+legends[i]+"</p>";
-      $("#streamgraph_legend").append(div);
+    $('#streamgraph_legend').remove();
+    $('#ohloh_streamgraph').after('<div id="streamgraph_legend"></div>');
+    legends.map(function(l, i) {
+      var item = "<span class='streamgraph_legend_item'>" +
+                 "<span class='streamgraph_legend_color' style='background-color: #" + colors[i] + "'></span>" +
+                 "<span class='streamgraph_legend_label'>" + l + "</span>" +
+                 "</span>";
+      $("#streamgraph_legend").append(item);
     });
   },
 

@@ -556,4 +556,91 @@ class AccountsControllerTest < ActionController::TestCase
       end
     end
   end
+
+  describe 'theme_preference' do
+    let(:theme_account) { create(:account) }
+
+    describe 'GET theme_preference' do
+      it 'must return unauthorized if not authenticated' do
+        get :theme_preference, params: { id: theme_account.id }, format: :json
+
+        assert_response :unauthorized
+      end
+
+      it 'must return theme preference as JSON when authenticated' do
+        login_as theme_account
+        theme_account.theme_preference = 'dark'
+
+        get :theme_preference, params: { id: theme_account.id }, format: :json
+
+        assert_response :success
+        response_body = JSON.parse(@response.body)
+        _(response_body['theme_preference']).must_equal('dark')
+      end
+
+      it 'must return nil as default theme preference (sparse storage)' do
+        login_as theme_account
+
+        get :theme_preference, params: { id: theme_account.id }, format: :json
+
+        assert_response :success
+        response_body = JSON.parse(@response.body)
+        _(response_body['theme_preference']).must_be_nil
+      end
+    end
+
+    describe 'POST set_theme_preference' do
+      it 'must redirect to login if not authenticated' do
+        post :set_theme_preference, params: { id: theme_account.id, theme: 'dark' }
+
+        assert_redirected_to new_session_path
+      end
+
+      it 'must save dark theme preference when authenticated' do
+        login_as theme_account
+
+        post :set_theme_preference, params: { id: theme_account.id, theme: 'dark' }
+
+        assert_response :success
+        response_body = JSON.parse(@response.body)
+        _(response_body['success']).must_equal(true)
+        _(response_body['theme']).must_equal('dark')
+
+        _(theme_account.reload.theme_preference).must_equal('dark')
+      end
+
+      it 'must delete database entry when setting to light (sparse storage)' do
+        login_as theme_account
+        theme_account.theme_preference = 'dark'
+
+        post :set_theme_preference, params: { id: theme_account.id, theme: 'light' }
+
+        assert_response :success
+        response_body = JSON.parse(@response.body)
+        _(response_body['success']).must_equal(true)
+
+        _(theme_account.reload.theme_preference).must_be_nil
+        _(Setting.find_by(key: "account_#{theme_account.id}_theme_preference")).must_be_nil
+      end
+
+      it 'must delete entry when setting to light (falls back to OS preference)' do
+        login_as theme_account
+        theme_account.theme_preference = 'dark'
+
+        post :set_theme_preference, params: { id: theme_account.id, theme: 'light' }
+
+        assert_response :success
+        _(theme_account.reload.theme_preference).must_be_nil
+      end
+
+      it 'must return success response with JSON format' do
+        login_as theme_account
+
+        post :set_theme_preference, params: { id: theme_account.id, theme: 'dark' }
+
+        assert_response :success
+        assert_equal('application/json', response.media_type)
+      end
+    end
+  end
 end

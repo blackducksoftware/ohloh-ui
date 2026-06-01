@@ -3,23 +3,24 @@
   page_context[:select_footer_nav] = nil
   content_for(:html_title) { t('.page_title', name: @parent.name) }
 
-.project_content_title
-  %h2.pull-left
-    = link_to t(:settings), settings_parent_path(@parent)
-    = t('.heading')
-  - unless @organization
-    = project_analysis_timestamp(@parent)
+.row
+  .col-md-10.col-md-offset-1
+    %h2
+      = link_to t(:settings), settings_parent_path(@parent)
+      %strong= t('.heading')
 
 .row
   .col-md-10.col-md-offset-1
-    .well
+    .oh-card
       - path = @parent.is_a?(Project) ? project_logos_path(@parent) : organization_logos_path(@parent)
       = form_for @logo, url: path, html: { multipart: true } do |f|
         = render partial: 'fields', locals: { f: f }
       .clearfix
         &nbsp;
 
-- if @project
-  = render partial: 'about_logos'
-- elsif @organization
-  = render partial: 'about_organization_logos'
+.row
+  .col-md-10.col-md-offset-1
+    - if @project
+      = render partial: 'about_logos'
+    - elsif @organization
+      = render partial: 'about_organization_logos'

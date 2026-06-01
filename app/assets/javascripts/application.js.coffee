@@ -31,6 +31,13 @@
 #= require slick.min
 
 
+$(document).on 'click', '.flash-close', (e) ->
+  e.preventDefault()
+  $alert = $(e.currentTarget).closest('.alert')
+  $flashMsg = $alert.closest('#flash-msg')
+  $target = if $flashMsg.length then $flashMsg else $alert
+  $target.fadeOut 200, -> $target.remove()
+
 $(document).on 'page:change', ->
   StackShow.init()
   Expander.init()
