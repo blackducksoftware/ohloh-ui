@@ -1,11 +1,18 @@
-%h4.nomargin
-  %span.soft= t('.about')
-  = t('.aliases')
-.col-md-6.margin_left_30
-  %ul
-    %li
-      = t('.about_desc_1')
-    %li
-      = t('.about_desc_2')
-    %li
-      = t('.about_desc_3')
+.about-project-basics-card
+  .card-header
+    %h4.card-title
+      %span.soft= t('.about')
+      = t('.aliases')
+    %button.expand-toggle{ type: 'button', 'aria-label' => 'Expand about section' }
+      %i.fa.fa-chevron-down
+
+  .card-content
+    .about-content-wrapper
+      .col-md-6.margin_left_30
+        %ul
+          %li
+            = t('.about_desc_1')
+          %li
+            = t('.about_desc_2')
+          %li
+            = t('.about_desc_3')

@@ -1,8 +1,16 @@
-%h4.margin_bottom_15
-  %span.soft= t('about')
-  = t('links.title').pluralize
-.col-md-8
-  %ul.margin_left_20
-    %li= t('.first')
-    %li= t('.second')
-    %li= t('.third')
+.about-project-basics-card
+  .card-header
+    %h4.card-title
+      %span.soft= t('.about')
+      = t('links.title').pluralize
+    %button.expand-toggle{ type: 'button', 'aria-label' => 'Expand about section' }
+      %i.fa.fa-chevron-down
+
+  .card-content
+    .about-content-wrapper
+      .col-md-6.margin_left_30
+        %ul
+          %li= t('.first')
+          %li= t('.second')
+          %li= t('.third')
+

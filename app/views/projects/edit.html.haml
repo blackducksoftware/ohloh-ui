@@ -5,54 +5,59 @@
   %h2.float_left
     = link_to t('.settings'), settings_project_path(params[:id])
     \ :
-    = t('.basics')
-  = project_analysis_timestamp(@project)
+    %strong= t('.basics')
 
-.row
-  .oh-card.col-md-10.col-md-offset-1
-    = form_for @project, as: :project, url: project_path(params[:id]), html: { method: :put,
-                                                                               class: 'center-block edit_project',
-                                                                               style: 'width:710px;' } do |f|
-      %fieldset
-        .control-group
-          %label.control-label.required= t('.project_name')
-          .controls
-            %input{ name: 'project[name]', id: 'project_name', type: 'text', value: @project.name,
-                    style: 'width: 100%;' }
-            - error_tag @project, :name
-        .clearfix
+#project-edit-page
+  .row.margin_left_5
+    .oh-card.col-md-8
+      = form_for @project, as: :project, url: project_path(params[:id]), html: { method: :put,
+                                                                                 class: 'edit_project' } do |f|
+        %fieldset
+          .control-group
+            %label.control-label.required{ for: 'project_name' }= t('.project_name')
+            .controls
+              %input.form-control{ name: 'project[name]', id: 'project_name', type: 'text', value: @project.name }
+              - error_tag @project, :name
+          .clearfix
 
-        .control-group
-          %label.control-label.required= t('.oh_project_url')
-          .controls
-            .input-prepend
-              %span.add-on http://www.openhub.net/p/
-              = f.text_field :vanity_url, class: 'check-availability', autocomplete: 'off',
-                                        style: 'width:514px;',
-                                        'data-original-value' => Project.find_by(id: @project).try(:vanity_url),
-                                        'data-ajax-path' => project_check_availabilities_path,
-                                        'data-preview-base-url' => projects_url
-              - error_tag @project, :vanity_url, class: 'error vanity_url'
-            = render 'shared/availability_preview'
-        .clearfix
+          .control-group
+            %label.control-label.required{ for: 'project_vanity_url' }= t('.oh_project_url')
+            .controls
+              .input-prepend.project-url-prepend
+                %span.add-on http://www.openhub.net/p/
+                = f.text_field :vanity_url, class: 'form-control check-availability', autocomplete: 'off',
+                                          'data-original-value' => Project.find_by(id: @project).try(:vanity_url),
+                                          'data-ajax-path' => project_check_availabilities_path,
+                                          'data-preview-base-url' => projects_url
+                - error_tag @project, :vanity_url, class: 'error vanity_url'
+              = render 'shared/availability_preview'
+          .clearfix
 
-        .control-group
-          %label.control-label= t('.description')
-          .controls
-            = find_and_preserve(f.text_area(:description, max_length: 800, style: 'width: 100%; height: 150px;'))
-            - error_tag @project, :description
-        .clearfix
+          .control-group
+            %label.control-label{ for: 'project_description' }= t('.description')
+            .controls
+              = find_and_preserve(f.text_area(:description, max_length: 800, class: 'form-control edit-description'))
+              - error_tag @project, :description
+          .clearfix
 
-        .actions
-          - if logged_in? && @project.edit_authorized?
-            %input.btn.btn-primary.save{ type: 'submit', value: t('.save_changes') }
-          - else
-            = disabled_button t('.save_changes'), class: 'btn-primary save'
-%h4.nomargin
-  %span.soft= t('.about')
-  = t('.basics')
-.col-md-6
-  %ul{ style: 'padding-left: 30px;' }
-    %li!= t('.about1', link: link_to(t('.contact_us'), blog_url_for(:contact_form)))
-    %li= t('.about2')
-    %li= t('.about3')
+          .actions
+            - if logged_in? && @project.edit_authorized?
+              %input.btn.btn-primary.save{ type: 'submit', value: t('.save_changes') }
+            - else
+              = disabled_button t('.save_changes'), class: 'btn-primary save'
+
+  .about-project-basics-card
+    .card-header
+      %h4.card-title
+        %span.soft= t('.about')
+        = t('.basics')
+      %button.expand-toggle{ type: 'button', 'aria-label' => 'Expand about section' }
+        %i.fa.fa-chevron-down
+
+    .card-content
+      .about-content-wrapper
+        .col-md-6
+          %ul
+            %li!= t('.about1', link: link_to(t('.contact_us'), blog_url_for(:contact_form)))
+            %li= t('.about2')
+            %li= t('.about3')

@@ -6,13 +6,12 @@
   = link_to t(:managers_link_name), parent_managers_path(@parent)
   &#58;
   = t(:new)
-= project_analysis_timestamp(@project)
 
 .clear
 %h4= t '.header', target: @parent.name
 
-.col-md-7
-  .oh-card{ style: 'margin-left:22px;' }
+.col-md-8
+  .oh-card
     = form_for(@manage, url: parent_managers_path(@parent), html: { method: :post }) do |form|
       = render partial: 'form', locals: { form: form }
 

@@ -8,8 +8,7 @@
   .col-md-6.col-md-offset-1
     %h2.float_left
       = link_to t(:settings), [:settings, @parent]
-      &#58; #{t('permissions.permissions')}
-    = project_analysis_timestamp(@project) if @project
+      &#58;<strong> #{t('permissions.permissions')}</strong>
 
 .row
   .col-md-6.col-md-offset-1

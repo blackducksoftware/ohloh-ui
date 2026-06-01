@@ -369,6 +369,15 @@
     flex-wrap: wrap !important
     overflow-x: visible !important
 
+  @media (min-width: 1025px)
+    flex-shrink: 0 !important
+    align-self: flex-start !important
+    margin: 0 0 0 auto !important
+    width: auto !important
+    padding: 0 !important
+    flex-wrap: wrap !important
+    overflow-x: visible !important
+
   .account-badge
     display: inline-block !important
     float: none !important
@@ -1357,3 +1366,16 @@
 
   #account_name h1
     font-size: 24px !important
+
+@media (min-width: 1025px)
+  .account_header_inner
+    flex-direction: row !important
+    flex-wrap: wrap !important
+    align-items: flex-start !important
+
+  .account_header_inner > .header_flex_container
+    flex: 1 1 0% !important
+    min-width: 0 !important
+
+  .account_header_inner > .header_actions
+    flex: 0 0 100% !important

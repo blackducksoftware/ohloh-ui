@@ -947,6 +947,10 @@ header
   background: #ffffff !important
   border: 1px solid transparent
 
+  html.dark &
+    background: #2D1548 !important
+    border-color: rgba(255, 255, 255, 0.08) !important
+
   .alert-accent-strip
     height: 4px
     width: 100%
@@ -957,6 +961,32 @@ header
     align-items: center
     padding: 14px 16px
     gap: 12px
+
+    .alert-block-content
+      display: flex
+      flex-direction: column
+      gap: 4px
+      flex: 1
+      min-width: 0
+
+      h3, h4, p
+        margin: 0
+        line-height: 1.5
+        color: #1f2937 !important
+
+      a
+        color: #5A2A82 !important
+        &:hover
+          color: #4a1f6e !important
+
+      html.dark &
+        h3, h4, p
+          color: #f3f4f6 !important
+
+        a
+          color: #c084fc !important
+          &:hover
+            color: #e9d5ff !important
 
   .close
     margin-left: auto

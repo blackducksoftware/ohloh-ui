@@ -22,6 +22,7 @@ en:
       add_new: 'Add a new source code enlistment'
     language_table:
       title: 'Language Breakdown'
+      color: 'Color'
       language: 'Language'
       codes: 'Code Lines'
       comments: 'Comment Lines'

@@ -9,12 +9,14 @@
   &nbsp;:&nbsp;
   = link_to t('aliases.aliases'), project_aliases_path(@project)
   &nbsp;: #{t('aliases.new_alias')}
-= project_analysis_timestamp(@project)
 
 .clearfix
 .alias
   - if @committer_names.length.zero?
-    .alert.alert-info.alert-block= t('.no_more_alias')
+    .alert.alert-info.alert-block.modern-alert
+      .alert-accent-strip
+      .alert-inner
+        = t('.no_more_alias')
   - else
     = form_for [@project, @alias] do
       = render partial: 'fields'
