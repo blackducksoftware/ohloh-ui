@@ -1,5 +1,5 @@
 .chosen.select-language-experiences#value_select
-  %select.chzn-select{ name: 'position[language_exp][]', multiple: true, 'data-placeholder' => t('.select_prompt') }
+  %select.chzn-select{ name: 'position[language_exp][]', id: 'position_language_exp', multiple: true, 'data-placeholder' => t('.select_prompt') }
     - all_languages = Language.order(Arel.sql('lower(nice_name) ASC')).map { |l| [l.id, l.nice_name] }
     - existing_experience_ids = @position.language_experiences.pluck(:language_id).presence || params[:position].try{|position| position[:language_exp] }.to_a.map(&:to_i)
     - all_languages.each do |id, language_name|

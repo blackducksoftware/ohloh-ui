@@ -1,15 +1,29 @@
 :ruby
   content_for(:html_title) { t('.page_title', name: @project.name) }
+
 #project_badges_page
-  %h2.pull-left.title
-    = link_to t(:settings), settings_project_path(@project)
-    \: #{t('.title')}
+  .pb-page__title
+    .pb-page__title-icon
+      %i.fa.fa-trophy
+    .pb-page__title-text
+      %h2
+        %strong
+          = link_to t(:settings), settings_project_path(@project)
+          = ": #{t('.title')}"
+      %p.pb-page__subtitle= t('.listing')
+
   - if logged_in? && @project.edit_authorized?
-    .badge_table_container
+    .pb-table-card
       = render 'editable_badges_table'
     .clearfix
-    - btn_css = 'display: none;' unless @project_badge.errors.empty?
-    %btn.btn.btn-primary#add_badge_btn{ style: btn_css }= t('.new_badge')
+    .pb-actions
+      - btn_css = 'display: none;' unless @project_badge.errors.empty?
+      %button.pb-btn-new#add_badge_btn{ style: btn_css }
+        %i.fa.fa-plus
+        = t('.new_badge')
+      .pb-actions__right
+        %button.pb-btn-save= t('project_badges.save_badge')
+        %button.pb-btn-cancel= t('project_badges.cancel')
   - else
-    .badge_table_container
+    .pb-table-card
       = render 'badges_table'

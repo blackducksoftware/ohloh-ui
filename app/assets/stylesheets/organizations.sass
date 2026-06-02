@@ -1031,6 +1031,60 @@ tbody.portfolio-projects-table
         margin-left: 110px !important
         word-break: break-word
 
+@media (max-width: 576px)
+  .manage-projects-table
+    thead
+      display: none
+    tbody tr
+      display: block
+      border: 1px solid #e5e7eb
+      border-radius: 8px
+      margin-bottom: 12px
+      overflow: hidden
+      background: white
+
+      html.dark &
+        background: #2D1548
+        border-color: rgba(90, 42, 130, 0.3)
+
+    tbody td
+      display: flex
+      align-items: center
+      justify-content: space-between
+      padding: 8px 12px
+      border-bottom: 1px solid #f3f4f6
+      border-top: none
+
+      html.dark &
+        border-bottom-color: rgba(90, 42, 130, 0.2)
+
+      &::before
+        content: attr(data-label)
+        font-weight: 600
+        font-size: 11px
+        color: #6b7280
+        text-transform: uppercase
+        margin-right: 12px
+        flex-shrink: 0
+
+        html.dark &
+          color: #9ca3af
+
+      &:last-child
+        border-bottom: none
+
+@media (max-width: 767px)
+  .org-summary-quick-ref
+    .dl-horizontal
+      dt
+        float: none !important
+        width: auto !important
+        text-align: left !important
+        white-space: normal !important
+      dd
+        margin-left: 0 !important
+        word-break: break-word
+
 /* ORG -- Infographics -- START */
 // Organization Infographic - Modern Design
 #org_infographic

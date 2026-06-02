@@ -386,6 +386,8 @@ en:
       contact_us: "Contact us"
       project_name_help: "This name must be unique across all projects on Open Hub.<br/>%{link} if you believe someone is using the name of your project inappropriately on Open Hub."
       project_source_code: "Project Source Code"
+      repository_url: "Repository URL"
+      branch: "Branch"
       i_manage_this_project: "I manage this project"
       i_manage_this_project_help1: "Click to manage this project on Open Hub. You should already contribute to the project in a significant way."
       i_manage_this_project_help2: "Open Hub project managers will normally be the project's leader or someone they designate."

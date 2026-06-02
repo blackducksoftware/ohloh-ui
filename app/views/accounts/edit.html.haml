@@ -16,7 +16,7 @@
     .oh-card.margin_left_15#account-edit-form
       = form_for @account do |f|
         %fieldset.row-fluid
-          .col-md-5
+          .col-md-5.col-sm-5
             .control-group
               = f.label :login, t('login'), class: 'control-label required'
               .controls
@@ -65,7 +65,7 @@
                 - error_tag @account, :organization_name
                 %p.help-block{ style: 'margin-top: 6px' }= t('.affiliation_help')
 
-          .col-md-5.col-md-push-1
+          .col-md-5.col-md-push-1.col-sm-5
             .control-group
               %label.control-label{ for: 'location_scratch' }!= t('.city_and_country')
               .controls

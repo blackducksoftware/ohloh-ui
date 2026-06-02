@@ -210,6 +210,14 @@
         html.dark &
           color: #ffffff
 
+    .commits_display_date_range
+      font-size: 13px
+      color: #6b7280
+      white-space: nowrap
+
+      html.dark &
+        color: #d1d5db
+
     .search-section
       flex: 1
       display: flex
@@ -520,3 +528,26 @@
       .search-section,
       .sort-section
         width: 100%
+        min-width: 0
+
+      .pagination-info
+        width: 100%
+        white-space: normal
+
+      label.checkbox,
+      label.radio
+        width: 100%
+
+      #value_select
+        width: 100%
+        margin-left: 0
+
+        select
+          min-width: 0
+          width: 100%
+
+      .commits_display_date_range
+        width: 100%
+        margin-left: 0
+        font-size: 12px
+        order: 10

@@ -1,23 +1,26 @@
-.oh-card.oh-card--hoverable.review_container{ id: "review_summary_#{review_summary.id}" }
+.oh-review-card.review_container{ id: "review_summary_#{review_summary.id}" }
   - account = review_summary.account
-  .row
-    .col-md-3.no_padding
-      .pull-right
-        = link_to h(truncate(account.name, length: 11)), account_url(account), title: account.name
-        says:
-      .pull-right.padding_right_15
-        = avatar_for(account, size: 58)
-    .col-md-9.no_padding_right.padding_left_25
-      %strong.pull-left
-        = (review_summary.title ? truncate(review_summary.title.camelize, length: 35) : "#{account.name}'s Review")
-        &nbsp;
-      .pull-left{ style: 'margin-top:1px' }
-        != rating_stars('rating_star', review_summary.score.to_f, mini: true)
-      .clearfix
-      .col-md
-        %abbr.soft.small{ title: review_summary.created_at }
-          = t('reviews.written_ago', time: time_ago_in_words(review_summary.created_at))
-      %p= simple_format(review_summary.comment.fix_encoding_if_invalid)
-      %p= render partial: 'helpful_count_status', locals: { review: review_summary }
-      %p= render partial: 'helpful_yes_or_no_links', locals: { review: review_summary }
-      = render partial: 'buttons', locals: { review: review_summary }
+  .oh-review-card__body
+    .oh-review-author-row
+      .oh-review-avatar
+        %span= account.name.first.upcase
+      .oh-review-meta
+        .oh-review-meta__header
+          .oh-review-meta__left
+            %p.oh-review-author
+              = link_to h(truncate(account.name, length: 20)), account_url(account), title: account.name
+              %span.oh-review-author__says says:
+            .oh-review-title-row
+              - if review_summary.title
+                %label.oh-review-title= truncate(review_summary.title.camelize, length: 35)
+              != rating_stars('rating_star', review_summary.score.to_f, mini: true)
+        .oh-review-timestamp
+          %i.fa.fa-clock-o
+          %abbr{ title: review_summary.created_at }
+            = t('reviews.written_ago', time: time_ago_in_words(review_summary.created_at))
+        .oh-review-comment= simple_format(review_summary.comment.fix_encoding_if_invalid)
+        .oh-review-helpful
+          = render partial: 'helpful_count_status', locals: { review: review_summary }
+          = render partial: 'helpful_yes_or_no_links', locals: { review: review_summary }
+  .oh-review-card__footer
+    = render partial: 'buttons', locals: { review: review_summary }

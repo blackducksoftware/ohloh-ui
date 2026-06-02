@@ -1,13 +1,13 @@
 - content_for(:html_title) { t('.title') }
 
-#license
-  %h1.col-md-9.no_padding_left= t('.licenses')
-  .pull-right.margin_top_15
-    - if @project
-      = link_to t('.edit_project_licenses'), edit_project_url(@project), class: 'btn btn-primary'
-    - else
-      = link_to t('.add_new_license'), new_license_path, class: 'btn btn-mini btn-primary'
-  .clearfix
+.people-page-container
+  .people-page-header
+    %h1.people-page-title= t('.licenses')
+    .people-page-header__action
+      - if @project
+        = link_to t('.edit_project_licenses'), edit_project_url(@project), class: 'btn btn-primary'
+      - else
+        = link_to t('.add_new_license'), new_license_path, class: 'btn btn-md btn-primary'
 
   - if @project && @licenses.empty?
     %p= t('.no_license_for_project', name: h(@project.name))
@@ -21,15 +21,12 @@
 
     %span{ itemscope: '', itemtype: 'http://schema.org/CreativeWork' }
       %span{ itemprop: 'publishingPrinciples' }
-        %table.table.table-striped.table-condensed
-          %tbody
-            %tr{ style: 'display: none' }
-              %td
-            - @licenses.each do |license|
-              %tr
-                %td= link_to h(license.name), license_url(license)
+        .licenses-list
+          - @licenses.each do |license|
+            .oh-card.oh-card--hoverable.licenses-list__item
+              = link_to h(license.name), license_url(license), class: 'licenses-list__link'
 
-= render partial: 'shared/alert',
-  locals: { message: t('shared.search_dingus.no_match_found.no_match') } if @licenses.blank? && params[:query].present?
+  = render partial: 'shared/alert',
+    locals: { message: t('shared.search_dingus.no_match_found.no_match') } if @licenses.blank? && params[:query].present?
 
-= render 'shared/modern_pagination', collection: @licenses
+  = render 'shared/modern_pagination', collection: @licenses

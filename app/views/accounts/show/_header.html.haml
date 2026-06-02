@@ -40,7 +40,7 @@
         - if my_account?(@account) || current_user_is_admin?
           = link_to bootstrap_icon('icon-cogs', t('.settings')), settings_account_path(@account), class: 'action_button'
         - if current_user_is_admin?
-          = link_to bootstrap_icon('icon-legal', t('.view_job')), admin_account_account_analysis_jobs_path(@account), class: 'action_button'
+          = link_to bootstrap_icon('icon-legal', t('.view_job')), admin_account_account_analysis_jobs_path(@account), class: 'action_button', target: '_blank', rel: 'noopener noreferrer'
         .kudo_button_wrapper
           = render partial: 'accounts/show/header/kudo_button', locals: { css: 'kudo_action_button' }
         - if !my_account?(@account) && @account.twitter_account.present?

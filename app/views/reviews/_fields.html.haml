@@ -4,16 +4,17 @@
       = render partial: 'rater', locals: { score: @rating.try(:score) || 0 }
     .col-md-12
     .col-md.margin_top_15
-    %b.required= t('.headline')
-    .margin_top_5
-      = f.text_field :title, class: 'col-md-7'
+    %label.control-label.required{ for: 'review_title' }= t('.headline')
+    .controls
+      = f.text_field :title, class: 'form-control col-md-7', id: 'review_title'
       - error_tag @review, :title
   .clearfix
+
   .control-group.margin_top_5
-    %b.required= t('.review')
-    .margin_top_5
+    %label.control-label.required{ for: 'review_comment' }= t('.review')
+    .controls
       = preserve do
-        = f.text_area :comment, max_length: 5000, size: '45x5', class: 'col-md-11'
+        = f.text_area :comment, max_length: 5000, size: '45x5', class: 'form-control col-md-11', id: 'review_comment'
         - error_tag @review, :comment
 
   .clearfix

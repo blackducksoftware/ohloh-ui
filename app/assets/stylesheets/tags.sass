@@ -9,3 +9,419 @@
     margin: 0 2px 4px 0
     padding: 5px 8px
     text-decoration: none
+
+// Tag Index page (browse by tag)
+#tag-index-page
+  width: 95%
+
+  .tag-index-header
+    display: flex
+    align-items: center
+    flex-wrap: wrap
+    gap: 12px
+    margin-bottom: 20px
+    padding-bottom: 16px
+    border-bottom: 1px solid #e5e7eb
+    html.dark &
+      border-bottom-color: rgba(255, 255, 255, 0.1)
+
+    h1
+      margin: 0
+      font-size: 22px
+      font-weight: 600
+      color: #111827
+      html.dark &
+        color: #ffffff
+
+  .tag-index-breadcrumb
+    color: #5A2A82
+    text-decoration: none
+    &:hover
+      text-decoration: underline
+    html.dark &
+      color: #ffb91a
+
+  .tag-index-breadcrumb-sep
+    color: #9ca3af
+    margin: 0 6px
+    font-weight: 300
+
+  .tag-index-pills
+    display: flex
+    flex-wrap: wrap
+    gap: 8px
+    margin-left: auto
+
+    .tag-index-pill
+      display: inline-block
+      padding: 4px 12px
+      background: #ede9f7
+      border: 1px solid #c4b5e8
+      border-radius: 20px
+      font-size: 12px
+      font-weight: 600
+      color: #5A2A82
+      html.dark &
+        background: #2D1548
+        border-color: #5A2A82
+        color: #ffb91a
+
+  .oh-card.tag-index-body
+    padding: 24px
+
+  .tag-index-hint
+    color: #6b7280
+    font-size: 14px
+    margin-bottom: 16px
+    html.dark &
+      color: #9ca3af
+
+  .tag-index-empty
+    text-align: center
+    padding: 32px 16px
+
+    p
+      color: #6b7280
+      margin-bottom: 16px
+      html.dark &
+        color: #9ca3af
+
+    .btn.btn-default
+      border-radius: 20px
+      padding: 8px 20px
+      font-weight: 500
+
+  @media (max-width: 767px)
+    width: 100%
+    .tag-index-header
+      flex-direction: column
+      align-items: flex-start
+    .tag-index-pills
+      margin-left: 0
+
+// Tag Cloud page
+#tag-cloud-page
+  width: 90%
+
+  .oh-card
+    padding: 24px
+
+  .tag-cloud-help
+    p
+      margin-bottom: 8px
+      color: #4b5563
+      font-size: 14px
+      html.dark &
+        color: #9ca3af
+
+  .form-control
+    box-sizing: border-box !important
+    border: 2px solid #e5e7eb !important
+    border-radius: 16px !important
+    -webkit-border-radius: 16px !important
+    -moz-border-radius: 16px !important
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important
+    background: #ffffff !important
+    color: #111827 !important
+    padding: 10px 16px !important
+    height: auto !important
+    width: 100% !important
+    transition: border-color 0.3s ease, box-shadow 0.3s ease
+    &::placeholder
+      color: #9ca3af !important
+      opacity: 1
+    &:hover
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important
+      border-color: #d1d5db !important
+    &:focus, &:focus-visible
+      border-color: #5A2A82 !important
+      outline: none !important
+      box-shadow: 0 0 0 4px rgba(90, 42, 130, 0.1) !important
+      background: #ffffff !important
+    html.dark &
+      background: #1D0631 !important
+      color: #ffffff !important
+      border-color: #5A2A82 !important
+      &::placeholder
+        color: #6b7280 !important
+        opacity: 1
+      &:hover
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2) !important
+        border-color: #6b7280 !important
+      &:focus, &:focus-visible
+        border-color: #ffb91a !important
+        background: #1D0631 !important
+        box-shadow: 0 0 0 4px rgba(255, 185, 26, 0.1) !important
+        outline: none !important
+
+.tag-cloud-grid
+  display: flex
+  flex-wrap: wrap
+  gap: 10px
+  padding: 4px 0
+
+.tag-cloud-item
+  display: inline-flex
+  align-items: center
+  gap: 5px
+  padding: 6px 14px
+  background: #f3f4f6
+  border: 1px solid #e5e7eb
+  border-radius: 20px
+  font-size: 13px
+  font-weight: 500
+  color: #5A2A82
+  text-decoration: none
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease
+  cursor: pointer
+  &:hover
+    background: #5A2A82
+    color: #ffffff
+    border-color: #5A2A82
+    text-decoration: none
+    box-shadow: 0 2px 8px rgba(90, 42, 130, 0.25)
+  html.dark &
+    background: #2D1548
+    border-color: #5A2A82
+    color: #ffb91a
+    &:hover
+      background: #ffb91a
+      color: #1D0631
+      border-color: #ffb91a
+      box-shadow: 0 2px 8px rgba(255, 185, 26, 0.25)
+
+  .tag-cloud-count
+    font-size: 11px
+    font-weight: 400
+    opacity: 0.7
+
+  @media (max-width: 767px)
+    font-size: 12px
+    padding: 5px 10px
+
+
+// ──────────────────────────────────────────────────────────────────────────────
+// Project Tags Page (#project-tags-page)
+// ──────────────────────────────────────────────────────────────────────────────
+
+#project-tags-page
+  padding: 24px 0
+
+  // ── Breadcrumb header ──
+
+  .project-tags-header
+    margin-bottom: 24px
+
+  .project-tags-title
+    font-size: 22px
+    font-weight: 700
+    color: #111827
+    margin: 0 0 8px 0
+    display: flex
+    align-items: center
+    gap: 8px
+    flex-wrap: wrap
+
+    html.dark &
+      color: #ffffff
+
+    a
+      color: #5A2A82
+      text-decoration: none
+
+      html.dark &
+        color: #ffb91a
+
+      &:hover
+        text-decoration: underline
+
+    &__sep
+      color: #9ca3af
+      font-weight: 400
+
+  // ── Section titles ──
+
+  .project-tags-card-title,
+  .project-tags-section-title
+    font-size: 16px
+    font-weight: 600
+    color: #5A2A82
+    margin: 0 0 16px 0
+
+    html.dark &
+      color: #ffb91a
+
+  // ── Tags remaining count ──
+
+  .project-tags-left
+    font-size: 13px
+    color: #6b7280
+    margin-bottom: 12px
+
+    html.dark &
+      color: #9ca3af
+
+  // ── Current tags pill list ──
+
+  .project-tags-current
+    display: flex
+    flex-wrap: wrap
+    gap: 6px
+    margin-bottom: 20px
+    min-height: 32px
+
+  .project-tag
+    display: inline-flex
+    align-items: center
+    gap: 5px
+    padding: 5px 10px
+    background: #ede9f7
+    border: 1px solid #c4b5e8
+    border-radius: 20px
+    font-size: 12px
+    font-weight: 500
+    color: #5A2A82
+    text-decoration: none
+    cursor: pointer
+    transition: background 0.15s, border-color 0.15s
+
+    html.dark &
+      background: #2D1548
+      border-color: #5A2A82
+      color: #ffb91a
+
+    &:hover
+      background: #ddd6f3
+      border-color: #a78bcc
+
+      html.dark &
+        background: #3d1f5c
+        border-color: #7c4dba
+
+    &__remove
+      font-size: 10px
+      opacity: 0.6
+      margin-left: 2px
+
+      &:hover
+        opacity: 1
+
+  // ── Add tag form ──
+
+  .project-tags-form
+    &__label
+      display: block
+      font-size: 13px
+      font-weight: 600
+      color: #374151
+      margin-bottom: 8px
+
+      html.dark &
+        color: #d1d5db
+
+    &__row
+      display: flex
+      gap: 8px
+      align-items: flex-start
+      flex-wrap: wrap
+
+      .form-control
+        flex: 1
+        min-width: 160px
+        box-sizing: border-box
+        border: 2px solid #e5e7eb
+        border-radius: 16px
+        padding: 10px 16px
+        font-size: 14px
+        height: auto
+        background: #ffffff
+        color: #111827
+        transition: border-color 0.2s, box-shadow 0.2s
+
+        &::placeholder
+          color: #9ca3af
+
+        &:focus
+          border-color: #5A2A82
+          outline: none
+          box-shadow: 0 0 0 3px rgba(90, 42, 130, 0.1)
+
+        html.dark &
+          background: #1D0631
+          color: #ffffff
+          border-color: #5A2A82
+
+          &::placeholder
+            color: #6b7280
+
+          &:focus
+            border-color: #ffb91a
+            box-shadow: 0 0 0 3px rgba(255, 185, 26, 0.1)
+
+    &__submit
+      height: 42px
+      padding: 0 20px
+      border-radius: 20px
+      font-size: 14px
+      font-weight: 600
+      white-space: nowrap
+
+  // ── Related project cards ──
+
+  .related-project-item
+    padding: 14px 16px
+    margin-bottom: 10px
+
+    &__header
+      display: flex
+      align-items: center
+      gap: 8px
+      margin-bottom: 10px
+
+    &__name
+      display: flex
+      align-items: center
+      gap: 6px
+      font-size: 14px
+      font-weight: 600
+
+      a
+        color: #5A2A82
+        text-decoration: none
+
+        html.dark &
+          color: #ffb91a
+
+        &:hover
+          text-decoration: underline
+
+    &__tags
+      display: flex
+      flex-wrap: wrap
+      gap: 4px
+
+  // ── Responsive ──
+
+  @media (max-width: 767px)
+    padding: 16px 0
+
+    .project-tags-title
+      font-size: 17px
+
+    .col-md-6
+      margin-bottom: 16px
+
+    .project-tags-section-title
+      margin-top: 8px
+
+    .project-tags-form__row
+      flex-direction: column
+
+      .form-control
+        width: 100%
+
+      .project-tags-form__submit
+        width: 100%
+
+  @media (min-width: 768px) and (max-width: 1024px)
+    padding: 20px 0

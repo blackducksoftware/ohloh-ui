@@ -2540,3 +2540,28 @@ html.dark
       &:focus
         background-color: #FFCC4D !important
         border-color: #FFCC4D !important
+
+// Dark mode for vulnerability table — scoped to #vulnerabilities-data to avoid affecting other tables
+html.dark #vulnerabilities-data .table-responsive > .table-striped
+  background-color: #1D0631 !important
+
+html.dark #vulnerabilities-data .table-responsive > .table-striped > thead > tr > th
+  background-color: #1D0631 !important
+  color: #d1d5db !important
+  border-bottom-color: rgba(90,42,130,0.4) !important
+
+html.dark #vulnerabilities-data .table-responsive > .table-striped > tbody > tr > td,
+html.dark #vulnerabilities-data .table-responsive > .table-striped > tbody > tr > th
+  background-color: #2D1548 !important
+  color: #d1d5db !important
+  border-top-color: rgba(90,42,130,0.2) !important
+
+html.dark #vulnerabilities-data .table-responsive > .table-striped > tbody > tr:nth-child(odd) > td,
+html.dark #vulnerabilities-data .table-responsive > .table-striped > tbody > tr:nth-child(odd) > th
+  background-color: rgba(29,6,49,0.8) !important
+
+html.dark #vulnerabilities-data .table-responsive > .table-striped > tbody > tr > td a
+  color: #ffb91a !important
+
+  &:hover
+    color: #ffcc4d !important

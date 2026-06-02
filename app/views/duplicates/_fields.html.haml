@@ -1,31 +1,28 @@
 - good = @duplicate.good_project
 
-%fieldset
-  %legend= t('.legend_html', name: truncate_project_name(@duplicate.bad_project.name))
-  .control-group.clearfix
-    %label.control-label.required= t('.good_label_html', name: truncate_project_name(@duplicate.bad_project.name))
-    .controls
-      = text_field_tag :good_project, good.try(:name), class: 'autocompletable', style: 'width: 95%;',
-      data: { source: '/autocompletes/project_duplicates', select: 'duplicatesSelect' }
-      .hidden#new_duplicate_spinner= image_tag 'spinner.gif', alt: ''
-      - error_tag @duplicate, :good_project
+%fieldset.duplicate-fieldset
+  %legend.duplicate-legend= t('.legend_html', name: truncate_project_name(@duplicate.bad_project.name))
 
-  .control-group.clearfix#good_project_url_label{ class: good ? '' : ' hidden' }
-    %label.control-label= t('.original_url')
-    .controls
-      - if good
-        %a#good_project_url{ base: projects_url, href: project_url(good) }= project_url(good)
-      - else
-        %a#good_project_url{ base: projects_url, href: '#' }
+  .duplicate-field-group
+    %label.duplicate-label.required{ for: 'good_project' }= t('.good_label_html', name: truncate_project_name(@duplicate.bad_project.name))
+    = text_field_tag :good_project, good.try(:name), id: 'good_project', class: 'form-control duplicate-input',
+    data: { source: '/autocompletes/project_duplicates', select: 'duplicatesSelect' }
+    .hidden#new_duplicate_spinner= image_tag 'spinner.gif', alt: ''
+    - error_tag @duplicate, :good_project
 
-  .control-group.clearfix
-    %label.control-label= t('.comment')
-    .controls
-      = preserve do
-        = form.text_area(:comment, rows: 10, cols: 80, max_length: 1000, style: 'width: 95%;')
+  .duplicate-field-group#good_project_url_label{ class: good ? '' : 'hidden' }
+    %label.duplicate-label= t('.original_url')
+    - if good
+      %a.duplicate-url#good_project_url{ base: projects_url, href: project_url(good) }= project_url(good)
+    - else
+      %a.duplicate-url#good_project_url{ base: projects_url, href: '#' }
+
+  .duplicate-field-group
+    %label.duplicate-label{ for: 'duplicate_comment' }= t('.comment')
+    = form.text_area(:comment, id: 'duplicate_comment', rows: 6, max_length: 1000, class: 'form-control duplicate-textarea')
 
   = form.hidden_field :bad_project_id
   = form.hidden_field :good_project_id
 
-  .actions
-    %input.btn.btn-primary{ type: 'submit', value: button_text }
+  .duplicate-actions
+    %input.btn.btn-primary.duplicate-submit{ type: 'submit', value: button_text }

@@ -1,21 +1,19 @@
-.oh-card.col-md-10.col-md-offset-1
-  .wrapper
-    .pull-left.margin_right_5.margin_top_5
-      = t('aliases.contributions_by')
-    .pull-left.margin_right_5.chosen#value_select
+.alias-fields
+  .alias-field-group
+    %label.alias-label{ for: 'commit_name_id' }= t('aliases.contributions_by')
+    .alias-select-wrap.chosen#value_select
       = select_tag :commit_name_id, options_for_select(@committer_names.map { |n| [n.name, n.id] }),
         class: 'chzn-select value-select', url: preferred_names_project_aliases_path(@project)
 
-    .pull-left.margin_right_5.margin_top_5
-      %span= t('aliases.attributed_to')
-    .pull-left.margin_right_5
+  .alias-field-group
+    %label.alias-label{ for: 'preferred_name_id' }= t('aliases.attributed_to')
+    .alias-select-wrap
       #preferred_name= render partial: 'preferred_names'
 
-    .pull-left.margin_right_5
-      %span.spinner= image_tag 'spinner.gif', alt: ''
-    .clearfix
-  .act.margin_top_5
+  %span.spinner= image_tag 'spinner.gif', alt: ''
+
+  .alias-actions
     - if logged_in? && @project.edit_authorized?
-      = submit_tag t('aliases.save_alias'), class: 'submit btn btn-primary btn-small', id: 'submit_button'
+      = submit_tag t('aliases.save_alias'), class: 'btn btn-primary alias-submit', id: 'submit_button'
     - else
-      = disabled_button t('aliases.save_alias'), class: 'btn-primary'
+      = disabled_button t('aliases.save_alias'), class: 'btn-primary alias-submit'

@@ -60,3 +60,489 @@ span.score_text
 .review_content
   :padding-top 10px
   :padding-right 10px
+
+// Modern review card design
+.oh-review-section-title
+  font-size: 18px
+  font-weight: 700
+  color: #111827
+  display: flex
+  align-items: center
+  gap: 8px
+  margin-bottom: 16px
+
+  .fa
+    color: #5A2A82
+    font-size: 16px
+
+  html.dark &
+    color: #ffffff
+
+    .fa
+      color: #ffb91a
+
+.oh-review-card
+  background-color: #ffffff
+  border-radius: 16px
+  border: 1px solid #e5e7eb
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08)
+  overflow: hidden
+
+  html.dark &
+    background-color: #2D1548
+    border-color: rgba(90,42,130,0.4)
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3)
+
+  &__body
+    padding: 20px
+
+  &__footer
+    display: flex
+    flex-wrap: wrap
+    align-items: center
+    gap: 8px
+    padding: 16px 20px
+    border-top: 1px solid #e5e7eb
+
+    html.dark &
+      border-top-color: rgba(90,42,130,0.3)
+
+.oh-review-author-row
+  display: flex
+  align-items: flex-start
+  gap: 16px
+  margin-bottom: 16px
+
+.oh-review-avatar
+  width: 48px
+  height: 48px
+  border-radius: 50%
+  background: linear-gradient(135deg, #5A2A82, #7B3FB5)
+  display: flex
+  align-items: center
+  justify-content: center
+  flex-shrink: 0
+
+  span
+    color: #ffffff
+    font-weight: 700
+    font-size: 18px
+    line-height: 1
+
+.oh-review-meta
+  flex: 1
+  min-width: 0
+
+  &__header
+    display: flex
+    align-items: flex-start
+    justify-content: space-between
+    gap: 16px
+    margin-bottom: 8px
+
+  &__left
+    flex: 1
+    min-width: 0
+
+  &__right
+    flex-shrink: 0
+
+.oh-review-author
+  font-weight: 600
+  font-size: 14px
+  color: #111827
+  margin: 0 0 4px
+
+  html.dark &
+    color: #ffffff
+
+  &__says
+    font-weight: 400
+    color: #6b7280
+
+    html.dark &
+      color: #d1d5db
+
+.oh-review-title-row
+  display: flex
+  align-items: center
+  gap: 8px
+  margin-top: 4px
+
+.oh-review-title
+  font-size: 13px
+  font-weight: 600
+  color: #059669
+  margin: 0
+
+  html.dark &
+    color: #34d399
+
+.oh-review-timestamp
+  display: flex
+  align-items: center
+  gap: 6px
+  font-size: 12px
+  color: #6b7280
+  margin-bottom: 12px
+
+  .fa
+    font-size: 12px
+
+  html.dark &
+    color: #9ca3af
+
+.oh-review-comment
+  font-size: 14px
+  color: #374151
+  line-height: 1.6
+
+  p
+    margin: 0
+
+  html.dark &
+    color: #d1d5db
+
+.oh-review-card__footer
+  .btn-info
+    background-color: #5A2A82
+    background-image: none
+    border-color: #5A2A82
+    color: #ffffff
+    border-radius: 8px
+    padding: 6px 14px
+    font-size: 13px
+    font-weight: 600
+    transition: background-color 0.2s ease
+
+    &:hover, &:focus, &:active
+      background-color: #4a1f6e
+      background-image: none
+      border-color: #4a1f6e
+      color: #ffffff
+
+  .btn-danger
+    background-image: none
+    border-radius: 8px
+    padding: 6px 14px
+    font-size: 13px
+    font-weight: 600
+    margin-left: 0
+
+    &:hover, &:focus, &:active
+      background-image: none
+
+// ── Review form inputs (new/edit) ─────────────────────────────────────────────
+.new_review,
+.edit_review
+  .form-control
+    box-sizing: border-box !important
+    border: 2px solid #e5e7eb !important
+    border-radius: 16px !important
+    box-shadow: 0 1px 2px 0 rgba(0,0,0,0.05) !important
+    background: #ffffff !important
+    color: #111827 !important
+    padding: 10px 16px !important
+    height: auto !important
+    width: 100% !important
+    transition: border-color 0.3s ease, box-shadow 0.3s ease
+
+    &::placeholder
+      color: #9ca3af !important
+      opacity: 1
+
+    &:hover
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06) !important
+      border-color: #d1d5db !important
+
+    &:focus, &:focus-visible
+      border-color: #5A2A82 !important
+      outline: none !important
+      box-shadow: 0 0 0 4px rgba(90,42,130,0.1) !important
+      background: #ffffff !important
+
+    html.dark &
+      background: #1D0631 !important
+      color: #ffffff !important
+      border-color: #5A2A82 !important
+
+      &::placeholder
+        color: #6b7280 !important
+        opacity: 1
+
+      &:hover
+        border-color: #6b7280 !important
+
+      &:focus, &:focus-visible
+        border-color: #ffb91a !important
+        background: #1D0631 !important
+        box-shadow: 0 0 0 4px rgba(255,185,26,0.1) !important
+
+  textarea.form-control
+    height: 150px !important
+    resize: vertical
+
+  .control-label
+    font-weight: 600
+    font-size: 14px
+    color: #374151
+    margin-bottom: 6px
+    display: block
+
+    html.dark &
+      color: #d1d5db
+
+  .controls
+    margin-top: 4px
+
+  .actions
+    display: flex
+    align-items: center
+    gap: 8px
+    margin-top: 16px
+
+    .btn,
+    input.btn
+      height: 40px !important
+      padding: 0 20px !important
+      line-height: 40px !important
+      font-size: 14px !important
+      font-weight: 600 !important
+      border-radius: 8px !important
+      border-width: 1px !important
+      box-sizing: border-box !important
+      display: inline-flex !important
+      align-items: center !important
+      justify-content: center !important
+      background-image: none !important
+      text-shadow: none !important
+      box-shadow: none !important
+
+// ── Page layout ──────────────────────────────────────────────────────────────
+.rr-page
+  padding: 24px 0
+
+.rr-page__title
+  display: flex
+  align-items: center
+  gap: 12px
+  margin-bottom: 24px
+
+  h2
+    font-size: 26px
+    font-weight: 700
+    color: #111827
+    margin: 0
+
+    html.dark &
+      color: #ffffff
+
+.rr-page__title-icon
+  width: 36px
+  height: 36px
+  border-radius: 10px
+  background: linear-gradient(135deg, #ffb91a, #f97316)
+  display: flex
+  align-items: center
+  justify-content: center
+  flex-shrink: 0
+  box-shadow: 0 2px 6px rgba(255,185,26,0.4)
+
+  .fa
+    color: #ffffff
+    font-size: 16px
+
+// ── Community Rating card ─────────────────────────────────────────────────────
+.rr-community-card
+  background-color: #ffffff
+  border-radius: 16px
+  border: 1px solid #e5e7eb
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08)
+  padding: 24px
+  margin-bottom: 24px
+
+  html.dark &
+    background-color: #2D1548
+    border-color: rgba(90,42,130,0.4)
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3)
+
+  &__title
+    font-size: 17px
+    font-weight: 700
+    color: #111827
+    margin: 0 0 20px
+
+    html.dark &
+      color: #ffffff
+
+  &__grid
+    display: grid
+    grid-template-columns: repeat(4, 1fr)
+    gap: 24px
+
+  &__stat
+    text-align: center
+
+  &__stars
+    display: flex
+    justify-content: center
+    margin-bottom: 6px
+
+  &__value
+    font-size: 28px
+    font-weight: 700
+    color: #5A2A82
+    line-height: 1.2
+    margin-bottom: 4px
+
+    html.dark &
+      color: #ffb91a
+
+  &__label
+    font-size: 12px
+    color: #6b7280
+    margin: 0
+
+    html.dark &
+      color: #9ca3af
+
+// ── My Review section ─────────────────────────────────────────────────────────
+.rr-my-review-section
+  margin-bottom: 32px
+
+// ── Reviews grid (2 col) ──────────────────────────────────────────────────────
+.rr-section-title
+  display: flex
+  align-items: center
+  gap: 10px
+  font-size: 18px
+  font-weight: 700
+  color: #111827
+  margin-bottom: 16px
+
+  html.dark &
+    color: #ffffff
+
+  a
+    color: inherit
+    text-decoration: none
+
+    &:hover
+      color: #5A2A82
+
+      html.dark &
+        color: #ffb91a
+
+.rr-section-title__icon
+  width: 32px
+  height: 32px
+  border-radius: 8px
+  background: linear-gradient(135deg, #5A2A82, #7B3FB5)
+  display: flex
+  align-items: center
+  justify-content: center
+  flex-shrink: 0
+
+  .fa
+    color: #ffffff
+    font-size: 14px
+
+  &--green
+    background: linear-gradient(135deg, #059669, #10b981)
+
+.rr-reviews-grid
+  display: grid
+  grid-template-columns: 1fr 1fr
+  gap: 24px
+  margin-bottom: 8px
+
+.rr-see-all
+  margin-top: 16px
+
+  .btn-primary
+    border-radius: 8px
+    background-image: none
+    font-weight: 600
+
+.rr-no-reviews
+  color: #6b7280
+  font-style: italic
+
+  html.dark &
+    color: #9ca3af
+
+// ── Add Review card ───────────────────────────────────────────────────────────
+.rr-add-review
+  display: flex
+  align-items: flex-start
+  gap: 16px
+
+  &__icon
+    width: 40px
+    height: 40px
+    border-radius: 50%
+    background: linear-gradient(135deg, #5A2A82, #7B3FB5)
+    display: flex
+    align-items: center
+    justify-content: center
+    flex-shrink: 0
+
+    .fa
+      color: #ffffff
+      font-size: 16px
+
+  &__content
+    flex: 1
+
+  &__message
+    font-size: 14px
+    color: #374151
+    margin: 0 0 8px
+
+    html.dark &
+      color: #d1d5db
+
+  &__meta
+    display: flex
+    align-items: center
+    gap: 8px
+    font-size: 13px
+
+// ── Helpful section ───────────────────────────────────────────────────────────
+.oh-review-helpful
+  margin-top: 12px
+  padding-top: 10px
+  border-top: 1px solid #f3f4f6
+  font-size: 12px
+  color: #6b7280
+  display: flex
+  align-items: center
+  gap: 12px
+  flex-wrap: wrap
+
+  html.dark &
+    border-top-color: rgba(90,42,130,0.2)
+    color: #9ca3af
+
+// ── Responsive ───────────────────────────────────────────────────────────────
+@media (max-width: 768px)
+  .rr-community-card__grid
+    grid-template-columns: repeat(2, 1fr)
+
+  .rr-reviews-grid
+    grid-template-columns: 1fr
+
+@media (max-width: 640px)
+  .oh-review-meta__header
+    flex-direction: column
+    gap: 8px
+
+  .oh-review-meta__right
+    display: none
+
+  .rr-community-card__grid
+    grid-template-columns: repeat(2, 1fr)
+    gap: 16px
+
+  .rr-community-card__value
+    font-size: 22px

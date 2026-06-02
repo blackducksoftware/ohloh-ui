@@ -550,3 +550,35 @@ button.unclaimed-card__btn
 
 .grecaptcha-badge
   display: none
+
+// Licenses index page — same container/header pattern as people page
+.people-page-header__action
+  display: flex
+  align-items: center
+
+.licenses-list
+  display: flex
+  flex-direction: column
+  gap: 8px
+  margin-top: 8px
+  margin-bottom: 10px
+
+  &__item
+    padding: 14px 20px !important
+    margin-bottom: 0 !important
+
+  &__link
+    font-size: 15px
+    font-weight: 500
+    color: #5A2A82
+    text-decoration: none
+
+    &:hover
+      color: #4a1f6e
+      text-decoration: underline
+
+    html.dark &
+      color: #ffb91a
+
+      &:hover
+        color: #ffcc4d

@@ -8,7 +8,6 @@
     %h2.pull-left
       = link_to t(:settings), settings_project_path(@project)
       &nbsp;:&nbsp;#{t('.licenses')}
-    = project_analysis_timestamp(@project)
 
 - flash.now[:notice] = t('.no_licenses_for_project') if @project_licenses.empty?
 
@@ -16,14 +15,14 @@
 
 - if @project_licenses.any?
   .declared_licenses
-    .col-md-7.oh-card.margin_top_15
-      %h4= t('.declared_licenses')
+    .col-md-8.oh-card.margin_top_15
+      %h3= t('.declared_licenses')
       %table{ style: 'width: 100%;' }
         %tbody
           - @project_licenses.each do |project_license|
             %tr.license
-              %td.col-md-8.padding_one_top= project_license.license ? project_license.license.name : ''
-              %td.col-md-4.padding_one_top.last
+              %td.col-md-7.padding_one_top{ style: 'font-size: 18px;' }= project_license.license ? project_license.license.name : ''
+              %td.col-md-5.padding_one_top.last
                 .pull-right
                   - if @project.edit_authorized?
                     %a.btn.btn-md.btn-danger{ href: project_license_path(@project, project_license),
@@ -36,8 +35,9 @@
     .clear
 
 - else
-  = show_license_button(@project)
+  .col-md-2.margin_top_15
+    = show_license_button(@project)
 
 = yield page_context[:header_title] if page_context[:header_title]
-= render partial: 'project_licenses/about'
 = render partial: 'layouts/partials/alert'
+= render partial: 'project_licenses/about'

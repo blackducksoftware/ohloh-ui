@@ -431,3 +431,313 @@
     width: 100%
     padding: 12px 20px
     font-size: 14px
+
+
+// ──────────────────────────────────────────────────────────────────────────────
+// Contribution Show Page
+// ──────────────────────────────────────────────────────────────────────────────
+
+#contribution-show-page
+  padding: 24px 0
+
+  .contribution-header
+    margin-bottom: 24px
+
+  .contribution-title
+    font-size: 22px
+    font-weight: 700
+    color: #111827
+    margin: 0 0 8px 0
+    display: flex
+    align-items: center
+    gap: 8px
+    flex-wrap: wrap
+
+    html.dark &
+      color: #ffffff
+
+    a
+      color: #5A2A82
+      text-decoration: none
+
+      html.dark &
+        color: #ffb91a
+
+      &:hover
+        text-decoration: underline
+
+    .contribution-title__sep
+      color: #9ca3af
+      font-weight: 400
+
+  // ── Activity card ──
+
+  .contribution-activity
+    padding: 24px
+    margin-bottom: 0
+
+    &__header
+      display: flex
+      align-items: flex-start
+      justify-content: space-between
+      flex-wrap: wrap
+      gap: 6px
+      margin-bottom: 20px
+
+    &__title
+      font-size: 15px
+      font-weight: 600
+      color: #111827
+      margin: 0
+
+      html.dark &
+        color: #e2e8f0
+
+    &__profile-link
+      font-size: 13px
+      color: #5A2A82
+      white-space: nowrap
+
+      html.dark &
+        color: #ffb91a
+
+    &__body
+      display: flex
+      align-items: flex-start
+      gap: 20px
+      flex-wrap: wrap
+      margin-bottom: 16px
+
+    &__avatar-img
+      width: 64px
+      height: 64px
+      border-radius: 50%
+      flex-shrink: 0
+
+    &__stats,
+    &__rank
+      flex: 1
+      min-width: 140px
+
+    &__meta
+      font-size: 13px
+      color: #4b5563
+      margin-bottom: 8px
+
+      html.dark &
+        color: #9ca3af
+
+    &__scm-label
+      font-weight: 600
+      margin-right: 4px
+
+    &__history-label
+      display: block
+      font-size: 13px
+      font-weight: 600
+      color: #4b5563
+      margin-bottom: 6px
+
+      html.dark &
+        color: #9ca3af
+
+    &__spark
+      overflow-x: auto
+      -webkit-overflow-scrolling: touch
+
+    &__spark-img
+      max-width: 100%
+      height: 39px
+      display: block
+
+  // ── Stat row ──
+
+  .contribution-stat
+    display: flex
+    justify-content: space-between
+    align-items: center
+    padding: 5px 0
+    border-bottom: 1px solid #f3f4f6
+    font-size: 13px
+
+    html.dark &
+      border-bottom-color: rgba(90, 42, 130, 0.2)
+
+    &:last-child
+      border-bottom: none
+
+    &__label
+      color: #6b7280
+
+      html.dark &
+        color: #9ca3af
+
+    &__value
+      font-weight: 600
+      color: #111827
+      text-align: right
+
+      html.dark &
+        color: #e2e8f0
+
+  // ── Kudos sidebar ──
+
+  .contribution-kudos
+    &__title
+      font-size: 15px
+      font-weight: 700
+      color: #5A2A82
+      margin-bottom: 4px
+
+      html.dark &
+        color: #ffb91a
+
+    &__subtitle
+      font-size: 12px
+      color: #6b7280
+      margin-bottom: 12px
+
+      html.dark &
+        color: #9ca3af
+
+    &__empty
+      font-size: 13px
+      color: #6b7280
+      font-style: italic
+
+      html.dark &
+        color: #9ca3af
+
+    &__action
+      margin-top: 16px
+      border-top: 1px solid #f3f4f6
+      padding-top: 16px
+
+      html.dark &
+        border-top-color: rgba(90, 42, 130, 0.2)
+
+  .contribution-kudo-item
+    display: flex
+    align-items: center
+    gap: 8px
+    margin-bottom: 10px
+    flex-wrap: wrap
+
+    &__name
+      font-size: 13px
+      font-weight: 600
+      color: #5A2A82
+      text-decoration: none
+
+      html.dark &
+        color: #ffb91a
+
+      &:hover
+        text-decoration: underline
+
+    &__rank
+      flex-shrink: 0
+
+    &__message
+      width: 100%
+      font-size: 12px
+      color: #6b7280
+      font-style: italic
+      margin: 2px 0 0 0
+
+      html.dark &
+        color: #9ca3af
+
+  // ── Unclaimed position notice ──
+
+  .contribution-unclaimed
+    &__header
+      display: flex
+      align-items: center
+      gap: 10px
+      margin-bottom: 6px
+
+    &__icon
+      font-size: 28px
+      color: #f59e0b
+
+    &__title
+      font-size: 17px
+      font-weight: 600
+      color: #111827
+
+      html.dark &
+        color: #e2e8f0
+
+    &__help
+      font-size: 14px
+      color: #4b5563
+      margin-bottom: 20px
+
+      html.dark &
+        color: #9ca3af
+
+    &__actions
+      display: flex
+      gap: 24px
+      flex-wrap: wrap
+
+    &__action
+      flex: 1
+      min-width: 200px
+
+    &__desc
+      font-size: 12px
+      color: #6b7280
+      margin-top: 8px
+
+      html.dark &
+        color: #9ca3af
+
+  // ── Languages table ──
+
+  .contribution-languages__title
+    font-size: 16px
+    font-weight: 600
+    color: #5A2A82
+    margin-bottom: 16px
+
+    html.dark &
+      color: #ffb91a
+
+  .contribution-languages__table-wrap
+    overflow-x: auto
+    -webkit-overflow-scrolling: touch
+
+    table
+      min-width: 500px
+
+  // ── Responsive ──
+
+  @media (max-width: 767px)
+    padding: 16px 0
+
+    .contribution-title
+      font-size: 17px
+
+    .contribution-activity
+      padding: 16px
+
+      &__body
+        flex-direction: column
+        gap: 16px
+
+      &__stats,
+      &__rank
+        min-width: 100%
+
+    .contribution-kudos
+      margin-top: 16px
+
+    .contribution-unclaimed__actions
+      flex-direction: column
+      gap: 16px
+
+  @media (min-width: 768px) and (max-width: 1024px)
+    .contribution-activity
+      padding: 20px
