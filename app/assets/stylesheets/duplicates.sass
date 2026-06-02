@@ -41,3 +41,205 @@
     padding-top: 19px
     width: 270px
     margin: 0 auto
+
+
+// ──────────────────────────────────────────────────────────────────────────────
+// Duplicate New Page (#duplicate-new-page)
+// ──────────────────────────────────────────────────────────────────────────────
+
+#duplicate-new-page
+  padding: 24px 0
+
+  .duplicate-page-header
+    margin-bottom: 24px
+
+  .duplicate-page-title
+    font-size: 22px
+    font-weight: 700
+    color: #111827
+    margin: 0
+
+    html.dark &
+      color: #ffffff
+
+  // ── Fieldset / form ──
+
+  .duplicate-fieldset
+    border: none
+    padding: 0
+    margin: 0
+
+  .duplicate-legend
+    font-size: 15px
+    font-weight: 600
+    color: #5A2A82
+    margin-bottom: 20px
+    padding: 0
+    width: 100%
+    border-bottom: 1px solid #e5e7eb
+    padding-bottom: 12px
+
+    html.dark &
+      color: #ffb91a
+      border-bottom-color: rgba(90, 42, 130, 0.3)
+
+  .duplicate-field-group
+    margin-bottom: 20px
+
+  .duplicate-label
+    display: block
+    font-size: 13px
+    font-weight: 600
+    color: #374151
+    margin-bottom: 6px
+
+    html.dark &
+      color: #d1d5db
+
+    &.required::after
+      content: ' *'
+      color: #ef4444
+
+  // form-control overrides — matches project basics style (same as positions.sass)
+  .form-control
+    box-sizing: border-box !important
+    border: 2px solid #e5e7eb !important
+    border-radius: 16px !important
+    -webkit-border-radius: 16px !important
+    -moz-border-radius: 16px !important
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important
+    background: #ffffff !important
+    color: #111827 !important
+    padding: 10px 16px !important
+    height: auto !important
+    width: 100% !important
+    font-size: 14px
+    transition: border-color 0.3s ease, box-shadow 0.3s ease
+
+    &::placeholder
+      color: #9ca3af !important
+      opacity: 1
+
+    &:hover
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important
+      border-color: #d1d5db !important
+
+    &:focus, &:focus-visible
+      border-color: #5A2A82 !important
+      outline: none !important
+      box-shadow: 0 0 0 4px rgba(90, 42, 130, 0.1) !important
+      background: #ffffff !important
+
+    html.dark &
+      background: #1D0631 !important
+      color: #ffffff !important
+      border-color: #5A2A82 !important
+
+      &::placeholder
+        color: #6b7280 !important
+        opacity: 1
+
+      &:hover
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important
+        border-color: #6b7280 !important
+
+      &:focus, &:focus-visible
+        border-color: #ffb91a !important
+        background: #1D0631 !important
+        box-shadow: 0 0 0 4px rgba(255, 185, 26, 0.1) !important
+        outline: none !important
+
+  .duplicate-textarea
+    resize: vertical !important
+    min-height: 140px !important
+    border-radius: 12px !important
+
+  .duplicate-url
+    font-size: 13px
+    color: #5A2A82
+    word-break: break-all
+
+    html.dark &
+      color: #ffb91a
+
+    &:hover
+      text-decoration: underline
+
+  .duplicate-actions
+    padding-top: 8px
+    display: flex
+    gap: 10px
+
+  .duplicate-submit
+    height: 40px
+    padding: 0 24px
+    border-radius: 20px
+    font-size: 14px
+    font-weight: 600
+
+  // ── Instructions card ──
+
+  .duplicate-instructions
+    padding: 20px 24px
+
+    &__title
+      font-size: 15px
+      font-weight: 600
+      color: #5A2A82
+      margin: 0 0 14px 0
+
+      html.dark &
+        color: #ffb91a
+
+      .soft
+        font-weight: 400
+        color: #6b7280
+        margin-right: 4px
+
+        html.dark &
+          color: #9ca3af
+
+    &__list
+      margin: 0
+      padding-left: 20px
+      font-size: 13px
+      color: #4b5563
+      line-height: 1.7
+
+      html.dark &
+        color: #9ca3af
+
+      ul
+        padding-left: 18px
+        margin-top: 4px
+
+      a
+        color: #5A2A82
+        text-decoration: none
+
+        html.dark &
+          color: #ffb91a
+
+        &:hover
+          text-decoration: underline
+
+  // ── Responsive ──
+
+  @media (max-width: 767px)
+    padding: 16px 0
+
+    .duplicate-page-title
+      font-size: 18px
+
+    .col-md-7,
+    .col-md-4
+      margin-bottom: 16px
+
+    .duplicate-actions
+      flex-direction: column
+
+      .duplicate-submit
+        width: 100%
+
+  @media (min-width: 768px) and (max-width: 1024px)
+    padding: 20px 0

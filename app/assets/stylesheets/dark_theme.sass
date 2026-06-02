@@ -501,3 +501,35 @@ html.dark
       &::before
         background: asset-url("charts/watermark_914.png") no-repeat center
         background-size: contain
+
+// Vulnerability all-version chart dark mode (index page — no .project-show-redesign wrapper)
+html.dark #vulnerability_all_version_chart
+  .highcharts-background
+    fill: transparent !important
+
+  .highcharts-plot-background,
+  .highcharts-plot-border,
+  .highcharts-label-box
+    fill: none !important
+
+  .highcharts-axis-line,
+  .highcharts-tick,
+  .highcharts-grid-line
+    stroke: rgba(148, 163, 184, 0.35) !important
+
+  .highcharts-axis-labels text,
+  .highcharts-axis-title,
+  .highcharts-legend-item text,
+  .highcharts-title,
+  .highcharts-subtitle
+    fill: #cbd5e1 !important
+
+  .highcharts-legend-item.highcharts-legend-item-hidden text
+    fill: #4b5563 !important
+
+  .highcharts-tooltip-box
+    fill: #2D1548 !important
+    stroke: #5A2A82 !important
+
+  .highcharts-tooltip text
+    fill: #f8fafc !important

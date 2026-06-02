@@ -9,10 +9,11 @@
     &nbsp;
   .col-md-10
     .row
-      %h2= t('.security')
+      %h2
+        %strong= t('.security')
     .row
       %h3{ style: 'font-weight: normal; font-size: 1.4em;' }= t('.vulns_per_version')
-      = link_to 'Learn more about BDSAs', 'https://www.blackduck.com/blog/black-duck-security-advisories-benefits.html', class: 'btn btn-primary learn-more btn-sm pull-right', target: '_blank'
+      = link_to 'Learn more about BDSAs', 'https://www.blackduck.com/blog/black-duck-security-advisories-benefits.html', class: 'btn btn-primary learn-more btn-md pull-right', target: '_blank'
   .col-md-1
     &nbsp;
 .row

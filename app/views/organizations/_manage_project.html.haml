@@ -1,18 +1,18 @@
-%td
+%td{ data: { label: t('organizations.manage_projects_header.logo') } }
   %a.logo.med{ href: project_path(p) }
     = p.decorate.icon(:med, width: 48)
-%td= link_to truncate(h(p.name), length: 20), project_path(p), title: p.name
-%td.center{ style: 'padding-right:15px;' }= p.user_count
-%td.center{ style: 'padding-right:15px;' }= p.best_analysis.code_total
-%td.left
+%td{ data: { label: t('organizations.manage_projects_header.name') } }= link_to truncate(h(p.name), length: 20), project_path(p), title: p.name
+%td.center{ style: 'padding-right:15px;', data: { label: t('organizations.manage_projects_header.i_use') } }= p.user_count
+%td.center{ style: 'padding-right:15px;', data: { label: t('organizations.manage_projects_header.lines_of_code') } }= p.best_analysis.code_total
+%td.left{ data: { label: t('organizations.manage_projects_header.activity') } }
   .project_activity_margin_top{ style: 'position: relative; top: -15px' }
     - project_activity_level_class(p, :fifteen)
-%td.center{ style: 'padding-right:15px;' }= p.active_committers
-%td.center
+%td.center{ style: 'padding-right:15px;', data: { label: t('organizations.manage_projects_header.committers') } }= p.active_committers
+%td.center{ data: { label: t('organizations.manage_projects_header.rating') } }
   - if p.rating_average.to_i.zero?
     = t('.none')
   - else
     != rating_stars('average_rating_stars', p.rating_average || 0, mini: true)
 
-%td.center{ style: 'padding-right:15px;' }= p.reviews.count
-%td.wrapword= expander(h(p.description.to_s), 100, 300)
+%td.center{ style: 'padding-right:15px;', data: { label: t('organizations.manage_projects_header.reviews') } }= p.reviews.count
+%td.wrapword{ data: { label: t('organizations.manage_projects_header.description') } }= expander(h(p.description.to_s), 100, 300)

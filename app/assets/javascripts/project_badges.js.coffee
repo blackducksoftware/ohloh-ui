@@ -7,6 +7,11 @@ ProjectNewBadge =
   initializeNewBadge: (_klass) ->
     $("#add_badge_btn").on 'click', (event) ->
       $('#add_badge_btn, #add_new_badge_form').toggle()
+      # Re-initialize chosen after showing the form row — it was first
+      # initialized on a display:none element, so width/position may be wrong.
+      if $('#add_new_badge_form').is(':visible')
+        $('#add_new_badge_form .chzn-select').chosen('destroy')
+        $('#add_new_badge_form .chzn-select').chosen()
 
   handleEvents: (_klass) ->
     $('#project_badges_page').on 'change', '#select_project_badge', (event) ->

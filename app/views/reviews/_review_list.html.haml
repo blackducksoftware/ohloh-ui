@@ -1,40 +1,48 @@
-.oh-card.oh-card--hoverable.review_container{ id: "review_list_#{review_list.id}" }
-  .row
-    .col-md-4
+.oh-review-card.review_container{ id: "review_list_#{review_list.id}" }
+  .oh-review-card__body
+    .oh-review-author-row
       - if @project
         - account = review_list.account
-        .padding_right_0
-          .pull-right
-            = link_to h(account.name.reverse.truncate(11).reverse), account_url(account), title: account.name
-            says:
-          .avatar_margin_left.pull-right.margin_right_10
-            = avatar_for(review_list.account, size: 58)
+        .oh-review-avatar
+          %span= account.name.first.upcase
+        .oh-review-meta
+          .oh-review-meta__header
+            .oh-review-meta__left
+              %p.oh-review-author
+                = link_to h(truncate(account.name, length: 20)), account_url(account), title: account.name
+                %span.oh-review-author__says says:
+              .oh-review-title-row
+                - if review_list.title
+                  %label.oh-review-title= truncate(review_list.title.camelize, length: 35)
+                != rating_stars('rating_star', review_list.score.to_f, mini: true)
+          .oh-review-timestamp
+            %i.fa.fa-clock-o
+            %abbr{ title: review_list.created_at }
+              = t('reviews.written_ago', time: time_ago_in_words(review_list.created_at))
+          .oh-review-comment= simple_format(review_list.comment.fix_encoding_if_invalid)
+          .oh-review-helpful
+            = render partial: 'helpful_count_status', locals: { review: review_list }
+            = render partial: 'helpful_yes_or_no_links', locals: { review: review_list }
       - elsif @account
         - project = review_list.project
-        .margin_left_20{ style: 'margin-bottom: 8px' }
-          - project_icon(project, :med)
-        .clearfix
-        .margin_left_20
-          = link_to h(truncate(project.name, length: 20)), project_path(project), title: project.name
-
-    .col-md-8.padding_left_30
-      %strong.pull-left
-        - if review_list.title
-          = truncate(review_list.title.camelize, length: 38)
-        - else
-          = t('.accounts_review', name: review_list.account.name)
-        &nbsp;
-      .pull-left{ style: 'margin-top:1px' }
-        != rating_stars('rating_star', review_list.score.to_f, mini: true)
-      .clear
-      .col-md
-        %abbr.soft.small{ title: review_list.created_at }
-          = t('reviews.written_ago', time: time_ago_in_words(review_list.created_at))
-      %p= simple_format(review_list.comment.fix_encoding_if_invalid)
-      .soft.small
-        .pull-left
-          = render partial: 'helpful_count_status', locals: { review: review_list }
-        .pull-right{ style: 'padding-right: 120px' }
-          = render partial: 'helpful_yes_or_no_links', locals: { review: review_list }
-        .clearfix
-        = render partial: 'buttons', locals: { review: review_list }
+        .oh-review-avatar
+          %span= project.name.first.upcase
+        .oh-review-meta
+          .oh-review-meta__header
+            .oh-review-meta__left
+              %p.oh-review-author
+                = link_to h(truncate(project.name, length: 20)), project_path(project), title: project.name
+              .oh-review-title-row
+                - if review_list.title
+                  %label.oh-review-title= truncate(review_list.title.camelize, length: 35)
+                != rating_stars('rating_star', review_list.score.to_f, mini: true)
+          .oh-review-timestamp
+            %i.fa.fa-clock-o
+            %abbr{ title: review_list.created_at }
+              = t('reviews.written_ago', time: time_ago_in_words(review_list.created_at))
+          .oh-review-comment= simple_format(review_list.comment.fix_encoding_if_invalid)
+          .oh-review-helpful
+            = render partial: 'helpful_count_status', locals: { review: review_list }
+            = render partial: 'helpful_yes_or_no_links', locals: { review: review_list }
+  .oh-review-card__footer
+    = render partial: 'buttons', locals: { review: review_list }

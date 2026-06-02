@@ -1,15 +1,11 @@
-.no_margin_left{ style: 'margin-top:10px;' }
-  - if logged_in?
-    .pull-left
-      - if current_user_is_admin? || review.account.id == current_user.id
-        = icon_button(edit_project_review_path(review.project, review), icon: 'pencil', text: t('reviews.edit_review'),
-          size: 'medium no-border', type: 'primary')
-        = icon_button(review_path(review), icon: 'trash', text: t('reviews.remove_review'), size: 'medium no-border',
-          type: 'danger', method: :delete, data: { confirm: t('reviews.remove_confirmation') },
-          style: 'margin-left: 7px')
-        &nbsp;
-      - if current_user_is_admin?
-        = icon_button(make_spammer_account_accesses_path(review.account), text: t('reviews.spam'), method: :post,
-          data: { confirm: t('reviews.spam_confirmation', name: review.account.name) }, size: 'medium no-border',
-          type: 'warning', title: t('reviews.spam_title', name: review.account.name))
-    .clearfix
+- if logged_in?
+  - if current_user_is_admin? || review.account.id == current_user.id
+    = icon_button(edit_project_review_path(review.project, review), icon: 'pencil',
+      text: t('reviews.edit_review'), size: 'mini', type: 'info')
+    = icon_button(review_path(review), icon: 'trash', text: t('reviews.remove_review'),
+      size: 'mini', type: 'danger', method: :delete,
+      data: { confirm: t('reviews.remove_confirmation') })
+  - if current_user_is_admin?
+    = icon_button(make_spammer_account_accesses_path(review.account), text: t('reviews.spam'),
+      method: :post, data: { confirm: t('reviews.spam_confirmation', name: review.account.name) },
+      size: 'mini', type: 'warning', title: t('reviews.spam_title', name: review.account.name))

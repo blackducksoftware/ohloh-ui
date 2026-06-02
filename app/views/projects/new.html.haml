@@ -2,28 +2,31 @@
 - page_context[:select_top_menu_nav] = 'select_projects'
 
 - if ApiAccess.available?
-  %h1.margin_bottom_20= t('.call_to_action')
-  .row
-    .col-md-12
-      = form_tag check_forge_projects_path, class: 'styled new_project' do
-        .clear &nbsp;
-        .col-md-9
-          %p= t('.help1')
-          %p= t('.help2')
-        .col-md-9
-          %label= t('.codelocation_label')
-        .col-md-9
-          %input.span9.field{ name: 'codelocation', type: 'text' }
-        .col-md-9
-          = t('.examples')
-          .inset
-            %p
-              %code!= t('.example1')
-            %p
-              %code!= t('.example2')
-        .col-md-9
-          .pull-right
-            %input.span2.btn.btn-primary{ type: 'submit', value: t('.next') }
+  #project-new-page
+    %h1.margin_bottom_20.margin_left_30.project-new-title= t('.call_to_action')
+    .row.margin_left_30.project-new-row
+      .oh-card.col-md-8.col-sm-10.col-xs-12
+        = form_tag check_forge_projects_path, class: 'styled new_project' do
+          %fieldset
+            .project-new-help
+              %p= t('.help1')
+              %p.margin_bottom_0= t('.help2')
+
+            .control-group.margin_top_20
+              %label.control-label{ for: 'codelocation' }= t('.codelocation_label')
+              .controls
+                %input.form-control#codelocation{ name: 'codelocation', type: 'text',
+                  placeholder: 'https://github.com/owner/repo' }
+
+            .project-new-examples
+              %p.project-new-examples-label= t('.examples')
+              .project-new-example-item
+                %code!= t('.example1')
+              .project-new-example-item
+                %code!= t('.example2')
+
+            .actions.margin_top_20
+              %input.btn.btn-primary{ type: 'submit', value: t('.next') }
 - else
   .padding_one_top
   = render 'shared/api_outage'

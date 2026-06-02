@@ -1,36 +1,35 @@
-%table.table.table-striped.table-condensed{ style: 'width:98%;' }
-  %thead
-    %tr{ id: 'dingus-row' }
-      %td{ colspan: '7' }
-        - if search_dingus
-          = render 'shared/search_dingus/commits_or_contributor_search', items: @commits, type: :commits
-    %tr
-      %th{ width: '40%' }= t('.commit_message')
-      %th{ width: '17%' }= t('.contributor')
-      %th.center{ width: '5%' }= t('.files_modified')
-      %th.center{ width: '5%' }= t('.lines_added')
-      %th.center{ width: '5%' }= t('.lines_removed')
-      %th.center{ width: '18%' }= t('.code_location')
-      %th{ width: '10%' }= t('.date')
-  %tbody
-    - @commits.each do |commit|
-      - commit_contributor = @commit_contributor || @commit_contributors.fetch(commit.name_id, []).first
-      - next if commit_contributor.nil?
-      %tr{ class: highlight(commit.time) }
-        %td= link_to h(commit.obfuscate_email(commit.comment).split("\n").first), project_commit_path(@project, commit)
-        %td
-          = avatar_for(commit_contributor.person)
-          .committer_name{ style: 'padding-top:5px;' }
-            = render partial: 'committer_name', locals: { commit_contributor: commit_contributor }
-        %td{ colspan: '4', class: "commit_#{commit.to_param}" }
-          %span.icon-play-circle{ id: "icon_play_circle_#{commit.to_param}" }
-            = link_to t('.more'), '#', class: 'commit-details',
-              commit_id: commit.to_param, project_id: @project.to_param
-          %span.spinner.hidden{ id: "spinner_#{commit.to_param}" }
-            = image_tag 'spinner.gif', alt: ''
-        %td
-          %abbr.date{ title: commit.time.to_s }
-            = t('time_ago', time: time_ago_in_words(commit.time))
+- if search_dingus
+  = render 'shared/search_dingus/commits_or_contributor_search', items: @commits, type: :commits
+.table-responsive
+  %table.table.table-striped.table-condensed
+    %thead
+      %tr
+        %th{ width: '40%' }= t('.commit_message')
+        %th{ width: '17%' }= t('.contributor')
+        %th.center{ width: '5%' }= t('.files_modified')
+        %th.center{ width: '5%' }= t('.lines_added')
+        %th.center{ width: '5%' }= t('.lines_removed')
+        %th.center{ width: '18%' }= t('.code_location')
+        %th{ width: '10%' }= t('.date')
+    %tbody
+      - @commits.each do |commit|
+        - commit_contributor = @commit_contributor || @commit_contributors.fetch(commit.name_id, []).first
+        - next if commit_contributor.nil?
+        %tr{ class: highlight(commit.time) }
+          %td= link_to h(commit.obfuscate_email(commit.comment).split("\n").first), project_commit_path(@project, commit)
+          %td
+            = avatar_for(commit_contributor.person)
+            .committer_name{ style: 'padding-top:5px;' }
+              = render partial: 'committer_name', locals: { commit_contributor: commit_contributor }
+          %td{ colspan: '4', class: "commit_#{commit.to_param}" }
+            %span.icon-play-circle{ id: "icon_play_circle_#{commit.to_param}" }
+              = link_to t('.more'), '#', class: 'commit-details',
+                commit_id: commit.to_param, project_id: @project.to_param
+            %span.spinner.hidden{ id: "spinner_#{commit.to_param}" }
+              = image_tag 'spinner.gif', alt: ''
+          %td
+            %abbr.date{ title: commit.time.to_s }
+              = t('time_ago', time: time_ago_in_words(commit.time))
 = render 'shared/modern_pagination', collection: @commits
 
 = render partial: 'shared/alert', locals: { message: t('.no_data') } if @commits.blank?

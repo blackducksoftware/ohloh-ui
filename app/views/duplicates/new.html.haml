@@ -1,12 +1,14 @@
 - content_for(:html_title) { t('.page_title', name: @project.name) }
 
-%h2.float_left= t('.page_header')
-= project_analysis_timestamp(@project)
+#duplicate-new-page
+  .duplicate-page-header
+    %h2.duplicate-page-title= t('.page_header')
 
-.clearfix
-.col-md-8.col-md-offset-2
-  .oh-card
-    = form_for @duplicate, url: project_duplicates_path(@project) do |form|
-      = render partial: 'fields', locals: { form: form, button_text: t('.button_text') }
+  .row
+    .col-md-7.col-sm-9.col-xs-12.center-block
+      .oh-card
+        = form_for @duplicate, url: project_duplicates_path(@project) do |form|
+          = render partial: 'fields', locals: { form: form, button_text: t('.button_text') }
 
-= render partial: 'instructions'
+    .col-md-4.col-sm-10.col-xs-12.center-block
+      = render partial: 'instructions'

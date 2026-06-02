@@ -30,7 +30,7 @@
               = t('.report_duplicate')
 
           - if current_user_is_admin?
-            = link_to oh_admin_project_jobs_path(@project), class: 'action-btn action-btn-outline' do
+            = link_to oh_admin_project_jobs_path(@project), class: 'action-btn action-btn-outline', target: '_blank', rel: 'noopener noreferrer' do
               %svg{ viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", 'stroke-width': "2", 'stroke-linecap': "round", 'stroke-linejoin': "round" }
                 %rect{ x: "3", y: "7", width: "18", height: "13", rx: "2", ry: "2" }
                 %path{ d: "M16 3v4M8 3v4M3 11h18" }
@@ -67,7 +67,7 @@
               %path{ d: "M23 21v-2a4 4 0 0 0-3-3.87" }
               %path{ d: "M16 3.13a4 4 0 0 1 0 7.75" }
             .user-count
-              = number_with_delimiter(@project.user_count)
+              = link_to number_with_delimiter(@project.user_count), users_project_path(@project)
 
           - unless @project.deleted?
             - if logged_in?

@@ -12,40 +12,41 @@
     = @project.name
   = committer_name
 
-%h2.pull-left.contributor_name.margin_top_20
-  = succeed ' : ' do
-    = link_to t('.contributors'), summary_project_contributors_path(@project)
-  = committer_name
+#contribution-show-page
+  .contribution-header
+    %h2.contribution-title
+      = link_to t('.contributors'), summary_project_contributors_path(@project)
+      %span.contribution-title__sep &rsaquo;
+      = committer_name
 
-.clearfix
+  .row
+    .col-md-9.col-sm-8.col-xs-12
+      = render partial: 'contributions/show/activity', locals: { committer: committer_name, account: account, fact: fact }
 
-= render partial: 'contributions/show/activity', locals: { committer: committer_name, account: account, fact: fact }
+    .col-md-3.col-sm-4.col-xs-12
+      .oh-card.contribution-kudos
+        %h4.contribution-kudos__title= t('.recent_kudos')
+        %p.contribution-kudos__subtitle= t('.given_by', name: @project.name)
+        - @recent_kudos.each do |kudo|
+          .contribution-kudo-item
+            = link_to h(kudo.sender.name), account_url(kudo.sender), id: "kudo_received_link_#{kudo.sender.login}", class: 'contribution-kudo-item__name'
+            = image_tag "icons/tn_laurel_#{kudo.sender.kudo_rank}.png", alt: "KudoRank #{kudo.sender.kudo_rank}", class: 'contribution-kudo-item__rank'
+            - unless kudo.message.blank?
+              %p.contribution-kudo-item__message{ id: "kudo_received_#{kudo.sender.login}" }
+                "#{kudo.message}"
+        - if @recent_kudos.empty?
+          %p.contribution-kudos__empty= t('.no_kudos')
+        .contribution-kudos__action
+          = render partial: 'contributions/show/kudo_button', locals: { contribution: @contribution } if fact.present?
 
-.col-md-3.pull-right
-  %h4.margin_top_15= t('.recent_kudos')
-  %p
-    = t('.given_by', name: @project.name)
-  - @recent_kudos.each do |kudo|
-    %p.nomargin.margin_left_15
-      = link_to h(kudo.sender.name), account_url(kudo.sender), id: "kudo_received_link_#{kudo.sender.login}"
-      = image_tag "icons/tn_laurel_#{kudo.sender.kudo_rank}.png", alt: "KudoRank #{kudo.sender.kudo_rank}"
-      - unless kudo.message.blank?
-        %p.margin_left_25{ id: "kudo_received_#{kudo.sender.login}" }
-          "#{kudo.message}"
+  .row
+    .col-md-12
+      = render partial: 'contributions/show/unclaimed_position', locals: { contribution: @contribution }
 
-  - if @recent_kudos.empty?
-    %p.margin_left_15
-      = t('.no_kudos')
+  .row
+    .col-md-12
+      = render partial: 'commits_timeline', locals: { contribution: @contribution }
 
-  .padding_one_top
-  = render partial: 'contributions/show/kudo_button', locals: { contribution: @contribution } if fact.present?
-.clearfix
-
-.col-md-12
-  = render partial: 'contributions/show/unclaimed_position', locals: { contribution: @contribution }
-
-.col-md-12
-  = render partial: 'commits_timeline', locals: { contribution: @contribution }
-
-.col-md-12
-  = render partial: 'contributions/show/languages', locals: { contribution: @contribution, name_fact: fact }
+  .row
+    .col-md-12
+      = render partial: 'contributions/show/languages', locals: { contribution: @contribution, name_fact: fact }

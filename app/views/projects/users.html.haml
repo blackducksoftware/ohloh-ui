@@ -3,31 +3,31 @@
   page_context[:select_top_menu_nav] = 'select_projects'
   page_context[:select_footer_nav] = :users
 
-%div
-  %h2.pull-left= t('.users')
-  = project_analysis_timestamp(@project)
+.pu-page
+  .pu-page__title
+    .pu-page__title-icon
+      %i.fa.fa-users
+    %h2
+      %strong= t('.users')
 
-.clearfix
+  - if params[:query].nil? && @accounts.none?
+    = render 'shared/alert', message: t('.no_users')
+  - else
+    = render partial: 'shared/search_dingus', locals: { collection: @accounts, sort_context: :project_users }
 
-- if params[:query].nil? && @accounts.none?
-  = render 'shared/alert', message: t('.no_users')
-- else
-  = render partial: 'shared/search_dingus', locals: { collection: @accounts, sort_context: :project_users }
+  .pu-user-list
+    - @accounts.each do |account|
+      .pu-user-card
+        .pu-user-card__left
+          = link_to avatar_img_for(account.person), avatar_path(account.person), class: 'pu-user-card__avatar-link'
+          .pu-user-card__info
+            %h3.pu-user-card__name= link_to h(account.person.person_name), avatar_path(account.person)
+            .pu-user-card__stacks!= stack_name(account)
+            .pu-user-card__contributions
+              %p.pu-user-card__contributions-label= t('.contributions')
+              = render partial: '/projects/person_contribution', locals: { person: account.person }
+        .pu-user-card__right
+          %p.pu-user-card__kudo-label= t('.kudo_rank')
+          = avatar_small_laurels(account.person.kudo_rank)
 
-- @accounts.each do |account|
-  .row.margin_bottom_25
-    .col-md-12
-      .col-md-3
-        .avatar
-          = link_to avatar_img_for(account.person), avatar_path(account.person)
-          .avatar_name
-            %h4.nomargin= link_to h(account.person.person_name), avatar_path(account.person)
-          .margin_left_50.small!= stack_name(account)
-      .col-md-6
-        %h6.soft.margin_top_0= t('.contributions')
-        = render partial: '/projects/person_contribution', locals: { person: account.person }
-      .col-md-2.kudo_rank.pull-right
-        %h6.soft.margin_top_0= t('.kudo_rank')
-        = avatar_small_laurels(account.person.kudo_rank)
-
-= render 'shared/modern_pagination', collection: @accounts
+  = render 'shared/modern_pagination', collection: @accounts

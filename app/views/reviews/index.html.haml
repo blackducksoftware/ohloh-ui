@@ -3,7 +3,7 @@
     - content_for(:html_title) { t('.title') }
     %h2
       = link_to t('reviews.rating_and_reviews'), summary_project_reviews_path(@project)
-      = t('.listing')
+      %strong= t('.listing')
   - else
     - content_for(:html_title) { t('.account_title', name: @account.name) }
     %h2

@@ -3,7 +3,7 @@
   widget_html = render(template: "#{controller_name}/#{widget.name.underscore}", locals: locals)
 
 .widget_list
-  .row{ style: 'margin-left: -15px' }
+  .row.oh-card{ style: 'margin-left: -15px' }
     .col-md-10
       %h3.inset_top.no_padding_top
         = widget.short_nice_name
@@ -18,5 +18,5 @@
       %h6= t('.bbc_code')
       %p
         %span.soft= t('.bbc')
-      %pre.prettyprint
+      %pre.prettyprint.oh-card
         = h render(template: "#{controller_name}/#{widget.name.underscore}", locals: locals.merge(bbc: true))

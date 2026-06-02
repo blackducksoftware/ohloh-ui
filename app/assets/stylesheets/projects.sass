@@ -1825,10 +1825,121 @@ $dark-shadow-lg: 0 8px 16px rgba(0,0,0,0.48)
       left: 4% !important
 
 // ============================================================================
+// Project New page
+// ============================================================================
+
+#project-new-page
+  width: 90%
+
+  .oh-card
+    padding: 28px
+
+  .project-new-help
+    p
+      font-size: 14px
+      color: #4b5563
+      margin-bottom: 8px
+      html.dark &
+        color: #9ca3af
+
+  .form-control
+    box-sizing: border-box !important
+    border: 2px solid #e5e7eb !important
+    border-radius: 16px !important
+    -webkit-border-radius: 16px !important
+    -moz-border-radius: 16px !important
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important
+    background: #ffffff !important
+    color: #111827 !important
+    padding: 10px 16px !important
+    height: auto !important
+    width: 100% !important
+    transition: border-color 0.3s ease, box-shadow 0.3s ease
+    &::placeholder
+      color: #9ca3af !important
+      opacity: 1
+    &:hover
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important
+      border-color: #d1d5db !important
+    &:focus, &:focus-visible
+      border-color: #5A2A82 !important
+      outline: none !important
+      box-shadow: 0 0 0 4px rgba(90, 42, 130, 0.1) !important
+    html.dark &
+      background: #1D0631 !important
+      color: #ffffff !important
+      border-color: #5A2A82 !important
+      &::placeholder
+        color: #6b7280 !important
+      &:focus, &:focus-visible
+        border-color: #ffb91a !important
+        background: #1D0631 !important
+        box-shadow: 0 0 0 4px rgba(255, 185, 26, 0.1) !important
+
+  .project-new-examples
+    margin-top: 16px
+    padding: 14px 16px
+    background: #f9fafb
+    border: 1px solid #e5e7eb
+    border-radius: 12px
+    max-width: 100%
+    overflow: hidden
+    html.dark &
+      background: #2D1548
+      border-color: #5A2A82
+
+    .project-new-examples-label
+      font-size: 12px
+      font-weight: 600
+      text-transform: uppercase
+      letter-spacing: 0.05em
+      color: #6b7280
+      margin-bottom: 8px
+      html.dark &
+        color: #9ca3af
+
+    .project-new-example-item
+      margin-bottom: 6px
+      &:last-child
+        margin-bottom: 0
+
+    code
+      display: inline
+      font-size: 12px
+      color: #5A2A82
+      word-break: break-all
+      overflow-wrap: break-word
+      white-space: normal
+      html.dark &
+        color: #ffb91a
+
+    @media (max-width: 767px)
+      padding: 12px
+      code
+        font-size: 11px
+
+  @media (max-width: 767px)
+    width: 100% !important
+
+    &.margin_left_30, .project-new-title
+      margin-left: 0 !important
+      padding-left: 15px
+
+    .project-new-row
+      margin-left: 0 !important
+
+    .oh-card
+      padding: 16px
+      border-radius: 12px
+
+    .project-new-examples code
+      font-size: 11px
+
 // Project Edit / Basics Form
 // ============================================================================
 
 #project-edit-page
+  width: 90%
   .edit_project
     width: 90%
     margin: 0 auto
@@ -1908,7 +2019,80 @@ $dark-shadow-lg: 0 8px 16px rgba(0,0,0,0.48)
       flex: 1 1 0 !important
       min-width: 0
 
+  // Mobile responsive
+  @media (max-width: 767px)
+    width: 100% !important
+
+    .check-forge-title
+      margin-left: 0 !important
+      padding-left: 15px
+      font-size: 20px
+
+    .check-forge-row
+      margin-left: 0 !important
+
+    .oh-card
+      padding: 16px
+      border-radius: 12px
+
+    .check-forge-fieldset
+      margin-left: 0 !important
+      padding-left: 0
+      padding-right: 0
+
+    .control-label
+      font-size: 13px
+
+    // Vanity URL — stack add-on above input on very small screens
+    .project-url-prepend
+      flex-wrap: wrap
+
+      .add-on
+        border-right: 2px solid #e5e7eb
+        border-radius: 16px 16px 0 0
+        width: 100%
+        html.dark &
+          border-right-color: #5A2A82
+
+      .form-control
+        border-radius: 0 0 16px 16px !important
+        width: 100% !important
+
+    // License remove button
+    .license-remove-btn-wrap
+      float: right
+      text-align: right
+      padding: 0
+      margin: 0
+
+    .actions
+      .btn
+        width: 100%
+
 // About Project Basics — collapsible card (mirrors .about-code-locations-card)
+.source-code-fields
+  display: flex
+  gap: 8px
+  align-items: center
+  flex-wrap: nowrap
+
+  select.form-control
+    flex: 0 0 120px
+    width: 120px !important
+
+  input.form-control:not([id='repository_type'])
+    flex: 1 1 0
+    min-width: 0
+
+  @media (max-width: 767px)
+    flex-wrap: wrap
+    gap: 6px
+
+    select.form-control,
+    input.form-control
+      flex: 1 1 100% !important
+      width: 100% !important
+
 .about-project-basics-card
   background: #ffffff
   border-radius: 16px
@@ -2025,3 +2209,511 @@ $dark-shadow-lg: 0 8px 16px rgba(0,0,0,0.48)
         width: 100% !important
         float: none !important
         padding-left: 0
+
+// ── Users page ────────────────────────────────────────────────────────────────
+.pu-page
+  padding: 24px 0
+
+.pu-page__title
+  display: flex
+  align-items: center
+  gap: 12px
+  margin-bottom: 24px
+
+  h2
+    font-size: 26px
+    font-weight: 700
+    color: #111827
+    margin: 0
+
+    html.dark &
+      color: #ffffff
+
+.pu-page__title-icon
+  width: 36px
+  height: 36px
+  border-radius: 10px
+  background: linear-gradient(135deg, #5A2A82, #4338ca)
+  display: flex
+  align-items: center
+  justify-content: center
+  flex-shrink: 0
+  box-shadow: 0 2px 6px rgba(90,42,130,0.4)
+
+  .fa
+    color: #ffffff
+    font-size: 16px
+
+.pu-user-list
+  display: flex
+  flex-direction: column
+  gap: 16px
+  margin-bottom: 24px
+
+.pu-user-card
+  background-color: #ffffff
+  border-radius: 16px
+  border: 1px solid #e5e7eb
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08)
+  padding: 20px
+  display: flex
+  align-items: flex-start
+  justify-content: space-between
+  gap: 20px
+  transition: box-shadow 0.2s ease
+
+  &:hover
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)
+
+  html.dark &
+    background-color: #2D1548
+    border-color: rgba(90,42,130,0.4)
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3)
+
+    &:hover
+      box-shadow: 0 3px 6px rgba(0,0,0,0.32), 0 3px 6px rgba(0,0,0,0.46)
+
+  &__left
+    display: flex
+    align-items: flex-start
+    gap: 16px
+    flex: 1
+    min-width: 0
+
+  &__avatar-link
+    flex-shrink: 0
+
+    img
+      width: 56px
+      height: 56px
+      border-radius: 8px
+      object-fit: cover
+      display: block
+
+  &__info
+    flex: 1
+    min-width: 0
+
+  &__name
+    font-size: 16px
+    font-weight: 700
+    margin: 0 0 4px
+
+    a
+      color: #5A2A82
+      text-decoration: none
+
+      &:hover
+        text-decoration: underline
+
+      html.dark &
+        color: #ffb91a
+
+  &__stacks
+    font-size: 13px
+    color: #6b7280
+    margin-bottom: 12px
+
+    html.dark &
+      color: #9ca3af
+
+  &__contributions
+    margin-top: 4px
+
+  &__contributions-label
+    font-size: 11px
+    font-weight: 700
+    color: #374151
+    text-transform: uppercase
+    letter-spacing: 0.05em
+    margin: 0 0 6px
+
+    html.dark &
+      color: #d1d5db
+
+  &__right
+    display: flex
+    flex-direction: column
+    align-items: flex-end
+    gap: 6px
+    padding-top: 4px
+    flex-shrink: 0
+
+  &__kudo-label
+    font-size: 11px
+    font-weight: 700
+    color: #374151
+    text-transform: uppercase
+    letter-spacing: 0.05em
+    margin: 0
+
+    html.dark &
+      color: #d1d5db
+
+@media (max-width: 640px)
+  .pu-user-card
+    flex-direction: column
+    gap: 16px
+
+    &__right
+      flex-direction: row
+      align-items: center
+      gap: 8px
+
+// ── Project Badges page ───────────────────────────────────────────────────────
+#project_badges_page
+  padding: 24px 0
+
+  .pb-page__title
+    display: flex
+    align-items: flex-start
+    gap: 12px
+    margin-bottom: 24px
+
+  .pb-page__title-icon
+    width: 36px
+    height: 36px
+    border-radius: 10px
+    background: linear-gradient(135deg, #f59e0b, #ca8a04)
+    display: flex
+    align-items: center
+    justify-content: center
+    flex-shrink: 0
+    box-shadow: 0 2px 6px rgba(245,158,11,0.4)
+
+    .fa
+      color: #ffffff
+      font-size: 16px
+
+  .pb-page__title-text
+    h2
+      font-size: 22px
+      font-weight: 700
+      color: #111827
+      margin: 0 0 4px
+
+      a
+        color: #111827
+        text-decoration: none
+
+        &:hover
+          color: #5A2A82
+
+      html.dark &
+        color: #ffffff
+
+        a
+          color: #ffffff
+
+          &:hover
+            color: #ffb91a
+
+  .pb-page__subtitle
+    font-size: 13px
+    color: #6b7280
+    margin: 0
+
+    html.dark &
+      color: #9ca3af
+
+  // Custom table scroll wrapper — Bootstrap's .table-responsive is NOT used here
+  // because overflow-x:auto clamps overflow-y to auto (per CSS spec), which
+  // clips absolutely-positioned chosen dropdowns. On mobile, column widths
+  // naturally collapse; horizontal scroll is handled only when truly needed.
+  .pb-table-scroll
+    width: 100%
+
+  // Card wrapper
+  .pb-table-card
+    background-color: #ffffff
+    border-radius: 16px
+    border: 1px solid #e5e7eb
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08)
+    overflow: visible
+    margin-bottom: 20px
+
+    html.dark &
+      background-color: #2D1548
+      border-color: rgba(90,42,130,0.4)
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3)
+
+  // Round top corners via th — no overflow:hidden needed on the table
+  .pb-table__head th:first-child
+    border-radius: 16px 0 0 0
+
+  .pb-table__head th:last-child
+    border-radius: 0 16px 0 0
+
+  // Table
+  .pb-table
+    margin: 0
+    width: 100%
+    border-collapse: collapse
+
+    &.table
+      margin-bottom: 0
+
+  .pb-table__head
+    th
+      background-color: #f9fafb
+      padding: 12px 16px
+      font-size: 11px
+      font-weight: 700
+      text-transform: uppercase
+      letter-spacing: 0.05em
+      color: #6b7280
+      border-bottom: 1px solid #e5e7eb
+      border-top: none
+      white-space: nowrap
+
+      html.dark &
+        background-color: #1D0631
+        color: #9ca3af
+        border-bottom-color: rgba(90,42,130,0.3)
+
+  .pb-table__body
+    tr
+      border-bottom: 1px solid #f3f4f6
+
+      &:last-child
+        border-bottom: none
+
+      html.dark &
+        border-bottom-color: rgba(90,42,130,0.2)
+
+    td
+      padding: 14px 16px
+      vertical-align: middle
+      font-size: 13px
+      color: #374151
+
+      html.dark &
+        color: #d1d5db
+
+  // Inputs and selects inside table
+  .pb-table select,
+  .pb-table input[type="text"],
+  .pb-table input[type="url"],
+  .pb-table .badge_url_holder,
+  .pb-table .edit_url_field,
+  .pb-table .dirty_url_field
+    width: 100%
+    padding: 7px 10px
+    font-size: 13px
+    border: 1px solid #e5e7eb
+    border-radius: 8px
+    background-color: #f9fafb
+    color: #111827
+    transition: border-color 0.2s ease, box-shadow 0.2s ease
+    box-sizing: border-box
+
+    &:focus, &:focus-visible
+      outline: none
+      border-color: #5A2A82
+      box-shadow: 0 0 0 3px rgba(90,42,130,0.1)
+      background-color: #ffffff
+
+    html.dark &
+      background-color: #1D0631
+      border-color: rgba(90,42,130,0.5)
+      color: #ffffff
+
+      &:focus, &:focus-visible
+        border-color: #ffb91a
+        box-shadow: 0 0 0 3px rgba(255,185,26,0.1)
+
+  // Remove button inside table
+  .pb-table .btn-danger
+    background-image: none
+    border-radius: 8px
+    font-size: 12px
+    font-weight: 600
+    padding: 5px 10px
+
+  // Action buttons row
+  .pb-actions
+    display: flex
+    align-items: center
+    gap: 10px
+    flex-wrap: wrap
+    margin-top: 16px
+
+  .pb-actions__right
+    display: flex
+    align-items: center
+    gap: 8px
+    margin-left: auto
+
+  .pb-btn-new
+    display: inline-flex
+    align-items: center
+    gap: 6px
+    padding: 8px 18px
+    border-radius: 8px
+    border: 2px solid #5A2A82
+    background: transparent
+    color: #5A2A82
+    font-size: 14px
+    font-weight: 600
+    cursor: pointer
+    transition: all 0.2s ease
+
+    &:hover
+      background-color: #5A2A82
+      color: #ffffff
+
+    html.dark &
+      border-color: #ffb91a
+      color: #ffb91a
+
+      &:hover
+        background-color: #ffb91a
+        color: #1D0631
+
+  .pb-btn-save
+    display: inline-flex
+    align-items: center
+    padding: 8px 24px
+    border-radius: 8px
+    border: none
+    background: linear-gradient(135deg, #5A2A82, #7B3FB5)
+    color: #ffffff
+    font-size: 14px
+    font-weight: 600
+    cursor: pointer
+    transition: opacity 0.2s ease
+
+    &:hover
+      opacity: 0.9
+
+  .pb-btn-cancel
+    display: inline-flex
+    align-items: center
+    padding: 8px 24px
+    border-radius: 8px
+    border: none
+    background-color: #e5e7eb
+    color: #374151
+    font-size: 14px
+    font-weight: 600
+    cursor: pointer
+    transition: background-color 0.2s ease
+
+    &:hover
+      background-color: #d1d5db
+
+    html.dark &
+      background-color: #1D0631
+      color: #d1d5db
+
+      &:hover
+        background-color: #180529
+
+  @media (max-width: 640px)
+    .pb-actions
+      flex-direction: column
+      align-items: stretch
+
+    .pb-actions__right
+      margin-left: 0
+      width: 100%
+
+      .pb-btn-save,
+      .pb-btn-cancel
+        flex: 1
+        justify-content: center
+
+  // ── Chosen dropdown fix ───────────────────────────────────────────────────
+  // Do NOT set position:relative on td — that can create stacking-context traps
+  // in some browsers. .chosen-container is the positioned ancestor for the drop.
+  .pb-table .chosen-container
+    width: 100% !important
+    position: relative
+
+  // Create a high stacking context only when the dropdown is open.
+  .pb-table .chosen-container.chosen-container-active
+    z-index: 9999
+
+  // Explicitly reveal the drop when open — chosen.css hides it via clip-path
+  // inset(100%,100%); override with higher specificity + !important to guarantee
+  // the drop is visible regardless of any ancestor overflow or stacking context.
+  .pb-table .chosen-container.chosen-with-drop .chosen-drop
+    clip: auto !important
+    -webkit-clip-path: none !important
+    clip-path: none !important
+    display: block !important
+
+  .pb-table .chosen-container-single .chosen-single
+    height: 34px
+    line-height: 34px
+    padding: 0 0 0 10px
+    background: #f9fafb !important
+    background-image: none !important
+    border: 1px solid #e5e7eb !important
+    border-radius: 8px !important
+    box-shadow: none !important
+    color: #111827
+    font-size: 13px
+
+    div b
+      background-image: none !important
+
+      &:before
+        content: '\f078'
+        font-family: FontAwesome
+        font-size: 11px
+        color: #6b7280
+        position: relative
+        top: 0
+
+  .pb-table .chosen-container-active.chosen-with-drop .chosen-single,
+  .pb-table .chosen-container-active > .chosen-single
+    border-color: #5A2A82 !important
+    box-shadow: 0 0 0 3px rgba(90,42,130,0.1) !important
+    background: #ffffff !important
+
+  .pb-table .chosen-drop
+    border: 1px solid #e5e7eb !important
+    border-top: none !important
+    border-radius: 0 0 8px 8px !important
+    box-shadow: 0 4px 6px rgba(0,0,0,0.08) !important
+    background: #ffffff !important
+    z-index: 9999 !important
+    position: absolute !important
+
+  .pb-table .chosen-results li
+    font-size: 13px
+    color: #111827 !important
+    padding: 7px 12px
+    background: #ffffff !important
+
+    &.highlighted
+      background: #5A2A82 !important
+      color: #ffffff !important
+
+    &.no-results
+      background: #f9fafb !important
+      color: #6b7280 !important
+
+  html.dark #project_badges_page
+    .pb-table .chosen-container-single .chosen-single
+      background: #1D0631 !important
+      border-color: rgba(90,42,130,0.5) !important
+      color: #ffffff
+
+    .pb-table .chosen-container-active.chosen-with-drop .chosen-single,
+    .pb-table .chosen-container-active > .chosen-single
+      border-color: #ffb91a !important
+      box-shadow: 0 0 0 3px rgba(255,185,26,0.1) !important
+      background: #1D0631 !important
+
+    .pb-table .chosen-drop
+      background: #1D0631 !important
+      border-color: rgba(90,42,130,0.5) !important
+
+    .pb-table .chosen-results li
+      color: #ffffff
+
+      &.highlighted
+        background: #ffb91a !important
+        color: #1D0631 !important

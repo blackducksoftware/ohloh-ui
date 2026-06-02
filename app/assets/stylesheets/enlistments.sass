@@ -8,6 +8,83 @@
       margin-bottom: 7px !important
       width: 148px
 
+@media (max-width: 767px)
+  .code-location-url
+    display: block
+    word-break: break-all
+    font-size: 13px
+
+#enlistment-edit-page
+  // Input fields — matches project basics form-control style
+  .form-control
+    box-sizing: border-box !important
+    border: 2px solid #e5e7eb !important
+    border-radius: 16px !important
+    -webkit-border-radius: 16px !important
+    -moz-border-radius: 16px !important
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important
+    background: #ffffff !important
+    color: #111827 !important
+    padding: 10px 16px !important
+    height: auto !important
+    width: 100% !important
+    transition: border-color 0.3s ease, box-shadow 0.3s ease
+    &::placeholder
+      color: #9ca3af !important
+      opacity: 1
+    &:hover
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important
+      border-color: #d1d5db !important
+    &:focus, &:focus-visible
+      border-color: #5A2A82 !important
+      outline: none !important
+      box-shadow: 0 0 0 4px rgba(14, 75, 122, 0.1) !important
+      background: #ffffff !important
+    html.dark &
+      background: #1D0631 !important
+      color: #ffffff !important
+      border-color: #5A2A82 !important
+      &::placeholder
+        color: #6b7280 !important
+        opacity: 1
+      &:hover
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important
+        border-color: #6b7280 !important
+      &:focus, &:focus-visible
+        border-color: #ffb91a !important
+        background: #1D0631 !important
+        box-shadow: 0 0 0 4px rgba(255, 185, 26, 0.1) !important
+        outline: none !important
+
+  // GitHub URL field — input-group add-on + input side by side
+  .input-group
+    display: flex !important
+    align-items: stretch !important
+    width: 100% !important
+
+    .input-group-addon
+      display: inline-flex !important
+      align-items: center
+      padding: 10px 12px
+      background: #f3f4f6
+      border: 2px solid #e5e7eb
+      border-right: none
+      border-radius: 16px 0 0 16px
+      color: #6b7280
+      font-size: 13px
+      white-space: nowrap
+      flex-shrink: 0
+      html.dark &
+        background: #2D1548
+        border-color: #5A2A82
+        color: #9ca3af
+
+    .form-control
+      border-radius: 0 16px 16px 0 !important
+      width: auto !important
+      flex: 1 1 0 !important
+      min-width: 0
+
     @media (max-width: 768px)
       flex-direction: row
       gap: 8px

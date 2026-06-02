@@ -1,13 +1,13 @@
-.table-responsive
-  %table.table
-    %thead
+.pb-table-scroll
+  %table.table.pb-table
+    %thead.pb-table__head
       %tr
-        %th.col-xs-2.no-left-padding= t('project_badges.repo_url')
-        %th.col-xs-2=  t('project_badges.badge_type')
-        %th.col-xs-3= t('project_badges.badge_url')
-        %th.col-xs-3= t('project_badges.badge_image')
-        %th.col-xs-2= t('project_badges.actions')
-    %tbody
+        %th.pb-col-repo= t('project_badges.repo_url')
+        %th.pb-col-type= t('project_badges.badge_type')
+        %th.pb-col-url= t('project_badges.badge_url')
+        %th.pb-col-image= t('project_badges.badge_image')
+        %th.pb-col-actions= t('project_badges.actions')
+    %tbody.pb-table__body
       - @active_badges.each do |badge|
         = render partial: 'edit_badge', locals: { badge: badge }
       - display_new_badge = 'display: none' if @project_badge.errors.empty?

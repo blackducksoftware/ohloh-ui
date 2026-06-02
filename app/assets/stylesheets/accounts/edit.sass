@@ -19,7 +19,8 @@
     html.dark &
       color: #9ca3af !important
   .chzn-container, .chosen p
-    width: 347px !important
+    max-width: 347px
+    width: 100% !important
 
   #location
     width: 85%
@@ -154,17 +155,39 @@
       padding: 16px 12px !important
 
   #account-edit-form
-    .form-group.margin_left_15
+    .col-md-5,
+    .col-md-push-1
+      width: 100% !important
+      left: 0 !important
+      float: none !important
+
+    .control-group,
+    .control-group.margin_left_15
       margin-left: 0 !important
       padding: 0
 
-      textarea.edit-description
-        width: 100% !important
-        box-sizing: border-box !important
-        font-size: 14px !important
+    .chzn-container,
+    .chosen p
+      width: 100% !important
 
-      .help-block
-        font-size: 12px !important
+    .form-control
+      width: 100% !important
+      box-sizing: border-box !important
+
+    textarea.edit-description
+      width: 100% !important
+      box-sizing: border-box !important
+      font-size: 14px !important
+
+    #location
+      width: 100% !important
+
+    .actions.col-md-10
+      width: 100% !important
+      padding: 0
+
+    .help-block
+      font-size: 12px !important
 
 @media (min-width: 768px) and (max-width: 1024px)
   #accounts_edits
@@ -173,13 +196,40 @@
       margin-right: 8px !important
 
   #account-edit-form
-    .form-group.margin_left_15
-      margin-left: 8px !important
-      padding-right: 8px
+    // Keep two columns side-by-side on tablet — just shrink them to fill available width
+    .col-md-5
+      width: 44% !important
+      float: left !important
 
-      textarea.edit-description
-        width: 100% !important
-        box-sizing: border-box !important
+    .col-md-5.col-md-push-1
+      width: 44% !important
+      margin-left: 4% !important
+      left: 0 !important
+      float: left !important
+
+    .control-group.margin_left_15
+      margin-left: 0 !important
+      padding-right: 0
+
+    // Unfix the hardcoded 347px chosen width so it fits the narrower column
+    .chzn-container,
+    .chosen p
+      width: 100% !important
+
+    .form-control
+      width: 100% !important
+      box-sizing: border-box !important
+
+    textarea.edit-description
+      width: 100% !important
+      box-sizing: border-box !important
+
+    #location
+      width: 100% !important
+
+    .actions.col-md-10
+      width: 92% !important
+      padding: 0
 
 .about-account-basics-card
   background: #ffffff
