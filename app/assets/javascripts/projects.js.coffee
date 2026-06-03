@@ -32,12 +32,20 @@ class App.ProjectForm
 class App.SimilarProjects
   constructor: ->
     return unless $('#projects_show_page').length
-    $('#similar_projects').html('')
+    $desktopDiv = $('#similar_projects')
+    $mobileDiv  = $('#similar_projects_mobile')
+    return unless $desktopDiv.length || $mobileDiv.length
+    $desktopDiv.html('')
+    $mobileDiv.html('')
     $('#related_spinner').removeClass('hidden')
-    projectId = $('#similar_projects').data('projectId')
+    $('#related_spinner_mobile').removeClass('hidden')
+    projectId = ($desktopDiv.length && $desktopDiv.data('projectId')) || $mobileDiv.data('projectId')
     $.ajax
       url: "/p/#{ projectId }/similar_by_tags.js"
+      success: (data) ->
+        $mobileDiv.html($desktopDiv.html())
       complete: ->
         $('#related_spinner').addClass('hidden')
+        $('#related_spinner_mobile').addClass('hidden')
 
 $(document).on 'page:change', -> new App.SimilarProjects()

@@ -2458,8 +2458,7 @@ body.dark #project_container .project-show-redesign,
 // Dark Mode - Login Modal & Add to Stacks Modal
 // ============================================================================
 html.dark
-  #LoginModal,
-  #stack-entries-modal
+  #LoginModal
     .modal-content
       background-color: #1D0631
       border: 1px solid rgba(90, 42, 130, 0.4)
@@ -2520,12 +2519,7 @@ html.dark
         i
           color: #9ca3af
 
-      // Stack checkbox rows
-      .stack-checkbox-container
-        border-bottom-color: rgba(90, 42, 130, 0.2)
-
-        span
-          color: #d1d5db
+      // Stack checkbox rows (legacy — now handled by .stack-entries-* scoped styles)
 
     .modal-footer
       border-top-color: rgba(90, 42, 130, 0.3)
@@ -2565,3 +2559,720 @@ html.dark #vulnerabilities-data .table-responsive > .table-striped > tbody > tr 
 
   &:hover
     color: #ffcc4d !important
+
+// ============================================================================
+// Add to Stacks Modal — Responsive Upgrade
+// ============================================================================
+#stack-entries-modal
+  .stack-entries-dialog
+    width: 100%
+    max-width: 520px
+    margin: 1.75rem auto
+
+    @media (max-width: 576px)
+      max-width: 100%
+      margin: 0.5rem
+
+  .stack-entries-content
+    border-radius: 12px
+    overflow: hidden
+    border: none
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15)
+
+  .stack-entries-header
+    display: flex
+    align-items: center
+    justify-content: space-between
+    padding: 1.25rem 1.5rem
+    border-bottom: 1px solid #e9ecef
+    background: linear-gradient(135deg, #f8f5ff 0%, #ffffff 100%)
+
+  .stack-entries-title
+    font-size: 1.1rem
+    font-weight: 600
+    color: #2d1548
+    margin: 0
+    display: flex
+    align-items: center
+    gap: 0.5rem
+
+    .fa
+      color: #7c3aed
+
+  .stack-entries-close
+    margin: 0
+    padding: 0.25rem 0.5rem
+    font-size: 1.4rem
+    line-height: 1
+    color: #6b7280
+    opacity: 1
+    float: none
+    order: 1
+
+    &:hover
+      color: #1f2937
+      opacity: 1
+
+  .stack-entries-body
+    padding: 1.25rem 1.5rem
+    max-height: 55vh
+    overflow-y: auto
+
+    @media (max-width: 576px)
+      max-height: 60vh
+      padding: 1rem
+
+  .stack-entries-subtitle
+    font-size: 0.95rem
+    color: #4b5563
+    margin-bottom: 1rem
+    text-align: center
+
+  .stack-entries-list
+    display: flex
+    flex-direction: column
+    gap: 0.5rem
+
+  .stack-entries-row
+    display: flex
+    align-items: center
+    justify-content: space-between
+    padding: 0.6rem 0.75rem
+    border-radius: 8px
+    border: 1px solid #e9ecef
+    background-color: #fafafa
+    transition: background-color 0.15s ease, border-color 0.15s ease
+
+    &:hover
+      background-color: #f3f0ff
+      border-color: #c4b5fd
+
+    @media (max-width: 576px)
+      flex-wrap: wrap
+      gap: 0.4rem
+
+  .stack-entries-row-left
+    display: flex
+    align-items: center
+    flex: 1
+    min-width: 0
+
+  .stack-entries-row-right
+    display: flex
+    align-items: center
+    gap: 0.5rem
+    flex-shrink: 0
+
+  .stack-entries-checkbox-wrap
+    display: flex
+    align-items: center
+    gap: 0.6rem
+    width: 100%
+
+  .stack-entries-checkbox
+    width: 16px
+    height: 16px
+    flex-shrink: 0
+    cursor: pointer
+    accent-color: #7c3aed
+
+  .stack-entries-label
+    display: flex
+    align-items: center
+    gap: 0.4rem
+    font-size: 0.9rem
+    color: #374151
+    cursor: pointer
+    margin: 0
+    white-space: nowrap
+    overflow: hidden
+    text-overflow: ellipsis
+
+  .stack-entries-stack-icon
+    color: #7c3aed
+    font-size: 0.8rem
+
+  .stack-entries-spinner
+    width: 16px
+    height: 16px
+
+  .stack-entries-message
+    font-size: 0.8rem
+    color: #059669
+
+  .stack-entries-footer
+    padding: 1rem 1.5rem
+    border-top: 1px solid #e9ecef
+    background-color: #fafafa
+
+    @media (max-width: 576px)
+      padding: 0.75rem 1rem
+
+  .stack-entries-new-form
+    margin: 0
+
+  .stack-entries-submit
+    width: 100%
+    font-size: 0.95rem
+    font-weight: 600
+    padding: 0.6rem 1rem
+    border-radius: 8px
+
+// Dark mode — Add to Stacks Modal
+html.dark #stack-entries-modal
+  .stack-entries-content
+    background-color: #1D0631
+    border: 1px solid rgba(90, 42, 130, 0.4)
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5)
+
+  .stack-entries-header
+    background: linear-gradient(135deg, #2D1548 0%, #1D0631 100%)
+    border-bottom-color: rgba(90, 42, 130, 0.3)
+
+  .stack-entries-title
+    color: #f3f4f6
+
+    .fa
+      color: #a78bfa
+
+  .stack-entries-close
+    color: #94a3b8
+
+    &:hover
+      color: #f3f4f6
+
+  .stack-entries-subtitle
+    color: #9ca3af
+
+  .stack-entries-row
+    background-color: #2D1548
+    border-color: rgba(90, 42, 130, 0.3)
+
+    &:hover
+      background-color: #3d1f60
+      border-color: rgba(159, 122, 186, 0.5)
+
+  .stack-entries-label
+    color: #d1d5db
+
+  .stack-entries-stack-icon
+    color: #a78bfa
+
+  .stack-entries-message
+    color: #6ee7b7
+
+  .stack-entries-footer
+    background-color: #1D0631
+    border-top-color: rgba(90, 42, 130, 0.3)
+
+  .stack-entries-submit
+    background-color: #FFB91A !important
+    border-color: #FFB91A !important
+    color: #1D0631 !important
+
+    &:hover,
+    &:focus
+      background-color: #FFCC4D !important
+      border-color: #FFCC4D !important
+
+// ============================================================================
+// Stacks Index Page — Responsive Upgrade
+// ============================================================================
+.stacks-index-page
+  max-width: 1200px
+  margin: 0 auto
+  padding: 24px 16px
+
+  @media (max-width: 576px)
+    padding: 16px 12px
+
+.stacks-page-header
+  display: flex
+  align-items: center
+  justify-content: space-between
+  flex-wrap: wrap
+  gap: 12px
+  margin-bottom: 24px
+  padding-bottom: 12px
+  border-bottom: 2px solid #e9ecef
+
+  html.dark &
+    border-bottom-color: rgba(90, 42, 130, 0.3)
+
+.stacks-page-title
+  font-size: 26px
+  font-weight: 700
+  color: #1f2937
+  margin: 0
+
+  html.dark &
+    color: #f3f4f6
+
+  @media (max-width: 576px)
+    font-size: 21px
+
+.stacks-new-btn
+  display: inline-flex
+  align-items: center
+  gap: 6px
+  border-radius: 8px
+  font-weight: 600
+  padding: 8px 16px
+  white-space: nowrap
+
+  @media (max-width: 400px)
+    font-size: 14px
+    padding: 6px 12px
+
+.stacks-layout
+  display: grid
+  grid-template-columns: 1fr 280px
+  gap: 24px
+  align-items: start
+
+  @media (max-width: 900px)
+    grid-template-columns: 1fr
+
+  @media (max-width: 576px)
+    gap: 16px
+
+.stacks-main
+  min-width: 0
+
+.stacks-card
+  margin-bottom: 16px
+  border-radius: 12px
+  transition: box-shadow 0.2s ease, transform 0.15s ease
+
+  &:hover
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12)
+    transform: translateY(-1px)
+
+  html.dark &:hover
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4)
+
+.stacks-card-header
+  display: flex
+  align-items: flex-start
+  justify-content: space-between
+  gap: 12px
+  padding: 16px 20px 8px
+
+  @media (max-width: 480px)
+    padding: 12px 16px 6px
+
+.stacks-card-title
+  font-size: 17px
+  font-weight: 600
+  margin: 0
+  min-width: 0
+
+.stacks-card-name
+  color: #7c3aed
+  text-decoration: none
+  word-break: break-word
+
+  &:hover
+    color: #5b21b6
+    text-decoration: underline
+
+  html.dark &
+    color: #a78bfa
+
+  html.dark &:hover
+    color: #c4b5fd
+
+.stacks-delete-btn
+  flex-shrink: 0
+  border-radius: 6px
+  font-size: 14px
+  padding: 5px 12px
+  line-height: 1.4
+
+.stacks-card-desc-link
+  display: block
+  padding: 0 20px
+  text-decoration: none
+
+  @media (max-width: 480px)
+    padding: 0 16px
+
+.stacks-card-desc
+  font-size: 16px
+  color: #4b5563
+  margin: 4px 0 8px
+  line-height: 1.6
+
+  html.dark &
+    color: #d1d5db
+
+.stacks-card-projects
+  display: flex
+  flex-wrap: wrap
+  gap: 6px
+  padding: 8px 20px
+
+  @media (max-width: 480px)
+    padding: 8px 16px
+
+.stacks-card-footer
+  padding: 8px 20px 12px
+  border-top: 1px solid #f3f4f6
+
+  html.dark &
+    border-top-color: rgba(90, 42, 130, 0.2)
+
+  @media (max-width: 480px)
+    padding: 8px 16px 10px
+
+.stacks-embed-link
+  font-size: 14px
+  color: #6b7280
+  text-decoration: none
+  display: inline-flex
+  align-items: center
+  gap: 6px
+
+  &:hover
+    color: #7c3aed
+
+  html.dark &
+    color: #9ca3af
+
+  html.dark &:hover
+    color: #a78bfa
+
+// Empty state
+.stacks-empty-state
+  text-align: center
+  padding: 48px 16px
+  background-color: #fafafa
+  border-radius: 12px
+  border: 2px dashed #e5e7eb
+
+  html.dark &
+    background-color: #2D1548
+    border-color: rgba(90, 42, 130, 0.3)
+
+.stacks-empty-icon
+  font-size: 48px
+  color: #d1d5db
+  margin-bottom: 16px
+  display: block
+
+  html.dark &
+    color: rgba(167, 139, 250, 0.3)
+
+.stacks-empty-text
+  font-size: 16px
+  color: #6b7280
+  margin: 0
+
+  html.dark &
+    color: #9ca3af
+
+.stacks-empty-link
+  color: #7c3aed
+  font-weight: 600
+  text-decoration: none
+
+  &:hover
+    text-decoration: underline
+
+  html.dark &
+    color: #a78bfa
+
+// Sidebar info card
+.stacks-sidebar
+  position: sticky
+  top: 16px
+
+  @media (max-width: 900px)
+    position: static
+    order: -1
+
+.stacks-info-card
+  border-radius: 12px
+  padding: 0
+
+.stacks-info-title
+  font-size: 15px
+  font-weight: 600
+  color: #374151
+  margin: 0
+  padding: 16px 20px 12px
+  border-bottom: 1px solid #e9ecef
+  display: flex
+  align-items: center
+  gap: 6px
+
+  .fa
+    color: #7c3aed
+
+  html.dark &
+    color: #d1d5db
+    border-bottom-color: rgba(90, 42, 130, 0.2)
+
+  html.dark & .fa
+    color: #a78bfa
+
+.stacks-info-text
+  font-size: 14px
+  color: #6b7280
+  line-height: 1.6
+  margin: 0
+  padding: 10px 20px
+
+  &:last-child
+    padding-bottom: 16px
+
+  html.dark &
+    color: #9ca3af
+
+  a
+    color: #7c3aed
+    text-decoration: none
+
+    &:hover
+      text-decoration: underline
+
+    html.dark &
+      color: #a78bfa
+
+// ============================================================================
+// Similar Projects Page — Responsive Upgrade
+// ============================================================================
+.similar-page
+  max-width: 1200px
+  margin: 0 auto
+  padding: 24px 16px
+
+  @media (max-width: 576px)
+    padding: 16px 12px
+
+.similar-page-header
+  margin-bottom: 24px
+  padding-bottom: 12px
+  border-bottom: 2px solid #e9ecef
+
+  html.dark &
+    border-bottom-color: rgba(90, 42, 130, 0.3)
+
+.similar-page-title
+  font-size: 26px
+  font-weight: 700
+  color: #1f2937
+  margin: 0
+
+  html.dark &
+    color: #f3f4f6
+
+  @media (max-width: 576px)
+    font-size: 21px
+
+.similar-section
+  margin-bottom: 40px
+
+.similar-section-heading
+  font-size: 18px
+  font-weight: 600
+  color: #374151
+  margin: 0 0 16px
+  display: flex
+  flex-wrap: wrap
+  align-items: baseline
+  gap: 6px
+
+  html.dark &
+    color: #e5e7eb
+
+  @media (max-width: 576px)
+    font-size: 16px
+
+.similar-project-name
+  color: #7c3aed
+  font-weight: 700
+
+  html.dark &
+    color: #a78bfa
+
+// Responsive card grid
+.similar-grid
+  display: grid
+  grid-template-columns: repeat(3, 1fr)
+  gap: 16px
+
+  @media (max-width: 900px)
+    grid-template-columns: repeat(2, 1fr)
+
+  @media (max-width: 560px)
+    grid-template-columns: 1fr
+
+// Individual project card
+.similar-card
+  display: flex
+  flex-direction: column
+  border-radius: 12px
+  overflow: hidden
+  transition: box-shadow 0.2s ease, transform 0.15s ease
+
+  &:hover
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12)
+    transform: translateY(-2px)
+
+  html.dark &:hover
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4)
+
+.similar-card-header
+  display: flex
+  align-items: flex-start
+  gap: 12px
+  padding: 16px 16px 10px
+
+.similar-card-icon
+  flex-shrink: 0
+
+  img
+    border-radius: 6px
+    display: block
+
+.similar-card-meta
+  flex: 1
+  min-width: 0
+
+.similar-card-title
+  font-size: 15px
+  font-weight: 600
+  margin: 0 0 4px
+  display: flex
+  flex-wrap: wrap
+  align-items: center
+  gap: 8px
+
+.similar-card-name
+  color: #7c3aed
+  text-decoration: none
+  word-break: break-word
+
+  &:hover
+    color: #5b21b6
+    text-decoration: underline
+
+  html.dark &
+    color: #a78bfa
+
+  html.dark &:hover
+    color: #c4b5fd
+
+.similar-compare-btn
+  font-size: 12px
+  color: #6b7280
+  text-decoration: none
+  white-space: nowrap
+  padding: 2px 8px
+  border: 1px solid #e5e7eb
+  border-radius: 4px
+  line-height: 1.4
+
+  &:hover
+    color: #7c3aed
+    border-color: #a78bfa
+    background-color: #f5f3ff
+
+  html.dark &
+    color: #9ca3af
+    border-color: rgba(90, 42, 130, 0.4)
+
+  html.dark &:hover
+    color: #a78bfa
+    background-color: rgba(90, 42, 130, 0.2)
+    border-color: rgba(167, 139, 250, 0.5)
+
+.similar-card-activity
+  font-size: 13px
+  color: #6b7280
+  position: relative
+
+  html.dark &
+    color: #9ca3af
+
+.similar-card-body
+  display: flex
+  flex-direction: column
+  gap: 6px
+  padding: 8px 16px 14px
+  border-top: 1px solid #f3f4f6
+
+  html.dark &
+    border-top-color: rgba(90, 42, 130, 0.2)
+
+.similar-card-row
+  display: flex
+  align-items: baseline
+  flex-wrap: wrap
+  gap: 4px
+  font-size: 13px
+
+.similar-card-label
+  color: #9ca3af
+  font-size: 12px
+  white-space: nowrap
+
+  html.dark &
+    color: #6b7280
+
+.similar-card-value
+  color: #374151
+  font-size: 13px
+
+  html.dark &
+    color: #d1d5db
+
+.similar-card-value-link
+  color: #7c3aed
+  text-decoration: none
+  font-size: 13px
+
+  &:hover
+    text-decoration: underline
+
+  html.dark &
+    color: #a78bfa
+
+// Empty state
+.similar-empty-state
+  padding: 32px 16px
+  background-color: #fafafa
+  border-radius: 12px
+  border: 2px dashed #e5e7eb
+  text-align: center
+
+  html.dark &
+    background-color: #2D1548
+    border-color: rgba(90, 42, 130, 0.3)
+
+.similar-empty-text
+  font-size: 15px
+  color: #6b7280
+  margin: 0 0 8px
+
+  html.dark &
+    color: #9ca3af
+
+.similar-action-link
+  color: #7c3aed
+  font-weight: 600
+  text-decoration: none
+
+  &:hover
+    text-decoration: underline
+
+  html.dark &
+    color: #a78bfa
+
+.similar-muted
+  color: #9ca3af
+  font-size: 13px
+
+  html.dark &
+    color: #6b7280

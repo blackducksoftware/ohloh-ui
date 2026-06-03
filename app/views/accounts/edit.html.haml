@@ -40,7 +40,7 @@
                 - error_tag @account, :email
                 %p.help-block
                   = t('.email_help')
-                  = link_to t('gravatar'), 'https://gravatar.com', target: '_blank'
+                  = link_to t('gravatar'), 'https://gravatar.com', target: '_blank', rel: 'noopener noreferrer'
 
             .control-group
               = f.label :url, t('.homepage_url'), class: 'control-label'

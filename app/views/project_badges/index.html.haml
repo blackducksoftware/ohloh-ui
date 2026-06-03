@@ -2,28 +2,24 @@
   content_for(:html_title) { t('.page_title', name: @project.name) }
 
 #project_badges_page
-  .pb-page__title
-    .pb-page__title-icon
-      %i.fa.fa-trophy
-    .pb-page__title-text
-      %h2
-        %strong
+  .pb-page__header
+    .pb-page__title
+      .pb-page__title-icon
+        %i.fa.fa-trophy{ 'aria-hidden' => 'true' }
+      .pb-page__title-text
+        %h2
           = link_to t(:settings), settings_project_path(@project)
           = ": #{t('.title')}"
-      %p.pb-page__subtitle= t('.listing')
+        %p.pb-page__subtitle= t('.listing')
 
   - if logged_in? && @project.edit_authorized?
     .pb-table-card
       = render 'editable_badges_table'
-    .clearfix
     .pb-actions
       - btn_css = 'display: none;' unless @project_badge.errors.empty?
       %button.pb-btn-new#add_badge_btn{ style: btn_css }
-        %i.fa.fa-plus
+        %i.fa.fa-plus{ 'aria-hidden' => 'true' }
         = t('.new_badge')
-      .pb-actions__right
-        %button.pb-btn-save= t('project_badges.save_badge')
-        %button.pb-btn-cancel= t('project_badges.cancel')
   - else
     .pb-table-card
       = render 'badges_table'

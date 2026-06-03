@@ -796,59 +796,114 @@ $pai_levels: (('very_high',0), ('high', 1), ('moderate', 2), ('low', 3), ('very_
     gap: 8px
     align-items: center
 
-.links-categories-grid
+.links-index-page
+  max-width: 1200px
+  margin: 0 auto
+  padding: 24px 16px
+
+  @media (max-width: 576px)
+    padding: 16px 12px
+
+.links-page-header
+  margin-bottom: 24px
+  padding-bottom: 12px
+  border-bottom: 2px solid #e9ecef
+
+  html.dark &
+    border-bottom-color: rgba(90, 42, 130, 0.3)
+
+.links-page-title
+  font-size: 22px
+  font-weight: 700
+  color: #1f2937
+  margin: 0
   display: flex
+  align-items: center
   flex-wrap: wrap
+  gap: 6px
+
+  html.dark &
+    color: #f3f4f6
+
+  @media (max-width: 576px)
+    font-size: 18px
+
+.links-settings-link
+  color: #7c3aed
+  text-decoration: none
+
+  &:hover
+    text-decoration: underline
+    color: #5b21b6
+
+  html.dark &
+    color: #a78bfa
+
+  html.dark &:hover
+    color: #c4b5fd
+
+.links-title-sep
+  color: #9ca3af
+  font-weight: 400
+
+.links-categories-grid
+  display: grid
+  grid-template-columns: repeat(2, 1fr)
   gap: 20px
-  align-items: flex-start
-
-  .links-category-card
-    flex: 1 1 calc(50% - 10px)
-    max-width: calc(50% - 10px)
-    max-height: 300px
-    overflow-y: auto
-    min-width: 0
-    margin-bottom: 0 !important
+  align-items: start
 
   @media (max-width: 767px)
-    .links-category-card
-      flex: 1 1 100%
-      max-width: 100%
+    grid-template-columns: 1fr
 
-  @media (max-width: 767px)
-    flex-direction: column
+.links-category-card
+  max-height: 340px
+  overflow-y: auto
+  margin-bottom: 0 !important
 
-    .links-category-card
-      min-width: 0
-      width: 100%
+.links-category-header
+  padding: 14px 16px 10px
+  border-bottom: 1px solid #f3f4f6
+
+  html.dark &
+    border-bottom-color: rgba(90, 42, 130, 0.2)
+
+.links-category-title
+  font-size: 15px
+  font-weight: 600
+  color: #374151
+  margin: 0
+
+  html.dark &
+    color: #e5e7eb
 
 .links-list
   display: flex
   flex-direction: column
-  gap: 8px
-  margin-bottom: 12px
+  padding: 8px 16px 4px
 
 .link-row
   display: flex
   align-items: center
   gap: 12px
   padding: 8px 0
-  border-bottom: 1px solid #e5e7eb
+  border-bottom: 1px solid #f3f4f6
 
   html.dark &
-    border-color: rgba(255, 255, 255, 0.08)
+    border-color: rgba(255, 255, 255, 0.06)
 
   &:last-child
     border-bottom: none
 
   .link-title
-    width: 160px
+    width: 150px
     flex-shrink: 0
+    font-size: 14px
     font-weight: 500
     color: #374151
     overflow: hidden
     text-overflow: ellipsis
     white-space: nowrap
+
     html.dark &
       color: #d1d5db
 
@@ -858,25 +913,38 @@ $pai_levels: (('very_high',0), ('high', 1), ('moderate', 2), ('low', 3), ('very_
     overflow: hidden
     text-overflow: ellipsis
     white-space: nowrap
+    font-size: 13px
 
     h5
       margin: 0
+
+    a
+      color: #7c3aed
+      text-decoration: none
+
+      &:hover
+        text-decoration: underline
+
+      html.dark &
+        color: #a78bfa
 
   .link-actions
     flex-shrink: 0
 
 .link-add-row
-  margin-top: 8px
+  padding: 10px 16px 14px
 
 .links-empty
-  color: #374151
-  font-style: italic
   display: block
-  margin-bottom: 8px
-  html.dark &
-    color: #d1d5db
+  font-size: 13px
+  font-style: italic
+  color: #9ca3af
+  padding: 10px 16px
 
-@media (max-width: 767px)
+  html.dark &
+    color: #6b7280
+
+@media (max-width: 576px)
   .link-row
     flex-wrap: wrap
     gap: 6px
@@ -886,7 +954,8 @@ $pai_levels: (('very_high',0), ('high', 1), ('moderate', 2), ('low', 3), ('very_
       white-space: normal
 
     .link-url
-      width: calc(100% - 80px)
+      flex: 1
+      min-width: 0
 
     .link-actions
       margin-left: auto
@@ -2362,13 +2431,20 @@ $dark-shadow-lg: 0 8px 16px rgba(0,0,0,0.48)
 
 // ── Project Badges page ───────────────────────────────────────────────────────
 #project_badges_page
-  padding: 24px 0
+  max-width: 1200px
+  margin: 0 auto
+  padding: 24px 16px
+
+  @media (max-width: 576px)
+    padding: 16px 12px
+
+  .pb-page__header
+    margin-bottom: 24px
 
   .pb-page__title
     display: flex
     align-items: flex-start
     gap: 12px
-    margin-bottom: 24px
 
   .pb-page__title-icon
     width: 36px
@@ -2391,22 +2467,30 @@ $dark-shadow-lg: 0 8px 16px rgba(0,0,0,0.48)
       font-weight: 700
       color: #111827
       margin: 0 0 4px
+      display: flex
+      flex-wrap: wrap
+      align-items: baseline
+      gap: 4px
+
+      @media (max-width: 576px)
+        font-size: 18px
 
       a
-        color: #111827
+        color: #7c3aed
         text-decoration: none
 
         &:hover
-          color: #5A2A82
+          color: #5b21b6
+          text-decoration: underline
 
       html.dark &
-        color: #ffffff
+        color: #f3f4f6
 
         a
-          color: #ffffff
+          color: #a78bfa
 
           &:hover
-            color: #ffb91a
+            color: #c4b5fd
 
   .pb-page__subtitle
     font-size: 13px
@@ -2422,6 +2506,8 @@ $dark-shadow-lg: 0 8px 16px rgba(0,0,0,0.48)
   // naturally collapse; horizontal scroll is handled only when truly needed.
   .pb-table-scroll
     width: 100%
+    overflow-x: auto
+    -webkit-overflow-scrolling: touch
 
   // Card wrapper
   .pb-table-card

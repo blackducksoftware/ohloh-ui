@@ -7,19 +7,6 @@
   overflow-x: hidden
   width: 100%
 
-  html.dark &
-    background-color: #1D0631
-    color: #fff
-
-  // Modern Header Styles
-  .modern-header
-    background: linear-gradient(to right, #000000, #1D0631, #5A2A82)
-    width: 100%
-    position: sticky
-    top: 0
-    z-index: 1000
-    overflow: hidden
-
   a:not(.btn):not(.logo-link)
     color: #1e40af
     text-decoration: underline
@@ -57,12 +44,11 @@
     display: none
 
   .modern-header-content
-    max-width: 1280px
+    max-width: 100%
     margin: 0 auto
     padding: 0 32px
     display: flex
     align-items: center
-    justify-content: space-between
     height: 60px
 
     @media (max-width: 540px)
@@ -75,6 +61,7 @@
     text-decoration: none
     transition: opacity 0.15s
     height: 60px
+    flex: 1
 
     &:hover
       opacity: 0.8
@@ -104,6 +91,7 @@
     align-items: center
     justify-content: center
     height: 40px
+    margin-right: 8px
 
     &:hover
       background-color: rgba(255, 255, 255, 0.1)
@@ -112,13 +100,13 @@
       font-size: 18px
       color: white
 
-  .theme-icon-light
-    width: 18px
-    height: 18px
-
   .theme-icon-light,
   .theme-icon-dark
     display: none
+
+  .theme-icon-light
+    width: 18px
+    height: 18px
 
   html.dark & .theme-icon-light
     display: inline-block
@@ -622,7 +610,7 @@
         color: #d1d5db
 
     span.medium
-      color: #fff
+      color: #000 !important
       background: rgb(231,140,135) !important
 
     span.low
@@ -662,8 +650,6 @@
   .row.details
     margin: 20px 0
 
-    .vuln-summary
-      margin-bottom: 15px
     > [class*="col-"]:first-child
       @media (max-width: 768px)
         padding-left: 10px !important
@@ -677,56 +663,6 @@
       flex-wrap: wrap
       gap: 12px
 
-      @media (max-width: 768px)
-        gap: 10px
-
-      .summary-info
-        background-color: #ffffff
-        border: 1px solid #e5e7eb
-        min-height: 55px
-        padding: 12px
-        border-radius: 8px
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1)
-        transition: all 0.2s
-        flex: 1 1 calc(25% - 12px)
-        min-width: 140px
-
-        @media (max-width: 768px)
-          flex: 1 1 calc(50% - 10px)
-          min-width: 0
-          padding: 10px
-          font-size: 14px
-
-        @media (max-width: 480px)
-          padding: 8px
-          font-size: 13px
-
-        .row
-          margin-left: 0
-          margin-right: 0
-
-        .row > [class*="col-"]
-          padding-left: 0
-          padding-right: 0
-
-        .fa-3x
-          @media (max-width: 576px)
-            font-size: 1.5em !important
-
-        &:hover
-          transform: translateY(-2px)
-          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1)
-
-        html.dark &
-          background-color: rgba(45, 21, 72, 0.5)
-          border-color: rgba(90, 42, 130, 0.3)
-          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3)
-
-          &:hover
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5)
-
-      .overflow-hidden
-        overflow: hidden
     .summary-info
       background-color: #ffffff
       border: 1px solid #e5e7eb
@@ -861,9 +797,6 @@
 
       @media (max-width: 576px)
         font-size: 14px
-
-      html.dark &
-        color: #9ca3af
 
       a
         color: #1e40af !important
@@ -1346,26 +1279,6 @@
     background: #f7f7f7
     border-radius: 8px
     padding: 8px
-    border-top: 1px solid #ddd
-    border-bottom: 1px solid #ddd
-    margin-bottom: 20px
-
-    html.dark &
-      background: rgba(45, 21, 72, 0.5)
-      border-top-color: rgba(90, 42, 130, 0.3)
-      border-bottom-color: rgba(90, 42, 130, 0.3)
-
-  .border-left
-    border-left: 1px solid #ddd
-
-    html.dark &
-      border-left-color: rgba(90, 42, 130, 0.3)
-
-  .border-right
-    border-right: 1px solid #ddd
-
-    html.dark &
-      border-right-color: rgba(90, 42, 130, 0.3)
     border-top: none
     border-bottom: none
 
@@ -1412,6 +1325,7 @@
         margin-left: 5%
         margin-right: 5%
         width: 90%
+        border-radius: 12px
 
       @media (max-width: 576px)
         margin-top: 10%
@@ -1420,36 +1334,6 @@
         background-color: #151b23
         box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5)
         border: 1px solid rgba(139, 122, 168, 0.2)
-
-  footer
-    margin-top: auto
-    border-top: 1px solid #e5e7eb
-    padding: 32px 16px
-    text-align: center
-    background-color: white
-
-    @media (max-width: 768px)
-      padding: 24px 12px
-
-    @media (max-width: 576px)
-      padding: 20px 10px
-
-    html.dark &
-      background-color: #1D0631
-      border-top-color: rgba(255, 255, 255, 0.1)
-
-    .footer-bottom
-      color: #b3b4b3
-      margin: 0
-      text-align: center
-      width: 100%
-      font-size: 14px
-
-      @media (max-width: 576px)
-        font-size: 12px
-
-      a
-        color: #b3b4b3
 
     .modal-header
       background-color: #6B46C1
