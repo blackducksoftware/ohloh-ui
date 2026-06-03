@@ -23,5 +23,5 @@
   %td.col-md-3.badge_image_container
     = image_tag @project_badge.try(:badge_url), alt: '' if @project_badge.identifier
   %td.col-md-2
-    %btn.icon-edit.btn.btn-mini.btn-primary.col-md-12#save_badge= t('project_badges.save_badge')
-    %btn.icon-edit.btn.btn-mini.btn-refresh.col-md-12#cancel_badge= t('project_badges.cancel')
+    %button.icon-edit.btn.btn-mini.btn-primary.col-md-12#save_badge{ type: 'button' }= t('project_badges.save_badge')
+    %button.icon-edit.btn.btn-mini.btn-refresh.col-md-12#cancel_badge{ type: 'button' }= t('project_badges.cancel')

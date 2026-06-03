@@ -9,10 +9,10 @@
     .about-content-wrapper
       .col-md-6
         %ul
-          %li!= t('.privacy_policy_html', href: link_to(t('.privacy_policy'), 'https://community.blackduck.com/s/article/Black-Duck-Open-Hub-Open-Hub-Privacy-Policy'))
+          %li!= t('.privacy_policy_html', href: link_to(t('.privacy_policy'), 'https://community.blackduck.com/s/article/Black-Duck-Open-Hub-Open-Hub-Privacy-Policy', target: '_blank', rel: 'noopener noreferrer'))
           %li= t('.admin_emails_from_openhub')
           %li= t('.opting_in')
       .col-md-6
         %ul
           %li= t('.opting_out')
-          %li!= t('.openhub_oauth_html', href: link_to(t('.oauth_api'), 'http://blog.openhub.net/oauth/'))
+          %li!= t('.openhub_oauth_html', href: link_to(t('.oauth_api'), 'https://github.com/blackducksoftware/ohloh_api/tree/main/examples/oauth2', target: '_blank', rel: 'noopener noreferrer'))

@@ -204,6 +204,7 @@
               %span.label= link_to t('.quick_reference.similar_projects'), similar_project_path(@project)
               %span.value
                 %div#similar_projects{ data: { project_id: @project.to_param } }
+                .hidden#related_spinner= image_tag('spinner.gif', alt: '')
 
             %li
               %span.label= link_to t('.quick_reference.managers'), project_managers_path(@project)
@@ -324,6 +325,7 @@
               %span.label= link_to t('.quick_reference.similar_projects'), similar_project_path(@project)
               %span.value
                 %div#similar_projects_mobile{ data: { project_id: @project.to_param } }
+                .hidden#related_spinner_mobile= image_tag('spinner.gif', alt: '')
             %li
               %span.label= link_to t('.quick_reference.managers'), project_managers_path(@project)
               %span.value

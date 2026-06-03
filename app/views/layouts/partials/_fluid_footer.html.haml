@@ -10,25 +10,25 @@
       = "ABOUT BLACK DUCK"
       %p
       %p
-        %a{ href: 'https://www.blackduck.com/solutions/application-security-testing.html' }= 'Application Security Testing'
+        %a{ href: 'https://www.blackduck.com/solutions/application-security-testing.html', target: '_blank', rel: 'noopener noreferrer' }= 'Application Security Testing'
       %p
-        %a{ href: 'https://www.blackduck.com/services.html' }= 'Application Security Services'
+        %a{ href: 'https://www.blackduck.com/services.html', target: '_blank', rel: 'noopener noreferrer' }= 'Application Security Services'
       %p
-        %a{ href: 'https://www.blackduck.com/services/security-program/strategy-planning.html' }= 'AppSec Program Development'
+        %a{ href: 'https://www.blackduck.com/services/security-program/strategy-planning.html', target: '_blank', rel: 'noopener noreferrer' }= 'AppSec Program Development'
       %p
-        %a{ href: 'https://www.blackduck.com/training.html', target: '_blank' }= 'Training'
+        %a{ href: 'https://www.blackduck.com/training.html', target: '_blank', rel: 'noopener noreferrer' }= 'Training'
 
     .footer-right
       = "ABOUT OPEN HUB"
       %p
       %p
-        %a{ href: 'https://community.blackduck.com/s/black-duck-open-hub' }= t :forum
+        %a{ href: 'https://community.blackduck.com/s/black-duck-open-hub', target: '_blank', rel: 'noopener noreferrer' }= t :forum
       %p
-        %a{ href: 'https://community.blackduck.com/s/article/Black-Duck-Open-Hub-Terms-of-Use' }= t :terms
+        %a{ href: 'https://community.blackduck.com/s/article/Black-Duck-Open-Hub-Terms-of-Use', target: '_blank', rel: 'noopener noreferrer' }= t :terms
       %p
-        %a{ href: 'https://community.blackduck.com/s/article/Black-Duck-Open-Hub-Open-Hub-Privacy-Policy' }= t :privacy_blog
+        %a{ href: 'https://community.blackduck.com/s/article/Black-Duck-Open-Hub-Open-Hub-Privacy-Policy', target: '_blank', rel: 'noopener noreferrer' }= t :privacy_blog
       %p
-        %a{ href: 'https://github.com/blackducksoftware/ohloh-ui', target: '_blank' }= t('copyright.source_code')
+        %a{ href: 'https://github.com/blackducksoftware/ohloh-ui', target: '_blank', rel: 'noopener noreferrer' }= t('copyright.source_code')
       %p
         %a{ href: "mailto:#{raw_email}".html_safe }= t :contact_us
 
@@ -38,5 +38,5 @@
       = Time.current.year
       %span{ itemscope: '', itemtype: 'http://schema.org/CreativeWork' }
         %span{ itemprop: 'publisher' }
-          %a{ href: 'http://www.blackduck.com', target: '_blank' }= "Black Duck Software, Inc."
+          %a{ href: 'http://www.blackduck.com', target: '_blank', rel: 'noopener noreferrer' }= "Black Duck Software, Inc."
           = t('copyright.rights_text')

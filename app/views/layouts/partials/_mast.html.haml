@@ -28,13 +28,22 @@
         %li.menu_item.tools
           = link_to t(:tools_menu), tools_path, class: tools_select
         %li.menu_item.blog
-          %a{ href: 'https://community.blackduck.com/s/black-duck-open-hub?tabset-c30ff=d9d77', target: '_blank' }= t :blog
+          %a{ href: 'https://community.blackduck.com/s/black-duck-open-hub?tabset-c30ff=d9d77', target: '_blank', rel: 'noopener noreferrer' }= t :blog
         %li.menu_item.bdsa
           %a{ href: bdsa_vulnerabilities_path, target: '_blank' }= t :bdsa
     %div.actions-div
       %button#theme-toggle.theme-toggle-btn{ 'aria-label' => 'Toggle theme' }
         %i#theme-icon-moon.icon-moon.theme-icon
-        %i#theme-icon-sun.icon-sun.theme-icon.hidden
+        %svg#theme-icon-sun.theme-icon-light.theme-icon.hidden{ xmlns: 'https://www.w3.org/2000/svg', width: '24', height: '24', viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', 'stroke-width': '2', 'stroke-linecap': 'round', 'stroke-linejoin': 'round', 'aria-hidden': 'true' }
+          %circle{ cx: '12', cy: '12', r: '5' }
+          %line{ x1: '12', y1: '1', x2: '12', y2: '3' }
+          %line{ x1: '12', y1: '21', x2: '12', y2: '23' }
+          %line{ x1: '4.22', y1: '4.22', x2: '5.64', y2: '5.64' }
+          %line{ x1: '18.36', y1: '18.36', x2: '19.78', y2: '19.78' }
+          %line{ x1: '1', y1: '12', x2: '3', y2: '12' }
+          %line{ x1: '21', y1: '12', x2: '23', y2: '12' }
+          %line{ x1: '4.22', y1: '19.78', x2: '5.64', y2: '18.36' }
+          %line{ x1: '18.36', y1: '5.64', x2: '19.78', y2: '4.22' }
       %ul#top_nav_actions.desktop-actions
         - if logged_in?
           %li
@@ -76,7 +85,7 @@
         %li
           = link_to t(:tools_menu), tools_path, class: tools_select
         %li
-          %a{ href: 'https://community.blackduck.com/s/black-duck-open-hub?tabset-c30ff=d9d77', target: '_blank' }= t :blog
+          %a{ href: 'https://community.blackduck.com/s/black-duck-open-hub?tabset-c30ff=d9d77', target: '_blank', rel: 'noopener noreferrer' }= t :blog
         %li
           %a{ href: bdsa_vulnerabilities_path, target: '_blank' }= t :bdsa
       - if logged_in?

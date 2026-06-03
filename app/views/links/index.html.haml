@@ -7,47 +7,44 @@
 
 = render partial: 'layouts/partials/alert'
 
-.project_content_title
-  %h2.pull-left
-    = link_to t(:settings), settings_project_path(@project)
-    \:
-    = t('links.title').pluralize
+.links-index-page
+  .links-page-header
+    %h2.links-page-title
+      = link_to t(:settings), settings_project_path(@project), class: 'links-settings-link'
+      %span.links-title-sep :
+      = t('links.title').pluralize
 
-- if @links.empty?
-  - flash.now[:notice] = t('.empty_message')
+  - if @links.empty?
+    - flash.now[:notice] = t('.empty_message')
 
-.row.margin_left_10
-  .links.center-block
-    .links-categories-grid
-      - Link::CATEGORIES.each do |category_name, category_id|
-        - links = @links.collect { |l| l if l.link_category_id == category_id }.compact
-        .oh-card.links-category-card
-          %h3.strong.pull-left.margin_bottom_15.margin_top_0
-            = category_name
-          .clear_both
-          - if links.empty?
-            %i.links-empty= t('.no_links')
-          .links-list
-            - links.each do |link|
-              .link-row
-                .link-title= h link.title
-                .link-url
-                  = link_to bootstrap_icon('icon-external-link', safe_slice_host(link.url)),
-                      sanitize(link.url), target: '_blank', title: sanitize(link.url)
-                .link-actions
-                  - if has_permission
-                    %a.btn.btn-md.btn-primary{ href: edit_project_link_path(@project, link) }
-                      %i.icon-pencil= t('edit')
-                  - else
-                    = disabled_button bootstrap_icon('icon-pencil', t('edit')), class: 'btn-md btn-primary'
-          - unless links.any? && %w(Homepage Download).include?(category_name)
-            .link-add-row
-              - new_link_title = t('new_model', model: t('links.title'))
-              - if has_permission
-                - path = new_project_link_path(@project, category_id: category_id)
-                %a.btn.btn-md.btn-primary{ href: path }= new_link_title
-              - else
-                = disabled_button new_link_title, class: 'btn-md btn-primary'
+  .links-categories-grid
+    - Link::CATEGORIES.each do |category_name, category_id|
+      - links = @links.collect { |l| l if l.link_category_id == category_id }.compact
+      .oh-card.links-category-card
+        .links-category-header
+          %h3.links-category-title= category_name
+        - if links.empty?
+          %i.links-empty= t('.no_links')
+        .links-list
+          - links.each do |link|
+            .link-row
+              .link-title= h link.title
+              .link-url
+                = link_to bootstrap_icon('icon-external-link', safe_slice_host(link.url)),
+                    sanitize(link.url), target: '_blank', rel: 'noopener', title: sanitize(link.url)
+              .link-actions
+                - if has_permission
+                  %a.btn.btn-md.btn-primary{ href: edit_project_link_path(@project, link) }
+                    %i.icon-pencil= t('edit')
+                - else
+                  = disabled_button bootstrap_icon('icon-pencil', t('edit')), class: 'btn-md btn-primary'
+        - unless links.any? && %w(Homepage Download).include?(category_name)
+          .link-add-row
+            - new_link_title = t('new_model', model: t('links.title'))
+            - if has_permission
+              - path = new_project_link_path(@project, category_id: category_id)
+              %a.btn.btn-md.btn-primary{ href: path }= new_link_title
+            - else
+              = disabled_button new_link_title, class: 'btn-md btn-primary'
 
-.clearfix
 = render partial: 'about_links'
