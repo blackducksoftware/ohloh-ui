@@ -28,7 +28,7 @@ module PeopleHelper
   private
 
   def people_contribution_list_for_no_account(person)
-    contributions = person.contributions.includes(:project)
+    contributions = person.contributions
     contributions.empty? ? '' : people_contributes_to_sentence(contributions.map(&:project))
   end
 
