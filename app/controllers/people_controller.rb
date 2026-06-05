@@ -17,10 +17,10 @@ class PeopleController < UnclaimedController
 
   def find_index_people
     @claimed_people = Person.find_claimed(params[:query], 'relevance')
-                            .preload(account: :markup)
                             .paginate(page: 1, per_page: 3)
-    @unclaimed_people = unclaimed_people(params[:query], 'relevance', 3)
-    @unclaimed_people_count = Person::Count.unclaimed_by(params[:query], 'relevance')
+    @unclaimed_people = unclaimed_people(params[:query], 'relevance', 4)
+    @more_unclaimed = @unclaimed_people.length > 3
+    @unclaimed_people = @unclaimed_people.first(3)
   end
 
   def preload_data

@@ -17,7 +17,7 @@
     %h3
       %a.margin_top_20{ href: account_path(account), title: account.name }= truncate(account.name, length: 18)
     - markup_raw = account.markup ? account.markup.raw : ''
-    %p.small.word_break_all= truncate(Markup.create(raw: markup_raw).first_line, length: 75)
+    %p.small.word_break_all= truncate(Markup.new(raw: markup_raw).first_line, length: 75)
     .small.member_info
       - if account.projects.any?
         %p
