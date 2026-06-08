@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class PeopleController < UnclaimedController
+  include ApplicationHelper
   helper KudosHelper
 
   before_action :find_index_people, unless: :query_or_cache_exist, only: [:index]
@@ -12,7 +13,8 @@ class PeopleController < UnclaimedController
   private
 
   def query_or_cache_exist
-    params[:query].blank? && Rails.cache.exist?('people_index_page') && Rails.cache.exist?('people_index_page_device')
+    key = only_device? ? 'people_index_page_device' : 'people_index_page'
+    params[:query].blank? && Rails.cache.exist?(key)
   end
 
   def find_index_people
