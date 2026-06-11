@@ -45,10 +45,13 @@ class UnclaimedController < ApplicationController
     unclaimed_people_with_limit(name_ids)
   end
 
-  # NOTE: Since this approach avoids the *includes*, it takes 3x DB time. However this prevents memory hog.
+  # NOTE: Fetches all name_ids in a single query then groups in Ruby to avoid N+1.
   def unclaimed_people_with_limit(unclaimed_name_ids)
-    unclaimed_name_ids.map do |name_id|
-      [name_id, Person.include_relations_and_order_by_kudo_position_and_name(name_id).limit(UNCLAIMED_TILE_LIMIT).to_a]
+    people = Person.include_relations_for_name_ids(unclaimed_name_ids).to_a
+    grouped = people.group_by(&:name_id)
+    unclaimed_name_ids.filter_map do |name_id|
+      group = grouped[name_id]
+      [name_id, group.first(UNCLAIMED_TILE_LIMIT)] if group
     end
   end
 end
