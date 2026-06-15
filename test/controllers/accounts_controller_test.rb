@@ -317,7 +317,7 @@ class AccountsControllerTest < ActionController::TestCase
       text = 'about raw content'
       post :update, params: { id: account.to_param, account: { email: '', about_raw: text } }
 
-      assert_select 'textarea.edit-description', text: text
+      assert_select 'textarea.edit-field-textarea', text: text
     end
 
     it 'must not allow description beyond 500 characters' do

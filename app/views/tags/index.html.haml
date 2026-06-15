@@ -1,7 +1,9 @@
 %meta{ name: 'ROBOTS', content: 'NOINDEX, NOFOLLOW' }
 - names = params[:names].split.flatten
-- content_for(:html_title) { t('.page_title', names: names.collect { |n| "‘#{n}’" }.to_sentence) }
-
+- content_for(:html_title) { t('.page_title', names: names.collect { |n| "'#{n}'" }.to_sentence) }
+- content_for :session_projects_banner do
+  #sp_menu
+    = render 'session_projects/menu'
 #tag-index-page
   .row.margin_left_30
     .col-md-11

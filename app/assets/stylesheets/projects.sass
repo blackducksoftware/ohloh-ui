@@ -377,8 +377,8 @@ $pai_levels: (('very_high',0), ('high', 1), ('moderate', 2), ('low', 3), ('very_
     letter-spacing: -0.02em
     padding: 0
 
-    @media (min-width: 640px)
-      font-size: 30px !important
+    @media (min-width: 320px)
+      font-size: 24px !important
 
   .settings-page-description
     font-size: 14px
@@ -728,73 +728,6 @@ $pai_levels: (('very_high',0), ('high', 1), ('moderate', 2), ('low', 3), ('very_
       &:focus, &:focus-visible
         border-color: #ffb91a !important
         box-shadow: 0 0 0 4px rgba(255, 185, 26, 0.1) !important
-
-// License new form — Chosen select matching account basics style
-.license-form
-  legend
-    color: #111827 !important
-    font-weight: 600
-    html.dark &
-      color: #f3f4f6 !important
-
-  .control-label
-    color: #374151 !important
-    html.dark &
-      color: #d1d5db !important
-
-  .help-block
-    color: #374151 !important
-    html.dark &
-      color: #d1d5db !important
-
-  #value_select
-    .chosen-container-single .chosen-single
-      border: 2px solid #e5e7eb !important
-      border-radius: 16px !important
-      -webkit-border-radius: 16px !important
-      background: #ffffff !important
-      background-image: none !important
-      height: auto !important
-      padding: 10px 16px !important
-      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important
-      color: #111827 !important
-      line-height: 1.5 !important
-      width: 100% !important
-      &:hover
-        border-color: #d1d5db !important
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important
-    .chosen-container-active > .chosen-single,
-    .chosen-container-active.chosen-with-drop .chosen-single
-      border-color: #5A2A82 !important
-      box-shadow: 0 0 0 4px rgba(14, 75, 122, 0.1) !important
-    .chosen-container .chosen-drop
-      border-radius: 0 0 16px 16px !important
-      border-left: 2px solid #5A2A82 !important
-      border-right: 2px solid #5A2A82 !important
-      border-bottom: 2px solid #5A2A82 !important
-      border-top: none !important
-    .chosen-container
-      width: 100% !important
-    html.dark &
-      .chosen-container-single .chosen-single
-        background: #1D0631 !important
-        border-color: #5A2A82 !important
-        color: #ffffff !important
-        &:hover
-          border-color: #6b7280 !important
-      .chosen-container-active > .chosen-single,
-      .chosen-container-active.chosen-with-drop .chosen-single
-        border-color: #ffb91a !important
-        box-shadow: 0 0 0 4px rgba(255, 185, 26, 0.1) !important
-      .chosen-container .chosen-drop
-        border-left: 2px solid #ffb91a !important
-        border-right: 2px solid #ffb91a !important
-        border-bottom: 2px solid #ffb91a !important
-
-  .actions
-    display: flex
-    gap: 8px
-    align-items: center
 
 .links-index-page
   max-width: 1200px

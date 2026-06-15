@@ -1,30 +1,36 @@
 - content_for(:html_title) { t('.title') }
 
-.people-page-container
-  .people-page-header
-    %h1.people-page-title= t('.licenses')
-    .people-page-header__action
+#licenses-index-page
+  .licenses-page-header
+    %h1.licenses-page-title
+      %i.fa.fa-balance-scale
+      = t('.license')
+    .licenses-page-actions
       - if @project
         = link_to t('.edit_project_licenses'), edit_project_url(@project), class: 'btn btn-primary'
       - else
-        = link_to t('.add_new_license'), new_license_path, class: 'btn btn-md btn-primary'
+        = link_to t('.add_new_license'), new_license_path, class: 'btn btn-primary'
 
   - if @project && @licenses.empty?
-    %p= t('.no_license_for_project', name: h(@project.name))
-    %p
-      = t('.click')
-      = link_to t('.here'), edit_project_url(@project)
-      = t('.click_more')
+    .licenses-empty-state
+      %i.fa.fa-folder-open-o.licenses-empty-icon
+      %p.licenses-empty-text= t('.no_license_for_project', name: h(@project.name))
+      %p.licenses-empty-link
+        = t('.click')
+        = link_to t('.here'), edit_project_url(@project)
+        = t('.click_more')
 
   - else
     = render 'shared/search_dingus', collection: @licenses, sort_context: nil, no_match_found_type: :none
 
     %span{ itemscope: '', itemtype: 'http://schema.org/CreativeWork' }
       %span{ itemprop: 'publishingPrinciples' }
-        .licenses-list
+        .licenses-grid
           - @licenses.each do |license|
-            .oh-card.oh-card--hoverable.licenses-list__item
-              = link_to h(license.name), license_url(license), class: 'licenses-list__link'
+            .oh-card.oh-card--hoverable.license-card
+              .license-card-body
+                %i.fa.fa-file-text-o.license-card-icon
+                = link_to h(license.name), license_url(license), class: 'license-card-link'
 
   = render partial: 'shared/alert',
     locals: { message: t('shared.search_dingus.no_match_found.no_match') } if @licenses.blank? && params[:query].present?

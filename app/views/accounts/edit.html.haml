@@ -1,118 +1,177 @@
 - page_context[:select_footer_nav] = :settings
 - content_for(:html_title) { t('accounts.edit.page_title', name: @account.name) }
 
-.clearfix
-
 - if @account.latitude && @account.longitude
   - content_for :javascript do
     - callback = "EditMap.jumpMeTo(#{@account.latitude}, #{@account.longitude});"
     = javascript_tag "$(document).on('page:change', function(){#{callback}});"
 
 #accounts_edits
-  .margin_left_15
-    %h2.margin_left_15
-      = link_to t('settings'), settings_account_path(@account)
-      %span.account-basics-title= t('.account_basics')
-    .oh-card.margin_left_15#account-edit-form
-      = form_for @account do |f|
-        %fieldset.row-fluid
-          .col-md-5.col-sm-5
-            .control-group
-              = f.label :login, t('login'), class: 'control-label required'
-              .controls
-                = f.text_field :login, class: 'form-control check-availability',
-                                       'data-original-value' => Account.find_by(id: @account).try(:login),
-                                       'data-ajax-path' => account_check_availabilities_path,
-                                       'data-preview-base-url' => accounts_url
-                = render 'shared/availability_preview'
-                - error_tag @account, :login
+  .settings-page-header
+    .settings-page-header-row
+      .settings-page-icon
+        %i.fa.fa-user
+      %h2.settings-page-h2
+        = link_to t('settings'), settings_account_path(@account)
+        %span.account-basics-sep
+        = t('.account_basics')
+    %p.settings-page-description= t('accounts.settings.account_basics_settings')
 
-            .control-group
-              = f.label :name, t('name'), class: 'control-label'
-              .controls
-                = f.text_field :name, class: 'form-control'
-                - error_tag @account, :name
+  = form_for @account, html: { id: 'account-edit-form' } do |f|
+    .edit-form-grid
 
-            .control-group
-              = f.label :email, t('email_address'), class: 'control-label required'
-              .controls
-                = f.text_field :email, class: 'form-control'
-                - error_tag @account, :email
-                %p.help-block
-                  = t('.email_help')
-                  = link_to t('gravatar'), 'https://gravatar.com', target: '_blank', rel: 'noopener noreferrer'
+      / ── Left column ──────────────────────────────────────
+      .edit-form-col
 
-            .control-group
-              = f.label :url, t('.homepage_url'), class: 'control-label'
-              .controls
-                = f.text_field :url, class: 'form-control', value: @account.url
-                - error_tag @account, :url
+        .edit-section
+          .edit-section-header
+            .edit-section-icon
+              %i.fa.fa-id-card
+            %h3.edit-section-title Identity
 
-            .control-group
-              = f.label :twitter_account, t('twitter_id'), class: 'control-label'
-              .controls
-                = f.text_field :twitter_account, class: 'form-control'
-                - error_tag @account, :twitter_account
+          .edit-field-group
+            = f.label :login, t('login'), class: 'edit-field-label'
+            .edit-field-input-wrapper
+              %i.fa.fa-at.edit-field-icon
+              = f.text_field :login, class: 'edit-field-input check-availability',
+                                     placeholder: 'your_login',
+                                     'data-original-value' => Account.find_by(id: @account).try(:login),
+                                     'data-ajax-path' => account_check_availabilities_path,
+                                     'data-preview-base-url' => accounts_url
+            = render 'shared/availability_preview'
+            - error_tag @account, :login
 
-            .control-group
-              = f.label :organization_id, t('affiliation'), class: 'control-label'
-              .controls.chosen#value_select
-                = f.select :organization_id, OrganizationDecorator.select_options, {},
-                  class: 'value-select chzn-select form-control'
-                - error_tag @account, :organization_id
-                = f.text_field :organization_name, class: 'hidden margin_top_10 form-control', aria: { label: t('affiliation') }
-                = f.hidden_field :affiliation_type, aria: { label: t('affiliation') }
-                - error_tag @account, :organization_name
-                %p.help-block{ style: 'margin-top: 6px' }= t('.affiliation_help')
+          .edit-field-group
+            = f.label :name, t('name'), class: 'edit-field-label'
+            .edit-field-input-wrapper
+              %i.fa.fa-user.edit-field-icon
+              = f.text_field :name, class: 'edit-field-input', placeholder: 'Display name'
+            - error_tag @account, :name
 
-          .col-md-5.col-md-push-1.col-sm-5
-            .control-group
-              %label.control-label{ for: 'location_scratch' }!= t('.city_and_country')
-              .controls
-                %p.enabled
-                  %input.form-control#location_scratch{ type: :text, autocomplete: :off, value: @account.location }
-                  %a{ href: 'javascript:EditMap.clearLocation();' }= t('clear')
-                %p.error#not_found{ style: 'display:none' }
-                  = t('.location_error_message')
-                #map
-                = f.hidden_field :location
-                = f.hidden_field :country_code
-                = f.hidden_field :latitude
-                = f.hidden_field :longitude
+        .edit-section
+          .edit-section-header
+            .edit-section-icon
+              %i.fa.fa-envelope
+            %h3.edit-section-title Contact
 
-          .clearfix
+          .edit-field-group
+            = f.label :email, t('email_address'), class: 'edit-field-label'
+            .edit-field-input-wrapper
+              %i.fa.fa-envelope-o.edit-field-icon
+              = f.text_field :email, class: 'edit-field-input', placeholder: 'you@example.com'
+            - error_tag @account, :email
+            %p.edit-field-hint
+              = t('.email_help')
+              = link_to t('gravatar'), 'https://gravatar.com', target: '_blank', rel: 'noopener noreferrer'
 
-          .control-group.margin_left_15
-            = f.label :about_raw, t('bio'), class: 'control-label'
-            .control
-              - about_raw = @account.markup ? @account.markup.raw : ''
-              = f.text_area :about_raw, value: about_raw, class: 'edit-description', rows: '10'
-              - error_tag @account, 'markup.raw'
-              %p.help-block= t('.about_raw_help')
+          .edit-field-group
+            = f.label :url, t('.homepage_url'), class: 'edit-field-label'
+            .edit-field-input-wrapper
+              %i.fa.fa-globe.edit-field-icon
+              = f.text_field :url, class: 'edit-field-input', value: @account.url, placeholder: 'https://'
+            - error_tag @account, :url
 
-          .actions.col-md-10
-            = submit_tag t('save_changes'), class: 'btn btn-primary pull-left margin_right_10'
-            = link_to t('.delete_account'), confirm_delete_account_path(@account), class: 'btn btn-danger pull-left', style: 'height: 43px;'
+          .edit-field-group
+            = f.label :twitter_account, t('twitter_id'), class: 'edit-field-label'
+            .edit-field-input-wrapper
+              %i.fa.fa-twitter.edit-field-icon
+              = f.text_field :twitter_account, class: 'edit-field-input', placeholder: '@username'
+            - error_tag @account, :twitter_account
+
+        .edit-section
+          .edit-section-header
+            .edit-section-icon
+              %i.fa.fa-building
+            %h3.edit-section-title= t('affiliation')
+
+          .edit-field-group
+            = f.label :organization_id, t('affiliation'), class: 'edit-field-label'
+            .controls.chosen#value_select
+              = f.select :organization_id, OrganizationDecorator.select_options, {},
+                class: 'value-select chzn-select form-control'
+            - error_tag @account, :organization_id
+            = f.text_field :organization_name, class: 'hidden margin_top_10 form-control', aria: { label: t('affiliation') }
+            = f.hidden_field :affiliation_type, aria: { label: t('affiliation') }
+            - error_tag @account, :organization_name
+            %p.edit-field-hint= t('.affiliation_help')
+
+      / ── Right column ─────────────────────────────────────
+      .edit-form-col
+
+        .edit-section
+          .edit-section-header
+            .edit-section-icon
+              %i.fa.fa-map-marker
+            %h3.edit-section-title= t('.city_and_country')
+
+          .edit-field-group
+            %label.edit-field-label{ for: 'location_scratch' }!= t('.city_and_country')
+            .edit-field-input-wrapper
+              %i.fa.fa-map-marker.edit-field-icon
+              %input.edit-field-input#location_scratch{ type: :text, autocomplete: :off, value: @account.location, placeholder: 'City, Country' }
+            = link_to t('clear'), 'javascript:EditMap.clearLocation();', class: 'edit-clear-link'
+            %p.edit-field-error#not_found{ style: 'display:none' }= t('.location_error_message')
+            #map
+            = f.hidden_field :location
+            = f.hidden_field :country_code
+            = f.hidden_field :latitude
+            = f.hidden_field :longitude
+
+    / ── Bio — full width ──────────────────────────────────────
+    .edit-section.edit-section--full
+      .edit-section-header
+        .edit-section-icon
+          %i.fa.fa-pencil
+        %h3.edit-section-title= t('bio')
+
+      .edit-field-group
+        - about_raw = @account.markup ? @account.markup.raw : ''
+        = f.text_area :about_raw, value: about_raw, class: 'edit-field-textarea', rows: '6',
+                      placeholder: t('.about_raw_help')
+        - error_tag @account, 'markup.raw'
+        %p.edit-field-hint= t('.about_raw_help')
+
+    .edit-form-actions
+      = submit_tag t('save_changes'), class: 'edit-save-btn'
+      = link_to t('.delete_account'), confirm_delete_account_path(@account), class: 'edit-delete-btn'
 
 .about-account-basics-card
   .card-header
-    %h4.card-title
-      %span.soft= t('about')
-      = t('basics')
-    %button.expand-toggle{ type: 'button', 'aria-label' => 'Expand about section' }
+    .card-header-left
+      .card-header-icon
+        %i.fa.fa-info-circle
+      .card-header-text
+        %h4.card-title= t('about') + ' ' + t('basics')
+        %p.card-subtitle Tips for filling out your profile
+    %button.expand-toggle{ type: 'button', 'aria-label' => 'Toggle about section' }
       %i.fa.fa-chevron-down
 
   .card-content
-    .about-content-wrapper
-      .col-md-5
-        %ul
-          %li= t('.help_1')
-          %li
+    .tips-grid
+      .tip-item
+        .tip-icon
+          %i.fa.fa-tag
+        .tip-body
+          %p.tip-text= t('.help_1')
+
+      .tip-item
+        .tip-icon
+          %i.fa.fa-envelope
+        .tip-body
+          %p.tip-text
             = t('.help_2')
-            %b= t('.help_3')
-      .col-md-5
-        %ul
-          %li= t('.help_4')
-          %li= t('.help_5')
+            %strong= t('.help_3')
+
+      .tip-item
+        .tip-icon
+          %i.fa.fa-link
+        .tip-body
+          %p.tip-text= t('.help_4')
+
+      .tip-item
+        .tip-icon
+          %i.fa.fa-map-marker
+        .tip-body
+          %p.tip-text= t('.help_5')
 
 != map_init('map', @account.latitude ? 7 : 0)

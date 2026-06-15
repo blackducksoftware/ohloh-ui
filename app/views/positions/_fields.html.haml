@@ -76,7 +76,9 @@
       = link_to 'javascript:', class: 'collapsed' do
         %i.fa.fa-chevron-down.position-expand-icon
         = t('.describe_projects_and_languages')
-      = link_to t('.describe_projects_and_languages'), 'javascript:', class: 'expanded hidden'
+      = link_to 'javascript:', class: 'expanded hidden' do
+        %i.fa.fa-chevron-up.position-expand-icon
+        = t('.describe_projects_and_languages')
     .hidden#additional-fields
       .position-field-group
         %label.position-label{ for: 'position_language_exp' }= t('.what_did_u_program_in')

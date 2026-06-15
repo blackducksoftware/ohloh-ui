@@ -52,7 +52,7 @@ class LicensesControllerTest < ActionController::TestCase
 
       get :show, params: { id: @license.vanity_url }
 
-      _(assert_select('p')[1].text).must_equal "foo \n <link>"
+      _(assert_select('.license-description p').first.text).must_equal "foo \n <link>"
     end
   end
 

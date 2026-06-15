@@ -21,7 +21,9 @@
     - if @account.decorate.account_analysis_status_message
       %p= @account.decorate.account_analysis_status_message
     - else
-      .dev_chart_section
-        = render partial: 'accounts/show/commits_by_projects'
-      .dev_chart_section
-        = render partial: 'accounts/show/commits_by_language'
+      .dev-history-section
+        %h2= t('.dev_history')
+        .dev_chart_section
+          = render partial: 'accounts/show/commits_by_projects'
+        .dev_chart_section
+          = render partial: 'accounts/show/commits_by_language'
