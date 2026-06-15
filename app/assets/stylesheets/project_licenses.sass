@@ -1,0 +1,326 @@
+// Styles for app/views/project_licenses/
+
+// Legacy form styles (kept for backward compatibility)
+.license-form
+  legend
+    color: #111827 !important
+    font-weight: 600
+    html.dark &
+      color: #f3f4f6 !important
+
+  .control-label
+    color: #374151 !important
+    html.dark &
+      color: #d1d5db !important
+
+  .help-block
+    color: #374151 !important
+    html.dark &
+      color: #d1d5db !important
+
+  #value_select
+    .chosen-container-single .chosen-single
+      border: 2px solid #e5e7eb !important
+      border-radius: 16px !important
+      -webkit-border-radius: 16px !important
+      background: #ffffff !important
+      background-image: none !important
+      height: auto !important
+      padding: 10px 16px !important
+      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important
+      color: #111827 !important
+      line-height: 1.5 !important
+      width: 100% !important
+      &:hover
+        border-color: #d1d5db !important
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important
+    .chosen-container-active > .chosen-single,
+    .chosen-container-active.chosen-with-drop .chosen-single
+      border-color: #5A2A82 !important
+      box-shadow: 0 0 0 4px rgba(14, 75, 122, 0.1) !important
+    .chosen-container .chosen-drop
+      border-radius: 0 0 16px 16px !important
+      border-left: 2px solid #5A2A82 !important
+      border-right: 2px solid #5A2A82 !important
+      border-bottom: 2px solid #5A2A82 !important
+      border-top: none !important
+    .chosen-container
+      width: 100% !important
+    html.dark &
+      .chosen-container-single .chosen-single
+        background: #1D0631 !important
+        border-color: #5A2A82 !important
+        color: #ffffff !important
+        &:hover
+          border-color: #6b7280 !important
+      .chosen-container-active > .chosen-single,
+      .chosen-container-active.chosen-with-drop .chosen-single
+        border-color: #ffb91a !important
+        box-shadow: 0 0 0 4px rgba(255, 185, 26, 0.1) !important
+      .chosen-container .chosen-drop
+        border-left: 2px solid #ffb91a !important
+        border-right: 2px solid #ffb91a !important
+        border-bottom: 2px solid #ffb91a !important
+
+  .actions
+    display: flex
+    gap: 8px
+    align-items: center
+
+// New declared license page
+#project-license-new-page
+  padding: 24px 0
+
+  .license-new-card-header
+    display: flex
+    align-items: center
+    padding: 20px 24px 16px
+    border-bottom: 1px solid #e5e7eb
+    margin-bottom: 24px
+    html.dark &
+      border-bottom-color: rgba(90, 42, 130, 0.3)
+
+  .license-new-card-title
+    font-size: 18px
+    font-weight: 600
+    color: #111827
+    margin: 0
+    display: flex
+    align-items: center
+    gap: 10px
+    .fa
+      color: #5A2A82
+      font-size: 16px
+    html.dark &
+      color: #f3f4f6
+      .fa
+        color: #ffb91a
+
+  .license-new-form
+    padding: 0 24px 24px
+
+  .license-alert
+    display: flex
+    align-items: center
+    gap: 8px
+    margin: 0 24px 20px
+    border-radius: 8px
+    padding: 12px 16px
+    background: #fef2f2
+    border: 1px solid #fecaca
+    color: #b91c1c
+    .fa
+      font-size: 16px
+    html.dark &
+      background: rgba(185, 28, 28, 0.1)
+      border-color: rgba(185, 28, 28, 0.3)
+      color: #fca5a5
+
+  .license-field-group
+    margin-bottom: 20px
+
+  .license-field-label
+    display: block
+    font-size: 14px
+    font-weight: 600
+    color: #374151
+    margin-bottom: 8px
+    &.required::after
+      content: ' *'
+      color: #dc2626
+    html.dark &
+      color: #d1d5db
+
+  .license-select-wrap
+    margin-bottom: 8px
+    .chosen-container
+      width: 100% !important
+    .chosen-container-single .chosen-single
+      border: 1.5px solid #d1d5db
+      border-radius: 8px
+      background: #ffffff
+      background-image: none !important
+      height: auto
+      padding: 10px 14px
+      color: #111827
+      font-size: 14px
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05)
+      line-height: 1.5
+      &:hover
+        border-color: #9ca3af
+      span
+        display: block
+        overflow: hidden
+        text-overflow: ellipsis
+        white-space: nowrap
+        line-height: 1.5
+        margin-right: 26px
+    // Higher specificity (0,3,2) beats retina media query (0,2,2) to prevent double arrow on HiDPI
+    .chosen-container-single .chosen-single div b
+      background: none !important
+      background-image: none !important
+      margin-top: 10px
+    .chosen-container-active.chosen-with-drop .chosen-single,
+    .chosen-container-active > .chosen-single
+      border-color: #5A2A82
+      box-shadow: 0 0 0 3px rgba(90, 42, 130, 0.15)
+    .chosen-container .chosen-drop
+      border: 1.5px solid #5A2A82
+      border-top: none
+      border-radius: 0 0 8px 8px
+    html.dark &
+      .chosen-container-single .chosen-single
+        background: #1D0631 !important
+        border-color: #5A2A82
+        color: #f3f4f6
+      .chosen-container-active.chosen-with-drop .chosen-single,
+      .chosen-container-active > .chosen-single
+        border-color: #ffb91a
+        box-shadow: 0 0 0 3px rgba(255, 185, 26, 0.15)
+      .chosen-container .chosen-drop
+        border-color: #ffb91a
+
+  .license-help-text
+    font-size: 13px
+    color: #6b7280
+    margin-top: 6px
+    margin-bottom: 0
+    a
+      color: #5A2A82
+      text-decoration: none
+      &:hover
+        text-decoration: underline
+    html.dark &
+      color: #9ca3af
+      a
+        color: #ffb91a
+
+  .license-form-actions
+    display: flex
+    align-items: center
+    gap: 12px
+    padding-top: 8px
+    border-top: 1px solid #f3f4f6
+    margin-top: 24px
+    html.dark &
+      border-top-color: rgba(90, 42, 130, 0.2)
+
+  .btn-add-license
+    display: inline-flex
+    align-items: center
+    gap: 6px
+    padding: 9px 20px
+    font-weight: 600
+    border-radius: 8px
+    .fa
+      font-size: 13px
+
+  .btn-cancel-license
+    color: #6b7280
+    border-color: #d1d5db
+    border-radius: 8px
+    padding: 9px 18px
+    &:hover
+      background: #f9fafb
+      color: #374151
+    html.dark &
+      color: #9ca3af
+      border-color: #4b5563
+      &:hover
+        background: rgba(255, 255, 255, 0.05)
+        color: #d1d5db
+
+// Declared licenses index page
+#project-license-index-page
+  padding: 24px 0
+
+  .license-index-card-header
+    display: flex
+    align-items: center
+    justify-content: space-between
+    padding: 20px 24px 16px
+    border-bottom: 1px solid #e5e7eb
+    html.dark &
+      border-bottom-color: rgba(90, 42, 130, 0.3)
+
+  .license-index-card-title
+    font-size: 18px
+    font-weight: 600
+    color: #111827
+    margin: 0
+    display: flex
+    align-items: center
+    gap: 10px
+    .fa
+      color: #5A2A82
+      font-size: 16px
+    html.dark &
+      color: #f3f4f6
+      .fa
+        color: #ffb91a
+
+  .license-list
+    padding: 8px 0
+
+  .license-list-item
+    display: flex
+    align-items: center
+    justify-content: space-between
+    padding: 12px 24px
+    border-bottom: 1px solid #f3f4f6
+    &:last-child
+      border-bottom: none
+    html.dark &
+      border-bottom-color: rgba(255, 255, 255, 0.06)
+
+  .license-name
+    display: flex
+    align-items: center
+    gap: 10px
+    font-size: 16px
+    color: #111827
+    font-weight: 500
+    .fa
+      color: #6b7280
+      font-size: 14px
+    html.dark &
+      color: #f3f4f6
+
+  .license-actions
+    flex-shrink: 0
+
+  .btn-remove-license
+    display: inline-flex
+    align-items: center
+    gap: 5px
+    border-radius: 6px
+    .fa
+      font-size: 12px
+
+  .license-empty-state
+    display: flex
+    flex-direction: column
+    align-items: center
+    padding: 48px 24px
+    text-align: center
+    .license-empty-icon
+      font-size: 48px
+      color: #d1d5db
+      margin-bottom: 16px
+    .license-empty-text
+      font-size: 15px
+      color: #6b7280
+      margin: 0
+    html.dark &
+      .license-empty-icon
+        color: #4b5563
+      .license-empty-text
+        color: #9ca3af
+
+  .new-license
+    display: inline-flex
+    align-items: center
+    border-radius: 8px
+    padding: 8px 16px
+    font-weight: 600
+    font-size: 14px

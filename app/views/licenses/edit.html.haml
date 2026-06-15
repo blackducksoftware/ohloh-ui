@@ -1,15 +1,17 @@
 - content_for(:html_title) { t('.title', name: @license.name) }
 
 #license-edit-page
-  .row.margin_left_5
-    .col-md-10
-      #license
-        %h1
-          = link_to t('.license'), licenses_path
-          &nbsp;:
-          = link_to h(truncate(@license.name, length: 42)), license_url(@license), title: @license.name
-        %h2= t('.edit_license')
-      .oh-card
-        = form_for @license do |f|
-          %fieldset
-            = render 'fields', f: f
+  .license-edit-breadcrumb
+    = link_to t('.license'), licenses_path
+    %span.license-edit-sep /
+    = link_to h(truncate(@license.name, length: 42)), license_url(@license), title: @license.name
+    %span.license-edit-sep /
+    %span= t('.edit_license')
+  .license-edit-header
+    %h1.license-edit-title
+      %i.fa.fa-pencil
+      = t('.edit_license')
+  .oh-card.col-md-8
+    = form_for @license do |f|
+      %fieldset.margin_left_15
+        = render 'fields', f: f

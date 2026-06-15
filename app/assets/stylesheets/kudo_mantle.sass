@@ -327,6 +327,15 @@ html.dark .kudo-form
     &:hover
       background: linear-gradient(to right, #4a1f6e, #7c3aed)
 
+// ── Kudo loader: tint GIF to purple (#5A2A82) light / yellow (#ffb91a) dark ──
+#TB_load
+  img
+    filter: invert(18%) sepia(54%) saturate(1447%) hue-rotate(254deg) brightness(91%) !important
+
+html.dark #TB_load
+  img
+    filter: invert(69%) sepia(72%) saturate(653%) hue-rotate(1deg) brightness(105%) !important
+
 // ── Mobile responsive ────────────────────────────────────────────────────────
 @media (max-width: 540px)
   #TB_window.kudo-active,

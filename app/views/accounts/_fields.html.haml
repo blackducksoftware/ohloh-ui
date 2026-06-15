@@ -27,7 +27,7 @@
 
     / Honeypot — keep hidden for spam protection
     .control-group{ style: 'position: absolute; left: -9999px; opacity: 0;' }
-      %label Age (mandatory)
+      %label{ for: 'mandatory_age' } Age (mandatory)
       = text_field_tag :mandatory_age, nil, autocomplete: 'off', tabindex: '-1'
 
     = hidden_field_tag :visitor_id, Time.current.to_i

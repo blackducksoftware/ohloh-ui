@@ -486,6 +486,20 @@ button.unclaimed-card__btn
     flex-wrap: wrap
     gap: 24px
 
+#account-settings-page
+  max-width: 1024px
+  margin: 0 auto
+  padding: 0 24px 32px
+
+  @media (max-width: 639px)
+    padding: 0 16px 24px
+
+  .settings-grid
+    @media (min-width: 640px)
+      grid-template-columns: repeat(2, 1fr)
+    @media (min-width: 1024px)
+      grid-template-columns: repeat(2, 1fr)
+
 // ── Account settings (unchanged) ─────────────────────────────────────────────
 #analysis_timestamp
   margin-top: 0px

@@ -3,6 +3,165 @@
   font-size: 17px
   margin-bottom: 30px
 
+.committers_index
+  border-bottom: 1px solid #e5e7eb;
+  padding: 0 !important;
+  margin: 0 0 24px !important;
+  max-width: none !important;
+  width: 100%;
+  position: static;
+
+// Committer index page — body content aligned with account_header_inner
+.committers-page-body
+  max-width: 1024px
+  margin: 24px auto 0
+  padding: 0 16px
+
+  @media (min-width: 640px)
+    padding: 0 24px
+
+  // Push radio filter to the right inside the search bar
+  .search-filter-content .search-section:last-child
+    flex: 0 0 auto
+    margin-left: auto
+    min-width: 0
+
+// Committer show page — placeholder avatar (no real avatar for unclaimed committers)
+#account_icon.committer-icon-placeholder
+  display: flex
+  align-items: center
+  justify-content: center
+  background: linear-gradient(135deg, #e9d5ff 0%, #c4b5fd 100%)
+  border-color: rgba(90, 42, 130, 0.25)
+
+  html.dark &
+    background: linear-gradient(135deg, #3b0764 0%, #5b21b6 100%)
+
+  .fa-user
+    font-size: 36px
+    color: #5A2A82
+    opacity: 0.7
+
+    html.dark &
+      color: #c4b5fd
+
+// ── Claim page ───────────────────────────────────────────────────────────────
+.claim-breadcrumb
+  font-size: 14px
+  font-weight: 500
+  color: #374151
+  margin: 0 0 24px
+  line-height: 1.6
+
+  a
+    color: #5A2A82
+    text-decoration: none
+    &:hover
+      text-decoration: underline
+
+  &__sep
+    margin: 0 4px
+    color: #9ca3af
+
+  &__action
+    margin-left: 4px
+    color: #6b7280
+
+  html.dark &
+    color: #d1d5db
+    a
+      color: #c4b5fd
+    &__sep, &__action
+      color: #9ca3af
+
+.claim-positions-grid
+  display: grid
+  grid-template-columns: 1fr
+  gap: 16px
+  margin-bottom: 24px
+
+  @media (min-width: 640px)
+    grid-template-columns: repeat(2, 1fr)
+
+.claim-position-card
+  display: flex
+  flex-direction: row
+  align-items: flex-start
+  gap: 16px
+  padding: 16px !important
+
+  &__tile
+    flex-shrink: 0
+
+  &__fields
+    flex: 1
+    min-width: 0
+    display: flex
+    flex-direction: column
+    gap: 12px
+
+    .form-group
+      display: flex
+      flex-direction: column
+      gap: 4px
+      margin: 0
+
+    .form-control
+      box-sizing: border-box !important
+      border: 2px solid #e5e7eb !important
+      border-radius: 16px !important
+      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important
+      background: #ffffff !important
+      color: #111827 !important
+      padding: 10px 16px !important
+      height: auto !important
+      width: 100% !important
+      font-size: 14px
+      transition: border-color 0.3s ease, box-shadow 0.3s ease
+      &::placeholder
+        color: #9ca3af !important
+      &:hover
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important
+        border-color: #d1d5db !important
+      &:focus, &:focus-visible
+        border-color: #5A2A82 !important
+        outline: none !important
+        box-shadow: 0 0 0 4px rgba(90, 42, 130, 0.1) !important
+
+      html.dark &
+        background: #1D0631 !important
+        border-color: rgba(255, 255, 255, 0.15) !important
+        color: #e2e8f0 !important
+        &::placeholder
+          color: #6b7280 !important
+
+    textarea.form-control
+      resize: vertical
+      min-height: 72px
+
+  &__label
+    font-size: 13px
+    font-weight: 500
+    color: #374151
+    html.dark &
+      color: #d1d5db
+
+  &__error
+    font-size: 12px
+    color: #dc2626
+    margin: 0
+
+.claim-submit-row
+  display: flex
+  justify-content: flex-end
+  margin-bottom: 32px
+
+.claim-empty
+  color: #6b7280
+  font-size: 14px
+  margin: 0
+
+
 .show_more
   width: 138px
   height: 75px

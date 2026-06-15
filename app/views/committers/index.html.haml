@@ -7,22 +7,29 @@
     page_context[:select_footer_nav] = :unclaimed
   end
 
-%h1.margin_bottom_15= t('.people')
-%h3.margin_bottom_15= t('.heading')
-= render 'shared/search_dingus', collection: @unclaimed_people, filter_type: :radiobutton,
-  total_count: @unclaimed_people_count
+.committers_index
+  .account_header_inner
+    #account_name
+      %h1= t('.people')
+      .info_row
+        .info
+          %i.fa.fa-users
+          = t('.heading')
+.committers-page-body
+  = render 'shared/search_dingus', collection: @unclaimed_people, filter_type: :radiobutton,
+    total_count: @unclaimed_people_count
 
-- if @unclaimed_people.present?
-  - @unclaimed_people.each do |name_id, people|
-    = render 'people/unclaimed_person', people: people, name_id: name_id
+  - if @unclaimed_people.present?
+    - @unclaimed_people.each do |name_id, people|
+      = render 'people/unclaimed_person', people: people, name_id: name_id
 
-- elsif params[:query].present?
-  = link_to t('.see_all_committers'), committers_path, class: 'btn btn-info btn-small'
-  .clearfix
-- else
-  %p= t('.no_committer')
+  - elsif params[:query].present?
+    = link_to t('.see_all_committers'), committers_path, class: 'btn btn-info btn-small'
+    .clearfix
+  - else
+    %p= t('.no_committer')
 
-- if @unclaimed_people_count > @unclaimed_people.size
-  - remaining = @unclaimed_people_count - @unclaimed_people.size
-  .unshown_committers_info
-    = t('.remaining_committers_count', remaining: remaining)
+  - if @unclaimed_people_count > @unclaimed_people.size
+    - remaining = @unclaimed_people_count - @unclaimed_people.size
+    .unshown_committers_info
+      = t('.remaining_committers_count', remaining: remaining)

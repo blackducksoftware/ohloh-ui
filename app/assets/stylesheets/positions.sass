@@ -1,3 +1,40 @@
+#positions-index-page
+  max-width: 1024px
+  margin: 0 auto
+  padding: 0 24px 32px
+
+  @media (max-width: 639px)
+    padding: 0 16px 24px
+
+  .positions-section-header
+    margin: 0 0 16px
+
+    h2
+      font-size: 16px
+      font-weight: 600
+      color: #111827
+      line-height: 1.3
+      margin: 0
+      padding: 0
+      float: none
+      display: flex
+      align-items: center
+      gap: 12px
+      white-space: nowrap
+
+      html.dark &
+        color: #ffffff
+
+      &::after
+        content: ''
+        flex: 1
+        height: 1px
+        background: #e5e7eb
+        min-width: 40px
+
+        html.dark &
+          background: rgba(90, 42, 130, 0.2)
+
 .one-project-header-left
   margin-left: 15px
   margin-top: 5px
@@ -297,7 +334,6 @@
 
 // ── Position edit page ────────────────────────────────────────────────────────
 #position-edit-page
-  padding: 24px 16px
 
   .position-edit-title
     font-size: 22px
@@ -358,6 +394,33 @@
 
   &:last-child
     margin-bottom: 0
+
+  &.position_affiliation
+    .controls
+      display: flex
+      flex-direction: row
+      align-items: center
+      gap: 8px
+
+      select.chzn-select
+        display: none !important
+
+      .chosen-container
+        flex: 1
+        min-width: 0
+        width: auto !important
+
+        .chosen-single
+          width: 100%
+
+      .form-control:not(.chzn-select)
+        flex: 1
+        min-width: 0
+        width: auto !important
+
+    .position-help
+      flex: 0 0 100%
+      margin-top: 4px
 
 .position-label
   display: block
@@ -480,10 +543,6 @@
 
   .position-expand-icon
     font-size: 12px
-    transition: transform 0.2s ease
-
-  a.expanded .position-expand-icon
-    transform: rotate(180deg)
 
 // Project experience rows
 .position-project-exp
