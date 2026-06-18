@@ -63,7 +63,8 @@ class AvatarHelperTest < ActionView::TestCase
     end
 
     it 'should contain openhub host name' do
-      _(gravatar_url('123', 12)).must_equal 'https://gravatar.com/avatar/123?&s=12&rating=PG&d=https%3a%2f%2fopenhub.net%2fanon32.gif'
+      expected_url = "https://gravatar.com/avatar/123?&s=12&rating=PG&d=https%3a%2f%2f#{ENV.fetch('URL_HOST')}%2fanon32.gif"
+      _(gravatar_url('123', 12)).must_equal expected_url
     end
   end
 end

@@ -23,7 +23,7 @@ module OhlohUi
     config.generators.helper = false
     config.action_controller.include_all_helpers = false
     config.active_record.schema_format = :sql
-    config.action_mailer.default_url_options = { host: ENV.fetch('URL_HOST', nil) }
+    config.action_mailer.default_url_options = { host: ENV.fetch('URL_HOST') }
     config.active_job.queue_adapter = :sidekiq
 
     config.google_maps_api_key = ENV.fetch('GOOGLE_MAPS_API', nil)

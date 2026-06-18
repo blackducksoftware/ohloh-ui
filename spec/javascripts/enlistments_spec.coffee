@@ -30,7 +30,7 @@ describe 'Enlistments', ->
       submitBtn = $('.enlistment .submit')
       submitBtn.click()
       expect($(enlistmentForm).attr('action'))
-        .toEqual('https://www.openhub.net/p/owasp-owtf/enlistments')
+        .toEqual('https://www.openhub.blackduck.com/p/owasp-owtf/enlistments')
       expect('submit').toHaveBeenTriggeredOn(enlistmentForm)
       expect(spyEvent).toHaveBeenTriggered()
 

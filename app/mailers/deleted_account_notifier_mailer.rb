@@ -9,7 +9,7 @@ class DeletedAccountNotifierMailer < ApplicationMailer
     mail(
       to: recipient,
       subject: I18n.t('mailers.deleted_account_notifier_mailer.account_deleted'),
-      from: 'mailer@openhub.net',
+      from: ENV.fetch('MAILER_SENDER'),
       template_path: 'mailers', template_name: 'account_deletion_notification'
     )
   end

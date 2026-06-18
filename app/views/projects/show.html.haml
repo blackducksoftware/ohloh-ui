@@ -10,7 +10,7 @@
   %meta{ content: project_twitter_description(@project, @analysis), name: 'twitter:description' }
   - if @project.logo
     %meta{ content: @project.logo.attachment.url(:med), name: 'twitter:image' }
-  %meta{ content: 'https://www.openhub.net', name: 'twitter:domain' }
+  %meta{ content: "https://#{ENV.fetch('URL_HOST')}", name: 'twitter:domain' }
 
 %div.separator-div
   = project_analysis_timestamp(@project)

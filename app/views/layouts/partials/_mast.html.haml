@@ -1,6 +1,6 @@
 .navbar
   %span{ itemscope: '', itemtype: 'http://schema.org/CreativeWork' }
-    %span.hidden{ itemprop: 'author' } openhub.net
+    %span.hidden{ itemprop: 'author' }= ENV.fetch('URL_HOST')
     %span.hidden{ itemprop: 'publisher' } Black Duck Software, Inc.
     %span
       %div.logo-div

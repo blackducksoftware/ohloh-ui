@@ -9,7 +9,7 @@
   %label.control-label.required= t('.url_name')
   .controls
     .input-prepend.pull-left
-      %span.add-on= 'http://www.openhub.net/licenses/'
+      %span.add-on= "https://#{ENV.fetch('URL_HOST')}/licenses/"
     - read_only = @license.persisted? ? true : false
     = f.text_field :vanity_url, readonly: read_only, :class => 'check-availability col-md-6',
       autocomplete: 'off',

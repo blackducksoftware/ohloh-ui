@@ -12,7 +12,7 @@ describe AccountMailer do
     email = AccountMailer.signup_notification(user).deliver_now
     _(ActionMailer::Base.deliveries.count).must_equal before + 1
     _(email.to).must_equal [user.email]
-    _(email[:from].value).must_equal 'mailer@openhub.net'
+    _(email[:from].value).must_equal ENV.fetch('MAILER_SENDER')
     _(email.subject).must_equal I18n.t('account_mailer.signup_notification.subject')
     _(email.body.encoded).must_match I18n.t('.account_mailer.signup_notification.body', login: user.login)
   end
@@ -25,7 +25,7 @@ describe AccountMailer do
     end
 
     it 'should have the from address' do
-      _(mail.from).must_equal ['mailer@openhub.net']
+      _(mail.from).must_equal [ENV.fetch('MAILER_SENDER')]
     end
 
     it 'should have the receiver address' do
@@ -55,7 +55,7 @@ describe AccountMailer do
     let(:mail) { AccountMailer.reset_password(account.id) }
 
     it 'should have the from address' do
-      _(mail.from).must_equal ['mailer@openhub.net']
+      _(mail.from).must_equal [ENV.fetch('MAILER_SENDER')]
     end
 
     it 'should have the receiver address' do

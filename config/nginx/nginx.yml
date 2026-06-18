@@ -27,9 +27,9 @@ upstream:
 
 sites:
   openhub:
-    server_name: <%= { production: "www.openhub.net", staging: "staging.openhub.net", development: "0.0.0.0" }[ENV['RAILS_ENV']] %>
+    server_name: <%= { production: ENV.fetch('NGINX_SERVER_NAME'), staging: ENV.fetch('NGINX_STAGING_SERVER_NAME'), development: "0.0.0.0" }[ENV['RAILS_ENV']] %>
 
-    # openhub.net => www.openhub.net
+    # apex host => canonical www host
     always_www: <%= production? || staging? %>
 
     # Which root to use.  You can add a custom one here, too.
