@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class PeopleController < UnclaimedController
-  include ApplicationHelper
   helper KudosHelper
 
   before_action :find_index_people, unless: :query_or_cache_exist, only: [:index]
@@ -11,6 +10,10 @@ class PeopleController < UnclaimedController
   def rankings; end
 
   private
+
+  def only_device?
+    request.env['HTTP_USER_AGENT']&.match?(/(iPhone|BlackBerry|Android)/)
+  end
 
   def query_or_cache_exist
     key = only_device? ? 'people_index_page_device' : 'people_index_page'
