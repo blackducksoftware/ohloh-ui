@@ -148,6 +148,12 @@ var Charts = {
       width: 950,
       lang: {
         thousandsSep: ','
+      },
+      exporting: {
+        enabled: false
+      },
+      credits: {
+        enabled: false
       }
     })
 

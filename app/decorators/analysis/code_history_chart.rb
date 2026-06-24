@@ -9,12 +9,13 @@ class Analysis::CodeHistoryChart < Analysis::Chart
   end
 
   def data
-    series_and_range_data(@defaults)  end
+    series_and_range_data(@defaults)
+  end
 
   def data_for_lines_of_code
     data.deep_merge(ANALYSIS_CHARTS_OPTIONS['no_auxillaries'])
         .deep_merge(ANALYSIS_CHARTS_OPTIONS['lines_of_code'])
-          end
+  end
 
   private
 
