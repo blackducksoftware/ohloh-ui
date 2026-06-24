@@ -38,9 +38,10 @@ jobs:
         id: harness
         run: |
           if [ "${{ github.ref_name }}" = 'main' ]; then
-            echo "webhook_url=${{ secrets.HARNESS_WEBHOOK_URL_PROD }}" >> $GITHUB_OUTPUT
+            echo "webhook_url_prod=${{ secrets.HARNESS_WEBHOOK_URL_PROD }}" >> $GITHUB_OUTPUT
+            echo "webhook_url_stage=${{ secrets.HARNESS_WEBHOOK_URL_STAGE }}" >> $GITHUB_OUTPUT
           else
-            echo "webhook_url=${{ secrets.HARNESS_WEBHOOK_URL_STAGE }}" >> $GITHUB_OUTPUT
+            echo "webhook_url_stage=${{ secrets.HARNESS_WEBHOOK_URL_STAGE }}" >> $GITHUB_OUTPUT
           fi
 
       - name: Checkout ohloh-ui
@@ -196,13 +197,20 @@ jobs:
           [ -z "${{ inputs.chart_version }}" ] && \
             echo 'Waiting for Harness to fetch the charts' && sleep 90
 
-          response=$(curl -s -X POST \
-            -H 'content-type: application/json' \
-            --url "${{ steps.harness.outputs.webhook_url }}" \
-            -d "{\"version\":\"$IMAGE_TAG\"}")
+          trigger() {
+            response=$(curl -s -X POST \
+              -H 'content-type: application/json' \
+              --url "$1" \
+              -d "{\"version\":\"$IMAGE_TAG\"}")
+            if echo "$response" | grep -q 'status":"ERROR'; then
+              echo "Deployment failed for $2" && exit 1
+            fi
+          }
 
-          if echo "$response" | grep -q 'status":"ERROR'; then
-            echo "Deployment failed" && exit 1
+          trigger "${{ steps.harness.outputs.webhook_url_stage }}" "stage"
+
+          if [ "${{ github.ref_name }}" = 'main' ]; then
+            trigger "${{ steps.harness.outputs.webhook_url_prod }}" "prod"
           fi
 
           echo "Harness deployment triggered successfully"
