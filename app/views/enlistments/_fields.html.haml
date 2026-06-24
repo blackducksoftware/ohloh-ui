@@ -1,6 +1,6 @@
 %fieldset
   .control-group
-    %label.control-label.required= t('.scm_type')
+    %label.control-label.required{ for: 'repository_type' }= t('.scm_type')
     .controls.chosen#value_select
       %select.chzn-select.value-select{ name: 'code_location[scm_type]', id: 'repository_type' }
         = options_for_select_type(@code_location.scm_type)
@@ -8,15 +8,15 @@
   .control-group
     .controls
       .default-url-tags
-        %label.control-label.required= t('.enter_url')
-        = f.text_field :url, class: 'col-md-7', value: params.dig(:code_location, :url)
+        %label.control-label.required{ for: 'code_location_url' }= t('.enter_url')
+        = f.text_field :url, class: 'form-control', value: params.dig(:code_location, :url)
         - error_tag @code_location, :url
 
       .github.scm_info{ style: 'display: none;' }
-        %label.control-label.required= t('.enter_github_username')
+        %label.control-label.required{ for: 'code_location_github_url' }= t('.enter_github_username')
         .input-group
           %span.input-group-addon https://github.com/
-          = f.text_field :url, class: 'form-control'
+          = f.text_field :url, class: 'form-control', id: 'code_location_github_url'
         - error_tag @code_location, :url
 
       .clearfix
@@ -56,9 +56,11 @@
     .control-group.warning
       %label.control-label= t('.if_required')
       .controls
-        = f.text_field :username, placeholder: t('.username'), style: 'display:block;'
+        %label.control-label.sr-only{ for: 'code_location_username' }= t('.username')
+        = f.text_field :username, placeholder: t('.username'), class: 'form-control'
         - error_tag @code_location, :username
-        = f.text_field :password, placeholder: t('.password'), style: 'display:block;'
+        %label.control-label.sr-only{ for: 'code_location_password' }= t('.password')
+        = f.text_field :password, placeholder: t('.password'), class: 'form-control'
         - error_tag @code_location, :password
         %p.help-block.col-md-7
           %strong= t('.warning')
@@ -67,9 +69,9 @@
 
   .cvs.scm_info{ style: 'display: none;' }
     .control-group
-      %label.cotrol-label.required= t('.cvs_module_name')
+      %label.control-label.required{ for: 'code_location_cvs_branch' }= t('.cvs_module_name')
       .controls
-        = f.text_field :branch
+        = f.text_field :branch, class: 'form-control', id: 'code_location_cvs_branch'
         - error_tag @code_location, :branch
         %p.help-block
           = t('.enter_cvs')
@@ -78,9 +80,9 @@
 
   .git.scm_info{ style: 'display: none;' }
     .control-group
-      %label.control-label.required= t('.enter_git')
+      %label.control-label.required{ for: 'code_location_git_branch' }= t('.enter_git')
       .controls
-        = f.text_field :branch, value: params.dig(:code_location, :branch)
+        = f.text_field :branch, class: 'form-control', id: 'code_location_git_branch', value: params.dig(:code_location, :branch)
         - error_tag @code_location, :branch_name
         %p.help-block
           = t('.enter_git_name')
@@ -96,7 +98,7 @@
     - if logged_in? && @project.edit_authorized?
       = submit_tag t('.save_code_location'), class: 'btn btn-primary submit'
       %p.spinner{ style: 'display: none;' }
-        = image_tag 'spinner.gif'
+        = image_tag 'spinner.gif', alt: ''
         = t('.check_server_connection')
     - else
       = disabled_button t('.save_code_location'), class: 'btn-primary'

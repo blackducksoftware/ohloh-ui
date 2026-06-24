@@ -7,6 +7,7 @@ class FeedbacksController < ApplicationController
 
   def set_access_control_header
     headers['Access-Control-Allow-Origin'] = 'https://security.openhub.net'
+    headers['Access-Control-Allow-Private-Network'] = 'true' if request.method == 'OPTIONS'
   end
 
   def create

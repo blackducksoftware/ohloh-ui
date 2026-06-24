@@ -5,23 +5,19 @@
   page_context[:select_top_menu_nav] = :select_people
   page_context[:select_footer_nav] = :positions
 
-%h2.pull-left= t('contribution')
-.padding_top_5
-  = render 'accounts/show/account_analysis_timestamp', best_account_analysis: @account.best_account_analysis
-
-.clearfix
 #positions-index-page
+  .positions-section-header
+    %h2= t('contribution')
   - if @account.positions.exists?
     = render 'commits_by_projects_extended'
     .mezzo.padding_one_top
       - @positions.each do |position|
         = render 'commits_by_individual_projects', position: position
-      = will_paginate @positions
+      = render 'shared/modern_pagination', collection: @positions
   - else
     %p= t('.no_contributions_to_display')
-
-- if current_user == @account
-  = link_to new_account_position_path(@account), class: 'btn btn-small btn-primary' do
-    %i.icon-plus-sign
-      &nbsp;
-    = t('.claim_contribution')
+  - if current_user == @account
+    = link_to new_account_position_path(@account), class: 'btn btn-medium btn-primary' do
+      %i.icon-plus-sign
+        &nbsp;
+      = t('.claim_contribution')

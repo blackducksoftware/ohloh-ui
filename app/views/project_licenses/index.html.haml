@@ -8,35 +8,38 @@
     %h2.pull-left
       = link_to t(:settings), settings_project_path(@project)
       &nbsp;:&nbsp;#{t('.licenses')}
-    = project_analysis_timestamp(@project)
 
-- flash.now[:notice] = t('.no_licenses_for_project') if @project_licenses.empty?
+= render partial: 'layouts/partials/alert'
 
-.clearfix
+#project-license-index-page
+  .row
+    .col-md-6
+      .oh-card.margin_top_20
+        .license-index-card-header
+          %h3.license-index-card-title
+            %i.fa.fa-certificate
+            = t('.declared_licenses')
+          = show_license_button(@project)
 
-- if @project_licenses.any?
-  .declared_licenses
-    .col-md-7.well.col-md-offset-2
-      %h4= t('.declared_licenses')
-      %table{ style: 'width: 100%;' }
-        %tbody
-          - @project_licenses.each do |project_license|
-            %tr.license
-              %td.col-md-8.padding_one_top= project_license.license ? project_license.license.name : ''
-              %td.col-md-4.padding_one_top.last
-                .pull-right
+        - if @project_licenses.any?
+          .license-list
+            - @project_licenses.each do |project_license|
+              .license-list-item
+                .license-name
+                  %i.fa.fa-file-text-o
+                  = project_license.license ? project_license.license.name : ''
+                .license-actions
                   - if @project.edit_authorized?
-                    %a.btn.btn-small.btn-danger{ href: project_license_path(@project, project_license),
-                                                data: { method: :delete, confirm: t('.remove_confirm') } }
-                      %i.icon-trash= t '.remove'
+                    %a.btn.btn-sm.btn-danger.btn-remove-license{ href: project_license_path(@project, project_license),
+                                                                  data: { method: :delete, confirm: t('.remove_confirm') } }
+                      %i.fa.fa-trash
+                      = t('.remove')
                   - else
-                    = disabled_button bootstrap_icon('icon-trash', t('.remove')), class: 'btn-small btn-danger'
-          %tr
-            %td.padding_one_top{ colspan: '2' }= show_license_button(@project)
-    .clear
+                    = disabled_button bootstrap_icon('icon-trash', t('.remove')), class: 'btn-sm btn-danger'
+        - else
+          .license-empty-state
+            %i.fa.fa-folder-open-o.license-empty-icon
+            %p.license-empty-text= t('.no_licenses_for_project')
 
-- else
-  = show_license_button(@project)
-
-= yield page_context[:header_title] if page_context[:header_title]
-= render partial: 'project_licenses/about'
+    .col-md-6
+      = render partial: 'project_licenses/about'

@@ -35,7 +35,7 @@
               title: t('.link_title', org: h(p.organization.name.to_s)), rel: 'tooltip' }
                 %i.icon-warning-sign
                 = t('.report_text')
-  = will_paginate @projects
+  = render 'shared/modern_pagination', collection: @projects
   .clearfix &nbsp;
 
 .margin_top_10

@@ -4,18 +4,18 @@
   - unless errors.empty?
     %p.error= errors.join('. ')
 
-%fieldset
+%fieldset.manager-form
   .control-group
-    %label.control-label= t '.message_label'
+    %label.control-label{ for: 'manage_message' }= t '.message_label'
     .controls
-      = find_and_preserve(form.text_area(:message, rows: 10, max_length: 200, style: 'width: 100%'))
+      = find_and_preserve(form.text_area(:message, rows: 10, max_length: 200, class: 'form-control'))
     %p.help-block
     .center.soft
       = t('.message_help1', target_type: @parent.class.to_s.downcase)
       %br
       = t('.message_help2')
     %br
-    %span= t('.promise', target: html_escape(@parent.name), target_type: @parent.class)
+    .center.soft= t('.promise', target: html_escape(@parent.name), target_type: @parent.class)
 
   .actions
     .clear{ style: 'margin-top: 5px;' }

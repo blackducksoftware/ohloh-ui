@@ -2,13 +2,55 @@
   %p= t('organizations.outside_projects.no_outside_projects')
 - else
   %h3= t('organizations.outside_projects.outside_projects')
-  %table.table.table-striped.table-condensed
+
+  -# Mobile card view
+  .outside-projects-mobile-view
+    - @outside_projects.each do |project|
+      .outside-project-card
+        .card-header
+          .project-info
+            = link_to h(truncate(project.name, length: 30)), project_path(project), title: project.name, class: 'project-name'
+            .project-meta
+              %a.twenty_project_activity_level{ href: 'https://community.blackduck.com/s/article/Black-Duck-Open-Hub-About-Project-Activity-Icons',
+                target: '_blank',
+                rel: 'noopener noreferrer',
+                class: "twenty_project_activity_level_#{project.best_analysis.activity_level}",
+                title: project_activity_text(project, true) }
+                &nbsp;
+              - if project.rating_average && project.rating_average > 0
+                %span.org_project_rating
+                  != rating_stars('rating_star', project.rating_average, mini: true)
+
+        .card-stats
+          .stat-box
+            .stat-item
+              %span.stat-label= t('organizations.outside_projects.header_claimed_by')
+              %span.stat-value
+                - if project.organization
+                  %a{ href: organization_path(project.organization) }= h(project.organization.name)
+                - else
+                  = '—'
+
+          .stat-box
+            .stat-item
+              %span.stat-label= t('organizations.outside_projects.header_i_use_this')
+              %span.stat-value= project.user_count
+            .stat-item
+              %span.stat-label= t('organizations.outside_projects.header_num_of_affiliates')
+              %span.stat-value= project.contribs_count
+
+          .stat-box
+            .stat-item
+              %span.stat-label= t('organizations.outside_projects.header_all_time_commits')
+              %span.stat-sublabel= t('organizations.outside_projects.header_by_current_affiliates')
+              %span.stat-value= project.commits
+
+  -# Desktop table view
+  %table.table.table-striped.table-condensed.outside-projects-desktop-view
     %thead
-      %tr{ id: 'dingus-row' }
-        %td{ colspan: '10' } &nbsp;
       %tr
         %th{ style: 'width: 190px;' }= t('organizations.outside_projects.header_name')
-        %th.center{ style: 'width: 50px;' } &nbsp;
+        %th.center{ style: 'width: 50px;', scope: 'col', aria: { label: t('organizations.outside_projects.header_activity') } }
         %th.center{ style: 'width: 150px;' }= t('organizations.outside_projects.header_claimed_by')
         %th.center{ style: 'width: 90px;' }= t('organizations.outside_projects.header_i_use_this')
         %th.center{ style: 'width: 110px;' }= t('organizations.outside_projects.header_community_rating')

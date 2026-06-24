@@ -1,5 +1,68 @@
+.limit-label
+  color: #111827
+  html.dark &
+    color: #e5e7eb
+
+#api-key-form
+  .help-block
+    color: #595959 !important
+    html.dark &
+      color: #9ca3af !important
+
+  html.dark &
+    legend
+      color: #e5e7eb !important
+      border-bottom-color: #4b5563 !important
+
+  .form-control
+    width: 85% !important
+    box-sizing: border-box !important
+    border: 2px solid #e5e7eb !important
+    border-radius: 16px !important
+    -webkit-border-radius: 16px !important
+    -moz-border-radius: 16px !important
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important
+    background: #ffffff !important
+    color: #111827 !important
+    padding: 10px 16px !important
+    height: auto !important
+    transition: border-color 0.3s ease, box-shadow 0.3s ease
+    &::placeholder
+      color: #9ca3af !important
+      opacity: 1
+    &:hover
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important
+      border-color: #d1d5db !important
+    &:focus, &:focus-visible
+      border-color: #5A2A82 !important
+      outline: none !important
+      box-shadow: 0 0 0 4px rgba(14, 75, 122, 0.1) !important
+      background: #ffffff !important
+    html.dark &
+      background: #1D0631 !important
+      color: #ffffff !important
+      border-color: #5A2A82 !important
+      &::placeholder
+        color: #6b7280 !important
+        opacity: 1
+      &:hover
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -1px rgba(0, 0, 0, 0.1) !important
+        border-color: #6b7280 !important
+      &:focus, &:focus-visible
+        border-color: #ffb91a !important
+        background: #1D0631 !important
+        box-shadow: 0 0 0 4px rgba(255, 185, 26, 0.1) !important
+        outline: none !important
+
 label#request_limit
   font-size: 13px
+  display: flex
+  align-items: flex-start
+  gap: 8px
+  font-weight: normal
+  input[type="checkbox"]
+    margin-top: 3px
+    flex-shrink: 0
 
 .api_keys
   .padding_20
@@ -9,6 +72,8 @@ label#request_limit
     color: #666
     font-size: 12px
     font-weight: normal
+    html.dark &
+      color: #9ca3af
 
 #api_key_request_info
   .inline

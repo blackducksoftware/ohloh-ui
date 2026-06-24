@@ -1,55 +1,50 @@
+
 :ruby
   has_permission = logged_in? && @project.edit_authorized?
   content_for(:html_title) { t('.page_title', name: @project.name) }
   page_context[:select_top_menu_nav] = 'select_projects'
   page_context[:select_footer_nav] = nil
 
-.project_content_title
-  %h2.pull-left
-    = link_to t(:settings), settings_project_path(@project)
-    \:
-    = t('links.title').pluralize
-  = project_analysis_timestamp(@project)
+= render partial: 'layouts/partials/alert'
 
-- if @links.empty?
-  - flash.now[:notice] = t('.empty_message')
+.links-index-page
+  .links-page-header
+    %h2.links-page-title
+      = link_to t(:settings), settings_project_path(@project), class: 'links-settings-link'
+      %span.links-title-sep :
+      = t('links.title').pluralize
 
-.row
-  .links.center-block
+  - if @links.empty?
+    - flash.now[:notice] = t('.empty_message')
+
+  .links-categories-grid
     - Link::CATEGORIES.each do |category_name, category_id|
       - links = @links.collect { |l| l if l.link_category_id == category_id }.compact
-      .well
-        %h3.strong.pull-left.margin_bottom_15.margin_top_0
-          = category_name
-        .clear_both
-        .row
-          - if links.empty?
-            .col-md-4.margin_bottom_15
-              %i= t('.no_links')
-          .clearfix
+      .oh-card.links-category-card
+        .links-category-header
+          %h3.links-category-title= category_name
+        - if links.empty?
+          %i.links-empty= t('.no_links')
+        .links-list
           - links.each do |link|
-            .col-md-3.margin_bottom_25
-              = h link.title
-            .col-md-6
-              %h5.nomargin
+            .link-row
+              .link-title= h link.title
+              .link-url
                 = link_to bootstrap_icon('icon-external-link', safe_slice_host(link.url)),
-                    sanitize(link.url), target: '_blank', title: sanitize(link.url)
-            .col-md-2.nomargin.pull-right
-              - if has_permission
-                %a.btn.btn-mini.btn-primary{ href: edit_project_link_path(@project, link) }
-                  %i.icon-pencil= t('edit')
-              - else
-                = disabled_button bootstrap_icon('icon-pencil', t('edit')), class: 'btn-mini btn-primary'
-            .clearfix
-          .col-md-4
-            - unless links.any? && %w(Homepage Download).include?(category_name)
-              - new_link_title = t('new_model', model: t('links.title'))
-              - if has_permission
-                - path = new_project_link_path(@project, category_id: category_id)
-                %a.btn.btn-mini.btn-primary.pull-left{ href: path }= new_link_title
-              - else
-                = disabled_button new_link_title, class: 'pull-left btn-mini btn-primary'
-          .clearfix
+                    sanitize(link.url), target: '_blank', rel: 'noopener', title: sanitize(link.url)
+              .link-actions
+                - if has_permission
+                  %a.btn.btn-md.btn-primary{ href: edit_project_link_path(@project, link) }
+                    %i.icon-pencil= t('edit')
+                - else
+                  = disabled_button bootstrap_icon('icon-pencil', t('edit')), class: 'btn-md btn-primary'
+        - unless links.any? && %w(Homepage Download).include?(category_name)
+          .link-add-row
+            - new_link_title = t('new_model', model: t('links.title'))
+            - if has_permission
+              - path = new_project_link_path(@project, category_id: category_id)
+              %a.btn.btn-md.btn-primary{ href: path }= new_link_title
+            - else
+              = disabled_button new_link_title, class: 'btn-md btn-primary'
 
-.clearfix
 = render partial: 'about_links'

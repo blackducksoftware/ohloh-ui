@@ -1,21 +1,26 @@
 - content_for(:html_title) { t('.page_title', name: @project.name) }
 - page_context[:select_footer_nav] = :rss
-%h2.pull-left
-  = link_to t('.settings'), settings_project_path(@project)
+%h2
+  %strong= link_to t('.settings'), settings_project_path(@project)
   \:
-  = link_to t('.news_feed'), project_rss_subscriptions_path(@project)
-  = t('.new')
-= render 'shared/analysis_timestamp', analysis: @project.best_analysis, project: @project
+  %strong= link_to t('.news_feed'), project_rss_subscriptions_path(@project)
+  %strong= t('.new')
 
 .clearfix
-.col-md-8.col-md-offset-2
-  .well
-    = form_for @rss_feed, url: project_rss_subscriptions_url(@project), html: { method: :post } do |f|
-      = render partial: 'fields', locals: { f: f }
+.col-md-10.oh-card
+  = form_for @rss_feed, url: project_rss_subscriptions_url(@project), html: { method: :post } do |f|
+    = render partial: 'fields', locals: { f: f }
 
 .clearfix
-.coll-md-11
-  %h4.soft= t('.about')
-  %ul.margin_left_25
-    %li= t('.about_1')
-    %li= t('.about_2')
+.about-account-basics-card
+  .card-header
+    %h4.card-title
+      %span.soft= t('.about')
+    %button.expand-toggle{ type: 'button', 'aria-label' => 'Expand about section' }
+      %i.fa.fa-chevron-down
+  .card-content
+    .about-content-wrapper
+      .col-md-9
+        %ul.margin_left_25
+          %li= t('.about_1')
+          %li= t('.about_2')

@@ -1,7 +1,7 @@
-.padding_one_top
+.row.padding_one_top
   - if logged_in? && @organization.edit_authorized?
     = link_to t('.new_manager'), new_manager_organization_path(@organization),
-    class: 'btn btn-primary btn-small'
+    class: 'btn btn-primary btn-lg'
   - else
     = link_to t('.new_manager'), new_manager_organization_path(@organization),
-    class: "btn btn-primary btn-small #{logged_in? ? 'disabled' : 'needs_login'}"
+    class: "btn btn-primary btn-lg #{logged_in? ? 'disabled' : 'needs_login'}"

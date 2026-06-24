@@ -1,16 +1,81 @@
 - if @affiliated_projects.any?
   %h3= t('organizations.projects.title')
-  %table.table.table-striped.table-condensed
+
+  -# Mobile card view
+  .portfolio-mobile-view
+    - @affiliated_projects.each do |project|
+      - best_analysis                 = project.best_analysis
+      - twelve_month_summary          = best_analysis.twelve_month_summary
+      - previous_twelve_month_summary = best_analysis.previous_twelve_month_summary
+      - language                      = best_analysis.main_language
+
+      - best_analysis_decorator       = AnalysisDecorator.new(best_analysis)
+      - affiliated_commits_diff       = best_analysis_decorator.affiliated_commits_difference
+      - affiliated_committers_diff    = best_analysis_decorator.affiliated_committers_difference
+      - outside_commits_diff          = best_analysis_decorator.outside_commits_difference
+      - outside_committers_diff       = best_analysis_decorator.outside_committers_difference
+
+      .portfolio-project-card
+        .card-header
+          .project-info
+            = link_to h(truncate(project.name, length: 30)), project_path(project), title: project.name, class: 'project-name'
+            .project-meta
+              %a.twenty_project_activity_level{ href: 'https://community.blackduck.com/s/article/Black-Duck-Open-Hub-About-Project-Activity-Icons',
+                target: '_blank',
+                rel: 'noopener noreferrer',
+                class: "twenty_project_activity_level_#{project.best_analysis.activity_level}",
+                title: project_activity_text(project, true) }
+                &nbsp;
+              - if language
+                .lang_bg{ style: "background-color: ##{language_color(language.name)};" }
+                  = link_to language.nice_name, language_path(language), class: 'language_name',
+                    style: "color: ##{language_text_color(language.name)}"
+              - if project.rating_average.to_i > 0
+                %span.org_project_rating
+                  != rating_stars('rating_star', project.rating_average, mini: true)
+          .use-this-count
+            .count-value= project.user_count
+            .count-label= t('organizations.projects.i_use_this')
+
+        .card-stats
+          .stat-box
+            .stat-title= t('organizations.projects.contributors')
+            .stat-rows
+              .stat-row
+                %span.stat-label= t('organizations.projects.affiliated')
+                = render partial: 'project_commit_status', locals: { diff: affiliated_committers_diff,
+                  commit_count: twelve_month_summary.affiliated_committers_count,
+                  prev_commit_count: previous_twelve_month_summary.affiliated_committers_count }
+              .stat-row
+                %span.stat-label= t('organizations.projects.outside')
+                = render partial: 'project_commit_status', locals: { diff: outside_committers_diff,
+                  commit_count: twelve_month_summary.outside_committers_count,
+                  prev_commit_count: previous_twelve_month_summary.outside_committers_count }
+
+          .stat-box
+            .stat-title= t('organizations.projects.commits')
+            .stat-rows
+              .stat-row
+                %span.stat-label= t('organizations.projects.affiliated')
+                = render partial: 'project_commit_status', locals: { diff: affiliated_commits_diff,
+                  commit_count: twelve_month_summary.affiliated_commits_count,
+                  prev_commit_count: previous_twelve_month_summary.affiliated_commits_count }
+              .stat-row
+                %span.stat-label= t('organizations.projects.outside')
+                = render partial: 'project_commit_status', locals: { diff: outside_commits_diff,
+                  commit_count: twelve_month_summary.outside_commits_count,
+                  prev_commit_count: previous_twelve_month_summary.outside_commits_count }
+
+  -# Desktop table view
+  %table.table.table-striped.table-condensed.portfolio-desktop-view
     %thead
-      %tr{ id: 'dingus-row' }
-        %td{ colspan: '10' } &nbsp;
       %tr
         %th{ rowspan: 2, style: 'width: 190px;' }= t('organizations.projects.name')
-        %th.center{ rowspan: 2, style: 'width: 50px;' } &nbsp;
+        %th.center{ rowspan: 2, style: 'width: 50px;', scope: 'col', aria: { label: t('organizations.projects.activity') } }
         %th.center{ rowspan: 2, style: 'width: 120px;' }= t('organizations.projects.primary_language')
         %th.center{ rowspan: 2, style: 'width: 90px;' }= t('organizations.projects.i_use_this')
         %th.center{ rowspan: 2, style: 'width: 110px;' }= t('organizations.projects.community_rating')
-        %th.center{ rowspan: 2, style: 'width: 15px;' }
+        %th{ rowspan: 2, style: 'width: 15px;', aria: { hidden: 'true' } }
         %th.center{ colspan: 2, style: 'width:250px' }
           %strong= t('organizations.projects.twelve_month_activity')
       %tr
@@ -39,7 +104,7 @@
               - project_activity_level_class(project, :twenty)
           %td.center{ rowspan: 3 }
             - if language.nil?
-              N/A
+              = t('organizations.projects.not_available')
             - else
               .lang_bg{ style: "background-color: ##{language_color(language.name)};" }
                 = link_to language.nice_name, language_path(language), class: 'language_name',
@@ -48,7 +113,7 @@
             = project.user_count
           %td.center{ rowspan: 3 }
             - if project.rating_average.to_i.zero?
-              none
+              = t('organizations.projects.none')
             - else
               %span.org_project_rating
                 != rating_stars('rating_star', project.rating_average, mini: true)

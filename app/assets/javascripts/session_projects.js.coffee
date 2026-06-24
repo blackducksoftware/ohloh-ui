@@ -9,83 +9,128 @@ SessionProjects =
         url: "/session_projects?#{ timestamp }"
         success: SessionProjects.success
 
-  enable: ->
-    # Update all checkboxes on page to match those in the menu.
-    # This is primarily so that state will be cleaned up after back button.
-    $('.sp_input').prop('checked', false)
-    $('.sp_form.styled').removeClass('selected')
-    $('#sp_menu .sp_input').each ->
-      $(".sp_input[project_id='#{ $(this).attr('project_id') }']").prop('checked', true)
-      $("#sp_form_#{ $(this).attr('project_id') }").addClass('selected')
+    # Initialize compare checkboxes
+    SessionProjects.enable()
 
-    if $('#sp_menu .sp_input').length < 3
+  enable: ->
+    # Update all compare checkboxes on page to match those in the menu.
+    # This is primarily so that state will be cleaned up after back button.
+    $('.compare-checkbox').removeClass('selected')
+    $('.compare-checkbox i').removeClass('fa-check-square-o').addClass('fa-square-o')
+
+    # Mark selected projects from menu
+    $('#sp_menu .remove-project').each ->
+      project_id = $(this).data('project-id')
+      $(".compare-checkbox[data-project-id='#{ project_id }']").addClass('selected')
+      $(".compare-checkbox[data-project-id='#{ project_id }'] i").removeClass('fa-square-o').addClass('fa-check-square-o')
+
+    if $('#sp_menu .remove-project').length < 3
       # All checkboxes are enabled.
-      $('.sp_input')
-        .unbind('change')
-        .bind('change', SessionProjects.change)
-        .prop('disabled', false)
-        .parent().removeClass('disabled')
+      $('.compare-checkbox')
+        .off('click')
+        .on('click', SessionProjects.change)
+        .removeClass('disabled')
     else
       # Project limit reached. Can only uncheck checkboxes.
-      $('.sp_input')
-        .filter(':checked')
-        .unbind('change')
-        .bind('change', SessionProjects.change)
-        .prop('disabled', false)
-        .parent().removeClass 'disabled'
+      $('.compare-checkbox.selected')
+        .off('click')
+        .on('click', SessionProjects.change)
+        .removeClass('disabled')
       SessionProjects.disableUnchecked()
 
-    # Activate the x icon.
-    $('#sp_menu .sp_input')
-      .unbind('click')
-      .bind('click', SessionProjects.change)
+    # Activate the remove icons in menu.
+    $('#sp_menu .remove-project')
+      .off('click')
+      .on('click', SessionProjects.remove)
 
-    # Animate the appearance/disappearance of menu.
-    height = '0'
-    height = '2.6em' if $('#sp_menu .sp_input').length
-    $('#sp_menu').animate { 'min-height': height }, duration: 300
+    # Activate toggle button
+    $('#compare_toggle_btn')
+      .off('click')
+      .on('click', SessionProjects.toggleTray)
+
+    # Show/hide the entire compare bar
+    if $('#sp_menu .remove-project').length > 0
+      $('#sp_menu').fadeIn(200)
+      $('#projects_index_page').addClass('has-compare-tray')
+    else
+      $('#sp_menu').fadeOut(200)
+      $('#projects_index_page').removeClass('has-compare-tray')
 
   disableUnchecked: ->
-    $('.sp_input')
-      .not(':checked')
-      .unbind('change')
-      .prop('disabled', true)
-      .parent().addClass('disabled')
+    $('.compare-checkbox')
+      .not('.selected')
+      .off('click')
+      .addClass('disabled')
 
-  busy_span: "<span class='busy pull-left' style='padding: 0 18px 0;'>&nbsp;</span>"
-  compare_span: "<span class='sp_label pull-left'>Compare</span>"
+  toggleTray: ->
+    $tray = $('.compare-tray-content')
+    $icon = $('#compare_toggle_btn .toggle-icon')
+
+    if $tray.hasClass('expanded')
+      $tray.removeClass('expanded')
+      $icon.removeClass('rotate')
+    else
+      $tray.addClass('expanded')
+      $icon.addClass('rotate')
+    false
 
   change: ->
-    checked = $(this).is(':checked')
-    checked = false if $(this).hasClass('icon-remove-sign')
-    # force false for remove-icons
-    project_id = $(this).attr('project_id')
-    sel = $('.sp_input[project_id="' + project_id + '"]')
-    sel.siblings('span').replaceWith SessionProjects.busy_span
-    sel.prop('checked', checked).prop 'disabled', true
-    SessionProjects.disableUnchecked()
-    if checked
-      $.ajax
-        type: 'POST'
-        url: '/session_projects?project_id=' + project_id
-        success: SessionProjects.success
-    else
+    $checkbox = $(this)
+    return false if $checkbox.hasClass('disabled')
+
+    is_selected = $checkbox.hasClass('selected')
+    project_id = $checkbox.data('project-id')
+
+    # Show loading state
+    $checkbox.addClass('disabled')
+
+    if is_selected
+      # Uncheck
       $.ajax
         type: 'POST'
         url: '/session_projects/' + project_id
         data: '_method': 'delete'
         success: SessionProjects.success
+        error: -> $checkbox.removeClass('disabled')
+    else
+      # Check
+      $.ajax
+        type: 'POST'
+        url: '/session_projects?project_id=' + project_id
+        success: SessionProjects.success
+        error: (xhr) ->
+          if xhr.status == 403
+            alert(xhr.responseText)
+          $checkbox.removeClass('disabled')
+    false
+
+  remove: ->
+    project_id = $(this).data('project-id')
+    $.ajax
+      type: 'POST'
+      url: '/session_projects/' + project_id
+      data: '_method': 'delete'
+      success: SessionProjects.success
     false
 
   success: (data, textStatus, jqXHR) ->
+    # Remember if the tray was expanded
+    wasExpanded = $('.compare-tray-content').hasClass('expanded')
+
+    # Replace the HTML
     $('#sp_menu').html(data)
-    if _(data).isEmpty()
-      $('#page').css('margin-top', '0px')
-    else
-      $('#page').css('margin-top', '52px')
-    $('.busy').replaceWith(SessionProjects.compare_span)
     SessionProjects.enable()
+
+    # Restore expanded state if it was open
+    if wasExpanded
+      $('.compare-tray-content').addClass('expanded')
+      $('#compare_toggle_btn .toggle-icon').addClass('rotate')
+
     false
 
 $(document).on 'page:change', ->
+  SessionProjects.init()
+
+# Also initialize on regular page load
+$ ->
   SessionProjects.init()

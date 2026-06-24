@@ -10,7 +10,7 @@ class ProjectLicensesControllerTest < ActionController::TestCase
     get :index, params: { project_id: project.to_param }
     assert_response :ok
     assert_select '#flash-msg .alert', 1
-    assert_select 'tr.license', 0
+    assert_select '.license-list-item', 0
     assert_select 'a.new-license', 1
     assert_select 'a.new-license.needs_login', 1
     assert_select 'a.new-license.disabled', 0
@@ -26,7 +26,7 @@ class ProjectLicensesControllerTest < ActionController::TestCase
     assert_response :ok
     _(flash[:notice]).must_equal I18n.t('permissions.must_log_in')
     assert_select '#flash-msg .alert', 1
-    assert_select 'tr.license', 3
+    assert_select '.license-list-item', 3
     assert_select 'a.new-license', 1
     assert_select 'a.new-license.needs_login', 1
     assert_select 'a.new-license.disabled', 0
@@ -80,7 +80,7 @@ class ProjectLicensesControllerTest < ActionController::TestCase
     login_as create(:account)
     get :new, params: { project_id: project.to_param }
     assert_response :ok
-    assert_select 'input.add-license', 1
+    assert_select 'button.btn-add-license', 1
     assert_select 'a.add-license.needs_login', 0
     assert_select 'a.add-license.disabled', 0
   end

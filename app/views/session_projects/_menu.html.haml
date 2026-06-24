@@ -1,20 +1,43 @@
 - if @session_projects.any?
-  .inner
-    %p.col.pull-left{ style: 'margin-right: 3em' }
-      %strong= t('.compare_projects')
-      - if @session_projects.size == 3
-        %span.limit
-          = surround '(', ')' do
-            = t('.limit_reached')
-    %ul.nav.pull-left.margin_top_0
-      - @session_projects.each_with_index do |project, i|
-        %li{ class: ('last' if i == @session_projects.length - 1) }
-          = form_tag nil, class: 'sp_form form-inline', id: "sp_frm_#{project.to_param}" do
-            %span.sp_label{ title: project.name }
-              = project.name.truncate(20)
-            %i.sp_input.icon.icon-remove-sign{ project_id: project.to_param }
-    %form.sp_form.form_inline.pull-right{ action: compare_projects_path, method: :get }
-      - @session_projects.each_with_index do |p, i|
-        %input{ type: 'hidden', name: "project_#{i}", value: p.name }
-      %input.btn.btn-sm#compare-submit-button{ type: 'submit', value: t('compare') }
-    .clearfix
+  / Toggle Button
+  .compare-toggle-tab
+    %button#compare_toggle_btn.compare-toggle-button
+      %i.fa.fa-exchange
+      = t('.compare_projects', count: @session_projects.size)
+      %i.fa.fa-chevron-up.toggle-icon
+
+  / Expandable Tray Content
+  .compare-tray-content
+    .compare-tray-inner
+      / Selected Projects Grid
+      .compare-projects-grid
+        - @session_projects.each do |project|
+          .compare-project-slot
+            %button.remove-project{ type: 'button', data: { project_id: project.to_param } }
+              %i.fa.fa-times
+            .project-slot-icon
+              - if project.logo.present?
+                = image_tag project.logo.attachment.url(:small), alt: project.name
+              - else
+                %i.fa.fa-cube
+            .project-slot-info
+              %p.project-slot-name{ title: project.name }= project.name.truncate(25)
+              - if project.best_analysis
+                %p.project-slot-meta= t('.lines', count: project.best_analysis.code_total.to_human)
+                %p.project-slot-meta= t('.contributors', count: project.active_committers)
+
+        - (3 - @session_projects.size).times do
+          .compare-project-slot.empty-slot
+            %i.fa.fa-plus
+            %span= t('.select_project')
+
+      / Compare Action Button
+      .compare-action
+        %form{ action: compare_projects_path, method: :get }
+          - @session_projects.each_with_index do |p, i|
+            %input{ type: 'hidden', name: "project_#{i}", value: p.name }
+          %button.btn-compare-submit{ type: 'submit', disabled: @session_projects.size < 2 }
+            - if @session_projects.size >= 2
+              = t('.compare_n_projects', count: @session_projects.size)
+            - else
+              = t('.compare_select_at_least')

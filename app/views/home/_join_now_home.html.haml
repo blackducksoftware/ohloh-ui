@@ -1,16 +1,28 @@
-.join_now_home
-  %ul
-    %li.fa.fa-stop.fa-rotate-45.join_now_color
-    %span.join_now_color= t('.claim')
-    %span.join_now_color= t('.contributions')
-    %p
-    %li.fa.fa-stop.fa-rotate-45.join_now_color
-    %span.join_now_color= t('.manage')
-    %span.join_now_color= t('.projects_data')
-    %p
-    %li.fa.fa-stop.fa-rotate-45.join_now_color
-    %span.join_now_color= t('.highlight')
-    %span.join_now_color= t('.use')
-  %br
-  %p
-    = link_to t('.join_now'), h(new_account_path(invite: params[:invite], ref: 'homepage')), class: 'btn btn_join_now'
+.join_now_card
+  .card_inner
+    .join_header
+      .join_icon
+        %i.fa.fa-user-plus
+      .join_header_text
+        %h3.join_title= t('.join_now')
+        %p.join_subtitle= t('.become_part_community')
+
+    .benefits_list
+      .benefit_item
+        .benefit_icon.benefit_icon_award
+          %i.fa.fa-trophy
+        .benefit_content
+          %h4.benefit_title= t('.track_contributions_title')
+          %p.benefit_description= t('.track_contributions_desc')
+
+      .benefit_item
+        .benefit_icon.benefit_icon_trending
+          %i.fa.fa-line-chart
+        .benefit_content
+          %h4.benefit_title= t('.gain_recognition_title')
+          %p.benefit_description= t('.gain_recognition_desc')
+
+    .join_cta
+      = link_to new_account_path(invite: params[:invite], ref: 'homepage'), class: 'btn btn_join_cta' do
+        %i.fa.fa-user-plus
+        = t('.create_account')

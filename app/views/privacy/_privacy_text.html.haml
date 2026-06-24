@@ -1,13 +1,18 @@
-.row.padding_one_top
-%h4.margin_left_15.margin_bottom_0
-  .soft.inline= t('.about')
-  = t('.privacy')
-.col-md-5
-  %ul.margin_left_40
-    %li= t('.privacy_policy_html', href: link_to(t('.privacy_policy'), 'https://community.blackduck.com/s/article/Black-Duck-Open-Hub-Open-Hub-Privacy-Policy'))
-    %li= t('.admin_emails_from_openhub')
-    %li= t('.opting_in')
-.col-md-5
-  %ul.margin_left_40
-    %li= t('.opting_out')
-    %li= t('.openhub_oauth_html', href: link_to(t('.oauth_api'), 'http://blog.openhub.net/oauth/'))
+.about-account-basics-card.alter-password-about
+  .card-header
+    %h4.card-title
+      %span.soft= t('.about')
+      = t('.privacy')
+    %button.expand-toggle{ type: 'button', 'aria-label' => 'Expand about section' }
+      %i.fa.fa-chevron-down
+  .card-content
+    .about-content-wrapper
+      .col-md-6
+        %ul
+          %li!= t('.privacy_policy_html', href: link_to(t('.privacy_policy'), 'https://community.blackduck.com/s/article/Black-Duck-Open-Hub-Open-Hub-Privacy-Policy', target: '_blank', rel: 'noopener noreferrer'))
+          %li= t('.admin_emails_from_openhub')
+          %li= t('.opting_in')
+      .col-md-6
+        %ul
+          %li= t('.opting_out')
+          %li!= t('.openhub_oauth_html', href: link_to(t('.oauth_api'), 'https://github.com/blackducksoftware/ohloh_api/tree/main/examples/oauth2', target: '_blank', rel: 'noopener noreferrer'))

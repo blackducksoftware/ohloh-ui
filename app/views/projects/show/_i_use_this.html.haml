@@ -1,2 +1,5 @@
-%a.btn.btn-mini.new-stack-entry.i_use_this_btn{ href: 'javascript:', 'data-project-id' => project.to_param }
+%button.i-use-this-btn.new-stack-entry.i_use_this_btn{ href: 'javascript:', 'data-project-id' => project.to_param }
+  %svg{ xmlns: 'http://www.w3.org/2000/svg', width: '16', height: '16', viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', 'stroke-width': '2', 'stroke-linecap': 'round', 'stroke-linejoin': 'round', style: 'vertical-align: middle; margin-right: 4px;' }
+    %path{ d: 'M22 11.08V12a10 10 0 1 1-5.93-9.14' }
+    %polyline{ points: '22 4 12 14.1 9 11.1' }
   = t('.i_use_this')

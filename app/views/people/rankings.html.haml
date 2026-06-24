@@ -24,4 +24,4 @@
             %dl.dl-horizontal
               %dt= t('.kudo_position')
               %dd!= people_position(person)
-= will_paginate @people
+= render 'shared/modern_pagination', collection: @people

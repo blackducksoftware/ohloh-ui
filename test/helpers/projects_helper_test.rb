@@ -155,6 +155,17 @@ class ProjectsHelperTest < ActionView::TestCase
       @project = create(:project_with_less_summary)
       _(project_description_size_breached?(@project)).must_equal false
     end
+
+    it 'should return true if project description size is greater than 800' do
+      @project = create(:project_with_invalid_description)
+      _(project_description_size_breached?(@project)).must_equal true
+    end
+
+    it 'should return nil if project description is nil' do
+      @project = create(:project)
+      @project.stubs(:description).returns(nil)
+      _(project_description_size_breached?(@project)).must_be_nil
+    end
   end
 
   describe 'project_separator_text method' do
@@ -162,6 +173,209 @@ class ProjectsHelperTest < ActionView::TestCase
       result = project_separator_text
 
       assert_equal '&nbsp;|&nbsp;', result
+    end
+  end
+
+  describe 'project_activity_css_class' do
+    it 'should return correct css class' do
+      @project = create(:project)
+      @project.best_analysis.stubs(:activity_level).returns(:high)
+      _(send(:project_activity_css_class, @project, 'large')).must_equal 'large_project_activity_level_high'
+    end
+  end
+
+  describe 'project_activity_level_text_class' do
+    it 'should return correct text class' do
+      _(send(:project_activity_level_text_class, 'small')).must_equal 'small_project_activity_text'
+    end
+  end
+
+  describe 'project_activity_level' do
+    it 'should return the activity level from best analysis' do
+      @project = create(:project)
+      @project.best_analysis.stubs(:activity_level).returns(:moderate)
+      _(send(:project_activity_level, @project)).must_equal :moderate
+    end
+  end
+
+  describe 'project_activity_level_class' do
+    it 'should call haml_tag with correct css class' do
+      @project = create(:project)
+      @project.best_analysis.stubs(:activity_level).returns(:high)
+      stubs(:haml_tag)
+      project_activity_level_class(@project, 'large')
+    end
+  end
+
+  describe 'project_activity_level_text' do
+    it 'should call haml_tag with activity text' do
+      @project = create(:project)
+      @project.best_analysis.stubs(:activity_level).returns(:high)
+      stubs(:haml_tag)
+      project_activity_level_text(@project, 'small')
+    end
+  end
+
+  describe 'project_iusethis_button' do
+    it 'should call haml_tag with correct attributes' do
+      @project = create(:project)
+      stubs(:haml_tag)
+      stubs(:concat)
+      stubs(:needs_login_or_verification_or_default).returns('new-stack-entry')
+      project_iusethis_button(@project)
+    end
+  end
+
+  describe 'project_twitter_description' do
+    before do
+      @project = create(:project)
+    end
+
+    it 'should return description when analysis is nil' do
+      @project.stubs(:description).returns('A test project')
+      _(project_twitter_description(@project, nil)).must_equal 'A test project'
+    end
+
+    it 'should return empty string when analysis is nil and description is empty' do
+      @project.stubs(:description).returns('')
+      _(project_twitter_description(@project, nil)).must_equal ''
+    end
+
+    it 'should return formatted string when analysis is present' do
+      analysis = @project.best_analysis
+      analysis.stubs(:code_total).returns(10_000)
+      analysis.stubs(:committers_all_time).returns(50)
+      @project.best_analysis.stubs(:activity_level).returns(:high)
+      @project.stubs(:user_count).returns(100)
+      result = project_twitter_description(@project, analysis)
+      _(result).must_match 'lines of code'
+      _(result).must_match 'contributors'
+      _(result).must_match '100 users'
+    end
+  end
+
+  describe 'show_badges' do
+    it 'should return div with badge images' do
+      @project = create(:project)
+      badge = stub(badge_url: 'https://example.com/badge.png')
+      @project.stubs(:badges_summary).returns([badge])
+      result = show_badges
+      _(result).must_match 'badges'
+      _(result).must_match 'https://example.com/badge.png'
+    end
+
+    it 'should return empty div when no badges' do
+      @project = create(:project)
+      @project.stubs(:badges_summary).returns([])
+      result = show_badges
+      _(result).must_match 'badges'
+    end
+  end
+
+  describe 'more_badges_link' do
+    it 'should return nil when badges count is within limit' do
+      @project = create(:project)
+      @project.stubs(:project_badges).returns(stub(active: stub(count: 1)))
+      _(more_badges_link).must_be_nil
+    end
+
+    it 'should return link when badges exceed limit' do
+      @project = create(:project)
+      @project.stubs(:project_badges).returns(stub(active: stub(count: ProjectBadge::SUMMARY_LIMIT + 1)))
+      result = more_badges_link
+      _(result).must_match 'more'
+    end
+  end
+
+  describe 'project_compare_button' do
+    it 'should call haml_tag for project compare form' do
+      @project = create(:project)
+      @session_projects = []
+      stubs(:haml_tag)
+      stubs(:concat)
+      project_compare_button(@project)
+    end
+
+    it 'should handle selected session project' do
+      @project = create(:project)
+      @session_projects = [@project]
+      stubs(:haml_tag)
+      stubs(:concat)
+      project_compare_button(@project)
+    end
+
+    it 'renders sp_label span with project name as title' do
+      @project = create(:project)
+      @session_projects = []
+      label = @project.name
+      expects(:haml_tag).with(:form, class: 'sp_form styled form-inline ', style: 'min-width: 94px;',
+                                     id: "sp_form_#{@project.to_param}").yields
+      expects(:haml_tag).with(:span, class: 'sp_label', title: label).yields
+      expects(:concat).with(label.truncate(35))
+      expects(:haml_tag).with(:input, style: 'margin-top: 2px;', type: 'checkbox',
+                                      id: "sp_chk_#{@project.to_param}", checked: false,
+                                      project_id: @project.to_param, class: 'sp_input')
+      expects(:haml_tag).with(:div, class: 'clear_both')
+      project_compare_button(@project)
+    end
+
+    it 'renders sp_label span with custom label as title' do
+      @project = create(:project)
+      @session_projects = []
+      custom_label = 'My Custom Label'
+      expects(:haml_tag).with(:form, class: 'sp_form styled form-inline ', style: 'min-width: 94px;',
+                                     id: "sp_form_#{@project.to_param}").yields
+      expects(:haml_tag).with(:span, class: 'sp_label', title: custom_label).yields
+      expects(:concat).with(custom_label.truncate(35))
+      expects(:haml_tag).with(:input, style: 'margin-top: 2px;', type: 'checkbox',
+                                      id: "sp_chk_#{@project.to_param}", checked: false,
+                                      project_id: @project.to_param, class: 'sp_input')
+      expects(:haml_tag).with(:div, class: 'clear_both')
+      project_compare_button(@project, custom_label)
+    end
+
+    it 'truncates label longer than 35 chars in span concat' do
+      @project = create(:project)
+      @session_projects = []
+      long_label = 'A' * 40
+      expects(:haml_tag).with(:form, class: 'sp_form styled form-inline ', style: 'min-width: 94px;',
+                                     id: "sp_form_#{@project.to_param}").yields
+      expects(:haml_tag).with(:span, class: 'sp_label', title: long_label).yields
+      expects(:concat).with(long_label.truncate(35))
+      expects(:haml_tag).with(:input, style: 'margin-top: 2px;', type: 'checkbox',
+                                      id: "sp_chk_#{@project.to_param}", checked: false,
+                                      project_id: @project.to_param, class: 'sp_input')
+      expects(:haml_tag).with(:div, class: 'clear_both')
+      project_compare_button(@project, long_label)
+    end
+
+    it 'renders checkbox with checked: true when project is selected' do
+      @project = create(:project)
+      @session_projects = [@project]
+      label = @project.name
+      expects(:haml_tag).with(:form, class: 'sp_form styled form-inline selected', style: 'min-width: 94px;',
+                                     id: "sp_form_#{@project.to_param}").yields
+      expects(:haml_tag).with(:span, class: 'sp_label', title: label).yields
+      expects(:concat).with(label.truncate(35))
+      expects(:haml_tag).with(:input, style: 'margin-top: 2px;', type: 'checkbox',
+                                      id: "sp_chk_#{@project.to_param}", checked: true,
+                                      project_id: @project.to_param, class: 'sp_input')
+      expects(:haml_tag).with(:div, class: 'clear_both')
+      project_compare_button(@project)
+    end
+
+    it 'renders clear_both div after checkbox' do
+      @project = create(:project)
+      @session_projects = []
+      expects(:haml_tag).with(:form, class: 'sp_form styled form-inline ', style: 'min-width: 94px;',
+                                     id: "sp_form_#{@project.to_param}").yields
+      expects(:haml_tag).with(:span, class: 'sp_label', title: @project.name).yields
+      expects(:concat).with(@project.name.truncate(35))
+      expects(:haml_tag).with(:input, style: 'margin-top: 2px;', type: 'checkbox',
+                                      id: "sp_chk_#{@project.to_param}", checked: false,
+                                      project_id: @project.to_param, class: 'sp_input')
+      expects(:haml_tag).with(:div, class: 'clear_both')
+      project_compare_button(@project)
     end
   end
 end

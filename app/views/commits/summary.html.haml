@@ -3,7 +3,6 @@
 
 .project_content_title
   %h2.pull-left= t('.commits')
-  = project_analysis_timestamp(@project)
 
 - if @analysis.empty?
   = render 'projects/show/no_analysis_summary'
@@ -16,12 +15,12 @@
     @thirty_day_summary   = NilAnalysisSummaryWithNa.new if @thirty_day_summary.nil?
 
   .col-md-12
-    .well.margin_left_20.margin_right_20
+    .oh-card.margin_left_20.margin_right_20
       %center
         %table.data-table{ style: 'width: 60%' }
           %tbody
             %tr.border_bottom
-              %th{ width: '25%', align: 'right' } &nbsp;
+              %th{ width: '25%' }
               %th.text-right{ width: '25%', align: 'right' }= t('.all_time')
               %th.text-right{ width: '25%', align: 'right' }= t('.12_month')
               %th.text-right{ width: '25%', align: 'right' }= t('.30_day')

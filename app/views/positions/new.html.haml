@@ -2,16 +2,16 @@
   = t('.position_new_title', name: @account.name)
 - page_context[:select_footer_nav] = :positions
 
-#positions_new
-  .margin_left_15
-    %h3
-      = link_to t('.contribution'), account_positions_path(@account)
-      = precede ' : ' do
+#position-edit-page
+  .row.position-edit-row
+    .col-md-8.col-sm-10.col-xs-12.center-block
+      %h1.position-edit-title
+        = link_to t('.contribution'), account_positions_path(@account)
+        %span.position-edit-title__sep &rsaquo;
         = t('new')
-
-    .well.center-block.margin_left_15
-      - if params[:invite].present?
-        %p= t('.provide_extra_information')
-      = form_for [@account, @position], html: { id: :position_form } do |f|
-        = hidden_field_tag :invite, params[:invite]
-        = render 'fields', f: f, position: @position, allow_delete: false
+      .oh-card
+        - if params[:invite].present?
+          %p.position-help= t('.provide_extra_information')
+        = form_for [@account, @position], html: { id: :position_form } do |f|
+          = hidden_field_tag :invite, params[:invite]
+          = render 'fields', f: f, position: @position, allow_delete: false

@@ -1,27 +1,34 @@
 %meta{ name: 'ROBOTS', content: 'NOINDEX, NOFOLLOW' }
 - names = params[:names].split.flatten
-- content_for(:html_title) { t('.page_title', names: names.collect { |n| "‘#{n}’" }.to_sentence) }
+- content_for(:html_title) { t('.page_title', names: names.collect { |n| "'#{n}'" }.to_sentence) }
 - content_for :session_projects_banner do
-  .navbar.container#sp_menu
+  #sp_menu
     = render 'session_projects/menu'
+#tag-index-page
+  .row.margin_left_30
+    .col-md-11
 
-#tags_show_header
-  %h1
-    %a{ href: tags_path }= t('.tags')
-    \: #{t('.browse_projects')}
+      .tag-index-header
+        %h1
+          %a.tag-index-breadcrumb{ href: tags_path }= t('.tags')
+          %span.tag-index-breadcrumb-sep /
+          = t('.browse_projects')
+        .tag-index-pills
+          - names.each do |name|
+            %span.tag-index-pill= name
 
-.call_to_action{ style: 'padding-top: 5px;' }
-  - if @projects.any?
-    %p= t('.select_a_tag')
-  - else
-    .margin_left_10
-      %p= t('.no_projects', names: names.to_sentence)
-      %a{ href: tags_path }= t('.browse_tags')
+      .oh-card.tag-index-body
+        - if @projects.any?
+          %p.tag-index-hint= t('.select_a_tag')
+        - else
+          .tag-index-empty
+            %p= t('.no_projects', names: names.to_sentence)
+            %a.btn.btn-default{ href: tags_path }= t('.browse_tags')
 
-= render partial: 'shared/search_dingus', locals: { collection: @projects, search_type: :tags, tags: @related_tags }
+        = render partial: 'shared/search_dingus', locals: { collection: @projects, search_type: :tags, tags: @related_tags }
 
-#projects_index_list
-  - if @projects.any?
-    = render partial: 'projects/project_index', collection: @projects,
-             locals: { compare: true, show_active_committers: true }
-    = will_paginate @projects
+        #projects_index_list
+          - if @projects.any?
+            = render partial: 'projects/project_index', collection: @projects,
+                    locals: { compare: true, show_active_committers: true }
+            = render 'shared/modern_pagination', collection: @projects

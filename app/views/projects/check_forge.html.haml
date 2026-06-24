@@ -3,102 +3,115 @@
   content_for(:html_title) { t('.page_title', name: @project.name.blank? ? 'New Project' : @project.name) }
   page_context[:select_top_menu_nav] = 'select_projects'
 
-%h1.margin_bottom_20= t('projects.new.call_to_action')
-.row
-  .col-md-12
-    %div{ style: 'padding: 0 15px;' }
-      .well
-        = form_for @project, as: :project, url: projects_path, html: { class: 'styled new_project' } do |f|
-          %fieldset
-            %legend= t('.create_a_new_project')
-            .control-group.nomargin
-              %label.control-label.required= t('.project_name')
-              .controls
-                %input.col-md-5#project_name{ name: 'project[name]', type: 'text', value: @project.name }
-                - error_tag @project, :name
-                %p.help-block!= t('.project_name_help', link: link_to(t('.contact_us'), blog_url_for(:contact_form)))
-            .control-group.nomargin
-              %label.control-label.required= t('.project_source_code')
-              .controls.chosen#value_select
-                - scm_type = @project.code_location_object&.scm_type
+%h1.margin_bottom_20.margin_left_30.check-forge-title= t('projects.new.call_to_action')
+
+#project-edit-page
+  .row.margin_left_30.check-forge-row
+    .oh-card.col-md-10.col-sm-12.col-xs-12
+      = form_for @project, as: :project, url: projects_path, html: { class: 'styled new_project' } do |f|
+        %fieldset.margin_left_20.check-forge-fieldset
+          %legend= t('.create_a_new_project')
+
+          .control-group
+            %label.control-label.required{ for: 'project_name' }= t('.project_name')
+            .controls
+              %input.form-control#project_name{ name: 'project[name]', type: 'text', value: @project.name }
+              - error_tag @project, :name
+              %p.help-block!= t('.project_name_help', link: link_to(t('.contact_us'), blog_url_for(:contact_form)))
+
+          .control-group
+            %label.control-label.required{ for: 'repository_type' }= t('.project_source_code')
+            .controls.chosen#value_select
+              - scm_type = @project.code_location_object&.scm_type
+              .source-code-fields
                 = select_tag :scm_type, scm_options_for_select(scm_type),
                   name: 'project[enlistments_attributes][0][code_location_attributes][scm_type]',
-                  class: 'chzn-select value-select', id: 'repository_type', style: 'width: 100px'
+                  class: 'chzn-select value-select form-control', id: 'repository_type'
+                %label.control-label{ for: 'url' }= t('.repository_url')
                 = text_field_tag :url, @project.code_location_object&.url,
-                  style: 'width: 265px; margin-bottom: 1px',
+                  class: 'form-control',
                   name: 'project[enlistments_attributes][0][code_location_attributes][url]'
+                %label.control-label{ for: 'branch' }= t('.branch')
                 = text_field_tag :branch,
                   @project.code_location_object&.branch || 'main',
-                  style: 'width: 105px; margin-bottom: 1px',
+                  class: 'form-control',
                   name: 'project[enlistments_attributes][0][code_location_attributes][branch]'
-                .clear_left
-                - error_tag @project, 'enlistments.base'
-            .control-group
-              .controls
-                %label.checkbox.control-label{ style: 'padding: 0;' }
-                  = f.check_box :managed_by_creator, choice: t('.i_manage_this_project'), class: 'col'
-                  = t('.i_manage_this_project')
-                %p.help-block
-                  = t('.i_manage_this_project_help1')
-                  %br
-                  = t('.i_manage_this_project_help2')
-            .control-group
-              %label.control-label= t('.homepage_page')
-              .controls
-                = f.text_field :url, class: 'col-md-5'
-                - error_tag @project, :url
-                %p.help-block= t('.homepage_page_help')
-            .control-group
-              %label.control-label= t('.download_page')
-              .controls
-                = f.text_field :download_url, class: 'col-md-5'
-                - error_tag @project, :download_url
-                %p.help-block= t('.download_page_help')
-            .control-group
-              %label.control-label= t('.add_license')
-              .controls
-                %input.license.col-md-5#add_license{ type: 'text' }
-                %p.help-block
-                  = t('.add_license_help1')
-                  %br
-                  = t('.add_license_help2')
-            .control-group
-              %label.control-label= t('.chosen_licenses')
-              .controls.chosen_licenses
-                .no-license.inset= t('.none')
+              .clear_left
+              - error_tag @project, 'enlistments.base'
 
-                .license-cell.col-md-5.no_margin_left.license-template
-                  .col-md-6.license_name
-                  .col-md-5.pull-right{ style: 'margin: 0 20px 20px 0' }
-                    %a.btn.btn-danger.btn-mini.remove_license.col{ href: 'javascript:' }
-                      %i.icon-trash>
-                      = t('.remove')
-            .clearfix
-            .control-group.clear_left
-              %label.control-label.required= t('.url')
-              .controls
-                .input-prepend
-                  %span.add-on= 'http://www.openhub.net/p/'
-                  = f.text_field :vanity_url, class: 'check-availability', autocomplete: 'off',
-                                            style: 'width: 188px;',
+          .control-group
+            .controls
+              .checkbox
+                %label{ for: 'project_managed_by_creator' }
+                  = f.check_box :managed_by_creator, id: 'project_managed_by_creator'
+                  = t('.i_manage_this_project')
+              %p.help-block
+                = t('.i_manage_this_project_help1')
+                %br
+                = t('.i_manage_this_project_help2')
+
+          .control-group
+            %label.control-label{ for: 'project_url' }= t('.homepage_page')
+            .controls
+              = f.text_field :url, class: 'form-control'
+              - error_tag @project, :url
+              %p.help-block= t('.homepage_page_help')
+
+          .control-group
+            %label.control-label{ for: 'project_download_url' }= t('.download_page')
+            .controls
+              = f.text_field :download_url, class: 'form-control'
+              - error_tag @project, :download_url
+              %p.help-block= t('.download_page_help')
+
+          .control-group
+            %label.control-label{ for: 'add_license' }= t('.add_license')
+            .controls
+              %input.license.form-control#add_license{ type: 'text' }
+              %p.help-block
+                = t('.add_license_help1')
+                %br
+                = t('.add_license_help2')
+
+          .control-group
+            %label.control-label= t('.chosen_licenses')
+            .controls.chosen_licenses
+              .no-license.inset= t('.none')
+              .license-cell.col-md-5.col-xs-12.no_margin_left.license-template
+                .col-md-6.col-xs-8.license_name
+                .col-md-5.col-xs-4.license-remove-btn-wrap
+                  %a.btn.btn-danger.btn-mini.remove_license.col{ href: 'javascript:' }
+                    %i.icon-trash>
+                    = t('.remove')
+
+          .clearfix
+          .control-group.clear_left
+            %label.control-label.required{ for: 'project_vanity_url' }= t('.url')
+            .controls
+              .input-prepend.project-url-prepend
+                %span.add-on http://www.openhub.net/p/
+                = f.text_field :vanity_url, class: 'form-control check-availability', autocomplete: 'off',
                                             'data-original-value' => Project.find_by(id: @project).try(:vanity_url),
                                             'data-ajax-path' => project_check_availabilities_path,
                                             'data-preview-base-url' => projects_url
-                = render 'shared/availability_preview'
-                - error_tag @project, :vanity_url, class: 'error vanity_url'
-                %p.help-block
-                  = t('.url_help1')
-                  %br
-                  = t('.url_help2')
-            .control-group
-              %label.control-label= t('.description')
-              .controls
-                = find_and_preserve(f.text_area(:description, max_length: 800, style: 'width: 376px; height: 200px;'))
-                - error_tag @project, :description
-                %p.help-block
-                  = t('.description_help1')
-                  %br
-                  = t('.description_help2')
-            .actions.clear_left
-              %input.btn.btn-primary{ type: 'submit', value: t('.submit'), 'data-disable-with' => t('.processing') }
+              = render 'shared/availability_preview'
+              - error_tag @project, :vanity_url, class: 'error vanity_url'
+              %p.help-block
+                = t('.url_help1')
+                %br
+                = t('.url_help2')
+
+          .control-group
+            %label.control-label{ for: 'project_description' }= t('.description')
+            .controls
+              = find_and_preserve(f.text_area(:description, max_length: 800, class: 'form-control edit-description'))
+              - error_tag @project, :description
+              %p.help-block
+                = t('.description_help1')
+                %br
+                = t('.description_help2')
+
+          .actions.clear_left
+            %input.btn.btn-primary{ type: 'submit', value: t('.submit'), 'data-disable-with' => t('.processing') }
+
 

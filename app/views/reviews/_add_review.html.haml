@@ -1,19 +1,17 @@
-%table{ width: '100%', boder: '1' }
-  %tr
-    %td{ colspan: '3' }
-      %h3= t('reviews.my_review', name: truncate(@project.name, length: 40))
-  %tr
-    %td{ width: '64%' }
-      - if @rating.try(:persisted?)
-        .pull-left
-          = t('.not_reviewd').html_safe
-      - else
-        = t('.not_reviewd_or_rated').html_safe
-    %td{ width: '15%' }
-      %strong= t('reviews.my_rating')
-    %td{ width: '21%' }
-      != rating_stars('rating_star', @rating.try(:score).to_i)
-  %tr
-    %td
-      .clear{ Style: 'margin-top:5px;' }
-      = icon_button(new_project_review_url(@project), text: 'New Review', size: 'small', type: 'primary')
+.oh-review-card
+  .oh-review-card__body
+    .rr-add-review
+      .rr-add-review__icon
+        %i.fa.fa-pencil
+      .rr-add-review__content
+        %p.rr-add-review__message
+          - if @rating.try(:persisted?)
+            = t('.not_reviewd').html_safe
+          - else
+            = t('.not_reviewd_or_rated').html_safe
+        .rr-add-review__meta
+          - if @rating.try(:score)
+            %strong= t('reviews.my_rating')
+            != rating_stars('rating_star', @rating.score.to_i)
+  .oh-review-card__footer
+    = icon_button(new_project_review_url(@project), text: t('reviews.new_review'), size: 'small', type: 'primary')

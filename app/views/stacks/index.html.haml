@@ -3,43 +3,51 @@
   page_context[:select_top_menu_nav] = 'select_people'
   page_context[:select_footer_nav] = :stacks
 
-.row
-  .col-md-9
-    %h2.pull-left= t('.stacks')
+.stacks-index-page
+  .stacks-page-header
+    %h2.stacks-page-title= t('.stacks')
     - if current_user == @account
-      %a.btn.btn-mini.btn-primary{ href: stacks_path, data: { method: :post },
-                                   style: 'margin:8px 19px 0 0; float: right;' }
-        %i.icon-plus-sign= t '.new_stack'
-    .clear
+      %a.btn.btn-primary.stacks-new-btn{ href: stacks_path, data: { method: :post } }
+        %i.icon-plus-sign{ 'aria-hidden' => 'true' }
+        = t('.new_stack')
 
-.row
-  .col-md-9
-    - @stacks.each do |stack|
-      .well.piano{ id: "stack_#{stack.id}" }
-        - if stack.account == current_user
-          = icon_button(stack_path(stack), text: t('.remove'), size: 'mini', type: 'danger',
-            icon: 'trash', data: { confirm: t('.delete_confirm', name: stack.title) },
-            method: :delete, style: 'float: right; display: block; margin-top: 10px;')
-        %h4.nomargin
-          %a.name{ href: stack_path(stack), title: stack.title }= stack.title
-        %a.description{ href: stack_path(stack), title: stack.title }
-          %p.nomargin.soft= stack.description
-        .clear
-          - stack.projects.order(Arel.sql('logo_id IS NULL, stack_entries.created_at DESC')).to_a.each do |project|
-            - project_link(project, :tiny, title: project.name)
-        %a{ href: stack_widgets_path(stack) }= t('.embed')
-    - if @stacks.blank?
-      .inset
-      - if current_user == @account
-        %p= t('.no_stack_fix_that_html', link: link_to(t('.new_stack'), stacks_path, method: :post, class: 'command'))
-      - else
-        %p= t('.no_stack')
-      &nbsp;
-  .col-md-3
-    .well
-      .inset.stack_definition
-        %h5.soft= t('.what_is_a_stack')
-        - lamp_link = link_to('LAMP', 'http://wikipedia.org/wiki/LAMP_(software_bundle)')
-        %p!= t('.stack_explanation', link: lamp_link)
-        %p= t('.max_stacks_desc')
-= will_paginate @stacks
+  .stacks-layout
+    .stacks-main
+      - @stacks.each do |stack|
+        .oh-card.stacks-card{ id: "stack_#{stack.id}" }
+          .stacks-card-header
+            %h4.stacks-card-title
+              %a.stacks-card-name{ href: stack_path(stack), title: stack.title }= stack.title
+            - if stack.account == current_user
+              = icon_button(stack_path(stack), text: t('.remove'), size: 'medium', type: 'danger',
+                icon: 'trash', data: { confirm: t('.delete_confirm', name: stack.title) },
+                method: :delete, style: 'float: right; display: block; margin-top: 10px;')
+          - if stack.description.present?
+            %a.stacks-card-desc-link{ href: stack_path(stack) }
+              %p.stacks-card-desc= stack.description
+          .stacks-card-projects
+            - stack.projects.order(Arel.sql('logo_id IS NULL, stack_entries.created_at DESC')).to_a.each do |project|
+              - project_link(project, :tiny, title: project.name)
+          .stacks-card-footer
+            %a.stacks-embed-link{ href: stack_widgets_path(stack) }
+              %i.fa.fa-code{ 'aria-hidden' => 'true' }
+              = t('.embed')
+
+      - if @stacks.blank?
+        .stacks-empty-state
+          %i.fa.fa-th-large.stacks-empty-icon{ 'aria-hidden' => 'true' }
+          - if current_user == @account
+            %p.stacks-empty-text= t('.no_stack_fix_that_html', link: link_to(t('.new_stack'), stacks_path, method: :post, class: 'stacks-empty-link'))
+          - else
+            %p.stacks-empty-text= t('.no_stack')
+
+      = render 'shared/modern_pagination', collection: @stacks
+
+    .stacks-sidebar
+      .oh-card.stacks-info-card
+        %h5.stacks-info-title
+          %i.fa.fa-info-circle{ 'aria-hidden' => 'true' }
+          = t('.what_is_a_stack')
+        - lamp_link = link_to('LAMP', 'http://wikipedia.org/wiki/LAMP_(software_bundle)', target: '_blank', rel: 'noopener noreferrer')
+        %p.stacks-info-text!= t('.stack_explanation', link: lamp_link)
+        %p.stacks-info-text= t('.max_stacks_desc')

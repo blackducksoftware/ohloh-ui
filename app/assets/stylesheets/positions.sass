@@ -1,3 +1,40 @@
+#positions-index-page
+  max-width: 1024px
+  margin: 0 auto
+  padding: 0 24px 32px
+
+  @media (max-width: 639px)
+    padding: 0 16px 24px
+
+  .positions-section-header
+    margin: 0 0 16px
+
+    h2
+      font-size: 16px
+      font-weight: 600
+      color: #111827
+      line-height: 1.3
+      margin: 0
+      padding: 0
+      float: none
+      display: flex
+      align-items: center
+      gap: 12px
+      white-space: nowrap
+
+      html.dark &
+        color: #ffffff
+
+      &::after
+        content: ''
+        flex: 1
+        height: 1px
+        background: #e5e7eb
+        min-width: 40px
+
+        html.dark &
+          background: rgba(90, 42, 130, 0.2)
+
 .one-project-header-left
   margin-left: 15px
   margin-top: 5px
@@ -24,8 +61,6 @@
     right: 0px
 
 .one-project
-  width: 940px
-  background-color: #F2F2F2
   margin-top: 20px
   margin-bottom: 10px
   border-radius: 5px
@@ -37,6 +72,7 @@
 
 .one-project-name
   margin-top: 16px
+  margin-left: 20px
   .title
     font-size: 1.25em
     font-weight: bold
@@ -51,6 +87,7 @@
 
 .one-project-contribution
   word-wrap: break-word
+  margin-left: 20px
 
 #position_form
   input
@@ -59,9 +96,147 @@
 
   .select-language-experiences
     margin-bottom: 10px
-    // Fixes a known problem with applying chosen on hidden elements.
-    .chzn-container
-      width: 220px !important
+
+    // Full-width container — remove hardcoded 220px (chosen on hidden element fix
+    // is handled by re-init in JS when #additional-fields is shown)
+    .chosen-container
+      width: 100% !important
+
+    // Multi-select tag input box
+    .chosen-container-multi .chosen-choices
+      width: 100%
+      min-height: 42px
+      border: 2px solid #e5e7eb !important
+      border-radius: 16px !important
+      background: #ffffff !important
+      background-image: none !important
+      padding: 6px 10px !important
+      box-shadow: 0 1px 2px 0 rgba(0,0,0,0.05) !important
+      cursor: text
+      transition: border-color 0.3s ease, box-shadow 0.3s ease
+
+      &:hover
+        border-color: #d1d5db !important
+        box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06) !important
+
+    // Active (focused) state
+    .chosen-container-active .chosen-choices
+      border-color: #5A2A82 !important
+      box-shadow: 0 0 0 4px rgba(14,75,122,0.1) !important
+
+    // Selected language pills
+    .chosen-container-multi .chosen-choices li.search-choice
+      background: #f3e8ff !important
+      background-image: none !important
+      border: 1px solid #d8b4fe !important
+      border-radius: 20px !important
+      color: #5A2A82 !important
+      font-size: 12px
+      font-weight: 500
+      padding: 3px 22px 3px 10px !important
+      box-shadow: none !important
+      line-height: 1.5
+
+    // Close (×) button on pills — use FontAwesome ×
+    .chosen-container-multi .chosen-choices li.search-choice .search-choice-close
+      background: none !important
+      font-size: 0
+      top: 50%
+      transform: translateY(-50%)
+      right: 6px
+      width: 14px
+      height: 14px
+      display: flex
+      align-items: center
+      justify-content: center
+
+      &::after
+        content: '\00d7'
+        font-size: 14px
+        color: #7c3aed
+        line-height: 1
+
+      &:hover::after
+        color: #5A2A82
+
+    // Search input inside the tag box
+    .chosen-container-multi .chosen-choices li.search-field input[type="text"]
+      color: #374151
+      font-size: 14px
+      height: 28px
+
+    // Dropdown
+    .chosen-container .chosen-drop
+      border: 1px solid #e5e7eb !important
+      border-top: none !important
+      border-radius: 0 0 12px 12px !important
+      box-shadow: 0 4px 6px rgba(0,0,0,0.08) !important
+      background: #ffffff !important
+      z-index: 9999
+
+    .chosen-results
+      max-height: 200px
+      overflow-y: auto
+      -webkit-overflow-scrolling: touch
+
+    .chosen-results li
+      font-size: 13px
+      color: #111827 !important
+      padding: 7px 12px
+
+      &.highlighted
+        background: #5A2A82 !important
+        color: #ffffff !important
+
+      &.result-selected
+        color: #9ca3af !important
+
+    // Dark mode
+    html.dark &
+      .chosen-container-multi .chosen-choices
+        background: #1D0631 !important
+        border-color: rgba(90,42,130,0.5) !important
+
+        &:hover
+          border-color: #6b7280 !important
+
+      .chosen-container-active .chosen-choices
+        border-color: #ffb91a !important
+        box-shadow: 0 0 0 4px rgba(255,185,26,0.1) !important
+
+      .chosen-container-multi .chosen-choices li.search-choice
+        background: rgba(90,42,130,0.3) !important
+        border-color: rgba(90,42,130,0.6) !important
+        color: #e9d5ff !important
+
+        .search-choice-close::after
+          color: #e9d5ff
+
+      .chosen-container-multi .chosen-choices li.search-field input[type="text"]
+        color: #d1d5db
+
+      .chosen-container .chosen-drop
+        background: #1D0631 !important
+        border-color: rgba(90,42,130,0.5) !important
+
+      .chosen-results li
+        color: #d1d5db !important
+        background: #1D0631
+
+        &.highlighted
+          background: #ffb91a !important
+          color: #1D0631 !important
+
+// Prevent border-radius and flex containers from clipping Chosen dropdowns
+#position-edit-page
+  .oh-card,
+  #position_form,
+  fieldset.position-fields,
+  fieldset.position-fieldset
+    overflow: visible !important
+
+.position-date-group
+  overflow: visible !important
 
 #position_organization_name
   float: initial
@@ -78,4 +253,400 @@
 
 .position_affiliation p.error
   display: inline-block
-  margin: 5px 0 !important
+
+@media (max-width: 767px)
+  .one-project-header-left
+    width: 100% !important
+    float: none !important
+    margin-left: 0 !important
+    box-sizing: border-box
+    display: flex
+    align-items: flex-start
+    gap: 10px
+
+    .logo
+      flex-shrink: 0
+      margin: 6px 0 10px 0 !important
+
+    .col-md-8.one-project-name
+      margin-left: 0 !important
+      margin-top: 8px !important
+      flex: 1
+      min-width: 0
+
+      .title
+        font-size: 1em !important
+        word-break: break-word
+
+    .col-md-8.one-project-contribution
+      margin-left: 0 !important
+
+    .project-organization
+      margin-left: 0 !important
+
+  .one-project-header-right
+    width: 100% !important
+    float: none !important
+    margin-right: 0 !important
+    margin-left: 0 !important
+    min-height: auto !important
+    position: static !important
+
+    p
+      position: static !important
+
+@media (min-width: 768px) and (max-width: 1024px)
+  .one-project-header-left
+    width: calc(100% - 220px) !important
+    float: none !important
+    margin-left: 0 !important
+    box-sizing: border-box
+    display: flex
+    align-items: flex-start
+    gap: 10px
+
+    .logo
+      flex-shrink: 0
+      margin: 6px 0 10px 0 !important
+
+    .col-md-8.one-project-name
+      margin-left: 0 !important
+      margin-top: 6px !important
+      float: none !important
+      width: auto !important
+      flex: 1
+      min-width: 0
+
+      .title
+        word-break: break-word
+
+    .col-md-8.one-project-contribution
+      margin-left: 0 !important
+      float: none !important
+      width: auto !important
+
+    .project-organization
+      margin-left: 0 !important
+
+  .one-project-header-right
+    width: 200px !important
+    margin-right: 10px !important
+
+// ── Position edit page ────────────────────────────────────────────────────────
+#position-edit-page
+
+  .position-edit-title
+    font-size: 22px
+    font-weight: 400
+    margin-bottom: 24px
+    color: #111827
+
+    html.dark &
+      color: #f3f4f6
+
+    a
+      font-size: 22px
+      color: #5A2A82
+      text-decoration: none
+
+      html.dark &
+        color: #ffb91a
+
+      &:hover
+        text-decoration: underline
+
+    .position-edit-title__sep
+      margin: 0 8px
+      color: #9ca3af
+      font-weight: 300
+
+  .position-edit-row
+    display: flex
+    justify-content: center
+
+  // Card inherits .oh-card base styles; just constrain and pad it
+  .oh-card
+    padding: 28px 32px
+    box-sizing: border-box
+
+// ── Fields inside the form ────────────────────────────────────────────────────
+.position-fields
+  border: none
+  margin: 0
+  padding: 0
+
+// Reset fieldset used for radio/date groups (replaces div+label for a11y)
+.position-fieldset
+  border: none
+  margin: 0
+  padding: 0
+  min-width: 0
+
+.position-date-group
+  margin-top: 8px
+  display: flex
+  flex-wrap: wrap
+  gap: 8px
+  align-items: center
+
+.position-field-group
+  margin-bottom: 20px
+
+  &:last-child
+    margin-bottom: 0
+
+  &.position_affiliation
+    .controls
+      display: flex
+      flex-direction: row
+      align-items: center
+      gap: 8px
+
+      select.chzn-select
+        display: none !important
+
+      .chosen-container
+        flex: 1
+        min-width: 0
+        width: auto !important
+
+        .chosen-single
+          width: 100%
+
+      .form-control:not(.chzn-select)
+        flex: 1
+        min-width: 0
+        width: auto !important
+
+    .position-help
+      flex: 0 0 100%
+      margin-top: 4px
+
+.position-label
+  display: block
+  font-size: 13px
+  font-weight: 600
+  color: #374151
+  margin-bottom: 6px
+
+  html.dark &
+    color: #d1d5db
+
+  &.required::after
+    content: ' *'
+    color: #ef4444
+
+.position-help
+  font-size: 12px
+  color: #6b7280
+  margin-top: 5px
+  margin-bottom: 0
+
+  html.dark &
+    color: #9ca3af
+
+// form-control overrides for edit page — matches project basics style
+#position_form
+  .form-control
+    box-sizing: border-box !important
+    border: 2px solid #e5e7eb !important
+    border-radius: 16px !important
+    -webkit-border-radius: 16px !important
+    -moz-border-radius: 16px !important
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important
+    background: #ffffff !important
+    color: #111827 !important
+    padding: 10px 16px !important
+    height: auto !important
+    width: 100% !important
+    font-size: 14px
+    transition: border-color 0.3s ease, box-shadow 0.3s ease
+
+    &::placeholder
+      color: #9ca3af !important
+      opacity: 1
+
+    &:hover
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important
+      border-color: #d1d5db !important
+
+    &:focus, &:focus-visible
+      border-color: #5A2A82 !important
+      outline: none !important
+      box-shadow: 0 0 0 4px rgba(14, 75, 122, 0.1) !important
+      background: #ffffff !important
+
+    html.dark &
+      background: #1D0631 !important
+      color: #ffffff !important
+      border-color: #5A2A82 !important
+
+      &::placeholder
+        color: #6b7280 !important
+        opacity: 1
+
+      &:hover
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important
+        border-color: #6b7280 !important
+
+      &:focus, &:focus-visible
+        border-color: #ffb91a !important
+        background: #1D0631 !important
+        box-shadow: 0 0 0 4px rgba(255, 185, 26, 0.1) !important
+        outline: none !important
+
+  .position-textarea
+    resize: vertical
+    line-height: 1.6
+
+// Radio button rows
+.position-radio-group
+  display: flex
+  flex-wrap: wrap
+  gap: 8px 20px
+  margin-bottom: 10px
+
+.position-radio-label
+  display: inline-flex
+  align-items: center
+  gap: 6px
+  font-size: 14px
+  color: #374151
+  cursor: pointer
+  font-weight: 400
+  margin: 0
+
+  html.dark &
+    color: #d1d5db
+
+  input[type="radio"]
+    margin: 0
+    accent-color: #5A2A82
+
+// Expand toggle link
+.position-expand-toggle
+  margin-bottom: 12px
+
+  a
+    font-size: 14px
+    color: #5A2A82
+    text-decoration: none
+    display: inline-flex
+    align-items: center
+    gap: 6px
+
+    html.dark &
+      color: #ffb91a
+
+    &:hover
+      text-decoration: underline
+
+  .position-expand-icon
+    font-size: 12px
+
+// Project experience rows
+.position-project-exp
+  display: flex
+  flex-wrap: wrap
+  align-items: flex-start
+  gap: 8px
+  margin-bottom: 12px
+
+  .form-control
+    flex: 1
+    min-width: 160px
+
+  .btn.remove
+    flex-shrink: 0
+
+// Actions bar
+.position-actions
+  display: flex
+  align-items: center
+  gap: 12px
+  padding-top: 20px
+  border-top: 1px solid #f3f4f6
+  margin-top: 8px
+
+  html.dark &
+    border-top-color: rgba(90,42,130,0.2)
+
+.position-btn-submit,
+.position-btn-delete
+  display: inline-flex
+  align-items: center
+  justify-content: center
+  height: 40px
+  min-width: 140px
+  box-sizing: border-box
+  padding: 0 24px
+  border-radius: 8px
+  font-size: 14px
+  font-weight: 600
+  line-height: 1
+  cursor: pointer
+  text-decoration: none
+
+.position-btn-submit
+  background: linear-gradient(135deg, #5A2A82, #7B3FB5)
+  border: none
+  color: #ffffff
+
+  &:hover, &:focus
+    opacity: 0.9
+    color: #ffffff
+
+.position-btn-delete
+  background-image: none
+  border-color: currentColor
+
+// ── Responsive ────────────────────────────────────────────────────────────────
+@media (max-width: 767px)
+  #position-edit-page
+    padding: 16px 8px
+
+    .position-edit-title
+      font-size: 18px !important
+      margin-bottom: 16px
+
+    .oh-card
+      padding: 18px 14px !important
+      margin-left: 0 !important
+      margin-right: 0 !important
+      width: 100% !important
+
+  .position-radio-group
+    flex-direction: column
+    gap: 6px
+
+  .position-date-group
+    flex-direction: column
+    gap: 4px
+
+    select
+      width: 100% !important
+      box-sizing: border-box
+
+  .position-project-exp
+    flex-direction: column
+
+    .form-control
+      width: 100%
+
+  .position-actions
+    flex-direction: column
+    align-items: stretch
+
+    .position-btn-submit,
+    .position-btn-delete
+      width: 100%
+      text-align: center
+      justify-content: center
+
+@media (min-width: 768px) and (max-width: 1024px)
+  #position-edit-page
+    padding: 20px 12px
+
+    .oh-card
+      padding: 24px 20px !important
+      width: 90% !important

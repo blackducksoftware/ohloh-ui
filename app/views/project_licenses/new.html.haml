@@ -3,12 +3,14 @@
   page_context[:select_top_menu_nav] = 'select_projects'
   page_context[:select_footer_nav] = nil
   content_for :javascript do
-    js = "$('#edit_project_license').submit(function(e) { \
-             if($('.chzn-container-single a.chzn-single').text().trim() == '#{t('.select_placeholder')}') { \
-               e.preventDefault(); \
-               $('#error').show(); \
-             } \
-           });"
+    js = "document.addEventListener('DOMContentLoaded', function() { \
+            $('#edit_project_license').submit(function(e) { \
+              if($('.chzn-container-single a.chzn-single').text().trim() == '#{t('.select_placeholder')}') { \
+                e.preventDefault(); \
+                $('#error').show(); \
+              } \
+            }); \
+          });"
     javascript_tag(js)
   end
 
@@ -21,34 +23,46 @@
       &nbsp;:&nbsp;#{t(:new)}
     = project_analysis_timestamp(@project)
 
-#error{ style: 'display: none;' }
-  .alert.alert-info
-    %i.icon-exclamation-sign
-    = t('.at_least_one')
+= render partial: 'layouts/partials/alert'
 
-.well.col-md-7.col-md-offset-2
-  = form_for ProjectLicense.new, url: project_licenses_path(@project),
-                                 html: { class: 'edit_project', id: 'edit_project_license' } do
-    %fieldset
-      %legend= t('.new_declared_license')
-      .control-group
-        %label.control-label.required= t('.license')
-        .controls.chosen#value_select
-          %select.chzn-select.value-select#value_selector{ name: 'license_id', style: 'width: 524px;',
-                                                           data: { placeholder: t('.select_placeholder') } }
-            %option{ value: 'blank' }
-            - @licenses.each do |license|
-              %option{ value: license.id }= license.name
-          %p.clear.help-block
-            - link = link_to t('.add_it'), new_license_path
-            != t('.add_it_help', link: link)
-          - error_tag @license, :license_id
+#project-license-new-page
+  .row
+    .col-md-6
+      .oh-card.margin_top_20
+        .license-new-card-header
+          %h3.license-new-card-title
+            %i.fa.fa-plus-circle
+            = t('.new_declared_license')
 
-      .actions
-        - if @project.edit_authorized?
-          %input.btn.btn-primary.add-license{ type: 'submit', value: t('.add_declared_license') }
-        - else
-          = disabled_button t('.add_declared_license'), class: 'btn-primary add-license'
+        #error{ style: 'display: none;' }
+          .alert.alert-danger.license-alert
+            %i.fa.fa-exclamation-circle
+            = t('.at_least_one')
 
-.clear
-= render partial: 'project_licenses/about'
+        = form_for ProjectLicense.new, url: project_licenses_path(@project),
+                                       html: { class: 'edit_project license-new-form', id: 'edit_project_license' } do
+          .license-field-group
+            %label.license-field-label.required{ for: 'value_selector' }
+              = t('.license')
+            .license-select-wrap
+              %select.chzn-select#value_selector{ name: 'license_id',
+                                                               data: { placeholder: t('.select_placeholder') } }
+                %option{ value: 'blank' }
+                - @licenses.each do |license|
+                  %option{ value: license.id }= license.name
+            %p.license-help-text
+              - link = link_to t('.add_it'), new_license_path
+              != t('.add_it_help', link: link)
+            - error_tag @license, :license_id
+
+          .license-form-actions
+            - if @project.edit_authorized?
+              %button.btn.btn-primary.btn-add-license{ type: 'submit' }
+                %i.fa.fa-plus
+                = t('.add_declared_license')
+              = link_to t('cancel'), project_licenses_path(@project), class: 'btn btn-default btn-cancel-license'
+            - else
+              = disabled_button t('.add_declared_license'), class: 'btn-primary add-license'
+
+    .col-md-6
+      = render partial: 'project_licenses/about'

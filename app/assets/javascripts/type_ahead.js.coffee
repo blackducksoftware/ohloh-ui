@@ -46,10 +46,12 @@ class App.TypeAhead
 
 class App.ChosenSelect
   constructor: () ->
+    $(document).on 'chosen:ready', (event, params) ->
+      $(params.chosen.container).find('.chosen-search-input').attr('aria-label', 'Search')
     $('.chzn-select').chosen()
     $('#sort_by .chzn-search').hide()
     $('.nav-select-container .chzn-search').show()
-    $('.value-select').chosen()
+    $('.value-select').not('.chzn-select').chosen()
 
 $(document).ready ->
   new App.ChosenSelect

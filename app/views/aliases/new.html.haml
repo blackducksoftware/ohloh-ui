@@ -4,20 +4,25 @@
   @alias ||= Alias.new
   @committer_names ||= Alias.committer_names(@project)
 
-%h2.pull-left
-  = link_to t('settings'), settings_project_path(@project)
-  &nbsp;:&nbsp;
-  = link_to t('aliases.aliases'), project_aliases_path(@project)
-  &nbsp;: #{t('aliases.new_alias')}
-= project_analysis_timestamp(@project)
+#alias-new-page
+  .alias-page-header
+    %h2.alias-page-title
+      = link_to t('settings'), settings_project_path(@project)
+      %span.alias-page-title__sep &rsaquo;
+      = link_to t('aliases.aliases'), project_aliases_path(@project)
+      %span.alias-page-title__sep &rsaquo;
+      = t('aliases.new_alias')
 
-.clearfix
-.alias
-  - if @committer_names.length.zero?
-    .alert.alert-info.alert-block= t('.no_more_alias')
-  - else
-    = form_for [@project, @alias] do
-      = render partial: 'fields'
+  .row
+    .col-md-8.col-sm-10.col-xs-12.center-block
+      - if @committer_names.length.zero?
+        .alert.alert-info.alert-block.modern-alert
+          .alert-accent-strip
+          .alert-inner
+            = t('.no_more_alias')
+      - else
+        .oh-card
+          = form_for [@project, @alias] do
+            = render partial: 'fields'
 
-.clearfix
-= render partial: 'about_aliases'
+  = render partial: 'about_aliases'

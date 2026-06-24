@@ -10,70 +10,64 @@
     res
   end
   sorted_cbl = cbl.sort_by { |_, v| v[:commits] }.reverse
-.well.no_padding
-  .pull-left.avatar_new
-    = avatar_for account, size: 128
-  .pull-left.account_details
-    %h3
-      %a.margin_top_20{ href: account_path(account), title: account.name }= truncate(account.name, length: 18)
-    - markup_raw = account.markup ? account.markup.raw : ''
-    %p.small.word_break_all= truncate(Markup.create(raw: markup_raw).first_line, length: 75)
-    .small.member_info
-      - if account.projects.any?
-        %p
-          - what = pluralize(account.projects.count, t('.project'))
-          %a{ href: account_projects_path(account) }= t('.manages', what: what)
-      %p= t('.open_hub_member_since', when: account.created_at.strftime('%B %Y'))
-  -if only_device?
-    .pull-left.kudo_rank
-      = claimed_person.kudo_rank || '1'
-    .mini-badges-section.pull-left.kudo_badge
-      = render 'accounts/badges_row', badges: [BadgeDecorator.new(Badge::KudoRankBadge.new(account))]
-  .pull-left.commits_summary
-    - if vf && vf.commits > 0 && @positions_map.any?
-      .commits_count.pull-left
-        = vf.commits
-        %br
-        %span
-          %a{ href: account_positions_path(account), style: 'font-size: 12px;' }
-            = pluralize_without_count(vf.commits, t('.commit'))
-      .pull-left.in= t('.in_dots')
-      - if sorted_cbl.empty?
-        .pull-left.language_summary.no_lang_summary!= t('.no_detected_languages')
-      - else
-        .pull-left.language_summary
-          .pull-left{ style: 'min-height: 99px;' }
-            - sorted_cbl.first(3).each do |lang_name, lang_hash|
-              - style = "background-color:##{language_color(lang_name)}; color: ##{language_text_color(lang_name)};"
-              .language_name{ style: style }
-                %span= link_to lang_hash[:nice_name], language_path(lang_name)
-          .pull-left.other_language
+.people-card
+  .people-card__body
+    .people-card__row
+      .people-card__avatar-info
+        = avatar_for account, size: 96
+        .people-card__info
+          %h3.people-card__name
+            = link_to truncate(account.name, length: 18), account_path(account), title: account.name
+          - if account.projects.any?
+            %p.people-card__meta
+              - what = pluralize(account.projects.count, t('.project'))
+              = link_to t('.manages', what: what), account_projects_path(account)
+          %p.people-card__meta= t('.open_hub_member_since', when: account.created_at.strftime('%B %Y'))
+      .people-card__commits
+        .people-card__commits-count= vf && vf.commits > 0 ? vf.commits : 0
+        .people-card__commits-label
+          - if vf && vf.commits > 0
+            = link_to pluralize_without_count(vf.commits, t('.commit')), account_positions_path(account)
+          - else
+            = t('.commit').pluralize
+      .people-card__activity
+        - if vf && vf.commits > 0 && @positions_map.any?
+          .people-card__row-langs
+            %span.people-card__label= t('.in_dots')
+            .people-card__lang-tags
+              - if sorted_cbl.empty?
+                %span.people-card__no-lang= t('.no_detected_languages')
+              - else
+                - sorted_cbl.first(3).each_with_index do |(lang_name, lang_hash), i|
+                  - if i == 0
+                    %span.people-card__lang-primary= link_to lang_hash[:nice_name], language_path(lang_name)
+                  - else
+                    %span.people-card__lang-secondary= link_to lang_hash[:nice_name], language_path(lang_name)
+          .people-card__row-projects
+            %span.people-card__label to...
+            .people-card__project-list
+              - pos_ids.each do |pos_id|
+                - project = @positions_map[pos_id].project
+                - next unless project
+                .people-card__project-item
+                  %a{ href: project_path(project), title: project.name }
+                    - project_icon(project, :small, width: 20, class: 'people-card__project-icon')
+                  = link_to truncate(project.name, length: 8), project_path(project), class: 'people-card__project-name'
+          %p.people-card__other-links
             - if sorted_cbl.length > 3
               - pluaral_term = pluralize(sorted_cbl.length - 3, t('.other_language'))
-              %a{ href: account_languages_path(account) }= t('.and_thing', thing: pluaral_term)
+              = link_to t('.and_thing', thing: pluaral_term), account_languages_path(account), class: 'people-card__link'
             - else
-              %a{ href: account_languages_path(account) }= t('.see_commits_by_languages')
-
-      .pull-left.in to ...
-      .pull-left.project_summary
-        - pos_ids.each do |pos_id|
-          - project = @positions_map[pos_id].project
-          - next unless project
-          .margin_bottom_10
-            %a{ href: project_path(project), title: project.name }
-              - project_icon(project, :small, width: 24, class: 'logo')
-            %a.margin_left_5{ href: project_path(project) }= truncate(project.name, length: 8)
-      .pull-left.other_language.other_projects
-        - if more_pos_count > 0
-          - pluaral_term = pluralize(more_pos_count, t('.other_project'))
-          %a.more_commits_padding{ href: account_positions_path(account) }= t('.and_thing', thing: pluaral_term)
+              = link_to t('.see_commits_by_languages'), account_languages_path(account), class: 'people-card__link'
+            %span.people-card__link-dot •
+            - if more_pos_count > 0
+              - pluaral_term = pluralize(more_pos_count, t('.other_project'))
+              = link_to t('.and_thing', thing: pluaral_term), account_positions_path(account), class: 'people-card__link'
+            - else
+              = link_to t('.see_commits_by_project'), account_positions_path(account), class: 'people-card__link'
         - else
-          %a.more_commits_padding{ href: account_positions_path(account) }= t('.see_commits_by_project')
-    - else
-      %p.no_commits No commit data to display
-  - unless only_device?
-    .pull-left.kudo_rank
-      = claimed_person.kudo_rank || '1'
-    .mini-badges-section.pull-left.kudo_badge
-      = render 'accounts/badges_row', badges: [BadgeDecorator.new(Badge::KudoRankBadge.new(account))]
-  .clear_both
+          %p.people-card__no-commits No commit data to display
+      .people-card__kudos
+        .people-card__kudos-rank= claimed_person.kudo_rank || '1'
+        .people-card__kudos-badge
+          = render 'accounts/badges_row', badges: [BadgeDecorator.new(Badge::KudoRankBadge.new(account))]

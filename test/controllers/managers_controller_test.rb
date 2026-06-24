@@ -25,7 +25,7 @@ class ManagersControllerTest < ActionController::TestCase
     get :index, params: { project_id: @proj.to_param }
     assert_response :success
     assert_select 'a.btn.btn-primary'
-    assert_select '.col-md-4 a.btn.btn-primary', text: 'I manage this project on Open Hub'
+    assert_select '.col-md-8 a.btn.btn-primary', text: 'I manage this project on Open Hub'
   end
 
   it 'must render projects/deleted when project is deleted' do
@@ -47,7 +47,7 @@ class ManagersControllerTest < ActionController::TestCase
     a.save
     get :index, params: { project_id: @proj.to_param }
     assert_response :success
-    assert_select 'p a.btn.btn-small.btn-danger', text: /remove manager/
+    assert_select 'p a.btn.btn-md.btn-danger', text: /remove manager/
   end
 
   it 'test index for applicant' do

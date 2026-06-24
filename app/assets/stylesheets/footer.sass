@@ -1,81 +1,154 @@
 footer
-  @include footer-colors
+  // Figma design: purple gradient background
+  position: relative
+  overflow: hidden
+  background: linear-gradient(to right, #1D0631, #5A2A82) !important
+  color: white !important
+  margin: 0
+  padding: 0
+  width: 100%
+  max-width: 100%
+  // Matches Figma: max-w-7xl mx-auto px-4 sm:px-6 lg:px-8
+  .footer-container
+    position: relative
+    max-width: 1280px
+    margin: 0 auto
+    padding: 24px 16px
+    @media (min-width: 640px)
+      padding: 32px 24px
+    @media (min-width: 1024px)
+      padding: 48px 32px
 
-  margin: 20px 0 0 0
-  min-height: 250px
-  padding-top: 10px
-  width: 960px
+  // Matches Figma: grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 md:gap-12
+  .footer-grid
+    display: grid
+    grid-template-columns: 1fr
+    gap: 24px
+    margin-bottom: 24px
+    @media (min-width: 640px)
+      gap: 32px
+      margin-bottom: 32px
+    @media (min-width: 768px)
+      grid-template-columns: repeat(3, 1fr)
+      gap: 48px
+      margin-bottom: 48px
 
-  @media (min-width: 320px) and (max-width: 480px)
-    width: auto
-    min-height: 194px !important
-    padding-top: 0px !important
-    margin: 0px 0 0 0 !important
-    .footer-left
-      margin-left: 5px !important
-      margin-top: 20px !important
-      min-height: 150px !important
-    .footer-mid
-      line-height: 15px
-      margin-left: 30px !important
-      font-size: 8px !important
-      width: 32% !important
-    .footer-right
-      font-size: 8px !important
-      padding-right: 2px !important
-      width: 31% !important
-    .footer-bottom
-      margin-left: 0px !important
-      margin-top: 0px !important
-  @media (min-width: 540px) and (max-width: 1024px)
-    width: auto
-
+  // Matches Figma: h-8 sm:h-10
   .footer-left
-    float: left
-    margin-top: 20px
-    margin-left: 30px
-    width: 15%
+    display: flex
+    align-items: flex-start
+    justify-content: center
+    @media (min-width: 768px)
+      justify-content: flex-start
     a
       .logo_img
-        width: 100%
-        height: 100%
+        width: auto
+        height: 32px
+        object-fit: contain
+        @media (min-width: 640px)
+          height: 40px
 
-  .footer-mid
-    float: left
-    margin-top: 20px
-    margin-left: 120px
-    margin-right: 40px
-    width: 20%
-    font-size: 12px
+  // Matches Figma: text-xs sm:text-sm for headers and links
+  .footer-mid, .footer-right
+    h3
+      font-size: 12px
+      font-weight: 600
+      color: white !important
+      margin-bottom: 8px
+      text-transform: uppercase
+      letter-spacing: 0.05em
+      @media (min-width: 640px)
+        font-size: 14px
+        margin-bottom: 12px
+      @media (min-width: 768px)
+        margin-bottom: 16px
+    ul
+      list-style: none
+      margin: 0
+      padding: 0
+      li
+        margin-bottom: 6px
+        @media (min-width: 640px)
+          margin-bottom: 8px
+        @media (min-width: 768px)
+          margin-bottom: 10px
+    p
+      margin: 0 0 6px 0
+      @media (min-width: 640px)
+        margin: 0 0 8px 0
+      @media (min-width: 768px)
+        margin: 0 0 10px 0
     a
-      @include footer-colors
-      padding: 4px 4px
+      color: #d1d5db !important
+      text-decoration: none
+      font-size: 12px
+      font-weight: 400
+      transition: color 0.3s ease
+      @media (min-width: 640px)
+        font-size: 14px
+      &:hover
+        color: white !important
 
-  .footer-right
-    float: left
-    margin-top: 20px
-    margin-bottom: 20px
-    width: 30%
-    font-size: 12px
-    padding-right: 60px
-    text-align: left
-    a
-      @include footer-colors
-      padding: 4px 6px
-
+  // Matches Figma: py-3 sm:py-4 md:py-6
   .footer-bottom
-    @include footer-copyright-colors
-
-    float: left
-    margin-top: 10px
-    margin-left: 30px
-    margin-bottom: 2em
-    bottom: 0
-    a
-      @include footer-copyright-colors
+    border-top: 1px solid rgba(255, 255, 255, 0.1)
+    padding: 12px 0
+    @media (min-width: 640px)
+      padding: 16px 0
+    @media (min-width: 768px)
+      padding: 24px 0
+    .footer-bottom-content
+      display: flex
+      flex-direction: column
+      align-items: center
+      justify-content: space-between
+      gap: 12px
+      @media (min-width: 640px)
+        flex-direction: row
+    // Matches Figma: text-[10px] sm:text-xs
+    .copyright
+      color: #9ca3af !important
+      font-size: 10px
+      order: 2
+      @media (min-width: 640px)
+        font-size: 12px
+        order: 1
+    .follow-us
+      display: flex
+      align-items: center
+      gap: 8px
+      order: 1
+      @media (min-width: 640px)
+        order: 2
+      // Matches Figma: text-xs sm:text-sm
+      span
+        color: #d1d5db !important
+        font-size: 12px
+        font-weight: 500
+        @media (min-width: 640px)
+          font-size: 14px
+      // Matches Figma: w-8 h-8
+      a
+        display: flex
+        align-items: center
+        justify-content: center
+        width: 32px
+        height: 32px
+        background-color: rgba(255, 255, 255, 0.1)
+        border-radius: 8px
+        transition: background-color 0.3s ease
+        &:hover
+          background-color: rgba(255, 255, 255, 0.2)
+        i
+          color: #d1d5db
+          font-size: 16px
+          transition: color 0.3s ease
+        &:hover i
+          color: white
 
 footer.fluid_footer
   width: auto
+  background: linear-gradient(to right, #1D0631, #5A2A82) !important
   .footer-left
     width: 12%
     ul
@@ -83,16 +156,22 @@ footer.fluid_footer
         a
           padding: 1rem 2rem
           font-weight: bold
+          color: rgba(209, 213, 219, 1) !important
+          &:hover
+            color: white !important
   .footer-mid
     width: 25%
     text-align: left
-    font-weight: bold
+    font-weight: 600
     font-size: 13px
+    color: white !important
   .footer-right
     width: 40%
     float: left
-    font-weight: bold
+    font-weight: 600
     font-size: 13px
+    color: white !important
   .footer-bottom
     float: left
     margin-botton: 2em !important
+    color: rgba(156, 163, 175, 1) !important

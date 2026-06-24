@@ -1,15 +1,448 @@
-#license
-  h1
-    margin-top: 20px
-    margin-bottom: 20px
+// License show page
+#license-show-page
+  padding: 24px 0
+  margin-left: 24px
+  margin-right: 24px
 
-  .licenses_button_groups
+  .license-show-breadcrumb
+    font-size: 18px
+    color: #6b7280
+    margin-bottom: 16px
+    display: flex
+    align-items: center
+    gap: 6px
     a
-      font-weight: normal !important
+      color: #5A2A82
+      text-decoration: none
+      &:hover
+        text-decoration: underline
+    .license-show-sep
+      color: #d1d5db
+    .license-show-name
+      color: #374151
+      font-weight: 500
+    html.dark &
+      color: #9ca3af
+      a
+        color: #ffb91a
+      .license-show-sep
+        color: #4b5563
+      .license-show-name
+        color: #d1d5db
 
+  .license-show-header
+    display: flex
+    align-items: flex-start
+    justify-content: space-between
+    flex-wrap: wrap
+    gap: 12px
+    padding: 20px 24px 16px
+    border-bottom: 1px solid #e5e7eb
+    html.dark &
+      border-bottom-color: rgba(90, 42, 130, 0.3)
+
+  .license-show-title
+    font-size: 22px
+    font-weight: 700
+    color: #111827
+    margin: 0
+    display: flex
+    align-items: center
+    gap: 10px
+    word-break: break-word
+    .fa
+      color: #5A2A82
+      font-size: 18px
+      flex-shrink: 0
+    html.dark &
+      color: #f3f4f6
+      .fa
+        color: #ffb91a
+
+  .license-show-actions
+    display: flex
+    align-items: center
+    flex-wrap: wrap
+    gap: 8px
+    flex-shrink: 0
+
+  .license-action-btn
+    display: inline-flex
+    align-items: center
+    gap: 5px
+    border-radius: 8px
+    font-size: 13px
+
+  .license-show-body
+    padding: 24px
+
+  .license-description
+    font-size: 15px
+    color: #374151
+    line-height: 1.7
+    margin: 0
+    p
+      margin-bottom: 12px
+      &:last-child
+        margin-bottom: 0
+    html.dark &
+      color: #d1d5db
+
+  .license-no-description
+    display: flex
+    align-items: center
+    gap: 8px
+    font-size: 14px
+    color: #6b7280
+    font-style: italic
+    .fa
+      color: #9ca3af
+    a
+      color: #5A2A82
+      &:hover
+        text-decoration: underline
+    html.dark &
+      color: #9ca3af
+      a
+        color: #ffb91a
+
+  .license-url-block
+    display: flex
+    align-items: baseline
+    flex-wrap: wrap
+    gap: 6px
+    margin-top: 20px
+    padding-top: 16px
+    border-top: 1px solid #f3f4f6
+    font-size: 14px
+    color: #6b7280
+    .fa
+      color: #9ca3af
+      font-size: 13px
+    a
+      color: #5A2A82
+      word-break: break-all
+      &:hover
+        text-decoration: underline
+    html.dark &
+      border-top-color: rgba(255, 255, 255, 0.06)
+      color: #9ca3af
+      a
+        color: #ffb91a
+
+  .license-show-footer
+    padding: 16px 24px
+    border-top: 1px solid #f3f4f6
+    html.dark &
+      border-top-color: rgba(90, 42, 130, 0.2)
+
+@media (max-width: 575px)
+  #license-show-page
+    .license-show-header
+      flex-direction: column
+    .license-show-actions
+      width: 100%
+      .license-action-btn
+        flex: 1
+        justify-content: center
+
+@media (max-width: 767px)
   #search-dingus
     margin-bottom: 0px !important
 
 #new_license
   .field_with_errors
     display: inline !important
+
+#license-edit-page
+  margin-left: 24px
+  margin-right: 24px
+  margin-top: 24px
+
+  .license-edit-breadcrumb
+    font-size: 18px
+    color: #6b7280
+    margin-bottom: 12px
+    display: flex
+    align-items: center
+    flex-wrap: wrap
+    gap: 6px
+    a
+      color: #5A2A82
+      text-decoration: none
+      &:hover
+        text-decoration: underline
+    .license-edit-sep
+      color: #9ca3af
+    html.dark &
+      color: #9ca3af
+      a
+        color: #ffb91a
+      .license-edit-sep
+        color: #6b7280
+
+  .license-edit-header
+    margin-bottom: 20px
+
+  .license-edit-title
+    font-size: 24px
+    font-weight: 700
+    color: #111827
+    margin: 0
+    display: flex
+    align-items: center
+    gap: 10px
+    .fa
+      color: #5A2A82
+      font-size: 20px
+    html.dark &
+      color: #f3f4f6
+      .fa
+        color: #ffb91a
+
+  label.checkbox
+    display: flex
+    align-items: center
+    gap: 6px
+    cursor: pointer
+    font-size: 14px
+    font-weight: 500
+    color: #374151
+    input[type="checkbox"]
+      flex-shrink: 0
+      cursor: pointer
+    html.dark &
+      color: #d1d5db
+
+  // Input fields — matches project basics form-control style
+  .form-control
+    box-sizing: border-box !important
+    border: 2px solid #e5e7eb !important
+    border-radius: 16px !important
+    -webkit-border-radius: 16px !important
+    -moz-border-radius: 16px !important
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important
+    background: #ffffff !important
+    color: #111827 !important
+    padding: 10px 16px !important
+    height: auto !important
+    width: 85% !important
+    transition: border-color 0.3s ease, box-shadow 0.3s ease
+    &::placeholder
+      color: #9ca3af !important
+      opacity: 1
+    &:hover
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important
+      border-color: #d1d5db !important
+    &:focus, &:focus-visible
+      border-color: #5A2A82 !important
+      outline: none !important
+      box-shadow: 0 0 0 4px rgba(14, 75, 122, 0.1) !important
+      background: #ffffff !important
+    html.dark &
+      background: #1D0631 !important
+      color: #ffffff !important
+      border-color: #5A2A82 !important
+      &::placeholder
+        color: #6b7280 !important
+        opacity: 1
+      &:hover
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important
+        border-color: #6b7280 !important
+      &:focus, &:focus-visible
+        border-color: #ffb91a !important
+        background: #1D0631 !important
+        box-shadow: 0 0 0 4px rgba(255, 185, 26, 0.1) !important
+        outline: none !important
+
+  textarea.form-control.edit-description
+    height: 150px !important
+    resize: vertical
+
+  // URL field prepend — add-on + input side by side
+  .license-url-prepend
+    display: flex !important
+    align-items: stretch !important
+    width: 85% !important
+
+    .add-on
+      display: inline-flex !important
+      align-items: center
+      padding: 10px 12px
+      background: #f3f4f6
+      border: 2px solid #e5e7eb
+      border-right: none
+      border-radius: 16px 0 0 16px
+      color: #6b7280
+      font-size: 13px
+      white-space: nowrap
+      flex-shrink: 0
+      html.dark &
+        background: #2D1548
+        border-color: #5A2A82
+        color: #9ca3af
+
+    .form-control
+      border-radius: 0 16px 16px 0 !important
+      width: auto !important
+      flex: 1 1 0 !important
+      min-width: 0
+
+  // Mobile responsive
+  @media (max-width: 575px)
+    margin-left: 12px
+    margin-right: 12px
+
+    .license-edit-breadcrumb
+      font-size: 13px
+
+    .license-edit-title
+      font-size: 20px
+
+    .control-group
+      margin-bottom: 16px
+
+    .form-control
+      width: 100% !important
+
+    .license-url-prepend
+      width: 100% !important
+      flex-wrap: nowrap
+
+      .add-on
+        font-size: 11px
+        padding: 10px 8px
+
+    .actions
+      display: flex
+      flex-direction: column
+      gap: 12px
+      align-items: stretch
+
+      .btn-primary
+        width: 100%
+
+      .pull-right
+        float: none !important
+        margin-right: 0 !important
+        display: flex
+        justify-content: flex-start
+
+    label.checkbox
+      font-size: 13px
+
+  @media (min-width: 576px) and (max-width: 767px)
+    margin-left: 16px
+    margin-right: 16px
+
+    .form-control
+      width: 100% !important
+
+    .license-url-prepend
+      width: 100% !important
+
+// Licenses index page
+#licenses-index-page
+  padding: 24px 0
+  margin-left: 24px
+  margin-right: 24px
+
+  .licenses-page-header
+    display: flex
+    align-items: center
+    justify-content: space-between
+    flex-wrap: wrap
+    gap: 12px
+    margin-bottom: 24px
+    padding-bottom: 16px
+    border-bottom: 2px solid #e9ecef
+    html.dark &
+      border-bottom-color: rgba(90, 42, 130, 0.3)
+
+  .licenses-page-title
+    font-size: 24px
+    font-weight: 700
+    color: #111827
+    margin: 0
+    display: flex
+    align-items: center
+    gap: 10px
+    .fa
+      color: #5A2A82
+      font-size: 20px
+    html.dark &
+      color: #f3f4f6
+      .fa
+        color: #ffb91a
+
+  .licenses-grid
+    display: grid
+    grid-template-columns: repeat(3, 1fr)
+    gap: 16px
+    margin-top: 16px
+    @media (max-width: 991px)
+      grid-template-columns: repeat(2, 1fr)
+    @media (max-width: 575px)
+      grid-template-columns: 1fr
+
+  .license-card
+    padding: 16px 20px !important
+    transition: border-color 0.2s ease, box-shadow 0.2s ease
+
+  .license-card-body
+    display: flex
+    align-items: center
+    gap: 10px
+
+  .license-card-icon
+    color: #5A2A82
+    font-size: 16px
+    flex-shrink: 0
+    html.dark &
+      color: #ffb91a
+
+  .license-card-link
+    font-size: 15px
+    font-weight: 500
+    color: #111827
+    text-decoration: none
+    overflow: hidden
+    text-overflow: ellipsis
+    white-space: nowrap
+    &:hover
+      color: #5A2A82
+      text-decoration: none
+    html.dark &
+      color: #e5e7eb
+      &:hover
+        color: #ffb91a
+
+  .licenses-empty-state
+    display: flex
+    flex-direction: column
+    align-items: center
+    padding: 48px 24px
+    text-align: center
+    .licenses-empty-icon
+      font-size: 48px
+      color: #d1d5db
+      margin-bottom: 16px
+    .licenses-empty-text
+      font-size: 15px
+      color: #6b7280
+      margin-bottom: 8px
+    .licenses-empty-link
+      font-size: 14px
+      color: #6b7280
+      a
+        color: #5A2A82
+        &:hover
+          text-decoration: underline
+    html.dark &
+      .licenses-empty-icon
+        color: #4b5563
+      .licenses-empty-text,
+      .licenses-empty-link
+        color: #9ca3af
+      .licenses-empty-link a
+        color: #ffb91a

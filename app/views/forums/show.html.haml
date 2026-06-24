@@ -27,4 +27,4 @@
     = link_to t('.add_new_topic'), new_forum_topic_path(@forum),
       class: 'btn btn-primary btn-mini disabled'
   .col-md-11{ style: 'margin-top: -20px' }
-    = will_paginate @topics
+    = render 'shared/modern_pagination', collection: @topics

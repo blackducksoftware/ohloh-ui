@@ -1,0 +1,53 @@
+/ Locals: hero_lines (Array of strings), hero_accent (String), tagline (String)
+.signup-left-panel
+  .signup-orb.signin-orb--top-left
+  .signup-orb.signin-orb--bottom-right
+  .signup-orb.signin-orb--center
+
+  .signup-left-content
+    .signup-badge
+      .signup-badge__dot.signin-badge__dot--pulse
+      = t('auth.shared.trusted_by')
+
+    %h1.signup-headline
+      - hero_lines.each_with_index do |line, i|
+        = line
+        - if i < hero_lines.length - 1
+          %br
+      %br
+      %span.signup-headline__accent= hero_accent
+
+    %p.signup-tagline= tagline
+
+  .signup-benefits
+    .signup-benefit
+      .signup-benefit__icon.signin-feature--purple
+        %i.fa.fa-code-fork
+      .signup-benefit__text
+        %p.signup-benefit__title= t('auth.shared.benefits.projects.title')
+        %p.signup-benefit__desc= t('auth.shared.benefits.projects.desc')
+
+    .signup-benefit
+      .signup-benefit__icon.signin-feature--amber
+        %i.fa.fa-users
+      .signup-benefit__text
+        %p.signup-benefit__title= t('auth.shared.benefits.contributors.title')
+        %p.signup-benefit__desc= t('auth.shared.benefits.contributors.desc')
+
+    .signup-benefit
+      .signup-benefit__icon.signin-feature--green
+        %i.fa.fa-shield
+      .signup-benefit__text
+        %p.signup-benefit__title= t('auth.shared.benefits.security.title')
+        %p.signup-benefit__desc= t('auth.shared.benefits.security.desc')
+
+    .signup-benefit
+      .signup-benefit__icon.signin-feature--pink
+        %i.fa.fa-bolt
+      .signup-benefit__text
+        %p.signup-benefit__title= t('auth.shared.benefits.activity.title')
+        %p.signup-benefit__desc= t('auth.shared.benefits.activity.desc')
+
+  .signup-left-footer
+    %p.signin-testimonial= t('auth.shared.testimonial')
+    %p.signin-testimonial-attr= t('auth.shared.testimonial_attr')

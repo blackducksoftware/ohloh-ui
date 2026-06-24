@@ -3,28 +3,27 @@
   compare_title = t('.compare_title', name_1: project.name, name_2: @project.name)
   languages_summary_path = languages_summary_project_analysis_path(project, id: 'latest')
 
-.col-md-4.no_padding
-  .col-md-3.no_padding
-    .pull-left= link_to project.decorate.icon(:med), project_path(project), title: h(project.description)
-  .col-md-9.no_padding
-    %h4.nomargin.no_margin_top
-      = link_to h(project.name), project_path(project)
-      &nbsp;
-      = link_to t('.compare'), compare_url, style: 'font-size: 12px', title: compare_title
-    .nomargin{ style: 'position: relative' }
-      - project_activity_level_class(project, :fifteen)
-      %span{ class: project_activity_level_text_class(:fifteen) }
-        = project_activity_text(project, true)
+.similar-card.oh-card
+  .similar-card-header
+    .similar-card-icon
+      = link_to project.decorate.icon(:med), project_path(project), title: h(project.description)
+    .similar-card-meta
+      %h4.similar-card-title
+        = link_to h(project.name), project_path(project), class: 'similar-card-name'
+        = link_to t('.compare'), compare_url, class: 'similar-compare-btn', title: compare_title
+      .similar-card-activity
+        - project_activity_level_class(project, :fifteen)
+        %span{ class: project_activity_level_text_class(:fifteen) }
+          = project_activity_text(project, true)
+  .similar-card-body
     - if project.best_analysis.present?
-      %p.nomargin
-        = t('.most_written')
-        = link_to project.best_analysis.main_language&.nice_name, languages_summary_path
-    %p.nomargin
-      = t('.licence')
-      - if project.licenses.any?
-        = project.licenses.map { |license| link_to h(license.short_name), license_path(license) }.join(', ').html_safe
-      - else
-        = t('.unknown')
-  .margin_top_10
-    %br
-    &nbsp;
+      .similar-card-row
+        %span.similar-card-label= t('.most_written')
+        = link_to project.best_analysis.main_language&.nice_name, languages_summary_path, class: 'similar-card-value-link'
+    .similar-card-row
+      %span.similar-card-label= t('.licence')
+      %span.similar-card-value
+        - if project.licenses.any?
+          = project.licenses.map { |license| link_to h(license.short_name), license_path(license), class: 'similar-card-value-link' }.join(', ').html_safe
+        - else
+          %span.similar-muted= t('.unknown')

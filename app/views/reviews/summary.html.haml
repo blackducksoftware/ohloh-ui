@@ -1,22 +1,32 @@
 - content_for(:html_title) { t('.title', name: @project.name) }
-.project_content_title{ style: 'height: 50px' }
-  %h2.pull-left= t('.rating_and_reviews')
-  = project_analysis_timestamp(@project)
-.row
-  .col.col-md-3.padding_left_25
-    = render partial: 'community_and_your_rating'
-  .col.col-md-8.pull-right
-    = render partial: 'new_or_existing_review'
-.clearfix
-- if @project.reviews.exists?
-  .col-md-6.no_padding_left.padding_right_10
-    %h3= link_to t('.most_helpful_reviews'), project_reviews_path(@project, sort: 'helpful')
-    = render partial: 'review_summary', collection: @most_helpful_reviews
-  .col-md-6.no_padding_right.padding_left_10
-    %h3= link_to t('.most_recent_reviews'), project_reviews_path(@project, sort: 'recently_added')
-    = render partial: 'review_summary', collection: @recent_reviews
-  .clear
-  - if @project.reviews.count > 1
-    = icon_button(project_reviews_path(@project), text: t('.see_all_reviews'), size: 'small', type: :primary)
-- else
-  %p= t('.no_review')
+
+.rr-page
+  .rr-page__title
+    .rr-page__title-icon
+      %i.fa.fa-star
+    %h2
+      %strong= t('.rating_and_reviews')
+
+  = render partial: 'community_and_your_rating'
+
+  = render partial: 'new_or_existing_review'
+
+  - if @project.reviews.exists?
+    .rr-reviews-grid
+      .rr-reviews-grid__col
+        %h3.rr-section-title
+          .rr-section-title__icon.rr-section-title__icon--green
+            %i.fa.fa-thumbs-up
+          = link_to t('.most_helpful_reviews'), project_reviews_path(@project, sort: 'helpful')
+        = render partial: 'review_summary', collection: @most_helpful_reviews
+      .rr-reviews-grid__col
+        %h3.rr-section-title
+          .rr-section-title__icon
+            %i.fa.fa-clock-o
+          = link_to t('.most_recent_reviews'), project_reviews_path(@project, sort: 'recently_added')
+        = render partial: 'review_summary', collection: @recent_reviews
+    - if @project.reviews.count > 1
+      .rr-see-all
+        = icon_button(project_reviews_path(@project), text: t('.see_all_reviews'), size: 'small', type: :primary)
+  - else
+    %p.rr-no-reviews= t('.no_review')

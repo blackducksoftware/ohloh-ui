@@ -1,11 +1,10 @@
 - content_for(:html_title) { t('.title') }
 %h2.pull_left
   = link_to t('reviews.rating_and_reviews'), summary_project_reviews_path(@project)
-  = t('new')
-= project_analysis_timestamp(@project)
+  %strong= t('new')
 .clearfix
 %br
-.col-md-9.no_padding{ style: 'margin-left:137px;' }
-  .well
+.col-md-9
+  .oh-card
     = form_for([@project, @review]) do |f|
       = render partial: 'fields', locals: { f: f }

@@ -1,16 +1,188 @@
-.project_content_title
-  :height 50px
-.alias
-  .undone
-    :text-decoration line-through
-    :color #808080
-  .pending
-    :color #8B0000
-    :padding-left 18px
-    :background asset_url('icons/fact_warning.png') left center no-repeat
-  li
-    :margin-left 25px
-    :margin-bottom 8px
-    :border-bottom 1px solid #ddd
-    :padding-bottom 5px
+// Design System Variables
+$purple-primary: #5A2A82
+$gray-500: #6b7280
+$gray-200: #e5e7eb
+$yellow-accent: #FFB91A
 
+// System Font Stack
+$font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif
+
+.project_content_title
+  height: 72px
+  font-family: $font-family
+
+.alias
+  font-family: $font-family
+  
+  .undone
+    text-decoration: line-through
+    color: $gray-500
+
+  .pending
+    color: $purple-primary
+    padding-left: 18px
+    background: asset_url('icons/fact_warning.png') left center no-repeat
+    font-weight: 500
+
+  li
+    margin-left: 25px
+    margin-bottom: 12px
+    border-bottom: 1px solid $gray-200
+    padding-bottom: 8px
+    font-weight: 400
+    line-height: 1.6
+
+// Dark Mode
+html.dark,
+body.dark
+  .alias
+    .undone
+      color: #94a3b8
+
+    .pending
+      color: $yellow-accent
+
+    li
+      border-bottom-color: rgba(255, 255, 255, 0.1)
+
+// ──────────────────────────────────────────────────────────────────────────────
+// Alias New Page (#alias-new-page)
+// ──────────────────────────────────────────────────────────────────────────────
+
+#alias-new-page
+  padding: 24px 0
+
+  .alias-page-header
+    margin-bottom: 24px
+
+  .alias-page-title
+    font-size: 22px
+    font-weight: 700
+    color: #111827
+    margin: 0 0 8px 0
+    display: flex
+    align-items: center
+    gap: 8px
+    flex-wrap: wrap
+
+    html.dark &
+      color: #ffffff
+
+    a
+      color: #5A2A82
+      text-decoration: none
+
+      html.dark &
+        color: #ffb91a
+
+      &:hover
+        text-decoration: underline
+
+    &__sep
+      color: #9ca3af
+      font-weight: 400
+
+  // ── Form fields ──
+
+  .alias-fields
+    padding: 4px 0
+
+  .alias-field-group
+    margin-bottom: 20px
+
+  .alias-label
+    display: block
+    font-size: 13px
+    font-weight: 600
+    color: #374151
+    margin-bottom: 6px
+
+    html.dark &
+      color: #d1d5db
+
+  .alias-select-wrap
+    width: 100%
+
+    select
+      box-sizing: border-box
+      width: 100%
+      border: 2px solid #e5e7eb !important
+      border-radius: 16px !important
+      padding: 10px 16px !important
+      font-size: 14px
+      height: auto !important
+      background: #ffffff !important
+      color: #111827 !important
+      transition: border-color 0.2s, box-shadow 0.2s
+      appearance: auto
+
+      &:focus
+        border-color: #5A2A82 !important
+        outline: none !important
+        box-shadow: 0 0 0 3px rgba(90, 42, 130, 0.1) !important
+
+      html.dark &
+        background: #1D0631 !important
+        color: #ffffff !important
+        border-color: #5A2A82 !important
+
+        &:focus
+          border-color: #ffb91a !important
+          box-shadow: 0 0 0 3px rgba(255, 185, 26, 0.1) !important
+
+    // chosen.js container
+    .chosen-container
+      width: 100% !important
+
+    .chosen-single,
+    .chosen-choices
+      border: 2px solid #e5e7eb !important
+      border-radius: 16px !important
+      padding: 8px 16px !important
+      background: #ffffff !important
+      box-shadow: none !important
+      font-size: 14px !important
+      color: #111827 !important
+
+      html.dark &
+        background: #1D0631 !important
+        border-color: #5A2A82 !important
+        color: #ffffff !important
+
+    .chosen-container-active .chosen-single,
+    .chosen-container-active .chosen-choices
+      border-color: #5A2A82 !important
+      box-shadow: 0 0 0 3px rgba(90, 42, 130, 0.1) !important
+
+      html.dark &
+        border-color: #ffb91a !important
+        box-shadow: 0 0 0 3px rgba(255, 185, 26, 0.1) !important
+
+  .alias-actions
+    padding-top: 8px
+    display: flex
+    gap: 10px
+
+  .alias-submit
+    height: 40px
+    padding: 0 24px
+    border-radius: 20px
+    font-size: 14px
+    font-weight: 600
+
+  // ── Responsive ──
+
+  @media (max-width: 767px)
+    padding: 16px 0
+
+    .alias-page-title
+      font-size: 17px
+
+    .alias-actions
+      flex-direction: column
+
+      .alias-submit
+        width: 100%
+
+  @media (min-width: 768px) and (max-width: 1024px)
+    padding: 20px 0
