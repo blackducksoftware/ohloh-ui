@@ -11,7 +11,7 @@ A Ruby on Rails application for the Open Hub platform.
 - [Testing](#testing)
 - [Pull Request Checks](#pull-request-checks)
 - [Contributing](#contributing)
-
+- [Running the Application using Docker](#running-the-application-docker)
 ## 🔧 Prerequisites
 
 Before you begin, ensure you have the following installed:
@@ -163,6 +163,10 @@ This includes:
 
 After all the successful checks, CI pipeline will have success message like
 `All checks has been passed`.
+
+###  Running the Application using Docker
+You can also run the application using Docker if you prefer to set up ohloh-ui locally without installing all the required packages.
+Refer to DOCKER.md for detailed instructions.
 
 ## 🤝 Contributing
 

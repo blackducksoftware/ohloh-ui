@@ -1,0 +1,93 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:14-alpine
+    container_name: ohloh-postgres
+    environment:
+      POSTGRES_USER: ohloh
+      POSTGRES_PASSWORD: ohloh_password
+      POSTGRES_DB: ohloh_development
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ohloh -d ohloh_development"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: ohloh-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: ohloh-web
+    command: bundle exec rails server -b 0.0.0.0 -p 3000
+    volumes:
+      - .:/app
+    ports:
+      - "3000:3000"
+    environment:
+      RAILS_ENV: development
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USERNAME: ohloh
+      DB_PASSWORD: ohloh_password
+      DB_NAME: ohloh_development
+      DB_ENCODING: UTF8
+      DB_SEARCH_PATH: 'oh,fis,public'
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      URL_HOST: 'localhost:3000'
+      SKIP_SCHEMA_DUMP: 'true'
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    stdin_open: true
+    tty: true
+
+  sidekiq:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: ohloh-sidekiq
+    entrypoint: []
+    command: bundle exec sidekiq
+    volumes:
+      - .:/app
+    environment:
+      RAILS_ENV: development
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USERNAME: ohloh
+      DB_PASSWORD: ohloh_password
+      DB_NAME: ohloh_development
+      DB_ENCODING: UTF8
+      DB_SEARCH_PATH: 'oh,fis,public'
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+volumes:
+  postgres_data:
+  redis_data:

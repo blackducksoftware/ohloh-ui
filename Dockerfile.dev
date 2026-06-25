@@ -1,0 +1,62 @@
+# Dockerfile for Ohloh UI (OpenHub)
+# Ruby on Rails 6.1 application with PostgreSQL
+
+FROM ruby:3.1.7-slim-bullseye
+
+# Set environment variables
+ENV RAILS_ENV=development \
+    BUNDLE_PATH=/usr/local/bundle \
+    BUNDLE_WITHOUT=production:staging \
+    APP_HOME=/app \
+    RAILS_LOG_TO_STDOUT=true
+
+# Install PostgreSQL 14 client (to match server version) and system dependencies
+RUN apt-get update -qq && \
+    apt-get install -y --no-install-recommends \
+    curl \
+    gnupg2 \
+    lsb-release \
+    && echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list \
+    && curl -fsSL https://www.postgresql.org/media/keys/ACCC4CF8.asc | gpg --dearmor -o /etc/apt/trusted.gpg.d/postgresql.gpg \
+    && apt-get update -qq \
+    && apt-get install -y --no-install-recommends \
+    build-essential \
+    libpq-dev \
+    postgresql-client-14 \
+    imagemagick \
+    libmagickwand-dev \
+    libsodium-dev \
+    libxml2-dev \
+    libxslt1-dev \
+    git \
+    nodejs \
+    npm \
+    && rm -rf /var/lib/apt/lists/*
+
+# Create app directory
+WORKDIR $APP_HOME
+
+# Install bundler
+RUN gem install bundler:2.3.6
+
+# Copy Gemfile first for better layer caching
+COPY Gemfile Gemfile.lock ./
+
+# Install gems (verbose output to track progress)
+RUN bundle install --jobs 4 --retry 3 --verbose
+
+# Copy the rest of the application
+COPY . .
+
+# Copy and set entrypoint
+COPY docker-entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+
+# Expose port 3000 (Puma default)
+EXPOSE 3000
+
+# Use entrypoint for database setup
+ENTRYPOINT ["docker-entrypoint.sh"]
+
+# Default command - start Puma server
+CMD ["bundle", "exec", "rails", "server", "-b", "0.0.0.0", "-p", "3000"]
