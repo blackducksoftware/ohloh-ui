@@ -11,16 +11,21 @@ class PeopleController < UnclaimedController
 
   private
 
+  def only_device?
+    request.env['HTTP_USER_AGENT']&.match?(/(iPhone|BlackBerry|Android)/)
+  end
+
   def query_or_cache_exist
-    params[:query].blank? && Rails.cache.exist?('people_index_page') && Rails.cache.exist?('people_index_page_device')
+    key = only_device? ? 'people_index_page_device' : 'people_index_page'
+    params[:query].blank? && Rails.cache.exist?(key)
   end
 
   def find_index_people
     @claimed_people = Person.find_claimed(params[:query], 'relevance')
-                            .preload(account: :markup)
                             .paginate(page: 1, per_page: 3)
-    @unclaimed_people = unclaimed_people(params[:query], 'relevance', 3)
-    @unclaimed_people_count = Person::Count.unclaimed_by(params[:query], 'relevance')
+    @unclaimed_people = unclaimed_people(params[:query], 'relevance', 4)
+    @more_unclaimed = @unclaimed_people.length > 3
+    @unclaimed_people = @unclaimed_people.first(3)
   end
 
   def preload_data

@@ -20540,6 +20540,13 @@ CREATE INDEX index_people_name_id ON oh.people USING btree (name_id) WHERE (name
 
 
 --
+-- Name: index_people_name_id_kudo_position; Type: INDEX; Schema: oh; Owner: -
+--
+
+CREATE INDEX index_people_name_id_kudo_position ON oh.people USING btree (name_id, kudo_position) WHERE (name_id IS NOT NULL);
+
+
+--
 -- Name: index_people_on_account_id; Type: INDEX; Schema: oh; Owner: -
 --
 
@@ -28227,3 +28234,5 @@ INSERT INTO oh.schema_migrations (version) VALUES ('98');
 
 INSERT INTO oh.schema_migrations (version) VALUES ('99');
 
+
+INSERT INTO oh.schema_migrations (version) VALUES ('20260603065929');

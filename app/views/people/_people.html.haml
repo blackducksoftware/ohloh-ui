@@ -9,6 +9,6 @@
   %h3.margin_bottom_15= t('.unclaimed_committer_ids')
   - @unclaimed_people.each do |_, people|
     = render partial: 'unclaimed_person', locals: { people: people }
-  - if @unclaimed_people_count > 3
+  - if @more_unclaimed
     %p
       %a.btn.btn-mini.btn-primary#more_unclaimed{ href: committers_path(query: params[:query]) }= t('.more_commiters')
