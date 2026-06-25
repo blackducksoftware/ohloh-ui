@@ -73,7 +73,7 @@ class WidgetsHelperTest < ActionView::TestCase
 
   describe 'widget_iframe_style' do
     it 'should return css' do
-      _(widget_iframe_style(widget)).must_equal 'height: 35px; width: 230px; border: none'
+      _(widget_iframe_style(widget)).must_equal 'height: 35px; width: 232px; border: none'
     end
   end
 
