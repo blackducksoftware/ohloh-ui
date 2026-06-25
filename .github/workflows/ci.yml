@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - main
+      - staging
 
 concurrency:
   group: ci-${{ github.workflow }}-${{ github.ref }}
@@ -40,15 +41,14 @@ jobs:
       TEST_DB_PASSWORD: postgres
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - name: Checkout Ohloh UI
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
 
       - name: Install system dependencies
         run: sudo apt-get update && sudo apt-get install -y libsodium-dev imagemagick
 
-
       - name: Setup Ruby
-        uses: ruby/setup-ruby@v1
+        uses: ruby/setup-ruby@9eb537ca036ebaed86729dcb9309076e4c5c3b74 # v1.314.0
         with:
           ruby-version: .ruby-version
           bundler-cache: false
