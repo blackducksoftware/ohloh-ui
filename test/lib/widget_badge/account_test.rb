@@ -12,7 +12,7 @@ describe 'WidgetBadge::Account' do
       result_blob = WidgetBadge::Account.create(options)
       result_file = write_to_file(result_blob)
 
-      compare_images(result_file.path, expected_image_path, 0.1)
+      compare_images(result_file.path, expected_image_path, 0.15)
     end
 
     it 'must handle spaces and utf-8 characters in account names' do

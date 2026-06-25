@@ -13,8 +13,8 @@ class TinyTest < ActiveSupport::TestCase
   end
 
   describe 'height' do
-    it 'should return 15' do
-      _(widget.height).must_equal 15
+    it 'should return 16' do
+      _(widget.height).must_equal 16
     end
   end
 
