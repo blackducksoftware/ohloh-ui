@@ -9,10 +9,10 @@
 .search-filter-bar
   %form
     .search-filter-content
-      = render 'shared/search_dingus/page_entries_info', collection: collection, total_count: total_count
-
       = render 'shared/search_dingus/search_bar', search_type: search_type, tags: tags
 
       = render 'shared/search_dingus/sort', filter_type: filter_type, sort_context: sort_context
+
+= render 'shared/search_dingus/page_entries_info', collection: collection, total_count: total_count
 
 = render 'shared/search_dingus/no_match_found', collection: collection, no_match_found_type: no_match_found_type

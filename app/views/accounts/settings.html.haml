@@ -19,12 +19,13 @@
         %h4= t('.account_basics')
         %span.settings_description= t('.account_basics_settings')
 
-    %a.settings_module{ href: alter_password_edit_account_path(@account) }
-      .settings-icon-wrapper.gradient-red
-        %i.fa.fa-lock
-      .settings-text
-        %h4= t('.password')
-        %span.settings_description= t('.change_passwords')
+    - if my_account?(@account)
+      %a.settings_module{ href: alter_password_edit_account_path(@account) }
+        .settings-icon-wrapper.gradient-red
+          %i.fa.fa-lock
+        .settings-text
+          %h4= t('.password')
+          %span.settings_description= t('.change_passwords')
 
     %a.settings_module{ href: account_api_keys_path(@account) }
       .settings-icon-wrapper.gradient-blue
