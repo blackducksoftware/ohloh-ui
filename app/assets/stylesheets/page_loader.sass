@@ -13,6 +13,9 @@
   opacity: 1
   transition: opacity 0.3s ease-out
 
+  html.dark &
+    background: rgba(0, 0, 0, 0.95)
+
   &.hidden
     display: none
 
@@ -26,11 +29,17 @@
       display: block
       animation: spin 2s linear infinite
 
+      html.dark &
+        color: #9ca3af
+
     p
       color: #666
       font-size: 16px
       margin: 0
       font-weight: 500
+
+      html.dark &
+        color: #d1d5db
 
 @keyframes spin
   0%

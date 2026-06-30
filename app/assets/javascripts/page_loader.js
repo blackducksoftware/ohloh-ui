@@ -34,10 +34,22 @@
 
   // Show loader when clicking links to slow pages
   document.addEventListener('click', function(e) {
+    // Skip if event was already prevented or not a left-click
+    if (e.defaultPrevented || e.button !== 0) return;
+    // Skip if modifier keys held (would open in new tab/window)
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+
     var link = e.target.closest('a[href]');
     if (!link) return;
+
+    // Skip if link targets something other than current window
+    if (link.target && link.target.toLowerCase() !== '_self') return;
+
     var href = link.getAttribute('href');
-    if (href && isSlowPage(href)) {
+    // Skip hash-only links
+    if (!href || href.charAt(0) === '#') return;
+
+    if (isSlowPage(href)) {
       showLoader();
     }
   });

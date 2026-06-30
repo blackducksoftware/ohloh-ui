@@ -1,5 +1,5 @@
 / Page loader - hidden by default, shown via JS when navigating to slow pages
 #page-loader.page-loader.hidden
-  .loader-content
-    %i.fa.fa-spinner.fa-spin
+  .loader-content{ role: 'status', 'aria-live': 'polite' }
+    %i.fa.fa-spinner.fa-spin{ 'aria-hidden': 'true' }
     %p= t('shared.page_loader.loading')
