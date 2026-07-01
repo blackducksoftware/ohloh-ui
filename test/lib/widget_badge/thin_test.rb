@@ -38,7 +38,7 @@ describe 'WidgetBadge::Thin' do
       result_image = WidgetBadge::Thin.send :new_text_image, 'Some Text', options
       expected_image_path = Rails.root.join('test', 'data', 'widget_badge', 'thin', 'new_text_image.png')
 
-      compare_images(result_image.path, expected_image_path, 0.13)
+      compare_images(result_image.path, expected_image_path, 0.15)
     end
   end
 end

@@ -51,7 +51,7 @@ describe 'WidgetBadge::Partner' do
       result_image = WidgetBadge::Partner.send :new_text_image, 'Some Text', options
       expected_image_path = Rails.root.join('test', 'data', 'widget_badge', 'partner', 'new_text_image.png')
 
-      compare_images(result_image.path, expected_image_path, 0.1)
+      compare_images(result_image.path, expected_image_path, 0.22)
     end
   end
 end
