@@ -1,4 +1,4 @@
-name: Deploy openhub
+name: Deploy openhub-tst
 
 on:
   push:
