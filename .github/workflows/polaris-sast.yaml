@@ -173,7 +173,6 @@ jobs:
           docker push --quiet "${{ secrets.GAR_IMAGE_BASE }}/offline:offline" >/dev/null
 
       - name: SCA scan (BlackDuck Detect)
-        if: ${{ github.ref_name == 'main' && !inputs.chart_version }}
         working-directory: ohloh-ui
         run: |
           (curl -s -L https://detect.synopsys.com/detect9.sh | bash -s -- \
@@ -185,7 +184,6 @@ jobs:
 
       - name: SAST scan (Polaris)
         id: polaris-scan
-        if: ${{ github.ref_name == 'main' && !inputs.chart_version }}
         uses: blackduck-inc/black-duck-security-scan@v2
         with: 
           polaris_server_url: ${{ secrets.POLARIS_SERVER_URL }}
