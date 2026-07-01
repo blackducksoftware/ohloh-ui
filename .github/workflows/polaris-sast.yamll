@@ -1,0 +1,219 @@
+name: Deploy openhub
+
+on:
+  push:
+    branches:
+      - main
+      - polaris-test
+  workflow_dispatch:
+    inputs:
+      oh_config_branch:
+        description: 'openhub-config branch'
+        default: 'main'
+        required: true
+      chart_version:
+        description: 'Deploy existing chart version (skips build)'
+        required: false
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    concurrency:
+      group: deploy-${{ github.ref_name }}
+      cancel-in-progress: true
+    steps:
+      - name: Wait for concurrent runs to settle
+        if: github.event_name == 'push'
+        run: sleep 15
+
+      - name: Mask sensitive values
+        run: |
+          echo "::add-mask::${{ secrets.GCP_PROJECT_ID }}"
+          echo "::add-mask::$GITHUB_WORKSPACE"
+
+      - name: Resolve Harness config
+        id: harness
+        run: |
+          if [ "${{ github.ref_name }}" = 'main' ]; then
+            echo "webhook_url_prod=${{ secrets.HARNESS_WEBHOOK_URL_PROD }}" >> $GITHUB_OUTPUT
+            echo "webhook_url_stage=${{ secrets.HARNESS_WEBHOOK_URL_STAGE }}" >> $GITHUB_OUTPUT
+          else
+            echo "webhook_url_stage=${{ secrets.HARNESS_WEBHOOK_URL_STAGE }}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Checkout ohloh-ui
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+        with:
+          path: ohloh-ui
+
+      - name: Generate GitHub App token
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        id: app-token
+        with:
+          client-id: ${{ secrets.APP_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+          repositories: openhub-config
+          skip-token-revoke: true
+
+      - name: Checkout openhub-config
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+        with:
+          repository: blackducksoftware/openhub-config
+          ref: ${{ inputs.oh_config_branch || 'main' }}
+          token: ${{ steps.app-token.outputs.token }}
+          path: openhub-config
+
+      - name: Revoke GitHub App token
+        run: |
+          curl -s -X DELETE \
+            -H "Authorization: Bearer ${{ steps.app-token.outputs.token }}" \
+            https://api.github.com/installation/token
+
+      - name: Authenticate to GCP via WIF
+        uses: google-github-actions/auth@7c6bc770dae815cd3e89ee6cdf493a5fab2cc093 # v3
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT_EMAIL }}
+          access_token_lifetime: 180s
+
+      - name: Mask credentials path
+        run: |
+          echo "::add-mask::$GOOGLE_APPLICATION_CREDENTIALS"
+          echo "::add-mask::$(basename $GOOGLE_APPLICATION_CREDENTIALS)"
+
+      - name: Set up gcloud
+        uses: google-github-actions/setup-gcloud@aa5489c8933f4cc7a4f7d45035b3b1440c9c10db # v3.0.1
+
+      - name: Configure Docker for GAR
+        run: gcloud auth configure-docker us-docker.pkg.dev --quiet
+
+      - name: Clean git credentials before Docker build
+        run: |
+          git -C ohloh-ui config --local --unset http.https://github.com/.extraheader || true
+          git -C openhub-config config --local --unset http.https://github.com/.extraheader || true
+
+      - name: Build Docker images
+        if: ${{ !inputs.chart_version }}
+        run: |
+          docker build --quiet --tag openhub:base    -f openhub-config/docker/openhub-gcp/Dockerfile .
+          docker build --quiet --tag openhub:latest  -f openhub-config/docker/openhub-gcp/Dockerfile.oh .
+          docker build --quiet --tag openhub:sidekiq -f openhub-config/docker/openhub-gcp/Dockerfile.sidekiq .
+          docker build --quiet --tag openhub:offline -f openhub-config/docker/openhub-gcp/Dockerfile.offline .
+
+      - name: Resolve image version
+        run: |
+          if [ -n "${{ inputs.chart_version }}" ]; then
+            echo "IMAGE_TAG=${{ inputs.chart_version }}" >> $GITHUB_ENV
+          else
+            gsutil cp gs://${{ secrets.GCS_BUCKET }}/${{ secrets.VERSION_FILE }} ${{ secrets.VERSION_FILE }}
+
+            MAJ_MIN_REV="$(cut -d. -f1-2 ${{ secrets.VERSION_FILE }})"
+            PATCH_REV="$(cut -d. -f3 ${{ secrets.VERSION_FILE }} | cut -d- -f1)"
+
+            if [ "${{ github.ref_name }}" = 'main' ]; then
+              PATCH_REV=$(($PATCH_REV + 1))
+              NEXT_VERSION="${MAJ_MIN_REV}.${PATCH_REV}"
+            else
+              RC_REV="$(cut -d. -f4 ${{ secrets.VERSION_FILE }})"
+              RC_REV=$(($RC_REV + 1))
+              NEXT_VERSION="${MAJ_MIN_REV}.${PATCH_REV}-rc.$RC_REV"
+            fi
+
+            echo $NEXT_VERSION > ${{ secrets.VERSION_FILE }}
+            gsutil cp ${{ secrets.VERSION_FILE }} gs://${{ secrets.GCS_BUCKET }}/${{ secrets.VERSION_FILE }}
+            echo "IMAGE_TAG=$NEXT_VERSION" >> $GITHUB_ENV
+          fi
+
+      - name: Install Helm
+        if: ${{ !inputs.chart_version }}
+        uses: azure/setup-helm@dda3372f752e03dde6b3237bc9431cdc2f7a02a2 # v5.0.0
+
+      - name: Push Helm charts
+        if: ${{ !inputs.chart_version }}
+        run: |
+          gcloud auth print-access-token | \
+            helm registry login -u oauth2accesstoken --password-stdin us-docker.pkg.dev
+
+          push_chart() {
+            cd openhub-config/helm/$1
+
+            sed -Ei "s/^version: .+/version: $IMAGE_TAG/" Chart.yaml
+            sed -Ei "s/^appVersion: .+/appVersion: $IMAGE_TAG/" Chart.yaml
+
+            helm package . >/dev/null
+            [ $2 ] && prefix="openhub-$2" || prefix="openhub"
+            helm push $prefix-$IMAGE_TAG.tgz oci://${{ secrets.GAR_CHARTS_REGISTRY }}
+
+            git checkout Chart.yaml
+            rm openhub-*.tgz
+            cd -
+          }
+
+          push_chart openhub
+          push_chart sidekiq sidekiq
+          push_chart openhub-cron cron
+
+      - name: Push images to GAR
+        if: ${{ !inputs.chart_version }}
+        run: |
+          docker rmi $(docker images | grep "${{ secrets.GAR_IMAGE_BASE }}/openhub" | awk '{print $3}') 2>/dev/null || true
+          docker tag openhub:latest ${{ secrets.GAR_IMAGE_BASE }}/openhub:$IMAGE_TAG
+          docker push --quiet "${{ secrets.GAR_IMAGE_BASE }}/openhub:$IMAGE_TAG" >/dev/null
+
+          docker rmi $(docker images | grep "${{ secrets.GAR_IMAGE_BASE }}/sidekiq" | awk '{print $3}') 2>/dev/null || true
+          docker tag openhub:sidekiq ${{ secrets.GAR_IMAGE_BASE }}/sidekiq:$IMAGE_TAG
+          docker push --quiet "${{ secrets.GAR_IMAGE_BASE }}/sidekiq:$IMAGE_TAG" >/dev/null
+
+          docker rmi "${{ secrets.GAR_IMAGE_BASE }}/offline:offline" 2>/dev/null || true
+          docker tag openhub:offline ${{ secrets.GAR_IMAGE_BASE }}/offline:offline
+          docker push --quiet "${{ secrets.GAR_IMAGE_BASE }}/offline:offline" >/dev/null
+
+      - name: SCA scan (BlackDuck Detect)
+        if: ${{ github.ref_name == 'main' && !inputs.chart_version }}
+        working-directory: ohloh-ui
+        run: |
+          (curl -s -L https://detect.synopsys.com/detect9.sh | bash -s -- \
+            --blackduck.url=${{ secrets.BLACKDUCK_URL }} \
+            --blackduck.api.token=${{ secrets.BLACKDUCK_TOKEN }} \
+            --detect.project.name=${{ secrets.BLACKDUCK_PROJECT_NAME }} \
+            --detect.project.version.name=${{ secrets.BLACKDUCK_PROJECT_VERSION }} \
+            --detect.project.group.name=${{ secrets.BLACKDUCK_PROJECT_GROUP }}) >/dev/null
+
+      - name: SAST scan (Polaris)
+        id: polaris-scan
+        if: ${{ github.ref_name == 'main' && !inputs.chart_version }}
+        uses: blackduck-inc/black-duck-security-scan@v2
+        with: 
+          polaris_server_url: ${{ secrets.POLARIS_SERVER_URL }}
+          polaris_access_token: ${{ secrets.POLARIS_ACCESS_TOKEN }}
+          polaris_assessment_types: "SAST"
+          polaris_application_name: ${{ secrets.polaris_application_name }}
+          polaris_project_name: ${{ secrets.polaris_project_name }}
+          project_directory: "ohloh-ui"
+
+      - name: Deploy via Harness
+        run: |
+          [ -z "${{ inputs.chart_version }}" ] && \
+            echo 'Waiting for Harness to fetch the charts' && sleep 90
+
+          trigger() {
+            response=$(curl -s -X POST \
+              -H 'content-type: application/json' \
+              --url "$1" \
+              -d "{\"version\":\"$IMAGE_TAG\"}")
+            if echo "$response" | grep -q 'status":"ERROR'; then
+              echo "Deployment failed for $2" && exit 1
+            fi
+          }
+
+          trigger "${{ steps.harness.outputs.webhook_url_stage }}" "stage"
+
+          if [ "${{ github.ref_name }}" = 'main' ]; then
+            trigger "${{ steps.harness.outputs.webhook_url_prod }}" "prod"
+          fi
+
+          echo "Harness deployment triggered successfully"
