@@ -147,10 +147,6 @@ var ThemeToggle = {
     }
 
     this.setCookie(this.COOKIE_NAME, theme, this.COOKIE_DAYS);
-
-    if (typeof Charts !== 'undefined') {
-      Charts.updateWatermarks(theme === 'dark');
-    }
   },
 
   toggleTheme: function() {
