@@ -459,48 +459,6 @@ html.dark
   #all_projects
     .highcharts-container
       background-image: none
-      position: relative
-      &::before
-        content: ''
-        position: absolute
-        top: 0
-        left: 0
-        right: 0
-        bottom: 0
-        z-index: 1
-        background: asset-url("charts/watermark_340.png") no-repeat center
-        background-size: contain
-        filter: hue-rotate(260deg) saturate(1.2) brightness(0.3)
-        opacity: 0.2
-        pointer-events: none
-
-// Per-class background overrides — shared block above always uses watermark_340.png
-html.dark
-  .watermark440
-    .highcharts-container
-      &::before
-        background: asset-url("charts/watermark_440.png") no-repeat center
-        background-size: contain
-html.dark
-  .watermark860
-    .highcharts-container
-      &::before
-        background: asset-url("charts/watermark_860.png") no-repeat center
-        background-size: contain
-html.dark
-  .watermark900white
-    .highcharts-container
-      background-color: #1D0631 !important
-      &::before
-        background: asset-url("charts/watermark_white_900.png") no-repeat center
-        background-size: contain
-html.dark
-  .watermark914,
-  #all_projects
-    .highcharts-container
-      &::before
-        background: asset-url("charts/watermark_914.png") no-repeat center
-        background-size: contain
 
 // Vulnerability all-version chart dark mode (index page — no .project-show-redesign wrapper)
 html.dark #vulnerability_all_version_chart

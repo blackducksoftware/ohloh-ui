@@ -1687,59 +1687,43 @@
         padding: 6px
 
   #cve-cvss3, #cvss3, #cve-cvss3-mobile, #cvss3-mobile
-    background: asset-url("charts/watermark_340.png") no-repeat center
-    background-size: contain
     position: relative
     width: 100%
     height: 100%
 
-    html.dark &
-      background-image: none
+html.dark
+  #cve-cvss3, #cvss3, #cve-cvss3-mobile, #cvss3-mobile
+    .highcharts-axis-labels text,
+    .highcharts-axis-title text
+      fill: #d1d5db !important
+      stroke: none !important
+      stroke-width: 0 !important
+      -webkit-text-stroke: 0 !important
+      paint-order: stroke fill !important
 
-      &::before
-        content: ''
-        position: absolute
-        top: 0
-        left: 0
-        right: 0
-        bottom: 0
-        background: asset-url("charts/watermark_340.png") no-repeat center
-        background-size: contain
-        filter: hue-rotate(260deg) saturate(1.2) brightness(0.3)
-        opacity: 0.2
-        pointer-events: none
+    .highcharts-legend text
+      fill: #d1d5db !important
+      stroke: none !important
+      stroke-width: 0 !important
+      -webkit-text-stroke: 0 !important
+      paint-order: stroke fill !important
 
-      .highcharts-axis-labels text,
-      .highcharts-axis-title text
-        fill: #d1d5db !important
-        stroke: none !important
-        stroke-width: 0 !important
-        -webkit-text-stroke: 0 !important
-        paint-order: stroke fill !important
+    svg text
+      stroke: none !important
+      stroke-width: 0 !important
+      -webkit-text-stroke: 0 !important
 
-      .highcharts-legend text
-        fill: #d1d5db !important
-        stroke: none !important
-        stroke-width: 0 !important
-        -webkit-text-stroke: 0 !important
-        paint-order: stroke fill !important
+    text[stroke]
+      stroke: none !important
+      stroke-width: 0 !important
+      -webkit-text-stroke: 0 !important
 
-      svg text
-        stroke: none !important
-        stroke-width: 0 !important
-        -webkit-text-stroke: 0 !important
+    .highcharts-axis-line
+      stroke: #6b7280 !important
 
-      text[stroke]
-        stroke: none !important
-        stroke-width: 0 !important
-        -webkit-text-stroke: 0 !important
-
-      .highcharts-axis-line
-        stroke: #6b7280 !important
-
-      .highcharts-grid-line
-        stroke: #374151 !important
-        opacity: 0.3
+    .highcharts-grid-line
+      stroke: #374151 !important
+      opacity: 0.3
 
 .search-container
   display: flex
