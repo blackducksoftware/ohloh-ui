@@ -2,7 +2,7 @@
 
 Clearance.configure do |config|
   config.routes = false
-  config.mailer_sender = 'mailer@openhub.net'
+  config.mailer_sender = ENV.fetch('MAILER_SENDER')
   config.password_strategy = PasswordStrategy
   config.secure_cookie = Rails.env.staging? || Rails.env.production?
   config.redirect_url = '/accounts/me'

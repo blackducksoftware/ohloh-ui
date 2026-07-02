@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class InviteMailer < ApplicationMailer
-  default from: 'mailer@openhub.net'
+  default from: ENV.fetch('MAILER_SENDER')
   default template_path: 'mailers'
 
   def send_invite(invite)

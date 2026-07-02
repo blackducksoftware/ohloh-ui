@@ -26,7 +26,7 @@
           %label.control-label.required= t('.oh_project_url')
           .controls
             .input-prepend
-              %span.add-on http://www.openhub.net/p/
+              %span.add-on= "https://#{ENV.fetch('URL_HOST')}/p/"
               = f.text_field :vanity_url, class: 'check-availability', autocomplete: 'off',
                                         style: 'width:514px;',
                                         'data-original-value' => Project.find_by(id: @project).try(:vanity_url),

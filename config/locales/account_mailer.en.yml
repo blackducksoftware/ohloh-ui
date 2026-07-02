@@ -5,14 +5,14 @@ en:
       body: "Your Open Hub account %{login} was created. Follow this link to activate your account:"
     notify_disabled_account_for_login_failure:
       subject: 'Open Hub account disabled notice'
-      body: '<p>We have encountered multiple failed login attempts for your Open Hub account, %{login}.</p><p> To keep your account secure, it has been disabled. Please contact the Open Hub team at info@openhub.net for assistance.</p>'
+      body: '<p>We have encountered multiple failed login attempts for your Open Hub account, %{login}.</p><p> To keep your account secure, it has been disabled. Please contact the Open Hub team at info@openhub.blackduck.com for assistance.</p>'
     activation:
       subject: "Your account has been activated!"
       dear: "Dear %{login};"
       body1: "<p>Thank you for activating your Open Hub account and becoming a member of the Black Duck Open Hub!</p>"
       body2: | 
         <p>Please update your bio at %{edit_account_link} and start claming your open source activity at %{position_link}.</p>
-        <p>Please feel free to post any question on our Forums at %{forum_link} and contact us at info@openhub.net if you have any questions that haven't been answered on the Forums.</p>
+        <p>Please feel free to post any question on our Forums at %{forum_link} and contact us at info@openhub.blackduck.com if you have any questions that haven't been answered on the Forums.</p>
         <p>Note that you can change your privacy options at %{privacy_link}.</p>
       sign: |
         <p>Sincerely Yours,</p>
@@ -37,7 +37,7 @@ en:
       body_3: |
         P.S. You signed up for Open Hub kudo notifications.
         Visit %{email_settings_link} to change your email preferences or unsubscribe directly %{unsubscribe_emails_link}.
-        If you've received this email in error, please let us know by mailing us at info@openhub.net."
+        If you've received this email in error, please let us know by mailing us at info@openhub.blackduck.com."
       message: |
         "%{message}"
         - %{sender}

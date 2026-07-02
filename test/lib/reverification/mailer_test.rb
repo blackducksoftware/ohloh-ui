@@ -11,7 +11,7 @@ class Reverification::MailerTest < ActiveSupport::TestCase
       assert_equal 140, ReverificationTracker::NOTIFICATION2_DUE_DAYS
       assert_equal 28, ReverificationTracker::NOTIFICATION3_DUE_DAYS
       assert_equal 14, ReverificationTracker::NOTIFICATION4_DUE_DAYS
-      assert_equal 'info@openhub.net', Reverification::Mailer::FROM
+      assert_equal ENV.fetch('SUPPORT_EMAIL'), Reverification::Mailer::FROM
     end
   end
 

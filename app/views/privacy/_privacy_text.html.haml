@@ -10,4 +10,4 @@
 .col-md-5
   %ul.margin_left_40
     %li= t('.opting_out')
-    %li= t('.openhub_oauth_html', href: link_to(t('.oauth_api'), 'http://blog.openhub.net/oauth/'))
+    %li= t('.openhub_oauth_html', href: link_to(t('.oauth_api'), ENV.fetch('OPENHUB_OAUTH_BLOG_URL')))

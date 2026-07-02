@@ -3,7 +3,7 @@
 module Reverification
   class Mailer
     extend Amazon
-    FROM = 'info@openhub.net'
+    FROM = ENV.fetch('SUPPORT_EMAIL')
 
     class << self
       def first_notice_template(account)

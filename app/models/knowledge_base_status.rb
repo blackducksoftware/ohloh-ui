@@ -23,7 +23,7 @@ class KnowledgeBaseStatus < ApplicationRecord
     message_hash = {
       ohloh_id: project_id,
       deleted: project.deleted?,
-      ohloh_url: "https://www.openhub.net/p/#{project_id}",
+      ohloh_url: "https://#{ENV.fetch('URL_HOST')}/p/#{project_id}",
       name: project.name,
       created_at: project.created_at.iso8601,
       updated_at: project.updated_at.iso8601,
@@ -199,7 +199,7 @@ class KnowledgeBaseStatus < ApplicationRecord
 
     org_hash = {}
     Organization::KB_SYNC_ATTRS.map { |attr| org_hash[attr] = project.organization.send(attr) }
-    org_hash['url'] = "https://www.openhub.net/orgs/#{project.organization.id}"
+    org_hash['url'] = "https://#{ENV.fetch('URL_HOST')}/orgs/#{project.organization.id}"
     org_hash
   end
 end

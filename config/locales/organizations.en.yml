@@ -75,7 +75,7 @@ en:
       already_claimed: 'Some projects already claimed!'
       report: 'One or more projects below have already been claimed by Another organization. Please report any improper claims to'
       claim_link: 'Claim'
-      mailto: 'mailto:info@openhub.net?subject=Incorrect Claim by %{org} on %{p.name}'
+      mailto: 'mailto:info@openhub.blackduck.com?subject=Incorrect Claim by %{org} on %{p.name}'
       link_title: 'This project has already been claimed by %{org}.'
       report_text: 'Report'
       enter_project_name: 'Enter a project name or Code Location above to search for projects that you wish to claim.'

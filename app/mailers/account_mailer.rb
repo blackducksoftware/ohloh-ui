@@ -1,17 +1,17 @@
 # frozen_string_literal: true
 
 class AccountMailer < ApplicationMailer
-  default from: 'mailer@openhub.net'
+  default from: ENV.fetch('MAILER_SENDER')
 
   def signup_notification(account)
     @account = account
     @url = activate_account_accesses_url(account_id: account.to_param, code: account.activation_code,
-                                         host: ENV.fetch('URL_HOST', nil), protocol: 'https')
-    mail to: account.email, subject: t('.subject'), bcc: 'info@openhub.net'
+                                         host: ENV.fetch('URL_HOST'), protocol: 'https')
+    mail to: account.email, subject: t('.subject'), bcc: ENV.fetch('SUPPORT_EMAIL')
   end
 
   def activation(account)
-    @url = root_url(host: ENV.fetch('URL_HOST', nil))
+    @url = root_url(host: ENV.fetch('URL_HOST'))
     @account = account
     mail to: account.email, subject: t('.subject')
   end
@@ -40,6 +40,6 @@ class AccountMailer < ApplicationMailer
 
   def review_account_data_for_spam(account)
     @account = account
-    mail to: 'info@openhub.net', subject: I18n.t('mailers.account_mailer.review_account_spam')
+    mail to: ENV.fetch('SUPPORT_EMAIL'), subject: I18n.t('mailers.account_mailer.review_account_spam')
   end
 end

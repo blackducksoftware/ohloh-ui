@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class ProjectBadgeMailer < ApplicationMailer
-  default from: 'mailer@openhub.net'
+  default from: ENV.fetch('MAILER_SENDER')
 
   def check_cii_projects(projects)
     @projects = projects

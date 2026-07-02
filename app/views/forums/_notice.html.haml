@@ -1,5 +1,5 @@
 - blog_link = 'https://community.blackduck.com/s/black-duck-open-hub'
-- email = 'info@openhub.net'
+- email = ENV.fetch('SUPPORT_EMAIL')
 .alert.alert-warning.margin_top_20
   %p
     Dear Open Hub Users,
@@ -13,5 +13,7 @@
 
   %p
     %br
-    On May 1, 2020, we will be freezing https://www.openhub.net/forums and users will not be able to create new discussions. If you have any questions and concerns, please email us at
+    On May 1, 2020, we will be freezing
+    = "https://#{ENV.fetch('URL_HOST')}/forums"
+    and users will not be able to create new discussions. If you have any questions and concerns, please email us at
     %a{ href: "mailto:#{email}"} #{email}

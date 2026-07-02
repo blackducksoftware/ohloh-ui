@@ -11,7 +11,7 @@ en:
             redirect_uri:
               fragment_present: 'cannot contain a fragment.'
               invalid_uri: 'must be a valid URL.'
-              relative_uri: "a fully qualified URL is required for this field. For example 'https://www.openhub.net'"
+              relative_uri: "a fully qualified URL is required for this field. For example 'https://www.openhub.blackduck.com'"
               secured_uri: 'must be an HTTPS/SSL URL.'
 
   doorkeeper:
