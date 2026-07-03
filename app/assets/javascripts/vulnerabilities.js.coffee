@@ -56,6 +56,8 @@
       $('.overlay-loader').show()
     success: (vulTable) ->
       $('.vulnerabilities-datatable').html(vulTable)
+      # Strip onclick from fresh pagination buttons so delegated AJAX handler works
+      $('#vulnerabilities_index_page .modern-pagination .page-btn').removeAttr('onclick')
       $('.overlay-loader').hide()
 
 @updateSeverityFilter = (release) ->
@@ -207,7 +209,7 @@ reRenderChart = (releases) ->
 noReportedVulnerabilities = () ->
   $('#vulnerability_filter_version').html("<option value=''>No versions in specified filters</option>")
   $('#vulnerability_filter_severity').prop('disabled', true)
-  $('.vulnerabilities-datatable').html('<div class="no_vulnerability">There are no reported vulnerabilities</div>')
+  $('.vulnerabilities-datatable').html('<div class="vuln-empty-state"><i class="fa fa-check-circle vuln-empty-icon"></i><p class="vuln-empty-text">There are no reported vulnerabilities</p></div>')
   queryStr = filter:
     major_version: $('#vulnerability_filter_major_version').val()
     period: $('#vulnerability_filter_period').val()

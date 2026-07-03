@@ -1,45 +1,82 @@
 - content_for(:html_title) do
   = t('.edit_password_title', account: @account.name)
 
-%h2.alter-password-heading
-  = link_to t('.settings'), settings_account_path(@account)
-  = ' : '
-  %span.account-basics-title= t('.password')
-.oh-card.col-md-7#alter-password-form
-  = form_for(@account, url: alter_password_edit_account_path) do |f|
-    %fieldset
-      %legend.margin_left_30
-        = t('.change_your_password')
-      .control-group.center_form_position
-        = f.label :current_password, t('.current_password'), class: 'required strong'
-        .controls
-          = f.password_field :current_password, class: 'form-control'
-          - password_error_tag @account, :current_password
-          %p.help-block
-            = t('.your_current_password')
-      .control-group.center_form_position
-        = f.label :password, t('.new_password'), class: 'required strong'
-        .controls
-          = f.password_field :password, class: 'form-control'
-          - password_error_tag @account, :password
-          %p.help-block
-            = t('.your_new_password')
-      .actions.margin_left_30
-        = submit_tag(t('.update_password'), class: 'btn btn-primary btn-small')
-.about-account-basics-card.alter-password-about
-  .card-header
-    %h4.card-title
-      %span.soft= t('.about')
-      = t('.password')
-    %button.expand-toggle{ type: 'button', 'aria-label' => 'Expand about section' }
-      %i.fa.fa-chevron-down
+#alter-password-edit
+  .settings-page-header
+    .settings-page-header-row
+      .settings-page-icon
+        %i.fa.fa-lock
+      %h2.settings-page-h2
+        = link_to t('.settings'), settings_account_path(@account)
+        %span.account-basics-sep :
+        = t('.password')
+    %p.settings-page-description= t('.change_your_password')
 
-  .card-content
-    .about-content-wrapper
-      .col-md-6
-        %ul
-          %li= t('.openhub_foss_resume')
-          %li= t('.password_specifications')
-      .col-md-6
-        %ul
-          %li= t('.confirmation_email')
+  = form_for(@account, url: alter_password_edit_account_path) do |f|
+    .edit-section
+
+      .edit-section-header
+        .edit-section-icon
+          %i.fa.fa-lock
+        %h3.edit-section-title= t('.change_your_password')
+
+      .edit-field-group
+        = f.label :current_password, t('.current_password'), class: 'edit-field-label'
+        .edit-field-input-wrapper
+          %i.fa.fa-lock.edit-field-icon
+          = f.password_field :current_password, class: 'edit-field-input',
+                                                placeholder: t('.your_current_password')
+        - password_error_tag @account, :current_password
+        %p.edit-field-hint= t('.your_current_password')
+
+      .edit-field-group
+        = f.label :password, t('.new_password'), class: 'edit-field-label'
+        .edit-field-input-wrapper
+          %i.fa.fa-key.edit-field-icon
+          = f.password_field :password, class: 'edit-field-input',
+                                         placeholder: t('.your_new_password')
+        - password_error_tag @account, :password
+        %p.edit-field-hint= t('.your_new_password')
+
+      .edit-field-group
+        = f.label :password_confirmation, t('.confirm_password'), class: 'edit-field-label'
+        .edit-field-input-wrapper
+          %i.fa.fa-check-circle.edit-field-icon
+          = f.password_field :password_confirmation, class: 'edit-field-input',
+                                                      placeholder: t('.confirm_your_password')
+        %p.edit-field-hint= t('.confirm_your_password')
+
+      .edit-form-actions
+        = submit_tag t('.update_password'), class: 'edit-save-btn'
+
+  .about-account-basics-card
+    .card-header
+      .card-header-left
+        .card-header-icon
+          %i.fa.fa-info-circle
+        .card-header-text
+          %h4.card-title= t('.about') + ' ' + t('.password')
+          %p.card-subtitle= t('.change_your_password')
+      %button.expand-toggle{ type: 'button', 'aria-label' => 'Toggle about section' }
+        %i.fa.fa-chevron-down
+
+    .card-content
+      .tips-grid
+        .tip-item
+          .tip-icon
+            %i.fa.fa-graduation-cap
+          .tip-body
+            %p.tip-text= t('.openhub_foss_resume')
+
+        .tip-item
+          .tip-icon
+            %i.fa.fa-shield
+          .tip-body
+            %p.tip-text= t('.password_specifications')
+
+        .tip-item
+          .tip-icon
+            %i.fa.fa-envelope
+          .tip-body
+            %p.tip-text= t('.confirmation_email')
+

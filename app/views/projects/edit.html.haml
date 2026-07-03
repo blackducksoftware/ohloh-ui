@@ -1,63 +1,88 @@
 - content_for(:html_title) { t('.page_title', name: @project.name) }
 - page_context[:select_top_menu_nav] = 'select_projects'
 
-.project_content_title
-  %h2.float_left
-    = link_to t('.settings'), settings_project_path(params[:id])
-    \ :
-    %strong= t('.basics')
-
 #project-edit-page
-  .row.margin_left_5
-    .oh-card.col-md-8
-      = form_for @project, as: :project, url: project_path(params[:id]), html: { method: :put,
-                                                                                 class: 'edit_project' } do |f|
-        %fieldset
-          .control-group
-            %label.control-label.required{ for: 'project_name' }= t('.project_name')
-            .controls
-              %input.form-control{ name: 'project[name]', id: 'project_name', type: 'text', value: @project.name }
-              - error_tag @project, :name
-          .clearfix
-
-          .control-group
-            %label.control-label.required{ for: 'project_vanity_url' }= t('.oh_project_url')
-            .controls
-              .input-prepend.project-url-prepend
-                %span.add-on http://www.openhub.net/p/
-                = f.text_field :vanity_url, class: 'form-control check-availability', autocomplete: 'off',
-                                          'data-original-value' => Project.find_by(id: @project).try(:vanity_url),
-                                          'data-ajax-path' => project_check_availabilities_path,
-                                          'data-preview-base-url' => projects_url
-                - error_tag @project, :vanity_url, class: 'error vanity_url'
-              = render 'shared/availability_preview'
-          .clearfix
-
-          .control-group
-            %label.control-label{ for: 'project_description' }= t('.description')
-            .controls
-              = find_and_preserve(f.text_area(:description, max_length: 800, class: 'form-control edit-description'))
-              - error_tag @project, :description
-          .clearfix
-
-          .actions
-            - if logged_in? && @project.edit_authorized?
-              %input.btn.btn-primary.save{ type: 'submit', value: t('.save_changes') }
-            - else
-              = disabled_button t('.save_changes'), class: 'btn-primary save'
-
-  .about-project-basics-card
-    .card-header
-      %h4.card-title
-        %span.soft= t('.about')
+  .settings-page-header
+    .settings-page-header-row
+      .settings-page-icon
+        %i.fa.fa-cog
+      %h2.settings-page-h2
+        = link_to t('.settings'), settings_project_path(params[:id])
+        %span.account-basics-sep :
         = t('.basics')
-      %button.expand-toggle{ type: 'button', 'aria-label' => 'Expand about section' }
-        %i.fa.fa-chevron-down
+    %p.settings-page-description= t('.page_title', name: @project.name)
 
-    .card-content
-      .about-content-wrapper
-        .col-md-6
-          %ul
-            %li!= t('.about1', link: link_to(t('.contact_us'), blog_url_for(:contact_form)))
-            %li= t('.about2')
-            %li= t('.about3')
+  .project-edit-layout
+    .project-edit-main
+      = form_for @project, as: :project, url: project_path(params[:id]), html: { method: :put,
+                                                                                 class: 'edit_project',
+                                                                                 id: 'edit_project_form' } do |f|
+        .edit-section
+          .edit-section-header
+            .edit-section-icon
+              %i.fa.fa-info-circle
+            %h3.edit-section-title= t('.basics')
+
+          .edit-field-group
+            %label.edit-field-label.required{ for: 'project_name' }= t('.project_name')
+            .edit-field-input-wrapper
+              %i.fa.fa-tag.edit-field-icon
+              %input.edit-field-input{ name: 'project[name]', id: 'project_name', type: 'text', value: @project.name,
+                                       placeholder: t('.project_name') }
+            - error_tag @project, :name
+
+          .edit-field-group
+            %label.edit-field-label.required{ for: 'project_vanity_url' }= t('.oh_project_url')
+            .input-prepend.project-url-prepend
+              %span.add-on http://www.openhub.net/p/
+              = f.text_field :vanity_url, class: 'edit-field-input check-availability', autocomplete: 'off',
+                                        'data-original-value' => Project.find_by(id: @project).try(:vanity_url),
+                                        'data-ajax-path' => project_check_availabilities_path,
+                                        'data-preview-base-url' => projects_url
+              - error_tag @project, :vanity_url, class: 'error vanity_url'
+            = render 'shared/availability_preview'
+
+          .edit-field-group
+            %label.edit-field-label{ for: 'project_description' }= t('.description')
+            = find_and_preserve(f.text_area(:description, max_length: 800, class: 'edit-field-textarea',
+                                            placeholder: t('.description')))
+            - error_tag @project, :description
+
+          .edit-form-actions
+            - if logged_in? && @project.edit_authorized?
+              %input.edit-save-btn{ type: 'submit', value: t('.save_changes') }
+            - else
+              = disabled_button t('.save_changes'), class: 'edit-save-btn'
+
+    / ── About Basics (below form, same width) ───────────────
+    .project-edit-aside
+      .about-account-basics-card
+        .card-header
+          .card-header-left
+            .card-header-icon
+              %i.fa.fa-info-circle
+            .card-header-text
+              %h4.card-title= t('.about') + ' ' + t('.basics')
+              %p.card-subtitle= t('.about_basics_desc', default: 'Tips for this project')
+          %button.expand-toggle{ type: 'button', 'aria-label' => 'Toggle about section' }
+            %i.fa.fa-chevron-down
+
+        .card-content
+          .tips-grid
+            .tip-item
+              .tip-icon
+                %i.fa.fa-tag
+              .tip-body
+                %p.tip-text!= t('.about1', link: link_to(t('.contact_us'), blog_url_for(:contact_form)))
+
+            .tip-item
+              .tip-icon
+                %i.fa.fa-pencil
+              .tip-body
+                %p.tip-text= t('.about2')
+
+            .tip-item
+              .tip-icon
+                %i.fa.fa-link
+              .tip-body
+                %p.tip-text= t('.about3')

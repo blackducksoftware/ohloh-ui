@@ -35,10 +35,43 @@
         html.dark &
           background: rgba(90, 42, 130, 0.2)
 
+// Empty state
+.positions-empty-state
+  padding: 48px 24px
+  text-align: center
+  display: flex
+  flex-direction: column
+  align-items: center
+  gap: 12px
+
+.positions-empty-icon
+  width: 56px
+  height: 56px
+  border-radius: 50%
+  background: rgba(90, 42, 130, 0.08)
+  display: flex
+  align-items: center
+  justify-content: center
+  i
+    font-size: 24px
+    color: #5A2A82
+  html.dark &
+    background: rgba(90, 42, 130, 0.2)
+    i
+      color: #c084fc
+
+.positions-empty-text
+  font-size: 14px
+  color: #6b7280
+  margin: 0
+  html.dark &
+    color: #9ca3af
+
 .one-project-header-left
   margin-left: 15px
   margin-top: 5px
-  width: 700px
+  width: 100%
+  max-width: 700px
   min-height: 83px
   display: inline-block
   float: left
@@ -49,7 +82,6 @@
 
 .one-project-header-right
   margin-top: 5px
-  margin-right: 15px
   margin-bottom: -7px
   width: 210px
   min-height: 90px
@@ -191,18 +223,22 @@
       &.result-selected
         color: #9ca3af !important
 
+      &.no-results
+        color: #777 !important
+        background: #f4f4f4 !important
+
     // Dark mode
     html.dark &
       .chosen-container-multi .chosen-choices
-        background: #1D0631 !important
+        background: #0d1117 !important
         border-color: rgba(90,42,130,0.5) !important
 
         &:hover
           border-color: #6b7280 !important
 
       .chosen-container-active .chosen-choices
-        border-color: #ffb91a !important
-        box-shadow: 0 0 0 4px rgba(255,185,26,0.1) !important
+        border-color: #5A2A82 !important
+        box-shadow: 0 0 0 4px rgba(90, 42, 130,0.1) !important
 
       .chosen-container-multi .chosen-choices li.search-choice
         background: rgba(90,42,130,0.3) !important
@@ -216,16 +252,16 @@
         color: #d1d5db
 
       .chosen-container .chosen-drop
-        background: #1D0631 !important
+        background: #0d1117 !important
         border-color: rgba(90,42,130,0.5) !important
 
       .chosen-results li
         color: #d1d5db !important
-        background: #1D0631
+        background: #0d1117
 
         &.highlighted
-          background: #ffb91a !important
-          color: #1D0631 !important
+          background: #5A2A82 !important
+          color: #ffffff !important
 
 // Prevent border-radius and flex containers from clipping Chosen dropdowns
 #position-edit-page
@@ -261,6 +297,7 @@
     margin-left: 0 !important
     box-sizing: border-box
     display: flex
+    flex-wrap: wrap
     align-items: flex-start
     gap: 10px
 
@@ -268,18 +305,24 @@
       flex-shrink: 0
       margin: 6px 0 10px 0 !important
 
-    .col-md-8.one-project-name
+    .col-md-8.one-project-name,
+    .one-project-name
       margin-left: 0 !important
       margin-top: 8px !important
-      flex: 1
+      flex: 1 1 100%
       min-width: 0
+      width: 100% !important
+      float: none !important
 
       .title
         font-size: 1em !important
         word-break: break-word
 
-    .col-md-8.one-project-contribution
+    .col-md-8.one-project-contribution,
+    .one-project-contribution
       margin-left: 0 !important
+      width: 100% !important
+      float: none !important
 
     .project-organization
       margin-left: 0 !important
@@ -298,10 +341,11 @@
 @media (min-width: 768px) and (max-width: 1024px)
   .one-project-header-left
     width: calc(100% - 220px) !important
-    float: none !important
+    float: left !important
     margin-left: 0 !important
     box-sizing: border-box
     display: flex
+    flex-wrap: wrap
     align-items: flex-start
     gap: 10px
 
@@ -309,7 +353,8 @@
       flex-shrink: 0
       margin: 6px 0 10px 0 !important
 
-    .col-md-8.one-project-name
+    .col-md-8.one-project-name,
+    .one-project-name
       margin-left: 0 !important
       margin-top: 6px !important
       float: none !important
@@ -320,16 +365,18 @@
       .title
         word-break: break-word
 
-    .col-md-8.one-project-contribution
+    .col-md-8.one-project-contribution,
+    .one-project-contribution
       margin-left: 0 !important
       float: none !important
-      width: auto !important
+      width: 100% !important
 
     .project-organization
       margin-left: 0 !important
 
   .one-project-header-right
     width: 200px !important
+    float: right !important
     margin-right: 10px !important
 
 // ── Position edit page ────────────────────────────────────────────────────────
@@ -350,7 +397,7 @@
       text-decoration: none
 
       html.dark &
-        color: #ffb91a
+        color: #5A2A82
 
       &:hover
         text-decoration: underline
@@ -389,6 +436,35 @@
   gap: 8px
   align-items: center
 
+  html.dark &
+    .chosen-container-single .chosen-single
+      background: #1c2128 !important
+      background-image: none !important
+      border-color: rgba(255, 255, 255, 0.15) !important
+      color: #e6edf3 !important
+      box-shadow: none !important
+
+      span
+        color: #e6edf3 !important
+
+      div b
+        background-color: transparent !important
+        filter: invert(1) brightness(2)
+
+    .chosen-container .chosen-drop
+      background: #1c2128 !important
+      border-color: rgba(255, 255, 255, 0.15) !important
+
+    .chosen-container .chosen-results li
+      color: #e6edf3
+
+      &.highlighted
+        background: #5A2A82 !important
+        color: #ffffff !important
+
+      &.result-selected
+        color: #9ca3af !important
+
 .position-field-group
   margin-bottom: 20px
 
@@ -421,6 +497,35 @@
     .position-help
       flex: 0 0 100%
       margin-top: 4px
+
+    html.dark &
+      .chosen-container-single .chosen-single
+        background: #1c2128 !important
+        background-image: none !important
+        border-color: rgba(255, 255, 255, 0.15) !important
+        color: #e6edf3 !important
+        box-shadow: none !important
+
+        span
+          color: #e6edf3 !important
+
+        div b
+          background-color: transparent !important
+          filter: invert(1) brightness(2)
+
+      .chosen-container .chosen-drop
+        background: #1c2128 !important
+        border-color: rgba(255, 255, 255, 0.15) !important
+
+      .chosen-container .chosen-results li
+        color: #e6edf3
+
+        &.highlighted
+          background: #5A2A82 !important
+          color: #ffffff !important
+
+        &.result-selected
+          color: #9ca3af !important
 
 .position-label
   display: block
@@ -477,9 +582,9 @@
       background: #ffffff !important
 
     html.dark &
-      background: #1D0631 !important
+      background: #0d1117 !important
       color: #ffffff !important
-      border-color: #5A2A82 !important
+      border-color: #2a2a2a !important
 
       &::placeholder
         color: #6b7280 !important
@@ -487,12 +592,12 @@
 
       &:hover
         box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important
-        border-color: #6b7280 !important
+        border-color: #c084fc !important
 
       &:focus, &:focus-visible
-        border-color: #ffb91a !important
-        background: #1D0631 !important
-        box-shadow: 0 0 0 4px rgba(255, 185, 26, 0.1) !important
+        border-color: #5A2A82 !important
+        background: #0d1117 !important
+        box-shadow: 0 0 0 4px rgba(90, 42, 130, 0.1) !important
         outline: none !important
 
   .position-textarea
@@ -536,7 +641,7 @@
     gap: 6px
 
     html.dark &
-      color: #ffb91a
+      color: #5A2A82
 
     &:hover
       text-decoration: underline
@@ -649,4 +754,4 @@
 
     .oh-card
       padding: 24px 20px !important
-      width: 90% !important
+      width: 100% !important

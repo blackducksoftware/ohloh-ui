@@ -3,17 +3,23 @@
 
 .claim-position-card.oh-card
   .claim-position-card__tile
-    .unclaimed-card__item
-      = render 'unclaimed_tile', project: project, name_fact: name_fact
+    = render 'unclaimed_tile', project: project, name_fact: name_fact
   .claim-position-card__fields
     %input{ type: 'hidden', value: project.id, name: 'positions[][project_id]' }
-    .form-group
-      %label.claim-position-card__label= t('.your_role', name: project.name)
-      %input.form-control{ placeholder: t('.your_role', name: project.name),
-        type: 'text', name: 'positions[][title]', value: position.title }
-    .form-group
-      %label.claim-position-card__label= t('.description')
+    .claim-position-field
+      %label.claim-position-card__label
+        %i.fa.fa-briefcase{ 'aria-hidden' => 'true' }
+        = t('.your_role', name: project.name)
+      .claim-position-input-wrapper
+        %input.form-control{ placeholder: t('.your_role', name: project.name),
+          type: 'text', name: 'positions[][title]', value: position.title }
+    .claim-position-field
+      %label.claim-position-card__label
+        %i.fa.fa-align-left{ 'aria-hidden' => 'true' }
+        = t('.description')
       %textarea.form-control{ placeholder: t('.description'),
         name: 'positions[][description]', rows: 3 }= position.description
     - if position.errors.present?
-      %p.claim-position-card__error= position.errors[:base]
+      .claim-position-card__error
+        %i.fa.fa-exclamation-circle{ 'aria-hidden' => 'true' }
+        = position.errors[:base]

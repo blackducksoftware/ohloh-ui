@@ -3,18 +3,22 @@
   page_context[:select_top_menu_nav] = 'select_projects'
   page_context[:select_footer_nav] = nil
 
-- content_for :header_title do
-  .project_content_title
-    %h2.pull-left
-      = link_to t(:settings), settings_project_path(@project)
-      &nbsp;:&nbsp;#{t('.licenses')}
-
 = render partial: 'layouts/partials/alert'
 
 #project-license-index-page
-  .row
-    .col-md-6
-      .oh-card.margin_top_20
+  .settings-page-header
+    .settings-page-header-row
+      .settings-page-icon
+        %i.fa.fa-certificate
+      %h2.settings-page-h2
+        = link_to t(:settings), settings_project_path(@project)
+        %span.account-basics-sep :
+        = t('.licenses')
+    %p.settings-page-description= t('.page_title', name: @project.name)
+
+  .project-edit-layout
+    .project-edit-main
+      .oh-card
         .license-index-card-header
           %h3.license-index-card-title
             %i.fa.fa-certificate
@@ -41,5 +45,5 @@
             %i.fa.fa-folder-open-o.license-empty-icon
             %p.license-empty-text= t('.no_licenses_for_project')
 
-    .col-md-6
+    .project-edit-aside
       = render partial: 'project_licenses/about'

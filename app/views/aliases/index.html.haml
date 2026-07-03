@@ -3,54 +3,74 @@
   page_context[:select_footer_nav] = nil
   has_permission = logged_in? && @project.edit_authorized?
 
-.project_content_title
-  %h2.pull-left
-    = link_to t('settings'), settings_project_path(@project)
-    &nbsp;:&nbsp;
-    = t('aliases.aliases')
-.clearfix
-.alias
-  - if @aliases.length + @best_analysis_aliases.length > 0
-    %ul
-      - @aliases.each do |a|
-        %li
-          = t('aliases.contributions_by')
-          %strong= h(a.commit_name.name)
-          = t('aliases.attributed_to')
-          %strong= h(a.preferred_name.name)
+#alias-index-page
+  .settings-page-header
+    .settings-page-header-row
+      .settings-page-icon
+        %i.fa.fa-users
+      %h2.settings-page-h2
+        = link_to t('settings'), settings_project_path(@project)
+        %span.account-basics-sep :
+        = t('aliases.aliases')
+
+  .project-edit-layout
+    .project-edit-main
+      .oh-card
+        .alias-index-card-header
+          %h3.alias-index-card-title
+            %i.fa.fa-users
+            = t('aliases.aliases')
           - if has_permission
-            = icon_button(undo_project_alias_path(project_id: @project.to_param, id: a.id), text: t('.remove'),
-              icon: 'trash', method: :post, data: { confirm: t('.confirm_message') },
-              type: 'danger', size: 'minier pull-right')
+            = link_to t('aliases.new_alias'), new_project_alias_path(@project), class: 'btn btn-primary btn-sm alias-add-btn'
           - else
-            = disabled_button bootstrap_icon('icon-trash', t('.remove')), class: 'btn-minier btn-danger pull-right'
-          - best_analysis_aliases = @best_analysis_aliases.pluck(:commit_name_id, :preferred_name_id)
-          - unless best_analysis_aliases.include?([a.commit_name_id, a.preferred_name_id])
-            %span.pending= t('.pending')
-          .clearfix
+            = disabled_button t('aliases.new_alias'), class: 'btn-primary btn-sm'
 
-      - @best_analysis_aliases.where.not(commit_name_id: @aliases.pluck(:commit_name_id)).each do |baa|
-        %li{ style: 'margin-bottom:0.5em;' }
-          %span.undone
-            = t('aliases.contributions_by')
-            %strong= h(baa.commit_name.name)
-            = t('aliases.attributed_to')
-            %strong= h(baa.preferred_name.name)
-          |
-          - if has_permission
-            = icon_button(redo_project_alias_path(project_id: @project.to_param, id: baa.id), text: t('.remove'),
-              icon: 'trash', method: :post, data: { confirm: t('.confirm_message_redo') }, type: 'danger', size: 'mini pull-right')
-          - else
-            = disabled_button bootstrap_icon('icon-trash', t('.remove')), class: 'btn-mini btn-danger pull-right'
-          %span.pending= t('.pending')
-          .clearfix
+        - if @aliases.length + @best_analysis_aliases.length > 0
+          .alias-list
+            - @aliases.each do |a|
+              .alias-list-item
+                .alias-info
+                  %span.alias-info-text
+                    = t('aliases.contributions_by')
+                    %strong= h(a.commit_name.name)
+                  %span.alias-info-text
+                    = t('aliases.attributed_to')
+                    %strong= h(a.preferred_name.name)
+                  - best_analysis_aliases = @best_analysis_aliases.pluck(:commit_name_id, :preferred_name_id)
+                  - unless best_analysis_aliases.include?([a.commit_name_id, a.preferred_name_id])
+                    %span.alias-badge.alias-badge--pending= t('.pending')
+                .alias-item-actions
+                  - if has_permission
+                    %a.btn.btn-sm.btn-danger.alias-remove-btn{ href: undo_project_alias_path(project_id: @project.to_param, id: a.id),
+                                                               data: { method: :post, confirm: t('.confirm_message') } }
+                      %i.fa.fa-trash
+                      = t('.remove')
+                  - else
+                    = disabled_button t('.remove'), class: 'btn-sm btn-danger'
 
-  - else
-    = render partial: 'shared/alert', locals: { message: t('.no_contributions') }
+            - @best_analysis_aliases.where.not(commit_name_id: @aliases.pluck(:commit_name_id)).each do |baa|
+              .alias-list-item.alias-list-item--undone
+                .alias-info
+                  %span.alias-info-text
+                    = t('aliases.contributions_by')
+                    %strong= h(baa.commit_name.name)
+                  %span.alias-info-text
+                    = t('aliases.attributed_to')
+                    %strong= h(baa.preferred_name.name)
+                  %span.alias-badge.alias-badge--pending= t('.pending')
+                .alias-item-actions
+                  - if has_permission
+                    %a.btn.btn-sm.btn-danger.alias-remove-btn{ href: redo_project_alias_path(project_id: @project.to_param, id: baa.id),
+                                                               data: { method: :post, confirm: t('.confirm_message_redo') } }
+                      %i.fa.fa-trash
+                      = t('.remove')
+                  - else
+                    = disabled_button t('.remove'), class: 'btn-sm btn-danger'
 
-  - if has_permission
-    = link_to t('aliases.new_alias'), new_project_alias_path(@project), class: 'btn btn-primary'
-  - else
-    = disabled_button t('aliases.new_alias'), class: 'btn-primary'
-.margin_top_5
-  = render partial: 'about_aliases'
+        - else
+          .alias-empty-state
+            %i.fa.fa-folder-open-o.alias-empty-icon
+            %p.alias-empty-text= t('.no_contributions')
+
+    .project-edit-aside
+      = render partial: 'about_aliases'

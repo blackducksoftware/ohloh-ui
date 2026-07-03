@@ -1,26 +1,41 @@
 - content_for(:html_title) { t('.page_title', name: @project.name) }
 - page_context[:select_footer_nav] = :rss
-%h2
-  %strong= link_to t('.settings'), settings_project_path(@project)
-  \:
-  %strong= link_to t('.news_feed'), project_rss_subscriptions_path(@project)
-  %strong= t('.new')
+.rss-new-page
+  .settings-page-header
+    .settings-page-header-row
+      .settings-page-icon
+        %i.fa.fa-rss
+      %h2.settings-page-h2
+        = link_to t('.settings'), settings_project_path(@project)
+        %span.account-basics-sep :
+        = link_to t('.news_feed'), project_rss_subscriptions_path(@project)
+        %span.account-basics-sep :
+        = t('.new')
+  .col-md-10.oh-card
+    = form_for @rss_feed, url: project_rss_subscriptions_url(@project), html: { method: :post } do |f|
+      = render partial: 'fields', locals: { f: f }
 
-.clearfix
-.col-md-10.oh-card
-  = form_for @rss_feed, url: project_rss_subscriptions_url(@project), html: { method: :post } do |f|
-    = render partial: 'fields', locals: { f: f }
-
-.clearfix
-.about-account-basics-card
-  .card-header
-    %h4.card-title
-      %span.soft= t('.about')
-    %button.expand-toggle{ type: 'button', 'aria-label' => 'Expand about section' }
-      %i.fa.fa-chevron-down
-  .card-content
-    .about-content-wrapper
-      .col-md-9
-        %ul.margin_left_25
-          %li= t('.about_1')
-          %li= t('.about_2')
+  .clearfix
+  .col-md-10.about-account-basics-card
+    .card-header
+      .card-header-left
+        .card-header-icon
+          %i.fa.fa-rss
+        .card-header-text
+          %h4.card-title= t('.about')
+          %p.card-subtitle= t('.about_subtitle')
+      %button.expand-toggle{ type: 'button', 'aria-label' => 'Toggle about section' }
+        %i.fa.fa-chevron-down
+    .card-content
+      .tips-grid
+        .tip-item
+          .tip-icon
+            %i.fa.fa-feed
+          .tip-body
+            %p.tip-text= t('.about_1')
+        .tip-item
+          .tip-icon
+            %i.fa.fa-wifi
+          .tip-body
+            %p.tip-text= t('.about_2')
+  .clearfix

@@ -86,7 +86,7 @@
 
           .edit-field-group
             = f.label :organization_id, t('affiliation'), class: 'edit-field-label'
-            .controls.chosen#value_select
+            .edit-field-input-wrapper.chosen#value_select
               = f.select :organization_id, OrganizationDecorator.select_options, {},
                 class: 'value-select chzn-select form-control'
             - error_tag @account, :organization_id
@@ -125,6 +125,7 @@
         %h3.edit-section-title= t('bio')
 
       .edit-field-group
+        = f.label :about_raw, t('bio'), class: 'edit-field-label'
         - about_raw = @account.markup ? @account.markup.raw : ''
         = f.text_area :about_raw, value: about_raw, class: 'edit-field-textarea', rows: '6',
                       placeholder: t('.about_raw_help')
@@ -135,43 +136,43 @@
       = submit_tag t('save_changes'), class: 'edit-save-btn'
       = link_to t('.delete_account'), confirm_delete_account_path(@account), class: 'edit-delete-btn'
 
-.about-account-basics-card
-  .card-header
-    .card-header-left
-      .card-header-icon
-        %i.fa.fa-info-circle
-      .card-header-text
-        %h4.card-title= t('about') + ' ' + t('basics')
-        %p.card-subtitle Tips for filling out your profile
-    %button.expand-toggle{ type: 'button', 'aria-label' => 'Toggle about section' }
-      %i.fa.fa-chevron-down
+  .about-account-basics-card
+    .card-header
+      .card-header-left
+        .card-header-icon
+          %i.fa.fa-info-circle
+        .card-header-text
+          %h4.card-title= t('about') + ' ' + t('basics')
+          %p.card-subtitle Tips for filling out your profile
+      %button.expand-toggle{ type: 'button', 'aria-label' => 'Toggle about section' }
+        %i.fa.fa-chevron-down
 
-  .card-content
-    .tips-grid
-      .tip-item
-        .tip-icon
-          %i.fa.fa-tag
-        .tip-body
-          %p.tip-text= t('.help_1')
+    .card-content
+      .tips-grid
+        .tip-item
+          .tip-icon
+            %i.fa.fa-tag
+          .tip-body
+            %p.tip-text= t('.help_1')
 
-      .tip-item
-        .tip-icon
-          %i.fa.fa-envelope
-        .tip-body
-          %p.tip-text
-            = t('.help_2')
-            %strong= t('.help_3')
+        .tip-item
+          .tip-icon
+            %i.fa.fa-envelope
+          .tip-body
+            %p.tip-text
+              = t('.help_2')
+              %strong= t('.help_3')
 
-      .tip-item
-        .tip-icon
-          %i.fa.fa-link
-        .tip-body
-          %p.tip-text= t('.help_4')
+        .tip-item
+          .tip-icon
+            %i.fa.fa-link
+          .tip-body
+            %p.tip-text= t('.help_4')
 
-      .tip-item
-        .tip-icon
-          %i.fa.fa-map-marker
-        .tip-body
-          %p.tip-text= t('.help_5')
+        .tip-item
+          .tip-icon
+            %i.fa.fa-map-marker
+          .tip-body
+            %p.tip-text= t('.help_5')
 
 != map_init('map', @account.latitude ? 7 : 0)

@@ -9,7 +9,9 @@ en:
       about_2: 'News Feeds'
       about_txt: 'Open Hub supports Atom, RSS 0.9, RSS 1.0, and RSS 2.0 feeds. Feeds are updated on a
                   frequent, regular schedule, and feeds that have problems will not be displayed.'
-      example: 'Example'
+      tip_formats: 'Open Hub supports Atom, RSS 0.9, RSS 1.0, and RSS 2.0 feeds.'
+      tip_schedule: 'Feeds are updated on a frequent, regular schedule, and feeds that have problems will not be displayed.'
+      example: 'Example feed URLs:'
       url_1: 'http://sourceforge.net/export/rss2_projnews.php?group_id=12345'
       url_2: 'http://del.icio.us/rss/tag/myproject'
       url_3: 'http://www.digg.com/rss_search?search=myproject'

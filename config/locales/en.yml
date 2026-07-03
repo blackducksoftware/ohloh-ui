@@ -282,7 +282,7 @@ en:
     invalid_file_size: 'File size is too big (must be less than %{max} kB)'
     new:
       meta_title: 'Settings: New Logo Page'
-      heading: ': Logo'
+      heading: 'Logo'
       page_title: 'New Logo Page - Open Hub'
     about_logos:
       title: 'Logos'
@@ -438,6 +438,7 @@ en:
       compare_n_projects: 'Compare %{count} Projects'
       compare_select_at_least: 'Compare (Select at least 2)'
       limit_reached: limit reached
+      remove_project: 'Remove %{name} from comparison'
     create:
       limit_exceeded: Project count limit exceeded
   ratings:

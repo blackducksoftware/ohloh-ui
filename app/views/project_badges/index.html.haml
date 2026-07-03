@@ -2,24 +2,21 @@
   content_for(:html_title) { t('.page_title', name: @project.name) }
 
 #project_badges_page
-  .pb-page__header
-    .pb-page__title
-      .pb-page__title-icon
-        %i.fa.fa-trophy{ 'aria-hidden' => 'true' }
-      .pb-page__title-text
-        %h2
-          = link_to t(:settings), settings_project_path(@project)
-          = ": #{t('.title')}"
-        %p.pb-page__subtitle= t('.listing')
-
-  - if logged_in? && @project.edit_authorized?
-    .pb-table-card
-      = render 'editable_badges_table'
-    .pb-actions
+  .settings-page-header
+    .settings-page-header-row
+      .settings-page-icon
+        %i.fa.fa-trophy
+      %h2.settings-page-h2
+        = link_to t(:settings), settings_project_path(@project)
+        %span.account-basics-sep :
+        = t('.title')
       - btn_css = 'display: none;' unless @project_badge.errors.empty?
-      %button.pb-btn-new#add_badge_btn{ style: btn_css }
-        %i.fa.fa-plus{ 'aria-hidden' => 'true' }
+      %button.btn.btn-primary.pb-btn-new#add_badge_btn{ style: btn_css }
+        %i.fa.fa-plus
         = t('.new_badge')
-  - else
-    .pb-table-card
-      = render 'badges_table'
+    %p.settings-page-description= t('.page_title', name: @project.name)
+
+  .project-edit-layout
+    .project-edit-main
+      .pb-table-card
+        = render 'editable_badges_table'

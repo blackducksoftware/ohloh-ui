@@ -18,9 +18,18 @@
   .settings-page-header
     margin-top: 16px
 
+  // Card is inside #accounts_edits so it aligns with the form header
+  .about-account-basics-card
+    max-width: none
+    margin: 24px 0 0
+    padding: 0
+
   .account-basics-sep
     color: #9ca3af
     font-weight: 400
+
+    html.dark &
+      color: #d1d5db
 
 // ── Form grid ──────────────────────────────────────────────────────────────────
 .edit-form-grid
@@ -47,8 +56,8 @@
   padding: 20px 24px
 
   html.dark &
-    background: #2D1548
-    border-color: rgba(90, 42, 130, 0.35)
+    background: #151b23
+    border-color: rgba(255, 255, 255, 0.10)
     box-shadow: 0 1px 6px rgba(0, 0, 0, 0.3)
 
   &.edit-section--full
@@ -135,15 +144,18 @@
   html.dark &
     color: #a0a6b0
 
-input.edit-field-input,
-textarea.edit-field-input
+#accounts_edits input.edit-field-input,
+#accounts_edits textarea.edit-field-input,
+#account-edit-form input.edit-field-input,
+#alter-password-new input.edit-field-input,
+#alter-password-edit input.edit-field-input,
+#api-keys-form input.edit-field-input,
+#stack-show input.edit-field-input
   display: block !important
   width: 100% !important
   padding: 12px 16px 12px 42px !important
   border: 1px solid #e5e7eb !important
   border-radius: 12px !important
-  -webkit-border-radius: 12px !important
-  -moz-border-radius: 12px !important
   font-size: 14px !important
   font-weight: 400 !important
   background: #f9fafb !important
@@ -169,8 +181,8 @@ textarea.edit-field-input
     outline: none !important
 
   html.dark &
-    background: #1D0631 !important
-    border-color: rgba(90, 42, 130, 0.5) !important
+    background: #0d1117 !important
+    border-color: rgba(255, 255, 255, 0.15) !important
     color: #ffffff !important
 
     &::placeholder
@@ -178,9 +190,9 @@ textarea.edit-field-input
 
     &:focus,
     &:focus-visible
-      border-color: #ffb91a !important
-      box-shadow: 0 0 0 2px rgba(255, 185, 26, 0.25) !important
-      background: #180529 !important
+      border-color: #c084fc !important
+      box-shadow: 0 0 0 2px rgba(90, 42, 130, 0.25) !important
+      background: #0d1117 !important
 
 .edit-field-textarea
   display: block !important
@@ -210,8 +222,8 @@ textarea.edit-field-input
     outline: none !important
 
   html.dark &
-    background: #1D0631 !important
-    border-color: rgba(90, 42, 130, 0.5) !important
+    background: #0d1117 !important
+    border-color: rgba(255, 255, 255, 0.15) !important
     color: #ffffff !important
 
     &::placeholder
@@ -219,9 +231,9 @@ textarea.edit-field-input
 
     &:focus,
     &:focus-visible
-      border-color: #ffb91a !important
-      box-shadow: 0 0 0 2px rgba(255, 185, 26, 0.25) !important
-      background: #180529 !important
+      border-color: #c084fc !important
+      box-shadow: 0 0 0 2px rgba(90, 42, 130, 0.25) !important
+      background: #0d1117 !important
 
 .edit-field-hint
   font-size: 11px
@@ -236,7 +248,7 @@ textarea.edit-field-input
     color: #5A2A82
     text-decoration: underline
     html.dark &
-      color: #ffb91a
+      color: #5A2A82
 
 .edit-field-error
   font-size: 12px
@@ -252,7 +264,7 @@ textarea.edit-field-input
   cursor: pointer
 
   html.dark &
-    color: #ffb91a
+    color: #5A2A82
 
 // ── Map ────────────────────────────────────────────────────────────────────────
 #map
@@ -264,7 +276,7 @@ textarea.edit-field-input
   border: 1.5px solid #e5e7eb
 
   html.dark &
-    border-color: rgba(90, 42, 130, 0.4)
+    border-color: rgba(255, 255, 255, 0.12)
 
 // ── Affiliation chosen override ────────────────────────────────────────────────
 #account-edit-form
@@ -276,13 +288,24 @@ textarea.edit-field-input
       background: #f9fafb !important
       background-image: none !important
       height: auto !important
-      padding: 12px 16px !important
+      padding: 12px 40px 12px 16px !important
       box-shadow: none !important
       color: #111827 !important
       line-height: 1.5 !important
       font-size: 14px !important
       &:hover
         border-color: #d1d5db !important
+      div
+        display: flex !important
+        align-items: center !important
+        justify-content: center !important
+        bottom: 0 !important
+        height: 100% !important
+        width: 30px !important
+        margin-top: 12px !important
+        b:before
+          top: 0 !important
+          position: relative !important
     .chosen-container-active > .chosen-single,
     .chosen-container-active.chosen-with-drop .chosen-single
       border-color: #5A2A82 !important
@@ -295,19 +318,19 @@ textarea.edit-field-input
       border-top: none !important
     html.dark &
       .chosen-container-single .chosen-single
-        background: #1D0631 !important
-        border-color: rgba(90, 42, 130, 0.5) !important
+        background: #0d1117 !important
+        border-color: rgba(255, 255, 255, 0.15) !important
         color: #ffffff !important
         &:hover
           border-color: #6b7280 !important
       .chosen-container-active > .chosen-single,
       .chosen-container-active.chosen-with-drop .chosen-single
-        border-color: #ffb91a !important
-        box-shadow: 0 0 0 2px rgba(255, 185, 26, 0.25) !important
+        border-color: #c084fc !important
+        box-shadow: 0 0 0 2px rgba(90, 42, 130, 0.25) !important
       .chosen-container .chosen-drop
-        border-left: 1px solid #ffb91a !important
-        border-right: 1px solid #ffb91a !important
-        border-bottom: 1px solid #ffb91a !important
+        border-left: 1px solid #5A2A82 !important
+        border-right: 1px solid #5A2A82 !important
+        border-bottom: 1px solid #5A2A82 !important
 
 // ── Action buttons ─────────────────────────────────────────────────────────────
 .edit-form-actions
@@ -315,11 +338,11 @@ textarea.edit-field-input
   align-items: center
   gap: 12px
   padding-top: 8px
-  margin-bottom: 32px
 
 .edit-save-btn
   display: inline-flex !important
   align-items: center
+  gap: 8px
   padding: 11px 28px !important
   background: linear-gradient(135deg, #5A2A82 0%, #7B3FB5 100%) !important
   color: #ffffff !important
@@ -328,6 +351,7 @@ textarea.edit-field-input
   font-size: 14px !important
   font-weight: 700 !important
   cursor: pointer !important
+  text-decoration: none !important
   box-shadow: 0 2px 8px rgba(90, 42, 130, 0.35) !important
   transition: background 0.15s, box-shadow 0.15s
   -webkit-appearance: none !important
@@ -337,10 +361,12 @@ textarea.edit-field-input
     background: linear-gradient(135deg, #4a1f6e 0%, #6B35A0 100%) !important
     box-shadow: 0 4px 14px rgba(90, 42, 130, 0.45) !important
     color: #ffffff !important
+    text-decoration: none !important
 
 .edit-delete-btn
   display: inline-flex !important
   align-items: center
+  gap: 8px
   padding: 11px 20px !important
   background: transparent !important
   color: #dc2626 !important
@@ -379,6 +405,7 @@ textarea.edit-field-input
     .edit-delete-btn
       width: 100% !important
       justify-content: center
+      underline: none
 
 // ── About Account Basics card ──────────────────────────────────────────────────
 .about-account-basics-card
@@ -389,16 +416,16 @@ textarea.edit-field-input
   @media (max-width: 639px)
     padding: 0 16px
 
-  background: #fffbeb
+  background: #ffffff
   border-radius: 16px
-  border: 1px solid rgba(251, 191, 36, 0.35)
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06)
+  border: 1px solid #e5e7eb
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24)
   overflow: hidden
 
   html.dark &
-    background: rgba(120, 53, 15, 0.12)
-    border-color: rgba(251, 191, 36, 0.25)
-    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.3)
+    background: #151b23
+    border-color: rgba(255, 255, 255, 0.1)
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.24), 0 1px 2px rgba(0, 0, 0, 0.48)
 
   .card-header
     display: flex
@@ -410,7 +437,10 @@ textarea.edit-field-input
     transition: background-color 0.15s
 
     &:hover
-      background-color: rgba(251, 191, 36, 0.08)
+      background-color: #f9fafb
+
+      html.dark &
+        background-color: rgba(255, 255, 255, 0.05)
 
     .card-header-left
       display: flex
@@ -423,11 +453,11 @@ textarea.edit-field-input
       height: 32px
       min-width: 32px
       border-radius: 10px
-      background: linear-gradient(135deg, #f59e0b, #d97706)
+      background: linear-gradient(135deg, #5A2A82, #7B3FB5)
       display: flex
       align-items: center
       justify-content: center
-      box-shadow: 0 2px 6px rgba(217, 119, 6, 0.3)
+      box-shadow: 0 2px 6px rgba(90, 42, 130, 0.3)
       i
         color: #ffffff
         font-size: 14px
@@ -440,30 +470,30 @@ textarea.edit-field-input
       margin: 0 0 1px
       font-size: 14px !important
       font-weight: 700 !important
-      color: #92400e !important
+      color: #5A2A82 !important
 
       html.dark &
-        color: #fbbf24 !important
+        color: #c084fc !important
 
     .card-subtitle
       margin: 0
       font-size: 11px
-      color: #b45309
+      color: #6b7280
       line-height: 1.3
 
       html.dark &
-        color: #d97706
+        color: #9ca3af
 
     .expand-toggle
       background: none
       border: none
       padding: 4px 8px
       cursor: pointer
-      color: #b45309
+      color: #6b7280
       transition: transform 0.2s
 
       html.dark &
-        color: #d97706
+        color: #9ca3af
 
       i
         font-size: 13px

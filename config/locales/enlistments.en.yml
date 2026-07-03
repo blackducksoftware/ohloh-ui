@@ -38,8 +38,10 @@ en:
     new:
       page_title: 'The %{name} Open Source Project on Open Hub : New Code Location Page'
       code_locations: 'Code Locations'
-      new: ' : New'
+      new: 'New Code Location'
+      page_description: 'Add a source code repository to this project.'
     fields:
+      sidebar_intro: 'Select a repository type, then enter the URL. Examples will appear here to guide you.'
       scm_type: 'Select the type of source control software'
       enter_url: 'Enter the source control URL'
       example: 'Examples:'
@@ -94,6 +96,10 @@ en:
     about_code_locations:
       about: 'About'
       code_locations: 'Code Locations'
+      tip_vcs: 'Open Hub supports repositories maintained using Git, Mercurial, Bazaar, Subversion, and CVS. For Subversion, submit only the trunk subdirectory — not tags or branches.'
+      tip_queue: 'After adding a repository, Open Hub immediately verifies the connection then queues it for analysis. Depending on crawler load and repository size, statistics may take several hours to update.'
+      tip_credentials: 'If a repository requires login credentials, those credentials will become public information. Do not submit a username and password unless you are certain it is safe for this information to be public.'
+      tip_multi: 'Open Hub can combine multiple code locations into a single composite view. A repository can also belong to multiple projects — organize carefully to reflect your project structure and avoid double-counting.'
       description1: "Open Hub's statistics are derived from analysis of the project's source code history as maintained by the project's repository. Accordingly, it is crucial that this information be maintained accurately."
       description2: "Open Hub currently supports repositories maintained using Git, Mercurial, Bazaar, Subversion, and CVS."
       description3: "For Subversion repositories, submit only the trunk subdirectory. Don't submit the tags or branches directories."
@@ -119,6 +125,9 @@ en:
     edit:
       html_title: 'The %{name} Open Source Project on Open Hub : Ignore Files'
       code_locations: 'Code Locations'
+      ignore_files_title: 'Ignore Files'
+      page_description: 'Specify files or directories this repository should exclude from analysis.'
+      about_ignore_title: 'Ignore File Syntax'
       save_ignored_files: 'Save Ignored Files'
       ignored_files: ' : Ignore Files'
       ignored_files_for: 'Ignored Files for'
@@ -158,6 +167,9 @@ en:
     edit_allowed_files:
       html_title: 'The %{name} Open Source Project on Open Hub : Allow Files'
       code_locations: 'Code Locations'
+      allow_files_title: 'Allow Files'
+      page_description: 'Specify only the files or directories this repository should include in analysis.'
+      about_allow_title: 'Allow File Syntax'
       save_allowed_files: 'Save Allowed Files'
       description1: 'If you just want Open Hub to include everything from this repository, leave this box blank.'
       allow_files: ' : Allow Files'

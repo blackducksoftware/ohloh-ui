@@ -79,7 +79,7 @@ span.score_text
     color: #ffffff
 
     .fa
-      color: #ffb91a
+      color: #c084fc
 
 .oh-review-card
   background-color: #ffffff
@@ -89,8 +89,8 @@ span.score_text
   overflow: hidden
 
   html.dark &
-    background-color: #2D1548
-    border-color: rgba(90,42,130,0.4)
+    background-color: #151b23
+    border-color: #2a2a2a
     box-shadow: 0 2px 8px rgba(0,0,0,0.3)
 
   &__body
@@ -262,21 +262,21 @@ span.score_text
       background: #ffffff !important
 
     html.dark &
-      background: #1D0631 !important
+      background: #0d1117 !important
       color: #ffffff !important
-      border-color: #5A2A82 !important
+      border-color: #2a2a2a !important
 
       &::placeholder
         color: #6b7280 !important
         opacity: 1
 
       &:hover
-        border-color: #6b7280 !important
+        border-color: #c084fc !important
 
       &:focus, &:focus-visible
-        border-color: #ffb91a !important
-        background: #1D0631 !important
-        box-shadow: 0 0 0 4px rgba(255,185,26,0.1) !important
+        border-color: #c084fc !important
+        background: #0d1117 !important
+        box-shadow: 0 0 0 4px rgba(90, 42, 130,0.1) !important
 
   textarea.form-control
     height: 150px !important
@@ -295,11 +295,17 @@ span.score_text
   .controls
     margin-top: 4px
 
-  .actions
+  .actions,
+  .enl-form-actions
     display: flex
     align-items: center
+    flex-wrap: wrap
     gap: 8px
     margin-top: 16px
+
+    @media (max-width: 767px)
+      flex-direction: column
+      align-items: stretch
 
     .btn,
     input.btn
@@ -317,6 +323,10 @@ span.score_text
       background-image: none !important
       text-shadow: none !important
       box-shadow: none !important
+
+      @media (max-width: 767px)
+        width: 100% !important
+        margin-left: 0 !important
 
 // ── Page layout ──────────────────────────────────────────────────────────────
 .rr-page
@@ -362,7 +372,7 @@ span.score_text
   margin-bottom: 24px
 
   html.dark &
-    background-color: #2D1548
+    background-color: #151b23
     border-color: rgba(90,42,130,0.4)
     box-shadow: 0 2px 8px rgba(0,0,0,0.3)
 
@@ -396,7 +406,7 @@ span.score_text
     margin-bottom: 4px
 
     html.dark &
-      color: #ffb91a
+      color: #c084fc
 
   &__label
     font-size: 12px
@@ -431,7 +441,7 @@ span.score_text
       color: #5A2A82
 
       html.dark &
-        color: #ffb91a
+        color: #5A2A82
 
 .rr-section-title__icon
   width: 32px
@@ -467,6 +477,42 @@ span.score_text
 .rr-no-reviews
   color: #6b7280
   font-style: italic
+
+  html.dark &
+    color: #9ca3af
+
+.reviews-list-container
+  display: flex
+  flex-direction: column
+  gap: 16px
+  margin-bottom: 16px
+
+.reviews-empty-state
+  display: flex
+  flex-direction: column
+  align-items: center
+  justify-content: center
+  padding: 48px 24px
+  text-align: center
+
+.reviews-empty-icon
+  font-size: 48px
+  color: #d1d5db
+  margin-bottom: 16px
+  display: block
+
+  .fa
+    color: #d1d5db
+
+  html.dark &
+    .fa
+      color: #4b5563
+
+.reviews-empty-text
+  font-size: 16px
+  color: #6b7280
+  margin: 0
+  font-weight: 500
 
   html.dark &
     color: #9ca3af

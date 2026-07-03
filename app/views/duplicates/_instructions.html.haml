@@ -1,12 +1,25 @@
-.oh-card.duplicate-instructions
-  %h4.duplicate-instructions__title
-    %span.soft= t(:about)
-    = t('.header')
-  %ul.duplicate-instructions__list
-    %li= t('.help1')
-    %li
-      = t('.help2')
-      %ul
-        - link = link_to(html_escape(@project.name), project_path(@project), title: html_escape(@project.name))
-        %li!= t('.help3', project: link)
-        %li= t('.help4', name: @project.name)
+.about-account-basics-card
+  .card-header
+    .card-header-left
+      .card-header-icon
+        %i.fa.fa-info-circle
+      .card-header-text
+        %h4.card-title= t('.header')
+    %button.expand-toggle{ type: 'button', 'aria-label' => 'Toggle instructions' }
+      %i.fa.fa-chevron-down
+  .card-content
+    .tips-grid
+      .tip-item
+        .tip-icon
+          %i.fa.fa-trash
+        .tip-body
+          %p.tip-text= t('.help1')
+      .tip-item
+        .tip-icon
+          %i.fa.fa-code-fork
+        .tip-body
+          %p.tip-text= t('.help2')
+          %ul.tip-sub-list
+            - link = link_to(html_escape(@project.name), project_path(@project), title: html_escape(@project.name))
+            %li!= t('.help3', project: link)
+            %li= t('.help4', name: @project.name)

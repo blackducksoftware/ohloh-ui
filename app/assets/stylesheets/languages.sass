@@ -33,7 +33,6 @@ $gray-900: #111827
 
 // Languages Show Page Container
 .languages-show-container
-  max-width: 1280px
   margin: 0 auto
   padding: 24px 16px
 
@@ -78,7 +77,7 @@ $gray-900: #111827
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24)
 
   html.dark &
-    background-color: $purple-card-dark
+    background-color: #1c2128
     border-color: rgba(255, 255, 255, 0.1)
 
 .measure-buttons-group
@@ -113,18 +112,19 @@ $gray-900: #111827
     background-color: #5A2A82 !important
 
   html.dark &
-    background-color: $purple-dark
-    color: $gray-200
+    background-color: #21262d
+    color: #e6edf3
     border-color: rgba(255, 255, 255, 0.1)
 
     &:hover
-      border-color: $yellow-accent
-      color: $yellow-accent
+      border-color: #c084fc
+      color: #c084fc
 
     &.active
-      background-color: $yellow-accent !important
-      color: $purple-dark !important
-      border-color: $yellow-accent !important
+      background-color: $purple-primary !important
+      color: white !important
+      border-color: $purple-primary !important
+      box-shadow: 0 2px 8px rgba(90, 42, 130, 0.4) !important
 
   @media (max-width: 640px)
     font-size: 12px
@@ -140,7 +140,7 @@ $gray-900: #111827
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24)
 
   html.dark &
-    background-color: $purple-card-dark
+    background-color: #1c2128
     border-color: rgba(255, 255, 255, 0.1)
 
 .languages-compare-container
@@ -173,7 +173,7 @@ $gray-900: #111827
       text-decoration: underline
 
     html.dark &
-      color: $yellow-accent
+      color: #c084fc
 
 // Content Card
 .languages-content-card
@@ -184,7 +184,7 @@ $gray-900: #111827
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24)
 
   html.dark &
-    background-color: $purple-card-dark
+    background-color: #1c2128
     border-color: rgba(255, 255, 255, 0.1)
 
 .content-grid
@@ -283,17 +283,17 @@ $gray-900: #111827
     box-shadow: 0 0 0 3px rgba(90, 42, 130, 0.1)
 
   html.dark &
-    background-color: rgba(255, 255, 255, 0.05)
+    background-color: #21262d
     border-color: rgba(255, 255, 255, 0.1)
-    color: white
+    color: #e6edf3
 
     &:hover
-      border-color: $yellow-accent
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2)
+      border-color: #c084fc
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3)
 
     &:focus
-      border-color: $yellow-accent
-      box-shadow: 0 0 0 3px rgba(255, 185, 26, 0.1)
+      border-color: #c084fc
+      box-shadow: 0 0 0 3px rgba(192, 132, 252, 0.15)
 
   i
     font-size: 12px
@@ -325,8 +325,8 @@ $gray-900: #111827
   display: none
 
   html.dark &
-    background-color: #1D0631 !important
-    border-color: #5A2A82
+    background-color: #161b22 !important
+    border-color: rgba(255, 255, 255, 0.15)
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.38), 0 6px 6px rgba(0, 0, 0, 0.46)
 
   &.active
@@ -359,18 +359,18 @@ $gray-900: #111827
         background-color: $purple-primary
 
     html.dark &
-      color: #ffffff
+      color: #e6edf3
 
       &:hover
-        background: #374151
+        background: #21262d
 
       &.active
-        background-color: $yellow-accent !important
-        color: #5A2A82 !important
-        font-weight: 400
+        background-color: $purple-primary !important
+        color: white !important
+        font-weight: 500
 
         &:hover
-          background-color: $yellow-accent
+          background-color: lighten($purple-primary, 5%)
 
 .language-input
   display: none
@@ -606,28 +606,323 @@ $gray-900: #111827
     font-size: 12px
 
 // Language Index Page - Card Table Responsive Styles
-.oh-card
-  background-color: white
-  border-radius: 12px
-  border: 1px solid $gray-200
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24)
-  margin-bottom: 16px
-  overflow: hidden
+// Language-specific .oh-card overrides (base is in oh-card.sass)
+.languages-show-container,
+.languages-index-container
+  .oh-card
+    overflow: hidden
+    border: 1px solid $gray-200
+
+    html.dark &
+      background-color: #1c2128
+      border-color: rgba(255, 255, 255, 0.1)
+
+    h4
+      margin: 0
+      padding: 10px 16px
+      font-size: 18px
+
+      @media (max-width: 768px)
+        font-size: 16px
+        padding: 8px 12px
+
+      @media (max-width: 480px)
+        font-size: 15px
+        padding: 6px 10px
+
+// ── Language Show Page ──────────────────────────────────────────────────────
+
+.lang-show-header
+  margin-bottom: 20px
+
+.lang-show-heading
+  font-size: 28px
+  font-weight: 700
+  color: $purple-primary
+  margin: 0
 
   html.dark &
-    background-color: $purple-card-dark
-    border-color: rgba(255, 255, 255, 0.1)
+    color: white
 
-  h4
-    margin: 0
-    padding: 10px 16px
-    font-size: 18px
+// Stats card
 
-    @media (max-width: 768px)
-      font-size: 16px
-      padding: 8px 12px
+.lang-stats-card
+  padding: 0
+  margin-bottom: 24px
 
-    @media (max-width: 480px)
+.lang-stats-header
+  display: flex
+  align-items: baseline
+  justify-content: space-between
+  flex-wrap: wrap
+  gap: 8px
+  padding: 16px 20px
+  border-bottom: 1px solid $gray-200
+
+  html.dark &
+    border-bottom-color: rgba(255, 255, 255, 0.08)
+
+.lang-stats-title
+  font-size: 20px
+  font-weight: 700
+  margin: 0
+
+  a
+    color: $purple-primary
+    text-decoration: none
+
+    &:hover
+      text-decoration: underline
+
+    html.dark &
+      color: #c084fc
+
+.lang-stats-earliest
+  display: flex
+  align-items: center
+  gap: 6px
+  font-size: 13px
+
+.lang-stats-earliest-label
+  color: $gray-600
+  font-weight: 500
+
+  html.dark &
+    color: $gray-400
+
+.lang-stats-earliest-value
+  color: $gray-900
+  font-weight: 600
+
+  html.dark &
+    color: white
+
+.lang-stats-grid
+  display: grid
+  grid-template-columns: 1fr 3fr
+  gap: 0
+
+  @media (max-width: 768px)
+    grid-template-columns: 1fr
+
+.lang-stats-code-block
+  display: flex
+  flex-direction: column
+  gap: 0
+  padding: 16px 20px
+  border-right: 1px solid $gray-200
+
+  html.dark &
+    border-right-color: rgba(255, 255, 255, 0.08)
+
+  @media (max-width: 768px)
+    border-right: none
+    border-bottom: 1px solid $gray-200
+
+    html.dark &
+      border-bottom-color: rgba(255, 255, 255, 0.08)
+
+.lang-stat-item
+  display: flex
+  align-items: baseline
+  justify-content: space-between
+  gap: 8px
+  padding: 8px 0
+  border-bottom: 1px solid $gray-100
+
+  &:last-child
+    border-bottom: none
+
+  html.dark &
+    border-bottom-color: rgba(255, 255, 255, 0.05)
+
+.lang-stat-label
+  font-size: 12px
+  font-weight: 600
+  text-transform: uppercase
+  letter-spacing: 0.04em
+  color: $gray-600
+
+  html.dark &
+    color: $gray-400
+
+.lang-stat-value
+  font-size: 15px
+  font-weight: 600
+  color: $gray-900
+
+  html.dark &
+    color: white
+
+.lang-stat-pct
+  font-size: 12px
+  color: $gray-600
+  font-weight: 400
+  margin-left: 2px
+
+  html.dark &
+    color: $gray-400
+
+.lang-stats-metrics
+  display: grid
+  grid-template-columns: repeat(3, 1fr)
+  gap: 0
+
+  @media (max-width: 640px)
+    grid-template-columns: 1fr
+
+.lang-metric-card
+  padding: 16px 20px
+  border-right: 1px solid $gray-200
+  text-align: center
+
+  &:last-child
+    border-right: none
+
+  html.dark &
+    border-right-color: rgba(255, 255, 255, 0.08)
+
+  @media (max-width: 640px)
+    border-right: none
+    border-bottom: 1px solid $gray-100
+    text-align: left
+
+    &:last-child
+      border-bottom: none
+
+    html.dark &
+      border-bottom-color: rgba(255, 255, 255, 0.05)
+
+.lang-metric-label
+  display: block
+  font-size: 11px
+  font-weight: 700
+  text-transform: uppercase
+  letter-spacing: 0.05em
+  color: $gray-600
+  margin-bottom: 6px
+
+  html.dark &
+    color: $gray-400
+
+.lang-metric-value
+  display: block
+  font-size: 22px
+  font-weight: 700
+  color: $purple-primary
+  margin-bottom: 10px
+
+  html.dark &
+    color: #c084fc
+
+// Contributors section
+
+.lang-show-contributors-grid
+  display: grid
+  grid-template-columns: 1fr 1fr
+  gap: 20px
+  margin-top: 8px
+
+  @media (max-width: 768px)
+    grid-template-columns: 1fr
+
+.lang-show-card
+  padding: 0
+
+.lang-show-card-header
+  padding: 16px 20px
+  border-bottom: 1px solid $gray-200
+
+  html.dark &
+    border-bottom-color: rgba(255, 255, 255, 0.08)
+
+.lang-show-card-title
+  font-size: 16px
+  font-weight: 700
+  color: $gray-900
+  margin: 0 0 6px 0
+
+  html.dark &
+    color: white
+
+.lang-show-card-desc
+  font-size: 13px
+  color: $gray-600
+  margin: 0
+  line-height: 1.5
+
+  html.dark &
+    color: $gray-400
+
+// Contributor list
+
+.lang-contributors-list
+  padding: 8px 0
+
+.lang-contributor-row
+  display: flex
+  align-items: center
+  gap: 12px
+  padding: 10px 20px
+  border-bottom: 1px solid $gray-100
+  transition: background-color 0.15s ease
+
+  &:last-child
+    border-bottom: none
+
+  &:hover
+    background-color: $gray-50
+
+    html.dark &
+      background-color: rgba(255, 255, 255, 0.04)
+
+  html.dark &
+    border-bottom-color: rgba(255, 255, 255, 0.05)
+
+.lang-contributor-rank
+  flex-shrink: 0
+
+.lang-contributor-avatar
+  flex-shrink: 0
+
+  img
+    width: 32px
+    height: 32px
+    border-radius: 50%
+    display: block
+
+.lang-contributor-info
+  flex: 1
+  min-width: 0
+  display: flex
+  flex-direction: column
+  gap: 2px
+
+.lang-contributor-name
+  font-size: 14px
+  font-weight: 600
+  color: $gray-900
+  text-decoration: none
+  white-space: nowrap
+  overflow: hidden
+  text-overflow: ellipsis
+
+  &:hover
+    color: $purple-primary
+    text-decoration: underline
+
+  html.dark &
+    color: white
+
+    &:hover
+      color: #c084fc
+
+.lang-contributor-metric
+  font-size: 12px
+  color: $gray-600
+
+  html.dark &
+    color: $gray-400
       font-size: 15px
       padding: 6px 10px
 
@@ -832,3 +1127,148 @@ $gray-900: #111827
       display: flex
       justify-content: center
       align-items: center
+
+
+
+// ── Languages Summary Page ────────────────────────────────────────────────────
+
+#languages_summary_page
+  .lang-summary-page
+    padding: 0 0 32px 0
+
+  .lang-page-header
+    display: flex
+    align-items: center
+    justify-content: space-between
+    flex-wrap: wrap
+    gap: 12px
+    margin-bottom: 24px
+
+  .lang-title-group
+    display: flex
+    align-items: center
+    gap: 12px
+
+  .lang-page-icon
+    width: 38px
+    height: 38px
+    border-radius: 10px
+    background: linear-gradient(135deg, #5A2A82, #7c3aed)
+    display: flex
+    align-items: center
+    justify-content: center
+    flex-shrink: 0
+    .fa
+      color: #ffffff
+      font-size: 17px
+
+  .lang-page-title
+    font-size: 26px
+    font-weight: 700
+    color: #111827
+    margin: 0
+    html.dark &
+      color: #ffffff
+
+  // Details stats partial — already wraps itself in .oh-card with no border/shadow
+  .oh-card[style*="border: none"]
+    margin-bottom: 20px
+
+  // Graphs card — neutralise Bootstrap row/col padding inside
+  .lang-graphs-card
+    margin-bottom: 20px
+    .row
+      margin-left: 0
+      margin-right: 0
+    .col-md-12, .no_margin_left
+      padding-left: 0
+      padding-right: 0
+    h4
+      font-size: 15px
+      font-weight: 600
+      color: #374151
+      margin-bottom: 12px
+      html.dark &
+        color: #e2e8f0
+
+  // Language breakdown table card
+  .lang-breakdown-card
+    h4
+      font-size: 15px
+      font-weight: 600
+      color: #374151
+      margin-bottom: 16px
+      html.dark &
+        color: #e2e8f0
+    .table-responsive
+      overflow-x: auto
+      -webkit-overflow-scrolling: touch
+    table
+      width: 100%
+      border-collapse: collapse
+      font-size: 13px
+    thead th
+      background: #f8f7ff
+      color: #374151
+      font-weight: 600
+      padding: 10px 12px
+      border-bottom: 2px solid #e9d8ff
+      white-space: nowrap
+      html.dark &
+        background: rgba(90, 42, 130, 0.18)
+        color: #e2e8f0
+        border-bottom-color: #4a3060
+    tbody td
+      padding: 9px 12px
+      border-bottom: 1px solid #f0e8f8
+      vertical-align: middle
+      html.dark &
+        border-bottom-color: #2d2a38
+    tbody tr.odd td
+      background: #faf8ff
+      html.dark &
+        background: rgba(255,255,255,0.03)
+    tbody tr.even td
+      background: #fff
+      html.dark &
+        background: transparent
+    .bar
+      display: inline-block
+      height: 14px
+      min-width: 60px
+      background: #e9d8ff
+      border-radius: 4px
+      overflow: hidden
+      vertical-align: middle
+      html.dark &
+        background: rgba(90, 42, 130, 0.25)
+    .barfill
+      height: 100%
+      background: #5A2A82
+      border-radius: 4px
+      html.dark &
+        background: #9f6ec8
+
+  // Empty — no recognized languages
+  .lang-empty-card
+    text-align: center
+    padding: 48px 24px
+
+  .lang-empty-state
+    display: flex
+    flex-direction: column
+    align-items: center
+    gap: 16px
+
+  .lang-empty-icon
+    font-size: 48px
+    color: #9ca3af
+    html.dark &
+      color: #6b7280
+
+  .lang-empty-text
+    font-size: 16px
+    color: #6b7280
+    margin: 0
+    html.dark &
+      color: #9ca3af

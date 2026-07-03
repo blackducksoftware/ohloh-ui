@@ -13,7 +13,7 @@
   transition: background-color 0.3s ease, color 0.3s ease
 
   html.dark &
-    background-color: #1D0631
+    background-color: #0d1117
     color: #e5e7eb
 
   .link_no_underline
@@ -27,13 +27,12 @@
   background: #ffffff
   border-bottom: 1px solid #e5e7eb
   padding: 0 !important
-  margin: 0 0 24px !important
   max-width: none !important
   width: 100%
   position: static
 
   html.dark &
-    background: #1D0631
+    background: #0d1117
     border-bottom-color: rgba(42, 18, 69, 1)
 
 // ─── Inner constrained container ─────────────────────────────────────
@@ -70,7 +69,7 @@
     color: #9ca3af
 
   html.dark &:hover
-    color: #ffb91a
+    color: #5A2A82
 
   i
     font-size: 11px
@@ -91,8 +90,6 @@
   height: 80px !important
   margin: 0 !important
   padding: 0 !important
-  position: relative
-  flex-shrink: 0
   border-radius: 16px
   overflow: hidden
   border: 2px solid rgba(90, 42, 130, 0.3)
@@ -119,27 +116,34 @@
     height: 96px !important
 
 // ─── Primary Language Badge (overlay on avatar — Figma: -bottom-2 -right-2) ─────
+.account-avatar-wrap
+  position: relative
+  display: inline-block
+  flex-shrink: 0
+
 .primary_language_bg
   position: absolute
   bottom: -8px
   right: -8px
-  width: 24px !important
-  height: 24px !important
+  width: auto !important
+  min-width: 24px
+  height: 20px !important
+  padding: 0 5px !important
   border-radius: 6px
-  font-size: 10px !important
+  font-size: 9px !important
   font-weight: 700
   border: 2px solid #ffffff
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15)
   text-transform: uppercase
+  white-space: nowrap
   display: flex
   align-items: center
   justify-content: center
   margin: 0 !important
-  padding: 0 !important
+  letter-spacing: 0.03em
 
   html.dark &
-    border-color: #1D0631
-
+    border-color: #ffffff
 // ═════════════════════════════════════════════════════════════════════
 // HEADER MAIN COLUMN (#account_header — name, info, kudos)
 // ═════════════════════════════════════════════════════════════════════
@@ -179,7 +183,6 @@
       color: #ffffff !important
 
     a
-      color: inherit !important
       text-decoration: none !important
       &:hover
         text-decoration: none !important
@@ -236,7 +239,7 @@
       text-decoration: underline
 
     html.dark &
-      color: #c084fc
+      color: #c084fc !important
 
 // ─── Action Buttons + Analyzed Timestamp (Figma: mt-4 flex-col gap-2) ─
 .header_actions
@@ -331,7 +334,7 @@
           border-color: #4a1f6e !important
 
       html.dark &
-        background: #2D1548 !important
+        background: #151b23 !important
         border-color: rgba(192, 132, 252, 0.5) !important
         color: #c084fc !important
 
@@ -426,13 +429,13 @@
     text-decoration: none !important
 
   html.dark &
-    background: #2D1548 !important
+    background: #151b23 !important
     border-color: rgba(192, 132, 252, 0.5) !important
     color: #c084fc !important
 
     &:hover
       border-color: #c084fc !important
-      background: #2D1548 !important
+      background: #151b23 !important
 
   i
     font-size: 14px !important
@@ -509,7 +512,7 @@
   width: 100%
 
   @media (min-width: 640px)
-    padding: 0 24px
+    padding: 12px 24px
 
 // Summary Card wrapper (white bg, rounded, border, shadow)
 .summary_card_wrapper
@@ -521,7 +524,7 @@
   width: 100%
 
   html.dark &
-    background: #2D1548
+    background: #151b23
     border-color: rgba(90, 42, 130, 0.2)
 
 // Grid layout: stacks on mobile (1 column), 2 columns on md+
@@ -653,6 +656,9 @@
     font-size: 12px
     align-items: center
     padding-left: 4px
+
+    html.dark & 
+      color: #ffff
 
     a
       color: inherit
@@ -809,7 +815,7 @@
       padding: 20px
 
     html.dark &
-      background: #2D1548
+      background: #151b23
       border-color: rgba(90, 42, 130, 0.2)
 
     &:last-child
@@ -956,7 +962,7 @@
   width: 100%
 
   html.dark &
-    background: #1a0e2e !important
+    background: #151b23 !important
     border-color: rgba(251, 191, 36, 0.3) !important
 
 // ─── Shared amber header bar (used in both open/closed states) ────
@@ -1049,7 +1055,7 @@
   flex-direction: column
 
   html.dark &
-    background: #1a0e2e
+    background: #151b23
 
 // ─── Info section (Figma: px-4 sm:px-5 py-4 space-y-4) ─────────────
 .admin_info_section
@@ -1145,7 +1151,7 @@
   padding: 10px 12px
 
   html.dark &
-    background: #2D1548
+    background: #151b23
     border-color: rgba(90, 42, 130, 0.2)
 
   > i

@@ -1,22 +1,33 @@
 - content_for(:html_title) { t('passwords.title') }
 
-.col-md-12
-  %h3= t('passwords.title')
+#alter-password-new
+  .settings-page-header
+    .settings-page-header-row
+      .settings-page-icon
+        %i.fa.fa-lock
+      %h2.settings-page-h2= t('passwords.new.form_title')
+    %p.settings-page-description= t('passwords.new.form_subtitle')
 
   - if flash[:notice]
-    .alert.alert-info= flash[:notice]
+    .edit-flash-notice= flash[:notice]
 
-  .row
-    .col-md-7
-      .oh-card
-        = form_for :password, url: passwords_path do |f|
-          %fieldset
-            .form-group
-              %label.control-label.required= t('email_address')
-              .controls
-                = f.text_field :email, type: :email
-                - error_tag @password, :email
-                %p.help-block= t('.enter_email_address')
+  .edit-section
+    .edit-section-header
+      .edit-section-icon
+        %i.fa.fa-envelope
+      %h3.edit-section-title= t('passwords.new.email_label')
 
-            .actions
-              = f.submit t('.submit_text'), class: 'btn btn-primary'
+    = form_for :password, url: passwords_path do |f|
+      .edit-field-group
+        = label_tag :password_email, t('passwords.new.email_label'), class: 'edit-field-label'
+        .edit-field-input-wrapper
+          %i.fa.fa-envelope-o.edit-field-icon
+          = f.text_field :email, id: 'password_email', type: :email,
+                                 class: 'edit-field-input',
+                                 placeholder: t('passwords.new.email_placeholder')
+        - error_tag @password, :email
+        %p.edit-field-hint= t('passwords.new.enter_email_address')
+
+      .edit-form-actions
+        = f.submit t('passwords.new.submit'), class: 'edit-save-btn'
+        = link_to t('passwords.new.back_to_sign_in'), new_session_path, class: 'edit-clear-link'

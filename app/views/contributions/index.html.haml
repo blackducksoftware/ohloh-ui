@@ -4,16 +4,22 @@
   = succeed t('.page_title') do
     = @project.name
 
-.project_content_title
-  %h2.pull-left
-    = link_to t('.contributors').html_safe, summary_project_contributors_path(@project)
-    = t('.listing').html_safe
-  .clearfix
+#contributions-index-page
+  .settings-page-header
+    .settings-page-header-row
+      .settings-page-icon
+        %i.fa.fa-users
+      %h2.settings-page-h2
+        = link_to t('.contributors').html_safe, summary_project_contributors_path(@project)
+        %span.account-basics-sep :
+        = t('.listing').html_safe
+    %p.settings-page-description= @project.name
 
-- if @project.best_analysis.present?
-  = render 'shared/search_dingus/commits_or_contributor_search', items: @contributions, type: :contributions, total_count: @contributions.total_entries
-  = render partial: 'contributions', locals: { contributions: @contributions }
-  = render 'shared/modern_pagination', collection: @contributions
-- else
-  = render partial: 'projects/show/no_analysis_summary', locals: { analysis: @project.best_analysis }
+  - if @project.best_analysis.present?
+    = render 'shared/search_dingus/commits_or_contributor_search', items: @contributions, type: :contributions  
+    = render 'shared/search_dingus/page_entries_info', collection: @contributions, total_count: @contributions.total_entries
+    = render partial: 'contributions', locals: { contributions: @contributions }
+    = render 'shared/modern_pagination', collection: @contributions
+  - else
+    = render partial: 'projects/show/no_analysis_summary', locals: { analysis: @project.best_analysis }
 

@@ -1,7 +1,7 @@
 // Colors
 $purple-primary: #5A2A82
-$purple-dark: #1D0631
-$purple-card-dark: #2D1548
+$purple-dark: #0d1117
+$purple-card-dark: #151b23
 $yellow-accent: #ffb91a
 $yellow-dark: #b8860b
 $orange-accent: #FF6B35
@@ -514,8 +514,8 @@ $gray-900: #111827
     transition: all 0.2s ease
 
     html.dark &
-      background-color: $yellow-accent
-      color: #1D0631 !important
+      background-color: #5A2A82
+      color: #ffff !important
 
     &:hover
       background-color: rgba($purple-primary, 0.9)
@@ -523,8 +523,8 @@ $gray-900: #111827
       color: #ffffff
 
       html.dark &
-        background-color: rgba($yellow-accent, 0.9)
-        color: #1D0631 !important
+        background-color: #6d35a0
+        color: #ffff !important
 
       i
         transform: translateX(4px)
@@ -607,13 +607,17 @@ $gray-900: #111827
 
       &:last-child
         margin-bottom: 0
+      
+      a 
+        html.dark &
+          color: #c084fc !important
 
   .list-bullet
     color: $purple-primary
     margin-top: 4px
 
     html.dark &
-      color: $yellow-accent
+      color: #c084fc
 
   .list-content
     display: flex
@@ -630,7 +634,7 @@ $gray-900: #111827
     transition: color 0.2s
 
     html.dark &
-      color: #60a5fa
+      color: #c084fc !important
 
     &:hover
       color: $purple-primary

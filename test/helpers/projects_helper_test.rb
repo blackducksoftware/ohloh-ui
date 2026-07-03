@@ -257,7 +257,9 @@ class ProjectsHelperTest < ActionView::TestCase
   describe 'show_badges' do
     it 'should return div with badge images' do
       @project = create(:project)
+      badge_class = stub(badge_name: 'Test Badge')
       badge = stub(badge_url: 'https://example.com/badge.png')
+      badge.stubs(:class).returns(badge_class)
       @project.stubs(:badges_summary).returns([badge])
       result = show_badges
       _(result).must_match 'badges'

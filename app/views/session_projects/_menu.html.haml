@@ -13,8 +13,8 @@
       .compare-projects-grid
         - @session_projects.each do |project|
           .compare-project-slot
-            %button.remove-project{ type: 'button', data: { project_id: project.to_param } }
-              %i.fa.fa-times
+            %button.remove-project{ type: 'button', data: { project_id: project.to_param }, aria: { label: t('.remove_project', name: project.name) } }
+              %i.fa.fa-times{ aria: { hidden: 'true' } }
             .project-slot-icon
               - if project.logo.present?
                 = image_tag project.logo.attachment.url(:small), alt: project.name

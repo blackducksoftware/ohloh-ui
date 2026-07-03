@@ -1,15 +1,12 @@
-// Project Show Page Redesign - Clean Implementation Based on Figma Design
+// Project Show Page
 // ============================================================================
 
-// Design System Variables
-// ============================================================================
+// Design System Variables (required — this file loads before projects.sass)
 $purple-dark: #1D0631
 $purple-primary: #5A2A82
-$purple-light: #9F7ABA
 $yellow-accent: #FFB91A
 $yellow-hover: #FFCC4D
 
-// Neutrals
 $gray-50: #f9fafb
 $gray-100: #f3f4f6
 $gray-200: #e5e7eb
@@ -20,12 +17,6 @@ $gray-600: #4b5563
 $gray-700: #374151
 $gray-900: #111827
 
-// Shadows
-$shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05)
-$shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)
-$shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)
-
-// System Font Stack
 $font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif
 
 // ============================================================================
@@ -368,6 +359,53 @@ body:has(.project-show-redesign)
   // ============================================================================
   // Nutshell List
   // ============================================================================
+  #project_badges
+    margin-top: 24px
+
+    h4
+      font-size: 16px !important
+      font-weight: 600 !important
+      color: $gray-900 !important
+      margin-bottom: 12px
+      display: flex
+      align-items: center
+      gap: 8px
+
+      svg
+        width: 16px
+        height: 16px
+        color: $gray-900 !important
+
+    .badges
+      display: flex
+      flex-wrap: wrap
+      gap: 8px
+      align-items: center
+
+      img
+        border-radius: 4px
+        max-height: 24px
+        height: auto
+
+    .more_badges
+      margin-top: 8px
+
+      p
+        float: none
+        margin: 0
+
+      a
+        font-size: 13px
+        color: $purple-primary
+        font-weight: 500
+        text-decoration: none
+
+        &:hover
+          text-decoration: underline
+
+  // ============================================================================
+  // Nutshell List (original)
+  // ============================================================================
   .nutshell-list
     list-style: none
     padding: 0
@@ -569,10 +607,10 @@ body:has(.project-show-redesign)
         font-size: 12px !important
 
         &.positive
-          color: #16a34a !important
+          color: #15803d !important
 
         &.negative
-          color: #dc2626 !important
+          color: #b91c1c !important
 
   // ============================================================================
   // Even more specific overrides for Activity card summary sections
@@ -587,7 +625,7 @@ body:has(.project-show-redesign)
 
       p.summary-timespan
         font-size: 12px !important
-        color: #9ca3af !important
+        color: #6b7280 !important
         margin-bottom: 8px !important
 
       p.summary-stat
@@ -603,10 +641,10 @@ body:has(.project-show-redesign)
         font-size: 12px !important
 
         &.positive
-          color: #16a34a !important
+          color: #15803d !important
 
         &.negative
-          color: #dc2626 !important
+          color: #b91c1c !important
 
   // ============================================================================
   // Licenses Section
@@ -899,7 +937,7 @@ body:has(.project-show-redesign)
         display: block !important
         font-size: 12px !important
         font-weight: 400 !important
-        color: #6b7280 !important
+        color: #374151 !important
         margin-top: 4px
 
         @media (min-width: 768px)
@@ -932,8 +970,8 @@ body:has(.project-show-redesign)
         visibility: visible !important
         opacity: 1 !important
         font-size: 14px !important
-        font-weight: 500 !important
-        color: #4b5563 !important
+        font-weight: 600 !important
+        color: #111827 !important
         margin-bottom: 8px !important
         line-height: 1.4
 
@@ -956,7 +994,7 @@ body:has(.project-show-redesign)
           top: 0
           width: 4px
           height: 100%
-          background: #1D0631
+          background: #0d1117
           border-radius: 9999px
           cursor: pointer
           transition: all 0.2s
@@ -968,7 +1006,7 @@ body:has(.project-show-redesign)
         display: flex
         justify-content: space-between
         font-size: 12px
-        color: #6b7280
+        color: #374151
 
         .label-left,
         .label-right
@@ -1086,27 +1124,27 @@ html.dark
 
     // Override any legacy color styles
     a
-      color: $yellow-accent !important
+      color: #ffff !important
 
       &:hover
-        color: $yellow-accent !important
+        color: #ffff !important
 
     .project-content
       background: transparent
 
     .stats-grid
       .stat-card
-        background: #2D1548
+        background: #151b23
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.24), 0 1px 2px rgba(0, 0, 0, 0.48)
 
         .stat-value
-          color: $yellow-accent
+          color: #ffff
 
         .stat-label
           color: #94a3b8
 
     .gradient-card
-      background: #2D1548
+      background: #151b23
       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.24), 0 1px 2px rgba(0, 0, 0, 0.48)
 
       .card-content
@@ -1124,27 +1162,27 @@ html.dark
             color: #94a3b8 !important
 
         a
-          color: $yellow-accent !important
+          color: #c084fc !important
 
           &:hover
             text-decoration: underline
-            color: $yellow-accent !important
+            color: #c084fc !important
 
         .tags-container
           .tag
-            color: $gray-300 !important
-            background: $purple-dark
+            color: #ffff !important
+            background: #5A2A82
 
             &:hover
-              color: $purple-dark !important
-              background: $yellow-accent
+              color: #ffff !important
+              background: #6d35a0
 
     .mobile-accordion
       .accordion-card
         .accordion-header
           .header-left
             svg
-              color: $yellow-accent
+              color: #ffff
 
             h3
               color: #f8fafc !important
@@ -1159,6 +1197,20 @@ html.dark
 
         svg
           color: white !important
+
+    #project_badges
+      h4
+        color: white !important
+
+        svg
+          color: white !important
+
+      .more_badges
+        a
+          color: #c084fc !important
+
+          &:hover
+            color: $yellow-accent !important
 
     .tags-container
       .tag
@@ -1181,7 +1233,7 @@ html.dark
         color: $gray-300 !important
 
         svg
-          color: $yellow-accent !important
+          color: #c084fc !important
 
         .content
           color: $gray-300 !important
@@ -1221,7 +1273,7 @@ html.dark
               color: $yellow-accent !important
 
           i
-            color: $yellow-accent !important
+            color: #c084fc !important
             font-size: 14px !important
             font-weight: 600 !important
 
@@ -1236,12 +1288,12 @@ html.dark
         font-size: 14px !important
 
       .value
-        color: $yellow-accent !important
+        color: #c084fc !important
         font-size: 14px !important
 
         a,
         i
-          color: $yellow-accent
+          color: #c084fc
           font-size: 14px !important
 
         .similar-projects-list .similar-project-item .similar-proj-name
@@ -1254,7 +1306,7 @@ html.dark
         font-size: 12px !important
 
         a
-          color: $yellow-accent !important
+          color: #c084fc !important
           font-size: 12px !important
 
       .language-percent
@@ -1282,7 +1334,7 @@ html.dark
 
         .header-left
           svg
-            color: $yellow-accent
+            color: #ffff
 
           h4
             color: $yellow-accent
@@ -1344,20 +1396,20 @@ html.dark
           border-top-color: rgba(90, 42, 130, 0.3)
 
           p
-            color: #94a3b8
+            color: #d1d5db
 
         .view-all-link
           a
             font-weight: 500 !important
-            color: $yellow-accent !important
+            color: #c084fc !important
 
             &:visited,
             &:active
-              color: $yellow-accent !important
+              color: #c084fc !important
 
             &:hover
               text-decoration: underline
-              color: $yellow-accent !important
+              color: #c084fc !important
 
   .security-section
     .section-title
@@ -1373,7 +1425,7 @@ html.dark
           color: $yellow-accent !important
 
       .subtitle-detail
-        color: #9ca3af !important
+        color: #cbd5e1 !important
 
     #vulnerability_version_chart
       .chart-container
@@ -1384,7 +1436,14 @@ html.dark
 
     .index-section
       .index-title
-        color: #9ca3af !important
+        color: #e2e8f0 !important
+
+      .index-labels
+        color: #d1d5db !important
+
+        .label-left,
+        .label-right
+          color: #d1d5db !important
 
       .gradient-bar-container
         .indicator-pointer
@@ -1416,10 +1475,10 @@ html.dark
 
     .security-footer-link
       a
-        color: $yellow-accent !important
+        color: #c084fc !important
 
         &:hover
-          color: $yellow-accent !important
+          color: #c084fc !important
 
     .no-data
       color: #94a3b8
@@ -1442,7 +1501,7 @@ html.dark
     .community_well,
     #vulnerability-report .well,
     #vulnerability-report .oh-card
-      background-color: #2D1548 !important
+      background-color: #151b23 !important
       border-color: rgba(159, 122, 186, 0.3) !important
 
     .right_border
@@ -1458,7 +1517,7 @@ html.dark
       color: #f8fafc !important
 
     .well, .oh-card
-      background-color: #1D0631 !important
+      background-color: #0d1117 !important
       border-color: #4b5563 !important
 
     ul,
@@ -1478,12 +1537,12 @@ html.dark
   .project_row
     #did_you_know
       .well, .oh-card
-        background-color: #1D0631 !important
+        background-color: #0d1117 !important
         border-color: #4b5563 !important
 
   .no_analysis_message
     .alert.alert-info.alert-block
-      background-color: #2D1548 !important
+      background-color: #151b23 !important
       border: 1px solid rgba(159, 122, 186, 0.35) !important
       color: #cbd5e1 !important
 
@@ -1507,16 +1566,16 @@ html.dark
 
     .btn.btn-primary,
     .btn.btn-large.btn-primary
-      background-color: $yellow-accent !important
-      border-color: $yellow-accent !important
-      color: $purple-dark !important
+      background-color: #5A2A82 !important
+      border-color: #5A2A82 !important
+      color: #ffff !important
 
       &:hover,
       &:focus,
       &:active
-        background-color: $yellow-hover !important
-        border-color: $yellow-hover !important
-        color: $purple-dark !important
+        background-color: #6d35a0 !important
+        border-color: #6d35a0 !important
+        color: #ffff !important
 
 // ============================================================================
 // Final Override Layer - Ensure our styles take precedence
@@ -1568,17 +1627,437 @@ html.dark #project_container .project-show-redesign
       color: $gray-300 !important
 
       a
-        color: $yellow-accent !important
+        color: #c084fc !important
 
   .quick-ref-list li
     .label
       color: $gray-400 !important
 
     .value
-      color: $yellow-accent !important
+      color: #c084fc !important
 
       a
-        color: $yellow-accent !important
+        color: #c084fc !important
+
+// ============================================================================
+// Scan Analytics Section
+// ============================================================================
+.project-show-redesign
+  .scan-analytics-section
+    .scan-analytics-header
+      display: flex
+      align-items: flex-start
+      gap: 14px
+      margin-bottom: 20px
+
+    .scan-analytics-icon
+      width: 40px
+      height: 40px
+      border-radius: 10px
+      background: linear-gradient(135deg, #5A2A82, #7B3FB5)
+      display: flex
+      align-items: center
+      justify-content: center
+      flex-shrink: 0
+      box-shadow: 0 2px 6px rgba(90, 42, 130, 0.3)
+
+      .fa
+        color: #ffffff
+        font-size: 16px
+
+    .scan-analytics-heading
+      flex: 1
+      min-width: 0
+
+    .scan-title-row
+      display: flex
+      align-items: center
+      flex-wrap: wrap
+      gap: 10px
+      margin-bottom: 6px
+
+    .section-title
+      font-size: 20px !important
+      font-weight: 700 !important
+      color: $gray-900 !important
+      margin: 0 !important
+
+      a
+        color: $gray-900
+        text-decoration: none
+
+        &:hover
+          color: $purple-primary
+
+    .scan-coverity-badge
+      display: inline-flex
+      align-items: center
+      gap: 5px
+      padding: 3px 10px
+      background: rgba(90, 42, 130, 0.08)
+      color: $purple-primary
+      border-radius: 20px
+      font-size: 11px
+      font-weight: 600
+      letter-spacing: 0.02em
+      white-space: nowrap
+      flex-shrink: 0
+
+      .fa
+        font-size: 10px
+        color: #10b981
+
+    .scan-analytics-meta
+      display: flex
+      flex-wrap: wrap
+      align-items: center
+      gap: 4px 6px
+
+      .scan-meta-text
+        font-size: 13px
+        color: $gray-500
+
+        a
+          color: $purple-primary
+          text-decoration: none
+
+          &:hover
+            text-decoration: underline
+
+      .scan-meta-separator
+        font-size: 13px
+        color: $gray-300
+        line-height: 1
+
+    .scan-analytics-grid
+      display: grid
+      grid-template-columns: 1fr 1fr
+      gap: 20px
+
+      @media (max-width: 767px)
+        grid-template-columns: 1fr
+
+    .scan-card-header
+      display: flex
+      align-items: center
+      justify-content: space-between
+      gap: 10px
+      margin-bottom: 20px
+      padding-bottom: 14px
+      border-bottom: 1px solid $gray-100
+
+    .scan-card-title
+      font-size: 11px !important
+      font-weight: 700 !important
+      text-transform: uppercase
+      letter-spacing: 0.06em
+      color: $gray-500 !important
+      margin: 0 !important
+
+    .scan-card-version
+      display: inline-flex
+      align-items: center
+      padding: 2px 10px
+      background: rgba(90, 42, 130, 0.08)
+      color: $purple-primary
+      border-radius: 20px
+      font-size: 12px
+      font-weight: 600
+
+    .scan-metrics-group
+      margin-bottom: 20px
+
+      &:last-child
+        margin-bottom: 0
+
+      .scan-group-label
+        font-size: 11px
+        font-weight: 700
+        text-transform: uppercase
+        letter-spacing: 0.06em
+        color: $gray-500
+        margin-bottom: 10px
+
+      .scan-metrics-row
+        display: grid
+        grid-template-columns: repeat(3, 1fr)
+        gap: 10px
+
+      .scan-metric
+        background: $gray-50
+        border: 1px solid $gray-100
+        border-radius: 10px
+        padding: 12px 8px
+        text-align: center
+        transition: box-shadow 0.15s ease
+
+        &:hover
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08)
+
+        .scan-metric-value
+          font-size: 22px
+          font-weight: 700
+          color: $gray-900
+          line-height: 1.2
+
+        .scan-metric-label
+          font-size: 10px
+          color: $gray-500
+          margin-top: 4px
+          text-transform: uppercase
+          letter-spacing: 0.04em
+
+      // Color-code defect status metrics: total=purple, outstanding=red, fixed=green
+      .scan-metrics-row .scan-metric:nth-child(1) .scan-metric-value
+        color: $purple-primary
+
+      .scan-metrics-row .scan-metric:nth-child(2) .scan-metric-value
+        color: #b91c1c
+
+      .scan-metrics-row .scan-metric:nth-child(3) .scan-metric-value
+        color: #065f46
+
+    .scan-empty-text
+      font-size: 14px
+      color: $gray-600
+      margin: 8px 0
+
+    .scan-page-meta
+      margin-bottom: 20px
+
+      .scan-meta-text
+        font-size: 13px
+        color: $gray-600
+
+        a
+          color: $purple-primary
+          text-decoration: none
+
+          &:hover
+            text-decoration: underline
+
+    .scan-enlistment-selector
+      display: flex
+      align-items: center
+      gap: 12px
+      flex-wrap: wrap
+      margin-bottom: 20px
+      padding: 12px 16px
+      background: $gray-50
+      border: 1px solid $gray-100
+      border-radius: 8px
+
+      .scan-enlistment-count
+        font-size: 13px
+        font-weight: 600
+        color: $gray-600
+        white-space: nowrap
+
+        .fa
+          margin-right: 6px
+          color: $purple-primary
+
+      select
+        flex: 1
+        min-width: 200px
+
+    .scan-empty-state
+      display: flex
+      flex-direction: column
+      align-items: center
+      justify-content: center
+      padding: 56px 24px
+      text-align: center
+      background: #fff
+      border: 1px solid $gray-100
+      border-radius: 12px
+      margin-top: 8px
+
+      .scan-empty-icon
+        font-size: 48px
+        color: $gray-300
+        margin-bottom: 16px
+
+      .scan-empty-message
+        font-size: 15px
+        color: $gray-600
+        margin: 0
+
+    .scan-charts-section
+      margin-top: 24px
+
+      #chart_data
+        display: grid
+        grid-template-columns: repeat(2, 1fr)
+        gap: 20px
+
+        @media (max-width: 767px)
+          grid-template-columns: 1fr
+
+      div[id^="chart"]
+        min-height: 200px
+        background: $gray-50
+        border: 1px solid $gray-100
+        border-radius: 8px
+
+    .cwe-table-wrapper
+      overflow-x: auto
+      margin-top: 8px
+
+    .cwe-table
+      width: 100%
+      border-collapse: collapse
+      font-size: 13px
+
+      thead tr
+        background: $gray-50
+        border-bottom: 2px solid $gray-100
+
+      th
+        padding: 10px 12px
+        font-size: 10px
+        font-weight: 700
+        text-transform: uppercase
+        letter-spacing: 0.05em
+        color: $gray-600
+        white-space: nowrap
+
+      td
+        padding: 10px 12px
+        border-bottom: 1px solid $gray-100
+        color: $gray-700
+        font-size: 13px
+
+        a
+          color: $purple-primary
+          text-decoration: none
+          font-weight: 600
+
+          &:hover
+            text-decoration: underline
+
+      tbody tr
+        transition: background 0.1s ease
+
+        &:hover td
+          background: rgba(90, 42, 130, 0.03)
+
+        &:last-child td
+          border-bottom: none
+
+      .col-right
+        text-align: right
+
+    html.dark &
+      border-top-color: rgba(255, 255, 255, 0.08)
+
+      .scan-analytics-icon
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4)
+
+      .section-title
+        color: #e6edf3 !important
+
+        a
+          color: #e6edf3
+
+          &:hover
+            color: #c084fc
+
+      .scan-coverity-badge
+        background: rgba(192, 132, 252, 0.12)
+        color: #c084fc
+
+      .scan-meta-text
+        color: #8b949e
+
+        a
+          color: #c084fc
+
+      .scan-meta-separator
+        color: #3d444d
+
+      .scan-card-header
+        border-bottom-color: rgba(255, 255, 255, 0.08)
+
+      .scan-card-title
+        color: #6e7681 !important
+
+      .scan-card-version
+        background: rgba(192, 132, 252, 0.12)
+        color: #c084fc
+
+      .scan-group-label
+        color: #6e7681
+
+      .scan-metric
+        background: rgba(255, 255, 255, 0.04)
+        border-color: rgba(255, 255, 255, 0.08)
+
+        &:hover
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3)
+
+        .scan-metric-value
+          color: #e6edf3
+
+        .scan-metric-label
+          color: #8b949e
+
+      .scan-metrics-row .scan-metric:nth-child(1) .scan-metric-value
+        color: #c084fc
+
+      .scan-metrics-row .scan-metric:nth-child(2) .scan-metric-value
+        color: #f87171
+
+      .scan-metrics-row .scan-metric:nth-child(3) .scan-metric-value
+        color: #34d399
+
+      .scan-empty-text
+        color: #8b949e
+
+      .scan-page-meta .scan-meta-text
+        color: #8b949e
+
+        a
+          color: #c084fc
+
+      .scan-enlistment-selector
+        background: rgba(255, 255, 255, 0.04)
+        border-color: rgba(255, 255, 255, 0.1)
+
+        .scan-enlistment-count
+          color: #adbac7
+
+      .scan-empty-state
+        background: #1c2128
+        border-color: rgba(255, 255, 255, 0.1)
+
+        .scan-empty-icon
+          color: #3d444d
+
+        .scan-empty-message
+          color: #adbac7
+
+      .scan-charts-section div[id^="chart"]
+        background: rgba(255, 255, 255, 0.04)
+        border-color: rgba(255, 255, 255, 0.08)
+
+      .cwe-table
+        thead tr
+          background: rgba(255, 255, 255, 0.03)
+          border-bottom-color: rgba(255, 255, 255, 0.1)
+
+        th
+          color: #6e7681
+
+        td
+          border-bottom-color: rgba(255, 255, 255, 0.07)
+          color: #adbac7
+
+          a
+            color: #c084fc
+
+        tbody tr:hover td
+          background: rgba(192, 132, 252, 0.05)
 
 // ============================================================================
 // Analysis Grid (Code, Activity, Community)
@@ -1680,17 +2159,6 @@ html.dark #project_container .project-show-redesign
     color: $gray-600
     font-size: 14px
 
-  // Chart header with zoom controls
-  .chart-header
-    display: flex
-    align-items: flex-start
-    justify-content: space-between
-    margin-bottom: 12px
-    gap: 8px
-
-    .chart-title
-      margin-bottom: 0
-
   .zoom-controls
     display: flex
     align-items: center
@@ -1774,10 +2242,10 @@ html.dark #project_container .project-show-redesign
       line-height: 1.4
 
       &.positive
-        color: #16a34a !important
+        color: #15803d !important
 
       &.negative
-        color: #dc2626 !important
+        color: #b91c1c !important
 
 // ============================================================================
 // Summary Cascade Guard (override generic gradient-card paragraph rules)
@@ -1867,9 +2335,7 @@ html.dark #project_container .project-show-redesign
           font-weight: 500 !important
 
   .community-chart-wrap
-    .col-md-12.manage_padding
-      padding: 0 !important
-    .col-md-12 
+    .col-md-12
       h4 
         a
           text-decoration: none !important
@@ -1912,7 +2378,7 @@ html.dark #project_container .project-show-redesign .analysis-grid .analysis-car
           color: $gray-300 !important
 
           a
-            color: $yellow-accent !important
+            color: #c084fc !important
 
         .language-percent
           color: $gray-400 !important
@@ -1920,7 +2386,7 @@ html.dark #project_container .project-show-redesign .analysis-grid .analysis-car
   .contributors-grid
     .contributor-item
       .contributor-name
-        color: $yellow-accent !important
+        color: #c084fc !important
 
   // Languages Section (styles consolidated into Cascade Guard above)
 
@@ -2016,7 +2482,7 @@ html.dark #project_container .project-show-redesign .analysis-grid .analysis-car
 
         &.star-filled,
         &.star-half
-          color: #ffb91a
+          color: #5A2A82
 
         &.star-empty
           color: $gray-300
@@ -2058,10 +2524,10 @@ html.dark .project-show-redesign
 
   .chart-title
     a
-      color: $yellow-accent !important
+      color: #c084fc !important
 
       &:hover
-        color: $yellow-accent !important
+        color: #c084fc !important
 
   .subsection-title
     color: white !important
@@ -2073,7 +2539,7 @@ html.dark .project-show-redesign
     background: rgba(90, 42, 130, 0.15)
 
     &.activity-chart
-      background: #1D0631
+      background: #0d1117
 
   #code_history_chart.chart-container
     background: transparent
@@ -2090,8 +2556,7 @@ html.dark .project-show-redesign
 
       &.active
         background: $yellow-accent
-        color: #1D0631
-
+        color: #ffffff
   // Summary section dark colors: see Summary Typography Final Guard below
   // Languages, contributors, ratings dark colors: see respective Final Guard blocks below
 
@@ -2209,7 +2674,7 @@ html.dark .project-show-redesign
 
 html.dark #project_container .project-show-redesign .analysis-grid .analysis-card .card-content
   .ratings-section
-    border-top-color: rgba(90, 42, 130, 0.3) !important
+    border-top-color: rgba(255, 255, 255, 0.08) !important
 
     .subsection-title
       color: white !important
@@ -2228,10 +2693,10 @@ html.dark #project_container .project-show-redesign .analysis-grid .analysis-car
       color: $gray-300 !important
 
       .rating-link
-        color: $yellow-accent !important
+        color: #c084fc !important
 
         &:hover
-          color: $yellow-accent !important
+          color: #c084fc !important
 
     .rating-display
       .rating-value
@@ -2241,7 +2706,7 @@ html.dark #project_container .project-show-redesign .analysis-grid .analysis-car
       .star-icon
         &.star-filled,
         &.star-half
-          color: #ffb91a !important
+          color: #5A2A82 !important
 
         &.star-empty
           color: #4b5563 !important
@@ -2263,39 +2728,41 @@ html.dark #project_container .project-show-redesign
       color: white !important
 
     .license-card
-      background: #2D1548 !important
+      background: #151b23 !important
       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.24), 0 1px 2px rgba(0, 0, 0, 0.48) !important
 
       .license-header
-        border-bottom-color: rgba(90, 42, 130, 0.3) !important
+        border-bottom-color: rgba(255, 255, 255, 0.08) !important
 
         .header-left
           h4
             color: $yellow-accent !important
 
           svg
-            color: $yellow-accent !important
+            color: #ffff !important
 
         .chevron
           color: #94a3b8 !important
 
       .license-content
-        border-top-color: rgba(90, 42, 130, 0.3) !important
+        border-top-color: rgba(255, 255, 255, 0.08) !important
 
         .license-disclaimer
-          border-top-color: rgba(90, 42, 130, 0.3) !important
+          border-top-color: rgba(255, 255, 255, 0.08) !important
 
           p
-            color: #94a3b8 !important
+            color: #d1d5db !important
 
         .view-all-link a
-          color: $yellow-accent !important
+          color: #c084fc !important
 
   // Graph surfaces + chart typography
   #activity_chart,
   #community_chart,
   #loc_chart,
-  #vulnerability_version_chart
+  #vulnerability_version_chart,
+  #code_analysis_chart,
+  #language_analysis_chart
     .highcharts-background
       fill: transparent !important
 
@@ -2317,7 +2784,7 @@ html.dark #project_container .project-show-redesign
       fill: #cbd5e1 !important
 
     .highcharts-tooltip-box
-      fill: #2D1548 !important
+      fill: #1e1e2e !important
       stroke: #5A2A82 !important
 
     .highcharts-tooltip text
@@ -2345,7 +2812,7 @@ html.dark #project_container .project-show-redesign
         margin-top: 0 !important
 
       p.summary-timespan
-        color: $gray-400 !important
+        color: #6b7280 !important
         margin-bottom: 6px !important
 
       p.summary-stat
@@ -2376,6 +2843,12 @@ html.dark #project_container .project-show-redesign .analysis-grid .analysis-car
       .stat-number
         color: white !important
 
+      p.summary-change
+        &.positive
+          color: #4ade80 !important
+        &.negative
+          color: #f87171 !important
+
 // ============================================================================
 // Dark Mode Compatibility Guard (html.dark + body.dark)
 // ============================================================================
@@ -2387,24 +2860,24 @@ body.dark #project_container .project-show-redesign,
       color: white !important
 
     .license-card
-      background: #2D1548 !important
+      background: #151b23 !important
       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.24), 0 1px 2px rgba(0, 0, 0, 0.48) !important
 
       .license-header
-        border-bottom-color: rgba(90, 42, 130, 0.3) !important
+        border-bottom-color: rgba(255, 255, 255, 0.08) !important
 
         .header-left
           h4
             color: $yellow-accent !important
 
           svg
-            color: $yellow-accent !important
+            color: #ffff !important
 
         .chevron
           color: #94a3b8 !important
 
       .license-content
-        border-top-color: rgba(90, 42, 130, 0.3) !important
+        border-top-color: rgba(255, 255, 255, 0.08) !important
 
         .license-detail-card
           &.permitted,
@@ -2446,13 +2919,13 @@ body.dark #project_container .project-show-redesign,
               color: $gray-300 !important
 
         .license-disclaimer
-          border-top-color: rgba(90, 42, 130, 0.3) !important
+          border-top-color: rgba(255, 255, 255, 0.08) !important
 
           p
-            color: #94a3b8 !important
+            color: #d1d5db !important
 
         .view-all-link a
-          color: $yellow-accent !important
+          color: #c084fc !important
 
 // ============================================================================
 // Dark Mode - Login Modal & Add to Stacks Modal
@@ -2460,7 +2933,7 @@ body.dark #project_container .project-show-redesign,
 html.dark
   #LoginModal
     .modal-content
-      background-color: #1D0631
+      background-color: #0d1117
       border: 1px solid rgba(90, 42, 130, 0.4)
       box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5)
 
@@ -2484,8 +2957,8 @@ html.dark
       color: #d1d5db
 
       .well, .oh-card
-        background-color: #2D1548
-        border-color: rgba(90, 42, 130, 0.3)
+        background-color: #151b23
+        border-color: rgba(255, 255, 255, 0.08)
         box-shadow: none
 
       legend
@@ -2500,7 +2973,7 @@ html.dark
       input[type="text"],
       input[type="password"],
       input[type="email"]
-        background-color: #2D1548
+        background-color: #151b23
         border-color: rgba(159, 122, 186, 0.3)
         color: white
 
@@ -2508,11 +2981,11 @@ html.dark
           color: #6b7280
 
         &:focus
-          border-color: #FFB91A
-          box-shadow: 0 0 0 2px rgba(255, 185, 26, 0.2)
+          border-color: #5A2A82
+          box-shadow: 0 0 0 2px rgba(90, 42, 130, 0.2)
 
       .add-on
-        background-color: #2D1548
+        background-color: #151b23
         border-color: rgba(159, 122, 186, 0.3)
         color: #9ca3af
 
@@ -2523,12 +2996,12 @@ html.dark
 
     .modal-footer
       border-top-color: rgba(90, 42, 130, 0.3)
-      background-color: #1D0631
+      background-color: #0d1117
 
     .btn-primary
-      background-color: #FFB91A !important
-      border-color: #FFB91A !important
-      color: #1D0631 !important
+      background-color: #5A2A82 !important
+      border-color: #5A2A82 !important
+      color: #ffffff !important
 
       &:hover,
       &:focus
@@ -2537,16 +3010,16 @@ html.dark
 
 // Dark mode for vulnerability table — scoped to #vulnerabilities-data to avoid affecting other tables
 html.dark #vulnerabilities-data .table-responsive > .table-striped
-  background-color: #1D0631 !important
+  background-color: #0d1117 !important
 
 html.dark #vulnerabilities-data .table-responsive > .table-striped > thead > tr > th
-  background-color: #1D0631 !important
+  background-color: #0d1117 !important
   color: #d1d5db !important
   border-bottom-color: rgba(90,42,130,0.4) !important
 
 html.dark #vulnerabilities-data .table-responsive > .table-striped > tbody > tr > td,
 html.dark #vulnerabilities-data .table-responsive > .table-striped > tbody > tr > th
-  background-color: #2D1548 !important
+  background-color: #151b23 !important
   color: #d1d5db !important
   border-top-color: rgba(90,42,130,0.2) !important
 
@@ -2555,7 +3028,7 @@ html.dark #vulnerabilities-data .table-responsive > .table-striped > tbody > tr:
   background-color: rgba(29,6,49,0.8) !important
 
 html.dark #vulnerabilities-data .table-responsive > .table-striped > tbody > tr > td a
-  color: #ffb91a !important
+  color: #5A2A82 !important
 
   &:hover
     color: #ffcc4d !important
@@ -2721,7 +3194,7 @@ html.dark #vulnerabilities-data .table-responsive > .table-striped > tbody > tr 
 // Dark mode — Add to Stacks Modal
 html.dark #stack-entries-modal
   .stack-entries-content
-    background-color: #1D0631
+    background-color: #0d1117
     border: 1px solid rgba(90, 42, 130, 0.4)
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5)
 
@@ -2745,12 +3218,12 @@ html.dark #stack-entries-modal
     color: #9ca3af
 
   .stack-entries-row
-    background-color: #2D1548
-    border-color: rgba(90, 42, 130, 0.3)
+    background-color: #151b23
+    border-color: rgba(255, 255, 255, 0.08)
 
     &:hover
-      background-color: #3d1f60
-      border-color: rgba(159, 122, 186, 0.5)
+      background-color: #1c2128
+      border-color: rgba(255, 255, 255, 0.15)
 
   .stack-entries-label
     color: #d1d5db
@@ -2762,29 +3235,439 @@ html.dark #stack-entries-modal
     color: #6ee7b7
 
   .stack-entries-footer
-    background-color: #1D0631
+    background-color: #0d1117
     border-top-color: rgba(90, 42, 130, 0.3)
 
   .stack-entries-submit
-    background-color: #FFB91A !important
-    border-color: #FFB91A !important
-    color: #1D0631 !important
+    background-color: #5A2A82 !important
+    border-color: #5A2A82 !important
+    color: #ffffff !important
 
     &:hover,
     &:focus
-      background-color: #FFCC4D !important
-      border-color: #FFCC4D !important
+      background-color: #6d35a0 !important
+      border-color: #6d35a0 !important
 
 // ============================================================================
 // Stacks Index Page — Responsive Upgrade
 // ============================================================================
-.stacks-index-page
-  max-width: 1200px
+.stacks-index-page,
+#stacks-index
+  max-width: 1024px
   margin: 0 auto
-  padding: 24px 16px
+  padding: 0 24px 32px
 
   @media (max-width: 576px)
-    padding: 16px 12px
+    padding: 0 12px 24px
+
+  .settings-page-header
+    margin-bottom: 24px
+
+.stacks-faq-link
+  color: #5A2A82
+  font-weight: 600
+  text-decoration: none
+
+  &:hover
+    text-decoration: underline
+
+// ============================================================================
+// Stack Show Page
+// ============================================================================
+#stack-show
+  max-width: 1024px
+  margin: 0 auto
+  padding: 0 24px 32px
+
+  @media (max-width: 576px)
+    padding: 0 12px 24px
+
+  .settings-page-header
+    margin-top: 16px
+    margin-bottom: 24px
+
+.stack-show-layout
+  display: grid
+  grid-template-columns: 1fr 260px
+  gap: 24px
+  align-items: start
+
+  @media (max-width: 900px)
+    grid-template-columns: 1fr
+
+  @media (max-width: 576px)
+    gap: 16px
+
+.stack-show-main
+  display: flex
+  flex-direction: column
+  gap: 20px
+  min-width: 0
+
+.stack-show-sidebar
+  display: flex
+  flex-direction: column
+  gap: 16px
+  position: sticky
+  top: 16px
+
+  @media (max-width: 900px)
+    position: static
+
+.stack-description
+  font-size: 14px
+  color: #374151
+  line-height: 1.6
+  margin: 0
+
+  html.dark &
+    color: #d1d5db
+
+.stack-toggle-link
+  display: inline-flex
+  align-items: center
+  gap: 6px
+  font-size: 13px
+  font-weight: 600
+  color: #5A2A82
+  text-decoration: none
+  cursor: pointer
+  padding: 7px 14px
+  border-radius: 8px
+  border: 1px solid rgba(90, 42, 130, 0.25)
+  background: rgba(90, 42, 130, 0.05)
+  transition: background 0.15s, border-color 0.15s
+
+  &:hover
+    background: rgba(90, 42, 130, 0.12)
+    border-color: rgba(90, 42, 130, 0.5)
+    text-decoration: none
+
+  html.dark &
+    color: #5A2A82
+    border-color: rgba(90, 42, 130, 0.25)
+    background: rgba(90, 42, 130, 0.05)
+
+    &:hover
+      background: rgba(90, 42, 130, 0.12)
+      border-color: rgba(90, 42, 130, 0.5)
+
+.stack-recommends-toggle
+  padding: 4px 0 12px
+
+.stack-recommends-content
+  padding-bottom: 4px
+
+  .stack-toggle-link
+    margin-bottom: 14px
+
+// .recommendations is the JS wrapper — .clear divs toggle show/hide
+.stack-recommendations-section .recommendations
+  padding-top: 4px
+
+  .clear
+    margin-bottom: 4px
+
+  .stack-toggle-inner
+    display: block
+
+  .list
+    margin: 8px 0
+
+  .controls
+    display: flex
+    flex-wrap: wrap
+    gap: 8px
+    margin-top: 14px
+    padding-top: 12px
+    border-top: 1px solid #f3f4f6
+
+    html.dark &
+      border-top-color: rgba(255, 255, 255, 0.08)
+
+// Small suggestion list items
+.stack_sm_suggestions
+  list-style: none
+  margin: 0
+  padding: 0
+  display: flex
+  flex-direction: column
+  gap: 10px
+
+.suggestion-item
+  display: flex
+  align-items: center
+  gap: 12px
+  padding: 12px 14px
+  background: #f9fafb
+  border: 1px solid #e9ecef
+  border-radius: 10px
+  transition: background 0.15s, border-color 0.15s
+
+  &:hover
+    background: #f3f4f6
+    border-color: #d1d5db
+
+  html.dark &
+    background: rgba(255, 255, 255, 0.04)
+    border-color: rgba(255, 255, 255, 0.1)
+
+    &:hover
+      background: rgba(255, 255, 255, 0.08)
+      border-color: rgba(255, 255, 255, 0.18)
+
+.suggestion-logo
+  flex-shrink: 0
+  width: 36px
+  height: 36px
+  display: flex
+  align-items: center
+  justify-content: center
+
+  img
+    width: 36px
+    height: 36px
+    object-fit: contain
+    border-radius: 6px
+
+.suggestion-body
+  flex: 1
+  min-width: 0
+  display: flex
+  flex-direction: column
+  gap: 2px
+
+.suggestion-name
+  margin: 0
+  font-size: 13px
+  font-weight: 600
+  line-height: 1.3
+
+.suggestion-name-link
+  color: #1D0631
+  text-decoration: none
+
+  &:hover
+    color: #5A2A82
+    text-decoration: underline
+
+  html.dark &
+    color: #f3f4f6
+
+    &:hover
+      color: #5A2A82
+
+.suggestion-desc
+  margin: 0
+  font-size: 12px
+  color: #6b7280
+  line-height: 1.4
+
+  html.dark &
+    color: #9ca3af
+
+.suggestion-actions
+  display: flex
+  flex-direction: column
+  gap: 6px
+  flex-shrink: 0
+
+  span
+    font-size: 11px
+    font-weight: 700
+    color: #6b7280
+    padding: 4px 8px
+    border-radius: 6px
+    background: #f3f4f6
+
+    html.dark &
+      color: #9ca3af
+      background: rgba(255, 255, 255, 0.06)
+
+.suggestion-btn
+  display: inline-flex
+  align-items: center
+  gap: 5px
+  font-size: 11px
+  font-weight: 600
+  padding: 5px 10px
+  border-radius: 6px
+  text-decoration: none !important
+  cursor: pointer
+  white-space: nowrap
+  box-sizing: border-box
+  transition: background 0.15s, border-color 0.15s
+
+.suggestion-btn--add
+  background: linear-gradient(135deg, #5A2A82 0%, #7B3FA8 100%)
+  color: #fff !important
+  border: 1px solid transparent
+
+  &:hover
+    background: linear-gradient(135deg, #4a2070 0%, #6b3298 100%)
+
+.suggestion-btn--skip
+  background: transparent
+  color: #6b7280
+  border: 1px solid #e2e8f0
+
+  &:hover
+    background: #f8fafc
+    border-color: #cbd5e0
+    color: #374151
+
+  html.dark &
+    color: #9ca3af
+    border-color: rgba(255, 255, 255, 0.12)
+
+    &:hover
+      background: rgba(255, 255, 255, 0.06)
+      border-color: rgba(255, 255, 255, 0.22)
+      color: #d1d5db
+
+
+  display: flex
+  gap: 12px
+
+  .edit-form-actions,
+  > input[type="submit"]
+    align-self: flex-start
+
+.stack-entries-table
+  width: 100%
+  border-collapse: collapse
+
+  tr.stack_entry
+    transition: background 0.15s
+
+    &:hover
+      background: #f9fafb
+
+      html.dark &
+        background: rgba(255, 255, 255, 0.03)
+
+    &:last-child td
+      border-bottom: none
+
+  td
+    padding: 12px 14px
+    border-bottom: 1px solid #f3f4f6
+    vertical-align: middle
+    font-size: 13px
+
+    html.dark &
+      border-bottom-color: rgba(255, 255, 255, 0.08)
+
+.stack-entry-logo-cell
+  width: 48px
+  padding-right: 0 !important
+
+  img
+    display: block
+    border-radius: 6px
+
+.stack-entry-body-cell
+  width: 100%
+
+.stack-entry-name
+  font-size: 14px
+  font-weight: 600
+  color: #5A2A82
+  text-decoration: none
+
+  &:hover
+    color: #7B3FA8
+    text-decoration: underline
+
+  html.dark &
+    color: #c4b5fd
+
+    &:hover
+      color: #e9d5ff
+
+.stack-entry-rating
+  display: flex
+  align-items: center
+  gap: 6px
+  margin-top: 4px
+
+.stack-entry-rating-label
+  font-size: 11px
+  color: #6b7280
+  font-weight: 600
+
+  html.dark &
+    color: #9ca3af
+
+.stack-entry-note
+  margin-top: 6px
+  display: flex
+  align-items: baseline
+  gap: 6px
+  flex-wrap: wrap
+
+.stack-entry-note-label
+  font-size: 11px
+  font-weight: 700
+  color: #6b7280
+  text-transform: uppercase
+  letter-spacing: 0.04em
+
+  html.dark &
+    color: #9ca3af
+
+.stack-entry-note-text
+  font-size: 12px
+  color: #4b5563
+
+  html.dark &
+    color: #d1d5db
+
+.stack-entry-action-cell
+  width: 100px
+  text-align: right
+  white-space: nowrap
+
+.stack-entry-remove-btn
+  display: inline-flex
+  align-items: center
+  gap: 5px
+  font-size: 12px
+  font-weight: 600
+  color: #dc2626
+  border: 1px solid rgba(220, 38, 38, 0.3)
+  background: transparent
+  border-radius: 6px
+  padding: 5px 10px
+  text-decoration: none !important
+  cursor: pointer
+  transition: background 0.15s, border-color 0.15s
+
+  &:hover
+    background: rgba(220, 38, 38, 0.08)
+    border-color: rgba(220, 38, 38, 0.6)
+    color: #b91c1c
+
+  html.dark &
+    color: #fca5a5
+    border-color: rgba(252, 165, 165, 0.3)
+
+    &:hover
+      background: rgba(252, 165, 165, 0.1)
+      border-color: rgba(252, 165, 165, 0.55)
+
+  @media (max-width: 600px)
+    .stack-entries-table
+      td
+        display: block
+        width: 100%
+
+    .stack-entry-logo-cell
+      display: none
+
+    .stack-entry-action-cell
+      text-align: left
+      padding-top: 0
 
 .stacks-page-header
   display: flex
@@ -2853,10 +3736,14 @@ html.dark #stack-entries-modal
 
 .stacks-card-header
   display: flex
-  align-items: flex-start
+  align-items: center
   justify-content: space-between
   gap: 12px
   padding: 16px 20px 8px
+
+  .edit-section-title
+    flex: 1
+    text-align: left
 
   @media (max-width: 480px)
     padding: 12px 16px 6px
@@ -2951,8 +3838,8 @@ html.dark #stack-entries-modal
   border: 2px dashed #e5e7eb
 
   html.dark &
-    background-color: #2D1548
-    border-color: rgba(90, 42, 130, 0.3)
+    background-color: #151b23
+    border-color: rgba(255, 255, 255, 0.08)
 
 .stacks-empty-icon
   font-size: 48px
@@ -2982,7 +3869,96 @@ html.dark #stack-entries-modal
   html.dark &
     color: #a78bfa
 
-// Sidebar info card
+// Sample stacks
+.sample-stacks
+  margin-top: 20px
+  text-align: left
+
+.sample-stacks-label
+  font-size: 12px
+  font-weight: 600
+  color: #6b7280
+  text-transform: uppercase
+  letter-spacing: 0.05em
+  margin: 0 0 10px
+
+  html.dark &
+    color: #9ca3af
+
+.sample-stacks-list
+  list-style: none
+  margin: 0
+  padding: 0
+  display: flex
+  flex-direction: column
+  gap: 8px
+
+.sample-stack-item
+  display: block
+
+.sample-stack-link
+  display: flex
+  align-items: center
+  gap: 12px
+  padding: 10px 14px
+  background: #fff
+  border: 1px solid #e5e7eb
+  border-radius: 10px
+  text-decoration: none !important
+  transition: background 0.15s, border-color 0.15s, box-shadow 0.15s
+
+  &:hover
+    background: #f9fafb
+    border-color: #c4b5fd
+    box-shadow: 0 2px 8px rgba(90, 42, 130, 0.1)
+
+  html.dark &
+    background: rgba(255, 255, 255, 0.04)
+    border-color: rgba(255, 255, 255, 0.1)
+
+    &:hover
+      background: rgba(90, 42, 130, 0.15)
+      border-color: rgba(164, 101, 255, 0.4)
+
+.sample-stack-icon
+  flex-shrink: 0
+  width: 32px
+  height: 32px
+  background: linear-gradient(135deg, #5A2A82 0%, #7B3FA8 100%)
+  border-radius: 8px
+  display: flex
+  align-items: center
+  justify-content: center
+  color: #fff
+  font-size: 13px
+
+.sample-stack-body
+  display: flex
+  flex-direction: column
+  gap: 2px
+  min-width: 0
+
+.sample-stack-name
+  font-size: 13px
+  font-weight: 700
+  color: #1D0631
+  line-height: 1.3
+
+  html.dark &
+    color: #f3f4f6
+
+.sample-stack-desc
+  font-size: 11px
+  color: #6b7280
+  line-height: 1.4
+  white-space: nowrap
+  overflow: hidden
+  text-overflow: ellipsis
+
+  html.dark &
+    color: #9ca3af
+
+
 .stacks-sidebar
   position: sticky
   top: 16px
@@ -3039,62 +4015,155 @@ html.dark #stack-entries-modal
     html.dark &
       color: #a78bfa
 
+// Similar stacks sidebar card
+.similar-stacks-card
+  margin-top: 12px
+
+.similar-stacks-avatars
+  display: flex
+  flex-wrap: wrap
+  gap: 8px
+  padding: 4px 0 14px
+
+  img,
+  a img
+    border-radius: 50%
+    border: 2px solid #fff
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12)
+    transition: transform 0.15s, box-shadow 0.15s
+    display: block
+
+    &:hover
+      transform: scale(1.12)
+      box-shadow: 0 3px 8px rgba(90, 42, 130, 0.25)
+
+  html.dark &
+    img,
+    a img
+      border-color: #2D1548
+
+.similar-stacks-more
+  display: inline-flex
+  align-items: center
+  gap: 5px
+  font-size: 12px
+  font-weight: 600
+  color: #5A2A82
+  text-decoration: none
+  padding: 5px 0
+  border-top: 1px solid #f3f4f6
+  width: 100%
+  margin-top: 2px
+  transition: color 0.15s
+
+  &:hover
+    color: #7B3FA8
+    text-decoration: none
+
+    .fa
+      transform: translateX(2px)
+
+  .fa
+    font-size: 10px
+    transition: transform 0.15s
+
+  html.dark &
+    color: #c4b5fd
+    border-top-color: rgba(255, 255, 255, 0.08)
+
+    &:hover
+      color: #e9d5ff
+
 // ============================================================================
 // Similar Projects Page — Responsive Upgrade
 // ============================================================================
-.similar-page
-  max-width: 1200px
-  margin: 0 auto
-  padding: 24px 16px
+// ──────────────────────────────────────────────────────────────────────────────
+// Similar Projects Page — matches project-basics design system
+// ──────────────────────────────────────────────────────────────────────────────
+
+#similar-projects-page
+  @media (max-width: 639px)
+    padding: 0 12px
+
+  .settings-page-header
+    margin-top: 16px
+
+// Section wrapper
+.similar-section
+  margin-bottom: 40px
 
   @media (max-width: 576px)
-    padding: 16px 12px
+    margin-bottom: 28px
 
-.similar-page-header
-  margin-bottom: 24px
-  padding-bottom: 12px
-  border-bottom: 2px solid #e9ecef
+// Section header — icon + title + description (mirrors edit-section-header)
+.similar-section-header
+  display: flex
+  align-items: flex-start
+  gap: 12px
+  margin-bottom: 20px
+  padding-bottom: 14px
+  border-bottom: 1px solid #e5e7eb
 
   html.dark &
     border-bottom-color: rgba(90, 42, 130, 0.3)
 
-.similar-page-title
-  font-size: 26px
-  font-weight: 700
-  color: #1f2937
-  margin: 0
+.similar-section-header-left
+  display: flex
+  align-items: flex-start
+  gap: 12px
+  flex: 1
 
-  html.dark &
-    color: #f3f4f6
+.similar-section-icon
+  width: 36px
+  height: 36px
+  min-width: 36px
+  border-radius: 10px
+  background: linear-gradient(135deg, #5A2A82, #7B3FB5)
+  display: flex
+  align-items: center
+  justify-content: center
+  box-shadow: 0 2px 6px rgba(90, 42, 130, 0.3)
+  flex-shrink: 0
 
-  @media (max-width: 576px)
-    font-size: 21px
+  i.fa
+    color: #ffffff
+    font-size: 15px
+    line-height: 1
 
-.similar-section
-  margin-bottom: 40px
+.similar-section-text
+  flex: 1
 
-.similar-section-heading
-  font-size: 18px
-  font-weight: 600
-  color: #374151
-  margin: 0 0 16px
+.similar-section-title
+  font-size: 18px !important
+  font-weight: 700 !important
+  color: #111827
+  margin: 0 0 4px !important
   display: flex
   flex-wrap: wrap
   align-items: baseline
   gap: 6px
 
   html.dark &
-    color: #e5e7eb
+    color: #f3f4f6
 
   @media (max-width: 576px)
-    font-size: 16px
+    font-size: 16px !important
 
 .similar-project-name
-  color: #7c3aed
+  color: #5A2A82
   font-weight: 700
 
   html.dark &
-    color: #a78bfa
+    color: #c084fc
+
+.similar-section-desc
+  font-size: 13px
+  color: #6b7280
+  margin: 0
+  line-height: 1.5
+
+  html.dark &
+    color: #9ca3af
 
 // Responsive card grid
 .similar-grid
@@ -3114,14 +4183,20 @@ html.dark #stack-entries-modal
   flex-direction: column
   border-radius: 12px
   overflow: hidden
-  transition: box-shadow 0.2s ease, transform 0.15s ease
+  border: 1px solid #e5e7eb !important
+  transition: box-shadow 0.2s ease, border-color 0.2s ease, transform 0.15s ease
 
   &:hover
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12)
+    border-color: rgba(90, 42, 130, 0.5) !important
+    box-shadow: 0 4px 12px rgba(90, 42, 130, 0.12) !important
     transform: translateY(-2px)
 
-  html.dark &:hover
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4)
+  html.dark &
+    border-color: rgba(255, 255, 255, 0.08) !important
+
+    &:hover
+      border-color: rgba(90, 42, 130, 0.6) !important
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4) !important
 
 .similar-card-header
   display: flex
@@ -3143,54 +4218,65 @@ html.dark #stack-entries-modal
 .similar-card-title
   font-size: 15px
   font-weight: 600
-  margin: 0 0 4px
-  display: flex
-  flex-wrap: wrap
-  align-items: center
-  gap: 8px
+  margin: 0 0 6px
+  padding: 0 !important
 
 .similar-card-name
-  color: #7c3aed
+  color: #5A2A82
   text-decoration: none
   word-break: break-word
+  display: block
 
   &:hover
-    color: #5b21b6
+    color: #4a1f6e
     text-decoration: underline
 
   html.dark &
-    color: #a78bfa
+    color: #c084fc
 
   html.dark &:hover
-    color: #c4b5fd
+    color: #d8b4fe
+
+.similar-card-actions
+  display: flex
+  align-items: center
+  gap: 6px
+  margin-top: 4px
 
 .similar-compare-btn
+  display: inline-flex
+  align-items: center
+  gap: 4px
   font-size: 12px
   color: #6b7280
   text-decoration: none
-  white-space: nowrap
-  padding: 2px 8px
+  padding: 3px 8px
   border: 1px solid #e5e7eb
-  border-radius: 4px
+  border-radius: 6px
   line-height: 1.4
+  transition: all 0.15s ease
+
+  i.fa
+    font-size: 11px
 
   &:hover
-    color: #7c3aed
-    border-color: #a78bfa
-    background-color: #f5f3ff
+    color: #5A2A82
+    border-color: rgba(90, 42, 130, 0.4)
+    background-color: rgba(90, 42, 130, 0.06)
 
   html.dark &
     color: #9ca3af
-    border-color: rgba(90, 42, 130, 0.4)
+    border-color: rgba(255, 255, 255, 0.12)
 
-  html.dark &:hover
-    color: #a78bfa
-    background-color: rgba(90, 42, 130, 0.2)
-    border-color: rgba(167, 139, 250, 0.5)
+    &:hover
+      color: #c084fc
+      background-color: rgba(90, 42, 130, 0.2)
+      border-color: rgba(192, 132, 252, 0.4)
 
 .similar-card-activity
-  font-size: 13px
+  font-size: 12px
   color: #6b7280
+  padding: 4px 16px 8px
   position: relative
 
   html.dark &
@@ -3200,11 +4286,12 @@ html.dark #stack-entries-modal
   display: flex
   flex-direction: column
   gap: 6px
-  padding: 8px 16px 14px
+  padding: 8px 16px 16px
   border-top: 1px solid #f3f4f6
+  margin-top: auto
 
   html.dark &
-    border-top-color: rgba(90, 42, 130, 0.2)
+    border-top-color: rgba(255, 255, 255, 0.06)
 
 .similar-card-row
   display: flex
@@ -3214,12 +4301,15 @@ html.dark #stack-entries-modal
   font-size: 13px
 
 .similar-card-label
-  color: #9ca3af
+  color: #4b5563
   font-size: 12px
+  font-weight: 600
+  text-transform: uppercase
+  letter-spacing: 0.04em
   white-space: nowrap
 
   html.dark &
-    color: #6b7280
+    color: #9ca3af
 
 .similar-card-value
   color: #374151
@@ -3229,38 +4319,84 @@ html.dark #stack-entries-modal
     color: #d1d5db
 
 .similar-card-value-link
-  color: #7c3aed
+  color: #5A2A82
   text-decoration: none
   font-size: 13px
+  font-weight: 500
 
   &:hover
     text-decoration: underline
+    color: #4a1f6e
 
   html.dark &
-    color: #a78bfa
+    color: #c084fc
+
+    &:hover
+      color: #d8b4fe
 
 // Empty state
 .similar-empty-state
-  padding: 32px 16px
+  padding: 40px 24px
   background-color: #fafafa
   border-radius: 12px
   border: 2px dashed #e5e7eb
   text-align: center
+  display: flex
+  flex-direction: column
+  align-items: center
+  gap: 12px
 
   html.dark &
-    background-color: #2D1548
-    border-color: rgba(90, 42, 130, 0.3)
+    background-color: #151b23
+    border-color: rgba(90, 42, 130, 0.2)
+
+.similar-empty-icon
+  width: 56px
+  height: 56px
+  border-radius: 16px
+  background: linear-gradient(135deg, #5A2A82, #7B3FB5)
+  display: flex
+  align-items: center
+  justify-content: center
+  margin: 0 auto
+
+  i.fa
+    color: #ffffff
+    font-size: 24px
 
 .similar-empty-text
   font-size: 15px
+  color: #374151
+  margin: 0
+  font-weight: 500
+
+  html.dark &
+    color: #d1d5db
+
+.similar-empty-subtext
+  font-size: 13px
   color: #6b7280
-  margin: 0 0 8px
+  margin: 0
 
   html.dark &
     color: #9ca3af
 
+.similar-empty-btn
+  border-radius: 20px !important
+  padding: 8px 24px !important
+  font-size: 14px !important
+  font-weight: 600 !important
+  background-color: #5A2A82 !important
+  border-color: #5A2A82 !important
+  color: #ffffff !important
+  text-decoration: none
+
+  &:hover
+    background-color: #4a1f6e !important
+    border-color: #4a1f6e !important
+
 .similar-action-link
-  color: #7c3aed
+  color: #5A2A82
   font-weight: 600
   text-decoration: none
 
@@ -3268,11 +4404,11 @@ html.dark #stack-entries-modal
     text-decoration: underline
 
   html.dark &
-    color: #a78bfa
+    color: #c084fc
 
 .similar-muted
-  color: #9ca3af
+  color: #4b5563
   font-size: 13px
 
   html.dark &
-    color: #6b7280
+    color: #9ca3af

@@ -8,7 +8,7 @@
           .org-logo
             = link_to org.decorate.icon(:med), organization_path(org), title: org.name, class: 'logo'
           .org-info
-            = link_to h(truncate(org.name, length: 24)), organization_path(org), title: org.name, class: 'org-name'
+            = link_to h(org.name), organization_path(org), title: org.name, class: 'org-name'
             .org-stats
               %span.projects-count
                 - if org.projects_count > 0

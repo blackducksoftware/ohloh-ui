@@ -14,21 +14,24 @@
     javascript_tag(js)
   end
 
-- content_for :header_title do
-  .project_content_title
-    %h2.float_left
-      = link_to t(:settings), settings_project_path(@project)
-      &nbsp;:&nbsp;
-      = link_to t('.licenses'), project_licenses_path(@project)
-      &nbsp;:&nbsp;#{t(:new)}
-    = project_analysis_timestamp(@project)
-
 = render partial: 'layouts/partials/alert'
 
 #project-license-new-page
-  .row
-    .col-md-6
-      .oh-card.margin_top_20
+  .settings-page-header
+    .settings-page-header-row
+      .settings-page-icon
+        %i.fa.fa-certificate
+      %h2.settings-page-h2
+        = link_to t(:settings), settings_project_path(@project)
+        %span.account-basics-sep :
+        = link_to t('.licenses'), project_licenses_path(@project)
+        %span.account-basics-sep :
+        = t(:new)
+    %p.settings-page-description= t('.page_title', name: @project.name)
+
+  .project-edit-layout
+    .project-edit-main
+      .oh-card
         .license-new-card-header
           %h3.license-new-card-title
             %i.fa.fa-plus-circle
@@ -64,5 +67,5 @@
             - else
               = disabled_button t('.add_declared_license'), class: 'btn-primary add-license'
 
-    .col-md-6
+    .project-edit-aside
       = render partial: 'project_licenses/about'

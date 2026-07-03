@@ -11,7 +11,7 @@
 
 body
   background-color: white !important
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"
+  font-family: inherit
   font-size: 1.3rem
   margin: 0
   padding: 0
@@ -28,12 +28,11 @@ body
   padding: 0 !important
   transition: background-color 0.3s ease
   html.dark &
-    background-color: #1D0631
+    background-color: #0d1117
 
 header
   // Figma design: gradient background for entire header
   background: linear-gradient(to right, #000000, #1D0631, #5A2A82)
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"
   font-size: 16px
   margin: 0
   padding: 0
@@ -88,7 +87,7 @@ header
         font-weight: 500 !important
         transition: color 0.3s ease !important
         white-space: nowrap !important
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important
+        font-family: inherit !important
         line-height: 1.5 !important
         letter-spacing: 0 !important
         padding: 6px 0 !important
@@ -102,7 +101,7 @@ header
           text-decoration: none !important
           background: none !important
         &.select
-          color: #FFB91A !important
+          color: #5a2a82 !important
           font-weight: 600 !important
 
 #navbar-inner
@@ -442,7 +441,7 @@ header
           position: relative !important
           padding: 6px 0 !important
           margin: 0 !important
-          font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important
+          font-family: inherit !important
           line-height: 1.5 !important
           letter-spacing: 0 !important
           display: inline-block !important
@@ -454,7 +453,7 @@ header
             text-decoration: none !important
             background: none !important
           &.select
-            color: #FFB91A !important
+            color: #ffff !important
             font-weight: 600 !important
             &::after
               content: '' !important
@@ -751,10 +750,10 @@ header
         box-shadow: none
       html.dark &
         background-color: transparent !important
-        color: #FFB91A !important
-        border-color: #FFB91A !important
+        color: #5A2A82 !important
+        border-color: #5A2A82 !important
         &:hover
-          background-color: rgba(255, 185, 26, 0.15) !important
+          background-color: rgba(90, 42, 130, 0.15) !important
 
 
 .dropdown#logged_user_menu
@@ -817,7 +816,7 @@ header
         cursor: pointer
         &:hover
           background-color: rgba(255, 185, 26, 0.2) !important
-          color: #FFB91A !important
+          color: #000000 !important
     .divider
       width: 100%
       height: 1px
@@ -847,7 +846,7 @@ header
   margin: 8px 16px 16px
 
   html.dark &
-    background: #2D1548
+    background: #151b23
     border-color: rgba(251, 191, 36, 0.3)
     box-shadow: 0 2px 8px rgba(251, 191, 36, 0.1)
 
@@ -948,7 +947,7 @@ header
   border: 1px solid transparent
 
   html.dark &
-    background: #2D1548 !important
+    background: #151b23 !important
     border-color: rgba(255, 255, 255, 0.08) !important
 
   .alert-accent-strip
@@ -1036,7 +1035,7 @@ header
   box-shadow: 0 2px 8px rgba(239, 68, 68, 0.15)
 
   html.dark &
-    background: #2D1548 !important
+    background: #151b23 !important
     border-color: rgba(239, 68, 68, 0.4)
     box-shadow: 0 2px 12px rgba(239, 68, 68, 0.25)
 
@@ -1063,7 +1062,7 @@ header
   box-shadow: 0 2px 8px rgba(90, 42, 130, 0.1)
 
   html.dark &
-    background: #2D1548 !important
+    background: #151b23 !important
     border-color: rgba(90, 42, 130, 0.5)
 
   .alert-accent-strip
@@ -1088,7 +1087,7 @@ header
   box-shadow: 0 2px 8px rgba(16, 185, 129, 0.12)
 
   html.dark &
-    background: #2D1548 !important
+    background: #151b23 !important
     border-color: rgba(16, 185, 129, 0.35)
 
   .alert-accent-strip
@@ -1425,7 +1424,7 @@ html.dark
     .project_row
       #did_you_know
         .well, .oh-card
-          background-color: #1D0631 !important
+          background-color: #0d1117 !important
           border: 1px solid #4b5563 !important
           box-shadow: none !important
 
@@ -1440,7 +1439,7 @@ html.dark
 
       .no_analysis_message
         .alert.alert-info.alert-block
-          background-color: #2D1548 !important
+          background-color: #151b23 !important
           border: 1px solid rgba(159, 122, 186, 0.35) !important
 
         p,
@@ -1525,7 +1524,7 @@ html.dark
 html.dark
   .no_analysis_message
     .modern-info-card
-      background-color: #2D1548
+      background-color: #151b23
 
     .info-icon-wrapper
       background: linear-gradient(135deg, #5A2A82 0%, #9F7ABA 100%)
@@ -1545,7 +1544,7 @@ html.dark
 body.dark
   .no_analysis_message
     .modern-info-card
-      background-color: #2D1548
+      background-color: #151b23
 
     .info-title
       color: #f9fafb
@@ -1558,7 +1557,7 @@ body.dark
     .project_row
       #did_you_know
         .well, .oh-card
-          background-color: #1D0631 !important
+          background-color: #0d1117 !important
           border: 1px solid #4b5563 !important
 
 // Full-width layout styles

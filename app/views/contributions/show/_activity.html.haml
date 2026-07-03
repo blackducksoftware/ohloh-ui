@@ -11,7 +11,7 @@
       .contribution-activity__stats
         .contribution-stat
           %span.contribution-stat__label= t('.all_commits')
-          %span.contribution-stat__value= fact.commits
+          %span.contribution-stat__value= number_with_delimiter(fact.commits)
         .contribution-stat
           %span.contribution-stat__label= t('.12_mo_commits')
           %span.contribution-stat__value= fact.twelve_month_commits

@@ -296,6 +296,24 @@ en:
         title: 'Project Security'
         title_nvd: 'This project has no vulnerabilities reported against it'
         blog_link: 'About Project Security'
+        site_features:
+          did_you_know: 'Did You Know...'
+        vulnerability_report:
+          no_data: 'No data available'
+          title: 'Vulnerability Report'
+          blog_link: 'About Project Vulnerability Report'
+          pvs:
+            title: 'Vulnerability Exposure Index'
+            good: 'Few reported vulnerabilities'
+            poor: 'Many reported vulnerabilities'
+          pss:
+            title: 'Security Confidence Index'
+            good: 'Favorable security track-record'
+            poor: 'Poor security track-record'
+        vulnerabilities_per_version:
+          title: 'Vulnerabilities per Version'
+          title_detail: '(Most recent versions)'
+          no_data: 'No data available'
       licenses:
         title: 'Licenses'
         all: 'All Licenses'
@@ -370,6 +388,10 @@ en:
       basic_cocomo_model: "Basic COCOMO Model"
       about: "About"
       cost_estimates: "Cost Estimates"
+      tip_estimation: "Software cost estimation is inherently uncertain. Open Hub estimates project cost using the Basic COCOMO Model with coefficients a=2.4 and b=1.05."
+      tip_model_html: "We calculate the estimated cost of the project using the %{link}."
+      tip_caveat: "COCOMO was created to model large institutional projects, which often don't compare well with distributed open-source projects. It accounts for design, specification, reviewing, and management overhead."
+      tip_maturity: "This model is most accurate with mature, large projects. Young projects with little activity are typically overvalued."
       about1: "Software cost estimation is tricky business even when all the variables are known -- knowledge which we certainly don't have."
       about2: "We calculate the estimated cost of the project using the %{link}."
       about3: "For those familiar with the details, we are using coeffcients a=2.4 and b=1.05."
@@ -421,10 +443,12 @@ en:
       title: 'Related Projects'
       project: 'Project'
       similar_to: 'Similar to'
+      similar_by_tags_desc: 'Projects that share similar tags are grouped together.'
       nothing_by_tags: 'No similar projects found. Open Hub uses project tags to determine project relationships.'
       add_tags: 'Add tags to this project'
       to_similar: 'to find similar projects.'
       also_use: 'People who use %{name} also use:'
+      also_use_desc: 'Projects frequently used together with this one by Open Hub users.'
       nothing_by_stacks: 'Open Hub requires more users for this project before we can determine project relationships.'
       nightly_update: 'This list is updated nightly.'
     similar_project:

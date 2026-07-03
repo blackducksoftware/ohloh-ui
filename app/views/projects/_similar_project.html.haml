@@ -3,18 +3,21 @@
   compare_title = t('.compare_title', name_1: project.name, name_2: @project.name)
   languages_summary_path = languages_summary_project_analysis_path(project, id: 'latest')
 
-.similar-card.oh-card
+.similar-card.oh-card.oh-card--hoverable
   .similar-card-header
     .similar-card-icon
       = link_to project.decorate.icon(:med), project_path(project), title: h(project.description)
     .similar-card-meta
       %h4.similar-card-title
         = link_to h(project.name), project_path(project), class: 'similar-card-name'
-        = link_to t('.compare'), compare_url, class: 'similar-compare-btn', title: compare_title
-      .similar-card-activity
-        - project_activity_level_class(project, :fifteen)
-        %span{ class: project_activity_level_text_class(:fifteen) }
-          = project_activity_text(project, true)
+      .similar-card-actions
+        = link_to compare_url, class: 'similar-compare-btn', title: compare_title do
+          %i.fa.fa-bar-chart
+          = t('.compare')
+  .similar-card-activity
+    - project_activity_level_class(project, :fifteen)
+    %span{ class: project_activity_level_text_class(:fifteen) }
+      = project_activity_text(project, true)
   .similar-card-body
     - if project.best_analysis.present?
       .similar-card-row

@@ -5,64 +5,115 @@
   remaining_tags = Tag::MAX_ALLOWED_PER_PROJECT - @project.tags.length
 
 #project-tags-page
-  .project-tags-header
-    %h2.project-tags-title
-      = link_to t(:settings), settings_project_path(@project)
-      %span.project-tags-title__sep &rsaquo;
-      = t('.tags')
-
-  .row
-    .col-md-6.col-sm-6.col-xs-12
-      .oh-card
-        %h3.project-tags-card-title= t('.tags_for', name: truncate_project_name(@project.name, 43))
-        %p.project-tags-left!= tags_left(remaining_tags)
-        .project-tags-current#current_tags
-          - @project.tags.sort { |a, b| a.name <=> b.name }.each do |tag|
-            %a.project-tag{ tagname: tag.name, class: @project.edit_authorized? ? 'delete tag_remove' : '', href: 'javascript:void(0)', role: 'button', aria: { label: "#{tag.name}#{@project.edit_authorized? ? ' – remove tag' : ''}" } }
-              = tag.name
-              - if @project.edit_authorized?
-                %i.icon-remove.project-tag__remove
-            %span.hidden{ tagname: tag.name }
-              = image_tag 'spinner.gif', alt: ''
-
-        %form#edit_tags.project-tags-form{ project_id: @project.id, project: @project.to_param,
-                       style: remaining_tags > 0 ? '' : 'display: none;', rel: 'tag_edit' }
-          %label.project-tags-form__label{ for: 'input_tags' }= t('.add_new_tag')
-          .project-tags-form__row
-            - if @project.edit_authorized?
-              %input.form-control#input_tags{ type: :text, placeholder: t('.enter_tag_here'), aria: { label: t('.enter_tag_here') } }
-            - else
-              %input.form-control{ type: :text, placeholder: t('.enter_tag_here'), aria: { label: t('.enter_tag_here') }, disabled: true }
-            - if @project.edit_authorized?
-              %input.btn.btn-primary.project-tags-form__submit#submit{ type: 'submit', value: t('.save_tag') }
-            - else
-              = disabled_button t('.save_tag'), class: 'btn-primary project-tags-form__submit'
-          %p.error.hidden#error &nbsp;
-          %span.spinner.hidden= image_tag 'spinner.gif', alt: ''
-
-    .col-md-6.col-sm-6.col-xs-12
-      %h3.project-tags-section-title= t('.projects_with_similar_tags')
-      #related_projects
-        = render partial: 'related_projects'
-      .hidden#related_spinner= image_tag 'spinner.gif', alt: ''
-
-  .about-project-basics-card
-    .card-header
-      %h4
-        %span.soft= t(:about)
+  .settings-page-header
+    .settings-page-header-row
+      .settings-page-icon
+        %i.fa.fa-tags
+      %h2.settings-page-h2
+        = link_to t(:settings), settings_project_path(@project)
+        %span.account-basics-sep :
         = t('.tags')
-      %button.expand-toggle{ type: 'button', 'aria-label' => 'Expand about section' }
-        %i.fa.fa-chevron-down
+    %p.settings-page-description= t('.page_title', name: @project.name)
 
-    .card-content
-      .about-content-wrapper
-        .col-md-5.padding_left_45
-          %ul
-            %li= t('.help1')
-            %li= t('.help2', max: Tag::MAX_ALLOWED_PER_PROJECT)
-            %li= t('.help3')
-        .col-md-5
-          %ul
-            %li= t('.help4')
-            %li= t('.help5')
-            %li= t('.help6', max: Tag::MAX_ALLOWED_PER_PROJECT)
+  .project-edit-layout
+    .project-edit-main
+      .tags-page-grid
+
+        / ── Current Tags ─────────────────────────────────────
+        .edit-section.tags-current-section
+          .edit-section-header
+            .edit-section-icon
+              %i.fa.fa-tags
+            %h3.edit-section-title= t('.tags_for', name: truncate_project_name(@project.name, 30))
+            .tags-remaining-badge{ class: remaining_tags <= 3 ? 'tags-remaining-badge--warn' : '' }
+              = remaining_tags
+              = t('.tags_left', default: 'left')
+
+          .project-tags-current#current_tags
+            - if @project.tags.empty?
+              %p.tags-empty-state
+                %i.fa.fa-tag
+                = t('.no_tags_yet', default: 'No tags yet — add one below')
+            - else
+              - @project.tags.sort { |a, b| a.name <=> b.name }.each do |tag|
+                %a.project-tag{ tagname: tag.name, class: @project.edit_authorized? ? 'delete tag_remove' : '', href: 'javascript:void(0)', role: 'button', aria: { label: "#{tag.name}#{@project.edit_authorized? ? ' – remove tag' : ''}" } }
+                  %i.fa.fa-tag.project-tag__icon
+                  = tag.name
+                  - if @project.edit_authorized?
+                    %i.icon-remove.project-tag__remove
+                %span.hidden{ tagname: tag.name }
+                  = image_tag 'spinner.gif', alt: ''
+
+          %form#edit_tags.project-tags-form{ project_id: @project.id, project: @project.to_param,
+                         style: remaining_tags > 0 ? '' : 'display: none;', rel: 'tag_edit' }
+            %label.project-tags-form__label{ for: 'input_tags' }= t('.add_new_tag')
+            .project-tags-form__row
+              .tags-input-wrapper
+                %i.fa.fa-tag.tags-input-icon
+                - if @project.edit_authorized?
+                  %input.form-control#input_tags{ type: :text, placeholder: t('.enter_tag_here'), aria: { label: t('.enter_tag_here') } }
+                - else
+                  %input.form-control{ type: :text, placeholder: t('.enter_tag_here'), aria: { label: t('.enter_tag_here') }, disabled: true }
+              - if @project.edit_authorized?
+                %input.edit-save-btn.tags-submit-btn#submit{ type: 'submit', value: t('.save_tag') }
+              - else
+                = disabled_button t('.save_tag'), class: 'edit-save-btn tags-submit-btn'
+            %p.error.hidden#error &nbsp;
+            %span.spinner.hidden= image_tag 'spinner.gif', alt: ''
+
+        / ── Related Projects ─────────────────────────────────
+        .edit-section.tags-related-section
+          .edit-section-header
+            .edit-section-icon.edit-section-icon--teal
+              %i.fa.fa-sitemap
+            %h3.edit-section-title= t('.projects_with_similar_tags')
+
+          #related_projects
+            = render partial: 'related_projects'
+          .hidden#related_spinner= image_tag 'spinner.gif', alt: ''
+
+    / ── About ────────────────────────────────────────────────
+    .project-edit-aside
+      .about-account-basics-card
+        .card-header
+          .card-header-left
+            .card-header-icon
+              %i.fa.fa-info-circle
+            .card-header-text
+              %h4.card-title= t(:about) + ' ' + t('.tags')
+              %p.card-subtitle Tips for tagging this project
+          %button.expand-toggle{ type: 'button', 'aria-label' => 'Toggle about section' }
+            %i.fa.fa-chevron-down
+
+        .card-content
+          .tips-grid
+            .tip-item
+              .tip-icon
+                %i.fa.fa-lightbulb-o
+              .tip-body
+                %p.tip-text= t('.help1')
+            .tip-item
+              .tip-icon
+                %i.fa.fa-hashtag
+              .tip-body
+                %p.tip-text= t('.help2', max: Tag::MAX_ALLOWED_PER_PROJECT)
+            .tip-item
+              .tip-icon
+                %i.fa.fa-check
+              .tip-body
+                %p.tip-text= t('.help3')
+            .tip-item
+              .tip-icon
+                %i.fa.fa-users
+              .tip-body
+                %p.tip-text= t('.help4')
+            .tip-item
+              .tip-icon
+                %i.fa.fa-search
+              .tip-body
+                %p.tip-text= t('.help5')
+            .tip-item
+              .tip-icon
+                %i.fa.fa-exclamation-circle
+              .tip-body
+                %p.tip-text= t('.help6', max: Tag::MAX_ALLOWED_PER_PROJECT)

@@ -4,26 +4,26 @@
 html.dark
   // Body and background colors - matches home page sections
   body
-    background-color: #1D0631 !important
+    background-color: #0d1117 !important
     color: #e2e8f0 !important
 
   // Page container
   #page, .container#page
-    background-color: #1D0631 !important
+    background-color: #0d1117 !important
 
   // Header stays with purple gradient (no change needed)
   // Footer stays with purple gradient (no change needed)
 
   // Content areas
   #page-contents, #page_contents
-    background-color: #1D0631 !important
+    background-color: #0d1117 !important
     color: #e2e8f0 !important
 
   // Cards and wells
   .well, .oh-card
-    background-color: #1D0631 !important
+    background-color: #0d1117 !important
     color: #e2e8f0 !important
-    border-color: #5A2A82 !important
+    border-color: rgba(139, 122, 168, 0.2) !important
 
   // Settings page — matches Figma ProjectSettingsView dark mode
   .settings-page-header
@@ -33,28 +33,33 @@ html.dark
         color: #ffffff !important
     h2.settings-page-h2
       color: #ffffff !important
+      a
+        color: #c084fc !important
+        &:hover
+          color: #d8b4fe !important
+          text-decoration: underline
     .settings-page-description
       color: #9ca3af
 
   .settings-grid .settings_module
-    background: #2D1548
+    background: #151b23
     border-color: rgba(90, 42, 130, 0.3)
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.24)
     &::after
-      color: #6b7280
+      color: #c084fc
     &:hover
-      border-color: rgba(255, 185, 26, 0.4)
-      box-shadow: 0 4px 12px rgba(255, 185, 26, 0.08)
+      border-color: rgba(90, 42, 130, 0.4)
+      box-shadow: 0 4px 12px rgba(90, 42, 130, 0.08)
       &::after
-        color: #ffb91a
+        color: #c084fc
         transform: translateX(2px)
       .settings-text h4
-        color: #ffd166
+        color: #ffff
     .settings-text
       h4
-        color: #ffb91a
+        color: #ffff
         a
-          color: #ffb91a
+          color: #ffff
       .settings_description
         color: #9ca3af
     .settings-icon-wrapper
@@ -63,31 +68,27 @@ html.dark
 
   // Tables
   table
-    background-color: #1D0631
+    background-color: #0d1117
     color: #e2e8f0
     td, th
-      border-color: #5A2A82 !important
+      border-color: rgba(139, 122, 168, 0.2) !important
       color: #e2e8f0 !important
 
   // Links
   a
-    color: #ffb91a !important
-    &:hover
-      color: #ffd966 !important
+    color: #ffffff !important
 
-  // Buttons (keep primary yellow button, update others)
-  // Exclude custom CTA buttons (.btn_join_cta) that have their own gradient styling
-  .btn
-    &:not(.btn-primary):not(.btn-success):not(.btn-danger):not(.btn_join_cta)
-      background-color: #ffb91a !important
-      color: #1D0631 !important
-      border-color: #ffb91a !important
-      outline: none !important
-      &:hover
-        background-color: #ffd966 !important
-      &:focus, &:active
-        outline: none !important
-        box-shadow: none !important
+  h1 a, h2 a, h3 a, h4 a, h5 a, h6 a
+    color: #ffffff !important
+
+  // Settings breadcrumb link in project sub-pages (enlistments, rss, links, etc.)
+  .project_content_title a[href*="settings"]
+    color: #c084fc !important
+    &:hover
+      color: #d8b4fe !important
+
+  .col-md-12 h4 a
+    color: #ffffff !important
 
   // password-reset submit input uses @extend .btn + @extend .btn-primary in SASS
   // but @extend only duplicates CSS selectors — it does NOT add the literal .btn-primary
@@ -96,7 +97,7 @@ html.dark
   .password-reset form .submit-field input
     background-color: #5A2A82 !important
     color: #ffffff !important
-    border-color: #5A2A82 !important
+    border-color: rgba(139, 122, 168, 0.2) !important
     outline: none !important
     &:hover
       background-color: #7b3fa8 !important
@@ -106,23 +107,23 @@ html.dark
 
   // Forms
   input, textarea, select
-    background-color: #1D0631 !important
+    background-color: #0d1117 !important
     color: #e2e8f0 !important
-    border-color: #5A2A82 !important
+    border-color: #2a2a2a !important
     &::placeholder
       color: #94a3b8 !important
 
   // Billboard/Showcase
   .billboard
-    background-color: #1D0631 !important
+    background-color: #0d1117 !important
     color: #e2e8f0 !important
 
   .showcase
-    background-color: #1D0631 !important
+    background-color: #0d1117 !important
 
   // Project container
   #project_container
-    background-color: #1D0631 !important
+    background-color: #0d1117 !important
     color: #e2e8f0 !important
 
   // Headings
@@ -130,25 +131,68 @@ html.dark
 
   // Alerts
   .alert
-    background-color: #1D0631 !important
-    border-color: #5A2A82 !important
+    background-color: #0d1117 !important
+    border-color: rgba(139, 122, 168, 0.2) !important
 
   // Dropdown menus
   .dropdown-menu
-    background-color: #1D0631 !important
-    border-color: #5A2A82 !important
+    background-color: #0d1117 !important
+    border-color: rgba(139, 122, 168, 0.2) !important
     li a
       color: #e2e8f0 !important
       &:hover
-        background-color: rgba(90, 42, 130, 0.5) !important
+        background-color: rgba(255, 255, 255, 0.06) !important
+
+  // Chosen.js select widget (SCM type dropdown and others)
+  .chosen-container-single .chosen-single,
+  .chosen-container-active.chosen-with-drop .chosen-single
+    background: #151b23 !important
+    background-image: none !important
+    filter: none !important
+    border-color: rgba(90, 42, 130, 0.5) !important
+    color: #e2e8f0 !important
+    box-shadow: none !important
+    span
+      color: #e2e8f0 !important
+    div b
+      border-top-color: #9ca3af !important
+
+  .chosen-container-active.chosen-with-drop .chosen-single div b
+    border-bottom-color: #9ca3af !important
+    border-top-color: transparent !important
+
+  .chosen-container .chosen-drop
+    background: #151b23 !important
+    border-color: rgba(90, 42, 130, 0.5) !important
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4) !important
+
+  .chosen-container .chosen-results
+    color: #e2e8f0 !important
+    li
+      color: #e2e8f0 !important
+      &.highlighted
+        background: #5A2A82 !important
+        color: #ffffff !important
+      &.active-result:hover
+        background: rgba(90, 42, 130, 0.25) !important
+      &.disabled-result
+        color: #6b7280 !important
+      &.no-results
+        color: #f87171 !important
+        background: rgba(248, 113, 113, 0.1) !important
+
+  .chosen-container .chosen-search input
+    background: #0d1117 !important
+    border-color: rgba(90, 42, 130, 0.4) !important
+    color: #e2e8f0 !important
 
   // Home page sections
   .top_ten, .top_ten.middle, .top_ten.last
-    background-color: #1D0631 !important
+    background-color: #0d1117 !important
     color: #e2e8f0 !important
 
   .home_page_row .col-md-4
-    background-color: #1D0631 !important
+    background-color: #0d1117 !important
 
   // Navigation menu - keep white text on purple gradient
   .navbar, #navbar-inner
@@ -157,31 +201,31 @@ html.dark
 
   // Search inputs
   .for_search_all_code
-    background-color: #1D0631 !important
+    background-color: #0d1117 !important
     color: #e2e8f0 !important
-    border-color: #5A2A82 !important
+    border-color: rgba(139, 122, 168, 0.2) !important
 
   // Badges
   .badge
-    background-color: rgba(90, 42, 130, 0.5) !important
+    background-color: rgba(255, 255, 255, 0.06) !important
     color: #e2e8f0 !important
 
   // Panels
   .panel
-    background-color: #1D0631 !important
-    border-color: #5A2A82 !important
+    background-color: #0d1117 !important
+    border-color: rgba(139, 122, 168, 0.2) !important
     .panel-heading
-      background-color: rgba(90, 42, 130, 0.5) !important
+      background-color: rgba(255, 255, 255, 0.06) !important
       color: #e2e8f0 !important
     .panel-body
-      background-color: #1D0631 !important
+      background-color: #0d1117 !important
       color: #e2e8f0 !important
 
   // Code blocks
   pre, code
-    background-color: #1D0631 !important
+    background-color: #0d1117 !important
     color: #e2e8f0 !important
-    border-color: #5A2A82 !important
+    border-color: rgba(139, 122, 168, 0.2) !important
 
   // Borders
   .mezzo
@@ -206,10 +250,10 @@ html.dark
 
   // Project security: Did You Know block (legacy and redesign templates)
   #project_container .project_row #did_you_know
-    background: #1D0631 !important
+    background: #0d1117 !important
 
     .well, .oh-card
-      background-color: #1D0631 !important
+      background-color: #0d1117 !important
       border: 1px solid #5A2A82 !important
       box-shadow: none !important
 
@@ -231,11 +275,11 @@ html.dark
     .sidebar-search-input,
     .tag-input,
     .compare-input
-      background-color: #1D0631 !important
+      background-color: #0d1117 !important
       color: #ffffff !important
 
     .sidebar-search-input
-      border-color: #5A2A82 !important
+      border-color: rgba(139, 122, 168, 0.2) !important
 
     .tag-input,
     .compare-input
@@ -243,22 +287,24 @@ html.dark
 
     // Sidebar cards
     .sidebar-card
-      background: #2D1548 !important
-      border-color: #ffb91a !important
+      background: #151b23 !important
+      border-color: #2a2a2a !important
 
     // Table container
     .hot-projects-container,
     .demographics-container
-      background: #2D1548 !important
+      background: #151b23 !important
 
     // Table header row
     .projects-table-header
-      background: #3A1D58 !important
+      background: #1c2128 !important
       border-color: #374151 !important
 
     // Table cells header text
     .header-cell
       color: #d1d5db !important
+      a 
+       color: #c084fc !important
 
     // Project rows
     .project-row
@@ -266,7 +312,7 @@ html.dark
 
     // Rank numbers
     .rank-number
-      color: #ffb91a !important
+      color: #5A2A82 !important
 
     // Project icon gradient
     .project-icon
@@ -276,7 +322,7 @@ html.dark
     .stat-card
       &.total-card
         background: linear-gradient(to bottom right, #2D1548, #3A1D58) !important
-        border-color: #5A2A82 !important
+        border-color: rgba(139, 122, 168, 0.2) !important
       &.pai-card
         background: linear-gradient(to bottom right, #134e4a, #0f766e) !important
         border-color: #0d9488 !important
@@ -297,25 +343,29 @@ html.dark
     .btn-add-project,
     .btn-add-project-full,
     .btn-compare
-      background: #ffb91a !important
-      color: #1D0631 !important
+      background: #5A2A82 !important
+      color: #ffff !important
+      &:hover
+        text-decoration: none
+        background: #6d35a0 !important
+        border-color: #6d35a0 !important
 
     // Language dropdown menu
     .language-dropdown-menu
-      background: #2D1548 !important
-      border-color: #5A2A82 !important
+      background: #151b23 !important
+      border-color: rgba(139, 122, 168, 0.2) !important
 
     .language-option
       color: #ffffff !important
       &:hover
         background: #374151 !important
       &.active
-        background: #ffb91a !important
-        color: #1D0631 !important
+        background: #5A2A82 !important
+        color: #ffffff !important
 
     // PAI link
     .pai-link
-      color: #ffb91a !important
+      color: #c084fc !important
 
     // Hotness score
     .hotness-score
@@ -343,25 +393,22 @@ html.dark
     color: #f1f5f9 !important
 
   .people-more-btn
-    background-color: #ffb91a
-    color: #1D0631 !important
+    background-color: #5A2A82
+    color: #ffff !important
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.32), 0 3px 6px rgba(0, 0, 0, 0.46)
     &:hover
-      background-color: #e6a617
-      color: #1D0631 !important
+      background-color: #6d35a0
 
   .people-card
-    background-color: #2D1548 !important
+    background-color: #151b23 !important
     border-color: rgba(255, 255, 255, 0.1) !important
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.24), 0 1px 2px rgba(0, 0, 0, 0.48) !important
     &:hover
-      border-color: #ffb91a !important
+      border-color: #c084fc !important
       box-shadow: 0 3px 6px rgba(0, 0, 0, 0.32), 0 3px 6px rgba(0, 0, 0, 0.46) !important
 
   .people-card__name a
-    color: #ffb91a !important
-    &:hover
-      color: #ffb91a !important
+    color: #ffff !important
 
   .people-card__meta,
   .people-card__meta a
@@ -388,20 +435,20 @@ html.dark
   .people-card__lang-secondary a
     color: #d1d5db !important
     &:hover
-      color: #ffb91a !important
+      color: #5A2A82 !important
 
   .people-card__project-name
     color: #9F7FBF !important
     &:hover
-      color: #ffb91a !important
+      color: #5A2A82 !important
 
   .people-card__link
-    color: #9F7FBF !important
+    color: #c084fc !important
     &:hover
-      color: #ffb91a !important
+      color: #c084fc !important
 
   .people-card__link-dot
-    color: #6b7280 !important
+    color: #d1d5db !important
 
   .people-card__no-commits,
   .people-card__no-lang
@@ -415,13 +462,13 @@ html.dark
 
   .unclaimed-card__name,
   .unclaimed-card__name a
-    color: #ffb91a !important
+    color: #ffff !important
 
   .unclaimed-card__btn
-    background-color: #ffb91a !important
-    color: #1D0631 !important
+    background-color: #5A2A82 !important
+    color: #ffff !important
     &:hover
-      background-color: #e6a617 !important
+      background-color: #6d35a0 !important
 
 // Ensure inputs and buttons with this class inherit font family and weight in dark theme
 input.unclaimed-card__btn,
@@ -436,7 +483,7 @@ html.dark
   .unclaimed-card__more a
     color: #9F7FBF !important
     &:hover
-      color: #ffb91a !important
+      color: #5A2A82 !important
 
   .unclaimed-card__item .project_link a
     color: #9F7FBF !important
@@ -450,6 +497,28 @@ html.dark
 // Charts — dark mode watermark (CSS-filter approach, applies to all watermark classes)
 // NOTE: kept as a separate html.dark block to avoid SASS indentation nesting issues
 html.dark
+  // Global chart text/fill — override inline colors from defaults.yml
+  .highcharts-axis-labels text,
+  .highcharts-xaxis-labels text,
+  .highcharts-yaxis-labels text,
+  .highcharts-axis-title,
+  .highcharts-legend-item text,
+  .highcharts-title,
+  .highcharts-subtitle,
+  .highcharts-data-label text
+    fill: #ffffff !important
+    color: #ffffff !important
+
+  .highcharts-legend-item.highcharts-legend-item-hidden text
+    fill: #6b7280 !important
+
+  .highcharts-tooltip text
+    fill: #f8fafc !important
+
+  .highcharts-tooltip-box
+    fill: #2D1548 !important
+    stroke: #5A2A82 !important
+
   .watermark340,
   .watermark440,
   .watermark860,

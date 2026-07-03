@@ -1,10 +1,9 @@
 - fact = @contribution.contributor_fact
-%h4= t('.project_commits')
-.col-md-10.center-block
+.oh-card.contribution-timeline-card
+  %h4.contribution-timeline__title= t('.project_commits')
   - if fact.commits.to_i > 0
     - fact_format = fact.last_checkin.strftime('%b %d %Y %H:%M:%S %Z')
     #timeline{ project_id: contribution.project_id.to_s, name_id: fact.name_id.to_s, date: fact_format }
-    %p.right.soft.small
-      = t('.approximately')
+    %p.contribution-timeline__approx= t('.approximately')
   - else
-    %p.inset_middle= t('.no_commits')
+    %p.contribution-timeline__empty= t('.no_commits')

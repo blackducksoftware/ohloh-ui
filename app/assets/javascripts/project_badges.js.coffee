@@ -46,11 +46,11 @@ ProjectNewBadge =
 
     $('#project_badges_page').on 'focus', '.edit_url_field', (event) ->
       $(this).addClass('hidden')
-      $(this).siblings('.dirty_url_container').removeClass('hidden')
-      $(this).siblings('.dirty_url_container').find('.dirty_url_field').focus()
+      $(this).closest('.pb-col-url').find('.dirty_url_container').removeClass('hidden')
+      $(this).closest('.pb-col-url').find('.dirty_url_field').focus()
 
     $('#project_badges_page').on 'click', '.edit_url_close_btn', (event) ->
-      urlValObject = $(this).parents('.dirty_url_container').siblings('.edit_url_field.badge_url_holder')
+      urlValObject = $(this).closest('.dirty_url_container').siblings('.pb-url-display').find('.edit_url_field.badge_url_holder')
       errorDiv = $(this).parents('td').find('.error')
       $(errorDiv).empty().addClass('hidden')
       $(this).siblings('.dirty_url_field').val($(urlValObject).val())
@@ -66,16 +66,16 @@ ProjectNewBadge =
         method: 'PUT'
         data: project_badge:
                 identifier: urlFieldVal
-        url: $(this).parents('.col-xs-3').find('.edit_url_field').data('url')
+        url: $(this).closest('.pb-col-url').find('.edit_url_field').data('url')
         success: (data) ->
           if data.success==true
             parentContainer = $(currentElement).parents('.dirty_url_container')
-            $(parentContainer).siblings('.edit_url_field').val(data.value)
+            $(parentContainer).siblings('.pb-url-display').find('.edit_url_field').val(data.value)
             $(this).siblings('.dirty_url_field').val(data.value)
             $(parentContainer).addClass('hidden')
             $(errorDiv).addClass('hidden')
-            $(parentContainer).siblings('.edit_url_field').removeClass('hidden')
-            $(parentContainer).siblings('.badge_url_holder').trigger('change')
+            $(parentContainer).siblings('.pb-url-display').find('.edit_url_field').removeClass('hidden')
+            $(parentContainer).siblings('.pb-url-display').find('.badge_url_holder').trigger('change')
           else
             $(errorDiv).html(data.errors).removeClass('hidden')
 

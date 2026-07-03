@@ -1,35 +1,30 @@
-%fieldset
-  .control-group
-    #proj_rating
-      = render partial: 'rater', locals: { score: @rating.try(:score) || 0 }
-    .col-md-12
-    .col-md.margin_top_15
-    %label.control-label.required{ for: 'review_title' }= t('.headline')
-    .controls
-      = f.text_field :title, class: 'form-control col-md-7', id: 'review_title'
-      - error_tag @review, :title
-  .clearfix
+.enl-form-row
+  %label.enl-label= t('.rating_label')
+  .review-rater-wrapper
+    = render partial: 'rater', locals: { score: @rating.try(:score) || 0 }
 
-  .control-group.margin_top_5
-    %label.control-label.required{ for: 'review_comment' }= t('.review')
-    .controls
-      = preserve do
-        = f.text_area :comment, max_length: 5000, size: '45x5', class: 'form-control col-md-11', id: 'review_comment'
-        - error_tag @review, :comment
+.enl-form-row
+  %label.enl-label.required{ for: 'review_title' }= t('.headline')
+  = f.text_field :title, class: 'form-control', id: 'review_title'
+  - error_tag @review, :title
 
-  .clearfix
-  .actions
-    - if @review.persisted?
-      %input.btn.btn-primary{ type: 'submit', value: t('.save_changes') }
-    - else
-      %input.btn.btn-primary{ type: 'submit', value: t('.save_review') }
-    - if @review.persisted?
-      - if current_user_is_admin? || @review.account == current_user
-        = icon_button(review_path(@review), icon: 'trash', text: t('reviews.remove_review'), size: 'sm',
-          type: 'danger', method: :delete, data: { confirm: t('reviews.remove_confirmation') },
-          style: 'margin-left: 7px', title: t('reviews.remove_review'))
-        &nbsp;
-      - if current_user_is_admin?
-        = icon_button(make_spammer_account_accesses_path(@review.account), text: t('reviews.spam'), method: :post,
-          data: { confirm: t('reviews.spam_confirmation', name: @review.account.name) }, size: 'sm', type: 'warning',
-          title: t('reviews.spam_title', name: @review.account.name))
+.enl-form-row
+  %label.enl-label.required{ for: 'review_comment' }= t('.review')
+  = preserve do
+    = f.text_area :comment, max_length: 5000, size: '45x5', class: 'form-control', id: 'review_comment'
+    - error_tag @review, :comment
+
+.enl-form-actions.margin_top_15
+  - if @review.persisted?
+    = f.submit t('.save_changes'), class: 'edit-save-btn'
+  - else
+    = f.submit t('.save_review'), class: 'edit-save-btn'
+  - if @review.persisted?
+    - if current_user_is_admin? || @review.account == current_user
+      = icon_button(review_path(@review), icon: 'trash', text: t('reviews.remove_review'), size: 'sm',
+        type: 'danger', method: :delete, data: { confirm: t('reviews.remove_confirmation') },
+        title: t('reviews.remove_review'))
+    - if current_user_is_admin?
+      = icon_button(make_spammer_account_accesses_path(@review.account), text: t('reviews.spam'), method: :post,
+        data: { confirm: t('reviews.spam_confirmation', name: @review.account.name) }, size: 'sm', type: 'warning',
+        title: t('reviews.spam_title', name: @review.account.name))

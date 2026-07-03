@@ -1,49 +1,79 @@
-%fieldset.row-fluid
-  .col-md-10
-    .form-group
-      = f.label :name, t('.name'), class: 'control-label required'
-      .controls
-        = f.text_field :name, class: 'form-control'
+.edit-form-grid
+  / ── Left column ───────────────────────────────────────
+  .edit-form-col
+
+    .edit-section
+      .edit-section-header
+        .edit-section-icon
+          %i.fa.fa-building
+        %h3.edit-section-title= t('.name')
+      .edit-field-group
+        = f.label :name, t('.name'), class: 'edit-field-label'
+        .edit-field-input-wrapper
+          %i.fa.fa-building.edit-field-icon
+          = f.text_field :name, class: 'edit-field-input', placeholder: t('.name')
         - error_tag @organization, :name
 
-    .form-group
-      = f.label :vanity_url, t('.url'), class: 'control-label required'
-      .controls
-        .input-group
-          %span.input-group-addon= 'http://www.openhub.net/orgs/'
-          = f.text_field :vanity_url, class: 'form-control check-availability',
+    .edit-section
+      .edit-section-header
+        .edit-section-icon
+          %i.fa.fa-link
+        %h3.edit-section-title= t('.url')
+      .edit-field-group
+        = f.label :vanity_url, t('.url'), class: 'edit-field-label'
+        .edit-url-field-wrapper
+          %span.edit-url-prefix openhub.net/orgs/
+          = f.text_field :vanity_url, class: 'edit-field-input check-availability',
             'data-original-value' => f.object.vanity_url,
             'data-ajax-path' => organization_check_availabilities_path,
             'data-preview-base-url' => organizations_url,
             autocomplete: 'off'
-          = render 'shared/availability_preview'
+        = render 'shared/availability_preview'
         - error_tag @organization, :vanity_url, class: 'error vanity_url'
 
-    .form-group
-      = f.label :org_type, t('.type'), class: 'control-label required'
-      .controls
-        - Organization::ORG_TYPES.each do |label, val|
-          %label.radio-inline
-            = f.radio_button :org_type, val
-            = label
-        - error_tag @organization, :org_type, class: 'error margin_top_25'
+    .edit-section
+      .edit-section-header
+        .edit-section-icon
+          %i.fa.fa-sitemap
+        %h3.edit-section-title= t('.type')
+      .edit-field-group
+        = f.label :org_type, t('.type'), class: 'edit-field-label'
+        .org-type-radio-group
+          - Organization::ORG_TYPES.each do |label, val|
+            %label.org-type-radio
+              = f.radio_button :org_type, val, class: 'org-type-input'
+              %span= label
+        - error_tag @organization, :org_type
 
-    .form-group
-      = f.label :description, t('.description'), class: 'control-label'
-      .controls
-        = find_and_preserve f.text_area(:description, max_length: 800, class: 'form-control edit-description', rows: '10')
+  / ── Right column ──────────────────────────────────────
+  .edit-form-col
+
+    .edit-section
+      .edit-section-header
+        .edit-section-icon
+          %i.fa.fa-align-left
+        %h3.edit-section-title= t('.description')
+      .edit-field-group
+        = f.label :description, t('.description'), class: 'edit-field-label'
+        = find_and_preserve f.text_area(:description, max_length: 800, class: 'edit-field-textarea', rows: '8', placeholder: t('.description'))
         - error_tag @organization, :description
 
-    .form-group
-      = f.label :homepage_url, t('.home'), class: 'control-label'
-      .controls
-        = f.text_field :homepage_url, class: 'form-control'
+    .edit-section
+      .edit-section-header
+        .edit-section-icon
+          %i.fa.fa-globe
+        %h3.edit-section-title= t('.home')
+      .edit-field-group
+        = f.label :homepage_url, t('.home'), class: 'edit-field-label'
+        .edit-field-input-wrapper
+          %i.fa.fa-globe.edit-field-icon
+          = f.text_field :homepage_url, class: 'edit-field-input', placeholder: 'https://'
         - error_tag @organization, :homepage_url
 
-    = f.hidden_field :id unless @organization.new_record?
+= f.hidden_field :id unless @organization.new_record?
 
-  .actions.col-md-10
-    - if logged_in? && @organization.edit_authorized?
-      = submit_tag t('.save_changes'), class: 'btn btn-primary pull-left margin_right_10', 'data-disable-with' => t('.processing')
-    - else
-      = disabled_button(t('.save_changes'), class: 'btn-primary')
+.edit-form-actions
+  - if logged_in? && @organization.edit_authorized?
+    = submit_tag t('.save_changes'), class: 'edit-save-btn', 'data-disable-with' => t('.processing')
+  - else
+    = disabled_button(t('.save_changes'), class: 'btn-primary')

@@ -33,9 +33,10 @@
                     - menu_id = "lang-dropdown-#{index}"
                     %button.language-dropdown-trigger{ type: 'button', data: { value: name }, aria: { haspopup: 'listbox', expanded: 'false', controls: menu_id } }
                       %span.selection= name
-                      %i.icon-chevron-down
+                      %i.icon-chevron-down{ aria: { hidden: 'true' } }
                     .language-dropdown-menu{ id: menu_id, role: 'listbox' }
                       - @languages.each do |lang_name, lang_value|
+                        - next if lang_name.blank?
                         %button.dropdown-item{ type: 'button', role: 'option', data: { value: lang_value } }= lang_name
                     %input.language-input{ type: 'hidden', name: 'language_name[]', value: name }
 
@@ -46,9 +47,10 @@
                   - menu_id = 'lang-dropdown-empty'
                   %button.language-dropdown-trigger{ type: 'button', aria: { haspopup: 'listbox', expanded: 'false', controls: menu_id } }
                     %span.selection= t('.select_language')
-                    %i.icon-chevron-down
+                    %i.icon-chevron-down{ aria: { hidden: 'true' } }
                   .language-dropdown-menu{ id: menu_id, role: 'listbox' }
                     - @languages.each do |lang_name, lang_value|
+                      - next if lang_name.blank?
                       %button.dropdown-item{ type: 'button', role: 'option', data: { value: lang_value } }= lang_name
                   %input.language-input{ type: 'hidden', name: 'language_name[]' }
 

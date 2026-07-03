@@ -1,55 +1,63 @@
 - oauth_application = api_key.oauth_application || Doorkeeper::Application.new
-.oh-card.col-md-12
-  .padding_20
-    %h5.pull-right.timestamp
-      %i.icon-time &nbsp;
+- status_map = { ApiKey::STATUS_OK => ['ok', 'fa-check-circle', t('api_keys.status_active'), t('api_keys.can_be_used')], ApiKey::STATUS_LIMIT_EXCEEDED => ['limit-exceeded', 'fa-exclamation-triangle', t('api_keys.status_limit_exceeded'), t('api_keys.cant_use_now')], ApiKey::STATUS_DISABLED => ['disabled', 'fa-ban', t('api_keys.status_disabled'), t('api_keys.cant_use_ever')] }
+- label_class, icon_class, status, status_appendix = status_map[api_key.status]
+
+.edit-section.api-key-card
+  .edit-section-header
+    .edit-section-icon
+      %i.fa.fa-key
+    %h3.edit-section-title= oauth_application.name || t('api_keys.untitled_application')
+    .api-key-status-badge{ class: "api-key-status-badge--#{label_class}" }
+      %i.fa{ class: icon_class }
+      = status
+    .api-key-timestamp
+      %i.fa.fa-clock-o
       = t 'api_keys.created_ago', ago: time_ago_in_words(api_key.created_at)
-      ,
       - if api_key.last_access_at
-        = t 'api_keys.last_accessed_at', ago: time_ago_in_words(api_key.last_access_at)
+        = " · #{t 'api_keys.last_accessed_at', ago: time_ago_in_words(api_key.last_access_at)}"
       - else
-        = t 'api_keys.hasnt_been_used_yet'
-    %h4.nomargin= oauth_application.name || t('api_keys.untitled_application')
-    %p.soft= api_key.description
-    .col-md-2
-      .strong= t('.api_key')
-      .strong= t('.oauth_secret')
-      .strong= t('.redirect_url')
-      .strong= t('.home_page_url')
-    .col-md-6.no_padding
-      %code{ title: oauth_application.uid }= oauth_application.uid
-      - secret = oauth_application.secret || t('.none')
-      %code{ title: secret }= secret
-      - redirect_uri = oauth_application.redirect_uri
-      - if redirect_uri
-        %a{ href: redirect_uri, target: '_blank' }= redirect_uri
-        %i.icon-external-link.inline &nbsp;
-      .clearfix
+        = " · #{t 'api_keys.hasnt_been_used_yet'}"
+
+  - if api_key.description.present?
+    %p.api-key-description= api_key.description
+
+  .api-key-body
+    .api-key-details
+      .api-key-detail-row
+        %span.api-key-detail-label= t('.api_key')
+        %code.api-key-detail-value{ title: oauth_application.uid }= oauth_application.uid
+
+      .api-key-detail-row
+        %span.api-key-detail-label= t('.oauth_secret')
+        - secret = oauth_application.secret || t('.none')
+        %code.api-key-detail-value{ title: secret }= secret
+
+      - if oauth_application.redirect_uri.present?
+        .api-key-detail-row
+          %span.api-key-detail-label= t('.redirect_url')
+          = link_to oauth_application.redirect_uri, target: '_blank', rel: 'noopener noreferrer', class: 'api-key-detail-link' do
+            %i.fa.fa-external-link
+            = oauth_application.redirect_uri
+
       - if api_key.url.present?
-        = link_to h(api_key.url), h(api_key.url), target: '_blank'
-        %i.icon-external-link.inline &nbsp;
-    .col-md-4#api_key_request_info
-      :ruby
-        label_class, icon_class, status, status_appendix =
-          case api_key.status
-          when ApiKey::STATUS_OK
-            ['ok', 'icon-ok', t('api_keys.status_active'), t('api_keys.can_be_used')]
-          when ApiKey::STATUS_LIMIT_EXCEEDED
-            ['limit-exceeded', 'icon-warning-sign', t('api_keys.status_limit_exceeded'), t('api_keys.cant_use_now')]
-          when ApiKey::STATUS_DISABLED
-            ['disabled', 'icon-ban-circle', t('api_keys.status_disabled'), t('api_keys.cant_use_ever')]
-          end
-      %span.status.margin_right_0
-        %label.api-key-status{ class: label_class }
-          != status
-          %i{ class: icon_class }
-      .soft.inline= status_appendix
-      %h4.nomargin!= t('api_keys.requests_all_time_view', count: api_key.total_count.to_i)
-      %h4.nomargin!= t('api_keys.requests_daily_view', count: api_key.daily_count.to_i)
-      %h4.nomargin!= t('api_keys.requests_daily_limit_view', count: api_key.daily_limit.to_i)
+        .api-key-detail-row
+          %span.api-key-detail-label= t('.home_page_url')
+          = link_to h(api_key.url), target: '_blank', rel: 'noopener noreferrer', class: 'api-key-detail-link' do
+            %i.fa.fa-external-link
+            = h(api_key.url)
 
-    .clearfix
+    .api-key-stats
+      .api-key-stat
+        %span.api-key-stat-value!= t('api_keys.requests_all_time_view', count: api_key.total_count.to_i)
+      .api-key-stat
+        %span.api-key-stat-value!= t('api_keys.requests_daily_view', count: api_key.daily_count.to_i)
+      .api-key-stat
+        %span.api-key-stat-value!= t('api_keys.requests_daily_limit_view', count: api_key.daily_limit.to_i)
+      .api-key-stat-status
+        %span.api-key-status-text{ class: "api-key-status-text--#{label_class}" }= status_appendix
 
-    .col-md-4.padding_bottom_20
-      %a.btn.btn-small.btn-primary{ href: edit_account_api_key_path(api_key.account, api_key) }
-        %i.icon-pencil= t 'api_keys.edit_api_key'
+  .api-key-footer
+    = link_to edit_account_api_key_path(api_key.account, api_key), class: 'edit-save-btn edit-save-btn--sm' do
+      %i.fa.fa-pencil
+      = t 'api_keys.edit_api_key'
+

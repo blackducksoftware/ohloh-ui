@@ -13,7 +13,6 @@
 
 #accounts_show_page
   = render partial: 'accounts/show/summary'
-  .clearfix
   - if current_user_is_admin?
     .admin_panel_page_wrapper
       = render partial: 'accounts/show/admin'

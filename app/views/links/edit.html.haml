@@ -1,17 +1,30 @@
 - content_for(:html_title) { t('.page_title', name: @project.name) }
 - page_context[:select_footer_nav] = nil
+- page_context[:select_top_menu_nav] = 'select_projects'
 
-.project_content_title
-  %h2.pull-left
-    = link_to t(:settings), settings_project_path(@project)
-    \:
-    = link_to t('links.title').pluralize, project_links_path(@project)
-    \:
-    = t(:edit)
+#links-edit-page
+  .settings-page-header
+    .settings-page-header-row
+      .settings-page-icon
+        %i.fa.fa-link
+      %h2.settings-page-h2
+        = link_to t(:settings), settings_project_path(@project)
+        %span.account-basics-sep :
+        = link_to t('links.title').pluralize, project_links_path(@project)
+        %span.account-basics-sep :
+        = t(:edit)
+    %p.settings-page-description= t('.page_title', name: @project.name)
 
-.oh-card.col-md-8
-  = form_for([@project, @link]) do |f|
-    = render partial: 'fields', locals: { f: f }
+  .project-edit-layout
+    .project-edit-main
+      .edit-section
+        .edit-section-header
+          .edit-section-icon
+            %i.fa.fa-link
+          %h3.edit-section-title= t(:edit) + ' ' + t('links.title')
 
-.clear
-= render partial: 'about_links'
+        = form_for([@project, @link]) do |f|
+          = render partial: 'fields', locals: { f: f }
+
+    .project-edit-aside
+      = render partial: 'about_links'

@@ -2,15 +2,19 @@
 - page_context[:select_footer_nav] = nil
 
 #enlistment-edit-page
-  .row.margin_left_5
-    .col-md-10.col-md-offset-1
-      %h3
+  .settings-page-header
+    .settings-page-header-row
+      .settings-page-icon
+        %i.fa.fa-code-fork
+      %h2.settings-page-h2
         = link_to t('settings'), settings_project_path(@project)
-        &nbsp;:&nbsp;
+        %span.account-basics-sep :
         = link_to t('.code_locations'), project_enlistments_path(@project)
+        %span.account-basics-sep :
         = t('.new')
-      .oh-card.enlistment
-        = form_for CodeLocation.new, url: project_enlistments_url, html: { method: 'post' } do |f|
-          = render partial: 'fields', locals: { f: f }
-.clearfix
+    %p.settings-page-description= t('.page_description')
+  .oh-card.enlistment
+    = form_for CodeLocation.new, url: project_enlistments_url, html: { method: 'post' } do |f|
+      = render partial: 'fields', locals: { f: f }
 = render partial: 'about_code_locations'
+.clearfix

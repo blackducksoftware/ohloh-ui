@@ -1,30 +1,33 @@
-.about-code-locations-card
+.about-account-basics-card
   .card-header
-    %h4.card-title
-      %span.soft= t('.about')
-      = t('.code_locations')
-    %button.expand-toggle{ type: 'button', 'aria-label' => 'Expand about section' }
+    .card-header-left
+      .card-header-icon
+        %i.fa.fa-code-fork
+      .card-header-text
+        %h4.card-title= t('.about') + ' ' + t('.code_locations')
+        %p.card-subtitle= t('.code_locations')
+    %button.expand-toggle{ type: 'button', 'aria-label' => 'Toggle about section' }
       %i.fa.fa-chevron-down
 
   .card-content
-    .about-content-wrapper
-      .col-md-5.margin_left_30
-        %ul
-          %li= t('.description1')
-          %li= t('.description2')
-          %li= t('.description3')
-          %li= t('.description4')
-          %li
-            = t('.description5')
-            %strong= t('.description6')
-            = t('.description7')
-      .col-md-5.margin_left_20
-        %ul
-          %li
-            = t('.description8')
-            %ul.margin_left_30
-              %li
-                = t('.description9')
-              %li
-                = t('.description10')
-          %li= t('.description11')
+    .tips-grid
+      .tip-item
+        .tip-icon
+          %i.fa.fa-git
+        .tip-body
+          %p.tip-text= t('.tip_vcs')
+      .tip-item
+        .tip-icon
+          %i.fa.fa-clock-o
+        .tip-body
+          %p.tip-text= t('.tip_queue')
+      .tip-item
+        .tip-icon
+          %i.fa.fa-lock
+        .tip-body
+          %p.tip-text= t('.tip_credentials')
+      .tip-item
+        .tip-icon
+          %i.fa.fa-sitemap
+        .tip-body
+          %p.tip-text= t('.tip_multi')

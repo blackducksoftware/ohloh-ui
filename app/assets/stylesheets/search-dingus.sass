@@ -38,12 +38,13 @@
         background-color: #f3f4f6
 
       html.dark &
-        background-color: #1D0631
-        border-color: #5A2A82
+        background-color: #0d1117
+        border-color: #2a2a2a
         color: #ffffff
 
         &:hover
-          background-color: rgba(29, 6, 49, 0.8)
+          background-color: #0d1117
+          border-color: #2a2a2a
 
       .selection
         display: inline-block
@@ -65,8 +66,8 @@
       box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23)
 
       html.dark &
-        background-color: #1D0631
-        border-color: #5A2A82
+        background-color: #0d1117
+        border-color: #c084fc
         box-shadow: 0 10px 20px rgba(0, 0, 0, 0.38), 0 6px 6px rgba(0, 0, 0, 0.46)
 
       .dropdown-item
@@ -102,12 +103,12 @@
             background: #374151
 
           &.active
-            background-color: #ffb91a !important
-            color: #5A2A82
+            background-color: #5A2A82 !important
+            color: #ffff
             font-weight: 400
 
             &:hover
-              background-color: #ffb91a
+              background-color: #5A2A82
 
   .header-search-input
     flex: 1
@@ -130,16 +131,19 @@
 
     &:focus
       outline: none
-      border-color: #5A2A82
+      border-color: #c084fc
       box-shadow: none
 
       html.dark &
-        border-color: #ffb91a !important
+        border-color: #c084fc !important
 
     html.dark &
-      background-color: #1D0631
-      border-color: #5A2A82 !important
-      color: #ffffff
+      background-color: #0d1117 !important
+      border-color: #2a2a2a !important
+      color: #ffffff !important
+      
+      &:hover
+        border-color: #c084fc !important
 
       &::placeholder
         color: #d1d5db
@@ -164,12 +168,12 @@
       background-color: rgba(90, 42, 130, 0.9)
 
     html.dark &
-      background-color: #ffb91a
-      border-color: #ffb91a
-      color: #1D0631
+      background-color: #5A2A82
+      border-color: #c084fc
+      color: #ffff
 
       &:hover
-        background-color: rgba(255, 185, 26, 0.9)
+        background-color: #6d35a0
 
     i
       font-size: 14px
@@ -185,7 +189,7 @@
   transition: background-color 0.3s ease
 
   html.dark &
-    background-color: #2D1548
+    background-color: #151b23
     border-color: rgba(255, 255, 255, 0.1)
     box-shadow: 0 1px 3px rgba(0,0,0,0.24), 0 1px 2px rgba(0,0,0,0.48)
 
@@ -245,17 +249,17 @@
 
           &:hover
             background-color: #f9fafb
-            border-color: #5A2A82
+            border-color: #c084fc
 
           &:focus
             outline: none
             background-color: #ffffff
-            border-color: #5A2A82
+            border-color: #c084fc
             box-shadow: 0 0 0 3px rgba(90, 42, 130, 0.1)
 
           html.dark &
-            background-color: #1D0631
-            border-color: #5A2A82
+            background-color: #0d1117
+            border-color: #c084fc
             color: #ffffff
 
             &::placeholder
@@ -263,12 +267,12 @@
 
             &:hover
               background-color: rgba(29, 6, 49, 0.8)
-              border-color: #ffb91a
+              border-color: #c084fc
 
             &:focus
-              background-color: #1D0631
-              border-color: #ffb91a
-              box-shadow: 0 0 0 3px rgba(255, 185, 26, 0.1)
+              background-color: #0d1117
+              border-color: #c084fc
+              box-shadow: 0 0 0 3px rgba(90, 42, 130, 0.1)
 
         .search-cancel-btn
           position: absolute
@@ -314,10 +318,9 @@
           opacity: 0.9
 
         html.dark &
-          background-color: #ffb91a
-          border-color: #ffb91a
-          color: #1D0631
-
+          background-color: #5A2A82
+          border-color: #c084fc
+          color: #ffffff
           &:hover
             opacity: 0.9
 
@@ -362,16 +365,16 @@
 
           &:hover
             background-color: #f3f4f6
-            border-color: #5A2A82
+            border-color: #c084fc
 
           html.dark &
-            background-color: #1D0631
-            border-color: #5A2A82
+            background-color: #0d1117
+            border-color: #2a2a2a
             color: #ffffff
 
             &:hover
-              background-color: rgba(29, 6, 49, 0.8)
-              border-color: #ffb91a
+              background-color: #0d1117
+              border-color: #c084fc
 
           .selection
             flex: 1
@@ -402,8 +405,8 @@
           box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23)
 
           html.dark &
-            background-color: #1D0631
-            border-color: #5A2A82
+            background-color: #0d1117
+            border-color: #c084fc
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.38), 0 6px 6px rgba(0, 0, 0, 0.46)
 
           .sort-dropdown-item
@@ -439,23 +442,127 @@
                 background: #374151
 
               &.active
-                background-color: #ffb91a !important
-                color: #5A2A82
+                background-color: #5A2A82 !important
+                color: #ffff
                 font-weight: 400
 
                 &:hover
-                  background-color: #ffb91a
+                  background-color: #5A2A82
 
         .sort-value-input
           display: none
 
   // Chosen select plugin support (for tag filtering)
   #value_select
-    display: inline-block
-    margin-left: 8px
+    flex: 1
+    min-width: 0
+    margin-left: 0
 
     select
-      min-width: 300px
+      min-width: 0
+      width: 100%
+
+    .chosen-container-multi
+      width: 100% !important
+
+      .chosen-choices
+        min-height: 40px
+        padding: 4px 8px
+        background: #ffffff !important
+        border: 1px solid #d1d5db !important
+        border-radius: 8px !important
+        box-shadow: none !important
+        display: flex
+        flex-wrap: wrap
+        align-items: center
+        gap: 4px
+        cursor: text
+        transition: border-color 0.15s ease, box-shadow 0.15s ease
+
+        &:hover
+          border-color: #c084fc !important
+
+        html.dark &
+          background: #0d1117 !important
+          border-color: #c084fc !important
+
+        li.search-choice
+          background: linear-gradient(to right, #5A2A82, #7F3FA0) !important
+          border: none !important
+          border-radius: 4px !important
+          box-shadow: none !important
+          color: #ffffff !important
+          font-size: 12px !important
+          font-weight: 600
+          padding: 3px 22px 3px 8px !important
+          margin: 0 !important
+          line-height: 1.4
+
+          .search-choice-close
+            top: 50%
+            transform: translateY(-50%)
+            right: 6px
+
+            &:before
+              color: rgba(255,255,255,0.8)
+
+            &:hover:before
+              color: #ffffff
+
+        li.search-field
+          margin: 0
+
+          input
+            height: 30px
+            padding: 0 4px !important
+            color: #111827 !important
+            font-size: 14px !important
+            background: transparent !important
+            border: none !important
+            box-shadow: none !important
+            margin: 0 !important
+
+            html.dark &
+              color: #ffffff !important
+
+              &::placeholder
+                color: #9ca3af !important
+
+      &.chosen-container-active .chosen-choices
+        border-color: #c084fc !important
+        box-shadow: 0 0 0 3px rgba(90, 42, 130, 0.1) !important
+
+        html.dark &
+          box-shadow: 0 0 0 3px rgba(90, 42, 130, 0.2) !important
+
+      .chosen-drop
+        border: 1px solid #d1d5db !important
+        border-radius: 0 0 8px 8px !important
+        box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23) !important
+        background: #ffffff !important
+
+        html.dark &
+          background: #0d1117 !important
+          border-color: #c084fc !important
+
+        .chosen-results
+          li
+            font-size: 13px
+            color: #111827
+            padding: 8px 12px
+
+            html.dark &
+              color: #ffffff
+
+            &.highlighted
+              background: #5A2A82 !important
+              color: #ffffff !important
+
+            &.result-selected
+              color: #6b7280
+
+              html.dark &
+                color: #d1d5db
 
   // Checkbox filters
   label.checkbox

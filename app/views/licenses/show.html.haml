@@ -1,10 +1,14 @@
 - content_for(:html_title) { t('.title', name: @license.name) }
 
 #license-show-page
-  .license-show-breadcrumb
-    = link_to t('.license'), licenses_path
-    %span.license-show-sep /
-    %span.license-show-name{ title: @license.name }= h(truncate(@license.name, length: 60))
+  .settings-page-header
+    .settings-page-header-row
+      .settings-page-icon
+        %i.fa.fa-balance-scale
+      %h2.settings-page-h2
+        = link_to t('.license'), licenses_path
+        %span.account-basics-sep :
+        %span.license-show-name{ title: @license.name }= h(truncate(@license.name, length: 60))
 
   .oh-card.margin_top_20
     .license-show-header

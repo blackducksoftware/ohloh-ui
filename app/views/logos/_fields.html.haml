@@ -13,7 +13,7 @@
             = f.file_field :attachment, class: 'new_file_upload', accept: 'image/*',
               'data_max_size' => Logo::FILE_SIZE_LIMIT.max, 'aria-label' => t('.head.first')
           %p.margin_bottom_5
-            = f.text_field :url, value: @logo.url, placeholder: t('.placeholder'), class: 'col-md-5', 'aria-label' => t('.placeholder')
+            = f.text_field :url, value: @logo.url, placeholder: t('.placeholder'), class: 'col-md-5 col-sm-8 col-xs-8', 'aria-label' => t('.placeholder')
             - error_tag @logo, :url
             - error_tag @logo, :attachment_content_type if @logo.url.present? && @logo.errors[:url].blank?
             - error_tag @logo, :attachment_file_size

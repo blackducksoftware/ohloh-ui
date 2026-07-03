@@ -1,24 +1,40 @@
 - content_for(:html_title) { project_pages_title t('.page_title') }
 
-%h2.pull-left
-  = link_to t(:settings), settings_parent_path(@parent)
-  &#58;
-  = link_to t(:managers_link_name), parent_managers_path(@parent)
-  &#58;
-  = t(:new)
+#managers-page
+  .settings-page-header
+    .settings-page-header-row
+      .settings-page-icon
+        %i.fa.fa-shield
+      %h2.settings-page-h2
+        = link_to t(:settings), settings_parent_path(@parent)
+        %span.account-basics-sep :
+        = link_to t(:managers_link_name), parent_managers_path(@parent)
+        %span.account-basics-sep :
+        = t(:new)
+    %p.settings-page-description= t('.header', target: @parent.name)
 
-.clear
-%h4= t '.header', target: @parent.name
+  .project-edit-layout
+    .project-edit-main
+      .edit-section
+        .edit-section-header
+          .edit-section-icon
+            %i.fa.fa-user-plus
+          %h3.edit-section-title= t('.header', target: @parent.name)
 
-.col-md-8
-  .oh-card
-    = form_for(@manage, url: parent_managers_path(@parent), html: { method: :post }) do |form|
-      = render partial: 'form', locals: { form: form }
+        - unless @manage.errors.empty?
+          .manager-form-errors
+            = @manage.errors.full_messages.reject { |k| k =~ /^ssh.public.key/i || k =~ /^message/i }.join('. ')
 
-.col-md-4
-  .oh-card
-    %h5.nomargin= t '.explain_header'
-    %p= @parent.active_managers.blank? ? t('.explainer_first') : t('.explainer_existing')
+        = form_for(@manage, url: parent_managers_path(@parent), html: { method: :post, class: 'manager-form-body' }) do |form|
+          = render partial: 'form', locals: { form: form }
 
-.clear
-= render partial: 'about'
+      - unless @parent.active_managers.blank?
+        .edit-section.managers-help-section
+          .edit-section-header
+            .edit-section-icon.edit-section-icon--amber
+              %i.fa.fa-info-circle
+            %h3.edit-section-title= t('.explain_header')
+          %p.managers-help-text= @parent.active_managers.blank? ? t('.explainer_first') : t('.explainer_existing')
+
+    .project-edit-aside
+      = render partial: 'about'

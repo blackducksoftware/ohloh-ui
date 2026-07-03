@@ -3,13 +3,10 @@
 .search-filter-bar
   %form
     .search-filter-content
-      = render 'shared/search_dingus/page_entries_info', collection: items, total_count: total_count
-
       .search-section
         %label{for: 'query'}= t('shared.search_dingus.search_bar.search_text')
         .search-input-wrapper
           %input#query{type: 'text', name: 'query', placeholder: t('shared.search_dingus.search_bar.search_text'), value: params[:query]}
-          = hidden_field_tag :time_span, params[:time_span]
           %button.search-cancel-btn{ type: 'button', 'aria-label': t('shared.search_dingus.search_bar.clear_search'), style: (params[:query].blank? ? 'display: none;' : '') }
             %i.fa.fa-times
         %button.search-refresh-btn{ type: 'submit', 'aria-label': t('shared.search_dingus.search_bar.search') }
@@ -17,6 +14,19 @@
 
       - if type == :contributions
         = render 'shared/search_dingus/sort', sort_context: :contributions, filter_type: nil
+
+      - if type == :commits
+        .sort-section
+          %label= t('shared.search_dingus.sort.sort_by')
+          - current_span = params[:time_span] || '30 days'
+          .custom-sort-dropdown
+            %button.sort-dropdown-btn{ type: 'button' }
+              %span.selection{ data: { value: current_span } }= current_span
+              %i.fa.fa-chevron-down
+            .dropdown-menu.sort-dropdown-menu
+              - TIME_SPANS.each_key do |label|
+                %button.sort-dropdown-item{ type: 'button', data: { value: label }, class: (label == current_span ? 'active' : '') }= label
+          %input{ type: 'hidden', name: 'time_span', value: current_span, class: 'sort-value-input' }
 
       - if type == :commits && @project.best_analysis.oldest_code_set_time.present?
         %span.commits_display_date_range

@@ -34,16 +34,16 @@
           .stat-box
             .stat-item
               %span.stat-label= t('organizations.outside_projects.header_i_use_this')
-              %span.stat-value= project.user_count
+              %span.stat-value= number_with_delimiter(project.user_count)
             .stat-item
               %span.stat-label= t('organizations.outside_projects.header_num_of_affiliates')
-              %span.stat-value= project.contribs_count
+              %span.stat-value= number_with_delimiter(project.contribs_count)
 
           .stat-box
             .stat-item
               %span.stat-label= t('organizations.outside_projects.header_all_time_commits')
               %span.stat-sublabel= t('organizations.outside_projects.header_by_current_affiliates')
-              %span.stat-value= project.commits
+              %span.stat-value= number_with_delimiter(project.commits)
 
   -# Desktop table view
   %table.table.table-striped.table-condensed.outside-projects-desktop-view
@@ -71,11 +71,11 @@
           %td{ style: 'padding-top: 15px; text-align: center;' }
             - if project.organization
               = link_to h(project.organization.name), organization_path(project.organization)
-          %td{ style: 'padding-top: 15px; text-align: center;' }= project.user_count
+          %td{ style: 'padding-top: 15px; text-align: center;' }= number_with_delimiter(project.user_count)
           %td{ style: 'padding-top: 15px; text-align: center;' }
             %span.center!= rating_stars('average_rating_stars', project.rating_average || 0)
-          %td{ style: 'padding-top: 15px; text-align: center;' }= project.contribs_count
-          %td{ style: 'padding-top: 15px; text-align: center;' }= project.commits
+          %td{ style: 'padding-top: 15px; text-align: center;' }= number_with_delimiter(project.contribs_count)
+          %td{ style: 'padding-top: 15px; text-align: center;' }= number_with_delimiter(project.commits)
   = render partial: 'pagination', locals: { count: @outside_projects.total_entries,
                                             text: t('organizations.outside_projects.see_all_num_outside_projs',
                                                      num: @outside_projects.total_entries),

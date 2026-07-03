@@ -34,7 +34,7 @@
                 %span.org_project_rating
                   != rating_stars('rating_star', project.rating_average, mini: true)
           .use-this-count
-            .count-value= project.user_count
+            .count-value= number_with_delimiter(project.user_count)
             .count-label= t('organizations.projects.i_use_this')
 
         .card-stats
@@ -70,12 +70,13 @@
   %table.table.table-striped.table-condensed.portfolio-desktop-view
     %thead
       %tr
-        %th{ rowspan: 2, style: 'width: 190px;' }= t('organizations.projects.name')
+        %th{ rowspan: 2, style: 'width: auto' }= t('organizations.projects.name')
         %th.center{ rowspan: 2, style: 'width: 50px;', scope: 'col', aria: { label: t('organizations.projects.activity') } }
         %th.center{ rowspan: 2, style: 'width: 120px;' }= t('organizations.projects.primary_language')
         %th.center{ rowspan: 2, style: 'width: 90px;' }= t('organizations.projects.i_use_this')
         %th.center{ rowspan: 2, style: 'width: 110px;' }= t('organizations.projects.community_rating')
         %th{ rowspan: 2, style: 'width: 15px;', aria: { hidden: 'true' } }
+          %span.sr-only Separator
         %th.center{ colspan: 2, style: 'width:250px' }
           %strong= t('organizations.projects.twelve_month_activity')
       %tr

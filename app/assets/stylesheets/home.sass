@@ -9,7 +9,7 @@
   background: #f9fafb !important
   transition: background 0.3s ease
   html.dark &
-    background: #1D0631 !important
+    background: #0d1117 !important
 
 .hero_section
   @extend .section_bg
@@ -21,7 +21,7 @@
     padding: 0 32px 16px
   // Dark mode support
   html.dark &
-    background: #1D0631 !important
+    background: #0d1117 !important
   // Ensure all child elements use border-box
   *, *::before, *::after
     box-sizing: border-box
@@ -124,7 +124,7 @@
     padding: 32px 32px
   // Dark mode support
   html.dark &
-    background: #1D0631 !important
+    background: #0d1117 !important
 .top_ten_main
   padding-left: 40px !important
   padding-bottom: 6px !important
@@ -226,7 +226,7 @@ a.top_ten_icon p
     html.dark &
       color: #ffffff
       &:hover
-        color: #ffb91a
+        color: #5A2A82
 // Old .icon_search, .wh_new, .common removed - using new card-based design
 .most_popular_projects
   @include most-popular-projects-colors
@@ -339,10 +339,9 @@ button
     justify-content: center
     gap: 24px
     padding: 12px 24px
-  // Dark mode support - Yellow background with purple text
   html.dark &
-    background: linear-gradient(90deg, #2D1548 0%, #2D1548 50%, #2D1548 100%)
-    border-color: rgba(255, 255, 255, 0.1)
+    background: #151b23
+    border-color: #2a2a2a !important
 
 
 .stat_item
@@ -360,7 +359,7 @@ button
     font-size: 20px
   // Dark mode - Yellow text on purple background
   html.dark &
-    color: #ffb91a
+    color: #ffff
 
 
 .stat_label
@@ -402,7 +401,7 @@ button
   padding: 32px 0
   // Dark mode support
   html.dark &
-    background: #1D0631 !important
+    background: #0d1117 !important
 
   .container
     max-width: 1280px
@@ -446,7 +445,7 @@ button
   &:hover
     box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)
   html.dark &
-    background: #2D1548
+    background: #151b23
     box-shadow: 0 1px 3px rgba(0,0,0,0.24), 0 1px 2px rgba(0,0,0,0.48)
     &:hover
       box-shadow: 0 3px 6px rgba(0,0,0,0.32), 0 3px 6px rgba(0,0,0,0.46)
@@ -460,7 +459,7 @@ button
   padding: 24px 24px 16px 24px
   background: white
   html.dark &
-    background: #2D1548
+    background: #151b23
 
 .top_contributors_card .header_icon
   display: flex
@@ -533,13 +532,13 @@ button
     &:hover
       background: rgba(90, 42, 130, 0.6)
   html.dark &
-    scrollbar-color: rgba(255, 185, 26, 0.4) rgba(255, 185, 26, 0.1)
+    scrollbar-color: rgba(90, 42, 130, 0.4) rgba(90, 42, 130, 0.1)
     &::-webkit-scrollbar-track
-      background: rgba(255, 185, 26, 0.1)
+      background: rgba(90, 42, 130, 0.1)
     &::-webkit-scrollbar-thumb
-      background: rgba(255, 185, 26, 0.4)
+      background: rgba(90, 42, 130, 0.4)
       &:hover
-        background: rgba(255, 185, 26, 0.6)
+        background: rgba(90, 42, 130, 0.6)
 
 .top_contributors_card .contributor_item
   display: flex
@@ -704,11 +703,13 @@ button
     font-size: 16px
 
   html.dark &
-    color: #ffb91a !important
-    border-color: #ffb91a
+    background: #5A2A82
+    color: #ffffff !important
+    border-color: #5A2A82
+
     &:hover
-      background: #ffb91a
-      color: #1D0631 !important
+      background: #6d35a0
+      border-color: #6d35a0
 
 
 // What's New Card - Figma Design
@@ -722,7 +723,7 @@ button
   &:hover
     box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)
   html.dark &
-    background: #2D1548
+    background: #151b23
     box-shadow: 0 1px 3px rgba(0,0,0,0.24), 0 1px 2px rgba(0,0,0,0.48)
     &:hover
       box-shadow: 0 3px 6px rgba(0,0,0,0.32), 0 3px 6px rgba(0,0,0,0.46)
@@ -735,7 +736,7 @@ button
     padding: 24px 24px 16px 24px !important
   // Dark mode support
   html.dark &
-    background: #2D1548
+    background: #151b23
 
 .whats_new_title
   font-size: 18px !important
@@ -798,7 +799,7 @@ button
   &:hover
     box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)
   html.dark &
-    background: #2D1548
+    background: #151b23
     box-shadow: 0 1px 3px rgba(0,0,0,0.24), 0 1px 2px rgba(0,0,0,0.48)
     &:hover
       box-shadow: 0 3px 6px rgba(0,0,0,0.32), 0 3px 6px rgba(0,0,0,0.46)
@@ -894,7 +895,7 @@ button
   html.dark &
     background: rgba(90, 42, 130, 0.2)
     i
-      color: #5A2A82
+      color: #ffff
 
 .benefit_icon_trending
   background: rgba(29, 6, 49, 0.1)
@@ -907,7 +908,7 @@ button
   html.dark &
     background: rgba(90, 42, 130, 0.2)
     i
-      color: #1D0631
+      color: #ffff
 
 .benefit_content
   flex: 1
@@ -969,7 +970,7 @@ button
 
 // User Journeys Section
 .user_journeys_section
-  background: #1D0631
+  background: #0d1117
   padding: 32px 0 !important
   width: 100vw
   margin-left: calc(-50vw + 50%)
@@ -1021,7 +1022,7 @@ button
   border-radius: 12px
   overflow: hidden
   border: 0.8px solid #ffb91a
-  background: #1D0631
+  background: #0d1117
   margin-bottom: 16px
   transition: all 0.3s
 
@@ -1034,7 +1035,7 @@ button
   padding: 16px
   text-align: left
   transition: background 0.3s
-  background: #1D0631
+  background: #0d1117
   border: none
   cursor: pointer
   border-radius: 12px
@@ -1072,7 +1073,7 @@ button
 .journey_card_content
   display: none
   padding: 0 16px 16px
-  background: #1D0631
+  background: #0d1117
   border-radius: 0 0 12px 12px
 
 .journey_card.expanded .journey_card_content
@@ -1143,12 +1144,12 @@ button
   border-radius: 12px
   padding: 24px
   border: 1px solid rgba(90, 42, 130, 0.4)
-  background: #1D0631
+  background: #0d1117
   transition: all 0.3s
   min-width: 0
   &:hover
     box-shadow: 0 10px 15px rgba(0, 0, 0, 0.3)
-    border-color: #ffb91a
+    border-color: #5A2A82
 
 .grid_card_icon
   width: 56px
@@ -1198,7 +1199,7 @@ button
   @media (min-width: 1024px)
     padding: 8px 32px !important
   html.dark &
-    background: #1D0631
+    background: #0d1117
 
 // Matches Figma: max-w-7xl mx-auto
 .swimlanes_container
@@ -1261,11 +1262,11 @@ button
     box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)
 
   html.dark &
-    background: #2D1548
+    background: #151b23
     border-color: rgba(255, 255, 255, 0.1)
     box-shadow: 0 1px 3px rgba(0,0,0,0.24), 0 1px 2px rgba(0,0,0,0.48)
     &:hover
-      border-color: #ffb91a
+      border-color: #c084fc
       box-shadow: 0 3px 6px rgba(0,0,0,0.32), 0 3px 6px rgba(0,0,0,0.46)
 
 .compact_project_card .compact_card_inner
@@ -1360,7 +1361,7 @@ button
   html.dark &
     color: #ffffff !important
     &:hover
-      color: #ffb91a !important
+      color: #c084fc !important
   span
     display: inline
 
@@ -1445,9 +1446,8 @@ button
   @media (min-width: 640px)
     font-size: 12px
   html.dark &
-    background: #ffb91a
-    color: #000000
-
+    background: #c084fc
+    color: #ffffff
 // Responsive visibility helpers
 .desktop_only
   display: none !important
@@ -1483,12 +1483,13 @@ button
     background: #5A2A82
     color: white
   html.dark &
-    background: transparent
-    color: #ffb91a
-    border-color: #ffb91a
+    background: #5A2A82
+    color: #ffff
+    border-color: #5A2A82
     &:hover
-      background: #ffb91a
-      color: #1D0631
+      background: #6d35a0
+      color: #ffffff
+      border-color: #6d35a0
 
 // Pagination Controls
 .pagination_controls
@@ -1538,7 +1539,7 @@ button
     color: #5A2A82
     font-weight: 700
     html.dark &
-      color: #ffb91a
+      color: #5A2A82
 
 .swimlane_project_item
   display: none
@@ -1562,7 +1563,7 @@ button
     padding-left: 32px
     padding-right: 32px
   html.dark &
-    background: #1D0631
+    background: #0d1117
 
 // Matches Figma: flex items-center gap-2 px-6 py-3 bg-[#ffb91a] rounded-lg
 .btn_view_all_projects
@@ -1580,13 +1581,13 @@ button
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1)
   @media (min-width: 640px)
     font-size: 16px
-  &:hover
-    background: rgba(255, 185, 26, 0.9)
-    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1)
-    color: #1D0631
   html.dark &
-    color: #1D0631 !important
+    background: #5A2A82
+    color: #ffffff !important
+    border-color: #5A2A82
     &:hover
-      color: #1D0631 !important
+      text-decoration: none
+      background: #6d35a0
+      border-color: #6d35a0
   i
     font-size: 16px

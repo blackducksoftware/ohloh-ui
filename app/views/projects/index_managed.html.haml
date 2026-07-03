@@ -4,7 +4,10 @@
   page_context[:select_footer_nav] = :managed_projects
 
 #managed_projects_list
-  %h3= t('.managed_projects')
+  .managed-projects-header
+    .managed-projects-header__icon
+      %i.fa.fa-folder-open
+    %h2.managed-projects-header__title= t('.managed_projects')
   = render partial: 'shared/search_dingus', locals: { collection: @projects, sort_context: :projects }
   = render partial: 'project_index', collection: @projects, locals: { i_use_this: true, compare: false,
                                                                       show_active_committers: false }

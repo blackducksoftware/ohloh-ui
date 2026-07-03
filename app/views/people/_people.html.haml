@@ -2,10 +2,10 @@
   %h2.people-section-title= t('.account_holders')
   = render partial: 'claimed_person', collection: @claimed_people
   - if @claimed_people.total_pages > 3
-    = link_to t('.more_account_holders'), accounts_path(query: params[:query]), class: 'people-more-btn mb-5', id: 'more_account'
+    = link_to t('.more_account_holders'), accounts_path(query: params[:query]), class: 'people-more-btn', id: 'more_account'
 
 - if @unclaimed_people.any?
-  .unclaimed-section.mt-5
+  .unclaimed-section
     %h2.people-section-title= t('.unclaimed_committer_ids')
     - @unclaimed_people.each do |_, people|
       = render partial: 'unclaimed_person', locals: { people: people }

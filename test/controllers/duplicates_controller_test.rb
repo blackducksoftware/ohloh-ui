@@ -113,7 +113,7 @@ class DuplicatesControllerTest < ActionController::TestCase
       login_as create(:account)
       get :new, params: { project_id: project.to_param }
       assert_response :ok
-      _(response.body).must_match I18n.t('duplicates.fields.legend_html', name: project.name)
+      _(response.body).must_match I18n.t('duplicates.fields.good_label_html', name: project.name)
     end
 
     it 'should not allow setting a project to be a duplicate of something else already marked as good' do
@@ -170,7 +170,7 @@ class DuplicatesControllerTest < ActionController::TestCase
       login_as create(:account)
       post :create, params: { project_id: project.to_param, duplicate: { good_project_id: project.to_param } }
       assert_response :unprocessable_entity
-      _(response.body).must_match I18n.t('duplicates.fields.legend_html', name: project.name)
+      _(response.body).must_match I18n.t('duplicates.fields.good_label_html', name: project.name)
     end
   end
 
@@ -257,7 +257,7 @@ class DuplicatesControllerTest < ActionController::TestCase
                               duplicate: { good_project_id: project.to_param, comment: 'Whatevs!' } }
       assert_response :unprocessable_entity
       _(duplicate.reload.comment).wont_equal 'Whatevs!'
-      _(response.body).must_match I18n.t('duplicates.fields.legend_html', name: project.name)
+      _(response.body).must_match I18n.t('duplicates.fields.good_label_html', name: project.name)
     end
 
     it 'must render error for blank good_project' do

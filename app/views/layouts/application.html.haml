@@ -48,7 +48,6 @@
     %header= render partial: 'layouts/partials/header'
     .container#page
       = render partial: 'layouts/partials/page', locals: { responsive_layout: true }
-      .clear
       %footer= render partial: 'layouts/partials/footer'
     = render partial: 'cookies/consent_banner' unless cookies[:cookie_consented]
     = render 'shared/page_loader'

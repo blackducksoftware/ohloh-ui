@@ -753,8 +753,8 @@ class ProjectsControllerTest < ActionController::TestCase
     login_as nil
     get :edit, params: { id: create(:project).id }
     assert_response :ok
-    assert_select 'input.save', 0
-    assert_select '.needs_login.save', 1
+    assert_select 'input.edit-save-btn', 0
+    assert_select '.needs_login.edit-save-btn', 1
   end
 
   it 'edit should enable save button for managers' do
@@ -764,16 +764,16 @@ class ProjectsControllerTest < ActionController::TestCase
     login_as manager
     get :edit, params: { id: project.id }
     assert_response :ok
-    assert_select 'input.save', 1
-    assert_select '.disabled.save', 0
+    assert_select 'input.edit-save-btn', 1
+    assert_select '.disabled.edit-save-btn', 0
   end
 
   it 'edit should enable save button for admins' do
     login_as create(:admin)
     get :edit, params: { id: create(:project).id }
     assert_response :ok
-    assert_select 'input.save', 1
-    assert_select '.disabled.save', 0
+    assert_select 'input.edit-save-btn', 1
+    assert_select '.disabled.edit-save-btn', 0
   end
 
   it 'edit should populate the form' do
@@ -807,7 +807,7 @@ class ProjectsControllerTest < ActionController::TestCase
     put :update, params: { id: project.id, project: { name: '' } }
     assert_response :unprocessable_entity
     _(project.reload.name).must_equal 'KoolOSSProject123'
-    assert_select 'input.save', 1
+    assert_select 'input.edit-save-btn', 1
     assert_select 'p.error[rel="name"]', 1
   end
 
@@ -818,7 +818,7 @@ class ProjectsControllerTest < ActionController::TestCase
     assert_response :unprocessable_entity
     _(project.reload.vanity_url.blank?).must_equal false
     assert_response :unprocessable_entity
-    assert_select 'input.save', 1
+    assert_select 'input.edit-save-btn', 1
     assert_select 'p.error[rel="vanity_url"]', 1
   end
 

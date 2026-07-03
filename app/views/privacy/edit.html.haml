@@ -4,47 +4,61 @@
 
 - account_context
 
-%h2.alter-password-heading
-  = link_to t('.settings'), settings_account_path(@account)
-  = ' : '
-  %span.account-basics-title= t('privacy.privacy_text.privacy')
-#privacy_edit_page
-  .row
-    .col-md-6
-      .oh-card
-        = form_for(@account, url: account_privacy_account_path) do |f|
-          %fieldset
-            %legend.margin_bottom_0= t('.manage_email')
-            .control-group.col-md-12.margin_left_5
-              %h4= t('.administrative_email')
-              %p.admin_email_notice= t('.send_admin_email')
-              %br
-              %h4= t('.other_openhub_email')
-              %p.admin_email_notice= t('.admin_email_notice')
-              %br
-              .controls.admin_email_notice
-                %p.email_opt_status
-                  = f.radio_button(:email_master, 'false', id: 'account_email_master_false')
-                  = f.label(:email_master, t('.dont_send_email'), value: 'false')
-                  %br
-                  = f.radio_button(:email_master, 'true', id: 'account_email_master_true')
-                  = f.label(:email_master, t('.do_send_email'), value: 'true')
-                %ul.chosen#email_status{ style: 'padding-left: 25px' }
-                  %li.margin_bottom_13
-                    %span= t('.please')
-                    = f.label :email_kudos, t('.notices_ive_received'), class: 'sr-only'
-                    = f.select :email_kudos, [['include', true], ['exclude', false]], {}, class: 'select_box value-select'
-                    %span= t('.notices_ive_received')
-                    %br
-                  %li{ style: 'width: 370px' }
-                    %span= t('.please')
-                    = f.label :email_posts, t('.replies_to_forum_topics'), class: 'sr-only'
-                    = f.select :email_posts, [['include', true], ['exclude', false]], {}, class: 'select_box value-select'
-                    %span= t('.replies_to_forum_topics')
-                %br
-                %p.help-inline= t('.never_ask_for_personal_email')
-              .actions
-                %br
-                = submit_tag(t('.save_changes'), id: 'Submit', class: 'btn btn-primary')
-    = render partial: 'authorized_apps'
-= render partial: 'privacy_text'
+#privacy-edit
+  .settings-page-header
+    .settings-page-header-row
+      .settings-page-icon
+        %i.fa.fa-shield
+      %h2.settings-page-h2
+        = link_to t('.settings'), settings_account_path(@account)
+        %span.account-basics-sep :
+        = t('privacy.privacy_text.privacy')
+    %p.settings-page-description= t('accounts.settings.email_settings')
+
+  .privacy-edit-grid
+    .privacy-edit-col
+      = form_for(@account, url: account_privacy_account_path) do |f|
+        .edit-section
+          .edit-section-header
+            .edit-section-icon
+              %i.fa.fa-envelope
+            %h3.edit-section-title= t('.manage_email')
+
+          .privacy-email-block
+            %h4.privacy-block-title= t('.administrative_email')
+            %p.edit-field-hint= t('.send_admin_email')
+
+          .privacy-email-block
+            %h4.privacy-block-title= t('.other_openhub_email')
+            %p.edit-field-hint= t('.admin_email_notice')
+
+            .privacy-radio-group
+              .privacy-radio-option
+                = f.radio_button :email_master, 'false', id: 'account_email_master_false', class: 'privacy-radio'
+                = f.label :email_master, t('.dont_send_email'), value: 'false', class: 'privacy-radio-label'
+              .privacy-radio-option
+                = f.radio_button :email_master, 'true', id: 'account_email_master_true', class: 'privacy-radio'
+                = f.label :email_master, t('.do_send_email'), value: 'true', class: 'privacy-radio-label'
+
+            .privacy-email-prefs
+              .privacy-pref-row
+                = f.label :email_kudos, t('.notices_ive_received'), class: 'sr-only'
+                %span.privacy-pref-please= t('.please')
+                = f.select :email_kudos, [['include', true], ['exclude', false]], {}, class: 'privacy-select value-select'
+                %span.privacy-pref-text= t('.notices_ive_received')
+              .privacy-pref-row
+                = f.label :email_posts, t('.replies_to_forum_topics'), class: 'sr-only'
+                %span.privacy-pref-please= t('.please')
+                = f.select :email_posts, [['include', true], ['exclude', false]], {}, class: 'privacy-select value-select'
+                %span.privacy-pref-text= t('.replies_to_forum_topics')
+
+            %p.edit-field-hint= t('.never_ask_for_personal_email')
+
+          .edit-form-actions
+            = submit_tag t('.save_changes'), id: 'Submit', class: 'edit-save-btn'
+
+    .privacy-edit-col
+      = render partial: 'authorized_apps'
+
+  = render partial: 'privacy_text'
+

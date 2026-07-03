@@ -21,6 +21,7 @@ en:
       news_feed: 'News Feed'
       new: ': New'
       about: 'About News Feeds'
+      about_subtitle: 'News Feeds'
       about_1: 'Open Hub supports Atom, RSS 0.9, RSS 1.0, and RSS 2.0 feeds.'
       about_2: 'Feeds must be "live" (e.g. respond to a web request) in order to be added'
     fields:
