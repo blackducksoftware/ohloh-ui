@@ -46,7 +46,7 @@ module KudosHelper
     haml_tag :a, href: kudo_path(kudo), class: 'btn kudo-btn btn-mini',
                  data: { method: :delete, confirm: confirm } do
       haml_tag :i, class: 'rescind-kudos' do
-        haml_concat undo_svg_icon
+        haml_concat thumbs_down_svg_icon
       end
       haml_tag :span, I18n.t('kudos.undo')
     end
@@ -88,6 +88,15 @@ module KudosHelper
     else
       new_kudo_path(contribution_id: target.id)
     end
+  end
+
+  def thumbs_down_svg_icon
+    svg_attrs = 'class="kudo-btn-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" ' \
+                'fill="none" stroke="currentColor" stroke-width="2" ' \
+                'stroke-linecap="round" stroke-linejoin="round"'
+    path1 = 'M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3z'
+    path2 = 'M17 2h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17'
+    "<svg #{svg_attrs}><path d=\"#{path1}\"/><path d=\"#{path2}\"/></svg>".html_safe
   end
 
   def undo_svg_icon

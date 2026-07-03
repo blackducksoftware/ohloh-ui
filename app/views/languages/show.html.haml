@@ -2,24 +2,28 @@
 - page_context[:select_side_bar] = @language.name
 
 .languages-show-container
-  %h3= t('.heading')
-  .col-md-12
-    = render 'language', language: @language, show_lang_usage: true
+  .lang-show-header
+    %h1.lang-show-heading= t('.heading')
 
-  .col-md-6
-    - exp_accounts = @language.experienced_contributors
-    - if exp_accounts.present?
-      .inset
-        %h3= t('.most_experience_contributors')
-        %p= t('.most_exp_Desc', name: @language.nice_name)
-        = render 'account', accounts: exp_accounts, show_commits: false
+  = render 'language', language: @language, show_lang_usage: true
 
-  .col-md-6
-    - active_accounts = @language.active_contributors
-    - if active_accounts.present?
-      .inset
-        %h3= t('.active_contributors')
-        %p= t('.active_contributors_desc', name: @language.nice_name,
-          start_date: Time.current.months_ago(2).at_beginning_of_month.strftime('%b %Y'),
-          end_date: Time.current.strftime('%b %Y'))
-        = render 'account', accounts: active_accounts, show_commits: true
+  .lang-show-contributors-grid
+    .lang-show-contributors-col
+      - exp_accounts = @language.experienced_contributors
+      - if exp_accounts.present?
+        .oh-card.lang-show-card
+          .lang-show-card-header
+            %h3.lang-show-card-title= t('.most_experience_contributors')
+            %p.lang-show-card-desc= t('.most_exp_Desc', name: @language.nice_name)
+          = render 'account', accounts: exp_accounts, show_commits: false
+
+    .lang-show-contributors-col
+      - active_accounts = @language.active_contributors
+      - if active_accounts.present?
+        .oh-card.lang-show-card
+          .lang-show-card-header
+            %h3.lang-show-card-title= t('.active_contributors')
+            %p.lang-show-card-desc= t('.active_contributors_desc', name: @language.nice_name,
+              start_date: Time.current.months_ago(2).at_beginning_of_month.strftime('%b %Y'),
+              end_date: Time.current.strftime('%b %Y'))
+          = render 'account', accounts: active_accounts, show_commits: true

@@ -73,9 +73,11 @@
         %th.center{ colspan: 2, style: 'width:200px' }
           %strong= t('organizations.affiliated_committers.projects_committed_to')
         %th{ rowspan: 2, style: 'width: 20px;', aria: { hidden: 'true' } }
+          %span.sr-only Separator
         %th.center{ colspan: 2, style: 'width:200px' }
           %strong= t('organizations.affiliated_committers.most_commits_to')
         %th{ rowspan: 2, style: 'width: 20px;', aria: { hidden: 'true' } }
+          %span.sr-only Separator
         %th.center{ colspan: 2, style: 'width:200px' }
           %strong= t('organizations.affiliated_committers.most_recent_commits_on')
       %tr
@@ -95,7 +97,7 @@
         - account_org = Account::OrganizationCore.new(a)
         %tr
           %td
-            %a.float_left{ href: account_path(a), title: h(a.name) }
+            %a{ href: account_path(a), title: h(a.name) }
               = image_tag avatar_img_path(a, 32), size: '32x32', style: 'margin-right:8px;', alt: h(a.name)
             %a{ href: account_path(a), title: h(a.name) }
               = a.name.truncate(20)
@@ -103,7 +105,7 @@
                 %span= t('organizations.affiliated_committers.you')
           %td.center!= avatar_small_laurels(a.person.kudo_rank)
           %td.center
-            .mini-badges-section{ style: 'margin:0; position:relative;height: 0px' }
+            .mini-badges-section{ style: 'margin:0; position:relative' }
               = render 'accounts/badges_row',
                 badges: [BadgeDecorator.new(Badge::FosserBadge.new(a, positions_count: a.positions.count))],
                 hide_foss_logo: true

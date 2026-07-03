@@ -3,14 +3,14 @@
     .one-project-header-left
       %a.pull-left.logo{ href: project_path(position.project) }
         = position.project.decorate.icon
-      .col-md-8.one-project-name#projects_similar_page
+      .col-md-8.col-sm-12.col-xs-12.one-project-name#projects_similar_page
         %a.title{ href: project_path(position.project), title: position.project.name }
           = truncate(position.project.name, length: 40)
         - project_activity_level_class(position.project, :fifteen)
         - organization = position.project.organization
         - if organization
           = link_to "(#{h(organization.name)})", organization, class: 'project-organization'
-      .col-md-8.one-project-contribution
+      .col-md-8.col-sm-12.col-xs-12.one-project-contribution
         %span.contribution_role
           = position.title
         = position.decorate.affiliation

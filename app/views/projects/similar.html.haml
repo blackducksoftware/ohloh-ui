@@ -1,15 +1,26 @@
 - content_for(:html_title) { t('.page_title', name: @project.name) }
 - page_context[:select_footer_nav] = :similar_projects
 
-.similar-page
-  .similar-page-header
-    %h2.similar-page-title= t('.title')
+#similar-projects-page
+  .settings-page-header
+    .settings-page-header-row
+      .settings-page-icon
+        %i.fa.fa-sitemap
+      %h2.settings-page-h2
+        = t('.title')
+    %p.settings-page-description= t('.page_title', name: @project.name)
 
   .similar-section
-    %h3.similar-section-heading
-      = pluralize_without_count(@similar_by_tags.length, t('.project'))
-      = t('.similar_to')
-      %span.similar-project-name= @project.name
+    .similar-section-header
+      .similar-section-header-left
+        .similar-section-icon
+          %i.fa.fa-tags
+        .similar-section-text
+          %h3.similar-section-title
+            = pluralize_without_count(@similar_by_tags.length, t('.project'))
+            = t('.similar_to')
+            %span.similar-project-name= @project.name
+          %p.similar-section-desc= t('.similar_by_tags_desc')
 
     - if @similar_by_tags.any?
       .similar-grid
@@ -17,13 +28,19 @@
           = render partial: 'similar_project', locals: { project: project }
     - else
       .similar-empty-state
+        .similar-empty-icon
+          %i.fa.fa-tags
         %p.similar-empty-text= t('.nothing_by_tags')
-        %p.similar-empty-text
-          = link_to t('.add_tags'), project_tags_path(@project), class: 'similar-action-link'
-          = t('.to_similar')
+        = link_to t('.add_tags'), project_tags_path(@project), class: 'btn btn-primary similar-empty-btn'
 
   .similar-section
-    %h3.similar-section-heading= t('.also_use', name: @project.name)
+    .similar-section-header
+      .similar-section-header-left
+        .similar-section-icon
+          %i.fa.fa-stack-overflow
+        .similar-section-text
+          %h3.similar-section-title= t('.also_use', name: @project.name)
+          %p.similar-section-desc= t('.also_use_desc')
 
     - if @similar_by_stacks.any?
       .similar-grid
@@ -31,5 +48,7 @@
           = render partial: 'similar_project', locals: { project: project }
     - else
       .similar-empty-state
+        .similar-empty-icon
+          %i.fa.fa-stack-overflow
         %p.similar-empty-text= t('.nothing_by_stacks')
-        %p.similar-empty-text.similar-muted= t('.nightly_update')
+        %p.similar-empty-subtext= t('.nightly_update')

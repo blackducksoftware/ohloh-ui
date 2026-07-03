@@ -5,18 +5,22 @@
   @committer_names ||= Alias.committer_names(@project)
 
 #alias-new-page
-  .alias-page-header
-    %h2.alias-page-title
-      = link_to t('settings'), settings_project_path(@project)
-      %span.alias-page-title__sep &rsaquo;
-      = link_to t('aliases.aliases'), project_aliases_path(@project)
-      %span.alias-page-title__sep &rsaquo;
-      = t('aliases.new_alias')
+  .settings-page-header
+    .settings-page-header-row
+      .settings-page-icon
+        %i.fa.fa-users
+      %h2.settings-page-h2
+        = link_to t('settings'), settings_project_path(@project)
+        %span.account-basics-sep :
+        = link_to t('aliases.aliases'), project_aliases_path(@project)
+        %span.account-basics-sep :
+        = t('aliases.new_alias')
+    %p.settings-page-description= t('.title', project_name: @project.name)
 
-  .row
-    .col-md-8.col-sm-10.col-xs-12.center-block
+  .project-edit-layout
+    .project-edit-main
       - if @committer_names.length.zero?
-        .alert.alert-info.alert-block.modern-alert
+        .alert.alert-info.modern-alert
           .alert-accent-strip
           .alert-inner
             = t('.no_more_alias')
@@ -25,4 +29,5 @@
           = form_for [@project, @alias] do
             = render partial: 'fields'
 
-  = render partial: 'about_aliases'
+    .project-edit-aside
+      = render partial: 'about_aliases'

@@ -17,7 +17,7 @@
           - names.each do |name|
             %span.tag-index-pill= name
 
-      .oh-card.tag-index-body
+      .tag-index-body
         - if @projects.any?
           %p.tag-index-hint= t('.select_a_tag')
         - else

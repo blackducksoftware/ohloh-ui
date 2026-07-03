@@ -35,9 +35,9 @@
             - rank = contribution.person.kudo_rank || 1
             = image_tag "icons/sm_laurel_#{rank}.png", alt: "KudoRank #{rank}"
           %td.center
-            = fact.twelve_month_commits
+            = number_with_delimiter(fact.twelve_month_commits)
           %td
-            = fact.commits
+            = number_with_delimiter(fact.commits)
           %td
             = image_tag commits_spark_project_contributor_url(project_id: @project.to_param, id: fact.name_id),
             width: 179, height: 32, alt: '' if fact.name_id
@@ -77,7 +77,7 @@
         .content-row
           .content-item
             .label= t('.all_commits')
-            .value= fact.commits
+            .value= number_with_delimiter(fact.commits)
           .content-item
             .label= t('.kudos')
             .value

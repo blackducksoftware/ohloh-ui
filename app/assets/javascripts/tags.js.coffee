@@ -21,9 +21,8 @@ App.TagCloud =
 App.TagNew =
   init: () ->
     project_id = $('form#edit_tags').attr('project_id')
-    term = $('#input_tags').val()
     $('#input_tags').autocomplete
-      source: "/autocompletes/tags?project_id=#{project_id}&term=#{term}"
+      source: "/autocompletes/tags?project_id=#{project_id}"
       select : (evt, ui) ->
 
 App.TagEdit =
@@ -31,7 +30,7 @@ App.TagEdit =
     return if $('input#input_tags').length == 0
     $('form#edit_tags').submit(App.TagEdit.onSubmit)
     $('a.tag.add').click(App.TagEdit.onTagAddClick)
-    $('a.tag.delete').click(App.TagEdit.onTagDeleteClick)
+    $('a.project-tag.delete').click(App.TagEdit.onTagDeleteClick)
 
   onSubmit: () ->
     input = $('#input_tags')[0]
@@ -42,7 +41,7 @@ App.TagEdit =
 
   create: (text) ->
     text = text.replace('.', '', 'g')
-    taglinks = $("a.tag[tagname='#{text}']");
+    taglinks = $("a.project-tag[tagname='#{text}']");
     taglinks.unbind('click', App.TagEdit.onTagAddClick).removeClass('add')
     $('.spinner').removeClass('hidden')
     $('#error').addClass('hidden')
@@ -68,17 +67,17 @@ App.TagEdit =
         $('#submit').removeAttr('disabled')
 
   update_status: (text) ->
-    taglinks = $("a.tag[tagname='#{text}']")
+    taglinks = $("a.project-tag[tagname='#{text}']")
     project = $('form#edit_tags').attr('project')
     $.ajax
       type: 'GET'
       url: "/p/#{project}/tags/status"
       success: (data, textStatus) ->
-        $('p.tags_left').html(data[1])
+        $('.tags-remaining-badge').html(data[1])
         $("#edit_tags").hide() if data[0] < 1
 
   destroy: (text) ->
-    taglinks = $("a.tag[tagname='#{text}']")
+    taglinks = $("a.project-tag[tagname='#{text}']")
     $("span[tagname='#{text}']").show()
     taglinks.fadeOut('slow');
     taglinks.unbind('click', App.TagEdit.onTagDeleteClick).removeClass('delete')
@@ -89,22 +88,22 @@ App.TagEdit =
       type: 'DELETE'
       url: "/p/#{project}/tags/#{text}"
       success: (data, textStatus) ->
-        $('p.tags_left').html(data[1])
+        $('.tags-remaining-badge').html(data[1])
         $("#edit_tags").show() if data[0] > 0
         App.TagEdit.updateRelatedProjects()
         $("span[tagname='#{text}']").hide();
 
   setTagArray: (ary) ->
-    $('span#current_tags').html('')
+    $('#current_tags').html('')
     for tag in ary
       if tag.length > 0
-        $('span#current_tags').append(App.TagEdit.tagLink(tag));
+        $('#current_tags').append(App.TagEdit.tagLink(tag));
         $("span#recommended_tags a.add[tagname='#{tag}']").remove()
-    $('span#current_tags a.tag').click(App.TagEdit.onTagDeleteClick).addClass('delete')
+    $('#current_tags a.project-tag').click(App.TagEdit.onTagDeleteClick).addClass('delete')
     App.TagEdit.updateRelatedProjects()
 
   tagLink: (text) ->
-    "<a tagname='#{text}' class='tag delete tag_remove'>#{text}&nbsp;&nbsp;&nbsp;<i class='icon-remove'></i></a>" +
+    "<a tagname='#{text}' class='project-tag delete tag_remove' href='javascript:void(0)' role='button'>#{text}&nbsp;<i class='icon-remove project-tag__remove'></i></a>" +
     "&nbsp;<span class='hidden' tagname='#{text}'><img src='/images/spinner.gif'></span>"
 
   onTagAddClick: () ->

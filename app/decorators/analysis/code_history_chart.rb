@@ -9,7 +9,7 @@ class Analysis::CodeHistoryChart < Analysis::Chart
   end
 
   def data
-    series_and_range_data(@defaults)
+    series_and_range_data(@defaults).deep_merge(chart_watermark)
   end
 
   def data_for_lines_of_code

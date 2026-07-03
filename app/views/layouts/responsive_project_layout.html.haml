@@ -21,7 +21,6 @@
     .container-fluid#project_container
       %header= render partial: 'layouts/partials/header'
       = render partial: 'layouts/partials/page', locals: { responsive_layout: true }
-      .clear
     %footer= render partial: 'layouts/partials/footer'
     = render 'cookies/consent_banner' unless cookies[:cookie_consented]
     = render partial: 'layouts/partials/js_scripts'

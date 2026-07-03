@@ -1,21 +1,17 @@
-.duplicate
-  .col.col-md-3
-    %p.inset
-      - if !resolved
-        = link_to t('.duplicate', id: duplicate.id), duplicate_path(duplicate)
-      - else
-        = t('.duplicate', id: duplicate.id)
-
-  .col.col-md-6.last
-    %p.inset
-      = link_to h(duplicate.bad_project.name), project_path(duplicate.bad_project)
+.duplicate-list-row
+  .duplicate-list-row-content
+    - if !resolved
+      = link_to t('.duplicate', id: duplicate.id), duplicate_path(duplicate), class: 'duplicate-row-id'
+    - else
+      %span.duplicate-row-id.duplicate-row-id--resolved= t('.duplicate', id: duplicate.id)
+    %p.duplicate-row-desc
+      = link_to h(duplicate.bad_project.name), project_path(duplicate.bad_project), class: 'duplicate-row-project-link'
       = t('.is_duplicate')
-      = link_to h(duplicate.good_project.name), project_path(duplicate.good_project)
-      %br
+      = link_to h(duplicate.good_project.name), project_path(duplicate.good_project), class: 'duplicate-row-project-link'
+    %p.duplicate-row-meta
       = t('.reported')
+      = t('.by')
       - if duplicate.account_id
-        = t('.by')
-        = link_to h(duplicate.account.name), account_path(duplicate.account)
+        = link_to h(duplicate.account.name), account_path(duplicate.account), class: 'duplicate-row-reporter-link'
       = time_ago_in_words(duplicate.created_at)
       = t(:ago)
-  .clearfix

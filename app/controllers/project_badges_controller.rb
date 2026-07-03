@@ -12,7 +12,6 @@ class ProjectBadgesController < ApplicationController
   before_action :find_badge, only: %i[update destroy]
 
   helper ProjectsHelper
-  layout 'responsive_project_layout'
 
   def index
     @project_badge = ProjectBadge.new

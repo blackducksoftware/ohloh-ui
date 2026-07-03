@@ -13,17 +13,23 @@
   = committer_name
 
 #contribution-show-page
-  .contribution-header
-    %h2.contribution-title
-      = link_to t('.contributors'), summary_project_contributors_path(@project)
-      %span.contribution-title__sep &rsaquo;
-      = committer_name
+  .settings-page-header
+    .settings-page-header-row
+      .settings-page-icon
+        %i.fa.fa-code-fork
+      %h2.settings-page-h2
+        = link_to t('.contributors'), summary_project_contributors_path(@project)
+        %span.account-basics-sep :
+        = committer_name
 
-  .row
-    .col-md-9.col-sm-8.col-xs-12
+  .contribution-layout
+    .contribution-layout__main
       = render partial: 'contributions/show/activity', locals: { committer: committer_name, account: account, fact: fact }
+      = render partial: 'contributions/show/unclaimed_position', locals: { contribution: @contribution }
+      = render partial: 'commits_timeline', locals: { contribution: @contribution }
+      = render partial: 'contributions/show/languages', locals: { contribution: @contribution, name_fact: fact }
 
-    .col-md-3.col-sm-4.col-xs-12
+    .contribution-layout__sidebar
       .oh-card.contribution-kudos
         %h4.contribution-kudos__title= t('.recent_kudos')
         %p.contribution-kudos__subtitle= t('.given_by', name: @project.name)
@@ -38,15 +44,3 @@
           %p.contribution-kudos__empty= t('.no_kudos')
         .contribution-kudos__action
           = render partial: 'contributions/show/kudo_button', locals: { contribution: @contribution } if fact.present?
-
-  .row
-    .col-md-12
-      = render partial: 'contributions/show/unclaimed_position', locals: { contribution: @contribution }
-
-  .row
-    .col-md-12
-      = render partial: 'commits_timeline', locals: { contribution: @contribution }
-
-  .row
-    .col-md-12
-      = render partial: 'contributions/show/languages', locals: { contribution: @contribution, name_fact: fact }

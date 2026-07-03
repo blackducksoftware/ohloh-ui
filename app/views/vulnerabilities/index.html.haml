@@ -3,56 +3,54 @@
   page_context[:select_top_menu_nav] = 'select_projects'
   page_context[:select_footer_nav] = :project_security
 
-.col-md-10.col-md-offset-2
-.row
-  .col-md-1
-    &nbsp;
-  .col-md-10
-    .row
-      %h2
-        %strong= t('.security')
-    .row
-      %h3{ style: 'font-weight: normal; font-size: 1.4em;' }= t('.vulns_per_version')
-      = link_to 'Learn more about BDSAs', 'https://www.blackduck.com/blog/black-duck-security-advisories-benefits.html', class: 'btn btn-primary learn-more btn-md pull-right', target: '_blank', rel: 'noopener noreferrer'
-  .col-md-1
-    &nbsp;
-.row
-  .col-md-1
-    &nbsp;
-  .col-md-10
-    - if @best_security_set && @releases.present?
-      - chart_data = Vulnerability::AllVersionChart.new(@release_history, @bdsa_visible).data
-      .row
-        %h4.pull-left= t('.major_versions')
-        .pull-left
-          - select_opts = options_for_select(major_releases(@releases, @project), filter_major_version_param)
-          - html_release_opts = { include_blank: 'All',
-                          style: 'max-width: 30%; margin-left: 10px',
-                          data: { releases: @release_history.to_json, bdsa_visible: @bdsa_visible }, class: 'vulnerability_main_filter' }
-          = select_tag 'vulnerability_filter_major_version', select_opts, html_release_opts
-        .pull-right.btn-toolbar{ 'aria-label' => '...', :role => 'group', style: 'margin-top: 17px' }
-          = release_timespan_widget
-      .row
-        .pull-right
-          .h6= t('.click_and_zoom')
-        .watermark440#vulnerability_all_version_chart{ data: { chart: chart_data.to_json } }
-    - else
-      %p.text-center= t('.no_vulnerability')
-  .col-md-1
-    &nbsp;
+.vuln-page
+  .vuln-page-header
+    .vuln-page-title-group
+      .vuln-page-icon
+        %i.fa.fa-shield
+      %h1.vuln-page-title= t('.security')
+    = link_to 'https://www.blackduck.com/blog/black-duck-security-advisories-benefits.html',
+              class: 'vuln-learn-more-btn', target: '_blank', rel: 'noopener noreferrer' do
+      %i.fa.fa-external-link
+      Learn more about BDSAs
 
-.row
-  .col-md-12#vulnerability-chart-divider
-    .mezzo.margin_bottom_5
+  - if @best_security_set && @releases.present?
+    - chart_data = Vulnerability::AllVersionChart.new(@release_history, @bdsa_visible).data
 
-.row
-  .col-md-1
-    &nbsp;
-  .col-md-10#vulnerabilities-data{ "data-source": security_project_path(@project) }
-    .row
-      .vulnerabilities-filter
+    .oh-card.vuln-chart-card
+      .vuln-chart-card-header
+        .vuln-chart-controls
+          .vuln-chart-title-row
+            %h2.vuln-chart-heading= t('.vulns_per_version')
+          .vuln-chart-filters
+            .vuln-filter-group
+              %label.vuln-filter-label{ for: 'vulnerability_filter_major_version' }= t('.major_versions')
+              - select_opts = options_for_select(major_releases(@releases, @project), filter_major_version_param)
+              - html_release_opts = { include_blank: 'All',
+                              data: { releases: @release_history.to_json, bdsa_visible: @bdsa_visible },
+                              class: 'vulnerability_main_filter vuln-select',
+                              id: 'vulnerability_filter_major_version',
+                              'aria-label': t('.major_versions') }
+              = select_tag 'vulnerability_filter_major_version', select_opts, html_release_opts
+            .vuln-timespan-group
+              = release_timespan_widget
+        .vuln-chart-zoom-hint
+          %i.fa.fa-search-plus
+          = t('.click_and_zoom')
+
+      .watermark440#vulnerability_all_version_chart{ data: { chart: chart_data.to_json } }
+
+  - else
+    .oh-card.vuln-empty-card
+      %i.fa.fa-check-circle.vuln-empty-icon
+      %p.vuln-empty-text= t('.no_vulnerability')
+
+  .oh-card.vuln-data-card
+    .vuln-data-header
+      %h2.vuln-data-title Vulnerability Details
+      .vuln-filters-row
         = render partial: 'version_filter'
+
+    .vuln-table-wrapper#vulnerabilities-data{ "data-source": security_project_path(@project) }
       .vulnerabilities-datatable
         = render partial: 'vulnerability_table'
-  .col-md-1
-    &nbsp;

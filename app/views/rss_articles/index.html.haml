@@ -1,9 +1,14 @@
 - content_for(:html_title) { t('.page_title', name: @project.name) }
 - page_context[:select_footer_nav] = :rss
-%div
-  %h2.pull-left= t('.title')
 
-.clearfix
+.settings-page-header
+  .settings-page-header-row
+    .settings-page-icon
+      %i.fa.fa-rss
+    %h2.settings-page-h2
+      = t('.title')
+  - if @project
+    %p.settings-page-description= @project.name
 .col-md-12
   - if @project && @rss_articles.empty?
     = render partial: 'shared/alert', locals: { message: t('.no_feed_exists') }

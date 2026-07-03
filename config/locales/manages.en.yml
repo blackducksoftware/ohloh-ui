@@ -22,7 +22,7 @@ en:
     manage:
       pending: "(Pending)"
       message_label: "Message:"
-      edit: "edit"
+      edit: "Edit"
       confirm_withdraw: "Remove your application to be a project manager for %{target}?"
       withdraw: "withdraw"
       withdraw_title: "Withdraw my application to be a manager for %{name}."
@@ -33,7 +33,7 @@ en:
       reject: "reject"
       reject_title: "%{name} is not a manager of %{target}, reject the application. %{name} may reapply later."
       confirm_delete: "Remove %{name} as a project manager for %{target}?"
-      remove_manager: "remove manager"
+      remove_manager: "Remove Manager"
     new:
       page_title: "New Manager Page - Open Hub"
       header: "Request Manager status for %{target}"

@@ -7,9 +7,13 @@
   = succeed t('.page_title') do
     = @project.name
 
-.project_content_title
-  %h1.pull-left= t('.contributors')
-  .clearfix
+.settings-page-header
+  .settings-page-header-row
+    .settings-page-icon
+      %i.fa.fa-users
+    %h2.settings-page-h2
+      = t('.contributors')
+  %p.settings-page-description= @project.name
 
 - if @analysis.present?
   .row.committers_chart

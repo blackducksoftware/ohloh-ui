@@ -1,37 +1,63 @@
 - content_for(:html_title) { t(:api_keys_account_title, name: @account.name) }
 - page_context[:select_footer_nav] = :settings
 
-%h2.float_left
-  = link_to(t(:settings), settings_account_path(@account))
-  &nbsp;:&nbsp;
-  %span.account-basics-title= t('api_keys_title')
-.clearfix
+#api-keys-index
+  .settings-page-header
+    .settings-page-header-row
+      .settings-page-icon
+        %i.fa.fa-key
+      %h2.settings-page-h2
+        = link_to t(:settings), settings_account_path(@account)
+        %span.account-basics-sep :
+        = t('api_keys_title')
+    %p.settings-page-description= t('api_keys.help_2')
 
-.api_keys
-  - unless @api_keys.empty?
-    = render partial: 'api_key', collection: @api_keys
-    = render 'shared/modern_pagination', collection: @api_keys
-- if @api_keys.size < ApiKey::KEY_LIMIT_PER_ACCOUNT
-  %a.btn.btn-primary.btn-small.margin_top_10{ href: new_account_api_key_path(@account) }= t('api_keys.request_new')
+  - if @api_keys.empty?
+    .api-keys-empty
+      %i.fa.fa-key.api-keys-empty-icon
+      %p.api-keys-empty-text= t('api_keys.help_2')
+  - else
+    .api-keys-list
+      = render partial: 'api_key', collection: @api_keys
+      = render 'shared/modern_pagination', collection: @api_keys
 
-.about-account-basics-card.alter-password-about
-  .card-header
-    %h4.card-title
-      %span.soft= t(:about)
-      = t('api_keys_title')
-    %button.expand-toggle{ type: 'button', 'aria-label' => 'Expand about section' }
-      %i.fa.fa-chevron-down
+  - if @api_keys.size < ApiKey::KEY_LIMIT_PER_ACCOUNT
+    .api-keys-actions
+      = link_to new_account_api_key_path(@account), class: 'edit-save-btn' do
+        %i.fa.fa-plus
+        = t('api_keys.request_new')
 
-  .card-content
-    .about-content-wrapper
-      - terms_link = blog_link_to(link: :terms, link_text: t('api_keys.terms_link'))
-      - terms_2_link = blog_link_to(link: :additional_terms, link_text: t('api_keys.terms_2_link'))
-      - url = 'https://github.com/blackducksoftware/ohloh_api#ohloh-api-documentation'
-      - getting_started_link = link_to(t('api_keys.getting_started_link'), url, target:'_blank')
-      .col-md-6
-        %ul
-          %li!= t('api_keys.help_1', terms_link: terms_link, terms_2_link: terms_2_link)
-          %li!= t('api_keys.help_2')
-      .col-md-6
-        %ul
-          %li!= t('api_keys.help_3', getting_started_link: getting_started_link)
+  .about-account-basics-card
+    .card-header
+      .card-header-left
+        .card-header-icon
+          %i.fa.fa-info-circle
+        .card-header-text
+          %h4.card-title= t(:about) + ' ' + t('api_keys_title')
+          %p.card-subtitle= t('api_keys.request_new')
+      %button.expand-toggle{ type: 'button', 'aria-label' => 'Toggle about section' }
+        %i.fa.fa-chevron-down
+
+    .card-content
+      .tips-grid
+        .tip-item
+          .tip-icon
+            %i.fa.fa-file-text-o
+          .tip-body
+            - terms_link = blog_link_to(link: :terms, link_text: t('api_keys.terms_link'))
+            - terms_2_link = blog_link_to(link: :additional_terms, link_text: t('api_keys.terms_2_link'))
+            %p.tip-text!= t('api_keys.help_1', terms_link: terms_link, terms_2_link: terms_2_link)
+
+        .tip-item
+          .tip-icon
+            %i.fa.fa-bar-chart
+          .tip-body
+            %p.tip-text!= t('api_keys.help_2')
+
+        .tip-item
+          .tip-icon
+            %i.fa.fa-book
+          .tip-body
+            - url = 'https://github.com/blackducksoftware/ohloh_api#ohloh-api-documentation'
+            - getting_started_link = link_to(t('api_keys.getting_started_link'), url, target: '_blank', rel: 'noopener noreferrer')
+            %p.tip-text!= t('api_keys.help_3', getting_started_link: getting_started_link)

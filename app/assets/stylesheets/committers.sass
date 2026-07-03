@@ -4,7 +4,6 @@
   margin-bottom: 30px
 
 .committers_index
-  border-bottom: 1px solid #e5e7eb;
   padding: 0 !important;
   margin: 0 0 24px !important;
   max-width: none !important;
@@ -80,86 +79,184 @@
   gap: 16px
   margin-bottom: 24px
 
-  @media (min-width: 640px)
-    grid-template-columns: repeat(2, 1fr)
-
 .claim-position-card
   display: flex
   flex-direction: row
   align-items: flex-start
-  gap: 16px
-  padding: 16px !important
+  gap: 20px
+  padding: 20px !important
+  border-radius: 14px !important
+  border: 1px solid #e9ecef !important
+  background: #fff !important
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06) !important
+
+  html.dark &
+    background: #151b23 !important
+    border-color: rgba(255, 255, 255, 0.08) !important
 
   &__tile
     flex-shrink: 0
+    padding: 4px
 
   &__fields
     flex: 1
     min-width: 0
     display: flex
     flex-direction: column
-    gap: 12px
-
-    .form-group
-      display: flex
-      flex-direction: column
-      gap: 4px
-      margin: 0
-
-    .form-control
-      box-sizing: border-box !important
-      border: 2px solid #e5e7eb !important
-      border-radius: 16px !important
-      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important
-      background: #ffffff !important
-      color: #111827 !important
-      padding: 10px 16px !important
-      height: auto !important
-      width: 100% !important
-      font-size: 14px
-      transition: border-color 0.3s ease, box-shadow 0.3s ease
-      &::placeholder
-        color: #9ca3af !important
-      &:hover
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important
-        border-color: #d1d5db !important
-      &:focus, &:focus-visible
-        border-color: #5A2A82 !important
-        outline: none !important
-        box-shadow: 0 0 0 4px rgba(90, 42, 130, 0.1) !important
-
-      html.dark &
-        background: #1D0631 !important
-        border-color: rgba(255, 255, 255, 0.15) !important
-        color: #e2e8f0 !important
-        &::placeholder
-          color: #6b7280 !important
-
-    textarea.form-control
-      resize: vertical
-      min-height: 72px
+    gap: 14px
 
   &__label
-    font-size: 13px
-    font-weight: 500
+    display: flex
+    align-items: center
+    gap: 6px
+    font-size: 12px
+    font-weight: 700
     color: #374151
+    text-transform: uppercase
+    letter-spacing: 0.04em
+    margin-bottom: 6px
+
+    .fa
+      color: #5A2A82
+      font-size: 11px
+
     html.dark &
       color: #d1d5db
 
+      .fa
+        color: #c4b5fd
+
   &__error
+    display: flex
+    align-items: center
+    gap: 6px
     font-size: 12px
     color: #dc2626
+    background: rgba(220, 38, 38, 0.06)
+    border: 1px solid rgba(220, 38, 38, 0.2)
+    border-radius: 8px
+    padding: 8px 12px
     margin: 0
+
+    html.dark &
+      color: #fca5a5
+      background: rgba(252, 165, 165, 0.08)
+      border-color: rgba(252, 165, 165, 0.2)
+
+.claim-position-field
+  display: flex
+  flex-direction: column
+
+.claim-position-input-wrapper
+  position: relative
+
+  .form-control
+    padding-left: 16px !important
+
+  .form-control
+    box-sizing: border-box !important
+    border: 1.5px solid #e5e7eb !important
+    border-radius: 10px !important
+    box-shadow: none !important
+    background: #f9fafb !important
+    color: #111827 !important
+    padding: 10px 16px !important
+    height: auto !important
+    width: 100% !important
+    font-size: 14px
+    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s
+
+    &::placeholder
+      color: #9ca3af !important
+
+    &:hover
+      border-color: #c4b5fd !important
+      background: #fff !important
+
+    &:focus, &:focus-visible
+      border-color: #5A2A82 !important
+      outline: none !important
+      box-shadow: 0 0 0 3px rgba(90, 42, 130, 0.12) !important
+      background: #fff !important
+
+    html.dark &
+      background: rgba(255, 255, 255, 0.05) !important
+      border-color: rgba(255, 255, 255, 0.12) !important
+      color: #e2e8f0 !important
+
+      &::placeholder
+        color: #6b7280 !important
+
+      &:hover
+        border-color: rgba(196, 181, 253, 0.4) !important
+        background: rgba(255, 255, 255, 0.08) !important
+
+      &:focus, &:focus-visible
+        border-color: rgba(196, 181, 253, 0.7) !important
+        box-shadow: 0 0 0 3px rgba(196, 181, 253, 0.15) !important
+
+.claim-position-card__fields
+  textarea.form-control
+    resize: vertical
+    min-height: 80px
+    box-sizing: border-box !important
+    border: 1.5px solid #e5e7eb !important
+    border-radius: 10px !important
+    background: #f9fafb !important
+    color: #111827 !important
+    padding: 10px 16px !important
+    width: 100% !important
+    font-size: 14px
+    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s
+
+    &::placeholder
+      color: #9ca3af !important
+
+    &:hover
+      border-color: #c4b5fd !important
+      background: #fff !important
+
+    &:focus, &:focus-visible
+      border-color: #5A2A82 !important
+      outline: none !important
+      box-shadow: 0 0 0 3px rgba(90, 42, 130, 0.12) !important
+      background: #fff !important
+
+    html.dark &
+      background: rgba(255, 255, 255, 0.05) !important
+      border-color: rgba(255, 255, 255, 0.12) !important
+      color: #e2e8f0 !important
+
+      &:focus, &:focus-visible
+        border-color: rgba(196, 181, 253, 0.7) !important
+        box-shadow: 0 0 0 3px rgba(196, 181, 253, 0.15) !important
 
 .claim-submit-row
   display: flex
   justify-content: flex-end
+  padding-top: 8px
   margin-bottom: 32px
+  border-top: 1px solid #f3f4f6
+
+  html.dark &
+    border-top-color: rgba(255, 255, 255, 0.08)
+
+.claim-empty-section
+  text-align: center
+  padding: 48px 24px !important
+
+  .edit-section-header
+    justify-content: center
+    border-bottom: none
+    margin-bottom: 8px
 
 .claim-empty
+  font-size: 15px
   color: #6b7280
-  font-size: 14px
   margin: 0
+
+  html.dark &
+    color: #9ca3af
 
 
 .show_more
@@ -284,9 +381,7 @@ ul.in_bubble
     line-height: 20px
 
 .commits_display_date_range
-  margin-top: 10px
   position: relative
-  top: 15px
   display: inline-block
   margin-right: 10px
   font-style: italic

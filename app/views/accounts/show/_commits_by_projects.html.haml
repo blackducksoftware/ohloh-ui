@@ -1,10 +1,9 @@
 - chart_url = commits_by_project_account_charts_url(@account).to_s
 
-.pull-left#commit_projects
+#commit_projects
   %h4= link_to t('.link'), account_positions_path(@account)
-.pull-left.soft.margin_top_10.margin_left_20
+.soft.margin_top_10.margin_left_20
   = chart_default_time_span
-.clearfix
 - light_wm = asset_url('charts/watermark_692.png')
 - dark_wm  = light_wm
 - if only_device?

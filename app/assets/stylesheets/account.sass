@@ -20,7 +20,7 @@
 .people-page-title
   font-size: 24px
   font-weight: 700
-  color: #111827
+  color: #5A2A82
   margin: 0
   @media only all and (min-width: 640px)
     font-size: 30px
@@ -173,20 +173,24 @@
     &:hover
       color: #5A2A82
 
-// Activity — languages + projects
+// Activity — languages + projects (two-column: langs left, projects right)
+// other-links wraps to full-width row below via flex-wrap
 .people-card__activity
   flex: 1
   min-width: 0
   display: flex
-  flex-direction: column
-  gap: 15px
+  flex-direction: row
+  flex-wrap: wrap
+  align-items: flex-start
+  gap: 24px
 
 .people-card__row-langs,
 .people-card__row-projects
+  flex: 1
   display: flex
+  flex-direction: column
   align-items: flex-start
-  gap: 8px
-  flex-wrap: wrap
+  gap: 6px
 
 .people-card__label
   font-size: 12px
@@ -197,8 +201,8 @@
 
 .people-card__lang-tags
   display: flex
-  align-items: center
-  flex-wrap: wrap
+  flex-direction: column
+  align-items: flex-start
   gap: 6px
 
 .people-card__lang-primary
@@ -216,13 +220,22 @@
       text-decoration: underline
 
 .people-card__lang-secondary
-  font-size: 13px
-  color: #374151
+  display: inline-block
+  padding: 2px 10px
+  background: linear-gradient(to right, #059669, #0d9488)
+  color: #ffffff
+  font-size: 12px
+  font-weight: 600
+  border-radius: 4px
   a
-    color: #374151
+    color: #ffffff !important
     text-decoration: none
     &:hover
-      color: #5A2A82
+      text-decoration: underline
+  html.dark &:hover
+    color: #ffffff !important
+    a
+      color: #ffffff !important
 
 .people-card__no-lang
   font-size: 13px
@@ -253,6 +266,7 @@
     text-decoration: underline
 
 .people-card__other-links
+  flex-basis: 100%
   font-size: 12px
   margin-top: 2px
   .people-card__link
@@ -486,6 +500,17 @@ button.unclaimed-card__btn
     flex-wrap: wrap
     gap: 24px
 
+// ── Tablet overrides (576px–1023px): activity breaks to its own full-width row ─
+@media only all and (min-width: 576px) and (max-width: 1023px)
+  .people-card__row
+    flex-wrap: wrap
+
+  .people-card__activity
+    flex: 0 0 100%
+    border-top: 1px solid #e5e7eb
+    padding-top: 16px
+    margin-top: 4px
+
 #account-settings-page
   max-width: 1024px
   margin: 0 auto
@@ -499,11 +524,6 @@ button.unclaimed-card__btn
       grid-template-columns: repeat(2, 1fr)
     @media (min-width: 1024px)
       grid-template-columns: repeat(2, 1fr)
-
-// ── Account settings (unchanged) ─────────────────────────────────────────────
-#analysis_timestamp
-  margin-top: 0px
-  margin-left: 32px
 
 .account_settings_options
   margin-left: 20px
@@ -592,7 +612,40 @@ button.unclaimed-card__btn
       text-decoration: underline
 
     html.dark &
-      color: #ffb91a
+      color: #5A2A82
 
       &:hover
         color: #ffcc4d
+
+#accounts-languages-page
+  .languages-status-card
+    display: flex
+    flex-direction: column
+    align-items: center
+    justify-content: center
+    padding: 48px 24px
+    text-align: center
+    background: #fff
+    border: 1px solid #e1e4e8
+    border-radius: 8px
+    margin-top: 24px
+
+    .languages-status-icon
+      font-size: 48px
+      color: #bbb
+      margin-bottom: 16px
+
+    .languages-status-message
+      font-size: 15px
+      color: #666
+      margin: 0
+
+    html.dark &
+      background: #1c2128
+      border-color: rgba(255,255,255,0.15)
+
+      .languages-status-icon
+        color: #555
+
+      .languages-status-message
+        color: #adbac7

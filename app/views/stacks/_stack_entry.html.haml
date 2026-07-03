@@ -1,30 +1,27 @@
 - hidden ||= false
 
 %tr.stack_entry{ id: "stack_entry_#{stack_entry.id}", style: ('display:none;' if hidden) }
-  %td{ width: '13%', valign: 'middle' }
+  %td.stack-entry-logo-cell
     - project_icon(stack_entry.project, :small)
-  %td{ width: '70%', valign: 'top' }
-    = link_to h(stack_entry.project.name), project_url(stack_entry.project)
-    .line_two
-      - if stack_entry.project.rating_average
-        .compact_rating_and_review
-          %span.header Community rating:
-          .rating_stars
-            != rating_stars('average_rating_stars', stack_entry.project.rating_average.to_i, mini: true)
-        %br
-      .note
-        %span.header.note= t :notes, scope: 'stacks.stack_entry'
-        %br
-        - if editable
-          - uri = "/stacks/#{@stack.id}/stack_entries/#{stack_entry.id}"
-          %span.rest_in_place{ url: uri, object: 'stack_entry', attribute: 'note',
-                               col: '32', rows: '7', max_length: StackEntry::MAX_NOTE_LENGTH }
-            = stack_entry.note
-          - stack_edit_in_place
-        - else
-          %span.note= stack_entry.note
+  %td.stack-entry-body-cell
+    %a.stack-entry-name{ href: project_url(stack_entry.project) }= h(stack_entry.project.name)
+    - if stack_entry.project.rating_average
+      .stack-entry-rating
+        %span.stack-entry-rating-label= 'Community rating:'
+        .rating_stars
+          != rating_stars('average_rating_stars', stack_entry.project.rating_average.to_i, mini: true)
+    .stack-entry-note
+      %span.stack-entry-note-label= t(:notes, scope: 'stacks.stack_entry')
+      - if editable
+        - uri = "/stacks/#{@stack.id}/stack_entries/#{stack_entry.id}"
+        %span.rest_in_place{ url: uri, object: 'stack_entry', attribute: 'note',
+                             col: '32', rows: '7', max_length: StackEntry::MAX_NOTE_LENGTH }
+          = stack_entry.note
+        - stack_edit_in_place
+      - else
+        %span.stack-entry-note-text= stack_entry.note
   - if editable
-    %td{ width: '18%', valign: 'top' }
-      %a.btn.btn-medium.btn-danger.command.stack_remove{ href: '#',
-                                                       id: "stackit_#{stack_entry.project.vanity_url}" }
-        %i.icon-trash= t :remove, scope: 'stacks.stack_entry'
+    %td.stack-entry-action-cell
+      %a.stack-entry-remove-btn.command.stack_remove{ href: '#', id: "stackit_#{stack_entry.project.vanity_url}" }
+        %i.fa.fa-trash{ 'aria-hidden' => 'true' }
+        = t(:remove, scope: 'stacks.stack_entry')

@@ -1,6 +1,7 @@
 en:
   stacks:
     edit_in_place: "[edit]"
+    sample_stacks_label: "Start with a sample stack:"
     lamp: 'LAMP'
     lamp_desc: 'Linux Kernel, Apache HTTP Server, MySQL, and PHP'
     sash: 'SASH'

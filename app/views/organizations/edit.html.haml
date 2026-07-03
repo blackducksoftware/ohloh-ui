@@ -3,21 +3,29 @@
   page_context[:select_top_menu_nav] = 'select_organizations'
   page_context[:select_footer_nav] = nil
 
-#accounts_edits
-  .margin_left_15
-    %h2.margin_left_15
-      = link_to t('.settings'), settings_organization_path(@organization)
-      %span.account-basics-title= t('.basics')
-    .oh-card.margin_left_15#account-edit-form
-      = form_for @current_object, url: organization_path(@organization) do |f|
-        = render partial: 'fields', locals: { f: f }
+.org-settings-wrap
+  .settings-page-header
+    .settings-page-header-row
+      .settings-page-icon
+        %i.fa.fa-building
+      %h2.settings-page-h2
+        = link_to t('.settings'), settings_organization_path(@organization)
+        = t('.basics')
+    %p.settings-page-description= t('.page_title', name: @organization.name)
 
-.about-account-basics-card.margin_left_15
-  .card-header
-    %h4.card-title
-      %span.soft= t('about')
-      = t('basics')
-    %button.expand-toggle{ type: 'button', 'aria-label' => 'Expand about section' }
-      %i.fa.fa-chevron-down
-  .card-content
-    = render partial: 'about_basics'
+  #account-edit-form
+    = form_for @current_object, url: organization_path(@organization) do |f|
+      = render partial: 'fields', locals: { f: f }
+
+  .about-account-basics-card
+    .card-header
+      .card-header-left
+        .card-header-icon
+          %i.fa.fa-info-circle
+        .card-header-text
+          %h4.card-title= t('about')
+          %p.card-subtitle= t('organizations.edit.basics').delete(':').strip
+      %button.expand-toggle{ type: 'button', 'aria-label' => 'Expand about section' }
+        %i.fa.fa-chevron-down
+    .card-content
+      = render partial: 'about_basics'

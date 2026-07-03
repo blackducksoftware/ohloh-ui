@@ -15,6 +15,167 @@
     font-size: 13px
 
 #enlistment-edit-page
+  // ── Two-column layout ─────────────────────────────────────────────────────────
+  .enl-form-layout
+    display: grid
+    grid-template-columns: 1fr 300px
+    gap: 28px
+    align-items: start
+
+    @media (max-width: 767px)
+      grid-template-columns: 1fr
+
+  .enl-form-sidebar
+    position: sticky
+    top: 24px
+
+    .enl-sidebar-static
+      display: flex
+      flex-direction: column
+      align-items: center
+      text-align: center
+      padding: 20px 16px 16px
+      background: linear-gradient(135deg, rgba(90, 42, 130, 0.06), rgba(123, 63, 181, 0.04))
+      border: 1px solid rgba(90, 42, 130, 0.15)
+      border-radius: 12px
+      margin-bottom: 12px
+      html.dark &
+        background: rgba(90, 42, 130, 0.08)
+        border-color: rgba(90, 42, 130, 0.3)
+
+      .enl-sidebar-icon
+        width: 40px
+        height: 40px
+        border-radius: 12px
+        background: linear-gradient(135deg, #5A2A82, #7B3FB5)
+        display: flex
+        align-items: center
+        justify-content: center
+        margin-bottom: 10px
+        box-shadow: 0 2px 8px rgba(90, 42, 130, 0.3)
+        i
+          color: #ffffff
+          font-size: 16px
+
+      .enl-sidebar-intro
+        font-size: 12px
+        color: #6b7280
+        line-height: 1.6
+        margin: 0
+        html.dark &
+          color: #9ca3af
+
+  // ── Form field rows ──────────────────────────────────────────────────────────
+  .enl-form-row
+    margin-bottom: 20px
+
+  .enl-label
+    display: block
+    font-size: 13px
+    font-weight: 600
+    color: #374151
+    margin-bottom: 6px
+    html.dark &
+      color: #d1d5db
+    &.required::after
+      content: ' *'
+      color: #ef4444
+
+  .enl-hint
+    margin-top: 8px
+    font-size: 12px
+    color: #6b7280
+    line-height: 1.5
+    html.dark &
+      color: #9ca3af
+
+  // ── SCM example code blocks (in sidebar) ─────────────────────────────────────
+  .enl-examples
+    padding: 14px 16px
+    background: #f8fafc
+    border: 1px solid #e5e7eb
+    border-left: 3px solid #5A2A82
+    border-radius: 8px
+    html.dark &
+      background: rgba(255, 255, 255, 0.04)
+      border-color: rgba(90, 42, 130, 0.3)
+      border-left-color: #7B3FB5
+
+    .enl-examples-title
+      font-size: 11px
+      font-weight: 700
+      text-transform: uppercase
+      letter-spacing: 0.06em
+      color: #6b7280
+      margin: 0 0 8px
+      html.dark &
+        color: #9ca3af
+
+    .enl-examples-list
+      list-style: none
+      padding: 0
+      margin: 0
+
+      li
+        font-size: 11px
+        font-family: 'SFMono-Regular', 'Consolas', 'Liberation Mono', monospace
+        color: #374151
+        padding: 3px 0
+        word-break: break-all
+        html.dark &
+          color: #e2e8f0
+
+  // ── Credentials section ───────────────────────────────────────────────────────
+  .enl-credentials
+    margin: 16px 0
+    padding: 16px
+    background: #fffbeb
+    border: 1px solid #fde68a
+    border-radius: 10px
+    html.dark &
+      background: rgba(251, 191, 36, 0.06)
+      border-color: rgba(251, 191, 36, 0.25)
+
+    .enl-credentials-header
+      display: flex
+      align-items: center
+      gap: 8px
+      margin-bottom: 12px
+      font-size: 13px
+      font-weight: 600
+      color: #92400e
+      html.dark &
+        color: #fbbf24
+      i
+        font-size: 14px
+
+  .enl-warning
+    margin-top: 12px
+    font-size: 12px
+    color: #92400e
+    line-height: 1.5
+    html.dark &
+      color: #fcd34d
+    i
+      margin-right: 4px
+      color: #d97706
+      html.dark &
+        color: #fbbf24
+
+  // ── Monospace textarea ───────────────────────────────────────────────────────
+  .enl-textarea
+    font-family: 'SFMono-Regular', 'Consolas', 'Liberation Mono', monospace !important
+    font-size: 13px !important
+    line-height: 1.6 !important
+    resize: vertical
+
+  // ── Form actions ─────────────────────────────────────────────────────────────
+  .enl-form-actions
+    margin-top: 24px
+    display: flex
+    align-items: center
+    gap: 12px
+
   // Input fields — matches project basics form-control style
   .form-control
     box-sizing: border-box !important
@@ -41,19 +202,19 @@
       box-shadow: 0 0 0 4px rgba(14, 75, 122, 0.1) !important
       background: #ffffff !important
     html.dark &
-      background: #1D0631 !important
+      background: #0d1117 !important
       color: #ffffff !important
-      border-color: #5A2A82 !important
+      border-color: #2a2a2a !important
       &::placeholder
         color: #6b7280 !important
         opacity: 1
       &:hover
         box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important
-        border-color: #6b7280 !important
+        border-color: #c084fc !important
       &:focus, &:focus-visible
-        border-color: #ffb91a !important
-        background: #1D0631 !important
-        box-shadow: 0 0 0 4px rgba(255, 185, 26, 0.1) !important
+        border-color: #5A2A82 !important
+        background: #0d1117 !important
+        box-shadow: 0 0 0 4px rgba(90, 42, 130, 0.1) !important
         outline: none !important
 
   // GitHub URL field — input-group add-on + input side by side
@@ -75,7 +236,7 @@
       white-space: nowrap
       flex-shrink: 0
       html.dark &
-        background: #2D1548
+        background: #151b23
         border-color: #5A2A82
         color: #9ca3af
 
@@ -118,7 +279,7 @@
   margin-bottom: 24px
 
   html.dark &
-    background: #2D1548
+    background: #151b23
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.24), 0 1px 2px rgba(0, 0, 0, 0.48)
 
   .enlistment-card-item
@@ -162,7 +323,7 @@
           text-decoration: none
 
           html.dark &
-            color: #ffb91a
+            color: #5A2A82
 
       .expand-toggle
         background: none
@@ -222,7 +383,7 @@
             text-decoration: none
 
             html.dark &
-              color: #ffb91a
+              color: #5A2A82
 
     &.expanded
       .card-item-header
@@ -240,90 +401,73 @@
   .field_with_errors
     display: block
 
-// About Code Locations collapsible card
-.about-code-locations-card
-  background: #ffffff
-  border-radius: 16px
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24)
-  overflow: hidden
-  margin-top: 24px
+// About Code Locations — now uses the shared .about-account-basics-card pattern
+// (global styles in accounts/edit.sass; only page-specific overrides here)
+.about-account-basics-card
+  max-width: none
+  margin: 24px 0 0
+  padding: 0
 
+// ── Ignore/Allow file about section grid ──────────────────────────────────────
+.enl-about-ignore-grid
+  display: grid
+  grid-template-columns: 1fr 1fr
+  gap: 24px
+  padding: 20px 24px 24px
+
+  @media (max-width: 767px)
+    grid-template-columns: 1fr
+
+.enl-about-section-label
+  font-size: 12px
+  font-weight: 700
+  text-transform: uppercase
+  letter-spacing: 0.06em
+  color: #6b7280
+  margin: 0 0 10px
   html.dark &
-    background: #2D1548
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.24), 0 1px 2px rgba(0, 0, 0, 0.48)
+    color: #9ca3af
 
-  .card-header
-    display: flex
-    align-items: center
-    justify-content: space-between
-    padding: 16px 24px
-    cursor: pointer
-    transition: background-color 0.2s
+.enl-about-tips-list
+  padding-left: 18px
+  margin: 0
+  li
+    font-size: 13px
+    color: #374151
+    line-height: 1.7
+    margin-bottom: 4px
+    html.dark &
+      color: #d1d5db
+  code
+    font-size: 12px
+    font-family: 'SFMono-Regular', 'Consolas', 'Liberation Mono', monospace
+    background: rgba(90, 42, 130, 0.08)
+    color: #5A2A82
+    padding: 1px 5px
+    border-radius: 4px
+    html.dark &
+      background: rgba(90, 42, 130, 0.2)
+      color: #c084fc
 
-    &:hover
-      background-color: #f9fafb
-
-      html.dark &
-        background-color: rgba(255, 255, 255, 0.05)
-
-    .card-title
-      margin: 0
-      font-size: 16px
-      font-weight: 600
-      color: #5A2A82
-      flex: 1
-
-      html.dark &
-        color: #ffb91a
-
-      .soft
-        margin-right: 4px
-
-    .expand-toggle
-      background: none
-      border: none
-      padding: 8px
-      cursor: pointer
-      color: #6b7280
-      transition: transform 0.2s
-      margin-left: 12px
-
-      html.dark &
-        color: #9ca3af
-
-      i
-        font-size: 16px
-
-  .card-content
-    display: none
-    padding: 0 24px 16px
-
-  &.expanded
-    .card-header
-      .expand-toggle
-        transform: rotate(180deg)
-
-    .card-content
-      display: block
-
-  .about-content-wrapper
-    display: flex
-    gap: 40px
-
-    @media (max-width: 768px)
-      flex-direction: column
-      gap: 24px
-
-    ul
-      list-style: disc
-      padding-left: 20px
-
-      li
-        margin-bottom: 8px
-        line-height: 1.6
-
-        strong
-          font-weight: 600
+.enl-example-pre
+  font-size: 12px
+  font-family: 'SFMono-Regular', 'Consolas', 'Liberation Mono', monospace
+  background: #f8fafc
+  border: 1px solid #e5e7eb
+  border-left: 3px solid #5A2A82
+  border-radius: 8px
+  padding: 14px 16px
+  color: #374151
+  white-space: pre
+  word-break: break-all
+  overflow-x: auto
+  margin: 0
+  line-height: 1.6
+  html.dark &
+    background: rgba(255, 255, 255, 0.04)
+    border-color: rgba(90, 42, 130, 0.3)
+    border-left-color: #7B3FB5
+    color: #e2e8f0
 
 .new-code-location-container
   display: flex
@@ -391,7 +535,7 @@
   box-shadow: 0 2px 8px rgba(251, 191, 36, 0.15)
 
   html.dark &
-    background: #2D1548
+    background: #151b23
     border-color: rgba(251, 191, 36, 0.3)
 
   .enlistment-banner__strip
@@ -422,7 +566,7 @@
   box-shadow: 0 2px 8px rgba(90, 42, 130, 0.1)
 
   html.dark &
-    background: #2D1548
+    background: #151b23
     border-color: rgba(90, 42, 130, 0.5)
 
   .enlistment-banner__strip
@@ -448,7 +592,7 @@
   box-shadow: 0 2px 8px rgba(220, 38, 38, 0.1)
 
   html.dark &
-    background: #2D1548
+    background: #151b23
     border-color: rgba(220, 38, 38, 0.4)
 
   .enlistment-banner__strip

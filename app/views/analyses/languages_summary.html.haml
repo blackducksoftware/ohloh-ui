@@ -3,21 +3,28 @@
 
 - page_context[:select_footer_nav] = :languages
 
-.project_content_title
-  %h2.pull-left= t('.title')
+.lang-summary-page
+  .settings-page-header
+    .settings-page-header-row
+      .settings-page-icon
+        %i.fa.fa-bar-chart
+      %h2.settings-page-h2
+        = t('.title')
+    %p.settings-page-description= @project.name
 
-- if @languages_breakdown.any?
-  %br
-  = render partial: 'projects_languages_details', locals: { languages_breakdown: @languages_breakdown }
-  .clearfix
+  - if @languages_breakdown.any?
+    = render partial: 'projects_languages_details', locals: { languages_breakdown: @languages_breakdown }
 
-  .col-md-12.default_grid_padding.padding_one_top
-    = render partial: 'analysis_graphs', locals: { project: @project, analysis: @analysis }
+    .oh-card.lang-graphs-card
+      = render partial: 'analysis_graphs', locals: { project: @project, analysis: @analysis }
 
-  .col-md-12.padding_one_top
-    = render partial: 'language_table', locals: { languages_breakdown: @languages_breakdown }
+    .oh-card.lang-breakdown-card
+      = render partial: 'language_table', locals: { languages_breakdown: @languages_breakdown }
 
-- elsif @analysis.present?
-  %p= t('.no_recognized_languages')
-- else
-  = render partial: 'projects/show/no_analysis_summary'
+  - elsif @analysis.present?
+    .oh-card.lang-empty-card
+      .lang-empty-state
+        %i.fa.fa-info-circle.lang-empty-icon
+        %p.lang-empty-text= t('.no_recognized_languages')
+  - else
+    = render partial: 'projects/show/no_analysis_summary'

@@ -4,54 +4,77 @@
 
 = render partial: 'layouts/partials/alert'
 
-.row
-  .col-md-6.col-md-offset-1
-    %h2.float_left
-      = link_to t(:settings), [:settings, @parent]
-      &#58;<strong> #{t('permissions.permissions')}</strong>
+#permissions-edit-page{ class: "permissions-for-#{@parent.class.name.downcase}" }
+  .settings-page-header
+    .settings-page-header-row
+      .settings-page-icon
+        %i.fa.fa-lock
+      %h2.settings-page-h2
+        = link_to t(:settings), [:settings, @parent]
+        %span.account-basics-sep :
+        = t('permissions.permissions')
+    %p.settings-page-description= t('.page_title', name: @parent.name)
 
-.row
-  .col-md-6.col-md-offset-1
-    .oh-card
-      - url = polymorphic_path([:permissions, @parent])
-      = form_for @permission, as: :permission, url: url, html: { method: :put, id: 'permission_show' } do |f|
-        %fieldset
+  .project-edit-layout
+    .project-edit-main
+      .edit-section
+        .edit-section-header
+          .edit-section-icon
+            %i.fa.fa-lock
+          %h3.edit-section-title= t('permissions.permissions')
+
+        - url = polymorphic_path([:permissions, @parent])
+        = form_for @permission, as: :permission, url: url, html: { method: :put, id: 'permission_show' } do |f|
           = hidden_field_tag 'permission[baseline_remainder]', @permission.remainder.to_s
-          .control-group
-            %label.control-label= t 'permissions.show.settings_may_be_changed_by'
-            .controls
-              %label.radio{ style: 'padding-top: 7px;' }
+
+          .edit-field-group
+            %label.edit-field-label= t 'permissions.show.settings_may_be_changed_by'
+            .permissions-radio-group
+              %label.permissions-radio-option
                 = f.radio_button :remainder, 'false', disabled: !current_user_can_manage?
-                = t 'permissions.show.everyone'
-              %p.help-block= t 'permissions.show.anyone_can_edit_settings'
-              %label.radio{ style: 'padding-top: 5px;' }
+                %span= t 'permissions.show.everyone'
+              %p.permissions-help-text= t 'permissions.show.anyone_can_edit_settings'
+              %label.permissions-radio-option
                 = f.radio_button :remainder, 'true', disabled: !current_user_can_manage?
-                = t 'permissions.show.managers_only'
-              %p.help-block
+                %span= t 'permissions.show.managers_only'
+              %p.permissions-help-text
                 - path = @parent.is_a?(Project) && project_managers_path(@parent)
                 - path ||= list_managers_organization_path(@parent)
                 - linky = link_to t('permissions.show.manager'), path, target: '_blank'
                 != t 'permissions.show.only_an_approved_manager', linky: linky
 
-          .actions
+          .edit-form-actions
             - if current_user_can_manage?
-              = button_tag t(:save_changes), type: 'submit', id: 'submit', class: 'btn btn-sm btn-primary', style: 'display: none'
+              = button_tag t(:save_changes), type: 'submit', id: 'submit', class: 'edit-save-btn permissions-save-btn'
             - else
-              = disabled_button t(:save_changes), class: 'btn-sm btn-primary'
-.row
-  .col-md-6.col-md-offset-1
-    .about-account-basics-card
-      .card-header
-        %h4.card-title
-          %span.soft= t 'permissions.show.about_permissions_1'
-          = t 'permissions.show.about_permissions_2'
-        %button.expand-toggle{ type: 'button', 'aria-label' => 'Expand about section' }
-          %i.fa.fa-chevron-down
-      .card-content
-        .about-content-wrapper
-          .col-md-10
+              = disabled_button t(:save_changes), class: 'edit-save-btn'
+
+    .project-edit-aside
+      .about-account-basics-card
+        .card-header
+          .card-header-left
+            .card-header-icon
+              %i.fa.fa-lock
+            .card-header-text
+              %h4.card-title= t('permissions.show.about_permissions_1') + ' ' + t('permissions.show.about_permissions_2')
+              %p.card-subtitle= t('permissions.permissions')
+          %button.expand-toggle{ type: 'button', 'aria-label' => 'Toggle about section' }
+            %i.fa.fa-chevron-down
+        .card-content
+          .tips-grid
             - parent_name = @parent.class.name
-            %ul
-              %li= t 'permissions.show.help_1', name: parent_name
-              %li= t 'permissions.show.help_2', name: parent_name.downcase
-              %li= t 'permissions.show.help_3', upper_name: parent_name, name: parent_name.downcase
+            .tip-item
+              .tip-icon
+                %i.fa.fa-info-circle
+              .tip-body
+                %p.tip-text= t 'permissions.show.help_1', name: parent_name
+            .tip-item
+              .tip-icon
+                %i.fa.fa-users
+              .tip-body
+                %p.tip-text= t 'permissions.show.help_2', name: parent_name.downcase
+            .tip-item
+              .tip-icon
+                %i.fa.fa-shield
+              .tip-body
+                %p.tip-text= t 'permissions.show.help_3', upper_name: parent_name, name: parent_name.downcase

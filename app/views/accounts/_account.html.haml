@@ -18,7 +18,7 @@
           %p.people-card__meta= t '.member_since', since: account.created_at.strftime('%B %Y')
       .people-card__commits
         - if vf.commits > 0
-          .people-card__commits-count= vf.commits
+          .people-card__commits-count= number_with_delimiter(vf.commits)
           .people-card__commits-label
             = link_to pluralize_without_count(vf.commits, 'Commit'), account_positions_path(account)
         - else

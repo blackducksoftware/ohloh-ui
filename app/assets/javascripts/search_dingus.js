@@ -128,7 +128,7 @@ var ohloh = (function builder($) {
           var $input = $('#query');
           $input.val('');
           $(this).hide();
-          $input.focus();
+          $input.closest('form').submit();
         });
 
         if( (/\?[query]=.{1,}/ig).test(window.location.href) ) {

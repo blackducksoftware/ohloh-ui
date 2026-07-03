@@ -1,14 +1,24 @@
-.vulnerability_filter_wrapper.vulnerability_filter_version
-  %span.title= t('.version')
+.vuln-filter-group
+  %label.vuln-filter-label{ for: 'vulnerability_filter_version' }= t('.version')
   = select_tag 'vulnerability[filter][version]',
     options_from_collection_for_select(sort_releases_by_version_number(@minor_versions).presence || no_versions_available,
       'id', 'version', filter_version_param),
-      class: 'ctrl vulnerability_filter'
-.vulnerability_filter_wrapper.vulnerability_filter_severity
-  %span.title= t('.severity')
+      class: 'ctrl vulnerability_filter vuln-select',
+      id: 'vulnerability_filter_version',
+      'aria-label': t('.version')
+
+.vuln-filter-group
+  %label.vuln-filter-label{ for: 'vulnerability_filter_severity' }= t('.severity')
   = select_tag 'vulnerability[filter][severity]', options_for_severities_filter,
-      include_blank: 'All', class: 'ctrl vulnerability_filter', disabled: @minor_versions.blank?
-.vulnerability_filter_wrapper.vulnerability_filter_severity
-  %span.title Type
+      include_blank: 'All', class: 'ctrl vulnerability_filter vuln-select',
+      id: 'vulnerability_filter_severity',
+      disabled: @minor_versions.blank?,
+      'aria-label': t('.severity')
+
+.vuln-filter-group
+  %label.vuln-filter-label{ for: 'vulnerability_filter_cve_id' } Type
   = select_tag 'vulnerability[filter][cve_id]', options_for_cve_filter,
-      include_blank: 'All', class: 'ctrl vulnerability_filter', disabled: @minor_versions.blank?
+      include_blank: 'All', class: 'ctrl vulnerability_filter vuln-select',
+      id: 'vulnerability_filter_cve_id',
+      disabled: @minor_versions.blank?,
+      'aria-label': 'Type'

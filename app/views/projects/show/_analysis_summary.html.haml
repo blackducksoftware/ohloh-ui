@@ -22,9 +22,8 @@
     .card-content
       %h3.section-header= t('.activity')
 
-      .chart-header
-        %h4.chart-title
-          = link_to t('.commits_per_month'), summary_project_commits_path(@project)
+      %h4.chart-title
+        = link_to t('.commits_per_month'), summary_project_commits_path(@project)
 
 
       - if @analysis.present?

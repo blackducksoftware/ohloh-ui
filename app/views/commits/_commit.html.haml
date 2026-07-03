@@ -1,5 +1,7 @@
 - if search_dingus
   = render 'shared/search_dingus/commits_or_contributor_search', items: @commits, type: :commits
+  - if @commits.respond_to?(:total_entries)
+    = render 'shared/search_dingus/page_entries_info', collection: @commits, total_count: @commits.total_entries
 .table-responsive
   %table.table.table-striped.table-condensed
     %thead

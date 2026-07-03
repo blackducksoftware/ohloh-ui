@@ -4,31 +4,16 @@
   margin-left: 24px
   margin-right: 24px
 
-  .license-show-breadcrumb
-    font-size: 18px
-    color: #6b7280
+  .settings-page-header
+    margin-top: 0
     margin-bottom: 16px
-    display: flex
-    align-items: center
-    gap: 6px
-    a
-      color: #5A2A82
-      text-decoration: none
-      &:hover
-        text-decoration: underline
-    .license-show-sep
-      color: #d1d5db
+
+  .settings-page-h2
     .license-show-name
-      color: #374151
-      font-weight: 500
-    html.dark &
-      color: #9ca3af
-      a
-        color: #ffb91a
-      .license-show-sep
-        color: #4b5563
-      .license-show-name
-        color: #d1d5db
+      color: #000000
+      font-weight: 600
+      html.dark &
+        color: #ffff
 
   .license-show-header
     display: flex
@@ -44,7 +29,7 @@
   .license-show-title
     font-size: 22px
     font-weight: 700
-    color: #111827
+    color: #5A2A82
     margin: 0
     display: flex
     align-items: center
@@ -55,9 +40,9 @@
       font-size: 18px
       flex-shrink: 0
     html.dark &
-      color: #f3f4f6
+      color: #ffff
       .fa
-        color: #ffb91a
+        color: #ffff
 
   .license-show-actions
     display: flex
@@ -104,7 +89,7 @@
     html.dark &
       color: #9ca3af
       a
-        color: #ffb91a
+        color: #5A2A82
 
   .license-url-block
     display: flex
@@ -128,7 +113,7 @@
       border-top-color: rgba(255, 255, 255, 0.06)
       color: #9ca3af
       a
-        color: #ffb91a
+        color: #5A2A82
 
   .license-show-footer
     padding: 16px 24px
@@ -159,6 +144,34 @@
   margin-right: 24px
   margin-top: 24px
 
+  .settings-page-header
+    margin-top: 0
+    margin-left: -24px
+    margin-right: -24px
+    padding-left: 24px
+    padding-right: 24px
+
+  .settings-page-h2
+    a
+      color: #5A2A82 !important
+      text-decoration: none
+      html.dark &
+       color: #c084fc !important
+      &:hover
+        text-decoration: underline
+
+  .project-edit-layout
+    margin-bottom: 24px
+
+  .project-edit-aside
+    .about-account-basics-card
+      margin: 0
+      max-width: none
+
+  .help-block
+    html.dark &
+      color: #9ca3af
+
   .license-edit-breadcrumb
     font-size: 18px
     color: #6b7280
@@ -177,7 +190,7 @@
     html.dark &
       color: #9ca3af
       a
-        color: #ffb91a
+        color: #5A2A82
       .license-edit-sep
         color: #6b7280
 
@@ -187,7 +200,7 @@
   .license-edit-title
     font-size: 24px
     font-weight: 700
-    color: #111827
+    color: #5A2A82
     margin: 0
     display: flex
     align-items: center
@@ -196,9 +209,9 @@
       color: #5A2A82
       font-size: 20px
     html.dark &
-      color: #f3f4f6
+      color: #c084fc
       .fa
-        color: #ffb91a
+        color: #c084fc
 
   label.checkbox
     display: flex
@@ -240,19 +253,19 @@
       box-shadow: 0 0 0 4px rgba(14, 75, 122, 0.1) !important
       background: #ffffff !important
     html.dark &
-      background: #1D0631 !important
+      background: #0d1117 !important
       color: #ffffff !important
-      border-color: #5A2A82 !important
+      border-color: rgba(255, 255, 255, 0.15) !important
       &::placeholder
         color: #6b7280 !important
         opacity: 1
       &:hover
         box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important
-        border-color: #6b7280 !important
+        border-color: rgba(255, 255, 255, 0.25) !important
       &:focus, &:focus-visible
-        border-color: #ffb91a !important
-        background: #1D0631 !important
-        box-shadow: 0 0 0 4px rgba(255, 185, 26, 0.1) !important
+        border-color: #6d35a0 !important
+        background: #0d1117 !important
+        box-shadow: 0 0 0 4px rgba(90, 42, 130, 0.1) !important
         outline: none !important
 
   textarea.form-control.edit-description
@@ -278,8 +291,8 @@
       white-space: nowrap
       flex-shrink: 0
       html.dark &
-        background: #2D1548
-        border-color: #5A2A82
+        background: #151b23
+        border-color: rgba(255, 255, 255, 0.15)
         color: #9ca3af
 
     .form-control
@@ -373,7 +386,7 @@
     html.dark &
       color: #f3f4f6
       .fa
-        color: #ffb91a
+        color: #ffff
 
   .licenses-grid
     display: grid
@@ -399,7 +412,7 @@
     font-size: 16px
     flex-shrink: 0
     html.dark &
-      color: #ffb91a
+      color: #ffff
 
   .license-card-link
     font-size: 15px
@@ -413,9 +426,9 @@
       color: #5A2A82
       text-decoration: none
     html.dark &
-      color: #e5e7eb
+      color: #c084fc !important
       &:hover
-        color: #ffb91a
+        color: #c084fc !important
 
   .licenses-empty-state
     display: flex
@@ -445,4 +458,4 @@
       .licenses-empty-link
         color: #9ca3af
       .licenses-empty-link a
-        color: #ffb91a
+        color: #5A2A82

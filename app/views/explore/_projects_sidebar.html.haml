@@ -7,9 +7,9 @@
     .card-body
       %form.sidebar-search-form{ action: projects_path, role: 'search' }
         .search-input-wrapper
-          = text_field_tag :query, params[:query], placeholder: t('.enter_search_string', default: 'Enter search string'), class: 'sidebar-search-input'
-          %button.search-icon-btn{ type: 'submit' }
-            %i.fa.fa-search
+          = text_field_tag :query, params[:query], placeholder: t('.enter_search_string', default: 'Enter search string'), class: 'sidebar-search-input', 'aria-label' => t('.search_projects', default: 'Search Projects')
+          %button.search-icon-btn{ type: 'submit', 'aria-label' => t('.search_projects', default: 'Search Projects') }
+            %i.fa.fa-search{ aria: { hidden: 'true' } }
 
   / Explore Tags Section
   .sidebar-card.tags-card
@@ -28,9 +28,9 @@
 
       / Custom Tag Input with icon inside
       .tag-input-wrapper
-        = text_field_tag :custom_tag, '', placeholder: t('.enter_different_tag', default: 'Enter different tag'), class: 'tag-input'
-        %button.tag-search-btn{ type: 'button' }
-          %i.fa.fa-search
+        = text_field_tag :custom_tag, '', placeholder: t('.enter_different_tag', default: 'Enter different tag'), class: 'tag-input', 'aria-label' => t('.explore_tags', default: 'Explore Tags')
+        %button.tag-search-btn{ type: 'button', 'aria-label' => t('.explore_tags', default: 'Explore Tags') }
+          %i.fa.fa-search{ aria: { hidden: 'true' } }
 
   / Compare Section
   .sidebar-card.compare-card
@@ -40,9 +40,9 @@
     .card-body.compare-body
       %form.compare-form{ action: '/p/_compare', method: :get }
         .compare-inputs
-          = text_field_tag 'project_0', '', placeholder: t('.enter_project_name', default: 'Enter a project name'), class: 'compare-input'
-          = text_field_tag 'project_1', '', placeholder: t('.enter_project_name', default: 'Enter a project name'), class: 'compare-input'
-          = text_field_tag 'project_2', '', placeholder: t('.enter_project_name', default: 'Enter a project name'), class: 'compare-input'
+          = text_field_tag 'project_0', '', placeholder: t('.enter_project_name', default: 'Enter a project name'), class: 'compare-input', 'aria-label' => t('.enter_project_name', default: 'Enter a project name') + ' 1'
+          = text_field_tag 'project_1', '', placeholder: t('.enter_project_name', default: 'Enter a project name'), class: 'compare-input', 'aria-label' => t('.enter_project_name', default: 'Enter a project name') + ' 2'
+          = text_field_tag 'project_2', '', placeholder: t('.enter_project_name', default: 'Enter a project name'), class: 'compare-input', 'aria-label' => t('.enter_project_name', default: 'Enter a project name') + ' 3'
 
         %button.btn-compare{ type: 'submit' }= t('.compare_btn', default: 'Compare')
 
@@ -54,9 +54,9 @@
     .card-body.similar-body
       %form.similar-form.autocomplete-submit{ rel: 'similar_project_jump' }
         .search-input-wrapper
-          = text_field_tag :project, '', placeholder: t('.enter_project_name', default: 'Enter a project name'), class: 'sidebar-search-input autocompletable', autocomplete: 'off', data: { source: '/autocompletes/project', select: 'submitFormWithId' }
-          %button.search-icon-btn{ type: 'button' }
-            %i.fa.fa-search
+          = text_field_tag :project, '', placeholder: t('.enter_project_name', default: 'Enter a project name'), class: 'sidebar-search-input autocompletable', autocomplete: 'off', 'aria-label' => t('.similar_projects_to', default: 'Similar Projects to:'), data: { source: '/autocompletes/project', select: 'submitFormWithId' }
+          %button.search-icon-btn{ type: 'button', 'aria-label' => t('.similar_projects_to', default: 'Similar Projects to:') }
+            %i.fa.fa-search{ aria: { hidden: 'true' } }
         %span.error.hidden= t('.invalid_select', default: 'Invalid selection')
 
   / Add a Project Section

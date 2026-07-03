@@ -1,6 +1,7 @@
 .tags
   .tag
-    @include default-tag-colors
+    background-color: #5A2A82
+    color: #ffff
     cursor: pointer
     display: inline-block
     font-size: 11px
@@ -13,38 +14,53 @@
 // Tag Index page (browse by tag)
 #tag-index-page
   width: 95%
+  margin-top: 32px
 
   .tag-index-header
     display: flex
     align-items: center
     flex-wrap: wrap
     gap: 12px
-    margin-bottom: 20px
-    padding-bottom: 16px
-    border-bottom: 1px solid #e5e7eb
+    margin-bottom: 24px
+    padding: 20px 24px
+    background: linear-gradient(135deg, #f5f3ff 0%, #ede9f7 100%)
+    border-radius: 16px
+    border: 1px solid #c4b5e8
+    box-shadow: 0 1px 3px rgba(90, 42, 130, 0.08)
     html.dark &
-      border-bottom-color: rgba(255, 255, 255, 0.1)
+      background: linear-gradient(135deg, #1e1428 0%, #151b23 100%)
+      border-color: rgba(192, 132, 252, 0.3)
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3)
 
     h1
       margin: 0
       font-size: 22px
-      font-weight: 600
+      font-weight: 700
       color: #111827
+      display: flex
+      align-items: center
+      gap: 10px
       html.dark &
         color: #ffffff
 
   .tag-index-breadcrumb
     color: #5A2A82
     text-decoration: none
+    font-weight: 600
     &:hover
       text-decoration: underline
+      color: #6d35a0
     html.dark &
-      color: #ffb91a
+      color: #c084fc !important
+      &:hover
+        color: #d8b4fe
 
   .tag-index-breadcrumb-sep
     color: #9ca3af
-    margin: 0 6px
+    margin: 0 4px
     font-weight: 300
+    html.dark &
+      color: #6b7280
 
   .tag-index-pills
     display: flex
@@ -54,20 +70,18 @@
 
     .tag-index-pill
       display: inline-block
-      padding: 4px 12px
-      background: #ede9f7
-      border: 1px solid #c4b5e8
+      padding: 5px 14px
+      background: #5A2A82
+      border: 1px solid #5A2A82
       border-radius: 20px
       font-size: 12px
       font-weight: 600
-      color: #5A2A82
+      color: #ffffff
+      letter-spacing: 0.02em
       html.dark &
-        background: #2D1548
-        border-color: #5A2A82
-        color: #ffb91a
-
-  .oh-card.tag-index-body
-    padding: 24px
+        background: rgba(192, 132, 252, 0.15)
+        border-color: #c084fc
+        color: #c084fc
 
   .tag-index-hint
     color: #6b7280
@@ -93,6 +107,7 @@
 
   @media (max-width: 767px)
     width: 100%
+    margin-top: 16px
     .tag-index-header
       flex-direction: column
       align-items: flex-start
@@ -105,6 +120,21 @@
 
   .oh-card
     padding: 24px
+    html.dark &
+      background: #151b23 !important
+      border-color: rgba(192, 132, 252, 0.2) !important
+
+  %h1
+    html.dark &
+      color: #ffffff !important
+
+  .control-label
+    html.dark &
+      color: #d1d5db !important
+
+  .help-block
+    html.dark &
+      color: #9ca3af !important
 
   .tag-cloud-help
     p
@@ -139,19 +169,19 @@
       box-shadow: 0 0 0 4px rgba(90, 42, 130, 0.1) !important
       background: #ffffff !important
     html.dark &
-      background: #1D0631 !important
+      background: #0d1117 !important
       color: #ffffff !important
-      border-color: #5A2A82 !important
+      border-color: #2a2a2a !important
       &::placeholder
         color: #6b7280 !important
         opacity: 1
       &:hover
         box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2) !important
-        border-color: #6b7280 !important
+        border-color: #c084fc !important
       &:focus, &:focus-visible
-        border-color: #ffb91a !important
-        background: #1D0631 !important
-        box-shadow: 0 0 0 4px rgba(255, 185, 26, 0.1) !important
+        border-color: #c084fc !important
+        background: #0d1117 !important
+        box-shadow: 0 0 0 4px rgba(192, 132, 252, 0.15) !important
         outline: none !important
 
 .tag-cloud-grid
@@ -181,14 +211,14 @@
     text-decoration: none
     box-shadow: 0 2px 8px rgba(90, 42, 130, 0.25)
   html.dark &
-    background: #2D1548
-    border-color: #5A2A82
-    color: #ffb91a
+    background: #151b23
+    border-color: rgba(192, 132, 252, 0.4)
+    color: #c084fc
     &:hover
-      background: #ffb91a
-      color: #1D0631
-      border-color: #ffb91a
-      box-shadow: 0 2px 8px rgba(255, 185, 26, 0.25)
+      background: #5A2A82
+      color: #ffffff
+      border-color: #c084fc
+      box-shadow: 0 2px 8px rgba(192, 132, 252, 0.25)
 
   .tag-cloud-count
     font-size: 11px
@@ -205,39 +235,101 @@
 // ──────────────────────────────────────────────────────────────────────────────
 
 #project-tags-page
-  padding: 24px 0
+  @media (max-width: 639px)
+    padding: 0 16px 24px
 
-  // ── Breadcrumb header ──
+  .settings-page-header
+    margin-top: 16px
 
-  .project-tags-header
-    margin-bottom: 24px
+  // Two-column grid inside main
+  .tags-page-grid
+    display: grid
+    grid-template-columns: 1fr 1fr
+    gap: 20px
+    align-items: start
 
-  .project-tags-title
-    font-size: 22px
-    font-weight: 700
-    color: #111827
-    margin: 0 0 8px 0
+    @media (max-width: 767px)
+      grid-template-columns: 1fr
+
+  // Section headers: teal variant for related projects
+  .edit-section-icon--teal
+    background: linear-gradient(135deg, #0d9488, #059669) !important
+
+  // Remaining tags badge
+  .tags-remaining-badge
+    margin-left: auto
+    display: inline-flex
+    align-items: center
+    gap: 4px
+    font-size: 12px
+    font-weight: 600
+    color: #5A2A82
+    background: rgba(90, 42, 130, 0.08)
+    border: 1px solid rgba(90, 42, 130, 0.2)
+    border-radius: 20px
+    padding: 2px 10px
+
+    html.dark &
+      color: #c084fc
+      background: rgba(192, 132, 252, 0.1)
+      border-color: rgba(192, 132, 252, 0.3)
+
+    &--warn
+      color: #dc2626
+      background: rgba(220, 38, 38, 0.08)
+      border-color: rgba(220, 38, 38, 0.25)
+
+      html.dark &
+        color: #fca5a5
+        background: rgba(220, 38, 38, 0.12)
+        border-color: rgba(220, 38, 38, 0.3)
+
+  // Empty state
+  .tags-empty-state
+    color: #6b7280
+    font-size: 13px
+    font-style: italic
     display: flex
     align-items: center
     gap: 8px
-    flex-wrap: wrap
+    padding: 12px 0
+    margin-bottom: 12px
+
+    .fa
+      font-size: 16px
+      color: #d1d5db
 
     html.dark &
-      color: #ffffff
+      color: #d1d5db
 
-    a
-      color: #5A2A82
-      text-decoration: none
+  // Input wrapper with icon
+  .tags-input-wrapper
+    position: relative
+    flex: 1
+    min-width: 160px
+
+    .tags-input-icon
+      position: absolute
+      left: 14px
+      top: 50%
+      transform: translateY(-50%)
+      color: #9ca3af
+      font-size: 13px
+      pointer-events: none
+      z-index: 2
 
       html.dark &
-        color: #ffb91a
+        color: #6b7280
 
-      &:hover
-        text-decoration: underline
+    .form-control
+      padding-left: 38px !important
 
-    &__sep
-      color: #9ca3af
-      font-weight: 400
+  // Submit btn sizing tweak for tag form
+  .tags-submit-btn
+    height: 42px
+    padding: 0 20px !important
+    white-space: nowrap
+    flex-shrink: 0
 
   // ── Section titles ──
 
@@ -249,7 +341,7 @@
     margin: 0 0 16px 0
 
     html.dark &
-      color: #ffb91a
+      color: #c084fc
 
   // ── Tags remaining count ──
 
@@ -286,9 +378,9 @@
     transition: background 0.15s, border-color 0.15s
 
     html.dark &
-      background: #2D1548
-      border-color: #5A2A82
-      color: #ffb91a
+      background: #1e2433
+      border-color: rgba(192, 132, 252, 0.4)
+      color: #c084fc
 
     &:hover
       background: #ddd6f3
@@ -298,13 +390,19 @@
         background: #3d1f5c
         border-color: #7c4dba
 
+    &__icon
+      font-size: 9px
+      opacity: 0.5
+
     &__remove
       font-size: 10px
-      opacity: 0.6
+      opacity: 0.5
       margin-left: 2px
+      transition: opacity 0.15s, color 0.15s
 
       &:hover
         opacity: 1
+        color: #dc2626
 
   // ── Add tag form ──
 
@@ -347,16 +445,16 @@
           box-shadow: 0 0 0 3px rgba(90, 42, 130, 0.1)
 
         html.dark &
-          background: #1D0631
+          background: #0d1117
           color: #ffffff
-          border-color: #5A2A82
+          border-color: rgba(255, 255, 255, 0.15)
 
           &::placeholder
             color: #6b7280
 
           &:focus
-            border-color: #ffb91a
-            box-shadow: 0 0 0 3px rgba(255, 185, 26, 0.1)
+            border-color: #5A2A82
+            box-shadow: 0 0 0 3px rgba(90, 42, 130, 0.1)
 
     &__submit
       height: 42px
@@ -390,7 +488,7 @@
         text-decoration: none
 
         html.dark &
-          color: #ffb91a
+          color: #c084fc
 
         &:hover
           text-decoration: underline
@@ -404,9 +502,6 @@
 
   @media (max-width: 767px)
     padding: 16px 0
-
-    .project-tags-title
-      font-size: 17px
 
     .col-md-6
       margin-bottom: 16px

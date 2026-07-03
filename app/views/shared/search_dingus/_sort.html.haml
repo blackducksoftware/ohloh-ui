@@ -23,10 +23,10 @@
 - elsif filter_type == :radiobutton
   .search-section
     %label.radio.inline
-      = radio_button_tag('find_by', 'name', params[:find_by] != 'email')
+      = radio_button_tag('find_by', 'name', params[:find_by] != 'email', onchange: 'this.form.submit()')
       = t('.by_name')
     %label.radio.inline
-      = radio_button_tag('find_by', 'email', params[:find_by] == 'email')
+      = radio_button_tag('find_by', 'email', params[:find_by] == 'email', onchange: 'this.form.submit()')
       = t('.by_email')
 
 - elsif sort_context.present?

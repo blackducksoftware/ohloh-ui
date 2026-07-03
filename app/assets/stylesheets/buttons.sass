@@ -79,20 +79,22 @@ button.btn:active, a.btn:active
 
   // Dark mode
   .dark &
-    background-color: #2D1548 !important
+    background-color: #5A2A82 !important
     border-color: #5A2A82 !important
-    color: #d1d5db !important
+    color: #ffffff !important
+    text-shadow: none !important
 
     &:hover
-      border-color: #ffb91a !important
-      background-color: #2D1548 !important
+      background-color: #6d35a0 !important
+      border-color: #6d35a0 !important
+      color: #ffffff !important
 
     &.active
-      background-color: #1D0631 !important
-      border-color: #ffb91a !important
+      background-color: #5A2A82 !important
+      border-color: #5A2A82 !important
 
     &.disabled, &[disabled]
-      background-color: #1D0631 !important
+      background-color: #0d1117 !important
       color: #6b7280 !important
       opacity: 0.6 !important
 
@@ -127,30 +129,29 @@ button.btn:active, a.btn:active
 
   // Dark mode
   .dark &
-    background-color: #ffb91a !important
-    border-color: #ffb91a !important
-    color: #1D0631 !important
+    background-color: #5A2A82 !important
+    border-color: #5A2A82 !important
+    color: #ffffff !important
     box-shadow: 0 3px 6px rgba(0,0,0,0.32), 0 3px 6px rgba(0,0,0,0.46) !important
 
     &:hover
-      opacity: 0.9 !important
-      background-color: #ffb91a !important
-      border-color: #ffb91a !important
-      color: #1D0631 !important
+      background-color: #6d35a0 !important
+      border-color: #6d35a0 !important
+      color: #ffffff !important
 
     &:active, &:focus
-      background-color: #e6a617 !important
-      border-color: #e6a617 !important
-      color: #1D0631 !important
+      background-color: #5A2A82 !important
+      border-color: #5A2A82 !important
+      color: #ffffff !important
 
     &.active
-      background-color: #e6a617 !important
-      border-color: #e6a617 !important
+      background-color: #5A2A82 !important
+      border-color: #5A2A82 !important
 
     &.disabled, &[disabled]
-      background-color: #ffb91a !important
-      border-color: #ffb91a !important
-      color: #1D0631 !important
+      background-color: #5A2A82 !important
+      border-color: #5A2A82 !important
+      color: #ffffff !important
       opacity: 0.7 !important
 
 .btn-secondary
@@ -182,26 +183,26 @@ button.btn:active, a.btn:active
 
   // Dark mode
   .dark &
-    background-color: #2D1548 !important
+    background-color: #5A2A82 !important
     border-color: #5A2A82 !important
-    color: #d1d5db !important
+    color: #ffffff !important
     box-shadow: 0 1px 3px rgba(0,0,0,0.24), 0 1px 2px rgba(0,0,0,0.48) !important
 
     &:hover
-      border-color: #ffb91a !important
-      background-color: #2D1548 !important
-      color: #d1d5db !important
+      border-color: #6d35a0 !important
+      background-color: #6d35a0 !important
+      color: #ffffff !important
 
     &:active, &:focus
-      background-color: #2D1548 !important
-      border-color: #ffb91a !important
+      background-color: #5A2A82 !important
+      border-color: #5A2A82 !important
 
     &.active
-      background-color: #1D0631 !important
-      border-color: #ffb91a !important
+      background-color: #5A2A82 !important
+      border-color: #5A2A82 !important
 
     &.disabled, &[disabled]
-      background-color: #1D0631 !important
+      background-color: #0d1117 !important
       color: #6b7280 !important
       opacity: 0.6 !important
 
@@ -226,19 +227,20 @@ button.btn:active, a.btn:active
 
   // Dark mode
   .dark &
-    background-color: transparent !important
+    background-color: #5A2A82 !important
     border-color: #5A2A82 !important
-    color: #d1d5db !important
+    color: #ffffff !important
 
     &:hover
-      background-color: rgba(90, 42, 130, 0.15) !important
-      border-color: #ffb91a !important
+      background-color: #6d35a0 !important
+      border-color: #6d35a0 !important
+      color: #ffffff !important
 
     &:active, &:focus
-      background-color: rgba(90, 42, 130, 0.25) !important
+      background-color: #5A2A82 !important
 
     &.disabled, &[disabled]
-      background-color: transparent !important
+      background-color: #0d1117 !important
       color: #6b7280 !important
       opacity: 0.6 !important
 
@@ -268,10 +270,17 @@ button.btn:active, a.btn:active
     border-color: #4A1A72
 
   &.disabled, &[disabled]
-    background-color: #8A5AAA !important
-    border-color: #8A5AAA !important
-    opacity: 0.6
-    cursor: not-allowed
+    color: #374151 !important
+    background-color: #e5e7eb !important
+    border-color: #d1d5db !important
+    opacity: 1 !important
+    cursor: not-allowed !important
+    pointer-events: none
+
+    html.dark &
+      color: #8b949e !important
+      background-color: #21262d !important
+      border-color: #30363d !important
 
   i
     font-size: 16px
@@ -279,26 +288,28 @@ button.btn:active, a.btn:active
 
   // Dark mode
   .dark &
-    background-color: #ffb91a !important
-    border-color: #ffb91a !important
-    color: #1D0631 !important
+    background-color: #5A2A82 !important
+    border-color: #5A2A82 !important
+    color: #ffffff !important
 
     &:hover
-      background-color: rgba(255, 185, 26, 0.9) !important
-      border-color: #ffb91a !important
+      background-color: #6d35a0 !important
+      border-color: #6d35a0 !important
+      color: #ffffff !important
 
     &:active
-      background-color: #e6a617 !important
-      border-color: #e6a617 !important
+      background-color: #5A2A82 !important
+      border-color: #5A2A82 !important
 
     &.active, &.no-border.active
-      background-color: #e6a617 !important
-      border-color: #e6a617
+      background-color: #5A2A82 !important
+      border-color: #5A2A82
 
     &.disabled, &[disabled]
-      background-color: #ffb91a !important
-      border-color: #ffb91a !important
-      opacity: 0.4
+      color: #8b949e !important
+      background-color: #21262d !important
+      border-color: #30363d !important
+      opacity: 1 !important
 
 // Modern "I Use This" Button Design - All variants
 .i_use_this_btn,
@@ -334,16 +345,16 @@ button.btn:active, a.btn:active
   
   // Dark mode
   html.dark &
-    background-color: #ffb91a !important
-    color: #1D0631 !important
+    background-color: #5A2A82 !important
+    color: #ffffff !important
     box-shadow: 0 1px 3px rgba(0,0,0,0.24), 0 1px 2px rgba(0,0,0,0.48) !important
     
     &:hover
-      background-color: rgba(255, 185, 26, 0.9) !important
-      color: #1D0631 !important
+      background-color: #6d35a0 !important
+      color: #ffffff !important
     
     &:active, &:focus
-      background-color: rgba(255, 185, 26, 0.9) !important
+      background-color: #6d35a0 !important
     
     &.disabled, &[disabled]
       background-color: #6b7280 !important
@@ -374,11 +385,12 @@ button.btn:active, a.btn:active
       background-color: #ffcc4d !important
 
     html.dark &
-      background-color: #ffb91a !important
-      color: #1D0631 !important
+      background-color: #5A2A82 !important
+      color: #ffffff !important
 
       &:hover
-        background-color: #ffcc4d !important
+        background-color: #6d35a0 !important
+        color: #ffffff !important
       
 .btn-header
   width: 100px
@@ -413,18 +425,18 @@ button.btn:active, a.btn:active
 
   // Dark mode
   .dark &
-    background-color: #ffb91a !important
-    border-color: #ffb91a !important
-    color: #1D0631 !important
-    box-shadow: 0 1px 3px rgba(0,0,0,0.24), 0 1px 2px rgba(0,0,0,0.48) !important
+    background-color: #5A2A82 !important
+    border-color: #5A2A82 !important
+    color: #ffffff !important
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.32), 0 3px 6px rgba(0, 0, 0, 0.46) !important
 
     &:hover
-      background-color: #e6a617 !important
-      border-color: #e6a617 !important
-      color: #1D0631 !important
+      background-color: #6d35a0 !important
+      border-color: #6d35a0 !important
+      color: #ffffff !important
 
     &.disabled, &[disabled]
-      background-color: #ffb91a !important
+      background-color: #8A5AAA !important
       opacity: 0.4 !important
 
 .btn-success
@@ -501,17 +513,17 @@ button.btn:active, a.btn:active
   .dark &
     background-color: #f59e0b !important
     border-color: #f59e0b !important
-    color: #1D0631 !important
+    color: #ffffff !important
     box-shadow: 0 1px 3px rgba(0,0,0,0.24), 0 1px 2px rgba(0,0,0,0.48) !important
 
     &:hover
       background-color: #d97706 !important
       border-color: #d97706 !important
-      color: #1D0631 !important
+      color: #ffffff !important
 
     &.disabled, &[disabled]
       background-color: #f59e0b !important
-      color: #1D0631 !important
+      color: #ffffff !important
       opacity: 0.4 !important
 
 .btn-danger
@@ -711,7 +723,7 @@ button.btn:active, a.btn:active
   .dark &
     background-color: #B3D084 !important
     border-color: #B3D084 !important
-    color: #1D0631 !important
+    color: #ffffff !important
 
     &:hover
       background-color: #A0C465 !important

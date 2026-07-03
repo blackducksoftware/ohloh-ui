@@ -6,8 +6,11 @@
   page_context[:select_footer_nav] = :positions
 
 #positions-index-page
-  .positions-section-header
-    %h2= t('contribution')
+  .settings-page-header
+    .settings-page-header-row
+      .settings-page-icon
+        %i.fa.fa-code-fork
+      %h2.settings-page-h2= t('contribution')
   - if @account.positions.exists?
     = render 'commits_by_projects_extended'
     .mezzo.padding_one_top
@@ -15,7 +18,14 @@
         = render 'commits_by_individual_projects', position: position
       = render 'shared/modern_pagination', collection: @positions
   - else
-    %p= t('.no_contributions_to_display')
+    .oh-card.positions-empty-state
+      .positions-empty-icon
+        %i.fa.fa-code-fork
+      %p.positions-empty-text= t('.no_contributions_to_display')
+      - if current_user == @account
+        = link_to new_account_position_path(@account), class: 'edit-save-btn' do
+          %i.fa.fa-plus
+          = t('.claim_contribution')
   - if current_user == @account
     = link_to new_account_position_path(@account), class: 'btn btn-medium btn-primary' do
       %i.icon-plus-sign

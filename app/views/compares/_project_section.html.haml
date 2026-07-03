@@ -7,7 +7,7 @@
     %h4.section.pull-left.nomargin= label
   - if has_header
     - @projects.each_with_index do |project, index|
-      %th.head
+      %th.head{ scope: 'col', 'aria-label': project ? project.name : t('.project_input_label', number: index + 1) }
         - if project
           %div
             - project_icon(project)

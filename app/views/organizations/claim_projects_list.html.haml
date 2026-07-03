@@ -1,45 +1,56 @@
 - content_for(:html_title) { t('.page_title', name: @organization.name) }
 - page_context[:select_footer_nav] = nil
 
-%h2.pull-left
-  = link_to t('.settings'), settings_organization_path(@organization)
-  \:
-  = link_to t('.manage_projects'), manage_projects_organization_path(@organization)
-  = t('.claim')
-.clearfix
-= render partial: 'shared/search_dingus', locals: { collection: @projects, sort_context: :claim_projects_list }
+.org-settings-wrap
+  .settings-page-header
+    .settings-page-header-row
+      .settings-page-icon
+        %i.fa.fa-plus-square
+      %h2.settings-page-h2
+        = link_to t('.settings'), settings_organization_path(@organization)
+        %span.account-basics-sep :
+        = link_to t('.manage_projects'), manage_projects_organization_path(@organization)
+        %span.account-basics-sep :
+        = t('.claim').delete(':').strip
 
-- if @projects.any? && @projects.detect { |p| !p.organization_id.blank? && p.organization_id != @organization.id }
-  .alert.alert-block.margin_top_10
-    %h4.nomargin
-      %i.icon-warning-sign
-      = t('.already_claimed')
-    = t('.report')
-    %a{ href: 'mailto:info@openhub.net' }
-      info@openhub.net
-    \.
+  = render partial: 'shared/search_dingus', locals: { collection: @projects, sort_context: :claim_projects_list }
 
-- unless @projects.empty?
-  %table.table.table-striped.table-condensed
-    %thead
-      = render partial: 'manage_projects_header'
-    %tbody
-      - @projects.each do |p|
-        %tr
-          = render partial: 'manage_project', locals: { p: p }
-          %td.center
-            - if p.organization_id.blank? || p.organization_id == @organization.id
-              = render 'claim_link', project: p
-            - else
-              %a.btn{ href: t('.mailto', org: p.organization.name.to_s, project: p.name),
-              title: t('.link_title', org: h(p.organization.name.to_s)), rel: 'tooltip' }
-                %i.icon-warning-sign
-                = t('.report_text')
-  = render 'shared/modern_pagination', collection: @projects
-  .clearfix &nbsp;
+  - if @projects.any? && @projects.detect { |p| !p.organization_id.blank? && p.organization_id != @organization.id }
+    .claim-already-claimed-alert
+      .claim-alert-icon
+        %i.fa.fa-exclamation-triangle
+      .claim-alert-body
+        %strong= t('.already_claimed')
+        %p
+          = t('.report')
+          %a{ href: 'mailto:info@openhub.net' } info@openhub.net
+          \.
 
-.margin_top_10
-- if @projects.empty? && params[:query].blank?
-  = render partial: 'shared/alert', locals: { message: t('.enter_project_name') }
-- elsif @projects.empty? && !params[:query].blank?
-  = render partial: 'shared/alert', locals: { message: t('.no_match') }
+  - if @projects.empty? && params[:query].blank?
+    .edits-empty-state
+      .edits-empty-icon
+        %i.fa.fa-search
+      %p.edits-empty-text= t('.enter_project_name')
+  - elsif @projects.empty?
+    .edits-empty-state
+      .edits-empty-icon
+        %i.fa.fa-search
+      %p.edits-empty-text= t('.no_match')
+  - else
+    .table-responsive
+      %table.table.table-striped.table-condensed
+        %thead
+          = render partial: 'manage_projects_header'
+        %tbody
+          - @projects.each do |p|
+            %tr
+              = render partial: 'manage_project', locals: { p: p }
+              %td.center
+                - if p.organization_id.blank? || p.organization_id == @organization.id
+                  = render 'claim_link', project: p
+                - else
+                  %a.btn{ href: t('.mailto', org: p.organization.name.to_s, project: p.name),
+                    title: t('.link_title', org: h(p.organization.name.to_s)), rel: 'tooltip' }
+                    %i.fa.fa-exclamation-triangle
+                    = t('.report_text')
+    = render 'shared/modern_pagination', collection: @projects

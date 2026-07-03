@@ -1,33 +1,44 @@
 - page_context[:select_footer_nav] = nil
 - content_for(:html_title) { t('.page_title', name: @organization.name) }
 
-.row
-  .col-md-offset-1
-    %h2
-      = link_to t('.settings'), settings_organization_path(@organization)
-      \:
-      = link_to t('.managers'), list_managers_organization_path(@organization)
-      %strong= t('.new')
+.org-settings-wrap
+  .settings-page-header
+    .settings-page-header-row
+      .settings-page-icon
+        %i.fa.fa-user-plus
+      %h2.settings-page-h2
+        = link_to t('.settings'), settings_organization_path(@organization)
+        %span.account-basics-sep :
+        = link_to t('.managers'), list_managers_organization_path(@organization)
+        %span.account-basics-sep :
+        = t('.new').delete(':').strip
 
-.row.padding_one_top
-  .oh-card.col-md-8.col-md-offset-1#account-edit-form
+  #account-edit-form
     = form_for @manage, url: new_manager_organization_path(@organization), class: 'nomargin' do |_|
       - unless @manage.errors.empty?
         - errors = @manage.errors.full_messages
         - errors = errors.reject { |k, _| k =~ /^ssh.public.key/i || k =~ /^message/i }
         - unless errors.empty?
-          %p.error= errors.join('. ')
+          %p.edit-field-error= errors.join('. ')
 
-      %fieldset
-        .form-group
-          %label.control-label.required{ for: 'org_new_manager' }= t('.new_manager')
-          .controls
+      .edit-section
+        .edit-section-header
+          .edit-section-icon
+            %i.fa.fa-user
+          %h3.edit-section-title= t('.new_manager')
+
+        .edit-field-group
+          %label.edit-field-label{ for: 'org_new_manager' }= t('.new_manager')
+          .edit-field-input-wrapper
+            %i.fa.fa-search.edit-field-icon
             = text_field_tag :account_name, params[:account_name],
-            id: 'org_new_manager', class: 'autocompletable form-control', placeholder: t('.enter_name'),
-            data: { source: '/autocompletes/account', select: 'new_manager' }
+              id: 'org_new_manager', class: 'edit-field-input autocompletable',
+              placeholder: t('.enter_name'),
+              data: { source: '/autocompletes/account', select: 'new_manager' }
             = hidden_field_tag :account_id
-          .actions.margin_top_15
-            - if logged_in? && @organization.edit_authorized?
-              %input.btn.btn-primary{ type: 'submit', value: t('.add'), id: 'org_new_manager_submit' }
-            - else
-              = disabled_button(t('.add'), class: 'btn-primary')
+
+        .edit-form-actions
+          - if logged_in? && @organization.edit_authorized?
+            %input.edit-save-btn{ type: 'submit', value: t('.add'), id: 'org_new_manager_submit' }
+          - else
+            = disabled_button(t('.add'), class: 'btn-primary')

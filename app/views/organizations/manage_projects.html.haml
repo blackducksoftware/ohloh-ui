@@ -1,37 +1,91 @@
 - page_context[:select_footer_nav] = nil
 - content_for(:html_title) { t('.html_title') }
 
-%h2.pull-left
-  = link_to t('.settings'), settings_organization_path(@organization)
-  = t('.title')
-.clearfix
+.org-settings-wrap
+  .settings-page-header
+    .settings-page-header-row
+      .settings-page-icon
+        %i.fa.fa-briefcase
+      %h2.settings-page-h2
+        = link_to t('.settings'), settings_organization_path(@organization)
+        %span.account-basics-sep :
+        = t('.title').delete(':').strip
+      - if logged_in? && @organization.edit_authorized?
+        = link_to claim_projects_list_organization_path(@organization), class: 'edit-save-btn stacks-new-btn' do
+          %i.fa.fa-plus
+          = t('.claim_link')
+      - else
+        %span.edit-save-btn.stacks-new-btn.disabled{ aria: { disabled: 'true' } }
+          %i.fa.fa-plus
+          = t('.claim_link')
 
-.col-md-12
   = render 'shared/search_dingus', collection: @projects, sort_context: :claim_projects_list,
     no_match_found_type: :none
-  .table-responsive
-    %table.table.table-striped.table-condensed.manage-projects-table
-      %thead
-        = render partial: 'manage_projects_header'
-      %tbody
-        - @projects.each do |p|
-          %tr
-            = render partial: 'manage_project', locals: { p: p }
-            %td.center{ data: { label: t('.actions') } }
-              - if logged_in? && @organization.edit_authorized?
-                = render partial: 'active_remove_project_button', locals: { p: p }
-              - else
-                = disabled_button(bootstrap_icon('icon-trash', t('.remove')), class: 'btn-danger btn-mini')
-  = render 'shared/modern_pagination', collection: @projects
 
-.clearfix
+  - if @projects.empty? && params[:query].blank?
+    .edits-empty-state
+      .edits-empty-icon
+        %i.fa.fa-briefcase
+      %p.edits-empty-text= t('.none_claimed')
+  - elsif @projects.empty? && params[:query].present?
+    .edits-empty-state
+      .edits-empty-icon
+        %i.fa.fa-search
+      %p.edits-empty-text= t('.no_results')
+  - else
+    .table-responsive.desktop-only
+      %table.table.table-striped.table-condensed.manage-projects-table
+        %thead
+          = render partial: 'manage_projects_header'
+        %tbody
+          - @projects.each do |p|
+            %tr
+              = render partial: 'manage_project', locals: { p: p }
+              %td.center{ data: { label: t('organizations.manage_projects_header.actions') } }
+                - if logged_in? && @organization.edit_authorized?
+                  = render partial: 'active_remove_project_button', locals: { p: p }
+                - else
+                  = disabled_button(bootstrap_icon('icon-trash', t('.remove')), class: 'btn-danger btn-mini')
 
-= render partial: 'shared/alert', locals: { message: t('.none_claimed') } if @projects.empty? && params[:query].blank?
-= render partial: 'shared/alert', locals: { message: t('.no_results') } if @projects.empty? && params[:query].present?
+    .mobile-only.manage-projects-cards
+      - @projects.each do |p|
+        .manage-project-card
+          .manage-project-card-header
+            %a.manage-project-card-icon{ href: project_path(p) }
+              = p.decorate.icon(:med, width: 36)
+            .manage-project-card-title
+              %a.manage-project-card-name{ href: project_path(p), title: p.name }
+                = truncate(h(p.name), length: 30)
+              %span.manage-project-card-loc= number_with_delimiter(p.best_analysis.code_total) + ' lines'
+          .manage-project-card-body
+            .manage-project-card-row
+              %span.manage-project-card-label= t('organizations.manage_projects_header.i_use')
+              %span.manage-project-card-value= number_with_delimiter(p.user_count)
+            .manage-project-card-row
+              %span.manage-project-card-label= t('organizations.manage_projects_header.committers')
+              %span.manage-project-card-value= number_with_delimiter(p.active_committers)
+            .manage-project-card-row
+              %span.manage-project-card-label= t('organizations.manage_projects_header.rating')
+              %span.manage-project-card-value
+                - if p.rating_average.to_i.zero?
+                  None
+                - else
+                  != rating_stars('average_rating_stars', p.rating_average || 0, mini: true)
+            .manage-project-card-row
+              %span.manage-project-card-label= t('organizations.manage_projects_header.reviews')
+              %span.manage-project-card-value= number_with_delimiter(p.reviews.count)
+          - if p.description.present?
+            %p.manage-project-card-desc= truncate(h(p.description.to_s), length: 120)
+          .manage-project-card-actions
+            - if logged_in? && @organization.edit_authorized?
+              = link_to remove_project_organization_path(@organization, project_id: p.id, source: action_name),
+                method: :put, class: 'manage-project-remove-btn',
+                data: { confirm: t('organizations.active_remove_project_button.remove_from', org: @organization.name, project: h(p.name.to_s)) } do
+                %i.fa.fa-trash
+                = t('.remove')
+            - else
+              %span.manage-project-remove-btn.disabled
+                %i.fa.fa-trash
+                = t('.remove')
 
-- if logged_in? && @organization.edit_authorized?
-  = link_to claim_projects_list_organization_path(@organization), class: 'btn btn-small btn-primary' do
-    %i.icon-plus-sign
-    = t('.claim_link')
-- else
-  = disabled_button(t('.claim_link'), class: 'btn-small btn-primary')
+    = render 'shared/modern_pagination', collection: @projects

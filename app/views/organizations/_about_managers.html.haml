@@ -1,18 +1,24 @@
-.col-md-11.about-account-basics-card
-  .card-header
-    %h4.card-title
-      %span.soft= t('.about')
-      = t('.managers')
-    %button.expand-toggle{ type: 'button', 'aria-label' => 'Expand about section' }
-      %i.fa.fa-chevron-down
-  .card-content
-    .about-content-wrapper
-      .col-md-5
-        %p= t('.ability')
-        %ul
-          %li= t('.limit')
-          %li= t('.edit')
-          %li= t('.approve')
-      .col-md-5
-        %ul
-          %li= t('.edit_info')
+.tips-grid
+  .tip-item
+    .tip-icon
+      %i.fa.fa-lock
+    .tip-body
+      %p.tip-text= t('.limit')
+
+  .tip-item
+    .tip-icon
+      %i.fa.fa-pencil
+    .tip-body
+      %p.tip-text= t('.edit')
+
+  .tip-item
+    .tip-icon
+      %i.fa.fa-check-circle
+    .tip-body
+      %p.tip-text= t('.approve')
+
+  .tip-item
+    .tip-icon
+      %i.fa.fa-info-circle
+    .tip-body
+      %p.tip-text= t('.edit_info')

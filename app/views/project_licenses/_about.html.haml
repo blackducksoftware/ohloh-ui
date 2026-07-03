@@ -1,14 +1,23 @@
-.about-project-basics-card
+.about-account-basics-card
   .card-header
-    %h4.card-title
-      %span.soft= t('.about')
-      = t('.licenses')
-    %button.expand-toggle{ type: 'button', 'aria-label' => 'Expand about section' }
+    .card-header-left
+      .card-header-icon
+        %i.fa.fa-certificate
+      .card-header-text
+        %h4.card-title= t('.about') + ' ' + t('.licenses')
+        %p.card-subtitle= t('.licenses')
+    %button.expand-toggle{ type: 'button', 'aria-label' => 'Toggle about section' }
       %i.fa.fa-chevron-down
 
   .card-content
-    .about-content-wrapper
-      .col-md-6.margin_left_30
-        %ul
-          %li= t('.help3')
-          %li= t('.help4')
+    .tips-grid
+      .tip-item
+        .tip-icon
+          %i.fa.fa-file-text-o
+        .tip-body
+          %p.tip-text= t('.help3')
+      .tip-item
+        .tip-icon
+          %i.fa.fa-info-circle
+        .tip-body
+          %p.tip-text= t('.help4')

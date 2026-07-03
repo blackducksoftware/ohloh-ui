@@ -1,17 +1,32 @@
 .about-account-basics-card
   .card-header
-    %h4.card-title
-      %span.soft= t('about')
-      = t('.title')
-    %button.expand-toggle{ type: 'button', 'aria-label' => 'Expand about section' }
+    .card-header-left
+      .card-header-icon
+        %i.fa.fa-image
+      .card-header-text
+        %h4.card-title= t('about') + ' ' + t('.title')
+        %p.card-subtitle= t('.title')
+    %button.expand-toggle{ type: 'button', 'aria-label' => 'Toggle about section' }
       %i.fa.fa-chevron-down
   .card-content
-    .about-content-wrapper
-      .col-md-5
-        %ul
-          %li= t('.first')
-          %li= t('.second')
-          %li= t('.third')
-      .col-md-5
-        %ul
-          %li= t('.fourth')
+    .tips-grid
+      .tip-item
+        .tip-icon
+          %i.fa.fa-upload
+        .tip-body
+          %p.tip-text= t('.first')
+      .tip-item
+        .tip-icon
+          %i.fa.fa-check-circle
+        .tip-body
+          %p.tip-text= t('.second')
+      .tip-item
+        .tip-icon
+          %i.fa.fa-file-image-o
+        .tip-body
+          %p.tip-text= t('.third')
+      .tip-item
+        .tip-icon
+          %i.fa.fa-link
+        .tip-body
+          %p.tip-text= t('.fourth')

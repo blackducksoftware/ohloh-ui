@@ -6,6 +6,9 @@ en:
     attributed_to: 'will be attributed to'
     save_alias: 'Save Alias'
     alias_temporarily_disabled: 'Creating aliases for this project is temporarily disabled'
+    select_committer: '— Select a committer —'
+    select_preferred_name: '— Select a name to attribute to —'
+    no_preferred_names: '— No names available —'
     index:
       title: "The %{project_name} Open Source Project on Open Hub : Aliases Page"
       confirm_message: 'Are you sure you want to delete this alias?'

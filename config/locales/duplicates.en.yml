@@ -50,6 +50,7 @@ en:
       cant_dupe_a_dupe: "Project '%{that}' has already been reported as a duplicate of this project. That report must be resolved or canceled before reporting '%{this}' as a duplicate."
       page_title: "The %{name} Open Source Project on Open Hub : Report Duplicate"
       page_header: "Report Duplicate : New"
+      page_description: "Request that a duplicate project be removed and its data merged into the original."
       button_text: "Submit Request"
     create:
       success: "Thank you for your help! Your report has been sent to an Open Hub administrator."
@@ -72,5 +73,6 @@ en:
     fields:
       legend_html: "Request to Remove Project %{name}"
       good_label_html: "%{name} is a duplicate of this original project"
-      original_url: "URL of the original project"
+      original_url: "Original project URL:"
+      search_placeholder: "Search for the original project…"
       comment: "Comment"

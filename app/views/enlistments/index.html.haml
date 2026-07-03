@@ -64,8 +64,6 @@
   .search-filter-bar
     %form
       .search-filter-content
-        = render 'shared/search_dingus/page_entries_info', collection: @enlistments, total_count: @enlistments.total_entries
-
         = render 'shared/search_dingus/search_bar', search_type: :default
 
         %label.checkbox
@@ -73,6 +71,8 @@
           = t('.show_unprocessable_sources')
 
         = render 'shared/search_dingus/sort', sort_context: :enlistments, filter_type: nil
+
+  = render 'shared/search_dingus/page_entries_info', collection: @enlistments, total_count: @enlistments.total_entries
 
   // Desktop table view
   .desktop-only

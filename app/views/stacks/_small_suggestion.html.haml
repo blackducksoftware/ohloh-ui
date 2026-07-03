@@ -1,13 +1,15 @@
 - project ||= small_suggestion
-%li.clear{ id: "suggestion_#{project.vanity_url}" }
-  .stack_right
-    %a.btn.btn-mini.btn-primary.command.stack_add{ href: '#', id: "stackit_#{project.vanity_url}" }
+%li.suggestion-item{ id: "suggestion_#{project.vanity_url}" }
+  .suggestion-logo
+    - project_link(project, :small)
+  .suggestion-body
+    %h6.suggestion-name
+      %a.suggestion-name-link{ href: project_url(project), title: project.name }= truncate(project.name, length: 35)
+    %p.suggestion-desc= truncate(project.description, length: 75)
+  .suggestion-actions.stack_right
+    %a.suggestion-btn.suggestion-btn--add.command.stack_add{ href: '#', id: "stackit_#{project.vanity_url}" }
+      %i.fa.fa-plus
       = t('stacks.small_suggestion.i_use_this')
-    %span.separator -
-    %a.btn.btn-mini.btn-warning.command.ignore{ href: '#', id: "stackit_#{project.vanity_url}" }
+    %a.suggestion-btn.suggestion-btn--skip.command.ignore{ href: '#', id: "stackit_#{project.vanity_url}" }
+      %i.fa.fa-times
       = t('stacks.small_suggestion.skip_this')
-  - project_link(project, :small, style: 'float: left;')
-  .title
-    %h6.nomargin.no_margin_top
-      %a{ href: project_url(project), title: project.name }= truncate(project.name, length: 35)
-  %p.description.nomargin= truncate(project.description, length: 55)

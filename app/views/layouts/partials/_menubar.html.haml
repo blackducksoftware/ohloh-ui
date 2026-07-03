@@ -1,19 +1,17 @@
 :ruby
-  explore_projects_class = params[:action] == 'explore/projects' ? 'select' : ''
-  explore_orgs_class = params[:action] == 'explore/orgs' ? 'select' : ''
-  tools_select = params[:action] == 'tools' ? 'select' : ''
+  nav = page_context[:select_top_menu_nav].to_s
 
 #navbar-inner
   #nav-top-bar
-    %ul.new_main_menu{ class: page_context[:select_top_menu_nav] }
+    %ul.new_main_menu{ class: nav }
       %li.menu_item.projects
-        = link_to t(:projects_menu), projects_explores_path, class: explore_projects_class
+        = link_to t(:projects_menu), projects_explores_path, class: (nav == 'select_projects' ? 'select' : '')
       %li.menu_item.people
-        = link_to t(:people_menu), people_path, class: params[:action] == 'people' ? 'select' : ''
+        = link_to t(:people_menu), people_path, class: (nav == 'select_people' ? 'select' : '')
       %li.menu_item.organizations
-        = link_to t(:organizations_menu), orgs_explores_path, class: explore_orgs_class
+        = link_to t(:organizations_menu), orgs_explores_path, class: (nav == 'select_organizations' ? 'select' : '')
       %li.menu_item.tools
-        = link_to t(:tools_menu), tools_path, class: tools_select
+        = link_to t(:tools_menu), tools_path, class: (nav == 'select_tools' ? 'select' : '')
       %li.menu_item.blog
         %a{ href: 'https://community.blackduck.com/s/black-duck-open-hub?tabset-c30ff=d9d77', target: '_blank', rel: 'noopener noreferrer' }= t :blog
       %li.menu_item.bdsa

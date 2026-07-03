@@ -3,24 +3,36 @@
   page_context[:select_footer_nav] = nil
   content_for(:html_title) { t('.page_title', name: @parent.name) }
 
-.row
-  .col-md-10.col-md-offset-1
-    %h2
-      = link_to t(:settings), settings_parent_path(@parent)
-      %strong= t('.heading')
+%div{ id: @organization ? nil : 'logos-edit-page', class: @organization ? 'org-settings-wrap' : nil }
+  .settings-page-header
+    .settings-page-header-row
+      .settings-page-icon
+        %i.fa.fa-picture-o
+      %h2.settings-page-h2
+        - if @organization
+          = link_to t(:settings), settings_organization_path(@organization)
+          %span.account-basics-sep :
+          = t('logo')
+        - else
+          = link_to t(:settings), settings_parent_path(@parent)
+          %span.account-basics-sep :
+          = t('.heading')
+    %p.settings-page-description= t('.page_title', name: @parent.name)
 
-.row
-  .col-md-10.col-md-offset-1
-    .oh-card
-      - path = @parent.is_a?(Project) ? project_logos_path(@parent) : organization_logos_path(@parent)
-      = form_for @logo, url: path, html: { multipart: true } do |f|
-        = render partial: 'fields', locals: { f: f }
-      .clearfix
-        &nbsp;
+  .project-edit-layout
+    .project-edit-main
+      .edit-section
+        .edit-section-header
+          .edit-section-icon
+            %i.fa.fa-picture-o
+          %h3.edit-section-title= @organization ? t('logo') : t('.heading')
 
-.row
-  .col-md-10.col-md-offset-1
-    - if @project
-      = render partial: 'about_logos'
-    - elsif @organization
-      = render partial: 'about_organization_logos'
+        - path = @parent.is_a?(Project) ? project_logos_path(@parent) : organization_logos_path(@parent)
+        = form_for @logo, url: path, html: { multipart: true } do |f|
+          = render partial: 'fields', locals: { f: f }
+
+    .project-edit-aside
+      - if @project
+        = render partial: 'about_logos'
+      - elsif @organization
+        = render partial: 'about_organization_logos'

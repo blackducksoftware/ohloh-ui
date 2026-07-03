@@ -4,12 +4,12 @@ $primary-purple: #5A2A82
 $primary-yellow: #ffb91a
 $bg-white: #ffffff
 $bg-light: #f8f9fa
-$bg-dark: #1D0631
-$bg-card-dark: #2D1548
-$bg-table-dark: #3A1D58
+$bg-dark: #0d1117
+$bg-card-dark: #151b23
+$bg-table-dark: #1c2128
 $text-dark: #1a202c
 $text-gray: #4a5568
-$text-light: #718096
+$text-light: #6b7280
 $border-gray: #e2e8f0
 $shadow-light: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24)
 $shadow-medium: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23)
@@ -42,6 +42,18 @@ $shadow-dark-hover: 0 3px 6px rgba(0, 0, 0, 0.32), 0 3px 6px rgba(0, 0, 0, 0.46)
 
   @media (min-width: 1024px)
     padding: 0 32px
+
+.explore-page-wrapper-org
+  max-width: 1280px
+  margin: 0 auto
+  padding: 0 16px
+  margin-bottom: 24px
+
+  @media (min-width: 640px)
+    padding: 24px 24px
+
+  @media (min-width: 1024px)
+    padding: 32px 32px
 
 // Main Layout Container (sidebar + content grid)
 .explore-main-container
@@ -76,7 +88,6 @@ $shadow-dark-hover: 0 3px 6px rgba(0, 0, 0, 0.32), 0 3px 6px rgba(0, 0, 0, 0.46)
 
 .sidebar-card
   background: $bg-white
-  border: 2px solid $primary-purple
   border-radius: 8px
   box-shadow: $shadow-light
   overflow: hidden
@@ -84,7 +95,7 @@ $shadow-dark-hover: 0 3px 6px rgba(0, 0, 0, 0.32), 0 3px 6px rgba(0, 0, 0, 0.46)
 
   html.dark &
     background: $bg-card-dark
-    border-color: $primary-yellow
+    border-color: #2a2a2a
     box-shadow: $shadow-dark
 
   &:hover
@@ -154,7 +165,7 @@ $shadow-dark-hover: 0 3px 6px rgba(0, 0, 0, 0.32), 0 3px 6px rgba(0, 0, 0, 0.46)
 
   html.dark &
     background: $bg-dark !important
-    border-color: $primary-purple !important
+    border-color: #2a2a2a !important
     color: #ffffff !important
 
   &:focus
@@ -163,7 +174,7 @@ $shadow-dark-hover: 0 3px 6px rgba(0, 0, 0, 0.32), 0 3px 6px rgba(0, 0, 0, 0.46)
     box-shadow: 0 0 0 3px rgba($primary-purple, 0.1)
 
     html.dark &
-      border-color: $primary-yellow !important
+      border-color: #c084fc !important
       box-shadow: 0 0 0 3px rgba($primary-yellow, 0.1)
 
   &::placeholder
@@ -215,7 +226,7 @@ $shadow-dark-hover: 0 3px 6px rgba(0, 0, 0, 0.32), 0 3px 6px rgba(0, 0, 0, 0.46)
 
   html.dark &
     background: $bg-dark
-    border-color: #4b5563
+    border-color: #2a2a2a
     color: $primary-yellow
 
   &:hover
@@ -225,9 +236,9 @@ $shadow-dark-hover: 0 3px 6px rgba(0, 0, 0, 0.32), 0 3px 6px rgba(0, 0, 0, 0.46)
     text-decoration: none
 
     html.dark &
-      background: $primary-yellow !important
-      color: $primary-purple !important
-      border-color: $primary-yellow !important
+      background: $primary-purple!important
+      color: $bg-white !important
+      border-color: #c084fc !important
 
 // Tag custom input with icon inside
 .tag-input-wrapper
@@ -250,7 +261,7 @@ $shadow-dark-hover: 0 3px 6px rgba(0, 0, 0, 0.32), 0 3px 6px rgba(0, 0, 0, 0.46)
 
   html.dark &
     background: $bg-dark !important
-    border-color: #4b5563 !important
+    border-color: #2a2a2a !important
     color: #ffffff !important
 
   &::placeholder
@@ -265,7 +276,7 @@ $shadow-dark-hover: 0 3px 6px rgba(0, 0, 0, 0.32), 0 3px 6px rgba(0, 0, 0, 0.46)
     box-shadow: 0 0 0 3px rgba($primary-purple, 0.1)
 
     html.dark &
-      border-color: $primary-yellow !important
+      border-color: #c084fc !important
       box-shadow: 0 0 0 3px rgba($primary-yellow, 0.1)
 
 .tag-search-btn
@@ -316,7 +327,7 @@ $shadow-dark-hover: 0 3px 6px rgba(0, 0, 0, 0.32), 0 3px 6px rgba(0, 0, 0, 0.46)
 
   html.dark &
     background: $bg-dark !important
-    border-color: #374151 !important
+    border-color: #2a2a2a !important
     color: #ffffff !important
 
   &::placeholder
@@ -331,7 +342,7 @@ $shadow-dark-hover: 0 3px 6px rgba(0, 0, 0, 0.32), 0 3px 6px rgba(0, 0, 0, 0.46)
     box-shadow: 0 0 0 3px rgba($primary-purple, 0.1)
 
     html.dark &
-      border-color: $primary-yellow !important
+      border-color: #c084fc !important
       box-shadow: 0 0 0 3px rgba($primary-yellow, 0.1)
 
 .btn-compare
@@ -422,16 +433,15 @@ $shadow-dark-hover: 0 3px 6px rgba(0, 0, 0, 0.32), 0 3px 6px rgba(0, 0, 0, 0.46)
   align-items: flex-start
   gap: 16px
   margin-bottom: 24px
-  padding-top: 24px
   flex-wrap: wrap
 
-  @media (max-width: 1024px)
+  @media (max-width: 480px)
     flex-direction: column
 
 .explore-title
   font-size: 36px !important
   font-weight: 700 !important
-  color: $text-dark !important
+  color: #5A2A82 !important
   margin: 0 !important
   letter-spacing: normal !important
   line-height: 1.2 !important
@@ -482,18 +492,17 @@ $shadow-dark-hover: 0 3px 6px rgba(0, 0, 0, 0.32), 0 3px 6px rgba(0, 0, 0, 0.46)
     text-decoration: none
 
   html.dark &
-    background: $primary-yellow
-    color: $bg-dark
-    box-shadow: $shadow-dark
-
+    background: #5A2A82 !important
+    color: #ffffff !important
+    border-color: #2a2a2a
+    &:hover
+      text-decoration: none
+      background: #6d35a0 !important
+      border-color: #c084fc !important
   &:hover
     background: darken($primary-purple, 10%)
     box-shadow: $shadow-medium
     color: $bg-white
-
-    html.dark &
-      background: rgba($primary-yellow, 0.9)
-      color: $bg-dark
 
 .btn-desktop-only
   @media (max-width: 640px)
@@ -618,7 +627,7 @@ $shadow-dark-hover: 0 3px 6px rgba(0, 0, 0, 0.32), 0 3px 6px rgba(0, 0, 0, 0.46)
 
     html.dark &
       background: $bg-dark
-      border-color: $primary-purple
+      border-color: #2a2a2a
       color: #ffffff
 
     &:hover
@@ -626,7 +635,7 @@ $shadow-dark-hover: 0 3px 6px rgba(0, 0, 0, 0.32), 0 3px 6px rgba(0, 0, 0, 0.46)
 
       html.dark &
         background: rgba($bg-dark, 0.8)
-        border-color: $primary-yellow
+        border-color: #c084fc
 
   .language-selected
     font-size: 14px
@@ -652,7 +661,7 @@ $shadow-dark-hover: 0 3px 6px rgba(0, 0, 0, 0.32), 0 3px 6px rgba(0, 0, 0, 0.46)
 
     html.dark &
       background: $bg-card-dark !important
-      border-color: $primary-purple !important
+      border-color: #2a2a2a !important
       box-shadow: 0 10px 20px rgba(0, 0, 0, 0.38), 0 6px 6px rgba(0, 0, 0, 0.46)
 
     &.show
@@ -701,7 +710,7 @@ $shadow-dark-hover: 0 3px 6px rgba(0, 0, 0, 0.32), 0 3px 6px rgba(0, 0, 0, 0.46)
 
   html.dark &
     background: $bg-table-dark
-    border-color: #374151
+    border-color: #2a2a2a
 
   // Mobile: proportional 12-unit grid (rank:1 icon:1 name:4 claimed:2 pai:2 hotness:2)
   // matches Figma col-span values — name always gets 33% regardless of screen width
@@ -954,7 +963,6 @@ $shadow-dark-hover: 0 3px 6px rgba(0, 0, 0, 0.32), 0 3px 6px rgba(0, 0, 0, 0.46)
 .stat-card
   padding: 16px
   border-radius: 8px
-  border: 1px solid $border-gray
   transition: all 0.2s ease
 
   &:hover
@@ -969,8 +977,8 @@ $shadow-dark-hover: 0 3px 6px rgba(0, 0, 0, 0.32), 0 3px 6px rgba(0, 0, 0, 0.46)
     border-color: darken($border-gray, 5%)
 
     html.dark &
-      background: linear-gradient(to bottom right, #2D1548, #3A1D58)
-      border-color: #5A2A82
+      background: linear-gradient(to bottom right, #161b22, #1c2128)
+      border-color: #2a2a2a
 
   &.pai-card
     background: linear-gradient(to bottom right, #e6fffa, #b2f5ea)
@@ -978,15 +986,15 @@ $shadow-dark-hover: 0 3px 6px rgba(0, 0, 0, 0.32), 0 3px 6px rgba(0, 0, 0, 0.46)
 
     html.dark &
       background: linear-gradient(to bottom right, #134e4a, #0f766e)
-      border-color: #0d9488
+      border-color: #2a2a2a
 
   &.active-card
     background: linear-gradient(to bottom right, #faf5ff, #e9d8fd)
     border-color: #d6bcfa
 
     html.dark &
-      background: linear-gradient(to bottom right, #3b0764, #4c1d95)
-      border-color: #7c3aed
+      background: linear-gradient(to bottom right, #1e1b4b, #312e81)
+      border-color: #2a2a2a
 
   &.new-card
     background: linear-gradient(to bottom right, #fffbeb, #fef3c7)
@@ -994,12 +1002,12 @@ $shadow-dark-hover: 0 3px 6px rgba(0, 0, 0, 0.32), 0 3px 6px rgba(0, 0, 0, 0.46)
 
     html.dark &
       background: linear-gradient(to bottom right, #451a03, #78350f)
-      border-color: #d97706
+      border-color: #2a2a2a
 
 .stat-label
   font-size: 12px
   color: $text-gray
-  margin-bottom: 4px
+  margin-bottom: 0
   font-weight: 500
 
   html.dark &

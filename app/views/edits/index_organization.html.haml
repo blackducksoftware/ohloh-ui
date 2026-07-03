@@ -2,23 +2,42 @@
 - content_for(:html_title) { t('.page_title') }
 - page_context[:select_footer_nav] = nil
 
-%h2.float-left
-  = link_to t(:settings), settings_organization_path(@parent)
-  &nbsp;:&nbsp;<strong>#{t('.openhub_edit_history')}</strong>
+.org-settings-wrap
+  .settings-page-header
+    .settings-page-header-row
+      .settings-page-icon
+        %i.fa.fa-history
+      %h2.settings-page-h2
+        = link_to t(:settings), settings_organization_path(@parent)
+        %span.account-basics-sep :
+        = t('.openhub_edit_history')
 
-= render partial: 'index'
+  = render partial: 'index'
 
-.col-md-12
   .about-account-basics-card
     .card-header
-      %h4.card-title
-        %span.soft= t(:about)
-        = t('.openhub_edit_history')
-      %button.expand-toggle{ type: 'button', 'aria-label' => 'Expand about section' }
+      .card-header-left
+        .card-header-icon
+          %i.fa.fa-info-circle
+        .card-header-text
+          %h4.card-title= t(:about) + ' — ' + t('.openhub_edit_history')
+          %p.card-subtitle= t('.openhub_edit_history')
+      %button.expand-toggle{ type: 'button', 'aria-label' => 'Toggle about section' }
         %i.fa.fa-chevron-down
     .card-content
-      .about-content-wrapper
-        %ul
-          %li= t('.help_1')
-          %li= t('.help_2')
-          %li= t('.help_3')
+      .tips-grid
+        .tip-item
+          .tip-icon
+            %i.fa.fa-list-alt
+          .tip-body
+            %p.tip-text= t('.help_1')
+        .tip-item
+          .tip-icon
+            %i.fa.fa-unlock-alt
+          .tip-body
+            %p.tip-text= t('.help_2')
+        .tip-item
+          .tip-icon
+            %i.fa.fa-undo
+          .tip-body
+            %p.tip-text= t('.help_3')

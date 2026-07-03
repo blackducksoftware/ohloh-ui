@@ -48,19 +48,19 @@
       width: 100% !important
     html.dark &
       .chosen-container-single .chosen-single
-        background: #1D0631 !important
+        background: #0d1117 !important
         border-color: #5A2A82 !important
         color: #ffffff !important
         &:hover
           border-color: #6b7280 !important
       .chosen-container-active > .chosen-single,
       .chosen-container-active.chosen-with-drop .chosen-single
-        border-color: #ffb91a !important
-        box-shadow: 0 0 0 4px rgba(255, 185, 26, 0.1) !important
+        border-color: #5A2A82 !important
+        box-shadow: 0 0 0 4px rgba(90, 42, 130, 0.1) !important
       .chosen-container .chosen-drop
-        border-left: 2px solid #ffb91a !important
-        border-right: 2px solid #ffb91a !important
-        border-bottom: 2px solid #ffb91a !important
+        border-left: 2px solid #5A2A82 !important
+        border-right: 2px solid #5A2A82 !important
+        border-bottom: 2px solid #5A2A82 !important
 
   .actions
     display: flex
@@ -69,7 +69,15 @@
 
 // New declared license page
 #project-license-new-page
-  padding: 24px 0
+  @media (max-width: 639px)
+    padding: 0 16px 24px
+
+  .settings-page-header
+    margin-top: 16px
+
+  .oh-card
+    padding: 0
+    overflow: visible !important
 
   .license-new-card-header
     display: flex
@@ -94,7 +102,7 @@
     html.dark &
       color: #f3f4f6
       .fa
-        color: #ffb91a
+        color: #5A2A82
 
   .license-new-form
     padding: 0 24px 24px
@@ -133,8 +141,17 @@
 
   .license-select-wrap
     margin-bottom: 8px
+    position: relative
+    z-index: 200
     .chosen-container
       width: 100% !important
+      position: relative
+      z-index: 200
+    .chosen-container.chosen-with-drop .chosen-drop
+      z-index: 9999 !important
+      clip: auto !important
+      clip-path: none !important
+      -webkit-clip-path: none !important
     .chosen-container-single .chosen-single
       border: 1.5px solid #d1d5db
       border-radius: 8px
@@ -168,17 +185,46 @@
       border: 1.5px solid #5A2A82
       border-top: none
       border-radius: 0 0 8px 8px
+      background: #ffffff
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12)
+    .chosen-results
+      max-height: 240px
+      overflow-y: auto
+      padding: 4px 0
+      margin: 0
+      li
+        font-size: 14px
+        color: #111827
+        padding: 9px 14px
+        line-height: 1.4
+        &.highlighted
+          background: #5A2A82 !important
+          color: #ffffff !important
+        &.result-selected
+          color: #9ca3af
+          font-style: italic
     html.dark &
       .chosen-container-single .chosen-single
-        background: #1D0631 !important
-        border-color: #5A2A82
+        background: #0d1117 !important
+        border-color: #4b5563
         color: #f3f4f6
       .chosen-container-active.chosen-with-drop .chosen-single,
       .chosen-container-active > .chosen-single
-        border-color: #ffb91a
-        box-shadow: 0 0 0 3px rgba(255, 185, 26, 0.15)
+        border-color: #5A2A82
+        box-shadow: 0 0 0 3px rgba(90, 42, 130, 0.15)
       .chosen-container .chosen-drop
-        border-color: #ffb91a
+        border-color: #5A2A82
+        background: #0d1117
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4)
+      .chosen-results li
+        color: #f3f4f6
+        &.highlighted
+          background: #5A2A82 !important
+          color: #ffffff !important
+        &.result-selected
+          color: #6b7280
+        &.no-results
+          color: #111827
 
   .license-help-text
     font-size: 13px
@@ -193,7 +239,7 @@
     html.dark &
       color: #9ca3af
       a
-        color: #ffb91a
+        color: #5A2A82
 
   .license-form-actions
     display: flex
@@ -216,23 +262,36 @@
       font-size: 13px
 
   .btn-cancel-license
-    color: #6b7280
-    border-color: #d1d5db
+    color: #374151 !important
+    background: #f3f4f6 !important
+    border-color: #d1d5db !important
     border-radius: 8px
     padding: 9px 18px
+    font-weight: 500
+    transition: background 0.15s, color 0.15s, border-color 0.15s
     &:hover
-      background: #f9fafb
-      color: #374151
+      background: #e5e7eb !important
+      color: #111827 !important
+      border-color: #9ca3af !important
     html.dark &
-      color: #9ca3af
-      border-color: #4b5563
+      color: #ffff !important
+      background: rgba(255, 255, 255, 0.06) !important
+      border-color: #374151 !important
       &:hover
-        background: rgba(255, 255, 255, 0.05)
-        color: #d1d5db
+        background: rgba(255, 255, 255, 0.1) !important
+        color: #d1d5db !important
+        border-color: #4b5563 !important
 
 // Declared licenses index page
 #project-license-index-page
-  padding: 24px 0
+  @media (max-width: 639px)
+    padding: 0 16px 24px
+
+  .settings-page-header
+    margin-top: 16px
+
+  .oh-card
+    padding: 0
 
   .license-index-card-header
     display: flex
@@ -257,7 +316,7 @@
     html.dark &
       color: #f3f4f6
       .fa
-        color: #ffb91a
+        color: #5A2A82
 
   .license-list
     padding: 8px 0
