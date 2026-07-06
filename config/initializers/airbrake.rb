@@ -7,6 +7,7 @@ Airbrake.configure do |config|
 
   config.project_id = ENV.fetch('AIRBRAKE_PROJECT_ID', nil)
   config.ignore_environments = %w[development test]
+  config.performance_stats = false
 end
 
 class Airbrake::Sender

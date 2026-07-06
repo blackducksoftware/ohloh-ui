@@ -49,7 +49,7 @@ class Person < ApplicationRecord
       sort_by = sort_by.eql?('kudo_position') ? 'sort_by_kudo_position' : nil
       tsearch(query, sort_by)
         .includes(:account)
-        .preload(account: :markup)
+        .preload(account: [:markup, :projects, { best_account_analysis: :name_fact }])
         .where.not(account_id: nil)
         .references(:all)
     end
@@ -70,8 +70,8 @@ class Person < ApplicationRecord
     end
 
     def include_relations_and_order_by_kudo_position_and_name(name_id)
-      joins(project: :best_analysis).includes({ project: [{ best_analysis: :main_language }, :logo] }, :name,
-                                              name_fact: :primary_language)
+      joins(project: :best_analysis).preload({ project: [{ best_analysis: :main_language }, :logo] }, :name,
+                                             name_fact: :primary_language)
                                     .where(name_id: name_id)
                                     .order(Arel.sql('COALESCE(kudo_position, 999999999), lower(effective_name)'))
     end

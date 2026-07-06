@@ -38,15 +38,17 @@ class UnclaimedController < ApplicationController
   end
 
   def unclaimed_people(query, find_by, per_page = 10)
-    name_ids = Person.joins(project: :best_analysis).unclaimed_people(q: query,
-                                                                      find_by: find_by).limit(per_page).pluck(:name_id)
+    name_ids = Person.unclaimed_people(q: query, find_by: find_by)
+                     .joins(:project)
+                     .where.not(projects: { best_analysis_id: nil })
+                     .limit(per_page).pluck(:name_id)
     unclaimed_people_with_limit(name_ids)
   end
 
   # NOTE: Since this approach avoids the *includes*, it takes 3x DB time. However this prevents memory hog.
   def unclaimed_people_with_limit(unclaimed_name_ids)
     unclaimed_name_ids.map do |name_id|
-      [name_id, Person.include_relations_and_order_by_kudo_position_and_name(name_id).limit(UNCLAIMED_TILE_LIMIT)]
+      [name_id, Person.include_relations_and_order_by_kudo_position_and_name(name_id).limit(UNCLAIMED_TILE_LIMIT).to_a]
     end
   end
 end

@@ -52,7 +52,11 @@ class Account < ApplicationRecord # rubocop:disable Metrics/ClassLength
   end
 
   def best_account_analysis
-    AccountAnalysis.find_by(id: best_vita_id, account_id: id) || NilAccountAnalysis.new
+    if association(:best_account_analysis).loaded?
+      super || NilAccountAnalysis.new
+    else
+      AccountAnalysis.find_by(id: best_vita_id, account_id: id) || NilAccountAnalysis.new
+    end
   end
 
   def email_topics?

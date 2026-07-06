@@ -47,9 +47,13 @@ class EnlistmentsController < SettingsController
   end
 
   def update
-    @enlistment.update(enlistment_params)
-    @enlistment.project.schedule_delayed_analysis(3.minutes)
-    redirect_to project_enlistments_path(@project), flash: { success: t('.success') }
+    if @enlistment.update(enlistment_params)
+      @enlistment.project.schedule_delayed_analysis(3.minutes)
+      redirect_to project_enlistments_path(@project), flash: { success: t('.success') }
+    else
+      template = params[:enlistment].key?(:allowed_fyles) ? :edit_allowed_files : :edit
+      render template, status: :unprocessable_entity
+    end
   end
 
   def destroy

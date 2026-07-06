@@ -332,7 +332,7 @@ class PositionsControllerTest < ActionController::TestCase
       assert_response :success
       language = position.name_fact.primary_language.nice_name
       _(unescaped_response_body).must_match "1\nCommit\n</a>in mostly\n#{language}"
-      _(unescaped_response_body).must_match position.name_fact.analysis.project.organization.name
+      _(unescaped_response_body).must_include position.name_fact.analysis.project.organization.name
       assert_select 'div#all_projects.chart-with-data[data-value]', 1
     end
 

@@ -2,7 +2,7 @@
 
 class Widget::AccountWidget::Tiny < Widget::AccountWidget
   def height
-    15
+    16
   end
 
   def width

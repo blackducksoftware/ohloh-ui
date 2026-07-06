@@ -15,6 +15,7 @@ module WidgetBadge
       def setup_blank
         image = MiniMagick::Image.open(IMAGE_DIR.join('OH_Partner_frame.png'))
         image.background('white')
+        image.flatten
         image
       end
 
