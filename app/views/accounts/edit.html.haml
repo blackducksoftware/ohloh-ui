@@ -3,6 +3,10 @@
 
 .clearfix
 
+- if @account.latitude && @account.longitude
+  - content_for :javascript do
+    - callback = "EditMap.jumpMeTo(#{@account.latitude}, #{@account.longitude});"
+    = javascript_tag "$(document).on('page:change', function(){#{callback}});"
 
 #accounts_edits
   .margin_left_15
@@ -108,4 +112,4 @@
     %li
       = t('.help_5')
 
-!= map_init('map', @account.latitude ? 7 : 0, @account.latitude, @account.longitude)
+!= map_init('map', @account.latitude ? 7 : 0)
