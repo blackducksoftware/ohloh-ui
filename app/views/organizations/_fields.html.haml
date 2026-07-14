@@ -11,7 +11,7 @@
       %label.control-label.required= t('.url')
       .controls
         .input-prepend
-          %span.add-on= 'http://www.openhub.net/orgs/'
+          %span.add-on= "https://#{ENV.fetch('URL_HOST')}/orgs/"
           = f.text_field :vanity_url, class: 'check-availability',
             'data-original-value' => Organization.find_by(id: @organization).try(:vanity_url),
             'data-ajax-path' => organization_check_availabilities_path,

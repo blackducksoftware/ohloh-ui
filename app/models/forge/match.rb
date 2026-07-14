@@ -49,7 +49,7 @@ class Forge::Match
     http = Net::HTTP.new(uri.host, uri.port)
     http.use_ssl = true
     request['Content-Type'] = 'application/json'
-    request['User-Agent'] = 'openhub.net client'
+    request['User-Agent'] = ENV.fetch('FORGE_USER_AGENT')
     response = http.request(request)
     JSON.parse(response.body)
   end

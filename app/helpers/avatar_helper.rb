@@ -57,7 +57,7 @@ module AvatarHelper
 
   def gravatar_url(md5, size)
     default_url = if ActionController::Base.asset_host.blank?
-                    'https%3a%2f%2fopenhub.net'
+                    "https%3a%2f%2f#{ENV.fetch('URL_HOST')}"
                   else
                     "http#{'s' if request&.ssl?}%3a%2f%2f#{ActionController::Base.asset_host}"
                   end

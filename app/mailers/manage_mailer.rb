@@ -2,7 +2,7 @@
 
 class ManageMailer < ApplicationMailer
   default to: proc { (@manager || @manage.account).email },
-          from: 'mailer@openhub.net'
+          from: ENV.fetch('MAILER_SENDER')
 
   def rejection(manage)
     @manage = manage

@@ -8,7 +8,7 @@
   The old name violated new system rules about allowed characters.
   Your new login name is "#{@account.login}" (without the quotation marks).
   You may edit your login name at Open Hub's
-  %a{ href: 'https://www.openhub.net/accounts/me/edit' }
+  %a{ href: "https://#{ENV.fetch('URL_HOST')}/accounts/me/edit" }
     Edit Account Page
   to any other legal value.
 

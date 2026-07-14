@@ -20,17 +20,17 @@ module Reverification
                   This is the fourth and final notice from the Black Duck OpenHub about reverifying your account.
                   Without an immediate response, your account will be permanently deleted within the next two weeks.
                   To prevent your account from being permanently deleted, please contact us at
-                  <a href='mailto:info@openhub.net'>info@openhub.net</a>.<br><br>
+                  <a href=’mailto:#{ENV.fetch('SUPPORT_EMAIL')}’>#{ENV.fetch('SUPPORT_EMAIL')}</a>.<br><br>
                   We understand that this can seem severe and ask for your understanding as we continue to provide
                   the OpenHub as a free and open service to the Open Source Software community.
                   If you would like more background on this issue, we invite you to read our blog postings,
-                  <a href='http://blog.openhub.net/2015/02/spammers_heaven/'>Oh dear, we’ve built a spammers heaven</a> and
-                  <a href='http://blog.openhub.net/2015/08/new-accounts-are-back-but-so-are-the-spammers/'>New
+                  <a href=’#{ENV.fetch('OPENHUB_BLOG_URL')}2015/02/spammers_heaven/’>Oh dear, we’ve built a spammers heaven</a> and
+                  <a href=’#{ENV.fetch('OPENHUB_BLOG_URL')}2015/08/new-accounts-are-back-but-so-are-the-spammers/’>New
                   Accounts are Back. But so are the spammers.</a><br><br> We thank you for your understanding and for being a
                   member of the OpenHub and the Open Source Software community.
                   <br><br>Sincerely,<br><br>The Black Duck OpenHub Team<br><br>Black Duck Software<br>
                   781.891.5100<br>8 New England Executive Park<br>Burlington, MA 01803<br>
-                  <a href='https://www.openhub.net'>www.openhub.net</a></p>"
+                  <a href=’https://#{ENV.fetch('URL_HOST')}’>www.openhub.blackduck.com</a></p>"
               }
             }
           }
@@ -53,19 +53,19 @@ module Reverification
                   At this point, it is not possible to access the account on the OpenHub.
                   At some point in the next few months, this account will be deleted permanently.
                   If you feel that this has been done in error, please contact us immediately at
-                  <a href='mailto:info@openhub.net'>info@openhub.net</a> so that
+                  <a href=’mailto:#{ENV.fetch('SUPPORT_EMAIL')}’>#{ENV.fetch('SUPPORT_EMAIL')}</a> so that
                   we may restore the account and give you the opportunity to verify the account.
                   We understand that this can seem severe and ask for your understanding as we continue to provide
                   the OpenHub as a free and open service to the Open Source Software community.
                   If you would like more background on this issue, we invite you to read our blog postings,
-                  <a href='http://blog.openhub.net/2015/02/spammers_heaven/'>Oh dear, we’ve built a spammers heaven</a> and
-                  <a href='http://blog.openhub.net/2015/08/new-accounts-are-back-but-so-are-the-spammers/'>New
+                  <a href=’#{ENV.fetch('OPENHUB_BLOG_URL')}2015/02/spammers_heaven/’>Oh dear, we’ve built a spammers heaven</a> and
+                  <a href=’#{ENV.fetch('OPENHUB_BLOG_URL')}2015/08/new-accounts-are-back-but-so-are-the-spammers/’>New
                   Accounts are Back. But so are the spammers.</a><br><br>
                   We thank you for your understanding and for being a member of the
                   OpenHub and the Open Source Software community.
                   <br><br>Sincerely,<br><br>The Black Duck OpenHub Team<br><br>Black Duck Software<br>
                   781.891.5100<br>8 New England Executive Park<br>Burlington, MA 01803<br>
-                  <a href='https://www.openhub.net'>www.openhub.net</a></p>"
+                  <a href=’https://#{ENV.fetch('URL_HOST')}’>www.openhub.blackduck.com</a></p>"
               }
             }
           }
@@ -94,14 +94,14 @@ module Reverification
                   deleted within a few months. We understand that this can seem severe and ask
                   for your understanding as we continue to provide the OpenHub as a free and open
                   service to the Open Source Software community. If you would like more background on this issue,
-                  we invite you to read our blog postings, <a href='http://blog.openhub.net/2015/02/spammers_heaven/'>
+                  we invite you to read our blog postings, <a href=’#{ENV.fetch('OPENHUB_BLOG_URL')}2015/02/spammers_heaven/’>
                   Oh dear, we’ve built a spammers heaven</a> and
-                  <a href='http://blog.openhub.net/2015/08/new-accounts-are-back-but-so-are-the-spammers/'>New
+                  <a href=’#{ENV.fetch('OPENHUB_BLOG_URL')}2015/08/new-accounts-are-back-but-so-are-the-spammers/’>New
                   Accounts are Back. But so are the spammers.</a><br><br>We thank you for your understanding
                   and for being a member of the OpenHub and the Open Source Software community.<br><br>
                   Sincerely,<br><br>The Black Duck OpenHub Team<br><br>Black Duck Software<br>
                   781.891.5100<br>8 New England Executive Park<br>Burlington, MA 01803<br>
-                  <a href='https://www.openhub.net'>www.openhub.net</a></p>"
+                  <a href=’https://#{ENV.fetch('URL_HOST')}’>www.openhub.blackduck.com</a></p>"
               }
             }
           }
@@ -130,14 +130,14 @@ module Reverification
                   and permanently deleted within a few months. We understand that this can seem severe and ask
                   for your understanding as we continue to provide the OpenHub as a free and open service to the
                   Open Source Software community. If you would like more background on this issue, we invite you
-                  to read our blog postings, <a href='http://blog.openhub.net/2015/02/spammers_heaven/'>Oh dear,
+                  to read our blog postings, <a href=’#{ENV.fetch('OPENHUB_BLOG_URL')}2015/02/spammers_heaven/’>Oh dear,
                   we’ve built a spammers heaven</a> and
-                  <a href='http://blog.openhub.net/2015/08/new-accounts-are-back-but-so-are-the-spammers/'>New
+                  <a href=’#{ENV.fetch('OPENHUB_BLOG_URL')}2015/08/new-accounts-are-back-but-so-are-the-spammers/’>New
                   Accounts are Back. But so are the spammers.</a><br><br>We thank you for your understanding
                   and for being a member of the OpenHub and the Open Source Software community.<br><br>
                   Sincerely,<br><br>The Black Duck OpenHub Team<br><br>Black Duck Software<br>
                   781.891.5100<br>8 New England Executive Park<br>Burlington, MA 01803<br>
-                  <a href='https://www.openhub.net'>www.openhub.net</a></p>"
+                  <a href=’https://#{ENV.fetch('URL_HOST')}’>www.openhub.blackduck.com</a></p>"
               }
             }
           }

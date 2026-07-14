@@ -3,10 +3,12 @@
 module SiteFeaturesHelper
   # rubocop:disable Metrics/MethodLength
 
+  BLOG_URL = ENV.fetch('OPENHUB_BLOG_URL').freeze
+
   def features_hash
     {
       'OpenHub' => [
-        "you can subscribe to e-mail newsletters to receive update from the <a href='http://blog.openhub.net/'
+        "you can subscribe to e-mail newsletters to receive update from the <a href='#{BLOG_URL}'
          target='_blank'>Open Hub blog</a>",
         "data presented on the Open Hub is available through our
          <a href='https://github.com/blackducksoftware/ohloh_api#ohloh-api-documentation' target='_blank'>API</a>",
@@ -18,7 +20,7 @@ module SiteFeaturesHelper
         "<a href=#{compare_projects_path} target='_self'>compare</a> projects before you chose one to use",
         "check out <a href=#{projects_explores_path} target='_self'>hot projects</a> on the Open Hub",
         "anyone with an Open Hub account can update a project's tags",
-        "learn about Open Hub updates and features on the <a href='http://blog.openhub.net/' target='_blank'>
+        "learn about Open Hub updates and features on the <a href='#{BLOG_URL}' target='_blank'>
          Open Hub blog</a>"
       ],
 
