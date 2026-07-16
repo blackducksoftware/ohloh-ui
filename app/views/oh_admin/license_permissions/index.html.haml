@@ -24,9 +24,9 @@
                   %tr
                     %td
                       %strong= license_permission.id
-                    %td= link_to license.name, "#", title: license.name
+                    %td= link_to license.name, license_path(license), title: license.name
                     %td
-                      %span.badge.badge-info= license_permission.name
+                      %span.label.label-info= license_permission.name
                     %td
                       - if license_permission.status == 'Permitted'
                         %span.badge{style: 'background-color: #28a745; color: white;'}= license_permission.status
@@ -61,7 +61,7 @@
                 = select_tag 'status', options_for_select(LicensePermission.statuses, :selected => params[:status]), prompt: "All", class: 'filter-select'
               .filter-actions
                 = submit_tag "Apply Filter", class: 'filter-btn filter-btn-apply'
-                = submit_tag "Clear", name: 'commit', class: 'filter-btn filter-btn-clear'
+                = submit_tag "Clear Filter", name: 'commit', class: 'filter-btn filter-btn-clear'
 
         / Action Card
         .box.action-card
