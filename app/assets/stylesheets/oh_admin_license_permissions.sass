@@ -1,0 +1,288 @@
+// Filter and Sidebar Styles for License Permissions Admin
+
+// Filter Card Styles
+.filter-card.box
+  margin-bottom: 20px
+
+.filter-header
+  background-color: #5A2A82 !important
+  color: white !important
+  border-color: #5A2A82 !important
+  display: flex !important
+  align-items: center !important
+  gap: 8px !important
+
+  i
+    font-size: 14px
+    margin-right: 4px
+
+  .box-title
+    margin: 0
+    font-size: 14px
+    font-weight: 600
+    color: white
+
+// Action Card Styles
+.action-card.box
+  margin-bottom: 20px
+
+.action-header
+  background-color: #10b981 !important
+  color: white !important
+  border-color: #10b981 !important
+  display: flex !important
+  align-items: center !important
+  gap: 8px !important
+
+  i
+    font-size: 14px
+    margin-right: 4px
+
+  .box-title
+    margin: 0
+    font-size: 14px
+    font-weight: 600
+    color: white
+
+// Form Control Styles
+.filter-group
+  margin-bottom: 16px
+
+  label
+    display: block
+    font-size: 12px
+    font-weight: 600
+    color: #374151
+    margin-bottom: 6px
+    text-transform: uppercase
+    letter-spacing: 0.5px
+
+// Filter Select - Base Styles
+.filter-select
+  height: 34px !important
+  font-size: 13px !important
+  border: 1px solid #e5e7eb !important
+  border-radius: 6px !important
+  background-color: white !important
+  margin-top: 0 !important
+  margin-right: 0 !important
+  margin-bottom: 10px !important
+  margin-left: 0 !important
+  padding: 6px 10px !important
+  box-shadow: none !important
+  display: block !important
+  width: 100% !important
+  color: #374151 !important
+  cursor: pointer !important
+  vertical-align: middle !important
+  box-sizing: border-box !important
+
+// Responsive - Large Desktop (1200px+)
+@media (min-width: 1200px)
+  .filter-select
+    height: 34px !important
+    font-size: 13px !important
+    padding: 6px 10px !important
+    margin-bottom: 10px !important
+
+// Responsive - Medium Desktop (992px - 1199px)
+@media (min-width: 992px) and (max-width: 1199px)
+  .filter-select
+    height: 32px !important
+    font-size: 12px !important
+    padding: 5px 8px !important
+    margin-bottom: 9px !important
+
+// Responsive - Tablet (768px - 991px)
+@media (min-width: 768px) and (max-width: 991px)
+  .filter-select
+    height: 30px !important
+    font-size: 11px !important
+    padding: 4px 6px !important
+    margin-bottom: 8px !important
+
+// Responsive - Small Tablet (480px - 767px)
+@media (min-width: 480px) and (max-width: 767px)
+  .filter-select
+    height: 28px !important
+    font-size: 10px !important
+    padding: 4px 6px !important
+    margin-bottom: 6px !important
+
+// Responsive - Mobile (< 480px)
+@media (max-width: 479px)
+  .filter-select
+    height: 28px !important
+    font-size: 10px !important
+    padding: 4px 6px !important
+    margin-bottom: 6px !important
+
+// Filter Actions
+.filter-actions
+  display: flex !important
+  gap: 8px !important
+  margin-top: 18px !important
+
+  .btn
+    flex: 1 !important
+    padding: 8px 12px !important
+    font-size: 13px !important
+    font-weight: 500 !important
+    border-radius: 6px !important
+    border: none !important
+    cursor: pointer !important
+    transition: all 0.2s ease !important
+
+    &.btn-primary
+      background-color: #5A2A82 !important
+      color: white !important
+
+      &:hover
+        background-color: #4a2170 !important
+
+    &.btn-secondary
+      background-color: #e5e7eb !important
+      color: #374151 !important
+
+      &:hover
+        background-color: #d1d5db !important
+
+// Action Buttons
+.action-btn
+  display: flex !important
+  align-items: center !important
+  justify-content: center !important
+  gap: 8px !important
+  padding: 10px 12px !important
+  font-size: 13px !important
+  font-weight: 500 !important
+  border-radius: 6px !important
+  border: none !important
+  text-decoration: none !important
+  transition: all 0.2s ease !important
+  cursor: pointer !important
+  display: block !important
+  width: 100% !important
+  text-align: center !important
+
+  i
+    font-size: 14px !important
+
+  &.btn-add
+    background-color: #10b981 !important
+    color: white !important
+
+    &:hover
+      background-color: #059669 !important
+
+// Custom Edit Button
+.license-edit-btn
+  display: inline-block
+  padding: 6px 12px
+  font-size: 12px
+  font-weight: 500
+  text-align: center
+  text-decoration: none
+  cursor: pointer
+  border: 1px solid #5A2A82
+  border-radius: 4px
+  background-color: #5A2A82
+  color: white
+  transition: all 0.2s ease
+
+  &:hover
+    background-color: #4a2170
+    border-color: #4a2170
+    text-decoration: none
+    color: white
+
+  &:focus
+    outline: none
+    box-shadow: 0 0 0 3px rgba(90, 42, 130, 0.25)
+
+  &:active
+    background-color: #3a1860
+    border-color: #3a1860
+
+// Custom Filter Buttons
+.filter-btn
+  padding: 8px 12px
+  font-size: 13px
+  font-weight: 500
+  border: 1px solid transparent
+  border-radius: 6px
+  cursor: pointer
+  transition: all 0.2s ease
+  display: inline-block
+  width: 48%
+
+  &.filter-btn-apply
+    background-color: #5A2A82
+    color: white
+    border-color: #5A2A82
+
+    &:hover
+      background-color: #4a2170
+      border-color: #4a2170
+
+    &:focus
+      outline: none
+      box-shadow: 0 0 0 3px rgba(90, 42, 130, 0.25)
+
+  &.filter-btn-clear
+    background-color: #e5e7eb
+    border-color: #d1d5db
+
+    &:hover
+      background-color: #d1d5db
+      border-color: #9ca3af
+
+    &:focus
+      outline: none
+      box-shadow: 0 0 0 3px rgba(209, 213, 219, 0.5)
+
+// Modern Pagination Styles
+.modern-pagination
+  display: flex !important
+  align-items: center !important
+  justify-content: center !important
+  gap: 8px !important
+  margin: 20px 0 !important
+  flex-wrap: wrap
+
+  .page-btn
+    min-width: 36px
+    width: auto
+    height: 36px
+    padding: 0 12px !important
+    border-radius: 8px !important
+    border: 1px solid #e5e7eb !important
+    background-color: #ffffff !important
+    color: #111827 !important
+    font-size: 14px !important
+    font-weight: 500 !important
+    cursor: pointer
+    transition: all 0.2s ease !important
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important
+
+    &:hover:not(:disabled)
+      border-color: #5A2A82 !important
+      background-color: #f3f4f6 !important
+
+    &:disabled
+      opacity: 0.5
+      cursor: not-allowed
+
+    &.active
+      background-color: #5A2A82 !important
+      color: #ffffff !important
+      border-color: #5A2A82 !important
+
+  .page-ellipsis
+    display: flex
+    align-items: center
+    justify-content: center
+    width: 36px
+    height: 36px
+    font-size: 14px
+    color: #6b7280
