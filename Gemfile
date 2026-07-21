@@ -7,7 +7,6 @@ gem 'aws-sdk', '~> 3'
 gem 'bcrypt_pbkdf', '~> 1.0'
 gem 'bootstrap_jt', '~> 0.1.0'
 gem 'brakeman', '>= 4.7.1'
-gem 'bundler-audit'
 gem 'bunny'
 gem 'clearance'
 gem 'coffee-rails'
@@ -70,6 +69,7 @@ group :test do
 end
 
 group :development, :test do
+  gem 'bundler-audit'
   gem 'bunny-mock'
   gem 'byebug'
   gem 'database_cleaner'
