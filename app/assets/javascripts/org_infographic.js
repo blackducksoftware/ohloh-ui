@@ -13,8 +13,8 @@ OrganizationPictogram = {
       $.ajax({
         url: $(this).attr('url'),
         success: function(response) {
-          $('#org_infographic').replaceWith(response.pictogram_html);
-          $(update).html(response.subview_html);
+          $('#org_infographic').replaceWith($.parseHTML(response.pictogram_html));
+          $(update).html($.parseHTML(response.subview_html));
           OrganizationPictogram.init();
           Expander.init();
           $.unblockUI();
