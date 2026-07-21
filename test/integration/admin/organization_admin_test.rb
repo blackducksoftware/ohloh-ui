@@ -3,7 +3,7 @@
 require 'test_helper'
 
 class OrganizationAdminTest < ActionDispatch::IntegrationTest
-  let(:admin) { create(:admin, password: TEST_PASSWORD) }
+  let(:admin) { create(:admin, password: PasswordGenerator.generate) }
 
   it 'should render index page' do
     login_as admin

@@ -131,11 +131,13 @@ class AccountTest < ActiveSupport::TestCase
   end
 
   it 'must update new password by passing previous password' do
-    account = create(:account, password: 'barfoo')
+    password = PasswordGenerator.generate
+    new_password = PasswordGenerator.generate
+    account = create(:account, password: password)
 
     account.validate_current_password = true
-    account.current_password = 'barfoo'
-    account.password = 'foobar'
+    account.current_password = password
+    account.password = new_password
 
     _(account).must_be :valid?
   end
@@ -286,33 +288,54 @@ class AccountTest < ActiveSupport::TestCase
   end
 
   it 'should validate current password error message' do
-    account.update(password: 'newpassword', current_password: 'dummy password', validate_current_password: true)
+    account.update(password: PasswordGenerator.generate, current_password: 'dummy password',
+                   validate_current_password: true)
     _(account.errors.size).must_equal 1
     error_message = [I18n.t('activerecord.errors.models.account.attributes.current_password.invalid')]
     _(error_message).must_equal account.errors[:current_password]
   end
 
   it 'should update password with valid passwords' do
-    account = create(:account, password: 'testing')
-    account.update(password: 'newpassword', current_password: 'testing')
-    _(account.reload.encrypted_password).must_equal account.encrypt('newpassword', account.salt)
+    old_password = PasswordGenerator.generate
+    new_password = PasswordGenerator.generate
+    account = create(:account, password: old_password)
+    account.update(password: new_password, current_password: old_password)
+    _(account.reload.encrypted_password).must_equal account.encrypt(new_password, account.salt)
   end
 
   it 'should not update password if current_password is an empty string' do
-    account.update(password: 'newpassword', current_password: '', validate_current_password: true)
-    assert_not_equal account.reload.encrypted_password, account.encrypt('newpassword', account.salt)
+    new_password = PasswordGenerator.generate
+    account.update(password: new_password, current_password: '', validate_current_password: true)
+    assert_not_equal account.reload.encrypted_password, account.encrypt(new_password, account.salt)
   end
 
   it 'should not update if password is blank' do
-    account = create(:account, password: 'testing')
-    account.update(password: '', current_password: 'testing')
+    old_password = PasswordGenerator.generate
+    account = create(:account, password: old_password)
+    account.update(password: '', current_password: old_password)
     assert account.invalid?
   end
 
-  it 'should not update password if password is less than 5 characters' do
-    account = create(:account, password: 'testing')
-    account.update(password: 'pass', current_password: 'testing')
+  it 'should not update password if password is less than 12 characters' do
+    old_password = PasswordGenerator.generate
+    account = create(:account, password: old_password)
+    account.update(password: 'pass', current_password: old_password)
     assert account.invalid?
+  end
+
+  it 'should reject passwords longer than 64 characters' do
+    long_password = 'a' * 65
+    account = build(:account, password: long_password)
+    _(account).wont_be :valid?
+    _(account.errors).must_include(:password)
+  end
+
+  it 'should accept passwords between 12 and 64 characters' do
+    account = build(:account, password: PasswordGenerator.generate)
+    _(account).must_be :valid?
+
+    account = build(:account, password: PasswordGenerator.generate)
+    _(account).must_be :valid?
   end
 
   describe 'first commit date' do
@@ -547,6 +570,7 @@ class AccountTest < ActiveSupport::TestCase
   end
 
   it 'must create an organization job when account is deleted' do
+    create(:anonymous_account)
     account = create(:account)
     organization = create(:organization)
     account.update_attribute(:organization_id, organization.id)
@@ -609,7 +633,7 @@ class AccountTest < ActiveSupport::TestCase
 
   describe 'anonymous?' do
     it 'should return true for anonymous account' do
-      account = AnonymousAccount.create!
+      account = create(:anonymous_account)
       _(account.anonymous?).must_equal true
     end
 
@@ -634,14 +658,15 @@ class AccountTest < ActiveSupport::TestCase
     end
   end
 
-  describe 'find_or_create_anonymous_account' do
+  describe 'anonymous_account' do
     it 'should create anonymous account if it does not exist' do
-      _(Account.find_or_create_anonymous_account.login).must_equal AnonymousAccount::LOGIN
+      create(:anonymous_account)
+      _(Account.anonymous_account.login).must_equal AnonymousAccount::LOGIN
     end
 
     it 'should find anonymous account if it exists' do
-      anonymous_account = AnonymousAccount.create!
-      _(Account.find_or_create_anonymous_account).must_equal anonymous_account
+      anonymous_account = create(:anonymous_account)
+      _(Account.anonymous_account).must_equal anonymous_account
     end
   end
 
@@ -882,6 +907,8 @@ class AccountTest < ActiveSupport::TestCase
   end
 
   describe 'destroy' do
+    before { create(:anonymous_account) }
+
     it 'must delete an Alias for an unverified account on account.destroy' do
       unverified_account = create(:position_with_unverified_account).account
       Alias.any_instance.stubs(:schedule_project_analysis)

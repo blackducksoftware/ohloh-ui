@@ -238,5 +238,5 @@ en:
       email_help_4: 'for this email address, Open Hub will use it.'
       verify_email_address: 'Verify Email Address'
       verify_password: 'Verify Password'
-      password_help: 'Password must be at least 5 characters long'
-      verify_password_help: 'Verify Password must be at least 5 characters long'
+      password_help: 'Password must be 12-64 chars with at least: 1 digit (0-9), 1 uppercase (A-Z), 1 lowercase (a-z), 1 special (!@#$%^&*)'
+      verify_password_help: '12-64 chars with at least: 1 digit (0-9), 1 uppercase (A-Z), 1 lowercase (a-z), 1 special (!@#$%^&*)'

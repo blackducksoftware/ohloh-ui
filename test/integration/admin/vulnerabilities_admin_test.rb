@@ -4,7 +4,7 @@ require 'test_helper'
 require 'test_helpers/admin_test_helper'
 
 class VulnerabilitiesAdminTest < ActionDispatch::IntegrationTest
-  let(:admin) { create(:admin, password: TEST_PASSWORD) }
+  let(:admin) { create(:admin, password: PasswordGenerator.generate) }
   let(:release) { create(:release) }
   let(:project_security_set) { release.project_security_set }
   let(:create_vulnerability) { create(:vulnerability, releases: [release]) }
