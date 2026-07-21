@@ -1,27 +1,32 @@
 .review_container{ id: "existing_review_#{existing_review.id}" }
-  %table{ width: '100%', boder: '1' }
-    %tr
-      %td{ colspan: '3' }
-        %h3= t('reviews.my_review', name: truncate(@project.name, length: 40))
-    %tr
-      %td{ width: '65%', valign: 'top' }
-        %label.control-label
-          = existing_review.title
-        %abbr.soft.small{ title: existing_review.created_at }
-          = t('reviews.written_ago', time: time_ago_in_words(existing_review.created_at))
-      %td{ width: '14%', valign: 'top' }
-        %label.control-label= t('reviews.my_rating')
-      %td{ width: '21%', valign: 'top' }
-        != rating_stars('rating_star', existing_review.score.to_f)
-    %tr
-      %td{ colspan: '3' }
-        %p.description.review_content= simple_format(existing_review.comment.fix_encoding_if_invalid)
-    %tr
-      %td
-        = icon_button(edit_project_review_path(existing_review.project, existing_review), icon: 'pencil',
-          text: t('reviews.edit_review'), size: 'mini', type: 'info')
-        - if current_user_is_admin? || existing_review.account == current_user
-          = icon_button(review_path(existing_review), icon: 'trash', text: t('reviews.remove_review'), size: 'mini',
-            type: 'danger', method: :delete, data: { confirm: t('reviews.remove_confirmation') },
-            style: 'margin-left: 5px')
-          &nbsp;
+  %h3.oh-review-section-title
+    %i.fa.fa-pencil
+    = t('reviews.my_review', name: truncate(@project.name, length: 40))
+
+  .oh-review-card
+    .oh-review-card__body
+      .oh-review-author-row
+        .oh-review-avatar
+          %span= existing_review.account&.login&.first&.upcase || 'U'
+        .oh-review-meta
+          .oh-review-meta__header
+            .oh-review-meta__left
+              %p.oh-review-author
+                = existing_review.account&.login
+                %span.oh-review-author__says= ' says:'
+              .oh-review-title-row
+                %label.oh-review-title= existing_review.title
+                != rating_stars('rating_star', existing_review.score.to_f)
+            .oh-review-meta__right
+              != rating_stars('rating_star', existing_review.score.to_f)
+          .oh-review-timestamp
+            %i.fa.fa-clock-o
+            = t('reviews.written_ago', time: time_ago_in_words(existing_review.created_at))
+          .oh-review-comment= simple_format(existing_review.comment.fix_encoding_if_invalid)
+
+    .oh-review-card__footer
+      = icon_button(edit_project_review_path(existing_review.project, existing_review), icon: 'pencil',
+        text: t('reviews.edit_review'), size: 'medium', type: 'info')
+      - if current_user_is_admin? || existing_review.account == current_user
+        = icon_button(review_path(existing_review), icon: 'trash', text: t('reviews.remove_review'), size: 'medium',
+          type: 'danger', method: :delete, data: { confirm: t('reviews.remove_confirmation') })

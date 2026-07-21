@@ -39,8 +39,11 @@ en:
       compare_table_rating: "Open Hub User Rating"
     project_section:
       remove_from: "Remove from comparision"
+      remove_project: "Remove project"
       enter_name: 'Enter a project name'
+      project_input_label: "Project %{number}"
       go: "Go"
+      add_project: "Add project"
     project_row:
       view_as_graph: "View as graph"
       project_comparison_graph: "Project Comparison Graph"

@@ -27,10 +27,10 @@ ProjectVulnerabilityFilter =
     $('#vulnerabilities_index_page').on 'change', '.vulnerability_main_filter', (event) ->
       refreshVulnerabilityTable()
 
-    $('#vulnerability_filter_major_version').on 'change', ->
+    $('#vulnerabilities_index_page').on 'change', '#vulnerability_filter_major_version', ->
       reDrawVulnerabilityChart()
 
-    $('.release_timespan').click ->
+    $('#vulnerabilities_index_page').on 'click', '.release_timespan', ->
       return if $(this).hasClass('selected')
       $('#vulnerability_filter_period').val($(this).attr('date')).change()
       reDrawVulnerabilityChart()
@@ -80,6 +80,18 @@ ProjectVulnerabilityPagination =
       fetchVulnerabilityData(queryStr)
       return false
 
+    # Strip onclick from modern pagination buttons so AJAX handler takes over
+    $('#vulnerabilities_index_page .modern-pagination .page-btn').removeAttr('onclick')
+
+    $('#vulnerabilities_index_page').on 'click', '.modern-pagination .page-btn:not([disabled])', (event) ->
+      event.preventDefault()
+      href = $(this).data('href')
+      return unless href
+      queryStr = href.split('?')[1]
+      window.history.pushState('', document.title, getProjectUrl() + 'security?' + queryStr)
+      fetchVulnerabilityData(queryStr)
+      return false
+
 $(document).on 'page:change', ->
   ProjectVulnerabilityVersionChart.init()
   ProjectVulnerabilityAllVersionChart.init()
@@ -87,6 +99,6 @@ $(document).on 'page:change', ->
   ProjectVulnerabilitySort.init()
   ProjectVulnerabilityPagination.init()
 
-  $('#vulnerabilities_index_page').on 'click', 'span#read_more a, span#read_less a', (e) ->
+  $('#vulnerabilities_index_page').on 'click', 'span.read_more a, span.read_less a, span#read_more a, span#read_less a', (e) ->
     e.stopPropagation()
     $(this).closest('td').find('span').toggle()

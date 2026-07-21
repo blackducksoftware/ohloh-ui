@@ -1,22 +1,26 @@
 - @login = OpenStruct.new
-= form_for(@login, as: :login, url: oh_sessions_path, html: { method: :post, class: 'well form-horizontal' }) do |f|
+= form_for(@login, as: :login, url: oh_sessions_path, html: { method: :post, id: 'signin_form' }) do |f|
   %fieldset
-    %legend= t('.log_in_to_open_hub')
-    .control-group
-      .input-prepend
-        %span.add-on
-          %i.icon-user
-        = f.text_field(:login, class: 'input-xlarge', placeholder: t('.login_or_email'))
-    .control-group.input-prepend
-      %span.add-on
-        %i.icon-key
-      = f.password_field(:password, class: 'input-xlarge', placeholder: t('.password'))
-    .control-group
-      %label.checkbox{ style: 'padding-left: -1px;' }
+    .signup-field-group
+      = f.label(:login, t('.login_or_email'), class: 'signup-field-label')
+      .signup-field-input-wrapper
+        %i.fa.fa-user.signup-field-icon
+        = f.text_field(:login, class: 'signup-field-input', placeholder: t('.login_or_email'))
+
+    .signup-field-group
+      = f.label(:password, t('.password'), class: 'signup-field-label')
+      .signup-field-input-wrapper
+        %i.fa.fa-lock.signup-field-icon
+        = f.password_field(:password, class: 'signup-field-input', placeholder: t('.password'))
+
+    .signin-remember-me
+      %label.signin-checkbox-label
         = f.check_box :remember_me
         = t('.remember_me')
+
     - if @ask_for_recaptcha
-      .control-group
+      .signup-field-group
         = render 'shared/captcha'
-    .actions
-      %input.btn.btn-primary{ type: 'submit', value: t('.log_in') }
+
+    .signup-field-actions
+      %input.signup-submit-btn{ type: 'submit', value: t('.log_in') }

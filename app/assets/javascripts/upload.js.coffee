@@ -13,6 +13,8 @@ FileUpload =
         $('input[type="submit"]').removeAttr('disabled')
         true
 
+    $('.ace-file-btn').attr('aria-label', 'Choose file')
+
     $('.new_file_upload').on 'change', () ->
       if this.files[0].size > $(this).data('max_size')
         $('input[type="submit"]').attr('disabled', 'disabled')

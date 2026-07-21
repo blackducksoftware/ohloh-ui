@@ -1,16 +1,319 @@
-.project_content_title
-  :height 50px
-.alias
-  .undone
-    :text-decoration line-through
-    :color #808080
-  .pending
-    :color #8B0000
-    :padding-left 18px
-    :background asset_url('icons/fact_warning.png') left center no-repeat
-  li
-    :margin-left 25px
-    :margin-bottom 8px
-    :border-bottom 1px solid #ddd
-    :padding-bottom 5px
+// Design System Variables
+$purple-primary: #5A2A82
+$gray-500: #6b7280
+$gray-200: #e5e7eb
+$yellow-accent: #FFB91A
 
+// System Font Stack
+$font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif
+
+// ──────────────────────────────────────────────────────────────────────────────
+// Alias Index Page (#alias-index-page)
+// ──────────────────────────────────────────────────────────────────────────────
+
+#alias-index-page
+  @media (max-width: 639px)
+    padding: 0 16px 24px
+
+  .settings-page-header
+    margin-top: 16px
+
+  .oh-card
+    padding: 0
+    overflow: visible !important
+
+.alias-index-card-header
+  display: flex
+  align-items: center
+  justify-content: space-between
+  padding: 20px 24px 16px
+  border-bottom: 1px solid #e5e7eb
+
+  html.dark &
+    border-bottom-color: rgba(90, 42, 130, 0.3)
+
+.alias-index-card-title
+  font-size: 18px
+  font-weight: 600
+  color: #111827
+  margin: 0
+  display: flex
+  align-items: center
+  gap: 10px
+
+  .fa
+    color: #5A2A82
+    font-size: 16px
+
+  html.dark &
+    color: #f3f4f6
+
+    .fa
+      color: #5A2A82
+
+.alias-list
+  display: flex
+  flex-direction: column
+
+.alias-list-item
+  display: flex
+  align-items: center
+  justify-content: space-between
+  gap: 12px
+  padding: 14px 24px
+  border-bottom: 1px solid #f3f4f6
+
+  html.dark &
+    border-bottom-color: rgba(255, 255, 255, 0.06)
+
+  &:last-child
+    border-bottom: none
+
+  &--undone
+    .alias-info
+      text-decoration: line-through
+      color: $gray-500
+
+      html.dark &
+        color: #94a3b8
+
+.alias-info
+  display: flex
+  flex-wrap: wrap
+  align-items: center
+  gap: 4px 8px
+  flex: 1
+  min-width: 0
+  font-size: 14px
+  color: #374151
+
+  html.dark &
+    color: #d1d5db
+
+  strong
+    font-weight: 600
+    color: #111827
+
+    html.dark &
+      color: #f9fafb
+
+.alias-info-text
+  display: inline-flex
+  align-items: center
+  gap: 4px
+
+.alias-badge
+  display: inline-flex
+  align-items: center
+  padding: 2px 8px
+  border-radius: 9999px
+  font-size: 11px
+  font-weight: 500
+
+  &--pending
+    background: rgba(90, 42, 130, 0.1)
+    color: $purple-primary
+
+    html.dark &
+      background: rgba(255, 185, 26, 0.15)
+      color: $yellow-accent
+
+.alias-item-actions
+  flex-shrink: 0
+
+.alias-empty-state
+  display: flex
+  flex-direction: column
+  align-items: center
+  justify-content: center
+  padding: 40px 24px
+  text-align: center
+
+.alias-empty-icon
+  font-size: 48px
+  color: #d1d5db
+  margin-bottom: 12px
+  display: block
+
+  html.dark &
+    color: #4b5563
+
+.alias-empty-text
+  font-size: 14px
+  color: #6b7280
+  margin: 0
+
+  html.dark &
+    color: #9ca3af
+
+@media (max-width: 767px)
+  .alias-list-item
+    flex-direction: column
+    align-items: flex-start
+
+    .alias-item-actions
+      width: 100%
+      display: flex
+      justify-content: flex-end
+
+// ──────────────────────────────────────────────────────────────────────────────
+// Alias New Page (#alias-new-page)
+// ──────────────────────────────────────────────────────────────────────────────
+
+#alias-new-page
+  @media (max-width: 639px)
+    padding: 0 16px 24px
+
+  .settings-page-header
+    margin-top: 16px
+
+  // ── Card header ──
+
+  .oh-card
+    padding: 0
+    overflow: visible !important
+
+  .alias-new-card-header
+    display: flex
+    align-items: center
+    padding: 20px 24px 16px
+    border-bottom: 1px solid #e5e7eb
+
+    html.dark &
+      border-bottom-color: rgba(90, 42, 130, 0.3)
+
+  .alias-new-card-title
+    font-size: 18px
+    font-weight: 600
+    color: #111827
+    margin: 0
+    display: flex
+    align-items: center
+    gap: 10px
+
+    .fa
+      color: #5A2A82
+      font-size: 16px
+
+    html.dark &
+      color: #f3f4f6
+
+  // ── Form body ──
+
+  .alias-new-form
+    padding: 0 24px 24px
+
+  .alias-field-group
+    margin-bottom: 20px
+    padding-top: 16px
+
+    &:first-child
+      padding-top: 0
+
+  .alias-field-label
+    display: block
+    font-size: 13px
+    font-weight: 600
+    color: #374151
+    margin-bottom: 6px
+
+    html.dark &
+      color: #d1d5db
+
+  .alias-select-wrap
+    width: 100%
+
+    select
+      box-sizing: border-box
+      width: 100%
+      border: 2px solid #e5e7eb !important
+      border-radius: 16px !important
+      padding: 10px 16px !important
+      font-size: 14px
+      height: auto !important
+      background: #ffffff !important
+      color: #111827 !important
+      transition: border-color 0.2s, box-shadow 0.2s
+      appearance: auto
+
+      &:focus
+        border-color: #5A2A82 !important
+        outline: none !important
+        box-shadow: 0 0 0 3px rgba(90, 42, 130, 0.1) !important
+
+      html.dark &
+        background: #0d1117 !important
+        color: #ffffff !important
+        border-color: #2a2a2a !important
+
+        &:focus
+          border-color: #5A2A82 !important
+          box-shadow: 0 0 0 3px rgba(90, 42, 130, 0.1) !important
+
+    // chosen.js container
+    .chosen-container
+      width: 100% !important
+
+    .chosen-single,
+    .chosen-choices
+      border: 2px solid #e5e7eb !important
+      border-radius: 16px !important
+      padding: 8px 16px !important
+      background: #ffffff !important
+      box-shadow: none !important
+      font-size: 14px !important
+      color: #111827 !important
+      height: auto !important
+      line-height: 1.5 !important
+
+      html.dark &
+        background: #0d1117 !important
+        border-color: #2a2a2a !important
+        color: #ffffff !important
+
+    .chosen-container-active .chosen-single,
+    .chosen-container-active .chosen-choices
+      border-color: #5A2A82 !important
+      box-shadow: 0 0 0 3px rgba(90, 42, 130, 0.1) !important
+
+      html.dark &
+        border-color: #c084fc !important
+        box-shadow: 0 0 0 3px rgba(90, 42, 130, 0.1) !important
+
+  .alias-form-actions
+    display: flex
+    align-items: center
+    gap: 10px
+    padding-top: 8px
+
+  .alias-submit-btn
+    display: inline-flex
+    align-items: center
+    gap: 6px
+    height: 40px
+    padding: 0 24px
+    border-radius: 20px
+    font-size: 14px
+    font-weight: 600
+
+  .btn-cancel-alias
+    html.dark &
+      color: #ffff !important;
+      background: rgba(255, 255, 255, 0.06) !important;
+      border-color: #374151 !important;
+
+  // ── Responsive ──
+
+  @media (max-width: 767px)
+    .alias-form-actions
+      flex-direction: column
+      align-items: stretch
+
+      .alias-submit-btn,
+      .btn-cancel-alias
+        width: 100%
+        justify-content: center
+
+// ──────────────────────────────────────────────────────────────────────────────
+// About aside — shared by both index and new pages
+// ──────────────────────────────────────────────────────────────────────────────

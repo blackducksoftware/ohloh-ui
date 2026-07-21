@@ -15,7 +15,7 @@
 
   %p= t('.help2')
 
-.col-md-11.well
+.col-md-11.oh-card
   = form_for @project, html: { method: :put, class: 'normal' } do |f|
     = hidden_field_tag 'original_missing_source', @project.missing_source
     %fieldset

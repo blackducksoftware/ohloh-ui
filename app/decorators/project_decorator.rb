@@ -5,12 +5,12 @@ class ProjectDecorator < Cherry::Decorator
 
   delegate :main_language, :links, to: :project
 
-  def icon(size = :small, opts = {})
+  def icon(size = :small, container_class: 'icon-container', **opts)
     opts[:color] = language_text_color(main_language)
     opts[:bg]    = language_color(main_language)
 
     icon = Icon.new(project, context: { size: size, options: opts })
-    icon.image
+    icon.image(with_dimensions: true, container_class: container_class)
   end
 
   def sorted_link_list

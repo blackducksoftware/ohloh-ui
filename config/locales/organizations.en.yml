@@ -22,6 +22,12 @@ en:
       rating: 'Community Rating'
       reviews: 'Reviews'
       description: 'Description'
+      logo: 'Logo'
+      activity: 'Activity'
+      actions: 'Actions'
+    organization:
+      projects: 'Projects'
+      affiliated_committers: 'Affiliated Committers'
     index:
       no_matches: 'No matches with this filter.'
       title: 'Organizations'
@@ -116,6 +122,8 @@ en:
       portfolio_projects: 'Portfolio Projects'
       header:
         settings: 'Settings'
+        portfolio_project: 'portfolio project'
+        affiliated_committer: 'affiliated committer'
       quick_reference:
         title: 'Quick Reference'
         org_type: 'Organization Type:'
@@ -136,7 +144,10 @@ en:
       commits: 'Commits'
       affiliated: 'Affiliated'
       outside: 'Outside'
+      not_available: 'N/A'
+      none: 'none'
       see_all_projects: 'See All %{num} Portfolio Projects'
+      activity: 'Activity'
     outside_projects:
       outside_projects: 'Outside Projects'
       no_outside_projects: "There are no outside projects to display."
@@ -146,6 +157,7 @@ en:
       header_community_rating: "Community Rating"
       header_num_of_affiliates: "# of Affiliates Contributing"
       header_all_time_commits: "All-time Commits"
+      header_activity: "Activity"
       header_by_current_affiliates: "(by Current Affiliates)"
       see_all_num_outside_projs: "See All %{num} Outside Projects"
     outside_committers:
@@ -176,8 +188,11 @@ en:
       num_commits: "#Commits"
       date: "Date"
       you: "(You)"
+      commit: "commit"
       see_all: "See All %{num} Affiliated Contributors"
     settings:
+      title: 'Settings'
+      configure_desc: 'Configure every aspect of the %{name} organization on Open Hub.'
       basics: Organization Basics
       name_description_and_url: Name, description and Open Hub URL for Organization.
       users_who_manage: Users who manage the organization settings and oversee the organization on Open Hub.

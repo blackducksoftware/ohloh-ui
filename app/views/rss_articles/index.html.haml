@@ -1,10 +1,14 @@
 - content_for(:html_title) { t('.page_title', name: @project.name) }
 - page_context[:select_footer_nav] = :rss
-%div
-  %h2.pull-left= t('.title')
-  = render 'shared/analysis_timestamp', analysis: @project.best_analysis, project: @project
 
-.clearfix
+.settings-page-header
+  .settings-page-header-row
+    .settings-page-icon
+      %i.fa.fa-rss
+    %h2.settings-page-h2
+      = t('.title')
+  - if @project
+    %p.settings-page-description= @project.name
 .col-md-12
   - if @project && @rss_articles.empty?
     = render partial: 'shared/alert', locals: { message: t('.no_feed_exists') }
@@ -34,4 +38,4 @@
 - if @project
   %p= link_to(t('.edit'), project_rss_subscriptions_path(@project), class: "#{needs_login} btn btn-info")
 
-= will_paginate @rss_articles
+= render 'shared/modern_pagination', collection: @rss_articles

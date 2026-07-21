@@ -1,3 +1,11 @@
+#accounts-languages-page
+  max-width: 1024px
+  margin: 0 auto
+  padding: 0 24px 32px
+
+  @media (max-width: 639px)
+    padding: 0 16px 24px
+
 #language_detail
   .lang_bg
     padding-top: 8px
@@ -16,6 +24,41 @@
       margin-top: -15px !important
   .chzn-select, .chzn-container
     :margin-top 2px
+
+@media (max-width: 767px)
+  #language_detail
+    .table-responsive
+      border: none
+    table
+      font-size: 12px
+      td, th
+        padding: 4px 6px
+        white-space: nowrap
+    // Hide empty spacer column
+    tbody tr td:nth-child(7),
+    thead tr:first-child th:nth-child(6)
+      display: none
+
+  .margin_top_10
+    h2.col-md-2
+      width: 100% !important
+      float: none !important
+      margin-bottom: 6px !important
+
+    .pull-right
+      float: none !important
+      display: block !important
+      margin-bottom: 6px !important
+
+    #sort_by.languages
+      float: none !important
+      margin-top: 0 !important
+      display: block !important
+      width: 100% !important
+
+      .chzn-container,
+      select.chzn-select
+        width: 100% !important
 
 #languages_index_page
   .projects

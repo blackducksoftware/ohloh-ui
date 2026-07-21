@@ -1,27 +1,69 @@
-- page_context[:footer_menu_list].each do |section|
-  .actions.margin_top_20.margin_bottom_40{ class: ('col-md-3 col-xs-3 no_padding' if page_context[:nav_type].eql?('footer_nav')) }
-    %ul.nav.nav-stacked.nav-pills
+.footer-nav-grid
+  - page_context[:footer_menu_list].each do |section|
+    .nav-column
       - header, *links = section
       - header_class, header_name, header_url, header_type = header
-      %h4{ class: [('selected' if header_class == page_context[:select_footer_nav]), ('linked' if header_url)] }
+      
+      .column-header
         - if header_url
-          %a{ href: header_url }
+          = link_to header_url do
             %i{ class: "icon #{header_class}" }
-            = header_name
+            %h4{ class: [('selected' if header_class == page_context[:select_footer_nav]), 'linked'] }= header_name
         - else
           %i{ class: "icon #{header_class}" }
-          = header_name
+          %h4{ class: ('selected' if header_class == page_context[:select_footer_nav]) }= header_name
+      
       - if header_type.eql?('select')
         = select(:language, :url, options_for_select(links), {}, id: 'nav-select', class: 'chzn-select')
       - else
-        - links.each do |link|
-          - link_class, link_name, link_url = link
-          %li.footer-nav{ class: ('nav-active' if link_class == page_context[:select_footer_nav]) }
-            - if link_name == 'SBOM'
-              = link_to h(link_name), link_url, remote: true,
-                    data: { toggle: 'modal', target: '#sbom-details.modal', keyboard: true }
-            - else
-              %a{ href: link_url }= link_name
+        %ul
+          - links.each do |link|
+            - link_class, link_name, link_url = link
+            %li{ class: ('nav-active' if link_class == page_context[:select_footer_nav]) }
+              - if link_name == 'SBOM'
+                = link_to h(link_name), link_url, remote: true,
+                      data: { toggle: 'modal', target: '#sbom-details.modal', keyboard: true }
+              - else
+                %a{ href: link_url }= link_name
+
+.footer-nav-accordion
+  - page_context[:footer_menu_list].each do |section|
+    .accordion-item
+      - header, *links = section
+      - header_class, header_name, header_url, header_type = header
+      
+      %button.accordion-header-btn{ onclick: "toggleFooterAccordion(this)" }
+        .header-left
+          %i{ class: "icon #{header_class}" }
+          %span{ class: ('selected' if header_class == page_context[:select_footer_nav]) }= header_name
+        %svg.chevron{ viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", 'stroke-width': "2" }
+          %polyline{ points: "6 9 12 15 18 9" }
+      
+      - if header_type.eql?('select')
+        .accordion-content-footer{ style: "display: none;" }
+          = select(:language, :url, options_for_select(links), {}, id: 'nav-select-mobile', class: 'chzn-select')
+      - else
+        .accordion-content-footer{ style: "display: none;" }
+          %ul
+            - links.each do |link|
+              - link_class, link_name, link_url = link
+              %li{ class: ('nav-active' if link_class == page_context[:select_footer_nav]) }
+                - if link_name == 'SBOM'
+                  = link_to h(link_name), link_url, remote: true,
+                        data: { toggle: 'modal', target: '#sbom-details.modal', keyboard: true }
+                - else
+                  %a{ href: link_url }= link_name
+
+:javascript
+  function toggleFooterAccordion(button) {
+    const content = button.nextElementSibling;
+    const chevron = button.querySelector('.chevron');
+    const isExpanded = content.style.display === 'block';
+
+    content.style.display = isExpanded ? 'none' : 'block';
+    chevron.classList.toggle('expanded', !isExpanded);
+  }
+
 #avatar-dialog.modal.pmd-modal.fade#sbom-details{"aria-hidden" => "true", :style => "display: none;", :tabindex => "-1"}
   .modal-dialog.modal-md
     .modal-content

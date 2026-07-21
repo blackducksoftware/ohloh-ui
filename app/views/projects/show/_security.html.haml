@@ -1,18 +1,84 @@
 - blog_url = 'https://community.blackduck.com/s/article/Black-Duck-Open-Hub-Project-Security'
-.row.project_row
-  - if @project.best_project_security_set.try(:most_recent_vulnerabilities?) || @project.project_vulnerability_report
-    .col-md-12.security_title_container
-      %h4.security-panel-title= t('.title')
-    .clearfix
-    .row-eq-height
-      .col-md-4#vulnerability_per_version
-        = render partial: 'projects/show/vulnerabilities_per_version'
-      .col-md-4#vulnerability-report
-        .well= render partial: 'projects/show/vulnerability_report'
-      .col-md-4#did_you_know
-        = render 'projects/show/site_features'
-    = link_to t('.blog_link'), blog_url, class: 'security_blog_link', target: '_blank'
-  - else
-    .col-md-12#did_you_know
-      %h4= t('.title_nvd')
-      = render 'projects/show/site_features'
+- if @project.best_project_security_set.try(:most_recent_vulnerabilities?) || @project.project_vulnerability_report
+  #security.security-section
+    %h2.section-title= t('.title', default: 'Project Security')
+
+    .security-grid
+      / Vulnerabilities per Version Card
+      .gradient-card
+        .card-content
+          %h4.card-subtitle
+            = link_to t('.vulnerabilities_per_version.title', default: 'Vulnerabilities per Version'), security_project_path(@project), class: 'security-link'
+            %span.subtitle-detail= t('.vulnerabilities_per_version.title_detail', default: '(Most recent versions)')
+          - if @project.best_project_security_set.try(:most_recent_vulnerabilities?)
+            - chart_url = recent_vulnerabilities_version_chart_project_path(@project)
+            #vulnerability_version_chart.chart-container{ data: { src: chart_url } }
+          - else
+            %p.no-data= t('vulnerabilities.index.no_vulnerability')
+
+      / Vulnerability Report Card
+      .gradient-card
+        .card-content
+          %h4.card-subtitle
+            = link_to t('.vulnerability_report.title', default: 'Vulnerability Report'), security_project_path(@project), class: 'security-link'
+
+          - pvr = @project.project_vulnerability_report
+          - if pvr
+            - pvr_link = 'https://community.blackduck.com/s/article/Black-Duck-Open-Hub-About-the-Project-Vulnerability-Report'
+
+            .vulnerability-indices
+              / Security Confidence Index
+              .index-section
+                .index-title= t('.vulnerability_report.pss.title', default: 'Security Confidence Index')
+                .gradient-bar-container
+                  .gradient-bar
+                  .indicator-pointer{ style: "left: #{100 - pointer_from_right(pvr).to_f}%", 'data-tipso': pss_content(pvr), 'data-tipso-title': t('.vulnerability_report.pss.title') }
+                .index-labels
+                  %span.label-left= t('.vulnerability_report.pss.poor')
+                  %span.label-right= t('.vulnerability_report.pss.good')
+
+              / Vulnerability Exposure Index
+              .index-section
+                .index-title= t('.vulnerability_report.pvs.title', default: 'Vulnerability Exposure Index')
+                .gradient-bar-container
+                  .gradient-bar
+                  .indicator-pointer{ style: "left: #{100 - pointer_from_right(pvr, pvs: true).to_f}%", 'data-tipso': pvs_content(pvr), 'data-tipso-title': t('.vulnerability_report.pvs.title') }
+                .index-labels
+                  %span.label-left= t('.vulnerability_report.pvs.poor')
+                  %span.label-right= t('.vulnerability_report.pvs.good')
+
+            .report-link-container
+              = link_to t('.vulnerability_report.blog_link', default: 'About Project Vulnerability Report'), pvr_link, class: 'report-link', target: '_blank'
+          - else
+            %p.no-data= t('.vulnerability_report.no_data')
+
+      / Did You Know Card
+      .did-you-know-card
+        .card-content
+          %h4.did-you-know-title
+            %svg{ viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", 'stroke-width': "2" }
+              %circle{ cx: "12", cy: "12", r: "10" }
+              %path{ d: "M12 16v-4" }
+              %path{ d: "M12 8h.01" }
+            = t('.site_features.did_you_know', default: 'Did You Know...')
+          %ul.feature-list
+            - random_site_features.each do |feature|
+              %li= feature.html_safe
+
+    .security-footer-link
+      = link_to "#{t('.blog_link', default: 'About Project Security')} →", blog_url, target: '_blank'
+
+- else
+  #security.security-section
+    %h2.section-title= t('.title_nvd', default: 'This Project has No vulnerabilities Reported Against it')
+    .did-you-know-card.single
+      .card-content
+        %h4.did-you-know-title
+          %svg{ viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", 'stroke-width': "2" }
+            %circle{ cx: "12", cy: "12", r: "10" }
+            %path{ d: "M12 16v-4" }
+            %path{ d: "M12 8h.01" }
+          = t('.site_features.did_you_know', default: 'Did You Know...')
+        %ul.feature-list
+          - random_site_features.each do |feature|
+            %li= feature.html_safe

@@ -5,7 +5,7 @@
     - if current_user_is_admin?
       = link_to code_location_admin_url(enlistment.code_location_id), target: '_blank' do
         %span.glyphicon.glyphicon-link
-    - job_id = enlistment.fis_code_location.last_job_id
+    - job_id = enlistment.fis_code_location&.last_job_id
     - fis_job = FisJob.find_by(id: job_id)
     - description = job_id ? FailureGroupApi.failure_group_description(job_id) : ''
     - if enlistment.code_location.do_not_fetch

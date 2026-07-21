@@ -8,7 +8,7 @@
   .link_container
     = link_to project_url(project), target: '_blank', class: 'project_link' do
       = t('.more')
-      = image_tag(widget_ohloh_logo_url)
+      = image_tag(widget_ohloh_logo_url, alt: 'Open Hub')
   = link_to project_url(project), target: '_blank', class: "project_link #{name_class}", title: project.name do
     = h(truncate(project.name, length: 50)) if show_name
     - if oldest_code_set_time

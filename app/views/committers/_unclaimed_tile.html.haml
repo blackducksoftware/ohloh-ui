@@ -7,15 +7,13 @@
   emails = emails.present? ? emails : [t('.no_email_addresses')]
   contributor_id = Contribution.generate_id_from_project_id_and_name_id(project.id, name_fact.name_id)
 
-.logo
-  %a{ href: project_path(project), title: project.name }
-    - project_icon(project, :small, class: 'logo')
-.commits{ style: "background-color: ##{bg_color}; color: ##{txt_color} !important", title: emails.join("\n") }
-  %span= name_fact.commits
-  .clearfix
-  %a{ href: project_contributor_path(project, contributor_id), style: 'display: inline-block;' }
-    = 'commit'.pluralize(name_fact.commits).to_s
-.clearfix
-
-.project_link
-  = link_to h(truncate(project.name, length: 14)), project_path(project), title: project.name
+.unclaimed-card__item
+  .logo
+    %a{ href: project_path(project), title: project.name }
+      - project_icon(project, :small, class: 'logo')
+    %span.commit-count= number_with_delimiter(name_fact.commits)
+  .commits{ title: emails.join("\n") }
+    %a{ href: project_contributor_path(project, contributor_id) }
+      = 'COMMITS'
+  .project_link
+    = link_to h(truncate(project.name, length: 14)), project_path(project), title: project.name

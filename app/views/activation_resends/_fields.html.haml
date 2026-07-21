@@ -1,13 +1,15 @@
-.col-md-10
-  .well
-    = form_tag action: :create do
-      %fieldset
-        .control-group
-          = label_tag t('email_address'), nil, class: 'control-label required'
-          .controls
-            = text_field_tag :email, current_user.try(:email)
-            .error= @errors
-            %p.help-block= t('.enter_email')
+= form_tag action: :create do
+  %fieldset
+    .signup-field-group
+      %label.signup-field-label
+        = t('email_address')
+        %span.pwd-required *
+      .signup-field-input-wrapper
+        %i.fa.fa-envelope-o.signup-field-icon
+        = text_field_tag :email, current_user.try(:email), class: 'signup-field-input', placeholder: 'you@example.com'
+      - if @errors
+        .signup-field-group
+          %span.error= @errors
 
-        .actions
-          = submit_tag t('.submit'), class: 'btn btn-primary'
+    .signup-field-actions
+      = submit_tag t('.submit'), class: 'signup-submit-btn'

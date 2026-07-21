@@ -11,7 +11,7 @@
   - if analysis.present?
     - colors = language_percentages.map { |_, _, attr| attr[:color] }
     .analysis
-      = image_tag languages_project_analysis_url(project_id: project.to_param, id: 'latest')
+      = image_tag languages_project_analysis_url(project_id: project.to_param, id: 'latest'), alt: ''
     %div
       %table{ width: '155px', cellpadding: '0', cellspacing: '0' }
         - language_percentages.each do |_, name, attr|

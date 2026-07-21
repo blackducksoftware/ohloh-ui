@@ -24,9 +24,10 @@ commits_history:
   series:
     - name: 'Commits'
       id: 'commits'
+      color: '#5A2A82'
     - name: 'Current Month'
       type: 'scatter'
-      color: 'rgba(119, 152, 191, 3)'
+      color: '#5A2A82'
       marker:
         radius: 4
         symbol: 'circle'
@@ -40,12 +41,12 @@ code_history:
       stacking: 'normal'
   series:
     - name: 'Code'
-      color: '#482268'
+      color: '#1D0631'
       id: 'code'
     - name: 'Comments'
-      color: '#008893'
+      color: '#5A2A82'
     - name: 'Blanks'
-      color: '#99dde3'
+      color: '#9F7ABA'
   tooltip:
     shared: true
 
@@ -56,9 +57,10 @@ committer_history:
   series:
     - name: 'Committers'
       id: 'committers'
+      color: '#5A2A82'
     - name: 'Current Month'
       type: 'scatter'
-      color: 'rgba(119, 152, 191, 3)'
+      color: '#5A2A82'
       marker:
         radius: 4
         symbol: 'circle'

@@ -1,11 +1,21 @@
-%h4.nomargin
-  %span.soft= t('.about')
-  = t('.basics')
-.col-md-6
-  %ul.margin_left_25.margin_top_10
-    %li
-      = t('.info')
-      %a{ href: 'https://community.blackduck.com/s/article/Black-Duck-Open-Hub-Support' }= t('.contact_us')
-      = t('.inapropriate')
-    %li= t('.url_unique')
-    %li= t('.description')
+.tips-grid
+  .tip-item
+    .tip-icon
+      %i.fa.fa-tag
+    .tip-body
+      %p.tip-text
+        = t('.info')
+        %a{ href: 'https://community.blackduck.com/s/article/Black-Duck-Open-Hub-Support', target: '_blank', rel: 'noopener noreferrer' }= t('.contact_us')
+        = t('.inapropriate')
+
+  .tip-item
+    .tip-icon
+      %i.fa.fa-link
+    .tip-body
+      %p.tip-text= t('.url_unique')
+
+  .tip-item
+    .tip-icon
+      %i.fa.fa-align-left
+    .tip-body
+      %p.tip-text= t('.description')

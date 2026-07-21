@@ -40,7 +40,7 @@
     = link_to t('.similar_projects'), similar_project_path(@project)
   .col-xs-7{ style: 'margin-bottom: .5em;' }
     #similar_projects{ data: { project_id: @project.to_param } }
-    .hidden#related_spinner= image_tag('spinner.gif')
+    .hidden#related_spinner= image_tag('spinner.gif', alt: '')
   .clearfix
   .col-xs-5.text-right
     = link_to t('.managers'), project_managers_path(@project)

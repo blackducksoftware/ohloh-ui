@@ -1,21 +1,21 @@
 - if @analysis && @analysis.all_time_summary
-  %h4= link_to t('.most_recent'), project_contributors_path(@project, sort: 'latest_commit')
   - recent_contributors = @analysis.all_time_summary.recent_contribution_persons
   - if recent_contributors.any?
-    %table#recent_committers_table
-      - recent_contributors.take(6).in_groups_of(2) do |persons|
-        %tr{ height: '40px;' }
-          - persons.compact.each do |p|
-            %td{ width: '1%' }= avatar_img_for(p, 24)
-            :ruby
-              contrib_id =
-                if p.account_id
-                  Contribution.generate_id_from_project_id_and_account_id(@project.id, p.account_id)
-                else
-                  p.id
-                end
-            %td.recent_committers{ width: '49%', title: obfuscate_email(p.person_name) }
-              - obfuscated_email = obfuscate_email(p.person_name).reverse.truncate(17).reverse
-              = link_to h(obfuscated_email), project_contributor_path(@project.id, contrib_id)
+    .contributors-grid
+      - recent_contributors.take(8).each do |p|
+        :ruby
+          contrib_id = if p.account_id
+                        Contribution.generate_id_from_project_id_and_account_id(@project.id, p.account_id)
+                      else
+                        p.id
+                      end
+          person_name = obfuscate_email(p.person_name)
+          truncated_name = person_name.reverse.truncate(20).reverse
+
+        .contributor-item
+          = image_tag avatar_img_path(p, 24), class: 'contributor-avatar', alt: person_name
+          = link_to truncated_name, project_contributor_path(@project.id, contrib_id), class: 'contributor-name', title: person_name
   - else
-    %p= t('.no_one_recently')
+    %p.no-data= t('.no_one_recently')
+- else
+  %p.no-data= t('.no_contributors')

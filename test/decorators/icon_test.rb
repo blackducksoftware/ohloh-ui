@@ -8,17 +8,30 @@ class IconTest < ActiveSupport::TestCase
       logo = create(:attachment)
       project = create(:project, logo_id: logo.id)
 
-      image = '<img style="width:32px; height:32px; border:0 none;" ' \
-              "itemprop=\"image\" alt=\"img avatar\" src=\"#{project.logo.attachment.url(:small)}\" />"
-      _(Icon.new(project).image).must_equal image
+      icon = Icon.new(project)
+      result = icon.image
+
+      # Check that it's wrapped in a div with icon-container and has-logo classes
+      _(result).must_match(/<div class="icon-container has-logo">/)
+      # Check that it contains an img tag with correct attributes
+      _(result).must_match(/itemprop="image"/)
+      _(result).must_match(/alt="#{project.name}"/)
+      _(result).must_match(/src="#{project.logo.attachment.url(:small)}"/)
+      # Check that it contains a span with icon-letter class
+      _(result).must_match(/<span class="icon-letter" style="display:none">/)
+      _(result).must_match(/<\/span><\/div>/)
     end
 
     it 'should return image like text when logo is not present' do
       org = create(:organization)
-      markup = '<p style="background-color:#EEE; color:#000; border:1px dashed #000;font-size:26px; ' \
-               'line-height:32px; width:32px; height:32px;text-align:center; ' \
-               "float:left; margin-bottom:0; margin-top:3px; margin-right:2px\">#{org.name[0].capitalize}</p>"
-      _(Icon.new(org).image).must_equal markup
+      icon = Icon.new(org)
+      result = icon.image
+
+      # Check that it's wrapped in a div with icon-container class
+      _(result).must_match(/<div class="icon-container">/)
+      # Check that it contains a span with icon-letter class and the first letter of the name
+      _(result).must_match(/<span class="icon-letter">#{org.name[0].upcase}<\/span>/)
+      _(result).must_match(/<\/div>/)
     end
   end
 end

@@ -157,6 +157,11 @@ class CommitsControllerTest < ActionController::TestCase
       _(assigns(:commits).first).must_equal @commit1
     end
 
+    it 'should populate commit_contributors' do
+      get :summary, params: { project_id: @project.id }
+      _(assigns(:commit_contributors)).wont_be_nil
+    end
+
     it 'should show no code_location when enlistment is empty' do
       Project.any_instance.stubs(:best_analysis).returns(NilAnalysis.new)
       get :summary, params: { project_id: @project.id }
@@ -186,6 +191,19 @@ class CommitsControllerTest < ActionController::TestCase
       _(assigns(:daily_commits).first.time.to_a).must_equal @commit1.time.to_a
       _(assigns(:daily_commits).first.comment).must_equal @commit1.comment
     end
+
+    it 'should render no analysis error when analysis is empty' do
+      Project.any_instance.stubs(:best_analysis).returns(NilAnalysis.new)
+      get :events, params: { project_id: @project.id, id: @commit1.id, contributor_id: @name1.id }, format: :xml
+      assert_response :not_found
+    end
+
+    it 'should render 404 when contributor_fact is not found' do
+      create(:name_fact, analysis: @project.best_analysis, name: @name1)
+      Airbrake.stubs(:notify)
+      get :events, params: { project_id: @project.id, id: @commit1.id, contributor_id: 999_999 }, format: :xml
+      assert_response :not_found
+    end
   end
 
   describe 'event_details' do
@@ -195,6 +213,32 @@ class CommitsControllerTest < ActionController::TestCase
                                     project_id: @project.id, time: "commit_#{@commit1.time.to_i}" }
       _(assigns(:commits).count).must_equal 1
       _(assigns(:commits).first).must_equal @commit1
+    end
+
+    it 'should handle plain time param without commit_ prefix' do
+      create(:name_fact, analysis: @project.best_analysis, name: @name1)
+      get :event_details, params: { contributor_id: @name1.id, id: @commit1.id,
+                                    project_id: @project.id, time: @commit1.time.to_i.to_s }
+      assert_response :ok
+    end
+  end
+
+  describe 'redirect_to_message_if_oversized_project' do
+    it 'should redirect to root for oversized projects' do
+      CommitsController.any_instance.stubs(:oversized_project?).returns(true)
+      get :index, params: { project_id: @project.id }
+      assert_redirected_to root_path
+      _(flash[:notice]).must_equal I18n.t('commits.project_temporarily_disabled')
+    end
+  end
+
+  describe 'individual_named_commits' do
+    it 'should return empty commits when commit_contributor is nil' do
+      Project.any_instance.stubs(:commit_contributors).returns(stub(find_by: nil))
+      contribution = @project.contributions.first
+      get :index, params: { project_id: @project.id, contributor_id: contribution.id }
+      assert_response :ok
+      _(assigns(:commits)).must_equal []
     end
   end
 

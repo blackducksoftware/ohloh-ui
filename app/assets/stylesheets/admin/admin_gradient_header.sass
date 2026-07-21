@@ -1,0 +1,40 @@
+// Admin Header Gradient - Match Home Page Design
+
+.main-header
+  background: linear-gradient(to right, #000000, #1D0631, #5A2A82) !important
+  border-bottom: 1px solid #5A2A82 !important
+
+  .logo
+    background: linear-gradient(to right, #000000, #1D0631, #5A2A82) !important
+    border-right: 1px solid #5A2A82 !important
+
+    &:hover
+      background: linear-gradient(to right, #1D0631, #5A2A82, #6366f1) !important
+
+  .navbar
+    background: transparent !important
+    border-bottom: none !important
+
+  .navbar-custom-menu
+    background: transparent !important
+
+  // Logo text styling
+  .logo-lg
+    color: white !important
+    font-weight: 600
+
+  // User menu styling
+  .user-menu
+    > a
+      color: white !important
+
+      &:hover
+        background: rgba(255, 255, 255, 0.1) !important
+
+// Responsive adjustments
+@media (max-width: 767px)
+  .main-header
+    background: linear-gradient(to right, #000000, #1D0631, #5A2A82) !important
+
+    .logo
+      background: linear-gradient(to right, #000000, #1D0631, #5A2A82) !important

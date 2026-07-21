@@ -1,13 +1,21 @@
 - content_for(:html_title) { t('.title') }
 
-#license
-  %h1.margin_bottom_20
-    = link_to t('.licenses'), licenses_path
-    &nbsp;:
-    = t('.new_license')
-
-  .col-md-10
-    .well
-      = form_for @license do |f|
-        %fieldset
-          = render 'fields', f: f
+#license-edit-page
+  .settings-page-header
+    .settings-page-header-row
+      .settings-page-icon
+        %i.fa.fa-certificate
+      %h2.settings-page-h2
+        = link_to t('.licenses'), licenses_path
+        %span.account-basics-sep :
+        = t('.new_license')
+  .project-edit-layout
+    .project-edit-main
+      .edit-section
+        .edit-section-header
+          .edit-section-icon
+            %i.fa.fa-plus-circle
+          %h3.edit-section-title= t('.new_license')
+        = form_for @license do |f|
+          %fieldset
+            = render 'fields', f: f

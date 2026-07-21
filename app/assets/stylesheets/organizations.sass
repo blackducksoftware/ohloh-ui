@@ -1,5 +1,777 @@
+// Organization Settings Wrap
+.org-settings-wrap
+  max-width: 1280px
+  margin: 0 auto
+  padding: 0 24px 32px
+
+  @media (max-width: 640px)
+    padding: 0 12px 24px
+
+    .settings-page-header
+      .settings-page-header-row
+        flex-wrap: wrap
+        gap: 8px
+
+      .stacks-new-btn,
+      .edit-save-btn.stacks-new-btn
+        width: 100%
+        justify-content: center
+        margin-top: 4px
+        order: 10
+
+// Organization Edit Form — align about card with form above
+.org-settings-wrap
+  .about-account-basics-card
+    max-width: none
+    margin: 24px 0 0
+    padding: 0
+
+    @media (max-width: 639px)
+      padding: 0
+
+// Managers list
+.managers-list
+  display: flex
+  flex-direction: column
+  gap: 12px
+  margin-bottom: 24px
+
+.manager-card
+  display: flex
+  align-items: center
+  gap: 16px
+  padding: 16px 20px
+  background: #ffffff
+  border-radius: 16px
+  border: 1px solid #e5e7eb
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06)
+
+  html.dark &
+    background: #1c2128
+    border-color: rgba(255, 255, 255, 0.1)
+
+  .manager-avatar
+    flex-shrink: 0
+    img
+      border-radius: 50%
+      display: block
+
+  .manager-info
+    flex: 1
+    min-width: 0
+
+  .manager-name
+    font-size: 15px
+    font-weight: 600
+    color: #111827
+    text-decoration: none
+
+    &:hover
+      color: #5A2A82
+      text-decoration: underline
+
+    html.dark &
+      color: #e6edf3
+
+      &:hover
+        color: #c084fc
+
+  .manager-actions
+    flex-shrink: 0
+
+.manager-remove-btn
+  display: inline-flex
+  align-items: center
+  gap: 6px
+  padding: 7px 14px
+  font-size: 13px
+  font-weight: 600
+  color: #ffffff
+  background: #dc2626
+  border: 1px solid #b91c1c
+  border-radius: 8px
+  text-decoration: none
+  cursor: pointer
+  transition: all 0.15s
+
+  &:hover
+    background: #b91c1c
+    border-color: #991b1b
+    text-decoration: none
+    color: #ffffff
+
+  html.dark &
+    color: #ffffff
+    background: #7f1d1d
+    border-color: #991b1b
+
+    &:hover
+      background: #991b1b
+      border-color: #b91c1c
+      color: #ffffff
+
+  &.disabled
+    opacity: 0.5
+    pointer-events: none
+
+// Mobile responsive — managers list
+@media (max-width: 639px)
+  .org-settings-wrap .settings-page-header
+    .settings-page-header-row
+      flex-wrap: wrap
+      gap: 8px
+    .stacks-new-btn
+      width: 100%
+      justify-content: center
+      margin-top: 4px
+
+  .manager-card
+    flex-wrap: wrap
+    padding: 12px 14px
+    gap: 10px
+
+    .manager-avatar
+      img
+        width: 36px !important
+        height: 36px !important
+
+    .manager-info
+      flex: 1 1 0
+      min-width: 0
+
+    .manager-name
+      font-size: 14px
+
+    .manager-actions
+      width: 100%
+      margin-top: 4px
+
+    .manager-remove-btn
+      width: 100%
+      justify-content: center
+      padding: 8px 12px
+      font-size: 12px
+
+  .managers-empty-state
+    padding: 32px 16px
+
+    .managers-empty-icon
+      width: 48px
+      height: 48px
+      i
+        font-size: 20px
+
+    .managers-empty-text
+      font-size: 13px
+
+// Managers empty state
+// Claim projects — already claimed warning banner
+.claim-already-claimed-alert
+  display: flex
+  align-items: flex-start
+  gap: 12px
+  padding: 14px 18px
+  background: #fffbeb
+  border: 1px solid #f59e0b
+  border-radius: 12px
+  margin-bottom: 16px
+
+  html.dark &
+    background: rgba(245, 158, 11, 0.08)
+    border-color: rgba(245, 158, 11, 0.35)
+
+  .claim-alert-icon
+    flex-shrink: 0
+    margin-top: 2px
+    i
+      font-size: 16px
+      color: #b45309
+
+      html.dark &
+        color: #fbbf24
+
+  .claim-alert-body
+    flex: 1
+    font-size: 13px
+    color: #78350f
+
+    html.dark &
+      color: #fde68a
+
+    strong
+      display: block
+      font-weight: 700
+      margin-bottom: 4px
+      color: #92400e
+
+      html.dark &
+        color: #fcd34d
+
+    p
+      margin: 0
+      line-height: 1.5
+
+    a
+      color: #92400e
+      text-decoration: underline
+
+      html.dark &
+        color: #fcd34d
+
+.managers-empty-state
+  text-align: center
+  padding: 48px 24px
+  background: #ffffff
+  border-radius: 16px
+  border: 1px solid #e5e7eb
+  margin-bottom: 24px
+
+  html.dark &
+    background: #1c2128
+    border-color: rgba(255, 255, 255, 0.1)
+
+  .managers-empty-icon
+    width: 56px
+    height: 56px
+    border-radius: 16px
+    background: linear-gradient(135deg, rgba(90, 42, 130, 0.1), rgba(90, 42, 130, 0.05))
+    display: flex
+    align-items: center
+    justify-content: center
+    margin: 0 auto 16px
+
+    i
+      font-size: 24px
+      color: #5A2A82
+
+      html.dark &
+        color: #c084fc
+
+  .managers-empty-text
+    font-size: 14px
+    color: #6b7280
+    margin: 0 0 20px
+
+    html.dark &
+      color: #8b949e
+
+// Organization Edit Form — Org type radio pills
+.org-type-radio-group
+  display: flex
+  flex-wrap: wrap
+  gap: 8px
+  margin-top: 4px
+
+.org-type-radio
+  display: flex
+  align-items: center
+  gap: 6px
+  padding: 8px 14px
+  border: 1px solid #e5e7eb
+  border-radius: 10px
+  background: #f9fafb
+  cursor: pointer
+  font-size: 13px
+  font-weight: 500
+  color: #374151
+  transition: all 0.15s
+  margin: 0
+
+  html.dark &
+    background: #161b22
+    border-color: rgba(255, 255, 255, 0.12)
+    color: #d1d5db
+
+  &:hover
+    border-color: #5A2A82
+    background: rgba(90, 42, 130, 0.06)
+    color: #5A2A82
+
+    html.dark &
+      background: rgba(192, 132, 252, 0.08)
+      color: #c084fc
+
+  input[type='radio']
+    accent-color: #5A2A82
+    width: 14px
+    height: 14px
+    margin: 0
+
+    html.dark &
+      accent-color: #c084fc
+
+  &:has(input:checked)
+    border-color: #5A2A82
+    background: rgba(90, 42, 130, 0.08)
+    color: #5A2A82
+
+    html.dark &
+      border-color: #c084fc
+      background: rgba(192, 132, 252, 0.12)
+      color: #c084fc
+
+// Organization Summary Container
+.org-summary-container
+  max-width: 1280px
+  margin: 0 auto
+  padding: 24px 24px 0
+
+  @media (max-width: 640px)
+    padding: 0
+
+// Organization Content Container
+.org-content-container
+  max-width: 1280px
+  margin: auto 0
+  padding: 24px
+  background: white
+  border-radius: 16px
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24)
+  border: 1px solid #f3f4f6
+
+  @media (max-width: 640px)
+    padding: 16px
+
+  html.dark &
+    background: #151b23
+    border-color: rgba(90, 42, 130, 0.3)
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.24), 0 1px 2px rgba(0, 0, 0, 0.48)
+
+  h4
+    margin-top: 0 !important
+    margin-bottom: 16px
+    font-size: 16px
+    font-weight: 700
+    color: #1f2937
+
+    html.dark &
+      color: white
+
+.org-page-section
+  margin-bottom: 24px
+
+.org-summary-grid
+  display: grid
+  grid-template-columns: 2fr 1fr
+  gap: 24px
+  margin-bottom: 16px
+
+  @media (max-width: 768px)
+    grid-template-columns: 1fr
+    gap: 12px
+    margin-bottom: 12px
+
+.org-summary-box
+  background: white
+  border-radius: 16px
+  margin: 0 0 16px
+  padding: 24px
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24)
+  border: 1px solid #f3f4f6
+
+  html.dark &
+    background: #151b23
+    border-color: rgba(90, 42, 130, 0.3)
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.24), 0 1px 2px rgba(0, 0, 0, 0.48)
+
+  h4
+    margin-top: 0 !important
+    margin-bottom: 16px
+    font-size: 16px
+    font-weight: 700
+    color: #1f2937
+
+    html.dark &
+      color: white
+
+  #org_summary
+    line-height: 1.6
+    color: #374151
+
+    html.dark &
+      color: #d1d5db
+
+    a
+      color: #5A2A82
+      text-decoration: underline
+
+      &:hover
+        color: #5A2A82
+
+      html.dark &
+        color: white
+        text-decoration: underline
+
+        &:hover
+          color: #5A2A82
+
+// Organization Header Banner
+.org-header-banner
+  background: white
+  border-bottom: 1px solid #e5e7eb
+  padding: 16px 0
+
+  html.dark &
+    background: #161b22
+    border-bottom-color: rgba(255, 255, 255, 0.1)
+
+.org-header-container
+  max-width: 1280px
+  margin: 0 auto
+  padding: 0 16px
+
+.org-header-content
+  display: flex
+  align-items: center
+  gap: 24px
+  flex-wrap: wrap
+
+  @media (max-width: 640px)
+    flex-direction: column
+    align-items: flex-start
+
+.org-header-logo-section
+  flex-shrink: 0
+
+  img
+    width: 80px
+    height: 80px
+    border-radius: 16px
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1)
+
+    @media (min-width: 640px)
+      width: 88px
+      height: 88px
+
+    html.dark &
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3)
+
+.org-header-info
+  flex: 1
+  min-width: 0
+
+.org-header-title
+  margin-bottom: 8px
+
+  h1
+    margin: 0
+    font-size: 30px
+    font-weight: 700
+    color: #1f2937
+
+    @media (min-width: 640px)
+      font-size: 36px
+
+    a
+      color: inherit
+      text-decoration: none
+
+      &:hover
+        color: #5A2A82
+
+    html.dark &
+      color: white
+
+      a:hover
+        color: #5A2A82
+
+.org-header-stats
+  display: flex
+  flex-wrap: wrap
+  gap: 16px
+  font-size: 14px
+  color: #6b7280
+
+  html.dark &
+    color: #9ca3af
+
+  .stat-item
+    display: flex
+    align-items: center
+    gap: 2px
+
+    icon
+      font-size: 14px
+      opacity: 0.75
+
+.org-header-actions
+  flex-shrink: 0
+
+.org-header-settings-btn
+  display: inline-flex
+  align-items: center
+  gap: 8px
+  padding: 8px 16px
+  background: #f3f4f6
+  color: #374151
+  border: 1px solid #d1d5db
+  border-radius: 8px
+  font-size: 14px
+  font-weight: 500
+  text-decoration: none
+  transition: all 0.2s
+
+  &:hover
+    background: #e5e7eb
+    color: #1f2937
+
+  html.dark &
+    background: #1c2128
+    color: #adbac7
+    border-color: rgba(255, 255, 255, 0.15)
+
+    &:hover
+      background: #2d333b
+      color: #e6edf3
+
+  icon
+    font-size: 16px
+    
+// SASS Variables (mirrors projects index design system)
+$org-primary-color: #5A2A82
+$org-primary-hover: rgba(90, 42, 130, 0.9)
+$org-bg-color: #f9fafb
+$org-card-bg: #ffffff
+$org-text-primary: #1f2937
+$org-text-secondary: #6b7280
+$org-border-color: rgba(229, 231, 235, 0.8)
+$org-shadow-sm: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)
+$org-shadow-md: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)
+$org-dark-primary: #c084fc
+$org-dark-bg: #0d1117
+$org-dark-card: #1c2128
+$org-dark-text-primary: #d1d5db
+$org-dark-text-secondary: #adbac7
+$org-dark-border: rgba(255, 255, 255, 0.15)
+$org-dark-shadow-sm: 0 1px 3px rgba(0,0,0,0.24), 0 1px 2px rgba(0,0,0,0.48)
+$org-dark-shadow-md: 0 3px 6px rgba(0,0,0,0.32), 0 3px 6px rgba(0,0,0,0.46)
+
+// Organizations Index Page
+#organizations_index_page
+  background-color: $org-bg-color
+  min-height: 100vh
+  padding: 32px 0
+  transition: background-color 0.3s ease, color 0.3s ease
+  html.dark &
+    background-color: $org-dark-bg
+
+  .organizations-container
+    max-width: 1280px
+    margin: 0 auto
+    padding: 0 16px
+
+  .organizations-header
+    display: flex
+    justify-content: space-between
+    align-items: center
+    margin-bottom: 24px
+    flex-wrap: wrap
+    gap: 16px
+
+    h1
+      font-size: 30px
+      font-weight: bold
+      color: $org-text-primary
+      margin: 0
+      html.dark &
+        color: $org-dark-text-primary
+
+      @media (min-width: 640px)
+        font-size: 36px
+
+    .header-actions
+      display: flex
+      gap: 12px
+      align-items: center
+      flex-wrap: wrap
+
+      .btn-add-organization
+        padding: 8px 16px
+        border-radius: 8px
+        font-weight: 600
+        font-size: 14px
+        transition: all 0.2s ease
+        text-decoration: none
+        display: inline-flex
+        align-items: center
+        gap: 8px
+        white-space: nowrap
+        background-color: $org-primary-color
+        color: #ffffff
+        border: none
+        box-shadow: $org-shadow-md
+        &:hover
+          background-color: $org-primary-hover
+          color: #ffffff
+        html.dark &
+          background-color: #5A2A82
+          color: #ffffff !important
+          &:hover
+            background-color: #6d35a0
+
+  .no-results
+    color: $org-text-secondary
+    padding: 24px 0
+    html.dark &
+      color: $org-dark-text-secondary
+
+// Organization Card
+.organization-card
+  background-color: $org-card-bg
+  border-radius: 12px
+  border: 1px solid $org-border-color
+  padding: 20px 24px
+  margin-bottom: 16px
+  box-shadow: $org-shadow-sm
+  transition: all 0.3s ease
+  html.dark &
+    background-color: $org-dark-card
+    border-color: $org-dark-border
+    box-shadow: $org-dark-shadow-sm
+
+  &:hover
+    border-color: $org-primary-color
+    box-shadow: $org-shadow-md
+    html.dark &
+      border-color: $org-dark-primary
+      box-shadow: $org-dark-shadow-md
+
+  .organization-header
+    margin-bottom: 16px
+
+    .organization-title-section
+      h2
+        margin: 0 0 4px 0
+        font-size: 18px
+        font-weight: 600
+
+        @media (min-width: 640px)
+          font-size: 20px
+
+        a
+          color: $org-primary-color
+          text-decoration: none
+          &:hover
+            text-decoration: underline
+          html.dark &
+            color: #ffff !important
+
+  .organization-content
+    display: grid
+    grid-template-columns: 1fr auto
+    column-gap: 24px
+
+    @media (max-width: 768px)
+      grid-template-columns: 1fr
+
+    .organization-main
+      .organization-icon-desc
+        display: flex
+        gap: 12px
+
+        .organization-description
+          flex: 1
+          font-size: 14px
+          color: $org-text-secondary
+          line-height: 1.5
+          word-wrap: break-word
+          html.dark &
+            color: $org-dark-text-secondary
+
+          .text-muted
+            html.dark &
+              color: #8b949e !important
+
+          a
+            html.dark &
+              color: $org-dark-primary
+
+    .organization-stats
+      min-width: 200px
+      border-left: 1px solid $org-border-color
+      padding-left: 24px
+      display: flex
+      flex-direction: column
+      gap: 12px
+      html.dark &
+        border-color: $org-dark-border
+
+      @media (max-width: 768px)
+        border-left: none
+        border-top: 1px solid $org-border-color
+        padding-left: 0
+        padding-top: 16px
+        margin-top: 16px
+        flex-direction: row
+        flex-wrap: wrap
+
+      .stat-item
+        display: flex
+        align-items: center
+        gap: 10px
+
+        .stat-value
+          font-size: 16px
+          font-weight: bold
+          color: $org-primary-color
+          html.dark &
+            color: $org-card-bg
+
+          a
+            color: inherit
+            text-decoration: none
+            &:hover
+              text-decoration: underline
+            html.dark &
+             color: $org-dark-primary !important
+
+          @media (min-width: 640px)
+            font-size: 18px
+
+        .stat-label
+          font-size: 12px
+          color: $org-text-secondary
+          html.dark &
+            color: $org-dark-text-secondary
+
+          @media (min-width: 640px)
+            font-size: 14px
+
+// New Organization page styles — radio button alignment
+.oh-card .radio-inline
+  display: inline-flex
+  align-items: center
+  gap: 6px
+  padding-left: 0
+  vertical-align: middle
+  cursor: pointer
+
+  input[type="radio"]
+    position: static
+    margin: 0
+    flex-shrink: 0
+    vertical-align: middle
+
+.org-new-title
+  font-weight: bold !important
+  margin-top: 24px
+  margin-bottom: 16px
+  color: $org-text-primary
+  html.dark &
+    color: $org-dark-text-primary
+
 .project_activity_margin_top
   margin-top: -8px
+
+table.table.table-striped.table-condensed
+  thead th
+    border-bottom: 1px solid #888 !important
+
+    html.dark &
+      border-bottom-color: #5A2A82 !important
+
+  td:first-child
+    text-align: left
 
 tbody.portfolio-projects-table
   td
@@ -8,13 +780,487 @@ tbody.portfolio-projects-table
   tr:nth-child(odd), tr:nth-child(even)
     td
       background-color: white
+
+      html.dark &
+        background-color: #151b23
   tr:nth-child(3n+1)
     td
       border-top: solid 1px #ddd !important
       border-bottom: solid 1px #ddd !important
+
+      html.dark &
+        border-top-color: #5A2A82 !important
+
+// Portfolio Projects List
+#portfolio_projects_list
+  max-width: 1280px
+  margin: 0 auto
+
+// Portfolio Projects Mobile Card View
+.portfolio-mobile-view
+  display: block
+
+  @media (min-width: 768px)
+    display: none
+
+.portfolio-desktop-view
+  display: none
+
+  @media (min-width: 768px)
+    display: table
+
+.portfolio-project-card
+  background: white
+  border-radius: 12px
+  padding: 16px
+  margin-bottom: 16px
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1)
+
+  html.dark &
+    background: #151b23
+    border: 1px solid rgba(90, 42, 130, 0.3)
+
+  .card-header
+    display: flex
+    align-items: flex-start
+    justify-content: space-between
+    gap: 12px
+    margin-bottom: 16px
+
+    .project-info
+      flex: 1
+
+      .project-name
+        font-size: 14px
+        font-weight: 600
+        color: #5A2A82
+        text-decoration: none
+        display: block
+        margin-bottom: 6px
+
+        html.dark &
+          color: #5A2A82
+
+        &:hover
+          text-decoration: underline
+
+      .project-meta
+        display: flex
+        align-items: center
+        gap: 8px
+
+        a[class*='twenty_project_activity_level']
+          position: static !important
+          display: inline-block !important
+          margin-left: 0 !important
+          top: auto !important
+          vertical-align: middle
+          flex-shrink: 0
+
+        .activity-indicator
+          display: flex
+          align-items: center
+
+    .use-this-count
+      text-align: center
+
+      .count-value
+        font-size: 16px
+        font-weight: 700
+        color: #1f2937
+
+        html.dark &
+          color: white
+
+      .count-label
+        font-size: 10px
+        color: #6b7280
+
+        html.dark &
+          color: #9ca3af
+
+  .card-stats
+    display: grid
+    grid-template-columns: 1fr 1fr
+    gap: 8px
+
+    .stat-box
+      background: #f9fafb
+      border-radius: 8px
+      padding: 12px
+
+      html.dark &
+        background: #000000
+
+      .stat-title
+        font-size: 11px
+        font-weight: 600
+        color: #6b7280
+        margin-bottom: 8px
+
+        html.dark &
+          color: #d1d5db
+
+      .stat-rows
+        display: flex
+        flex-direction: column
+        gap: 4px
+
+      .stat-row
+        display: flex
+        justify-content: space-between
+        align-items: center
+        font-size: 12px
+
+        .stat-label
+          color: #6b7280
+          font-size: 11px
+
+          html.dark &
+            color: #9ca3af
+
+// Affiliated Committers Mobile View
+.affiliated-committers-mobile-view
+  display: block
+
+  @media (min-width: 768px)
+    display: none
+
+.affiliated-committers-desktop-view
+  display: none
+
+  @media (min-width: 768px)
+    display: table
+
+.committer-card
+  background: white
+  border-radius: 12px
+  padding: 16px
+  margin-bottom: 16px
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1)
+
+  html.dark &
+    background: #151b23
+    border: 1px solid rgba(90, 42, 130, 0.3)
+
+  .card-header
+    display: flex
+    align-items: flex-start
+    gap: 12px
+    margin-bottom: 16px
+    padding-bottom: 12px
+    border-bottom: 1px solid #e5e7eb
+
+    html.dark &
+      border-bottom-color: rgba(90, 42, 130, 0.3)
+
+    .committer-info
+      display: flex
+      gap: 12px
+      flex: 1
+
+      .committer-avatar
+        border-radius: 50%
+        flex-shrink: 0
+
+      .committer-details
+        flex: 1
+
+        .committer-name
+          font-size: 14px
+          font-weight: 600
+          color: #5A2A82
+          text-decoration: none
+          display: block
+          margin-bottom: 6px
+
+          html.dark &
+            color: #5A2A82
+
+          &:hover
+            text-decoration: underline
+
+          .you-badge
+            font-size: 11px
+            color: #6b7280
+            margin-left: 4px
+
+        .committer-badges
+          display: flex
+          flex-direction: column
+          gap: 6px
+
+          .badge-item
+            display: flex
+            align-items: center
+            gap: 6px
+
+            .badge-label
+              font-size: 10px
+              color: #6b7280
+              font-weight: 600
+              text-transform: uppercase
+              min-width: 50px
+
+              html.dark &
+                color: #9ca3af
+
+            .pips
+              margin: 0 !important
+
+          .mini-badges-section
+            margin: 0
+            position: relative
+            height: auto
+
+  .card-stats
+    display: flex
+    flex-direction: column
+    gap: 16px
+
+    .stat-group
+      .stat-label
+        font-size: 11px
+        font-weight: 600
+        color: #6b7280
+        margin-bottom: 8px
+        display: block
+
+        html.dark &
+          color: #9ca3af
+
+      .stat-values
+        display: flex
+        flex-direction: column
+        gap: 8px
+
+        .stat-item
+          display: flex
+          flex-direction: column
+          gap: 4px
+          font-size: 12px
+
+          .stat-sublabel
+            color: #374151
+            font-size: 12px
+            font-weight: 700
+            text-transform: uppercase
+            letter-spacing: 0.5px
+
+            html.dark &
+              color: #e5e7eb
+
+          .stat-value
+            color: #1f2937
+            font-weight: 700
+            font-size: 15px
+
+            html.dark &
+              color: white
+
+      .stat-project-info
+        display: flex
+        align-items: center
+        gap: 20px
+        padding: 8px
+        border-radius: 8px
+        margin-top: 4px
+
+        .project-icon
+          flex-shrink: 0
+
+        .project-details
+          flex: 1
+          display: flex
+          flex-direction: column
+          gap: 2px
+
+          .project-name
+            font-size: 12px
+            color: #5A2A82
+            text-decoration: none
+            font-weight: 500
+
+            html.dark &
+              color: #5A2A82
+
+            &:hover
+              text-decoration: underline
+
+          .commit-count, .commit-date
+            font-size: 11px
+            color: #6b7280
+
+            html.dark &
+              color: #9ca3af
+
+// Outside Committers Mobile View
+.outside-committers-mobile-view
+  display: block
+
+  @media (min-width: 768px)
+    display: none
+
+.outside-committers-desktop-view
+  display: none
+
+  @media (min-width: 768px)
+    display: table
+
+  .stat-subgroup
+    display: flex
+    flex-direction: column
+    gap: 8px
+
+    .stat-item
+      display: flex
+      flex-direction: column
+      gap: 4px
+
+      .stat-sublabel
+        font-size: 12px
+        font-weight: 700
+        color: #374151
+        text-transform: uppercase
+        letter-spacing: 0.5px
+
+        html.dark &
+          color: #e5e7eb
+
+      .project-list
+        .project-link
+          color: #5A2A82
+          text-decoration: none
+          font-size: 12px
+
+          html.dark &
+            color: #5A2A82
+
+          &:hover
+            text-decoration: underline
+
+      .stat-value
+        color: #1f2937
+        font-weight: 700
+        font-size: 15px
+
+        html.dark &
+          color: white
+
+// Outside Projects Mobile View
+.outside-projects-mobile-view
+  display: block
+
+  @media (min-width: 768px)
+    display: none
+
+.outside-projects-desktop-view
+  display: none
+
+  @media (min-width: 768px)
+    display: table
+
+.outside-project-card
+  background: white
+  border-radius: 12px
+  padding: 16px
+  margin-bottom: 16px
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1)
+
+  html.dark &
+    background: #151b23
+    border: 1px solid rgba(90, 42, 130, 0.3)
+
+  .card-header
+    margin-bottom: 16px
+    padding-bottom: 12px
+    border-bottom: 1px solid #e5e7eb
+
+    html.dark &
+      border-bottom-color: rgba(90, 42, 130, 0.3)
+
+    .project-info
+      .project-name
+        font-size: 14px
+        font-weight: 600
+        color: #5A2A82
+        text-decoration: none
+        display: block
+        margin-bottom: 8px
+
+        html.dark &
+          color: #5A2A82
+
+        &:hover
+          text-decoration: underline
+
+      .project-meta
+        display: flex
+        align-items: center
+        gap: 8px
+
+        a[class*='twenty_project_activity_level']
+          position: static !important
+          display: inline-block !important
+          margin-left: 0 !important
+          top: auto !important
+          vertical-align: middle
+          flex-shrink: 0
+
+  .card-stats
+    display: flex
+    flex-direction: column
+    gap: 12px
+
+    .stat-box
+      display: flex
+      flex-direction: column
+      gap: 8px
+
+      .stat-item
+        display: flex
+        flex-direction: column
+        gap: 4px
+
+        .stat-label
+          font-size: 11px
+          font-weight: 600
+          color: #6b7280
+
+          html.dark &
+            color: #9ca3af
+
+        .stat-sublabel
+          font-size: 10px
+          color: #6b7280
+
+          html.dark &
+            color: #9ca3af
+
+        .stat-value
+          font-size: 12px
+          color: #1f2937
+          font-weight: 600
+
+          html.dark &
+            color: white
+
+          a
+            color: #5A2A82
+            text-decoration: none
+
+            html.dark &
+              color: #5A2A82
+
+            &:hover
+              text-decoration: underline
+        border-bottom-color: #5A2A82 !important
   tr:nth-child(6n+1), tr:nth-child(6n+2), tr:nth-child(6n+3)
     td
       background-color: #f9f9f9 !important
+
+      html.dark &
+        background-color: #151b23 !important
 
 .org_project_rating
   margin-left: 18px
@@ -30,155 +1276,911 @@ tbody.portfolio-projects-table
 
 .language_name
   line-height: 28px
+  padding: 0 8px
+
+  html.dark &
+    color: white !important
 
 #org_icon
   margin-bottom: 15px
   margin-top: 10px
 .org-summary-quick-ref
   line-height: 20px
-  margin-top: -20px !important
+  margin-top: 0 !important
+
   h4
-    margin-top: 0px !important
+    margin-top: 0 !important
+    margin-bottom: 16px
+    font-size: 16px
+    font-weight: 700
+    color: #1f2937
+
+    html.dark &
+      color: white
+
   dl
-    margin-bottom: 0px !important
+    margin-bottom: 0 !important
+
+  dt
+    color: #6b7280
+    font-size: 12px
+    font-weight: 600
+    text-transform: uppercase
+    margin-bottom: 4px
+
+    html.dark &
+      color: #9ca3af
+
+  dd
+    color: #374151
+    margin-bottom: 12px
+
+    html.dark &
+      color: #d1d5db
+
+    a
+      color: #5A2A82
+      text-decoration: none
+
+      &:hover
+        text-decoration: underline
+
+      html.dark &
+        color: #c084fc !important
+
+@media (min-width: 768px) and (max-width: 1024px)
+  .org-summary-quick-ref
+    .dl-horizontal
+      display: flex
+      flex-wrap: wrap
+
+      dt
+        float: none !important
+        width: 100% !important
+        text-align: left !important
+        font-size: 11px !important
+        margin-bottom: 2px !important
+
+      dd
+        float: none !important
+        margin-left: 0 !important
+        margin-bottom: 14px !important
+        width: 100% !important
+        word-break: break-word
+
+@media (max-width: 576px)
+  .table-responsive
+    overflow: visible !important
+    border: none !important
+
+// Manage Projects — responsive show/hide
+.org-settings-wrap
+  .table-responsive.desktop-only
+    display: none !important
+    @media (min-width: 768px)
+      display: block !important
+
+  .manage-projects-cards.mobile-only
+    display: block
+    @media (min-width: 768px)
+      display: none !important
+
+// Manage Projects — mobile card view
+.manage-projects-cards
+  display: flex
+  flex-direction: column
+  gap: 12px
+
+.manage-project-card
+  background: #f9fafb
+  border: 1px solid #e5e7eb
+  border-radius: 12px
+  padding: 14px
+  html.dark &
+    background: #0d1117
+    border-color: #2a2a2a
+
+.manage-project-card-header
+  display: flex
+  align-items: center
+  gap: 10px
+  margin-bottom: 12px
+  padding-bottom: 12px
+  border-bottom: 1px solid #e5e7eb
+  html.dark &
+    border-bottom-color: #2a2a2a
+
+.manage-project-card-icon
+  flex-shrink: 0
+  line-height: 0
+  img
+    border-radius: 6px
+
+.manage-project-card-title
+  flex: 1
+  min-width: 0
+
+.manage-project-card-name
+  display: block
+  font-size: 14px
+  font-weight: 600
+  color: #5A2A82
+  text-decoration: none
+  &:hover
+    text-decoration: underline
+  html.dark &
+    color: #c084fc !important
+
+.manage-project-card-loc
+  display: block
+  font-size: 11px
+  color: #6b7280
+  margin-top: 2px
+  html.dark &
+    color: #9ca3af
+
+.manage-project-card-body
+  display: grid
+  grid-template-columns: 1fr 1fr
+  gap: 8px 16px
+  margin-bottom: 12px
+
+.manage-project-card-row
+  display: flex
+  justify-content: space-between
+  align-items: center
+
+.manage-project-card-label
+  font-size: 11px
+  font-weight: 600
+  color: #6b7280
+  text-transform: uppercase
+  html.dark &
+    color: #9ca3af
+
+.manage-project-card-value
+  font-size: 12px
+  font-weight: 500
+  color: #374151
+  html.dark &
+    color: #d1d5db
+
+.manage-project-card-desc
+  font-size: 12px
+  color: #6b7280
+  line-height: 1.5
+  margin: 0 0 12px
+  html.dark &
+    color: #9ca3af
+
+.manage-project-card-actions
+  padding-top: 10px
+  border-top: 1px solid #e5e7eb
+  html.dark &
+    border-top-color: #2a2a2a
+
+.manage-project-remove-btn
+  display: flex
+  align-items: center
+  justify-content: center
+  gap: 6px
+  width: 100%
+  padding: 8px 12px
+  font-size: 12px
+  font-weight: 600
+  color: #ffffff
+  background: #dc2626
+  border: none
+  border-radius: 8px
+  text-decoration: none
+  cursor: pointer
+  transition: background 0.15s
+  &:hover
+    background: #b91c1c
+    text-decoration: none
+    color: #ffffff
+  &.disabled
+    opacity: 0.5
+    pointer-events: none
+    background: #9ca3af
+  html.dark &
+    background: #7f1d1d
+    &:hover
+      background: #991b1b
+
+@media (min-width: 577px) and (max-width: 1024px)
+  .table-responsive
+    overflow-x: visible !important
+    overflow-y: visible !important
+    border: none !important
+
+  .manage-projects-table
+    border-collapse: separate
+    border-spacing: 0
+
+    thead
+      display: none
+
+    tbody
+      display: grid
+      grid-template-columns: repeat(2, 1fr)
+      gap: 16px
+
+    tbody tr
+      display: block
+      border: 1px solid #e5e7eb
+      border-radius: 12px
+      overflow: hidden
+      background: white
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08)
+
+      html.dark &
+        background: #151b23
+        border-color: rgba(90, 42, 130, 0.3)
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.24)
+
+    tbody td
+      display: flex
+      align-items: center
+      justify-content: space-between
+      padding: 8px 14px
+      border-bottom: 1px solid #f3f4f6
+      border-top: none
+      font-size: 12px
+
+      html.dark &
+        border-bottom-color: rgba(90, 42, 130, 0.2)
+
+      &::before
+        content: attr(data-label)
+        font-weight: 600
+        font-size: 10px
+        color: #6b7280
+        text-transform: uppercase
+        margin-right: 10px
+        flex-shrink: 0
+
+        html.dark &
+          color: #9ca3af
+
+      &:last-child
+        border-bottom: none
+
+      &.center
+        text-align: left
+        justify-content: space-between
+
+      .btn
+        display: inline-flex !important
+        align-items: center
+        gap: 4px
+        white-space: nowrap
+        visibility: visible !important
+
+@media (max-width: 767px)
+  .org-summary-quick-ref
+    .dl-horizontal
+      dt
+        float: none !important
+        width: auto !important
+        text-align: left !important
+        white-space: normal !important
+      dd
+        margin-left: 0 !important
+        word-break: break-word
 
 /* ORG -- Infographics -- START */
+// Organization Infographic - Modern Design
 #org_infographic
-  position: relative
-  height: 290px
+  background: linear-gradient(to bottom right, #f9fafb, #f3f4f6)
+  border-radius: 12px
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.06)
+  overflow: hidden
+
+  html.dark &
+    background: linear-gradient(to bottom right, #1a1632, #0f0b1f)
+
+  img
+    html.dark &
+      filter: invert(1)
+
+  // All links in infographic
+  a
+    color: #5A2A82
+    text-decoration: none
+
+    &:hover
+      text-decoration: underline
+
+    html.dark &
+      color: #ffff !important
+
   .about
     font-size: 12px
-    color: #80539C
+    color: #5A2A82
+    font-weight: 500
+
+    html.dark &
+      color: #ffff
+
   .pictogram_link_active
-    color: #000 !important
+    color: #5A2A82 !important
     pointer-events: none
     cursor: default
     text-decoration: none !important
+
+    html.dark &
+      color: #5A2A82 !important
+
   .disabled
-    color: #DDDAD9 !important
+    color: #000 !important
+
+    html.dark &
+      color: #ffffff !important
+
   .active
-    color: #2a2a2c !important
+    color: #374151 !important
     background-color: transparent !important
+
+    html.dark &
+      color: #d1d5db !important
+
   .inactive
-    color: #646E81 !important
+    color: #6b7280 !important
+
+    html.dark &
+      color: #9ca3af !important
+
   .icon-group
-    font-size: 45px
-    color: #595A5D
+    font-size: 48px
+    color: #000000
+
+    html.dark &
+      color: #ffffff
+
+// Full-width header bar
+.infographic-header
+  background: linear-gradient(to right, #7B68A6, #6B5896)
+  color: white
+  text-align: center
+  font-size: 18px
+  font-weight: 700
+  padding: 12px 16px
+  letter-spacing: 0.5px
+
+  @media (min-width: 640px)
+    font-size: 20px
+    padding: 16px 24px
+
+// Main content area with 3 columns
+.infographic-main
+  display: flex
+  flex-direction: column
+  align-items: center
+  gap: 16px
+  padding: 20px 16px
+
+  @media (min-width: 640px)
+    gap: 24px
+    padding: 24px 20px
+
+  @media (min-width: 992px)
+    flex-direction: row
+    justify-content: center
+    align-items: center
+    gap: 0
+    padding: 32px 16px
+
+  & > *
+    @media (min-width: 992px)
+      display: flex
+      align-items: center
+      flex-shrink: 0
+
+#org_infographic
   #section1
-    position: absolute
-    width: 250px
-    left: 20px
-    height: 215px
+    display: flex
+    flex-direction: column
+    align-items: center
+    gap: 8px
+    text-align: center
+    flex-shrink: 0
+    max-width: 280px
+
+    @media (min-width: 992px)
+      flex-direction: row
+      align-items: center
+      gap: 0
+      max-width: none
+
     .col1
-      width: 30%
       text-align: center
-      margin-top: 65px
-      font-weight: bold
-      color: #195887
+      font-weight: 700
+      color: #000000 !important
+      font-size: 12px
+      line-height: 1.4
+      min-width: 70px
+      display: flex
+      flex-direction: column
+      align-items: center
+      gap: 8px
+
+      @media (min-width: 992px)
+        font-size: 14px
+        min-width: 80px
+
+      html.dark &
+        color: #ffffff !important
+
+      a
+        color: #000000 !important
+        text-decoration: none
+
+        &:hover
+          color: #5A2A82 !important
+          text-decoration: underline
+
+        html.dark &
+          color: #ffffff !important
+
+          &:hover
+            color: #5A2A82 !important
+
+      .icon-group
+        font-size: 40px
+        margin-bottom: 8px
+        display: block
+        color: #000000 !important
+
+        @media (min-width: 992px)
+          font-size: 48px
+
+        html.dark &
+          color: #ffffff !important
+
+      .commits-text
+        text-align: center
+        line-height: 1.5
+        margin-bottom: 8px
+        background: white
+        border: 1px solid #e5e7eb
+        border-radius: 8px
+        padding: 10px 12px
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05)
+
+        @media (min-width: 992px)
+          padding: 12px 16px
+
+        html.dark &
+          background: #0d1117
+          border-color: rgba(90, 42, 130, 0.3)
+
+        .commits
+          font-size: 12px
+          font-weight: 700
+          margin-bottom: 4px
+          color: #000000
+
+          @media (min-width: 992px)
+            font-size: 14px
+
+          html.dark &
+            color: #ffffff
+
+        .projects
+          font-size: 10px
+          color: #4b5563
+          line-height: 1.4
+
+          @media (min-width: 992px)
+            font-size: 12px
+
+          html.dark &
+            color: #d1d5db
+
     .col2
-      width: 70%
-      padding-top: 120px
-      line-height: 13px
       text-align: center
-      .commits
-        font-size: 13px
-      .projects
-        font-size: 11px
+      line-height: 1.5
+      display: flex
+      flex-direction: column
+      align-items: center
+      gap: 12px
+      padding-top: 0 !important
+
+      .svg-arrow
+        flex-shrink: 0
 
   #section2
-    position: absolute
-    width: 270px
-    right: 20px
-    height: 215px
-    top: 0
+    display: flex
+    flex-direction: column
+    align-items: center
+    gap: 8px
+    text-align: center
+    flex-shrink: 0
+    max-width: 280px
+
+    @media (min-width: 992px)
+      flex-direction: row
+      align-items: center
+      gap: 0
+      max-width: none
+
     .col1
-      width: 65%
-      padding-top: 121px
-      line-height: 13px
       text-align: center
-      .commits
-        font-size: 13px
-      .projects
-        font-size: 11px
+      line-height: 1.5
+      display: flex
+      flex-direction: column
+      align-items: center
+      gap: 12px
+      padding-top: 0 !important
+
+      .svg-arrow
+        flex-shrink: 0
+
     .col2
-      width: 30%
       text-align: center
-      margin-top: 65px
-      font-weight: bold
-      color: #000
+      font-weight: 700
+      color: #000000 !important
+      font-size: 12px
+      line-height: 1.4
+      min-width: 70px
+      display: flex
+      flex-direction: column
+      align-items: center
+      gap: 8px
+
+      @media (min-width: 992px)
+        font-size: 14px
+        min-width: 80px
+
+      html.dark &
+        color: #ffffff !important
+
+      a
+        color: #000000 !important
+        text-decoration: none
+
+        &:hover
+          color: #5A2A82 !important
+          text-decoration: underline
+
+        html.dark &
+          color: #ffffff !important
+
+          &:hover
+            color: #5A2A82 !important
+
+      .icon-group
+        font-size: 40px
+        margin-bottom: 8px
+        display: block
+        color: #000000 !important
+
+        @media (min-width: 992px)
+          font-size: 48px
+
+        html.dark &
+          color: #ffffff !important
+
+      .commits-text
+        text-align: center
+        line-height: 1.5
+        background: white
+        border: 1px solid #e5e7eb
+        border-radius: 8px
+        padding: 10px 12px
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05)
+
+        @media (min-width: 992px)
+          padding: 12px 16px
+
+        html.dark &
+          background: #0d1117
+          border-color: rgba(90, 42, 130, 0.3)
+
+        .commits
+          font-size: 12px
+          font-weight: 700
+          margin-bottom: 4px
+          color: #000000
+
+          @media (min-width: 992px)
+            font-size: 14px
+
+          html.dark &
+            color: #ffffff
+
+        .projects
+          font-size: 10px
+          color: #4b5563
+          line-height: 1.4
+
+          @media (min-width: 992px)
+            font-size: 12px
+
+          html.dark &
+            color: #d1d5db
+
       span
-        line-height: 15px
+        line-height: 1.4
         font-size: 13px
+        display: block
 
-
+// Infographic Box - Center Component
 #infographic_box
-  width: 500px
-  margin: 0 auto
-  letter-spacing: -0.5px
+  flex: 1
+  min-width: 0
+  display: inline-table
+  flex-direction: column
+  background: white
+  border-radius: 12px
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.06)
+  border: 2px solid #e5e7eb
+  width: 100%
+  max-width: 420px
+
+  @media (min-width: 992px)
+    flex: 1
+    max-width: none
+
+  html.dark &
+    background: #0d1117
+    border-color: rgba(90, 42, 130, 0.4)
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3), 0 2px 4px rgba(0, 0, 0, 0.2)
+
   a.print_infographic
     font-style: normal !important
-    font-size: 11px
-  .header
-    @include infographic-box-header-background-color
-    -webkit-print-color-adjust: exact
-    height: 33px
-    color: white !important
-    -webkit-print-color-adjust: exact
-    display: table-cell
-    vertical-align: middle
-    text-align: center
-    font-size: 18px
-    width: inherit
+    font-size: 12px
+    color: #5A2A82
+    font-weight: 500
+    display: inline-flex
+    align-items: center
+    gap: 6px
+
+    &:hover
+      text-decoration: underline
+
+    html.dark &
+      color: #5A2A82
+
   .content
-    background-color: #d2dae6 !important
-    -webkit-print-color-adjust: exact
-    height: 185px
-    padding: 15px 50px
+    padding: 16px 12px
+    display: flex
+    flex-direction: column
+    align-items: center
+    justify-content: center
+    gap: 12px
+
+    @media (min-width: 640px)
+      padding: 20px 16px
+      gap: 14px
+
+    @media (min-width: 992px)
+      flex-direction: row
+      justify-content: space-between
+      padding: 24px 16px
+      gap: 16px
+
+    .col1, .col3
+      display: flex
+      flex-direction: column
+      align-items: center
+      gap: 8px
+      text-align: center
+      flex: 1
+
+    .col2
+      display: flex
+      align-items: center
+      justify-content: center
+      padding: 0 8px
+      flex: 0 0 auto
+
+    .count
+      font-size: 28px
+      font-weight: 700
+      color: #5A2A82
+      line-height: 1.2
+
+      @media (min-width: 992px)
+        font-size: 32px
+
+      html.dark &
+        color: #5A2A82
+
+      a
+        color: inherit
+        text-decoration: none
+        display: flex
+        flex-direction: column
+        align-items: center
+        gap: 4px
+
+        &:hover
+          text-decoration: underline
+
+        .portfolio_label
+          color: inherit
+          font-size: 11px
+          font-weight: 600
+          white-space: nowrap
+
+          html.dark &
+            color: #c084fc !important
+
+        html.dark &
+          color: #c084fc !important
+        
+
+    .portfolio_label
+      font-size: 10px
+      font-weight: 600
+      color: #000000
+      white-space: nowrap
+
+      @media (min-width: 992px)
+        font-size: 11px
+
+      html.dark &
+        color: #ffffff
+
+    .icon-group
+      font-size: 36px
+      color: #000000
+      display: block
+      margin-bottom: 4px
+
+      @media (min-width: 992px)
+        font-size: 40px
+
+      html.dark &
+        color: #ffffff
+
+  .portfolio-stats
+    text-align: center
+    padding: 12px 16px
+
+    @media (min-width: 992px)
+      padding: 16px 24px
+
+    border-top: 1px solid #e5e7eb
+
+    html.dark &
+      border-top-color: rgba(90, 42, 130, 0.3)
+
     .commits
-      font-size: 13px
+      font-size: 12px
+      font-weight: 700
+      color: #000000
+      margin-bottom: 4px
+
+      @media (min-width: 992px)
+        font-size: 14px
+
+      html.dark &
+        color: #ffffff
+
     .projects
       font-size: 11px
-    .col1
-      width: 30%
-    .col2
-      width: 33%
-      padding-top: 64px
-      line-height: 13px
-    .col3
-      width: 34%
-      text-align: center
-      .icon-group
-        font-size: 55px
-        display: inline-block
-        margin-top: 17px
-    .count
-      @include site-link-color
-      font-size: 22px
-      text-align: center
-      a
-        @include site-link-color
-    .portfolio_label
-      @include site-link-color
-      font-size: 12px
-      white-space: nowrap
-      margin-top: -5px
+      color: #4b5563
+
+      @media (min-width: 992px)
+        font-size: 12px
+
+      html.dark &
+        color: #d1d5db
+
   .footer_line
-    @include site-link-color
-    font-size: 1px
-    height: 7px !important
-  .bottom_links
-    .col1
-      width: 63px !important
-      img
-        max-width: 100%
-    .col2
-      margin-left: 60px
-      width: 217px
+    height: 4px
+    background: linear-gradient(to right, #7B68A6, #5A2A82)
+
+// Infographic Footer - Full Width
+.infographic-footer
+  display: grid
+  grid-template-columns: 1fr
+  gap: 12px
+  padding: 12px 16px
+  border-top: 1px solid #d1d5db
+  align-items: center
+  text-align: center
+
+  @media (min-width: 640px)
+    grid-template-columns: auto 1fr auto
+    text-align: left
+    gap: 16px
+    padding: 12px 24px
+
+  html.dark &
+    border-top-color: rgba(90, 42, 130, 0.3)
+
+  .footer-col1
+    display: flex
+    justify-content: center
+
+    @media (min-width: 640px)
+      justify-content: flex-start
+
+    img
+      max-width: 88px
+      height: 31px
+
+  .footer-col2
+    font-size: 12px
+    text-align: center
+
+    a
+      color: #5A2A82
+      font-weight: 500
+
+      &:hover
+        text-decoration: underline
+
+      html.dark &
+        color: #5A2A82
+
+  .footer-col3
+    display: flex
+    flex-direction: column
+    align-items: center
+    gap: 8px
+
+    @media (min-width: 640px)
+      align-items: flex-end
+
+    .about
       font-size: 12px
-    .col3
-      width: 160px
-  .hub_icon
-    margin-top: 7px
+      color: #6b7280
+      font-weight: 500
+
+      html.dark &
+        color: #9ca3af
+
+    a.print_infographic
+      font-size: 12px
+      color: #5A2A82
+      font-weight: 500
+      display: inline-flex
+      align-items: center
+      gap: 6px
+
+      &:hover
+        text-decoration: underline
+
+      html.dark &
+        color: #5A2A82
+
+// SVG Arrow Styling
+.svg-arrow
+  display: flex
+  align-items: center
+  justify-content: center
+  min-height: 40px
+
+  // Mobile: Rotate arrows to vertical for stacked layout
+  @media (max-width: 991px)
+    min-height: 90px
+
+    svg
+      transform: rotate(90deg) scale(0.7)
+      transform-origin: center
+
+  svg
+    fill: #000000 !important
+    stroke: #000000 !important
+    color: #000000 !important
+
+    path
+      fill: #000000 !important
+      stroke: #000000 !important
+
+    html.dark &
+      fill: #ffffff !important
+      stroke: #000 !important
+      color: #ffffff !important
+
+      path
+        fill: #ffffff !important
+        stroke: #000 !important
 
 .infographic_links_in_print
   text-decoration: none !important
@@ -205,6 +2207,127 @@ form#new_logo
 #org_summary
   p
     word-wrap: break-word
+
+#addthis_sharing
+  h4
+    margin-top: 0 !important
+    margin-bottom: 16px
+    font-size: 16px
+    font-weight: 700
+    color: #1f2937
+
+    html.dark &
+      color: white
+
+// Pagination button for "See All" links
+.pagination-button-container
+  text-align: center
+
+.btn-see-all-org
+  display: inline-flex
+  align-items: center
+  justify-content: center
+  gap: 8px
+  padding: 12px 32px
+  background: $org-primary-color
+  color: white !important
+  border: none
+  border-radius: 8px
+  font-size: 14px
+  font-weight: 600
+  text-decoration: none
+  transition: all 0.2s ease
+  box-shadow: $org-shadow-sm
+  min-width: 200px
+
+  &:hover
+    background: $org-primary-hover
+    color: white !important
+    box-shadow: $org-shadow-md
+    text-decoration: none
+    transform: translateY(-1px)
+
+  html.dark &
+    background: $org-dark-primary
+    color: #ffffff !important
+
+    &:hover
+      background: rgba(90, 42, 130, 0.9)
+      color: #ffffff !important
+
+// ── Organization URL vanity field ─────────────────────────────────────────────
+.edit-url-field-wrapper
+  display: flex
+  align-items: stretch
+  border: 1px solid #e5e7eb
+  border-radius: 12px
+  overflow: hidden
+  background: #f9fafb
+  transition: border-color 0.2s, box-shadow 0.2s
+
+  &:focus-within
+    border-color: #5A2A82
+    box-shadow: 0 0 0 2px rgba(90, 42, 130, 0.2)
+    background: #ffffff
+
+    .edit-url-prefix
+      border-right-color: #c4b5d9
+      background: #f3eeff
+      color: #5A2A82
+
+  html.dark &
+    background: #0d1117
+    border-color: rgba(255, 255, 255, 0.15)
+
+    &:focus-within
+      border-color: #c084fc
+      box-shadow: 0 0 0 2px rgba(90, 42, 130, 0.25)
+      background: #0d1117
+
+      .edit-url-prefix
+        border-right-color: rgba(192, 132, 252, 0.3)
+        background: rgba(192, 132, 252, 0.08)
+        color: #c084fc
+
+.edit-url-prefix
+  display: flex
+  align-items: center
+  padding: 0 12px
+  background: #f3f4f6
+  border-right: 1px solid #e5e7eb
+  font-size: 13px
+  font-weight: 500
+  color: #6b7280
+  white-space: nowrap
+  flex-shrink: 0
+  transition: background 0.2s, color 0.2s, border-color 0.2s
+  user-select: none
+
+  html.dark &
+    background: rgba(255, 255, 255, 0.06)
+    border-right-color: rgba(255, 255, 255, 0.1)
+    color: #8b949e
+
+// Override icon-padding for URL field input (no leading icon)
+#account-edit-form .edit-url-field-wrapper input.edit-field-input
+  flex: 1
+  border: none !important
+  border-radius: 0 !important
+  box-shadow: none !important
+  background: transparent !important
+  padding: 12px 14px !important
+  margin: 0
+
+  &:focus,
+  &:focus-visible
+    border: none !important
+    box-shadow: none !important
+    outline: none !important
+    background: transparent !important
+
+  html.dark &
+    background: transparent !important
+    color: #ffffff !important
 
 @media print
   a[href]:after

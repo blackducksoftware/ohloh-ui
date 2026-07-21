@@ -1,4 +1,11 @@
-%ul
-  - %w(lamp sash gnome).each do |name|
-    %li
-      = link_to h(t("stacks.#{name}")), reset_stack_path(stack.id, init: name), title: t("stacks.#{name}_desc")
+.sample-stacks
+  %p.sample-stacks-label= t('stacks.sample_stacks_label', default: 'Start with a sample stack:')
+  %ul.sample-stacks-list
+    - %w(lamp sash gnome).each do |name|
+      %li.sample-stack-item
+        = link_to reset_stack_path(stack.id, init: name), class: 'sample-stack-link', title: t("stacks.#{name}_desc") do
+          %span.sample-stack-icon
+            %i.fa.fa-th-large{ 'aria-hidden' => 'true' }
+          .sample-stack-body
+            %span.sample-stack-name= h(t("stacks.#{name}"))
+            %span.sample-stack-desc= t("stacks.#{name}_desc")

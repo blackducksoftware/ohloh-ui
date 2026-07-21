@@ -4,20 +4,30 @@
   @alias ||= Alias.new
   @committer_names ||= Alias.committer_names(@project)
 
-%h2.pull-left
-  = link_to t('settings'), settings_project_path(@project)
-  &nbsp;:&nbsp;
-  = link_to t('aliases.aliases'), project_aliases_path(@project)
-  &nbsp;: #{t('aliases.new_alias')}
-= project_analysis_timestamp(@project)
+#alias-new-page
+  .settings-page-header
+    .settings-page-header-row
+      .settings-page-icon
+        %i.fa.fa-users
+      %h2.settings-page-h2
+        = link_to t('settings'), settings_project_path(@project)
+        %span.account-basics-sep :
+        = link_to t('aliases.aliases'), project_aliases_path(@project)
+        %span.account-basics-sep :
+        = t('aliases.new_alias')
+    %p.settings-page-description= t('.title', project_name: @project.name)
 
-.clearfix
-.alias
-  - if @committer_names.length.zero?
-    .alert.alert-info.alert-block= t('.no_more_alias')
-  - else
-    = form_for [@project, @alias] do
-      = render partial: 'fields'
+  .project-edit-layout
+    .project-edit-main
+      - if @committer_names.length.zero?
+        .alert.alert-info.modern-alert
+          .alert-accent-strip
+          .alert-inner
+            = t('.no_more_alias')
+      - else
+        .oh-card
+          = form_for [@project, @alias] do
+            = render partial: 'fields'
 
-.clearfix
-= render partial: 'about_aliases'
+    .project-edit-aside
+      = render partial: 'about_aliases'

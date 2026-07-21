@@ -28,18 +28,18 @@ class BaseballCardTest < ActiveSupport::TestCase
 
       result = [{ css: {}, label: 'First commit', value: first_commit_day },
                 { css: {}, label: 'Most recent commit', value: last_commit_day },
-                { css: {}, label: 'Has made', value: commits },
+                { css: { class: 'statistic--commits' }, label: 'Has made', value: commits },
                 { css: {}, label: 'Joined Open Hub', value: joined_day },
                 { css: {}, label: 'Contributed to',
                   value: "<a href=\"/accounts/#{account.login}/positions\">1 project</a>" },
                 {
-                  css: { style: 'min-height:38px;' },
+                  css: { class: 'statistic--orgs', style: 'min-height:38px;' },
                   label: I18n.t('accounts.show.baseball_card.contributed_to'),
                   partial: 'accounts/show/orgs',
                   locals: { orgs: [org] }
                 },
                 {
-                  css: { style: 'min-height:38px;' },
+                  css: { class: 'statistic--orgs', style: 'min-height:38px;' },
                   label: I18n.t('accounts.show.baseball_card.contributed_for'),
                   partial: 'accounts/show/orgs',
                   locals: { orgs: [org] }

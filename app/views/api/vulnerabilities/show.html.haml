@@ -16,9 +16,9 @@
       %span.meta-label Last Modified:
       %span.meta-value= humanize_datetime(@response['lastModifiedDate'])
   .col-lg-2.col-xs-3.cybersecurity-logo.pull-right
-    %a{ href: "https://www.blackduck.com/resources/cybersecurity-research-center.html", target: '_blank' }
+    %a{ href: "https://www.blackduck.com/resources/cybersecurity-research-center.html", target: '_blank', rel: 'noopener noreferrer' }
       %img{ itemprop: 'image', src: image_path('logo/cyrc-500.png'), alt: 'Black Duck Cybersecurity' }
-    = link_to 'Learn more about BDSAs', 'https://www.blackduck.com/blog/black-duck-security-advisories-benefits.html', class: 'btn btn-primary learn-more btn-sm', target: '_blank'
+    = link_to 'Learn more about BDSAs', 'https://www.blackduck.com/blog/black-duck-security-advisories-benefits.html', class: 'btn btn-primary learn-more btn-sm', target: '_blank', rel: 'noopener noreferrer'
 .row.details
   .col-lg-6.col-xs-12
     .summary-info

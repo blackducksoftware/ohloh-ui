@@ -28,7 +28,7 @@ class SessionProjectsControllerTest < ActionController::TestCase
       assert_response :success
 
       _(session[:session_projects]).must_equal [project.to_param]
-      assert_select "form#sp_frm_#{project.to_param}"
+      assert_select "button.remove-project[data-project-id='#{project.to_param}']"
     end
 
     it 'must prevent bot access' do

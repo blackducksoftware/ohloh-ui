@@ -1,21 +1,22 @@
-.col-md-5
-  %form
-    %fieldset
-      %legend.margin_bottom_0#authorized_apps= t('.authorized_apps')
-      .col-md-12
-        %p.help-block= t('.registered_applications')
-        %br
-      - if @oauth_applications.present?
-        %table.table{ style: 'border: 1px solid #ddd;' }
-          %tbody
-            - @oauth_applications.each do |oauth_application|
-              - api_key = ApiKey.find_by(oauth_application: oauth_application)
-              %tr
-                %td
-                  %h3= oauth_application.name
-                  %p= api_key.description
-                %td{ style: 'width: 90px;' }
-                  - path = account_revoke_oauth_access_path(@account, oauth_application)
-                  = link_to t('.remove'), path, class: 'btn btn-danger'
-      - else
-        %span.well.col-md-10.margin_left_20= t('.no_registered_applications')
+.edit-section.authorized-apps-section
+  .edit-section-header
+    .edit-section-icon
+      %i.fa.fa-plug
+    %h3.edit-section-title= t('.authorized_apps')
+
+  %p.edit-field-hint= t('.registered_applications')
+
+  - if @oauth_applications.present?
+    .authorized-apps-list
+      - @oauth_applications.each do |oauth_application|
+        - api_key = ApiKey.find_by(oauth_application: oauth_application)
+        .authorized-app-item
+          .authorized-app-info
+            %h4.authorized-app-name= oauth_application.name
+            %p.authorized-app-desc= api_key&.description
+          - path = account_revoke_oauth_access_path(@account, oauth_application)
+          = link_to t('.remove'), path, class: 'edit-delete-btn edit-delete-btn--sm'
+  - else
+    .authorized-apps-empty
+      %i.fa.fa-plug.authorized-apps-empty-icon
+      %p.authorized-apps-empty-text= t('.no_registered_applications')

@@ -1,3 +1,71 @@
+#edits_account
+  max-width: 1024px
+  margin: 0 auto
+  padding: 0 24px 32px
+
+  @media (max-width: 639px)
+    padding: 0 16px 24px
+
+  .settings-page-header
+    margin-top: 16px
+
+  .about-account-basics-card
+    max-width: none
+    margin: 0
+    padding: 0
+
+// Edits empty state
+.edits-empty-state
+  text-align: center
+  padding: 48px 24px
+  background: #ffffff
+  border-radius: 16px
+  border: 1px solid #e5e7eb
+  margin: 16px 0 24px
+
+  html.dark &
+    background: #1c2128
+    border-color: rgba(255, 255, 255, 0.1)
+
+  .edits-empty-icon
+    width: 56px
+    height: 56px
+    border-radius: 16px
+    background: linear-gradient(135deg, rgba(90, 42, 130, 0.1), rgba(90, 42, 130, 0.05))
+    display: flex
+    align-items: center
+    justify-content: center
+    margin: 0 auto 16px
+
+    i
+      font-size: 24px
+      color: #5A2A82
+
+      html.dark &
+        color: #c084fc
+
+  .edits-empty-text
+    font-size: 14px
+    color: #6b7280
+    margin: 0
+
+    html.dark &
+      color: #8b949e
+
+#project-edit-history-page
+  margin-right: 24px
+  margin-top: 24px
+
+  .settings-page-header
+    margin-top: 0
+    margin-left: -24px
+    margin-right: -24px
+    padding-left: 24px
+    padding-right: 24px
+
+  .about-account-basics-card
+    margin-top: 24px
+
 .edit
   h6.undone
     text-decoration: line-through
@@ -10,8 +78,10 @@
     text-align: right
     vertical-align: middle
     .info
-      color: #777
+      color: #666
       line-height: 18px
+      html.dark &
+        color: #9ca3af
   .in_avatar
     float: left
     width: 42px
@@ -28,6 +98,9 @@
       padding-top: 3px
   .inside
     margin-left: 50px
+    span.date
+      html.dark &
+        color: #c084fc
 .edit_enlist_branch_name, .edit_enlist_module_name, .edit_enlist_module_branch_name
   background: #7BB432
   color: #fff

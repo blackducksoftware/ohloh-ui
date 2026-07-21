@@ -3,11 +3,16 @@
 
 - page_context[:select_footer_nav] = :widgets
 
-.project_content_title.margin_bottom_10{ style: 'height: 100%' }
-  %h2= t('.widgets')
-  %p
-    = t('.embed')
-    .clearfix
-    - @widgets.each do |widget|
-      .project_widget_container
-        = render partial: 'widget', locals: { widget: widget, type: 'project', ref: 'sample' }
+.settings-page-header
+  .settings-page-header-row
+    .settings-page-icon
+      %i.fa.fa-share-alt
+    %h2.settings-page-h2
+      = t('.widgets')
+  %p.settings-page-description= t('.embed')
+
+.clearfix
+.oh-card
+  - @widgets.each do |widget|
+    .project_widget_container
+      = render partial: 'widget', locals: { widget: widget, type: 'project', ref: 'sample' }

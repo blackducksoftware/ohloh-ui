@@ -5,21 +5,19 @@
   position = account.positions.where(project_id: @parent.id).first
   name_fact = position && position.name_fact
 - if !manage.pending? || (current_user_can_manage? || current_user == account)
-  .row.padding_one_top
-    .col-md-2
+  .header_flex_container
+    .account_icon
       = avatar_for(account.person, size: 60)
-    .col-md-7
-      %h4.soft.nomargin.no_margin_top
+    .manage_content
+      %h3
         = link_to(html_escape(account.name), account_path(account))
         - if manage.pending?
-          = t('.pending')
+          %span.manage-pending= t('.pending')
       - if position && position.title? && position.organization.present?
         .position
           %p.nomargin
             %span.title= position.title
             %span.at= t('at')
             %span.organization= position.organization
-      %p.nomargin.soft== #{name_fact ? name_fact.commits : '0'} commits
+      %p.soft== #{name_fact ? name_fact.commits : '0'} commits
       = render partial: 'action_buttons', locals: { manage: manage, account: account, name: name, target: target }
-    .clear
-      &nbsp;

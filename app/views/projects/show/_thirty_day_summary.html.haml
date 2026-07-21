@@ -6,7 +6,7 @@
     - new_languages = Language.new_languages_for_project(@project, thirty_days_ago)
 
     %li
-      %big= thirty_day_summary.commits_count
+      %big= number_with_delimiter(thirty_day_summary.commits_count)
       - commits_link_text = thirty_day_summary.commits_count == 1 ? t('.commit') : t('.commits')
       = link_to commits_link_text, project_commits_path(@project, time_span: '30 days')
     %li

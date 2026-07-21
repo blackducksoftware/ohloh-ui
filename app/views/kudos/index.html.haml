@@ -2,8 +2,12 @@
   content_for(:html_title) { t('.page_title', name: @person.account ? @person.account.name : @person.name) }
   page_context[:select_footer_nav] = :kudos
   position = @person ? kudo_position_for_person(@person.id, @person.kudo_position.to_i) : kudo_position_for_person(nil)
-.col-md-12
-  %h2= t('.title')
+#kudos-index
+  .settings-page-header
+    .settings-page-header-row
+      .settings-page-icon
+        %i.fa.fa-thumbs-up
+      %h2.settings-page-h2= t('.title')
   != position
   %table#kudo_mantle
     %tr
@@ -19,15 +23,22 @@
         .arrow_down &nbsp;
   .row &nbsp;
   .row &nbsp;
-.col-md-2.no-margin
-  &nbsp;
-.col-md-5
-  %h5= t('.kudos_received')
-  = render partial: 'kudos/received', collection: @received_kudos
-  - if @received_kudos.empty?
-    %p= t('.no_kudos_received_yet')
-.col-md-5
-  %h5= t('.kudos_given')
-  = render partial: 'kudos/given', collection: kudos_grouped_sent(@sent_kudos)
-  - if @sent_kudos.empty?
-    %p= t('.no_kudos_given_yet')
+  .kudos-grid
+    .oh-card.oh-card--flush.kudos-card
+      .edit-section-header.kudos-card__header
+        .edit-section-icon.kudos-card__icon--received
+          %i.fa.fa-thumbs-up{ 'aria-hidden' => 'true' }
+        %h3.edit-section-title.kudos-card__title= t('.kudos_received')
+      .kudos-card__list
+        = render partial: 'kudos/received', collection: @received_kudos
+        - if @received_kudos.empty?
+          %p.kudos-card__empty= t('.no_kudos_received_yet')
+    .oh-card.oh-card--flush.kudos-card
+      .edit-section-header.kudos-card__header
+        .edit-section-icon.kudos-card__icon--given
+          %i.fa.fa-gift{ 'aria-hidden' => 'true' }
+        %h3.edit-section-title.kudos-card__title= t('.kudos_given')
+      .kudos-card__list
+        = render partial: 'kudos/given', collection: kudos_grouped_sent(@sent_kudos)
+        - if @sent_kudos.empty?
+          %p.kudos-card__empty= t('.no_kudos_given_yet')

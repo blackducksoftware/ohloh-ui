@@ -1,11 +1,16 @@
 %meta{ name: 'ROBOTS', content: 'NOINDEX, NOFOLLOW' }
 - content_for(:html_title) { t('.page_title', name: @parent.vanity_url) }
 
-#license
-  %h1.margin_bottom_20
-    = link_to t('.licenses'), licenses_url
-    &nbsp;:&nbsp;
-    = link_to h(truncate(@parent.name, length: 42)), license_url(@parent), title: @parent.name
-    &nbsp;:&nbsp;#{t('.openhub_edit_history')}
+#license-edit-page
+  .settings-page-header
+    .settings-page-header-row
+      .settings-page-icon
+        %i.fa.fa-history
+      %h2.settings-page-h2
+        = link_to t('.licenses'), licenses_url
+        %span.account-basics-sep :
+        = link_to h(truncate(@parent.name, length: 42)), license_url(@parent), title: @parent.name
+        %span.account-basics-sep :
+        = t('.openhub_edit_history')
 
-= render partial: 'index'
+  = render partial: 'index'

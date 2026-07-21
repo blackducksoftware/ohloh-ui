@@ -148,6 +148,12 @@ var Charts = {
       width: 950,
       lang: {
         thousandsSep: ','
+      },
+      exporting: {
+        enabled: false
+      },
+      credits: {
+        enabled: false
       }
     })
 
@@ -182,6 +188,7 @@ var Charts = {
     }
 
   },
+
   commit_volume_formatter: function() {
     return '<strong>' + this.series.name + '</strong><br/>' + this.y + ' Commits (' + Math.floor(this.percentage) + '%)';
   }

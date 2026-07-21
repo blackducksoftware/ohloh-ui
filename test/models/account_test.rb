@@ -1016,4 +1016,81 @@ class AccountTest < ActiveSupport::TestCase
       end
     end
   end
+
+  describe 'theme_preference' do
+    describe '#theme_preference' do
+      it 'should return nil when no preference is set (sparse storage)' do
+        new_account = create(:account)
+        _(new_account.theme_preference).must_be_nil
+      end
+
+      it 'should return the saved dark theme preference from settings table' do
+        test_account = create(:account)
+        Setting.create(key: "account_#{test_account.id}_theme_preference", value: 'dark')
+
+        _(test_account.theme_preference).must_equal('dark')
+      end
+
+      it 'should return nil for light theme (sparse storage - no entry created)' do
+        test_account = create(:account)
+        test_account.theme_preference = 'light'
+
+        _(test_account.theme_preference).must_be_nil
+        _(Setting.find_by(key: "account_#{test_account.id}_theme_preference")).must_be_nil
+      end
+    end
+
+    describe '#theme_preference=' do
+      it 'should create settings entry only when setting to dark' do
+        test_account = create(:account)
+        assert_difference('Setting.count', 1) do
+          test_account.theme_preference = 'dark'
+        end
+
+        setting = Setting.find_by(key: "account_#{test_account.id}_theme_preference")
+        _(setting).wont_be_nil
+        _(setting.value).must_equal('dark')
+      end
+
+      it 'should delete entry when setting to light (sparse storage)' do
+        test_account = create(:account)
+        test_account.theme_preference = 'dark'
+
+        assert_difference('Setting.count', -1) do
+          test_account.theme_preference = 'light'
+        end
+
+        setting = Setting.find_by(key: "account_#{test_account.id}_theme_preference")
+        _(setting).must_be_nil
+      end
+
+      it 'should handle toggle from light to dark' do
+        test_account = create(:account)
+        test_account.theme_preference = 'light'
+        assert_equal(Setting.where(key: "account_#{test_account.id}_theme_preference").count, 0)
+
+        test_account.theme_preference = 'dark'
+        setting = Setting.find_by(key: "account_#{test_account.id}_theme_preference")
+        _(setting.value).must_equal('dark')
+      end
+
+      it 'should only store dark mode in database (not light or system)' do
+        test_account = create(:account)
+
+        test_account.theme_preference = 'dark'
+        _(Setting.find_by(key: "account_#{test_account.id}_theme_preference")&.value).must_equal('dark')
+
+        test_account.theme_preference = 'light'
+        _(Setting.find_by(key: "account_#{test_account.id}_theme_preference")).must_be_nil
+      end
+
+      it 'should retrieve updated preference on reload' do
+        test_account = create(:account)
+        test_account.theme_preference = 'dark'
+
+        reloaded_account = Account.find(test_account.id)
+        _(reloaded_account.theme_preference).must_equal('dark')
+      end
+    end
+  end
 end

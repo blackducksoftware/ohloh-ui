@@ -82,7 +82,7 @@ module ProjectsHelper
   def show_badges
     content_tag :div, class: 'badges' do
       @project.badges_summary.map do |badge|
-        concat content_tag(:img, nil, src: badge.badge_url)
+        concat content_tag(:img, nil, src: badge.badge_url, alt: "#{badge.class.badge_name} badge")
       end
     end
   end

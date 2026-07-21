@@ -3,11 +3,17 @@
 - content_for :html_title do
   = t('.edit_title', name: @account.name)
 
-%h3
-  = link_to t('contribution'), account_positions_path(@account)
-  = precede ' : ' do
-    = t('edit')
-
-.well.col-md-11.center-block
-  = form_for [@account, @position], html: { id: :position_form } do |f|
-    = render 'fields', f: f, position: @position, allow_delete: true
+#position-edit-page
+  .settings-page-header
+    .settings-page-header-row
+      .settings-page-icon
+        %i.fa.fa-code-fork
+      %h2.settings-page-h2
+        = link_to t('contribution'), account_positions_path(@account)
+        = ' : '
+        = t('edit')
+  .row.position-edit-row
+    .col-md-12.col-sm-12.col-xs-12.center-block
+      .oh-card
+        = form_for [@account, @position], html: { id: :position_form } do |f|
+          = render 'fields', f: f, position: @position, allow_delete: true

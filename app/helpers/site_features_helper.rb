@@ -6,10 +6,11 @@ module SiteFeaturesHelper
   def features_hash
     {
       'OpenHub' => [
-        "you can subscribe to e-mail newsletters to receive update from the <a href='http://blog.openhub.net/'
-         target='_blank'>Open Hub blog</a>",
+        "you can subscribe to e-mail newsletters to receive update from the <a href='https://community.blackduck.com/s/black-duck-open-hub?tabset-c30ff=d9d77'
+         target='_blank' rel='noopener noreferrer'>Open Hub blog</a>",
         "data presented on the Open Hub is available through our
-         <a href='https://github.com/blackducksoftware/ohloh_api#ohloh-api-documentation' target='_blank'>API</a>",
+         <a href='https://github.com/blackducksoftware/ohloh_api#ohloh-api-documentation'
+         target='_blank' rel='noopener noreferrer'>API</a>",
         "you can embed <a href=#{project_widgets_path(project_id: @project.to_param)}
          target='_self'>statistics from Open Hub</a> on your site",
         'by exploring contributors within projects, you can view details on every commit
@@ -18,8 +19,9 @@ module SiteFeaturesHelper
         "<a href=#{compare_projects_path} target='_self'>compare</a> projects before you chose one to use",
         "check out <a href=#{projects_explores_path} target='_self'>hot projects</a> on the Open Hub",
         "anyone with an Open Hub account can update a project's tags",
-        "learn about Open Hub updates and features on the <a href='http://blog.openhub.net/' target='_blank'>
-         Open Hub blog</a>"
+        'learn about Open Hub updates and features on the ' \
+        "<a href='https://community.blackduck.com/s/black-duck-open-hub?tabset-c30ff=d9d77' " \
+        "target='_blank' rel='noopener noreferrer'>Open Hub blog</a>"
       ],
 
       'Security' => [

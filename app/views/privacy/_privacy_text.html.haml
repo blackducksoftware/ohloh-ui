@@ -1,13 +1,43 @@
-.row.padding_one_top
-%h4.margin_left_15.margin_bottom_0
-  .soft.inline= t('.about')
-  = t('.privacy')
-.col-md-5
-  %ul.margin_left_40
-    %li= t('.privacy_policy_html', href: link_to(t('.privacy_policy'), 'https://community.blackduck.com/s/article/Black-Duck-Open-Hub-Open-Hub-Privacy-Policy'))
-    %li= t('.admin_emails_from_openhub')
-    %li= t('.opting_in')
-.col-md-5
-  %ul.margin_left_40
-    %li= t('.opting_out')
-    %li= t('.openhub_oauth_html', href: link_to(t('.oauth_api'), 'http://blog.openhub.net/oauth/'))
+.about-account-basics-card
+  .card-header
+    .card-header-left
+      .card-header-icon
+        %i.fa.fa-info-circle
+      .card-header-text
+        %h4.card-title= t('.about') + ' ' + t('.privacy')
+        %p.card-subtitle Privacy settings and data usage
+    %button.expand-toggle{ type: 'button', 'aria-label' => 'Toggle about section' }
+      %i.fa.fa-chevron-down
+
+  .card-content
+    .tips-grid
+      .tip-item
+        .tip-icon
+          %i.fa.fa-file-text-o
+        .tip-body
+          %p.tip-text!= t('.privacy_policy_html', href: link_to(t('.privacy_policy'), 'https://community.blackduck.com/s/article/Black-Duck-Open-Hub-Open-Hub-Privacy-Policy', target: '_blank', rel: 'noopener noreferrer'))
+
+      .tip-item
+        .tip-icon
+          %i.fa.fa-envelope
+        .tip-body
+          %p.tip-text= t('.admin_emails_from_openhub')
+
+      .tip-item
+        .tip-icon
+          %i.fa.fa-check-circle
+        .tip-body
+          %p.tip-text= t('.opting_in')
+
+      .tip-item
+        .tip-icon
+          %i.fa.fa-times-circle
+        .tip-body
+          %p.tip-text= t('.opting_out')
+
+      .tip-item
+        .tip-icon
+          %i.fa.fa-unlock-alt
+        .tip-body
+          %p.tip-text!= t('.openhub_oauth_html', href: link_to(t('.oauth_api'), 'https://github.com/blackducksoftware/ohloh_api/tree/main/examples/oauth2', target: '_blank', rel: 'noopener noreferrer'))
+

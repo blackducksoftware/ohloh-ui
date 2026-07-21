@@ -1,13 +1,24 @@
-.col-md-12.margin_top_20
-  %h4.nomargin
-    %span.soft.margin_left_20= t('.about')
-    = t('.managers')
-  .col-md-6.margin_left_20
-    = t('.ability')
-    %ul.margin_left_30
-      %li= t('.limit')
-      %li= t('.edit')
-      %li= t('.approve')
-    %ul.margin_left_30
-      %li= t('.edit_info')
+.tips-grid
+  .tip-item
+    .tip-icon
+      %i.fa.fa-lock
+    .tip-body
+      %p.tip-text= t('.limit')
 
+  .tip-item
+    .tip-icon
+      %i.fa.fa-pencil
+    .tip-body
+      %p.tip-text= t('.edit')
+
+  .tip-item
+    .tip-icon
+      %i.fa.fa-check-circle
+    .tip-body
+      %p.tip-text= t('.approve')
+
+  .tip-item
+    .tip-icon
+      %i.fa.fa-info-circle
+    .tip-body
+      %p.tip-text= t('.edit_info')

@@ -8,9 +8,9 @@
 
 .col-md-12
   = render partial: 'posts/post', collection: @posts
-  = will_paginate @posts
+  = render 'shared/modern_pagination', collection: @posts
 
-  .well
+  .oh-card
     - if @topic.closed?
       %br
       - if @topic.account == current_user

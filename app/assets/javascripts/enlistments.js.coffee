@@ -14,7 +14,7 @@ class App.EnlistmentSelect
   showSpinnerAndSubmit = ->
     $(this).attr('disabled', 'disabled')
     $('.enlistment .spinner').show()
-    $('.well.enlistment form').submit()
+    $('.enlistment form').submit()
 
   hideAllScmInfo = ->
     $('.enlistment .scm_info').hide()

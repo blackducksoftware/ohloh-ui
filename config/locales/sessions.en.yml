@@ -12,6 +12,18 @@ en:
       forgot_password: "Forgot Password"
       resend_activation_email: "Resend Activation Email"
       sign_in_with: Sign in with
+      hero_welcome: 'Welcome'
+      hero_back_to: 'back to'
+      hero_accent: 'Open Hub'
+      tagline: "The world's largest directory of open source projects and contributors."
+      divider: 'or sign in with email'
+      form_title: 'Sign in to your account'
+      no_account: "Don't have an account?"
+      join_now: "Join Now — it's free"
+      sign_in_with_email: 'Sign in with Email & Password'
+      terms_preamble: 'By signing in you agree to the'
+      terms_of_service: 'Terms of Service'
+      privacy_policy: 'Privacy Policy'
     sign_in:
       log_in_to_open_hub: "Log in to Open Hub"
       login_or_email: "Login or Email"

@@ -1,12 +1,18 @@
 - content_for(:html_title) { t('.html_title', name: @project.name) }
 - page_context[:select_footer_nav] = :commits
 
-.project_content_title
-  %h2.pull-left= t('.commits')
-  = project_analysis_timestamp(@project)
+#commits-summary-page
+  .settings-page-header
+    .settings-page-header-row
+      .settings-page-icon
+        %i.fa.fa-code-fork
+      %h2.settings-page-h2
+        = t('.commits')
+    %p.settings-page-description= @project.name
 
 - if @analysis.empty?
-  = render 'projects/show/no_analysis_summary'
+  .col-md-12
+    = render 'projects/show/no_analysis_summary'
 - else
   :ruby
     @all_time_summary     = @analysis.all_time_summary.nil? ? NilAnalysisSummaryWithNa.new : @analysis.all_time_summary
@@ -16,12 +22,12 @@
     @thirty_day_summary   = NilAnalysisSummaryWithNa.new if @thirty_day_summary.nil?
 
   .col-md-12
-    .well.margin_left_20.margin_right_20
+    .oh-card.margin_left_20.margin_right_20
       %center
         %table.data-table{ style: 'width: 60%' }
           %tbody
             %tr.border_bottom
-              %th{ width: '25%', align: 'right' } &nbsp;
+              %th{ width: '25%' }
               %th.text-right{ width: '25%', align: 'right' }= t('.all_time')
               %th.text-right{ width: '25%', align: 'right' }= t('.12_month')
               %th.text-right{ width: '25%', align: 'right' }= t('.30_day')
@@ -54,3 +60,4 @@
     %h4= link_to t('.most_recent_commits'), project_commits_path(@project)
     = render 'commit', commits: @commits, search_dingus: false
     = link_to t('.see_all_commits'), project_commits_path(@project), class: 'btn btn-small btn-primary'
+  .clearfix

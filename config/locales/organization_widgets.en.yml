@@ -5,6 +5,7 @@ en:
     index:
       page_title: '%{name} : Organization Widgets - Open Hub'
       title: 'Widgets'
+      settings: 'Settings'
       embed: 'You can embed Open Hub widgets in your web site.'
     activity:
       made: 'made'

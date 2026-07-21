@@ -41,3 +41,785 @@
     padding-top: 19px
     width: 270px
     margin: 0 auto
+
+
+// ──────────────────────────────────────────────────────────────────────────────
+// Duplicate New/Edit Page — modern layout
+// ──────────────────────────────────────────────────────────────────────────────
+
+.duplicate-form-layout
+  display: grid
+  gap: 24px
+  align-items: start
+
+  @media (max-width: 767px)
+    grid-template-columns: 1fr
+
+.duplicate-form-layout .about-account-basics-card
+  max-width: none
+  margin: 0
+  padding: 0
+
+.tip-sub-list
+  margin: 6px 0 0 4px
+  padding-left: 16px
+  li
+    font-size: 12px
+    color: #4b5563
+    line-height: 1.6
+    html.dark &
+      color: #9ca3af
+    a
+      color: #5A2A82
+      text-decoration: none
+      &:hover
+        text-decoration: underline
+
+.duplicate-form-layout .form-control
+  box-sizing: border-box !important
+  border: 2px solid #e5e7eb !important
+  border-radius: 16px !important
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important
+  background: #ffffff !important
+  color: #111827 !important
+  padding: 10px 16px !important
+  height: auto !important
+  width: 100% !important
+  font-size: 14px
+  transition: border-color 0.3s ease, box-shadow 0.3s ease
+  &::placeholder
+    color: #9ca3af !important
+    opacity: 1
+  &:hover
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important
+    border-color: #d1d5db !important
+  &:focus, &:focus-visible
+    border-color: #5A2A82 !important
+    outline: none !important
+    box-shadow: 0 0 0 4px rgba(90, 42, 130, 0.1) !important
+    background: #ffffff !important
+  html.dark &
+    background: #0d1117 !important
+    color: #ffffff !important
+    border-color: #2a2a2a !important
+    &::placeholder
+      color: #6b7280 !important
+      opacity: 1
+    &:hover
+      border-color: #c084fc !important
+    &:focus, &:focus-visible
+      border-color: #c084fc !important
+      background: #0d1117 !important
+      box-shadow: 0 0 0 4px rgba(90, 42, 130, 0.1) !important
+      outline: none !important
+
+.duplicate-textarea
+  resize: vertical !important
+  min-height: 140px !important
+  border-radius: 12px !important
+
+.duplicate-search-group
+  position: relative
+  display: flex
+  align-items: center
+  .duplicate-search-icon
+    position: absolute
+    left: 16px
+    top: 50%
+    transform: translateY(-50%)
+    color: #9ca3af
+    font-size: 14px
+    pointer-events: none
+    z-index: 1
+    html.dark &
+      color: #6b7280
+  .duplicate-search-input
+    padding-left: 44px !important
+  .duplicate-spinner-icon
+    position: absolute
+    right: 14px
+    top: 50%
+    transform: translateY(-50%)
+    color: #5A2A82
+    font-size: 14px
+
+.duplicate-selected-panel
+  margin-top: 10px
+  padding: 10px 14px
+  background: rgba(90, 42, 130, 0.05)
+  border: 1px solid rgba(90, 42, 130, 0.2)
+  border-radius: 10px
+  display: flex
+  align-items: center
+  gap: 10px
+  html.dark &
+    background: rgba(90, 42, 130, 0.1)
+    border-color: rgba(90, 42, 130, 0.35)
+  .duplicate-selected-label
+    font-size: 12px
+    font-weight: 600
+    color: #6b7280
+    white-space: nowrap
+    html.dark &
+      color: #9ca3af
+
+.duplicate-url
+  font-size: 13px
+  color: #5A2A82
+  word-break: break-all
+  display: flex
+  align-items: center
+  gap: 5px
+  html.dark &
+    color: #c084fc
+  i
+    font-size: 11px
+    opacity: 0.7
+  &:hover
+    text-decoration: underline
+
+.duplicate-form-layout .enl-form-actions
+  margin-top: 24px
+
+@media (max-width: 767px)
+  .duplicate-form-layout
+    padding: 16px 0
+  .duplicate-form-layout .enl-form-actions
+    flex-direction: column
+    align-items: stretch
+    .edit-save-btn
+      width: 100%
+
+
+
+  @media (min-width: 768px) and (max-width: 1024px)
+    padding: 20px 0
+
+
+// ──────────────────────────────────────────────────────────────────────────────
+// Duplicate Index Page — Figma design
+// ──────────────────────────────────────────────────────────────────────────────
+
+#duplicate-index-page
+  margin: 0 auto
+  padding: 0 24px 32px
+  min-height: 100vh
+  background: #f9fafb
+
+  @media (max-width: 639px)
+    padding: 0 16px 24px
+
+  .settings-page-header
+    margin-top: 16px
+
+  .settings-page-h2
+    color: #5A2A82
+    font-size: 28px
+
+  html.dark &
+    background: #0d1117
+
+    .settings-page-h2
+      color: #c084fc
+
+    .settings-page-icon
+      background: linear-gradient(135deg, #5A2A82, #1D0631)
+      i
+        color: #ffffff !important
+
+// Purple gradient banner
+.duplicate-page-banner
+  background: #ffff
+  padding: 80px 24px 32px
+  position: relative
+  overflow: hidden
+  &::before
+    content: ''
+    position: absolute
+    top: 0
+    right: 0
+    width: 384px
+    height: 384px
+    background: rgba(255, 255, 255, 0.05)
+    border-radius: 50%
+    transform: translate(50%, -50%)
+    pointer-events: none
+
+.duplicate-page-banner-inner
+  max-width: 1024px
+  margin: 0 auto
+  position: relative
+  z-index: 1
+  display: flex
+  align-items: flex-end
+  justify-content: space-between
+  gap: 24px
+  @media (max-width: 639px)
+    flex-direction: column
+    align-items: flex-start
+    gap: 16px
+
+.duplicate-page-banner-content
+  flex: 1
+
+.duplicate-page-banner-title
+  font-size: 32px
+  font-weight: 700
+  color: #ffffff
+  margin: 0
+  @media (min-width: 640px)
+    font-size: 36px
+
+.duplicate-page-banner-subtitle
+  font-size: 14px
+  color: rgba(255, 255, 255, 0.75)
+  margin: 8px 0 0
+  line-height: 1.5
+
+.duplicate-page-banner-stats
+  display: flex
+  gap: 16px
+  flex-shrink: 0
+
+.duplicate-banner-stat
+  display: flex
+  flex-direction: column
+  align-items: center
+  padding: 12px 20px
+  background: rgba(255, 255, 255, 0.1)
+  border: 1px solid rgba(255, 255, 255, 0.15)
+  border-radius: 12px
+  min-width: 80px
+  backdrop-filter: blur(4px)
+
+.duplicate-banner-stat-value
+  font-size: 24px
+  font-weight: 700
+  color: #ffffff
+  line-height: 1
+
+.duplicate-banner-stat-label
+  font-size: 11px
+  font-weight: 600
+  text-transform: uppercase
+  letter-spacing: 0.05em
+  color: rgba(255, 255, 255, 0.7)
+  margin-top: 4px
+
+// Content area
+.duplicate-page-content
+  margin: 0 auto
+  padding: 32px 16px
+  @media (min-width: 640px)
+    padding: 32px 24px
+
+// Pill tabs
+.duplicate-pill-tabs
+  margin-bottom: 24px
+
+.duplicate-pill-list
+  list-style: none
+  margin: 0
+  padding: 0
+  display: flex
+  gap: 8px
+
+.duplicate-pill-item
+  margin: 0
+
+.duplicate-pill-link
+  display: inline-block
+  padding: 8px 20px
+  font-size: 14px
+  font-weight: 600
+  border-radius: 9999px
+  border: 1px solid rgba(90, 42, 130, 0.4)
+  text-decoration: none
+  transition: all 0.2s ease
+  cursor: pointer
+  color: #5A2A82
+  background: #ffffff
+  &:hover
+    border-color: #5A2A82
+    text-decoration: none
+  html.dark &
+    color: #c084fc !important
+    background: #151b23
+    border-color: rgba(90, 42, 130, 0.4)
+    &:hover
+      border-color: #c084fc
+
+.duplicate-pill-item.active .duplicate-pill-link
+  color: #ffffff !important
+  background: #5A2A82
+  border-color: #5A2A82
+  box-shadow: 0 1px 3px rgba(90, 42, 130, 0.3)
+  html.dark &
+    color: #ffffff !important
+    background: #5A2A82
+    border-color: #5A2A82
+
+// List card
+.duplicate-list-card
+  background: #ffffff
+  border-radius: 16px
+  overflow: hidden
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24)
+  html.dark &
+    background: #151b23
+    border: 1px solid rgba(139, 122, 168, 0.2)
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.24), 0 1px 2px rgba(0, 0, 0, 0.48)
+  &:hover
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23)
+    html.dark &
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.32), 0 3px 6px rgba(0, 0, 0, 0.46)
+
+.duplicate-list-inner
+  > .duplicate-list-row
+    border-bottom: 1px solid #f3f4f6
+    html.dark &
+      border-bottom-color: rgba(255, 255, 255, 0.1)
+    &:last-child
+      border-bottom: none
+
+// Empty state
+.duplicate-empty-state
+  padding: 64px 20px
+  text-align: center
+  p
+    font-size: 14px
+    color: #6b7280
+    margin: 0
+    html.dark &
+      color: #9ca3af
+
+// Each duplicate row
+.duplicate-list-row
+  padding: 16px 20px
+  transition: background 0.15s ease
+  &:hover
+    background: #f9fafb
+    html.dark &
+      background: rgba(255, 255, 255, 0.05)
+
+.duplicate-list-row-content
+  display: flex
+  flex-direction: column
+  gap: 2px
+
+.duplicate-row-id
+  font-size: 14px
+  font-weight: 600
+  color: #5A2A82 !important
+  text-decoration: none
+  &:hover
+    text-decoration: underline
+  html.dark &
+    color: #c084fc !important
+
+.duplicate-row-id--resolved
+  color: #6b7280
+  html.dark &
+    color: #9ca3af
+
+.duplicate-row-desc
+  font-size: 14px
+  color: #374151
+  margin: 2px 0 0
+  html.dark &
+    color: #d1d5db
+  a
+    color: #5A2A82 !important
+    font-weight: 500
+    text-decoration: none
+    &:hover
+      text-decoration: underline
+    html.dark &
+      color: #c084fc !important
+
+.duplicate-row-meta
+  font-size: 12px
+  color: #6b7280
+  margin: 4px 0 0
+  html.dark &
+    color: #9ca3af
+
+.duplicate-row-reporter-link
+  color: #5A2A82 !important
+  text-decoration: none
+  &:hover
+    text-decoration: underline
+  html.dark &
+    color: #c084fc !important
+
+.duplicate-row-project-link
+  color: #5A2A82 !important
+  font-weight: 500
+  text-decoration: none
+  &:hover
+    text-decoration: underline
+  html.dark &
+    color: #c084fc !important
+
+@media (max-width: 639px)
+  .duplicate-page-banner
+    padding: 60px 16px 24px
+  .duplicate-list-row
+    padding: 12px 16px
+
+
+// ──────────────────────────────────────────────────────────────────────────────
+// Duplicate Show Page — modern layout
+// ──────────────────────────────────────────────────────────────────────────────
+
+#duplicate-show-page
+  margin: 0 auto
+  padding: 0 24px 32px
+
+  @media (max-width: 639px)
+    padding: 0 16px 24px
+
+  .settings-page-header
+    margin-top: 16px
+
+  .settings-page-h2
+    color: #5A2A82
+    font-size: 28px
+
+// Summary banner
+.duplicate-show-summary
+  margin-top: 20px
+  padding: 16px 20px
+  border-radius: 12px
+
+.duplicate-show-summary-text
+  font-size: 14px
+  line-height: 1.8
+  color: #374151
+  html.dark &
+    color: #d1d5db
+
+.duplicate-show-time
+  display: inline-flex
+  align-items: center
+  gap: 5px
+  margin-right: 6px
+  font-size: 12px
+  color: #4b5563
+  i
+    font-size: 11px
+  html.dark &
+    color: #9ca3af
+
+.duplicate-show-account-link
+  font-weight: 600
+  color: #5A2A82 !important
+  text-decoration: none
+  &:hover
+    text-decoration: underline
+  html.dark &
+    color: #c084fc !important
+
+.duplicate-show-project-link
+  font-weight: 600
+  text-decoration: none
+  &:hover
+    text-decoration: underline
+  &--good
+    color: #047857 !important
+    html.dark &
+      color: #34d399 !important
+  &--bad
+    color: #b91c1c !important
+    html.dark &
+      color: #f87171 !important
+
+// Details row (reporter + comment)
+.duplicate-show-details
+  display: grid
+  grid-template-columns: 1fr 1fr
+  gap: 20px
+  margin-top: 20px
+  @media (max-width: 767px)
+    grid-template-columns: 1fr
+
+.duplicate-show-detail-card
+  padding: 16px 20px
+  border-radius: 12px
+
+.duplicate-show-detail-header
+  margin-bottom: 10px
+  i
+    font-size: 16px
+    color: #5A2A82
+    html.dark &
+      color: #c084fc
+
+.duplicate-show-detail-title
+  font-size: 12px
+  font-weight: 600
+  text-transform: uppercase
+  letter-spacing: 0.05em
+  color: #6b7280
+  margin: 0 0 8px
+  html.dark &
+    color: #9ca3af
+
+.duplicate-show-reporter
+  display: flex
+  align-items: center
+  gap: 10px
+  img
+    border-radius: 50%
+
+.duplicate-show-reporter-name
+  font-weight: 600
+  color: #5A2A82 !important
+  text-decoration: none
+  &:hover
+    text-decoration: underline
+  html.dark &
+    color: #c084fc !important
+
+.duplicate-show-comment
+  font-size: 14px
+  color: #374151
+  line-height: 1.6
+  margin: 0
+  html.dark &
+    color: #d1d5db
+
+// Project comparison cards
+.duplicate-show-comparison
+  display: grid
+  grid-template-columns: 1fr 1fr
+  gap: 20px
+  margin-top: 24px
+  @media (max-width: 767px)
+    grid-template-columns: 1fr
+
+.duplicate-show-project-card
+  border-radius: 12px
+  padding: 20px
+  border: 2px solid transparent
+  &--good
+    border-color: rgba(4, 120, 87, 0.2)
+    background: rgba(4, 120, 87, 0.03)
+    html.dark &
+      border-color: rgba(52, 211, 153, 0.2)
+      background: rgba(52, 211, 153, 0.04)
+  &--bad
+    border-color: rgba(185, 28, 28, 0.2)
+    background: rgba(185, 28, 28, 0.03)
+    html.dark &
+      border-color: rgba(248, 113, 113, 0.2)
+      background: rgba(248, 113, 113, 0.04)
+
+.duplicate-project-detail-name
+  font-size: 18px
+  font-weight: 600
+  margin: 0 0 8px
+  a
+    color: #111827 !important
+    text-decoration: none
+    &:hover
+      color: #5A2A82 !important
+      text-decoration: underline
+    html.dark &
+      color: #f9fafb !important
+      &:hover
+        color: #c084fc !important
+
+.duplicate-project-detail-desc
+  font-size: 13px
+  color: #6b7280
+  line-height: 1.6
+  margin: 0 0 12px
+  html.dark &
+    color: #9ca3af
+
+.duplicate-project-detail-stats
+  display: flex
+  flex-wrap: wrap
+  gap: 12px
+  margin-bottom: 12px
+
+.duplicate-project-detail-stat
+  display: flex
+  align-items: center
+  gap: 5px
+  font-size: 12px
+  color: #4b5563
+  a
+    color: #5A2A82 !important
+    text-decoration: none
+    &:hover
+      text-decoration: underline
+    html.dark &
+      color: #c084fc !important
+  i
+    color: #9ca3af
+    font-size: 12px
+  html.dark &
+    color: #d1d5db
+
+.duplicate-project-detail-tags
+  display: flex
+  align-items: center
+  gap: 6px
+  flex-wrap: wrap
+  font-size: 12px
+  color: #6b7280
+  i
+    color: #9ca3af
+  a
+    color: #5A2A82 !important
+    text-decoration: none
+    &:hover
+      text-decoration: underline
+    html.dark &
+      color: #c084fc !important
+  html.dark &
+    color: #9ca3af
+
+.duplicate-tag-more
+  font-size: 11px
+  font-weight: 500
+
+// Comparison table
+.duplicate-show-table
+  margin-top: 24px
+  padding: 0
+  border-radius: 12px
+  overflow: hidden
+
+.duplicate-comparison-table
+  width: 100%
+  border-collapse: collapse
+  font-size: 13px
+
+  thead
+    background: #f9fafb
+    html.dark &
+      background: #1c2128
+    th
+      padding: 10px 16px
+      font-weight: 600
+      font-size: 12px
+      text-transform: uppercase
+      letter-spacing: 0.04em
+      border-bottom: 1px solid #e5e7eb
+      html.dark &
+        border-bottom-color: #2a2a2a
+
+  tbody
+    tr
+      border-bottom: 1px solid #f3f4f6
+      html.dark &
+        border-bottom-color: #1f1f1f
+      &:last-child
+        border-bottom: none
+    td
+      padding: 12px 16px
+      vertical-align: top
+      color: #374151
+      html.dark &
+        color: #d1d5db
+      a
+        color: #5A2A82 !important
+        text-decoration: none
+        word-break: break-all
+        &:hover
+          text-decoration: underline
+        html.dark &
+          color: #c084fc !important
+
+.duplicate-table-label
+  font-weight: 600
+  color: #6b7280
+  white-space: nowrap
+  width: 140px
+  html.dark &
+    color: #9ca3af
+
+.duplicate-table-good
+  color: #047857
+  html.dark &
+    color: #34d399
+
+.duplicate-table-bad
+  color: #b91c1c
+  html.dark &
+    color: #f87171
+
+.duplicate-table-suggestion-row
+  .duplicate-suggest-badge
+    display: inline-flex
+    align-items: center
+    gap: 6px
+    padding: 4px 12px
+    font-size: 12px
+    font-weight: 600
+    background: rgba(4, 120, 87, 0.1)
+    color: #047857
+    border-radius: 20px
+    html.dark &
+      background: rgba(52, 211, 153, 0.15)
+      color: #34d399
+
+// Action buttons
+.duplicate-show-actions
+  margin-top: 24px
+
+.duplicate-show-actions-row
+  display: flex
+  flex-wrap: wrap
+  gap: 12px
+  justify-content: flex-end
+  @media (max-width: 767px)
+    flex-direction: column
+
+.duplicate-action-btn
+  display: inline-flex
+  align-items: center
+  gap: 8px
+  padding: 10px 20px
+  font-size: 13px
+  font-weight: 600
+  border-radius: 8px
+  text-decoration: none
+  transition: background 0.2s ease, box-shadow 0.2s ease
+  cursor: pointer
+  &:hover
+    text-decoration: none
+  &--keep
+    background: #047857
+    color: #ffffff !important
+    &:hover
+      background: #065f46
+      box-shadow: 0 2px 8px rgba(4, 120, 87, 0.3)
+  &--keep-alt
+    background: #f3f4f6
+    color: #1f2937 !important
+    border: 1px solid #e5e7eb
+    &:hover
+      background: #e5e7eb
+    html.dark &
+      background: #1c2128
+      color: #d1d5db !important
+      border-color: #2a2a2a
+      &:hover
+        background: #2a2a2a
+  &--close
+    background: transparent
+    color: #b91c1c !important
+    border: 1px solid rgba(185, 28, 28, 0.3)
+    &:hover
+      background: rgba(185, 28, 28, 0.05)
+      border-color: rgba(185, 28, 28, 0.5)
+    html.dark &
+      color: #f87171 !important
+      border-color: rgba(248, 113, 113, 0.3)
+      &:hover
+        background: rgba(248, 113, 113, 0.08)
+        border-color: rgba(248, 113, 113, 0.5)
