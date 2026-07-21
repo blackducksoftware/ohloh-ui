@@ -14,7 +14,7 @@ OrganizationPictogram = {
         url: $(this).attr('url'),
         success: function(response) {
           $('#org_infographic').replaceWith($.parseHTML(response.pictogram_html));
-          $(update).html($.parseHTML(response.subview_html));
+          $(update).empty().append($.parseHTML(response.subview_html));
           OrganizationPictogram.init();
           Expander.init();
           $.unblockUI();
