@@ -184,7 +184,6 @@ jobs:
 
       - name: SAST scan (Polaris)
         id: polaris-scan
-        if: ${{ github.ref_name == 'main' && !inputs.chart_version }}
         uses: blackduck-inc/black-duck-security-scan@v2
         with: 
           polaris_server_url: ${{ secrets.POLARIS_SERVER_URL }}
