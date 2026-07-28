@@ -5,7 +5,9 @@ Rails.application.config.to_prepare do
 
   LetterOpenerWeb::LettersController.class_eval do
     before_action :check_access
+
     private
+
     def check_access
       redirect_to main_app.new_session_path if request.env[:clearance].current_user.nil?
     end
