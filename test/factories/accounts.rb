@@ -9,8 +9,12 @@ FactoryBot.define do
     sequence(:email) { |n| "someone#{n}@gmail.com" }
     sequence(:login) { |n| "login-#{n}" }
     url { Faker::Internet.url }
-    password { Faker::Internet.password }
+    password { PasswordGenerator.generate }
     current_password { |account| account.send(:password) }
+
+    after(:create) do |account|
+      account.instance_variable_set(:@test_password, account.password)
+    end
     twitter_account { 'openhub' }
     name { Faker::Name.name + rand(999_999).to_s }
     about_raw { Faker::Lorem.characters(number: 10) }
@@ -45,6 +49,12 @@ FactoryBot.define do
 
   factory :disabled_account, parent: :account do
     level { Account::Access::DISABLED }
+  end
+
+  factory :anonymous_account, parent: :account do
+    login { AnonymousAccount::LOGIN }
+    url { nil }
+    association :github_verification, strategy: :null
   end
 
   factory :spammer, parent: :account do

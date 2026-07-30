@@ -4,7 +4,7 @@ require 'test_helper'
 
 class SessionsControllerTest < ActionController::TestCase
   describe 'create' do
-    let(:password) { Faker::Internet.password }
+    let(:password) { PasswordGenerator.generate }
     let(:account) { create(:account, password: password) }
     let(:max_login_retries) { ENV['MAX_LOGIN_RETRIES'].to_i }
 

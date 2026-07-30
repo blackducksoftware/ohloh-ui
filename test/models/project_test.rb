@@ -207,7 +207,7 @@ class ProjectTest < ActiveSupport::TestCase
     end
 
     it 'should have project creation edit as the first edit' do
-      account = create(:account, password: 'password', level: 10)
+      account = create(:account, password: PasswordGenerator.generate, level: 10)
       proj = create(:project, editor_account: account, url: 'http://openhub.net', download_url: 'http://openhub.net/download')
       edits = proj.links.map(&:edits).flatten + proj.edits
 

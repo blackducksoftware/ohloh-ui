@@ -82,7 +82,7 @@ ActiveAdmin.register Account do
 
   member_action :reset_password do
     account = Account.find_by(login: params[:id])
-    account.password = SecureRandom.hex(16)
+    account.password = PasswordGenerator.generate
     account.save!
     AccountMailer.reset_password(account.id).deliver
     flash[:notice] = "Account #{account.email}'s password has been changed."

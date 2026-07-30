@@ -58,8 +58,6 @@ class ActiveSupport::TestCase
   # Also add this to use Rails' built-in transactional tests
   self.use_transactional_tests = true
 
-  TEST_PASSWORD = :test_password
-
   create_hamster_account
   create_forges
 
@@ -120,7 +118,8 @@ class ActiveSupport::TestCase
   def integration_login_as(account)
     if account
       get new_session_path
-      post sessions_path, params: { login: { login: account.login, password: TEST_PASSWORD } }
+      password = account.instance_variable_get(:@test_password) || PasswordGenerator.generate
+      post sessions_path, params: { login: { login: account.login, password: password } }
     else
       delete sessions_path
     end
