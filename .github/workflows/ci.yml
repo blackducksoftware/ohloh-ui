@@ -45,7 +45,10 @@ jobs:
         uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
 
       - name: Install system dependencies
-        run: sudo apt-get update && sudo apt-get install -y libsodium-dev imagemagick
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libsodium-dev imagemagick
+          sudo apt-get install -y postgresql-client-17
 
       - name: Setup Ruby
         uses: ruby/setup-ruby@9eb537ca036ebaed86729dcb9309076e4c5c3b74 # v1.314.0
