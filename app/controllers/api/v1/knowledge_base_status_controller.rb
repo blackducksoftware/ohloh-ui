@@ -13,7 +13,7 @@ class Api::V1::KnowledgeBaseStatusController < ApplicationController
   rescue StandardError => e
     AppLogger.info(e.message)
     Airbrake.notify(e)
-    render json: { message: e.message }, status: :bad_request
+    json_response_with_deprecation({ message: e.message }, status: :bad_request)
   ensure
     conn&.close
   end
@@ -24,6 +24,6 @@ class Api::V1::KnowledgeBaseStatusController < ApplicationController
     kb = KnowledgeBaseStatus.find_by(project_id: params[:project_id])
     exchange.publish(kb.json_message, key: ENV.fetch('KB_EXCHANGE_KEY', nil))
     kb.update(in_sync: true, updated_at: Time.now.utc)
-    render json: { message: I18n.t(:kb_message, project_id: kb.project_id) }, status: :ok
+    json_response_with_deprecation({ message: I18n.t(:kb_message, project_id: kb.project_id) }, status: :ok)
   end
 end
