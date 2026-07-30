@@ -10,8 +10,13 @@ module SetupHamsterAccount
   private
 
   def create_new_account
-    Account.create(login: 'ohloh_slave', name: 'hamster', email: 'slave@ohloh.net', password: 'password',
-                   activated_at: Time.current.utc,
-                   github_verification_attributes: { unique_id: Faker::Name.first_name })
+    Account.create(
+      login: 'ohloh_slave',
+      name: 'hamster',
+      email: 'slave@ohloh.net',
+      password: PasswordGenerator.generate,
+      activated_at: Time.current.utc,
+      github_verification_attributes: { unique_id: Faker::Name.first_name }
+    )
   end
 end

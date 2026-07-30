@@ -361,8 +361,9 @@ class AccountsControllerTest < ActionController::TestCase
   end
 
   describe 'destroy' do
+    before { create(:anonymous_account) }
+
     it 'must allow deletion' do
-      AnonymousAccount.create!
       account = create(:account)
       login_as account
 
@@ -387,7 +388,7 @@ class AccountsControllerTest < ActionController::TestCase
       project = create(:project)
       account = create(:account)
       login_as account
-      anonymous_account_id = Account.find_or_create_anonymous_account.id
+      anonymous_account_id = Account.anonymous_account.id
       Edit.delete_all
 
       manage = project.manages.create!(account: account)

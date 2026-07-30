@@ -106,7 +106,7 @@ class Account::Hooks
   end
 
   def transfer_associations_to_anonymous_account(account)
-    @anonymous_account = Account.find_or_create_anonymous_account
+    @anonymous_account = Account.anonymous_account
     account.posts.update_all(account_id: @anonymous_account.id)
     # account.account_reports.update_all(account_id: @anonymous_account.id)
     account.topics.update_all(account_id: @anonymous_account.id)
@@ -117,7 +117,7 @@ class Account::Hooks
   end
 
   def transfer_topics_replied_by_to_anonymous_account(account)
-    @anonymous_account = Account.find_or_create_anonymous_account
+    @anonymous_account = Account.anonymous_account
     Topic.where(replied_by: account.id).update_all(replied_by: @anonymous_account.id)
   end
 

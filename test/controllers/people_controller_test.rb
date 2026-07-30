@@ -6,6 +6,7 @@ require 'support/unclaimed_controller_test'
 
 class PeopleControllerTest < ActionController::TestCase
   before do
+    create(:anonymous_account)
     Account.destroy_all
     Person.destroy_all
     account = create(:account, name: 'Bubba Hotep')

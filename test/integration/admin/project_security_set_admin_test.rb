@@ -4,7 +4,7 @@ require 'test_helper'
 require 'test_helpers/admin_test_helper'
 
 class ProjectSecuritySetAdminTest < ActionDispatch::IntegrationTest
-  let(:admin) { create(:admin, password: TEST_PASSWORD) }
+  let(:admin) { create(:admin, password: PasswordGenerator.generate) }
   let(:project_security_set) { create(:project_security_set) }
 
   it 'should render index page' do

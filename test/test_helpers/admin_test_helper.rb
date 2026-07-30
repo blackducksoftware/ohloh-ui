@@ -2,7 +2,8 @@
 
 module AdminTestHelper
   def create_and_login_admin
-    admin = create(:admin, password: ActiveSupport::TestCase::TEST_PASSWORD)
+    password = PasswordGenerator.generate
+    admin = create(:admin, password: password)
     login_as admin
   end
 end

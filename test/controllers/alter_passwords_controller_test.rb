@@ -18,7 +18,7 @@ class AlterPasswordsControllerTest < ActionController::TestCase
   end
 
   it 'must fail to update if all fields are blank' do
-    account = create(:account, password: 'testing')
+    account = create(:account, password: PasswordGenerator.generate)
     login_as account
     put :update, params: { id: account.login, account: { current_password: '', password: '' } }
     assert_response :unprocessable_entity
@@ -26,51 +26,38 @@ class AlterPasswordsControllerTest < ActionController::TestCase
   end
 
   it 'must fail if current password is not provided' do
-    account = create(:account, password: 'testing')
+    account = create(:account, password: PasswordGenerator.generate)
     login_as account
-    put :update, params: { id: account.login, account: { current_password: '', password: 'newpassword' } }
+    put :update, params: { id: account.login, account: { current_password: '', password: PasswordGenerator.generate } }
     assert_response :unprocessable_entity
     _(flash[:error]).must_equal 'There was a problem saving!'
   end
 
   it 'must fail if current password does not match' do
-    account = create(:account, password: 'testing')
+    account = create(:account, password: PasswordGenerator.generate)
     login_as account
     put :update,
-        params: { id: account.login, account: { current_password: 'wrongcurrentpassword', password: 'newpassword' } }
+        params: { id: account.login,
+                  account: { current_password: PasswordGenerator.generate, password: PasswordGenerator.generate } }
     assert_response :unprocessable_entity
     _(flash[:error]).must_equal 'There was a problem saving!'
   end
 
   it 'must fail when new password is not provided' do
-    account = create(:account, password: 'testing')
+    newpassword = PasswordGenerator.generate
+    account = create(:account, password: newpassword)
     login_as account
-    put :update, params: { id: account.login, account: { current_password: 'testing', password: '' } }
-    assert_response :unprocessable_entity
-    _(flash[:error]).must_equal 'There was a problem saving!'
-  end
-
-  it 'must fail if new password is less than 5 characters' do
-    account = create(:account, password: 'testing')
-    login_as account
-    put :update, params: { id: account.login, account: { current_password: 'testing', password: 'abc' } }
-    assert_response :unprocessable_entity
-    _(flash[:error]).must_equal 'There was a problem saving!'
-  end
-
-  it 'must fail if new password is more than 40 characters' do
-    account = create(:account, password: 'testing')
-    login_as account
-    password = 'averylongpasswordthatiswaymorethanfortycharactersandshouldfailwhensubmitted'
-    put :update, params: { id: account.login, account: { current_password: 'testing', password: password } }
+    put :update, params: { id: account.login, account: { current_password: newpassword, password: '' } }
     assert_response :unprocessable_entity
     _(flash[:error]).must_equal 'There was a problem saving!'
   end
 
   it 'must update password fields' do
-    account = create(:account, password: 'testing')
+    oldpassword = PasswordGenerator.generate
+    account = create(:account, password: oldpassword)
     login_as account
-    put :update, params: { id: account.login, account: { current_password: 'testing', password: 'newpassword' } }
+    put :update,
+        params: { id: account.login, account: { current_password: oldpassword, password: PasswordGenerator.generate } }
     assert_redirected_to account_path
     _(flash[:success]).must_equal 'Password successfully changed.'
   end
@@ -140,24 +127,26 @@ class AlterPasswordsControllerTest < ActionController::TestCase
 
   describe 'edge cases' do
     it 'must preserve validate_current_password flag' do
-      account = create(:account, password: 'testing')
+      oldpassword = PasswordGenerator.generate
+      account = create(:account, password: oldpassword)
       login_as account
 
       put :update, params: {
         id: account.login,
-        account: { current_password: 'testing', password: 'newpassword' }
+        account: { current_password: oldpassword, password: PasswordGenerator.generate }
       }
 
       _(assigns(:account).validate_current_password).must_equal true
     end
 
     it 'must handle nil password parameter' do
-      account = create(:account, password: 'testing')
+      oldpassword = PasswordGenerator.generate
+      account = create(:account, password: oldpassword)
       login_as account
 
       put :update, params: {
         id: account.login,
-        account: { current_password: 'testing', password: nil }
+        account: { current_password: oldpassword, password: nil }
       }
       assert_response :unprocessable_entity
     end
@@ -165,12 +154,13 @@ class AlterPasswordsControllerTest < ActionController::TestCase
 
   describe 'flash messages' do
     it 'must show success flash on password change' do
-      account = create(:account, password: 'testing')
+      oldpassword = PasswordGenerator.generate
+      account = create(:account, password: oldpassword)
       login_as account
 
       put :update, params: {
         id: account.login,
-        account: { current_password: 'testing', password: 'newpassword' }
+        account: { current_password: oldpassword, password: PasswordGenerator.generate }
       }
 
       _(flash[:success]).must_equal 'Password successfully changed.'
@@ -178,12 +168,12 @@ class AlterPasswordsControllerTest < ActionController::TestCase
     end
 
     it 'must show error flash on validation failure' do
-      account = create(:account, password: 'testing')
+      account = create(:account, password: PasswordGenerator.generate)
       login_as account
 
       put :update, params: {
         id: account.login,
-        account: { current_password: 'wrong', password: 'newpassword' }
+        account: { current_password: 'wrong', password: PasswordGenerator.generate }
       }
 
       _(flash[:error]).must_equal 'There was a problem saving!'

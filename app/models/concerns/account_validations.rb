@@ -7,7 +7,14 @@ module AccountValidations
     validates :email, presence: true, length: { in: 3..100 }, uniqueness: { case_sensitive: false },
                       email_format: true, allow_blank: false
 
-    validates :password, length: { in: 5..40 }, unless: :skip_password_validation?
+    validates :password,
+              length: { in: 12..64 },
+              format: {
+                with: /\A.*(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W).*\z/,
+                message: :invalid_format
+              },
+              allow_blank: true,
+              unless: :skip_password_validation?
 
     validate :valid_current_password?, on: :update, if: :validate_current_password
 

@@ -3,7 +3,7 @@
 require 'test_helper'
 
 class CodeSetAdminTest < ActionDispatch::IntegrationTest
-  let(:admin) { create(:admin, password: TEST_PASSWORD) }
+  let(:admin) { create(:admin, password: PasswordGenerator.generate) }
 
   it 'index loads' do
     create(:clump)

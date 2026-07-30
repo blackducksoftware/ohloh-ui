@@ -3,8 +3,8 @@
 require 'test_helper'
 
 class PermissionsIntegrationTest < ActionDispatch::IntegrationTest
-  let(:admin) { create(:admin, password: TEST_PASSWORD) }
-  let(:account) { create(:account, password: TEST_PASSWORD) }
+  let(:admin) { create(:admin, password: PasswordGenerator.generate) }
+  let(:account) { create(:account, password: PasswordGenerator.generate) }
 
   before do
     @organization = create(:organization)

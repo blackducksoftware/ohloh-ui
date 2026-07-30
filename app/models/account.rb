@@ -160,8 +160,8 @@ class Account < ApplicationRecord # rubocop:disable Metrics/ClassLength
       find_by('lower(login) = ? or lower(email) = ?', username_or_email.downcase, username_or_email.downcase)
     end
 
-    def find_or_create_anonymous_account
-      find_by(login: AnonymousAccount::LOGIN) || AnonymousAccount.create!
+    def anonymous_account
+      find_by(login: AnonymousAccount::LOGIN)
     end
 
     def ransackable_attributes(_auth_object = nil)

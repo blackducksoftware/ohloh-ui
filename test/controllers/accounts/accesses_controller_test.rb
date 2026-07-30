@@ -5,7 +5,7 @@ require 'test_helper'
 class Accounts::AccessesControllerTest < ActionController::TestCase
   describe 'activate' do
     it 'should successfully activate account' do
-      account = Account.create(login: 'ralph', password: 'abcdef', email: 'ralph@mailinator.com')
+      account = Account.create(login: 'ralph', password: PasswordGenerator.generate, email: 'ralph@mailinator.com')
 
       get :activate, params: { account_id: account.to_param, code: account.activation_code }
 
@@ -16,14 +16,14 @@ class Accounts::AccessesControllerTest < ActionController::TestCase
 
     it 'should redirect to maintainance page in diabled mode' do
       ApplicationController.any_instance.stubs(:read_only_mode?).returns(true)
-      account = Account.create(login: 'ralph', password: 'abcdef', email: 'ralph@mailinator.com')
+      account = Account.create(login: 'ralph', password: PasswordGenerator.generate, email: 'ralph@mailinator.com')
       get :activate, params: { account_id: account.to_param, code: account.activation_code }
 
       assert_redirected_to maintenance_path
     end
 
     it 'should redirect already activated message' do
-      account = Account.create(login: 'ralph', password: 'abcdef', email: 'ralph@mailinator.com')
+      account = Account.create(login: 'ralph', password: PasswordGenerator.generate, email: 'ralph@mailinator.com')
       account.access.activate!(account.activation_code)
 
       get :activate, params: { account_id: account.to_param, code: account.activation_code }
