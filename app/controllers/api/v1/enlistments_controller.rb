@@ -17,15 +17,18 @@ class Api::V1::EnlistmentsController < ApplicationController
       en.create_edit.undo!(current_user)
       delete_all_subscriptions(en.code_location_id)
     end
-    render json: 'No Code Locations', status: :not_found if @enlistments.empty?
-    render json: @enlistments, status: :ok unless @enlistments.empty?
+    if @enlistments.empty?
+      json_response_with_deprecation({ error: 'No Code Locations' }, status: :not_found)
+    else
+      json_response_with_deprecation({ data: @enlistments }, status: :ok)
+    end
   end
 
   def enlist
     @code_location.create_enlistment_for_project(current_user, @project)
     CodeLocationSubscription.create(code_location_id: @code_location.id,
                                     client_relation_id: @project.id)
-    render json: @code_location
+    json_response_with_deprecation({ data: @code_location }, status: :ok)
   end
 
   private
