@@ -252,7 +252,88 @@ class ApplicationControllerTest < ActionController::TestCase
       Rails.application.config.unstub(:consider_all_requests_local)
     end
   end
+  describe 'API credential helpers' do
+    before do
+      @controller = TestController.new
+      @controller.request = @request
+      @controller.response = @response
+    end
 
+    describe '#api_key_from_request' do
+      it 'extracts api key from Authorization Bearer header' do
+        request.headers['Authorization'] = 'Bearer my-header-key'
+        _(@controller.send(:api_key_from_request)).must_equal 'my-header-key'
+      end
+
+      it 'falls back to params[:api_key] when no Authorization header' do
+        @controller.params = ActionController::Parameters.new(api_key: 'param-key')
+        _(@controller.send(:api_key_from_request)).must_equal 'param-key'
+      end
+
+      it 'returns nil when neither header nor param is present' do
+        _(@controller.send(:api_key_from_request)).must_be_nil
+      end
+
+      it 'ignores Authorization header that is not Bearer' do
+        request.headers['Authorization'] = 'Basic dXNlcjpwYXNz'
+        _(@controller.send(:api_key_from_request)).must_be_nil
+      end
+    end
+
+    describe '#api_client_id' do
+      it 'returns api_key_from_request when present' do
+        request.headers['Authorization'] = 'Bearer bearer-key'
+        _(@controller.send(:api_client_id)).must_equal 'bearer-key'
+      end
+
+      it 'returns doorkeeper application uid when api_key_from_request is blank' do
+        mock_app = mock
+        mock_app.stubs(:uid).returns('doorkeeper-uid-123')
+        mock_token = mock
+        mock_token.stubs(:application).returns(mock_app)
+        @controller.stubs(:doorkeeper_token).returns(mock_token)
+        _(@controller.send(:api_client_id)).must_equal 'doorkeeper-uid-123'
+      end
+
+      it 'returns nil when no credentials present' do
+        @controller.stubs(:doorkeeper_token).returns(nil)
+        _(@controller.send(:api_client_id)).must_be_nil
+      end
+    end
+
+    describe '#verify_api_access_for_xml_request' do
+      it 'returns missing api key for xml request without any credentials' do
+        @controller.stubs(:request_format).returns('xml')
+        @controller.stubs(:api_client_id).returns(nil)
+        @controller.expects(:render_missing_api_key).once
+        @controller.send(:verify_api_access_for_xml_request)
+      end
+
+      it 'proceeds for xml request with Bearer header credential' do
+        @controller.stubs(:request_format).returns('xml')
+        request.headers['Authorization'] = 'Bearer valid-key'
+        @controller.stubs(:api_client_id).returns('valid-key')
+        @controller.expects(:verify_api_key_standing).once
+        @controller.expects(:render_missing_api_key).never
+        @controller.send(:verify_api_access_for_xml_request)
+      end
+
+      it 'proceeds for xml request with doorkeeper OAuth token' do
+        @controller.stubs(:request_format).returns('xml')
+        @controller.stubs(:api_client_id).returns('doorkeeper-app-uid')
+        @controller.expects(:verify_api_key_standing).once
+        @controller.expects(:render_missing_api_key).never
+        @controller.send(:verify_api_access_for_xml_request)
+      end
+
+      it 'skips check entirely for non-xml/json similar requests' do
+        @controller.stubs(:request_format).returns('html')
+        @controller.expects(:render_missing_api_key).never
+        @controller.expects(:verify_api_key_standing).never
+        @controller.send(:verify_api_access_for_xml_request)
+      end
+    end
+  end
   describe 'ProjectsController' do
     before do
       @controller = ProjectsController.new
@@ -360,6 +441,10 @@ end
 class TestController < ApplicationController
   before_action :session_required, only: :session_required_action
   before_action :admin_session_required, only: :admin_session_required_action
+
+  def verify_api_xml
+    head :ok
+  end
 
   def renders_404
     render_404

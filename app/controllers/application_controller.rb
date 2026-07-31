@@ -290,7 +290,7 @@ class ApplicationController < ActionController::Base
 
   def log_valid_api_request
     statsd_increment('Openhub.Api.success')
-    statsd_set('Openhub.Api.valid_api', api_key_from_request)
+    statsd_set('Openhub.Api.valid_api', api_client_id)
   end
 
   def api_client_id
@@ -324,12 +324,13 @@ class ApplicationController < ActionController::Base
   end
 
   def json_response_with_deprecation(data, status: :ok)
-    body = data.is_a?(Hash) ? data : { data: data }
-    if @deprecation_warning.present?
-      body[:deprecation_warning] = @deprecation_warning
-      body[:deprecation_deadline] = @deprecation_deadline
+    if data.is_a?(Hash) && @deprecation_warning.present?
+      data = data.merge(
+        deprecation_warning: @deprecation_warning,
+        deprecation_deadline: @deprecation_deadline
+      )
     end
-    render json: body, status: status
+    render json: data, status: status
   end
 
   def strip_query_param
