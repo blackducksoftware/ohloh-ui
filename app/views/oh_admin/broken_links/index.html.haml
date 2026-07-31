@@ -1,37 +1,55 @@
-%h1
+%h1.bl-page-title
+  %i.fa.fa-chain-broken
   Broken Links
-  .dropdown.pull-right#broken_links
-    %button.btn.btn-primary.dropdown-toggle{"data-toggle" => "dropdown", :type => "button"}
-      Error Type
-      %span.caret
-    %ul.dropdown-menu.scrollable-menu
-      - errors = BrokenLink.distinct.pluck(:error).sort
-      - errors.each do |error|
-        %li.font-weight-light
-          = link_to h(error), oh_admin_broken_links_path(query: error)
+  %span.bl-count-badge= @broken_links.total_entries
 
 %section.content
   = render partial: 'layouts/partials/alert'
+
+  .bl-filter-bar
+    .dropdown#broken_links
+      %button.bl-dropdown-btn.dropdown-toggle{"data-toggle" => "dropdown", :type => "button"}
+        %i.fa.fa-filter
+        Filter by Error Type
+        %span.caret
+      %ul.dropdown-menu.scrollable-menu
+        %li= link_to 'All Errors', oh_admin_broken_links_path
+        - errors = BrokenLink.distinct.pluck(:error).sort
+        - errors.each do |error|
+          %li= link_to h(error), oh_admin_broken_links_path(query: error)
+
   - if @broken_links.present?
     .box
       .box-body.table-responsive.no-padding
         %table.table.table-striped.table-hover
-          %tr
-            %th Link Id
-            %th URL
-            %th Error
-            %th Project Name
-            %th Last Updated
-            %th.text-center Actions
-          - @broken_links.each do |broken_link|
-            - project = broken_link.link.project
+          %thead
             %tr
-              %td= broken_link.link_id
-              %td= broken_link.link.url
-              %td= broken_link.error
-              %td= link_to(h(project.name), project_links_url(project.to_param))
-              %td= broken_link.updated_at.strftime('%b %d, %Y')
-              %td.text-center= button_to 'Delete', oh_admin_broken_link_path(broken_link), method: :delete, data: { confirm: t('.delete_confirmation') }, class: 'btn btn-danger btn-xs'
-    = render 'shared/modern_pagination', collection: @broken_links
+              %th.bl-id-cell ID
+              %th URL
+              %th Error
+              %th Project
+              %th Last Updated
+              %th.text-center Actions
+          %tbody
+            - @broken_links.each do |broken_link|
+              - project = broken_link.link.project
+              - error_class = broken_link.error.to_s.scan(/\d{3}/).first
+              - css_error = error_class ? "bl-error-#{error_class}" : 'bl-error-other'
+              %tr
+                %td.bl-id-cell= broken_link.link_id
+                %td.bl-url-cell
+                  = link_to broken_link.link.url, broken_link.link.url, target: '_blank', title: broken_link.link.url
+                %td
+                  %span.bl-error-badge{ class: css_error }= broken_link.error
+                %td= link_to h(project.name), project_links_url(project.to_param), class: 'bl-project-link'
+                %td.bl-date-cell= broken_link.updated_at.strftime('%b %d, %Y')
+                %td.text-center
+                  = button_to oh_admin_broken_link_path(broken_link), method: :delete, data: { confirm: t('.delete_confirmation') }, class: 'bl-delete-btn', form_class: 'bl-delete-form' do
+                    %i.fa.fa-trash
+                    Delete
+    .box-footer
+      = render 'shared/modern_pagination', collection: @broken_links
   - else
-    %h2= 'No Broken Links Found'
+    .bl-empty-state
+      %i.fa.fa-chain-broken
+      %h3 No Broken Links Found

@@ -107,7 +107,7 @@ $pai_levels: (('very_high',0), ('high', 1), ('moderate', 2), ('low', 3), ('very_
   background: linear-gradient(to bottom, #1a0d2e, #0D0019)
   padding: 32px 16px 32px
   position: relative
-  overflow: hiddenßß
+  overflow: hidden
 
   .header-content
     padding: 0px 10px
@@ -274,23 +274,34 @@ $pai_levels: (('very_high',0), ('high', 1), ('moderate', 2), ('low', 3), ('very_
         font-size: 12px
         font-weight: 500
         line-height: 1.25
+        color: white !important
         text-decoration: none !important
+        background: rgba(255, 255, 255, 0.1)
+        border: 1px solid rgba(255, 255, 255, 0.2)
         appearance: none
         -webkit-appearance: none
         background-image: none !important
-        box-shadow: none !important
-        border: 0
+        box-shadow: none
         cursor: pointer
         transition: all 0.2s ease
 
         &:link,
         &:visited,
-        &:hover,
         &:active
           color: white !important
           text-decoration: none !important
 
-        @media (min-width: 768px)
+        &:hover
+          background: rgba(255, 255, 255, 0.2)
+          border-color: rgba(255, 255, 255, 0.2)
+          color: white !important
+          text-decoration: none !important
+
+        &:focus-visible
+          outline: 2px solid rgba(255, 255, 255, 0.55)
+          outline-offset: 2px
+
+        @media (min-width: 640px)
           font-size: 14px
 
         svg
@@ -298,27 +309,6 @@ $pai_levels: (('very_high',0), ('high', 1), ('moderate', 2), ('low', 3), ('very_
           height: 14px
           flex-shrink: 0
           stroke: currentColor
-
-        // Outlined button style (for Settings and Report Duplicate)
-        &.action-btn-outline
-          background: rgba(255, 255, 255, 0.1)
-          border: 1px solid rgba(255, 255, 255, 0.2)
-          color: white !important
-          box-shadow: none
-
-          &:hover
-            background: rgba(255, 255, 255, 0.2)
-            border-color: rgba(255, 255, 255, 0.2)
-            color: white !important
-            transform: none
-
-          &:active
-            transform: none
-            background: rgba(255, 255, 255, 0.2)
-
-          &:focus-visible
-            outline: 2px solid rgba(255, 255, 255, 0.55)
-            outline-offset: 2px
 
     .project-description
       font-size: 16px
@@ -1758,7 +1748,7 @@ $dark-shadow-lg: 0 8px 16px rgba(0,0,0,0.48)
         cursor: pointer
         text-decoration: none
         &:hover
-        background-color: rgba(255, 185, 26, 0.3)
+          background-color: rgba(255, 185, 26, 0.3)
         html.dark &
           background-color: #5A2A82
           color: #ffffff !important

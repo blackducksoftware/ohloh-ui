@@ -6,7 +6,7 @@
           = link_to @project.name, project_path(@project)
 
         .action-buttons
-          = link_to settings_project_path(@project), class: 'action-btn action-btn-outline' do
+          = link_to settings_project_path(@project), class: 'action-btn' do
             %svg{ viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", 'stroke-width': "2", 'stroke-linecap': "round", 'stroke-linejoin': "round" }
               %circle{ cx: "12", cy: "12", r: "3" }
               %path{ d: "M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" }
@@ -14,7 +14,7 @@
 
           - if @project.is_a_duplicate
             - if current_user_is_admin? || (@current_account && @project.is_a_duplicate.account == @current_account)
-              = link_to edit_project_duplicate_path(@project, @project.is_a_duplicate), class: 'action-btn action-btn-outline' do
+              = link_to edit_project_duplicate_path(@project, @project.is_a_duplicate), class: 'action-btn' do
                 %svg{ viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", 'stroke-width': "2", 'stroke-linecap': "round", 'stroke-linejoin': "round" }
                   %path{ d: "M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" }
                   %polyline{ points: "14 2 14 8 20 8" }
@@ -23,21 +23,21 @@
                   %polyline{ points: "10 9 9 9 8 9" }
                 = t('.edit_duplicate')
           - else
-            = link_to new_project_duplicate_path(@project), class: 'action-btn action-btn-outline' do
+            = link_to new_project_duplicate_path(@project), class: 'action-btn' do
               %svg{ viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", 'stroke-width': "2", 'stroke-linecap': "round", 'stroke-linejoin': "round" }
                 %path{ d: "M4 15s1-1 4-1 5 2 9 2V3s-4 0-6-2-9-1-3 1-4 1-4 1z" }
                 %line{ x1: "4", y1: "22", x2: "4", y2: "15" }
               = t('.report_duplicate')
 
           - if current_user_is_admin?
-            = link_to oh_admin_project_jobs_path(@project), class: 'action-btn action-btn-outline', target: '_blank', rel: 'noopener noreferrer' do
+            = link_to oh_admin_project_jobs_path(@project), class: 'action-btn', target: '_blank', rel: 'noopener noreferrer' do
               %svg{ viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", 'stroke-width': "2", 'stroke-linecap': "round", 'stroke-linejoin': "round" }
                 %rect{ x: "3", y: "7", width: "18", height: "13", rx: "2", ry: "2" }
                 %path{ d: "M16 3v4M8 3v4M3 11h18" }
               = t('projects.header.job')
 
           - if current_user.present? && @project.analysis_updated_or_project_created_time < 1.week.ago
-            = link_to report_outdated_project_path(@project), method: :put, class: 'action-btn action-btn-outline' do
+            = link_to report_outdated_project_path(@project), method: :put, class: 'action-btn' do
               %svg{ viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", 'stroke-width': "2", 'stroke-linecap': "round", 'stroke-linejoin': "round" }
                 %circle{ cx: "12", cy: "12", r: "10" }
                 %polyline{ points: "12 6 12 12 16 14" }
