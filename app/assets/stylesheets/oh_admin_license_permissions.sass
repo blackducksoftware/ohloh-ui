@@ -1,31 +1,96 @@
-// Filter and Sidebar Styles for License Permissions Admin
+// License Permissions Admin Styles
 
-// Filter Card Styles
-.filter-card.box
-  margin-bottom: 20px
+// ─── Page Title ───────────────────────────────────────────────────────────────
 
-.filter-header
-  background-color: #5A2A82 !important
-  color: white !important
-  border-color: #5A2A82 !important
-  display: flex !important
-  align-items: center !important
-  gap: 8px !important
+.lp-page-title
+  display: flex
+  align-items: center
+  gap: 10px
+  font-size: 24px
+  font-weight: 700
+  color: #111827
+  margin: 0 0 20px
 
   i
-    font-size: 14px
-    margin-right: 4px
+    color: #5A2A82
+    font-size: 20px
 
-  .box-title
-    margin: 0
-    font-size: 14px
-    font-weight: 600
-    color: white
+.lp-count-badge
+  display: inline-flex
+  align-items: center
+  justify-content: center
+  background: #5A2A82
+  color: white
+  font-size: 12px
+  font-weight: 600
+  padding: 2px 10px
+  border-radius: 9999px
+  margin-left: 4px
+  vertical-align: middle
 
-// Action Card Styles
+// ─── Table Cell Styles ────────────────────────────────────────────────────────
+
+.lp-id-cell
+  font-weight: 600
+  color: #6b7280
+  font-size: 13px
+  width: 60px
+
+.lp-license-name
+  color: #5A2A82
+  font-weight: 500
+  text-decoration: none
+
+  &:hover
+    text-decoration: underline
+    color: #4a2170
+
+.lp-right-tag
+  display: inline-block
+  padding: 2px 10px
+  border-radius: 9999px
+  font-size: 12px
+  font-weight: 500
+  background: #ede9fe
+  color: #5A2A82
+
+.lp-date-cell
+  font-size: 13px
+  color: #6b7280
+
+// Status badges (replacing inline styles)
+.lp-status-badge
+  display: inline-block
+  padding: 3px 10px
+  border-radius: 9999px
+  font-size: 12px
+  font-weight: 600
+
+.lp-status-permitted
+  background-color: #28a745
+  color: white
+
+.lp-status-forbidden
+  background-color: #dc3545
+  color: white
+
+.lp-status-required
+  background-color: #ffc107
+  color: #333
+
+.lp-status-unknown
+  background-color: #6c757d
+  color: white
+
+// ─── Index Page: Filter & Action Cards ───────────────────────────────────────
+
+.filter-card.box,
 .action-card.box
   margin-bottom: 20px
+  border-radius: 6px
+  overflow: hidden
 
+.filter-header,
 .action-header
   background-color: #5A2A82 !important
   color: white !important
@@ -36,7 +101,6 @@
 
   i
     font-size: 14px
-    margin-right: 4px
 
   .box-title
     margin: 0
@@ -44,136 +108,118 @@
     font-weight: 600
     color: white
 
-// Form Control Styles
-.filter-group
-  margin-bottom: 16px
+// Filter form controls (scoped to sidebar cards and new page)
+.filter-card,
+.lp-license-select-row
+  .filter-group
+    margin-bottom: 14px
 
-  label
-    display: block
-    font-size: 12px
-    font-weight: 600
-    color: #374151
-    margin-bottom: 6px
-    text-transform: uppercase
-    letter-spacing: 0.5px
+    label
+      display: block
+      font-size: 12px
+      font-weight: 600
+      color: #374151
+      margin-bottom: 6px
+      text-transform: uppercase
+      letter-spacing: 0.5px
 
-// Filter Select - Base Styles
-.filter-select
-  height: 34px !important
-  font-size: 13px !important
-  border: 1px solid #e5e7eb !important
-  border-radius: 6px !important
-  background-color: white !important
-  margin-top: 0 !important
-  margin-right: 0 !important
-  margin-bottom: 10px !important
-  margin-left: 0 !important
-  padding: 6px 10px !important
-  box-shadow: none !important
-  display: block !important
-  width: 100% !important
-  color: #374151 !important
-  cursor: pointer !important
-  vertical-align: middle !important
-  box-sizing: border-box !important
-
-// Responsive - Large Desktop (1200px+)
-@media (min-width: 1200px)
   .filter-select
     height: 34px !important
     font-size: 13px !important
+    border: 1px solid #e5e7eb !important
+    border-radius: 6px !important
+    background-color: white !important
+    margin: 0 0 10px !important
     padding: 6px 10px !important
-    margin-bottom: 10px !important
+    box-shadow: none !important
+    display: block !important
+    width: 100% !important
+    color: #374151 !important
+    cursor: pointer !important
+    box-sizing: border-box !important
 
-// Responsive - Medium Desktop (992px - 1199px)
-@media (min-width: 992px) and (max-width: 1199px)
-  .filter-select
-    height: 32px !important
-    font-size: 12px !important
-    padding: 5px 8px !important
-    margin-bottom: 9px !important
+  .filter-actions
+    display: flex !important
+    flex-direction: column !important
+    gap: 0 !important
+    margin-top: 16px !important
 
-// Responsive - Tablet (768px - 991px)
-@media (min-width: 768px) and (max-width: 991px)
-  .filter-select
-    height: 30px !important
-    font-size: 11px !important
-    padding: 4px 6px !important
-    margin-bottom: 8px !important
+// Filter action buttons
+.filter-btn
+  display: flex
+  align-items: center
+  justify-content: center
+  gap: 6px
+  width: 100%
+  padding: 8px 12px
+  font-size: 13px
+  font-weight: 500
+  border-radius: 6px
+  cursor: pointer
+  transition: all 0.2s ease
+  text-align: center
+  margin-bottom: 6px
 
-// Responsive - Small Tablet (480px - 767px)
-@media (min-width: 480px) and (max-width: 767px)
-  .filter-select
-    height: 28px !important
-    font-size: 10px !important
-    padding: 4px 6px !important
-    margin-bottom: 6px !important
+  &:last-child
+    margin-bottom: 0
 
-// Responsive - Mobile (< 480px)
-@media (max-width: 479px)
-  .filter-select
-    height: 28px !important
-    font-size: 10px !important
-    padding: 4px 6px !important
-    margin-bottom: 6px !important
+  i
+    font-size: 12px
 
-// Filter Actions
-.filter-actions
-  display: flex !important
-  gap: 8px !important
-  margin-top: 18px !important
+  &.filter-btn-apply
+    background-color: #5A2A82
+    color: white
+    border: 1px solid #5A2A82
 
-  .btn
-    flex: 1 !important
-    padding: 8px 12px !important
+    &:hover
+      background-color: #4a2170
+      border-color: #4a2170
+
+    &:focus
+      outline: none
+      box-shadow: 0 0 0 3px rgba(90, 42, 130, 0.25)
+
+  &.filter-btn-clear
+    background-color: transparent
+    color: #dc3545
+    border: 1px solid #dc3545
+
+    &:hover
+      background-color: #dc3545
+      color: white
+
+    &:focus
+      outline: none
+      box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.25)
+
+// Action button (scoped to avoid overriding project show page)
+.action-card
+  .action-btn
+    display: flex !important
+    align-items: center !important
+    justify-content: center !important
+    gap: 8px !important
+    padding: 10px 12px !important
     font-size: 13px !important
     font-weight: 500 !important
     border-radius: 6px !important
     border: none !important
-    cursor: pointer !important
+    text-decoration: none !important
     transition: all 0.2s ease !important
+    cursor: pointer !important
+    width: 100% !important
 
-    &.btn-primary
+    i
+      font-size: 14px !important
+
+    &.btn-add
       background-color: #5A2A82 !important
       color: white !important
 
       &:hover
-        background-color: #4a2170 !important
+        background-color: #4a2269 !important
 
-    &.btn-secondary
-      background-color: #e5e7eb !important
-      color: #374151 !important
-
-      &:hover
-        background-color: #d1d5db !important
-
-// Action Buttons
-.action-btn
-  display: flex !important
-  align-items: center !important
-  justify-content: center !important
-  gap: 8px !important
-  padding: 10px 12px !important
-  font-size: 13px !important
-  font-weight: 500 !important
-  border-radius: 6px !important
-  border: none !important
-  text-decoration: none !important
-  transition: all 0.2s ease !important
-  cursor: pointer !important
-  width: 100% !important
-
-  i
-    font-size: 14px !important
-
-  &.btn-add
-    background-color: #10b981 !important
-    color: white !important
-
-    &:hover
-      background-color: #059669 !important
-
-// Custom Edit Button
+// Edit button in table
 .license-edit-btn
   display: inline-block
   padding: 6px 12px
@@ -202,44 +248,256 @@
     background-color: #3a1860
     border-color: #3a1860
 
-// Custom Filter Buttons
-.filter-btn
-  padding: 8px 12px
-  font-size: 13px
-  font-weight: 500
-  border: 1px solid transparent
+// ─── New Page Styles ──────────────────────────────────────────────────────────
+
+.lp-license-select-row
+  max-width: 420px
+
+.lp-select-box
+  margin-bottom: 16px
+
+.lp-select-header,
+.lp-permissions-header
+  background-color: #5A2A82 !important
+  color: white !important
+  border-color: #5A2A82 !important
+  display: flex !important
+  align-items: center !important
+  gap: 8px !important
+
+  i
+    font-size: 14px
+
+  .box-title
+    margin: 0
+    font-size: 14px
+    font-weight: 600
+    color: white
+    flex: 1
+
+.lp-rights-count
+  background: rgba(255, 255, 255, 0.2)
+  color: white
+  font-size: 11px
+  font-weight: 600
+  padding: 2px 8px
+  border-radius: 9999px
+
+.lp-permissions-box
+  margin-top: 0
   border-radius: 6px
+  overflow: hidden
+
+// Rights table layout
+.lp-rights-table
+  width: 100%
+
+.lp-rights-thead
+  background: #f9fafb
+  border-bottom: 2px solid #e5e7eb
+
+.lp-rights-tbody
+  .lp-row-even
+    background: #ffffff
+
+  .lp-row-odd
+    background: #fafafa
+
+  .lp-rights-tr:hover
+    background: #f0e8fa
+
+.lp-rights-tr
+  display: grid
+  grid-template-columns: 1fr 110px 110px 110px
+  align-items: center
+  border-bottom: 1px solid #f3f4f6
+
+  &:last-child
+    border-bottom: none
+
+.lp-rights-th
+  padding: 10px 14px
+  font-size: 11px
+  font-weight: 700
+  color: #6b7280
+  text-transform: uppercase
+  letter-spacing: 0.05em
+
+.lp-rights-td
+  padding: 10px 14px
+  font-size: 13px
+  color: #374151
+
+.lp-col-name
+  font-weight: 500
+
+.lp-col-options
+  text-align: center
+
+// Custom radio buttons — icon style
+// .lp-radio-wrap must have position:relative so admin/custom.css's
+// `input.custom-radio ~ label { position: absolute }` stays contained
+.lp-radio-wrap
+  position: relative
+  width: 34px
+  height: 34px
+  margin: 0 auto
+
+  input.custom-radio
+    position: absolute
+    clip: rect(0, 0, 0, 0)
+
+  // Override admin/custom.css gradient label with icon-circle style
+  input.custom-radio ~ .lp-radio-label
+    display: inline-flex !important
+    align-items: center !important
+    justify-content: center !important
+    position: absolute !important
+    top: 0 !important
+    left: 0 !important
+    right: 0 !important
+    bottom: 0 !important
+    width: 34px !important
+    height: 34px !important
+    border-radius: 50% !important
+    border: 2px solid #d1d5db !important
+    cursor: pointer !important
+    transition: all 0.15s ease !important
+    color: #d1d5db !important
+    font-size: 13px !important
+    background: white !important
+    background-image: none !important
+    text-shadow: none !important
+    box-shadow: none !important
+    line-height: 1 !important
+
+    &:hover
+      border-color: #9ca3af !important
+      color: #6b7280 !important
+
+  // Override admin/custom.css checked state
+  input.custom-radio:checked ~ .lp-radio-label
+    background-image: none !important
+    box-shadow: none !important
+
+  input.custom-radio:checked[value='0'] ~ .lp-radio-permitted
+    background: #28a745 !important
+    border-color: #28a745 !important
+    color: white !important
+
+  input.custom-radio:checked[value='1'] ~ .lp-radio-forbidden
+    background: #dc3545 !important
+    border-color: #dc3545 !important
+    color: white !important
+
+  input.custom-radio:checked[value='2'] ~ .lp-radio-required
+    background: #ffc107 !important
+    border-color: #ffc107 !important
+    color: #333 !important
+
+.lp-save-row
+  display: flex
+  align-items: center
+  gap: 12px
+  padding: 16px 0 4px
+  border-top: 1px solid #e5e7eb
+  margin-top: 12px
+
+input.lp-save-btn
+  padding: 8px 24px
+  font-size: 14px
+  font-weight: 500
+  border: 2px solid #5A2A82 !important
+  border-radius: 6px
+  background-color: transparent !important
+  background-image: none !important
+  color: #5A2A82 !important
   cursor: pointer
   transition: all 0.2s ease
-  display: inline-block
-  width: 48%
+  text-shadow: none !important
+  box-shadow: none !important
 
-  &.filter-btn-apply
-    background-color: #5A2A82
+  &:hover
+    background-color: #5A2A82 !important
+    color: white !important
+
+  &:focus
+    outline: none
+    box-shadow: 0 0 0 3px rgba(90, 42, 130, 0.3) !important
+
+.lp-cancel-btn
+  padding: 8px 16px
+  font-size: 14px
+  font-weight: 500
+  border: 2px solid #dc3545
+  border-radius: 6px
+  background-color: transparent
+  color: #dc3545
+  cursor: pointer
+  text-decoration: none
+  transition: all 0.2s ease
+
+  &:hover
+    background-color: #dc3545
     color: white
-    border-color: #5A2A82
+    text-decoration: none
+
+// ─── Empty State ─────────────────────────────────────────────────────────────
+
+.lp-empty-state
+  text-align: center
+  padding: 64px 24px
+  border: 2px dashed #d1d5db
+  border-radius: 12px
+  background-color: #fafafa
+  margin: 20px 0
+
+  i
+    font-size: 56px
+    color: #5A2A82
+    display: block
+    margin-bottom: 16px
+    opacity: 0.6
+
+  h3
+    font-size: 20px
+    font-weight: 600
+    color: #374151
+    margin: 0 0 8px
+
+  p
+    font-size: 14px
+    color: #6b7280
+    margin: 0 0 24px
+
+  a.lp-save-btn, a.action-btn
+    display: inline-flex
+    align-items: center
+    gap: 8px
+    padding: 10px 24px
+    border: 2px solid #5A2A82
+    border-radius: 6px
+    background-color: transparent
+    color: #5A2A82
+    font-size: 14px
+    font-weight: 500
+    text-decoration: none
+    transition: all 0.2s ease
+
+    i
+      font-size: 14px
+      color: inherit
+      display: inline
+      margin-bottom: 0
+      opacity: 1
 
     &:hover
-      background-color: #4a2170
-      border-color: #4a2170
+      background-color: #5A2A82
+      color: white
+      text-decoration: none
 
-    &:focus
-      outline: none
-      box-shadow: 0 0 0 3px rgba(90, 42, 130, 0.25)
+// ─── Pagination ───────────────────────────────────────────────────────────────
 
-  &.filter-btn-clear
-    background-color: #e5e7eb
-    border-color: #d1d5db
-
-    &:hover
-      background-color: #d1d5db
-      border-color: #9ca3af
-
-    &:focus
-      outline: none
-      box-shadow: 0 0 0 3px rgba(209, 213, 219, 0.5)
-
-// Modern Pagination Styles
 .modern-pagination
   display: flex !important
   align-items: center !important

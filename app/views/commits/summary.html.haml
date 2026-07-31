@@ -13,6 +13,7 @@
 - if @analysis.empty?
   .col-md-12
     = render 'projects/show/no_analysis_summary'
+  .clearfix
 - else
   :ruby
     @all_time_summary     = @analysis.all_time_summary.nil? ? NilAnalysisSummaryWithNa.new : @analysis.all_time_summary

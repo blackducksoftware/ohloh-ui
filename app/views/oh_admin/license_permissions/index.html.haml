@@ -1,18 +1,20 @@
-%h1
+%h1.lp-page-title
+  %i.fa.fa-key
   License Permissions
+  %span.lp-count-badge= @license_permissions.total_entries
 
 %section.content
   = render partial: 'layouts/partials/alert'
 
   - if @license_permissions.present?
     .row
-      .col-lg-10
+      .col-lg-9
         .box
           .box-body.table-responsive.no-padding
             %table.table.table-striped.table-hover
               %thead
                 %tr
-                  %th Id
+                  %th.col-id ID
                   %th License
                   %th License Right
                   %th Status
@@ -22,27 +24,21 @@
                 - @license_permissions.each do |license_permission|
                   - license = license_permission.license
                   %tr
+                    %td.lp-id-cell= license_permission.id
+                    %td= link_to license.name, license_path(license), title: license.name, class: 'lp-license-name'
                     %td
-                      %strong= license_permission.id
-                    %td= link_to license.name, license_path(license), title: license.name
+                      %span.lp-right-tag= license_permission.name
                     %td
-                      %span.label.label-info= license_permission.name
-                    %td
-                      - if license_permission.status == 'Permitted'
-                        %span.badge{style: 'background-color: #28a745; color: white;'}= license_permission.status
-                      - elsif license_permission.status == 'Forbidden'
-                        %span.badge{style: 'background-color: #dc3545; color: white;'}= license_permission.status
-                      - elsif license_permission.status == 'Required'
-                        %span.badge{style: 'background-color: #ffc107; color: #333;'}= license_permission.status
-                      - else
-                        %span.badge{style: 'background-color: #6c757d; color: white;'}= license_permission.status
-                    %td
-                      %small= license_permission.updated_at.strftime('%b %d, %Y')
+                      - status_key = license_permission.status.downcase
+                      %span.lp-status-badge{ class: "lp-status-#{status_key}" }= license_permission.status
+                    %td.lp-date-cell= license_permission.updated_at.strftime('%b %d, %Y')
                     %td.text-center
-                      = link_to 'Edit', new_oh_admin_license_permission_path(license_id: license.id), class: 'license-edit-btn'
+                      = link_to new_oh_admin_license_permission_path(license_id: license.id), class: 'license-edit-btn' do
+                        %i.fa.fa-pencil
+                        Edit
           .box-footer
             = render 'shared/modern_pagination', collection: @license_permissions
-      .col-lg-2
+      .col-lg-3
         / Filter Card
         .box.filter-card
           .box-header.with-border.filter-header
@@ -61,7 +57,8 @@
                 = select_tag 'status', options_for_select(LicensePermission.statuses, :selected => params[:status]), prompt: "All", class: 'filter-select'
               .filter-actions
                 = submit_tag "Apply Filter", class: 'filter-btn filter-btn-apply'
-                = submit_tag "Clear Filter", name: 'commit', class: 'filter-btn filter-btn-clear'
+                = link_to oh_admin_license_permissions_path, class: 'filter-btn filter-btn-clear' do
+                  Clear Filter
 
         / Action Card
         .box.action-card
@@ -73,4 +70,9 @@
               %i.fa.fa-edit
               Add/Edit Permissions
   - else
-    %h2= 'No License Permissions Found'
+    .lp-empty-state
+      %i.fa.fa-key
+      %h3 No License Permissions Found
+      = link_to new_oh_admin_license_permission_path, class: 'lp-save-btn' do
+        %i.fa.fa-plus
+        Add Permissions
