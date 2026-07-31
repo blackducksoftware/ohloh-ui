@@ -1,3 +1,8 @@
+-- \restrict 18JpI3xcXEwZCu404bBwX6d42bviCgVSHTgUWxl5ABgigAqOQkyUCA9g6HYcmp7
+
+-- Dumped from database version 14.21 (Homebrew)
+-- Dumped by pg_dump version 14.21 (Homebrew)
+
 SET statement_timeout = 0;
 SET lock_timeout = 0;
 SET idle_in_transaction_session_timeout = 0;
@@ -7071,6 +7076,9 @@ CREATE TABLE oh.accounts (
     organization_name text,
     auth_fail_count integer DEFAULT 0,
     twitter_id character varying,
+    jwt_failed_attempts integer DEFAULT 0,
+    jwt_failed_attempts_window_start timestamp without time zone,
+    jwt_locked_until timestamp without time zone,
     CONSTRAINT accounts_email_check CHECK ((length(email) >= 3)),
     CONSTRAINT accounts_login_check CHECK ((length(login) >= 3))
 );
@@ -27594,177 +27602,9 @@ ALTER TABLE ONLY oh.vitae
 -- PostgreSQL database dump complete
 --
 
-SET search_path TO oa,fis,oh,public;
+-- \unrestrict 18JpI3xcXEwZCu404bBwX6d42bviCgVSHTgUWxl5ABgigAqOQkyUCA9g6HYcmp7
 
-INSERT INTO oa.schema_migrations (version) VALUES ('20200627071334');
-
-INSERT INTO oa.schema_migrations (version) VALUES ('20200627132332');
-
-INSERT INTO oa.schema_migrations (version) VALUES ('20201117131904');
-
-INSERT INTO oa.schema_migrations (version) VALUES ('20201117131910');
-
-INSERT INTO oa.schema_migrations (version) VALUES ('20201201112503');
-
-INSERT INTO oa.schema_migrations (version) VALUES ('20201207132558');
-
-INSERT INTO oa.schema_migrations (version) VALUES ('20211104214912');
-
-INSERT INTO oa.schema_migrations (version) VALUES ('20211109010836');
-
-INSERT INTO oa.schema_migrations (version) VALUES ('20211109014644');
-
-INSERT INTO oa.schema_migrations (version) VALUES ('20220607143514');
-
-INSERT INTO oa.schema_migrations (version) VALUES ('20220712200702');
-
-INSERT INTO oa.schema_migrations (version) VALUES ('20230106122202');
-
-INSERT INTO oa.schema_migrations (version) VALUES ('20240506094848');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20150429084504');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20150504072306');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20150615040531');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20150615041336');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20170112183242');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20170615183328');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20170622141518');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20170905123152');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20170911100003');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20170913160134');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20170925190632');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20170925192153');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20170925192352');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20170925192829');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20170925193357');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20170925195815');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20171020021211');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20171025191016');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20171030153430');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20171030154453');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20171127181222');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20171128174144');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20171204165745');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20171206203036');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20171207154419');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20171209110545');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20171212162720');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20180104114359');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20180116211819');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20180211230753');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20180212162025');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20180212210716');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20180213152903');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20180213161347');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20180213163053');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20180907134326');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20180927143345');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20181009171118');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20181010181449');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20181108152834');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20181220010101');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20190107183802');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20190212105155');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20190214122613');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20190320154004');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20190320154440');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20190321201057');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20190508051951');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20190508052835');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20190813133442');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20190823151155');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20191010121016');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20200327135712');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20200715091451');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20200730110840');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20200824010101');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20201112135239');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20210101153940');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20210216020202');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20210705020202');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20220315135231');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20220424111301');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20220505105631');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20220607175022');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20220613201812');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20221201113522');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20221214121917');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20230104191144');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20230215133911');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20230712175621');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20250224134022');
-
-INSERT INTO fis.schema_migrations (version) VALUES ('20250415123838');
+SET search_path TO oh,oa,fis,public;
 
 INSERT INTO oh.schema_migrations (version) VALUES ('1');
 
@@ -28062,6 +27902,10 @@ INSERT INTO oh.schema_migrations (version) VALUES ('20250709184823');
 
 INSERT INTO oh.schema_migrations (version) VALUES ('20250709184824');
 
+INSERT INTO oh.schema_migrations (version) VALUES ('20260603065929');
+
+INSERT INTO oh.schema_migrations (version) VALUES ('20260727000000');
+
 INSERT INTO oh.schema_migrations (version) VALUES ('21');
 
 INSERT INTO oh.schema_migrations (version) VALUES ('22');
@@ -28234,5 +28078,173 @@ INSERT INTO oh.schema_migrations (version) VALUES ('98');
 
 INSERT INTO oh.schema_migrations (version) VALUES ('99');
 
+INSERT INTO oa.schema_migrations (version) VALUES ('20200627071334');
 
-INSERT INTO oh.schema_migrations (version) VALUES ('20260603065929');
+INSERT INTO oa.schema_migrations (version) VALUES ('20200627132332');
+
+INSERT INTO oa.schema_migrations (version) VALUES ('20201117131904');
+
+INSERT INTO oa.schema_migrations (version) VALUES ('20201117131910');
+
+INSERT INTO oa.schema_migrations (version) VALUES ('20201201112503');
+
+INSERT INTO oa.schema_migrations (version) VALUES ('20201207132558');
+
+INSERT INTO oa.schema_migrations (version) VALUES ('20211104214912');
+
+INSERT INTO oa.schema_migrations (version) VALUES ('20211109010836');
+
+INSERT INTO oa.schema_migrations (version) VALUES ('20211109014644');
+
+INSERT INTO oa.schema_migrations (version) VALUES ('20220607143514');
+
+INSERT INTO oa.schema_migrations (version) VALUES ('20220712200702');
+
+INSERT INTO oa.schema_migrations (version) VALUES ('20230106122202');
+
+INSERT INTO oa.schema_migrations (version) VALUES ('20240506094848');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20150429084504');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20150504072306');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20150615040531');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20150615041336');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20170112183242');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20170615183328');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20170622141518');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20170905123152');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20170911100003');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20170913160134');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20170925190632');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20170925192153');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20170925192352');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20170925192829');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20170925193357');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20170925195815');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20171020021211');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20171025191016');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20171030153430');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20171030154453');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20171127181222');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20171128174144');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20171204165745');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20171206203036');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20171207154419');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20171209110545');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20171212162720');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20180104114359');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20180116211819');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20180211230753');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20180212162025');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20180212210716');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20180213152903');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20180213161347');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20180213163053');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20180907134326');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20180927143345');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20181009171118');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20181010181449');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20181108152834');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20181220010101');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20190107183802');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20190212105155');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20190214122613');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20190320154004');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20190320154440');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20190321201057');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20190508051951');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20190508052835');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20190813133442');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20190823151155');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20191010121016');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20200327135712');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20200715091451');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20200730110840');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20200824010101');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20201112135239');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20210101153940');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20210216020202');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20210705020202');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20220315135231');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20220424111301');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20220505105631');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20220607175022');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20220613201812');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20221201113522');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20221214121917');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20230104191144');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20230215133911');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20230712175621');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20250224134022');
+
+INSERT INTO fis.schema_migrations (version) VALUES ('20250415123838');
+
