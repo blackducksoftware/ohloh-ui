@@ -84,18 +84,15 @@ class OhAdmin::ProjectChart
     end
   end
 
+  # Check for the presence of best_analysis_id.
   def best_analysis_project
-    # Check for the presence of best_analysis_id.
+    scope = Project.where.not(best_analysis_id: nil)
     if @filter == 'monthly'
-      Project.group("DATE_TRUNC('month', projects.created_at)")
-             .where(projects: { created_at: @from.beginning_of_month..@to.end_of_month })
-             .where.not(best_analysis_id: nil)
-             .count
+      scope.group("DATE_TRUNC('month', projects.created_at)")
+           .where(projects: { created_at: @from.beginning_of_month..@to.end_of_month }).count
     else
-      Project.group('date(projects.created_at)')
-             .where(projects: { created_at: @from..@to })
-             .where.not(best_analysis_id: nil)
-             .count
+      scope.group('date(projects.created_at)')
+           .where(projects: { created_at: @from..@to }).count
     end
   end
 
