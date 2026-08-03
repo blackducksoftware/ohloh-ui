@@ -4226,3 +4226,139 @@ $dark-shadow-lg: 0 8px 16px rgba(0,0,0,0.48)
 
   html.dark &
     border-top-color: rgba(255, 255, 255, 0.06)
+
+// ─── Duplicate Project Notice (Project Show) ────────────────────────────────
+// Scoped to .project-show-redesign .duplicate-notice — no impact on other pages.
+// Uses !important on background-image/text-shadow to strip Bootstrap 3 gradients.
+
+.project-show-redesign .duplicate-notice
+  .alert.alert-info
+    background-color: #eff6ff !important
+    border-color: #bfdbfe !important
+    border-radius: 12px
+    color: #1e3a8a
+    padding: 16px 20px
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06)
+
+    // Explicit p/a color overrides needed because project_show.sass
+    // .gradient-card .card-content p/a { color !important } directly targets
+    // these elements and beats inherited colors from the container.
+    p
+      color: #1e40af !important
+      margin-bottom: 10px !important
+
+      // Buttons row — flex so Cancel (inside form) and Edit link align
+      &:last-child
+        margin-bottom: 0 !important
+        display: flex !important
+        flex-wrap: wrap
+        align-items: center
+        gap: 8px
+
+    a
+      color: #1d4ed8 !important
+      font-weight: 600
+
+      &:hover
+        color: #1e3a8a !important
+        text-decoration: underline
+
+    // link_to method: :delete generates <form class="button_to"> (block by default)
+    // inline-flex flattens it into the flex row without breaking button sizing
+    form.button_to
+      display: inline-flex
+      margin: 0
+      padding: 0
+
+  .btn.btn-warning
+    background-color: #fffbeb !important
+    background-image: none !important
+    border: 1px solid #fcd34d
+    border-radius: 8px
+    color: #92400e !important
+    font-size: 13px
+    font-weight: 600
+    padding: 6px 14px
+    text-shadow: none !important
+    box-shadow: none !important
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease
+
+    &:hover
+      background-color: #fef3c7 !important
+      border-color: #f59e0b !important
+      color: #78350f !important
+
+  .btn.btn-info
+    background-color: #eff6ff !important
+    background-image: none !important
+    border: 1px solid #93c5fd
+    border-radius: 8px
+    color: #1d4ed8 !important
+    font-size: 13px
+    font-weight: 600
+    padding: 6px 14px
+    text-shadow: none !important
+    box-shadow: none !important
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease
+
+    &:hover
+      background-color: #dbeafe !important
+      border-color: #60a5fa !important
+      color: #1e3a8a !important
+
+// Dark mode — standalone top-level block with !important on all overrides
+// to guarantee they beat both Bootstrap AND the light-mode !important rules above.
+
+html.dark #project_container .project-show-redesign .gradient-card .card-content .duplicate-notice,
+html.dark .project-show-redesign .card-content .duplicate-notice
+  .alert.alert-info
+    background-color: rgba(30, 64, 110, 0.3) !important
+    border-color: rgba(99, 179, 237, 0.25) !important
+    color: #90cdf4 !important
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3) !important
+
+    // Explicit p/a overrides needed to beat
+    // html.dark .project-show-redesign .gradient-card .card-content p/a { !important }
+    p
+      color: #111827 !important
+      margin-bottom: 10px !important
+
+      &:last-child
+        margin-bottom: 0 !important
+        display: flex !important
+        flex-wrap: wrap
+        align-items: center
+        gap: 8px
+
+    a
+      color: #5A2A82 !important
+
+      &:hover
+        color: #5A2A82 !important
+        text-decoration: underline
+
+  .btn.btn-warning
+    background-color: rgba(246, 173, 85, 0.15) !important
+    background-image: none !important
+    border-color: rgba(246, 173, 85, 0.4) !important
+    color: #f6ad55 !important
+    text-shadow: none !important
+    box-shadow: none !important
+
+    &:hover
+      background-color: rgba(246, 173, 85, 0.3) !important
+      border-color: rgba(246, 173, 85, 0.5) !important
+      color: #fbd38d !important
+
+  .btn.btn-info
+    background-color: rgba(99, 179, 237, 0.15) !important
+    background-image: none !important
+    border-color: rgba(99, 179, 237, 0.35) !important
+    color: #90cdf4 !important
+    text-shadow: none !important
+    box-shadow: none !important
+
+    &:hover
+      background-color: rgba(99, 179, 237, 0.3) !important
+      border-color: rgba(99, 179, 237, 0.5) !important
+      color: #bee3f8 !important

@@ -54,13 +54,7 @@
               = link_to t('.add_description'), edit_project_path(@project)
 
           - if @project.is_a_duplicate
-            %p.note
-              = t('.note')
-              There are two distinct
-              = link_to 'Mozilla Core', '#'
-              and
-              = link_to 'Mozilla Chrome', '#'
-              projects for complete coverage.
+            = render partial: 'projects/show/is_a_duplicate', locals: { project: @project }
 
           %section#project_tags
             %h4
@@ -240,13 +234,7 @@
               = link_to t('.add_description'), edit_project_path(@project)
 
           - if @project.is_a_duplicate
-            %p.note
-              = t('.note')
-              There are two distinct
-              = link_to 'Mozilla Core', '#'
-              and
-              = link_to 'Mozilla Chrome', '#'
-              projects for complete coverage.
+            = render partial: 'projects/show/is_a_duplicate', locals: { project: @project }
 
           %section#project_tags_mobile
             %h4
