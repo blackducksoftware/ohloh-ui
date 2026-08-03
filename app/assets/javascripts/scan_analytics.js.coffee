@@ -28,16 +28,25 @@ scanDataFetch = ->
       mediumImpactChart options, data
 
 setDefaultChartOptions = ->
+  isDark = document.documentElement.classList.contains('dark')
+  titleColor  = if isDark then '#e5e7eb' else '#000'
+  labelColor  = if isDark then '#9ca3af' else '#606064'
+  axisColor   = if isDark then '#d1d5db' else '#333'
+  bgColor     = if isDark then '#1c2433' else null
   Highcharts.setOptions
+    chart:
+      backgroundColor: bgColor
+      style:
+        fontFamily: '"Helvetica Neue",Helvetica,Arial,sans-serif'
     title: style:
-      color: '#000'
+      color: titleColor
       font: 'bold 14px "Helvetica Neue",Helvetica,Arial,sans-serif'
     xAxis:
       labels: style:
-        color: '#606064'
+        color: labelColor
         font: '8px Helvetica Neue",Helvetica,Arial,sans-serif'
       title: style:
-        color: '#333'
+        color: axisColor
         fontWeight: 'bold'
         fontSize: '12px'
         fontFamily: 'Helvetica Neue",Helvetica,Arial,sans-serif'
@@ -45,14 +54,15 @@ setDefaultChartOptions = ->
       lineWidth: 0
       tickWidth: 0
       labels: style:
-        color: '#606064'
+        color: labelColor
         font: '11px Helvetica Neue",Helvetica,Arial,sans-serif'
       title: style:
-        color: '#333'
+        color: axisColor
         fontWeight: 'bold'
         fontSize: '12px'
         fontFamily: 'Helvetica Neue",Helvetica,Arial,sans-serif'
     legend:
+      itemStyle: color: titleColor
       itemHoverStyle: color: '#039'
       itemHiddenStyle: color: 'gray'
     credits: style: right: '10px'

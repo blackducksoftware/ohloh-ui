@@ -7,3 +7,34 @@
       display: table-cell
       width: 1%
       padding: 0 2em
+
+// ─── Chart Section Dark Mode ─────────────────────────────────────────────────
+
+html.dark .scan-charts-section
+  #chart_data
+    #chart1, #chart2, #chart3, #chart4
+      background-color: #1c2433
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4)
+
+// Highcharts SVG text color overrides in dark mode
+html.dark .scan-charts-section
+  .highcharts-title,
+  .highcharts-axis-title
+    fill: #e5e7eb !important
+
+  .highcharts-axis-labels text,
+  .highcharts-legend-item text
+    fill: #9ca3af !important
+
+  .highcharts-background
+    fill: #1c2433 !important
+
+  .highcharts-plot-background
+    fill: #1c2433 !important
+
+  .highcharts-grid-line
+    stroke: rgba(255, 255, 255, 0.08) !important
+
+  .highcharts-axis-line,
+  .highcharts-tick
+    stroke: rgba(255, 255, 255, 0.15) !important
