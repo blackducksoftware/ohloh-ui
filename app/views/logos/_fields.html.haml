@@ -53,7 +53,7 @@
 .row.margin_top_30
   .col-md-12
     .actions
-      - if can_edit
+      - if logged_in? && @parent.edit_authorized?
         %input.btn.btn-sm.btn-primary{ type: 'submit', value: t('.button.save') }
         - if @parent.logo
           - path = @parent.is_a?(Project) ? project_logos_path(@parent) : organization_logos_path(@parent)
