@@ -57,9 +57,11 @@ module DashboardHelper
   end
 
   def active_projects_count
-    Rails.cache.fetch('Admin-active-project-count-cache', expires_in: 1.day) do
+    # Because this cache is regularly populated and kept up-to-date by a background cron job,
+    # explicit expiration isn't necessary here.
+    Rails.cache.fetch('Admin-active-project-count-cache') do
       Project.active.where(
-        Enlistment.where('enlistments.project_id = projects.id').arel.exists
+        Enlistment.where('enlistments.project_id = projects.id and deleted = false').arel.exists
       ).count
     end
   end
@@ -73,7 +75,7 @@ module DashboardHelper
     return 'N/A' if active.zero?
 
     without_analysis_count = Project.active.where(
-      Enlistment.where('enlistments.project_id = projects.id').arel.exists
+      Enlistment.where('enlistments.project_id = projects.id and deleted = false').arel.exists
     ).where(best_analysis_id: nil).count
     number_to_percentage((without_analysis_count.to_f / active) * 100, precision: 2)
   end

@@ -20,6 +20,6 @@ task admin_project_stats: :environment do
 
   Rails.cache.write('Admin-weeks-updated-project-count-cache', weeks_updated_project_count)
   Rails.cache.write('Admin-active-project-count-cache', Project.active.where(
-    Enlistment.where('enlistments.project_id = projects.id').arel.exists
-  ).count, expires_in: 1.day)
+    Enlistment.where('enlistments.project_id = projects.id and deleted = false').arel.exists
+  ).count)
 end
