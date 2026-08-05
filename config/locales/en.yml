@@ -375,6 +375,11 @@ en:
   project_experiences:
     no_matching_project: No matching open source project with this name.
 
+  alter_passwords:
+    new:
+      enter_email_address: Enter the email you signed up with.
+      submit_text: Reset Password
+
   passwords:
     title: 'Password Reset - Open Hub'
     new:
@@ -382,6 +387,8 @@ en:
       submit_text: Send me a password reset link
     create:
       success: A link to reset your password was sent to your email address.
+      rate_limit_wait: "Please wait %{seconds} seconds before requesting another reset."
+      rate_limit_exceeded: "Too many password reset requests. Please try again in 10 minutes."
     reset:
       success: Your password has been reset successfully.
     confirm:
