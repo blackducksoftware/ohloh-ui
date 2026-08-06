@@ -87,6 +87,6 @@ class OhAdmin::AccountChart
   end
 
   def total_accounts(date)
-    Account.where('DATE(created_at) < ?', date).where(level: Account::Access::DEFAULT).count
+    Account.where(created_at: ...date.to_date.beginning_of_day).where(level: Account::Access::DEFAULT).count
   end
 end
