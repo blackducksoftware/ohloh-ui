@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
-allowed_script_sources = %w[www.google.com www.gstatic.com s7.addthis.com cdnjs.cloudflare.com]
+allowed_script_sources = %w[www.google.com www.gstatic.com maps.googleapis.com maps.gstatic.com s7.addthis.com
+                            cdnjs.cloudflare.com]
 
 Rails.application.config.content_security_policy do |policy|
   policy.default_src :self, :https
