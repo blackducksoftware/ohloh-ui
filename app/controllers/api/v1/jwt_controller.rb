@@ -3,7 +3,7 @@
 class Api::V1::JwtController < ApplicationController
   include JwtHelper
   skip_before_action :verify_authenticity_token
-  before_action :get_params
+  before_action :get_params, only: :create
 
   def create
     params[:login] = { 'login' => params[:username], 'password' => params[:password], 'remember_me' => '0' }
@@ -15,6 +15,10 @@ class Api::V1::JwtController < ApplicationController
     else
       render json: 'Not Authorized', status: :unauthorized
     end
+  end
+
+  def destroy
+    render json: { message: 'Logout successful' }, status: :ok
   end
 
   def get_params

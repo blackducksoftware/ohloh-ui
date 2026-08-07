@@ -31,6 +31,7 @@ module OhlohUi
     config.eager_load_paths << Rails.root.join('lib')
     config.eager_load_paths << Rails.root.join('lib', 'reverification', '**', '*')
     config.eager_load_paths << Rails.root.join('lib', 'constraints')
+    config.eager_load_paths << Rails.root.join('app', 'lib')
 
     config.eager_load_paths << Rails.root.join('app', 'core', '**', '*')
     config.to_prepare do
