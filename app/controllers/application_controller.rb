@@ -28,7 +28,7 @@ class ApplicationController < ActionController::Base
   before_action :handle_me_account_paths
   before_action :strip_query_param
   before_action :clear_reminder
-  before_action :verify_api_access_for_xml_request, only: %i[show index similar]
+  before_action :verify_api_access, only: %i[show index similar]
   before_action :update_last_seen_at_and_ip
   before_action :check_maintenance_mode
 
@@ -248,9 +248,25 @@ class ApplicationController < ActionController::Base
 
   private
 
-  def verify_api_access_for_xml_request
-    return unless request_format == 'xml' || (params[:action] == 'similar' && request_format == 'json')
-    return render_missing_api_key if params[:api_key].blank?
+  def verify_api_access
+    return unless %w[xml json].include?(request_format)
+
+    if request_format == 'json'
+      verify_json_api_access
+    else
+      verify_xml_api_access
+    end
+  end
+
+  def verify_json_api_access
+    return if current_user.present?
+    return render_missing_api_key if api_client_id.blank?
+
+    verify_api_key_standing
+  end
+
+  def verify_xml_api_access
+    return render_missing_api_key if api_client_id.blank?
 
     verify_api_key_standing
   end
