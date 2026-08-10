@@ -1,0 +1,32 @@
+# Git
+.git
+.gitignore
+
+# Docker files (not needed inside container)
+Dockerfile*
+docker-compose*.yml
+.dockerignore
+DOCKER.md
+
+# Development/temp files
+tmp/
+log/
+.byebug_history
+.bundle
+coverage/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Test artifacts
+test/reports/
+
+# Node (if any)
+node_modules/
