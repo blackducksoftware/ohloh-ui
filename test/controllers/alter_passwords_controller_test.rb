@@ -62,6 +62,20 @@ class AlterPasswordsControllerTest < ActionController::TestCase
     _(flash[:success]).must_equal 'Password successfully changed.'
   end
 
+  it 'must rotate remember_token on successful password change' do
+    oldpassword = PasswordGenerator.generate
+    newpassword = PasswordGenerator.generate
+    account = create(:account, password: oldpassword)
+    original_token = account.remember_token
+    _(original_token).wont_be_nil
+    login_as account
+    put :update,
+        params: { id: account.login, account: { current_password: oldpassword, password: newpassword } }
+    account.reload
+    # Token should be rotated — old sessions are invalidated
+    _(account.remember_token).wont_equal original_token
+  end
+
   describe 'authentication and authorization' do
     it 'must redirect to login when not authenticated' do
       account = create(:account)
