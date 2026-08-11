@@ -30,7 +30,6 @@ class ActivationResendsController < ApplicationController
     @account = Account.find_by(email: params[:email])
     return unless @account.nil?
 
-    @errors = t('.no_account')
-    render :new
+    redirect_to root_path, notice: t('.success')
   end
 end
