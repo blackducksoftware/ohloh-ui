@@ -28,7 +28,7 @@ module EnlistmentFilters
   end
 
   def find_enlistment
-    @enlistment = Enlistment.find_by(id: params[:id])
+    @enlistment = @project.enlistments.find_by(id: params[:id])
     raise ParamRecordNotFound unless @enlistment
 
     @enlistment.editor_account = current_user

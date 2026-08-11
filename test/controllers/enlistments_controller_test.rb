@@ -379,6 +379,16 @@ class EnlistmentsControllerTest < ActionController::TestCase
     assert_response :ok
     assert_template :show
   end
+
+  it 'show returns 404 when enlistment belongs to a different project' do
+    login_as @account
+    other_enlistment = create(:enlistment)
+    client_id = create(:api_key).oauth_application.uid
+
+    get :show, params: { project_id: @project_id, id: other_enlistment.id, format: :xml, api_key: client_id }
+
+    assert_response :not_found
+  end
 end
 
 # rubocop:disable Style/OptionalArguments
