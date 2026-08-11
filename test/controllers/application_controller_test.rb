@@ -411,6 +411,8 @@ class TestController < ApplicationController
     raise ActionView::MissingTemplate.new(%w[path1 path2], 'template_name', %w[detail1 detail2], false, 'html')
   end
 
+  skip_before_action :store_location, only: :redirect_to_saved_path_action
+
   def redirect_to_saved_path_action
     redirect_to_saved_path
   end

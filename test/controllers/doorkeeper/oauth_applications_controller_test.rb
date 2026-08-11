@@ -34,7 +34,7 @@ class Doorkeeper::OauthApplicationsControllerTest < ActionController::TestCase
 
     it 'must revoke access token successfully' do
       login_as account
-      referer_path = edit_account_privacy_account_path(account)
+      referer_path = edit_account_privacy_account_url(account)
 
       request.env['HTTP_REFERER'] = referer_path
       get :revoke_access, params: { account_id: account.id, id: oauth_application.id }
