@@ -251,6 +251,21 @@ class ApplicationControllerTest < ActionController::TestCase
 
       Rails.application.config.unstub(:consider_all_requests_local)
     end
+
+    describe '#set_no_cache_for_authenticated_response' do
+      it 'sets no-store headers for authenticated users' do
+        login_as create(:account)
+        get :head_ok
+        _(response.headers['Cache-Control']).must_equal 'no-store, no-cache'
+        _(response.headers['Pragma']).must_equal 'no-cache'
+      end
+
+      it 'does not set no-store headers for anonymous users' do
+        login_as nil
+        get :head_ok
+        _(response.headers['Cache-Control'].to_s).wont_include 'no-store'
+      end
+    end
   end
 
   describe 'ProjectsController' do
@@ -396,6 +411,10 @@ class TestController < ApplicationController
   def throws_missing_template
     raise ActionView::MissingTemplate.new(%w[path1 path2], 'template_name', %w[detail1 detail2], false, 'html')
   end
+
+  def head_ok
+    head :ok
+  end
 end
 
 test_routes = proc do
@@ -408,5 +427,6 @@ test_routes = proc do
   get 'test/throws_standard_error' => 'test#throws_standard_error'
   get 'test/throws_fisbot_api_error' => 'test#throws_fisbot_api_error'
   get 'test/throws_missing_template' => 'test#throws_missing_template'
+  get 'test/head_ok' => 'test#head_ok'
 end
 Rails.application.routes.send(:eval_block, test_routes)
