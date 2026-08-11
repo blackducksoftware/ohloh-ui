@@ -209,6 +209,7 @@ class ApplicationController < ActionController::Base
   end
 
   def redirect_to_saved_path(default = root_path, **args)
+    args[:allow_other_host] = false
     redirect_back(fallback_location: session[:return_to] || default, **args)
     session[:return_to] = nil
   end
