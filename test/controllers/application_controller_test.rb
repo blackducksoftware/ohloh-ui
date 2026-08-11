@@ -251,6 +251,20 @@ class ApplicationControllerTest < ActionController::TestCase
 
       Rails.application.config.unstub(:consider_all_requests_local)
     end
+
+    describe '#redirect_to_saved_path' do
+      it 'must redirect to fallback when Referer is an external host' do
+        @request.env['HTTP_REFERER'] = 'https://evil.com/phishing'
+        get :redirect_to_saved_path_action
+        assert_redirected_to root_path
+      end
+
+      it 'must follow Referer when it is the same host' do
+        @request.env['HTTP_REFERER'] = 'http://test.host/accounts'
+        get :redirect_to_saved_path_action
+        assert_redirected_to 'http://test.host/accounts'
+      end
+    end
   end
 
   describe 'ProjectsController' do
@@ -396,6 +410,12 @@ class TestController < ApplicationController
   def throws_missing_template
     raise ActionView::MissingTemplate.new(%w[path1 path2], 'template_name', %w[detail1 detail2], false, 'html')
   end
+
+  skip_before_action :store_location, only: :redirect_to_saved_path_action
+
+  def redirect_to_saved_path_action
+    redirect_to_saved_path
+  end
 end
 
 test_routes = proc do
@@ -408,5 +428,6 @@ test_routes = proc do
   get 'test/throws_standard_error' => 'test#throws_standard_error'
   get 'test/throws_fisbot_api_error' => 'test#throws_fisbot_api_error'
   get 'test/throws_missing_template' => 'test#throws_missing_template'
+  get 'test/redirect_to_saved_path_action' => 'test#redirect_to_saved_path_action'
 end
 Rails.application.routes.send(:eval_block, test_routes)
