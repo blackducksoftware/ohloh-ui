@@ -96,4 +96,11 @@ Rails.application.configure do
   SqlTracker::Config.enabled = ENV['SQL_TRACKER'].eql?('enabled')
   SqlTracker::Config.tracked_sql_command = %w[sloc_metrics]
   SqlTracker::Config.output_path = File.join(ENV['SQL_TRACER_TEMP_PATH'] || '/tmp', 'sql_tracker')
+
+  # Reject requests whose Host (or X-Forwarded-Host) does not match the trusted domain.
+  # Prevents host-header injection / X-Forwarded-Host cache-poisoning attacks.
+  config.hosts = [ENV.fetch('URL_HOST', 'https://openhub.staging.openhub.net')]
+
+  # Pin *_url helpers to the trusted host so X-Forwarded-Host cannot poison generated URLs.
+  config.action_controller.default_url_options = { host: ENV.fetch('URL_HOST', 'https://openhub.staging.openhub.net') }
 end
