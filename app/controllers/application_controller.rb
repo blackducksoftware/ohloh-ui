@@ -31,6 +31,7 @@ class ApplicationController < ActionController::Base
   before_action :verify_api_access_for_xml_request, only: %i[show index similar]
   before_action :update_last_seen_at_and_ip
   before_action :check_maintenance_mode
+  before_action :set_no_cache_for_authenticated_response
 
   alias session_required require_login
 
@@ -341,6 +342,13 @@ class ApplicationController < ActionController::Base
     return unless logged_in?
 
     current_user.update_columns(last_seen_at: Time.current, last_seen_ip: request.remote_ip)
+  end
+
+  def set_no_cache_for_authenticated_response
+    return unless logged_in?
+
+    response.headers['Cache-Control'] = 'no-store, no-cache'
+    response.headers['Pragma'] = 'no-cache'
   end
 end
 # rubocop:enable Metrics/ClassLength
