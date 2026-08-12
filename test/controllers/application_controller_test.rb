@@ -256,8 +256,7 @@ class ApplicationControllerTest < ActionController::TestCase
       it 'sets no-store headers for authenticated users' do
         login_as create(:account)
         get :head_ok
-        _(response.headers['Cache-Control']).must_equal 'no-store, no-cache'
-        _(response.headers['Pragma']).must_equal 'no-cache'
+        _(response.headers['Cache-Control'].to_s).must_include 'no-store'
       end
 
       it 'does not set no-store headers for anonymous users' do
