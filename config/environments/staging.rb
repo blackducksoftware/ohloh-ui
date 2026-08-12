@@ -99,8 +99,8 @@ Rails.application.configure do
 
   # Reject requests whose Host (or X-Forwarded-Host) does not match the trusted domain.
   # Prevents host-header injection / X-Forwarded-Host cache-poisoning attacks.
-  config.hosts = [ENV.fetch('URL_HOST', 'https://openhub.staging.openhub.net')]
+  config.hosts = [ENV.fetch('URL_HOST', 'openhub.staging.openhub.net')]
 
   # Pin *_url helpers to the trusted host so X-Forwarded-Host cannot poison generated URLs.
-  config.action_controller.default_url_options = { host: ENV.fetch('URL_HOST', 'https://openhub.staging.openhub.net') }
+  config.action_controller.default_url_options = { host: ENV.fetch('URL_HOST', 'openhub.staging.openhub.net') }
 end
