@@ -9,7 +9,10 @@
 Rails.application.config.to_prepare do
   Clearance::SessionsController.class_eval do
     # Uses after_action (not content_security_policy DSL) so it runs even when a before_action redirects.
-    after_action :set_clickjacking_headers_on_session
+    # Guard prevents duplicate registration on each code reload in development.
+    unless _process_action_callbacks.any? { |cb| cb.filter == :set_clickjacking_headers_on_session }
+      after_action :set_clickjacking_headers_on_session
+    end
 
     private
 
