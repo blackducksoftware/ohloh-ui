@@ -557,4 +557,12 @@ class AccountsControllerTest < ActionController::TestCase
       end
     end
   end
+
+  describe 'clickjacking protection (CWE-1021)' do
+    it 'sets X-Frame-Options: SAMEORIGIN on account show' do
+      get :show, params: { id: admin.login }
+
+      _(response.headers['X-Frame-Options']).must_equal 'SAMEORIGIN'
+    end
+  end
 end
