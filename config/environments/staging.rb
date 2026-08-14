@@ -46,7 +46,7 @@ Rails.application.configure do
   # Force all access to the app over SSL, use Strict-Transport-Security, and use
   # secure cookies.
   # CWE-319: Enable HSTS and HTTPS enforcement. Excludes /ready to prevent readinessProbe redirect loops.
-  # Stage 1: max-age=300 (5 min). Bump hsts.expires to 604800 after 1 week, 31536000 after 1 month.
+  # Stage 1: max-age=300 (5 min). Bump hsts.expires to 604800 after 1 week, then to 31536000 (1 year) after 1 month.
   config.force_ssl = true
   config.ssl_options = {
     hsts: { expires: 300, subdomains: true },
