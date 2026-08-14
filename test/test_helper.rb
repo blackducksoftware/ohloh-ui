@@ -110,6 +110,7 @@ class ActiveSupport::TestCase
   def controller_login_as(account)
     if account
       request.env[:clearance].sign_in(account)
+      session[:okta_authed_at] = Time.current.to_i if account.admin?
     else
       request.env[:clearance].sign_out
     end

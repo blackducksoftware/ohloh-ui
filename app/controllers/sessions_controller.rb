@@ -10,8 +10,13 @@ class SessionsController < Clearance::SessionsController
 
   def create
     account_or_nil = authenticate(params)
+    return handle_admin_login(account_or_nil) if account_or_nil&.admin?
 
-    sign_in(account_or_nil) do |status|
+    handle_regular_login(account_or_nil)
+  end
+
+  def handle_regular_login(account)
+    sign_in(account) do |status|
       if status.success?
         reset_auth_fail_count
         redirect_back_or url_after_create
@@ -20,6 +25,39 @@ class SessionsController < Clearance::SessionsController
         sign_in_failure(status.failure_message)
       end
     end
+  end
+
+  def handle_admin_login(admin)
+    reset_auth_fail_count
+    return direct_sign_in(admin) if okta_auth_excluded?(admin.email) || Rails.env.test?
+
+    prepare_okta_redirect(admin)
+  end
+
+  def direct_sign_in(admin)
+    sign_in(admin) do |status|
+      if status.success?
+        session[:okta_authed_at] = Time.current.to_i
+        reset_auth_fail_count
+        redirect_back_or url_after_create
+      else
+        increment_auth_fail_count
+        sign_in_failure(status.failure_message)
+      end
+    end
+  end
+
+  def prepare_okta_redirect(admin)
+    token = SecureRandom.hex(16)
+    cache_data = { email: admin.email, return_to: session[:return_to] }
+    Rails.cache.write("saml_pending:#{token}", cache_data, expires_in: 10.minutes)
+    @relay_state = token
+    render 'sessions/saml_redirect'
+  end
+
+  def okta_auth_excluded?(email)
+    excluded_emails = ENV.fetch('OKTA_AUTH_EXCLUDED_ADMINS', '').split(',').map(&:strip)
+    excluded_emails.include?(email)
   end
 
   def health
