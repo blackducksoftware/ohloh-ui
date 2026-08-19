@@ -100,6 +100,9 @@ Rails.application.configure do
   # Reject requests whose Host (or X-Forwarded-Host) does not match the trusted domain.
   # Prevents host-header injection / X-Forwarded-Host cache-poisoning attacks.
   config.hosts = [ENV.fetch('URL_HOST', 'openhub.staging.openhub.net')]
+  # Exclude the K8s liveness/readiness probe path from host validation.
+  # Probes use the pod IP as Host header which does not match the allowlist.
+  config.host_authorization = { exclude: ->(request) { request.path == '/health' } }
 
   # Pin *_url helpers to the trusted host so X-Forwarded-Host cannot poison generated URLs.
   config.action_controller.default_url_options = { host: ENV.fetch('URL_HOST', 'openhub.staging.openhub.net') }
