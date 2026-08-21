@@ -6,6 +6,7 @@ class SessionsControllerTest < ActionController::TestCase
   describe 'create' do
     let(:password) { PasswordGenerator.generate }
     let(:account) { create(:account, password: password) }
+    let(:admin) { create(:admin, password: password) }
     let(:max_login_retries) { ENV['MAX_LOGIN_RETRIES'].to_i }
 
     describe 'success' do
@@ -111,6 +112,28 @@ class SessionsControllerTest < ActionController::TestCase
 
         assert_template 'sessions/new'
         _(flash.now[:error]).must_equal I18n.t('accounts.disabled_error')
+      end
+    end
+
+    describe 'admin okta auth' do
+      it 'renders saml form when admin logs in' do
+        Rails.env.stubs(:test?).returns(false)
+        post :create, params: { login: { login: admin.login, password: password } }
+
+        assert_response :success
+        assert_template 'sessions/saml_redirect'
+      end
+
+      it 'skips okta auth when admin is excluded' do
+        old_env = ENV.fetch('OKTA_AUTH_EXCLUDED_ADMINS', nil)
+        ENV['OKTA_AUTH_EXCLUDED_ADMINS'] = admin.email
+        begin
+          post :create, params: { login: { login: admin.login, password: password } }
+          assert_redirected_to '/accounts/me'
+          _(session[:okta_authed_at]).must_be_instance_of Integer
+        ensure
+          ENV['OKTA_AUTH_EXCLUDED_ADMINS'] = old_env
+        end
       end
     end
   end

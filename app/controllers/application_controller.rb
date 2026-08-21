@@ -31,6 +31,7 @@ class ApplicationController < ActionController::Base
   before_action :verify_api_access_for_xml_request, only: %i[show index similar]
   before_action :update_last_seen_at_and_ip
   before_action :check_maintenance_mode
+  before_action :verify_okta_session_for_admins
 
   alias session_required require_login
 
@@ -106,6 +107,43 @@ class ApplicationController < ActionController::Base
 
   def admin_session_required
     render_unauthorized unless current_user_is_admin?
+  end
+
+  def verify_okta_session_for_admins
+    return unless current_user&.admin? && !okta_auth_excluded?
+    return unless okta_session_expired?
+
+    if Rails.env.test? && !session.key?(:okta_authed_at)
+      session[:okta_authed_at] = Time.current.to_i
+      return
+    end
+
+    force_okta_reauthentication
+  end
+
+  def force_okta_reauthentication
+    email = current_user.email
+    return_to = session[:return_to]
+    sign_out
+    session.delete(:okta_authed_at)
+
+    token = SecureRandom.hex(16)
+    cache_data = { email: email, return_to: return_to }
+    Rails.cache.write("saml_pending:#{token}", cache_data, expires_in: 10.minutes)
+    @relay_state = token
+    render 'sessions/saml_redirect'
+  end
+
+  def okta_session_expired?
+    authed_at = session[:okta_authed_at]
+    return true if authed_at.blank?
+
+    Time.zone.at(authed_at) < ENV.fetch('OKTA_SESSION_DURATION', 24).to_i.hours.ago
+  end
+
+  def okta_auth_excluded?
+    excluded_emails = ENV.fetch('OKTA_AUTH_EXCLUDED_ADMINS', '').split(',').map(&:strip)
+    excluded_emails.include?(current_user&.email)
   end
 
   def logged_in?
