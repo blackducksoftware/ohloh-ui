@@ -35,7 +35,6 @@ Rails.application.routes.draw do
   get 'health' => 'sessions#health'
 
   post '/auth/saml/callback', to: 'saml#callback', as: :saml_callback
-  post '/auth/saml/gtr', to: 'saml#global_token_revocation', as: :saml_gtr
 
   post '/csp-violation-report' => 'csp_violation_reports#report'
 
