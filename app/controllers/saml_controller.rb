@@ -1,8 +1,7 @@
 # frozen_string_literal: true
 
 class SamlController < ApplicationController
-  skip_before_action :verify_authenticity_token, only: %i[callback global_token_revocation]
-  before_action :verify_gtr_request, only: :global_token_revocation
+  skip_before_action :verify_authenticity_token, only: :callback
 
   def callback
     okta_email = extract_okta_email
@@ -43,25 +42,5 @@ class SamlController < ApplicationController
 
   def handle_email_mismatch
     redirect_to new_session_path, alert: t('flashes.saml_email_mismatch')
-  end
-
-  def global_token_revocation
-    params[:sub] || params[:login]
-    head :ok
-  end
-
-  private
-
-  def verify_gtr_request
-    secret = ENV.fetch('OKTA_GTR_SECRET', nil)
-    return head :unauthorized if secret.blank?
-
-    auth_header = request.headers['Authorization']
-    return head :unauthorized if auth_header.blank?
-
-    expected_token = "Bearer #{secret}"
-    return head :unauthorized if auth_header.length != expected_token.length
-
-    head :unauthorized unless ActiveSupport::SecurityUtils.secure_compare(auth_header, expected_token)
   end
 end
