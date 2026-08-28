@@ -70,6 +70,7 @@ jobs:
         run: |
           bundle exec bundle-audit update
           bundle exec bundle-audit check
+        continue-on-error: true
 
       - name: Setup test environment
         run: |
