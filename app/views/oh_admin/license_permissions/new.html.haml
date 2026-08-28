@@ -47,13 +47,13 @@
   - else
     %h2= 'No License Permissions Found'
 
-%script{ nonce: content_security_policy_nonce }
-  :plain
-    function ToggleSelection(radio) {
-      var elements = document.getElementsByName(radio.name);
-      for (var i = 0, l = elements.length; i < l; i++) {
-        if (elements[i] != radio) {
-          elements[i].checked = false;
+  %script{ nonce: content_security_policy_nonce }
+    :plain
+      function ToggleSelection(radio) {
+        var elements = document.getElementsByName(radio.name);
+        for (var i = 0, l = elements.length; i < l; i++) {
+          if (elements[i] != radio) {
+            elements[i].checked = false;
+          }
         }
       }
-    }
