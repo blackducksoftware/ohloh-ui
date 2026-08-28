@@ -13,15 +13,7 @@ module JwtHelper
     decoded_token = JWT.decode(jwt, ENV.fetch('JWT_SECRET_API_KEY', nil), true,
                                { algorithm: 'HS256', verify_expiration: true })
     payload = decoded_token[0]
-
-    # Ensure an expiration claim exists (either standard 'exp' or legacy 'expiration')
-    raise JWT::ExpiredSignature, 'Token missing expiration claim' unless payload['exp'] || payload['expiration']
-
-    # Verify legacy 'expiration' field if present
-    if payload['expiration'] && Time.at(payload['expiration']).to_i < Time.now.to_i
-      raise JWT::ExpiredSignature, 'Token expiration field has expired'
-    end
-
+    validate_token_expiration!(payload)
     Account.find_by(login: payload['user'])
   rescue JWT::ExpiredSignature
     'JWT::ExpiredSignature'
@@ -39,6 +31,14 @@ module JwtHelper
   end
 
   private
+
+  def validate_token_expiration!(payload)
+    raise JWT::ExpiredSignature, 'Token missing expiration claim' unless payload['exp'] || payload['expiration']
+    return unless payload['expiration']
+
+    exp_time = Time.at(payload['expiration']).to_i
+    raise JWT::ExpiredSignature, 'Token expiration field has expired' if exp_time < Time.now.to_i
+  end
 
   def jwt_expired_error
     render json: { error: 'Authentication token has expired' }, status: :unauthorized
