@@ -8,12 +8,7 @@ class Api::V1::JwtControllerTest < ActionController::TestCase
   before do
     @account = create(:account)
     ENV['JWT_SECRET_API_KEY'] = Faker::Alphanumeric.alpha(number: 5)
-    @original_cache = Rails.cache
-    Rails.cache = ActiveSupport::Cache::MemoryStore.new
-  end
-
-  after do
-    Rails.cache = @original_cache
+    Rails.cache.clear
   end
 
   describe 'create' do
@@ -49,13 +44,15 @@ class Api::V1::JwtControllerTest < ActionController::TestCase
     it 'returns success for logout' do
       jwt = build_jwt(@account.login)
 
-      delete :destroy, params: { JWT: jwt }
+      @request.headers['Authorization'] = "Bearer #{jwt}"
+      delete :destroy
       assert_response :ok
       _(response.parsed_body['message']).must_equal 'Logout successful'
     end
 
     it 'returns success even with an unparseable token' do
-      delete :destroy, params: { JWT: 'not-a-real-token' }
+      @request.headers['Authorization'] = 'Bearer not-a-real-token'
+      delete :destroy
       assert_response :ok
       _(response.parsed_body['message']).must_equal 'Logout successful'
     end

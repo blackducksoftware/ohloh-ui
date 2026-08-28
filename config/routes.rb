@@ -493,11 +493,7 @@ Rails.application.routes.draw do
         post 'unsubscribe'
         post 'enlist'
       end
-      resources :jwt, only: [:create] do
-        collection do
-          delete '', action: :destroy
-        end
-      end
+      resource :jwt, only: %i[create destroy], controller: 'jwt'
       resources :projects, only: [:create] do
         member do
           get :similar, format: :json
