@@ -45,9 +45,8 @@
             .form-group
               %label.control-label= t('.homepage_url')
               .controls
-                - valid_url = @account.url&.match?(%r{\A(https?|ftp)://}) ? @account.url : nil
-                = f.text_field :url, class: 'form-control validate-url', value: valid_url,
-                                      pattern: '(https?|ftp)://.*', title: t('accounts.edit.valid_url_format')
+                = f.text_field :url, class: 'form-control validate-url', value: @account.url,
+                                      pattern: 'https?://.*', title: t('accounts.edit.valid_url_format')
                 - error_tag @account, :url
                 %p.help-block= t('accounts.edit.url_format_help')
 
