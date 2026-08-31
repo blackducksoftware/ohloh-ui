@@ -11,7 +11,8 @@ module AccountValidations
 
     validate :valid_current_password?, on: :update, if: :validate_current_password
 
-    validates :url, length: { maximum: 100 }, url_format: true, allow_blank: true
+    validates :url, length: { maximum: 100 }, url_format: true, allow_blank: true,
+                    format: { with: %r{\A(https?|ftp)://}, message: :invalid_format, allow_blank: true }
     validates :login, presence: true
     validates :login, length: { in: 3..40 }, uniqueness: { case_sensitive: false },
                       allow_blank: false, default_param_format: true, if: :will_save_change_to_login?
