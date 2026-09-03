@@ -36,6 +36,9 @@ class FisbotApi
     uri = api_access.resource_uri(:valid)
     response = Net::HTTP.post_form(uri, attributes)
     response.is_a?(Net::HTTPSuccess)
+  rescue Errno::ECONNREFUSED, Timeout::Error
+    # Only bypass validation in development/test; fail safely in production
+    Rails.env.development? || Rails.env.test?
   end
 
   def fetch

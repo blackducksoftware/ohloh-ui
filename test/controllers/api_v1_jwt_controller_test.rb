@@ -8,6 +8,7 @@ class Api::V1::JwtControllerTest < ActionController::TestCase
   before do
     @account = create(:account)
     ENV['JWT_SECRET_API_KEY'] = Faker::Alphanumeric.alpha(number: 5)
+    Rails.cache.clear
   end
 
   describe 'create' do
@@ -36,6 +37,24 @@ class Api::V1::JwtControllerTest < ActionController::TestCase
     it 'should return errors if not given a password' do
       post :create, params: { username: @account.login }
       assert_response :bad_request
+    end
+  end
+
+  describe 'destroy' do
+    it 'returns success for logout' do
+      jwt = build_jwt(@account.login)
+
+      @request.headers['Authorization'] = "Bearer #{jwt}"
+      delete :destroy
+      assert_response :ok
+      _(response.parsed_body['message']).must_equal 'Logout successful'
+    end
+
+    it 'returns success even with an unparseable token' do
+      @request.headers['Authorization'] = 'Bearer not-a-real-token'
+      delete :destroy
+      assert_response :ok
+      _(response.parsed_body['message']).must_equal 'Logout successful'
     end
   end
 end
