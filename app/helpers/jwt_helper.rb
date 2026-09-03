@@ -3,7 +3,8 @@
 module JwtHelper
   DEFAULT_JWT_EXPIRY_HOURS = 1
 
-  def build_jwt(user, valid_for_hours = ENV.fetch('JWT_EXPIRY_HOURS', DEFAULT_JWT_EXPIRY_HOURS).to_f)
+  def build_jwt(user, valid_for_hours = nil)
+    valid_for_hours ||= ENV['JWT_EXPIRY_HOURS'].presence&.to_f || DEFAULT_JWT_EXPIRY_HOURS
     exp = Time.now.to_i + (valid_for_hours * 60 * 60)
     payload = { exp: exp, user: user }
     JWT.encode(payload, ENV.fetch('JWT_SECRET_API_KEY', nil), 'HS256')
