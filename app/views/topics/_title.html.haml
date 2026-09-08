@@ -1,3 +1,4 @@
-%h2.max_width.pull-left= @topic.title
-- if @topic.closed
-  %span.label.label-warning#closed_status= t('closed')
+%h2.topic-page-title
+  = @topic.title
+  - if @topic.closed?
+    %span.topic-row-badge.badge-closed{ style: 'font-size: 12px; margin-left: 8px; vertical-align: middle' }= t('closed')

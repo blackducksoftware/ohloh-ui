@@ -5,14 +5,16 @@
 
 #accounts-languages-page
   - if @account.decorate.account_analysis_status_message.blank?
-    .col-md-12
-      = render partial: 'accounts/languages/commits_by_language'
-    - if @vlfs.present?
-      .col-md-12#language_detail
-        .table-responsive
-          %table.table.table-striped.table-condensed
-            %thead= render partial: 'contributions/language_header'
-            %tbody= render partial: 'contributions/language_fact', collection: @vlfs
+    .row
+      .col-md-12
+        = render partial: 'accounts/languages/commits_by_language'
+      - if @vlfs.present?
+        .col-md-12#language_detail
+          .table-responsive
+            %table.table.table-striped.table-condensed
+              %thead= render partial: 'contributions/language_header'
+              %tbody= render partial: 'contributions/language_fact', collection: @vlfs
+      .clearfix
   - else
     .settings-page-header
       .settings-page-header-row

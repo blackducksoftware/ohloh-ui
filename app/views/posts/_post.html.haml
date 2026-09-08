@@ -1,14 +1,22 @@
-.oh-card.posts{ style: post.account.access.admin? ? 'background: #D5E3E9;' : 'background: #F6F6F6' }
-  = find_and_preserve(markdown_format(post.body))
-  .clearfix.margin_top_10
-    .col-md-3.pull-right
-      .pull-left
-        %a{ href: account_path(post.account), 'aria-label' => "View #{h(post.account.name)}'s profile" }= avatar_img_for post.account, 42
-      .pull-left.margin_left_5
-        %a.avatar_name{ href: account_path(post.account) }
-          = truncate(h(post.account.name), length: 18)
-        %small.date.avatar_name
-          = t('.replied_ago', date: time_ago_in_words(post.updated_at))
-    .clear
-.row
-  &nbsp;
+.post-card{ class: (post.account.access.admin? ? 'post-card-admin' : '') }
+  .post-card-body
+    = find_and_preserve(markdown_format(post.body))
+  .post-card-footer
+    .post-card-author
+      .post-card-avatar
+        %a{ href: account_path(post.account), 'aria-label' => "View #{h(post.account.name)}'s profile" }
+          = avatar_img_for post.account, 32
+      .post-card-author-info
+        = link_to truncate(h(post.account.name), length: 20), account_path(post.account), class: 'post-card-author-name'
+        %span.post-card-date= t('.replied_ago', date: time_ago_in_words(post.updated_at))
+    .post-card-actions
+      - if current_user_is_admin? || (logged_in? && current_user.id == post.account_id)
+        = link_to edit_topic_post_path(@topic, post), class: 'post-action-link' do
+          %i.fa.fa-pencil
+          = t('edit')
+      - if current_user_is_admin?
+        = link_to topic_post_path(@topic, post), method: :delete,
+          data: { confirm: t('posts.edit.delete_confirmation') },
+          class: 'post-action-link post-action-danger' do
+          %i.fa.fa-trash
+          = t('posts.edit.delete')

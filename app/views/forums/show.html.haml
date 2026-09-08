@@ -1,30 +1,23 @@
 - content_for :html_title do
   = t('openhub_show', name: @forum.name.to_s)
 
-%h1
-  = link_to t('.forums'), forums_url
-  \:
-  = @forum.name
+.forum-page-wrap
+  .settings-page-header
+    .settings-page-header-row
+      .settings-page-icon
+        %i.fa.fa-comments
+      %h2.settings-page-h2= @forum.name
+      = link_to new_forum_topic_path(@forum), class: 'forum-btn forum-btn-primary forum-btn-sm' do
+        %i.fa.fa-plus
+        = t('.add_new_topic')
+    %p.settings-page-description
+      = link_to t('.forums'), forums_url
+      %span.account-basics-sep ›
+      = h(@forum.name)
 
-= render partial: '/forums/notice'
+  = render partial: '/forums/notice'
 
-%table.table.table-striped
-  %thead
-    %tr
-      %th.first.col-md-4
-        %h4.nomargin.strong.margin_bottom_0= t('.topic')
-      %th.col-md-1
-      %th.col-md-1
-        %h4.nomargin.center.strong.margin_bottom_0= t('.replies')
-      %th.col-md-1
-        %h4.nomargin.center.strong.margin_bottom_0= t('.views')
-      %th.col-md-3
-        %h4.nomargin.center.strong.margin_bottom_0= t('.last_post')
-  %tbody
+  .topics-list
     = render partial: 'topics/topic', collection: @topics
-.col-md-12{ style: 'margin-left: -15px' }
-  .col-md-1
-    = link_to t('.add_new_topic'), new_forum_topic_path(@forum),
-      class: 'btn btn-primary btn-mini disabled'
-  .col-md-11{ style: 'margin-top: -20px' }
-    = render 'shared/modern_pagination', collection: @topics
+
+  = render 'shared/modern_pagination', collection: @topics

@@ -241,6 +241,32 @@ html.dark
   margin-top: 100px
   position: fixed
 
+  html.dark &
+    .modal-content
+      background-color: #151b23
+      border: 1px solid rgba(255, 255, 255, 0.1)
+
+    .modal-header
+      border-bottom-color: rgba(255, 255, 255, 0.1)
+
+      .modal-title
+        color: #e5e7eb
+
+      button.close
+        color: #e5e7eb
+        opacity: 0.6
+        text-shadow: none
+
+        &:hover
+          opacity: 1
+
+    .panel.panel-default
+      background-color: #151b23
+      border-color: rgba(255, 255, 255, 0.1)
+
+    .panel-body
+      background-color: #151b23
+
 // Mobile Accordion View
 .mobile-compare-view
   display: none

@@ -25,7 +25,10 @@ class Invite < ApplicationRecord
   end
 
   def claim_url
-    "http://#{ENV.fetch('URL_HOST', nil)}/p/#{project_id}/contributors/#{contribution_id}?invite=#{activation_code}"
+    Rails.application.routes.url_helpers.one_click_create_account_positions_url(
+      account_id: 'me', project_name: project.name, committer_name: name.name,
+      host: ENV.fetch('URL_HOST', nil)
+    )
   end
 
   private

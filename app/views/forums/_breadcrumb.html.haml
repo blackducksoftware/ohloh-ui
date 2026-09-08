@@ -1,7 +1,5 @@
-%h1.margin_top_0
+%p.settings-page-description.forum-breadcrumb
   = link_to t('forums.index.forums'), forums_path
-  \:
-  = link_to h(forum.name), h(forum_path(forum))
-.clearfix
+  %span.account-basics-sep ›
+  = link_to h(forum.name), forum_path(forum)
 = render partial: '/forums/notice'
-.clearfix

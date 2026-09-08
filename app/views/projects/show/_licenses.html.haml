@@ -13,7 +13,7 @@
           %svg.chevron{ viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", 'stroke-width': "2", 'stroke-linecap': "round", 'stroke-linejoin': "round" }
             %polyline{ points: "6 9 12 15 18 9" }
 
-        .license-content{ class: "license-content-#{license.id}" }
+        .license-content.license_details{ class: "license-content-#{license.id}" }
           .license-details-grid
             / Permitted Column
             .license-detail-card.permitted
@@ -26,7 +26,7 @@
                 - license.permitted_license_permissions.each do |p|
                   %p
                     %span{ 'data-tipso' => p.description }= p.name
-                    %i.fa.float_right{ 'aria-hidden' => 'true', class: "fa-#{p.icon}", 'data-tipso' => p.name }
+                    %i.fa.float_right{ 'aria-hidden' => 'true', class: p.icon, 'data-tipso' => p.name }
 
             / Forbidden Column
             .license-detail-card.forbidden
@@ -40,7 +40,7 @@
                 - license.forbidden_license_permissions.each do |p|
                   %p
                     %span{ 'data-tipso' => p.description }= p.name
-                    %i.fa.float_right{ 'aria-hidden' => 'true', class: "fa-#{p.icon}", 'data-tipso' => p.name }
+                    %i.fa.float_right{ 'aria-hidden' => 'true', class: p.icon, 'data-tipso' => p.name }
 
             / Required Column
             .license-detail-card.required
@@ -54,7 +54,7 @@
                 - license.required_license_permissions.each do |p|
                   %p
                     %span{ 'data-tipso' => p.description }= p.name
-                    %i.fa.float_right{ 'aria-hidden' => 'true', class: "fa-#{p.icon}", 'data-tipso' => p.name }
+                    %i.fa.float_right{ 'aria-hidden' => 'true', class: p.icon, 'data-tipso' => p.name }
 
           .license-disclaimer
             %p= t('.disclaimer')

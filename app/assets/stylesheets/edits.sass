@@ -100,7 +100,7 @@
     margin-left: 50px
     span.date
       html.dark &
-        color: #c084fc
+        color: #ffffff
 .edit_enlist_branch_name, .edit_enlist_module_name, .edit_enlist_module_branch_name
   background: #7BB432
   color: #fff
@@ -108,20 +108,78 @@
 .edit_enlist_module_name
   background: #547C21
 #edit-details
+  .modal-content
+    border-radius: 14px
+    border: none
+    overflow: hidden
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15)
+
   .modal-header
-    padding: 8px
-    background: #0082C6
-    color: #FFF
+    padding: 16px 20px
+    background: linear-gradient(135deg, #5A2A82, #7c3aed)
+    color: #fff
+    border-bottom: none
+
+  .modal-title
+    font-size: 16px
+    font-weight: 700
+    color: #fff
+    margin: 0
+
   button.close
-    padding: 1px
-    opacity: 0.4
-    border: 1px solid #FFF
-    border-radius: 5px
+    background: rgba(255, 255, 255, 0.15)
+    border: none
+    border-radius: 6px
+    width: 28px
+    height: 28px
+    opacity: 1
+    padding: 0
+    color: #fff
+    text-shadow: none
+    font-size: 18px
+    line-height: 26px
+
     &:hover
-      opacity: 0.5
+      background: rgba(255, 255, 255, 0.28)
+      opacity: 1
+
   .modal-body
+    padding: 20px
+
     .row
-      padding-bottom: 5px
+      padding-top: 10px
+      padding-bottom: 10px
+      border-bottom: 1px solid #eef0f3
+
+      &:last-child
+        border-bottom: none
+
+    .list-title
+      color: #6b7280
+      font-weight: 600
+      font-size: 13px
+
+    .list-separator
+      color: #d1d5db
+      font-weight: 400
+
+  html.dark &
+    .modal-content
+      background-color: #0d1117
+      border: 1px solid rgba(90, 42, 130, 0.4)
+
+    .modal-body
+      color: #d1d5db
+
+      .row
+        border-bottom-color: rgba(255, 255, 255, 0.08)
+
+      .list-title
+        color: #9ca3af
+
+      .list-separator
+        color: #4b5563
+
 
 .edit_spinner
   position: absolute

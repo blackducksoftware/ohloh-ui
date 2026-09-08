@@ -70,8 +70,7 @@ class ForumsControllerTest < ActionController::TestCase
 
     get :show, params: { id: forum.id }
     # Should have 15 topics per page
-    html = 'table.table.table-striped tbody tr'
-    assert_select html, 15
+    assert_select 'div.topic-row', 15
   end
 
   it 'admin edit' do
@@ -143,8 +142,7 @@ class ForumsControllerTest < ActionController::TestCase
     assert_response :success
 
     # Should have 15 topics per page
-    html = 'table.table.table-striped tbody tr'
-    assert_select html, 15
+    assert_select 'div.topic-row', 15
   end
 
   it 'edit' do

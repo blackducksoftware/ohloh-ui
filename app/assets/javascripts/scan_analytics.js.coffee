@@ -70,7 +70,8 @@ setDefaultChartOptions = ->
 
 outstandingFixedChart = (options, data) ->
   if data and data['fixed_defects']
-    chart1Options = 
+    $('#chart1').show()
+    chart1Options =
       chart:
         renderTo: 'chart1'
         type: 'line'
@@ -104,6 +105,7 @@ outstandingFixedChart = (options, data) ->
 
 defectDensityChart = (options, data) ->
   if data and data['defect_density']
+    $('#chart2').show()
     chart2Options =
       chart:
         renderTo: 'chart2'
@@ -143,7 +145,8 @@ defectDensityChart = (options, data) ->
 
 highImpactChart = (options, data) ->
   if data and Object.keys(data["high_impact_defects"]).length > 0
-    chart3Options = 
+    $('#chart3').show()
+    chart3Options =
       chart:
         renderTo: 'chart3'
         type: 'bar'
@@ -163,7 +166,8 @@ highImpactChart = (options, data) ->
 
 mediumImpactChart = (options, data) ->
   if data and Object.keys(data["medium_impact_defects"]).length > 0
-    chart4Options = 
+    $('#chart4').show()
+    chart4Options =
       chart:
         renderTo: 'chart4'
         type: 'bar'

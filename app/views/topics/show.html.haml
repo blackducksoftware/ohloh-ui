@@ -1,18 +1,20 @@
 - content_for :html_title do
   = t('.topic_show', forum: @forum.name, topic: @topic.title)
 
-.col-md-12.margin_top_10
+.forum-page-wrap
   = render partial: 'forums/breadcrumb', locals: { forum: @forum }
-  = render partial: 'topics/title', locals: { topic: @topic }
-  = render partial: 'topics/action_group', locals: { topic: @topic }
 
-.col-md-12
-  = render partial: 'posts/post', collection: @posts
+  .topic-page-header
+    = render partial: 'topics/title', locals: { topic: @topic }
+    = render partial: 'topics/action_group', locals: { topic: @topic }
+
+  .post-thread
+    = render partial: 'posts/post', collection: @posts
+
   = render 'shared/modern_pagination', collection: @posts
 
-  .oh-card
-    - if @topic.closed?
-      %br
+  - if @topic.closed?
+    .topic-closed-banner
       - if @topic.account == current_user
         %p= t('.close_topic_message_1')
         %p= t('.reopen_message_html', link: link_to(t('topics.reopen'), reopen_topic_path(@topic)))
@@ -20,17 +22,19 @@
         %p= t('.closed_topic_message_2')
         %p= t('.closed_topic_message_3')
 
+  = render partial: 'posts/reply'
+
   - collection_of_all_topics = @topic.forum.topics
-  %ul.pager
-    %li.pull-left{ class: ('disabled' if collection_of_all_topics.index(@topic).zero?) }
-      - if @topic == collection_of_all_topics.first
-        = link_to t('.previous_topic_html'), '#'
-      - else
-        = link_to t('.previous_topic_html'),
-          topic_path(collection_of_all_topics[(collection_of_all_topics.index(@topic) - 1)])
-    %li.pull-right{ class: ('disabled' if collection_of_all_topics.index(@topic).zero?) }
-      - if @topic == collection_of_all_topics.last
-        = link_to t('.next_topic_html'), '#'
-      - else
-        = link_to t('.next_topic_html'),
-          topic_path(collection_of_all_topics[(collection_of_all_topics.index(@topic) + 1)])
+  .topic-pager
+    - if @topic == collection_of_all_topics.first
+      %span.topic-pager-btn.disabled= t('.previous_topic_html').html_safe
+    - else
+      = link_to t('.previous_topic_html'),
+        topic_path(collection_of_all_topics[(collection_of_all_topics.index(@topic) - 1)]),
+        class: 'topic-pager-btn'
+    - if @topic == collection_of_all_topics.last
+      %span.topic-pager-btn.disabled= t('.next_topic_html').html_safe
+    - else
+      = link_to t('.next_topic_html'),
+        topic_path(collection_of_all_topics[(collection_of_all_topics.index(@topic) + 1)]),
+        class: 'topic-pager-btn'

@@ -1,27 +1,26 @@
 - content_for :html_title do
   = t('.edit_title')
 
-%br
-.col-md-12
-  = render partial: 'forums/breadcrumb', locals: { forum:  @post.topic.forum }
-.clear
-.row
-  .col-md-8.pull-left.margin_top_10
-    %h2= t('.edit_post')
-  .col-md-3.pull-right
-    - if current_user_is_admin?
-      .btn-group
-        .pull-left
-          = button_to t('.spam'), make_spammer_account_accesses_path(@post.account), method: :post,
-          data: { confirm: t('.spam_confirmation'), user: @topic.posts.first.account.name },
-          class: 'btn btn-warning btn-mini'
-        .pull-left.margin_left_5
-          = button_to t('.delete'), topic_post_path(@topic, @post), method: :delete,
-          data: { confirm: t('.delete_confirmation') }, class: 'btn btn-danger btn-mini'
+.post-edit-wrap
+  .settings-page-header
+    .settings-page-header-row
+      .settings-page-icon
+        %i.fa.fa-pencil
+      %h2.settings-page-h2= t('.edit_post')
+    = render partial: 'forums/breadcrumb', locals: { forum: @post.topic.forum }
 
-.oh-card.col-md-12
-  .col-md-9
-    = form_for([@topic, @post], url: topic_post_path(@topic, @post), html: { method: 'put' }) do |f|
-      = render partial: 'fields', locals: { f: f }
-  .col-md-2.margin_left_30.margin_top_10
-    = render partial: 'shared/markdown_help'
+  - if current_user_is_admin?
+    .topic-page-actions{ style: 'margin-bottom: 16px' }
+      = button_to t('.spam'), make_spammer_account_accesses_path(@post.account), method: :post,
+        data: { confirm: t('.spam_confirmation'), user: @topic.posts.first.account.name },
+        class: 'forum-btn forum-btn-warning forum-btn-sm'
+      = button_to t('.delete'), topic_post_path(@topic, @post), method: :delete,
+        data: { confirm: t('.delete_confirmation') },
+        class: 'forum-btn forum-btn-danger forum-btn-sm'
+
+  .post-edit-card
+    .post-edit-main
+      = form_for([@topic, @post], url: topic_post_path(@topic, @post), html: { method: 'put' }) do |f|
+        = render partial: 'fields', locals: { f: f }
+    .post-edit-sidebar
+      = render partial: 'shared/markdown_help'

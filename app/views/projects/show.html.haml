@@ -117,17 +117,21 @@
                   .content
                     is
                     = link_to "mostly written in #{@analysis.main_language.nice_name}", languages_summary_project_analysis_path(@project, id: 'latest')
-                    with average comment density
+                    with
+                    - get_factoid_display :comments
 
               %li
                 %svg{ viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", 'stroke-width': "2" }
                   %polyline{ points: "23 6 13.5 15.5 8.5 10.5 1 18" }
                   %polyline{ points: "17 6 23 6 23 12" }
                 .content
-                  has a
-                  %span.font-semibold mature codebase
-                  maintained by a
-                  %span.font-semibold very large development team
+                  has
+                  - get_factoid_display :age
+                  maintained by
+                  - get_factoid_display :team
+                  %br
+                  with
+                  - get_factoid_display :activity
 
               %li
                 %svg{ viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", 'stroke-width': "2" }
@@ -147,10 +151,13 @@
                 .content
                   - if @analysis.first_commit_time?
                     starting
-                    %span.font-semibold= @analysis.first_commit_time.strftime('%B %Y')
+                    = link_to t('.factoids.first_commit_in', time: @analysis.first_commit_time.strftime('%B, %Y')),
+                              project_commits_path(@project, sort: 'oldest')
                   - if @analysis.last_commit_time?
                     , ending
-                    %span.font-semibold= "#{time_ago_in_words(@analysis.last_commit_time)} ago"
+                    = link_to t('.factoids.most_recent_commit', time: time_ago_in_words(@analysis.last_commit_time)),
+                              project_commits_path(@project)
+                    = t('ago')
           - else
             = render partial: 'projects/show/no_analysis_summary'
 
@@ -302,17 +309,21 @@
                   .content
                     is
                     = link_to "mostly written in #{@analysis.main_language.nice_name}", languages_summary_project_analysis_path(@project, id: 'latest')
-                    with average comment density
+                    with
+                    - get_factoid_display :comments
 
               %li
                 %svg{ viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", 'stroke-width': "2" }
                   %polyline{ points: "23 6 13.5 15.5 8.5 10.5 1 18" }
                   %polyline{ points: "17 6 23 6 23 12" }
                 .content
-                  has a
-                  %span.font-semibold mature codebase
-                  maintained by a
-                  %span.font-semibold very large development team
+                  has
+                  - get_factoid_display :age
+                  maintained by
+                  - get_factoid_display :team
+                  %br
+                  with
+                  - get_factoid_display :activity
 
               %li
                 %svg{ viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", 'stroke-width': "2" }
@@ -332,10 +343,13 @@
                 .content
                   - if @analysis.first_commit_time?
                     starting
-                    %span.font-semibold= @analysis.first_commit_time.strftime('%B %Y')
+                    = link_to t('.factoids.first_commit_in', time: @analysis.first_commit_time.strftime('%B, %Y')),
+                              project_commits_path(@project, sort: 'oldest')
                   - if @analysis.last_commit_time?
                     , ending
-                    %span.font-semibold= "#{time_ago_in_words(@analysis.last_commit_time)} ago"
+                    = link_to t('.factoids.most_recent_commit', time: time_ago_in_words(@analysis.last_commit_time)),
+                              project_commits_path(@project)
+                    = t('ago')
           - else
             = render partial: 'projects/show/no_analysis_summary'
 

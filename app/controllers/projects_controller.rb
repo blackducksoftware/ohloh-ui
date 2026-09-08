@@ -72,7 +72,7 @@ class ProjectsController < ApplicationController
   def report_outdated
     if @project.reported_at.blank?
       @project.update!(reported_at: Time.current, editor_account: Account.hamster)
-      ProjectMailer.report_outdated(current_user, @project).deliver
+      ProjectMailer.report_outdated(current_user, @project).deliver_now
     end
     flash[:notice] = t('.notification')
     redirect_back(fallback_location: root_path)

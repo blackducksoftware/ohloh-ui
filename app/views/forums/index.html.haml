@@ -1,36 +1,45 @@
 - content_for :html_title do
   = t('.openhub_forums')
 
-%h1= t('.forums')
-= render partial: '/forums/notice'
+.forum-page-wrap
+  .settings-page-header
+    .settings-page-header-row
+      .settings-page-icon
+        %i.fa.fa-comments
+      %h2.settings-page-h2= t('.forums')
 
-%h2.soft.margin_top_20= t('.active_topics')
-= render partial: '/topics/current_discussions', object: @recent_topics
+  = render partial: '/forums/notice'
 
-.center
-  = link_to t('.recent_posts'), all_posts_path, class: 'btn btn-info btn-small'
-  = link_to t('.unanswered_posts'), all_posts_path(sort: :unanswered), class: 'btn btn-info btn-small'
+  %p.forum-section-label= t('.active_topics')
+  = render partial: '/topics/current_discussions', object: @recent_topics
 
-%h2.soft= t('.all_forums')
-%table.table.table-striped
-  %thead
-    %tr
-      %th{ width: '70%' }
-        %h4.nomargin.strong.margin_bottom_0= t('.forums')
-      %th.center{ width: '15%' }
-        %h4.nomargin.center.strong.margin_bottom_0= t('.topics')
-      %th.center{ width: '15%' }
-        %h4.nomargin.center.strong.margin_bottom_0= t('.posts')
-  %tbody
+  .forum-quick-links
+    = link_to all_posts_path, class: 'forum-btn forum-btn-outline forum-btn-sm' do
+      %i.fa.fa-clock-o
+      = t('.recent_posts')
+    = link_to all_posts_path(sort: :unanswered), class: 'forum-btn forum-btn-outline forum-btn-sm' do
+      %i.fa.fa-question-circle
+      = t('.unanswered_posts')
+
+  %p.forum-section-label= t('.all_forums')
+  .forum-list
     - @forums.each do |forum|
-      - class_name = (@forums.last == forum) ? 'border_bottom_color' : ''
-      %tr{ class: class_name }
-        %td.first
-          %h3.nomargin
-            = link_to h(forum.name), forum_path(forum)
-          %p.nomargin= forum.description
-        %td.center= forum.topics_count
-        %td.center= forum.posts_count
+      .forum-card
+        .forum-card-icon
+          %i.fa.fa-comments
+        .forum-card-body
+          %p.forum-card-name= link_to h(forum.name), forum_path(forum)
+          %p.forum-card-desc= forum.description
+          .forum-card-meta
+            %span.forum-card-stat
+              %i.fa.fa-list
+              = forum.topics_count
+              = t('.topics')
+            %span.forum-card-stat
+              %i.fa.fa-comment
+              = forum.posts_count
+              = t('.posts')
 
-- if current_user_is_admin?
-  = link_to t('.new_forum'), new_forum_path, class: 'btn btn-primary btn-small disabled'
+  - if current_user_is_admin?
+    .forum-index-actions
+      = link_to t('.new_forum'), new_forum_path, class: 'forum-btn forum-btn-primary'
