@@ -23,7 +23,7 @@ class ProjectTagsControllerTest < ActionController::TestCase
       project = create(:project)
       get :index, params: { project_id: project.to_param }
       assert_response :success
-      assert_select '.alert', 1
+      assert_select '#related_projects .alert', 1
       _(response.body).must_match I18n.t('project_tags.index.no_other_projects')
     end
   end

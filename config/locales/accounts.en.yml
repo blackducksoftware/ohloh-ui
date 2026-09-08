@@ -48,7 +48,7 @@ en:
       page_title: '%{name} : Account Basics - Open Hub'
       email_help: 'We use your email address to show your'
       affiliation_help: "Enter the company or organization you're affiliated with."
-      city_and_country: 'City &amp; Country'
+      city_and_country: 'City & Country'
       location_error_message: 'Sorry, that location was not found.'
       about_raw_help: 'A short (less than 500 characters) description of you.'
       delete_account: 'Delete Account'

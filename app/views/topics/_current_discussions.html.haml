@@ -1,19 +1,15 @@
-%table.table.table-striped
-  %thead
-    %tr
-      %th.first{ width: '45%' }
-        %h4.nomargin.strong.margin_bottom_0= t('.discussion')
-      %th{ width: '15%' }
-        %h4.nomargin.center.strong.margin_bottom_0= t('.posts')
-      %th{ width: '25%' }
-        %h4.nomargin.strong.margin_bottom_0= t('.poster')
-      %th{ width: '15%' }
-        %h4.nomargin.strong.margin_bottom_0= t('.freshness')
-  %tbody
-    - @recent_topics.each do |topic|
-      %tr{ class: ('border_bottom_color' if @recent_topics.last == topic) }
-        %td.first= link_to h(topic.title), topic_path(topic)
-        %td.center= topic.posts_count
-        - if topic.posts.last
-          %td= topic.posts.last.account.name
-          %td.freshness= t('.freshness_time', date: time_ago_in_words(topic.replied_at))
+.topics-list
+  - @recent_topics.each do |topic|
+    .topic-row
+      .topic-row-main
+        .topic-row-title= link_to h(topic.title), topic_path(topic)
+        .topic-row-meta
+          - if topic.posts.last
+            = t('.poster')
+            = topic.posts.last.account.name
+      .topic-row-stats
+        .topic-row-stat
+          %span.stat-value= topic.posts_count
+          %span.stat-label= t('.posts')
+      - if topic.replied_at
+        .topic-row-last= t('.freshness_time', date: time_ago_in_words(topic.replied_at))

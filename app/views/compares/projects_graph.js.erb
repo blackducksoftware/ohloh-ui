@@ -4,15 +4,29 @@ var year = year - 3;
 var month = presentDay.getMonth();
 
 $(function () {
+   var isDark = document.documentElement.classList.contains('dark');
+   var bgColor = isDark ? '#151b23' : '#ffffff';
+   var borderColor = isDark ? 'rgba(255, 255, 255, 0.2)' : '#525252';
+   var titleColor = isDark ? '#e5e7eb' : '#333333';
+   var labelColor = isDark ? '#9ca3af' : '#606064';
+   var axisColor = isDark ? '#d1d5db' : '#333333';
+   var gridLineColor = isDark ? 'rgba(255, 255, 255, 0.1)' : '#e6e6e6';
+   var legendColor = isDark ? '#e5e7eb' : '#333333';
+
    $('#chartContainer').highcharts({
     chart: {
     height: 450,
     width: 540,
     borderWidth: 5,
-    borderColor: '#525252'
+    borderColor: borderColor,
+    backgroundColor: bgColor,
+    style: {
+      fontFamily: '"Helvetica Neue",Helvetica,Arial,sans-serif'
+    }
     },
     colors: ['#ee1f08','#39d63c','#2ba5e1'],
     title: {
+      style: { color: titleColor },
       <%- if @metric == 'code_total' -%>
             text: 'Total lines of project source code, excluding comments and blank lines.'
       <%- else %>
@@ -24,19 +38,26 @@ $(function () {
         month: '20%y'
       },
       labels: {
-        step: 1
+        step: 1,
+        style: { color: labelColor }
       },
+      lineColor: gridLineColor,
+      tickColor: gridLineColor,
+      gridLineColor: gridLineColor,
       tickInterval: 24 * 3600 * 1000 * 365,
       type: 'datetime'
     },
     yAxis: {
       floor: 0,
+      gridLineColor: gridLineColor,
       labels: {
+       style: { color: labelColor },
        formatter:function() {
         return Highcharts.numberFormat(this.value, 0, '', ',');
         }
       },
       title: {
+        style: { color: axisColor },
         <%- if @metric == 'code_total' -%>
           text: 'Total Lines of Code'
         <%- else %>
@@ -56,6 +77,11 @@ $(function () {
         marker: {enabled:false},
         shadow : true
       }
+    },
+    legend: {
+      itemStyle: { color: legendColor },
+      itemHoverStyle: { color: '#039' },
+      itemHiddenStyle: { color: 'gray' }
     },
     series: [
     <%- @series_of_plot_points.size.times do |index| %>
@@ -77,3 +103,4 @@ $(function () {
 });
 
 $('#graphModal').modal();
+

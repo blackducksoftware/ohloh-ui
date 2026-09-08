@@ -76,6 +76,8 @@
               %button.i-use-this-btn.not-using{ 'data-toggle': "modal", 'data-target': "#LoginModal" }
                 = t('.i_use_this')
 
+= render partial: 'layouts/partials/alert'
+
 / Login Modal for non-logged in users
 - unless logged_in?
   .modal.fade#LoginModal{ 'aria-hidden': 'true', 'aria-labelledby': 'LoginModalLabel', role: 'dialog' }

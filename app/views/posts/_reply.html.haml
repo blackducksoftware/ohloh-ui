@@ -1,13 +1,15 @@
 - if logged_in?
-  .row
-    .col-md-9.pull-left
-      %h3= t('.post_a_response')
+  .reply-section
+    .reply-section-header
+      %i.fa.fa-reply
+      %h4= t('.post_a_response')
+    .reply-form-body
       = form_for @post, url: topic_posts_path(@topic) do |f|
         = hidden_field_tag :page, params[:page]
         = render partial: 'posts/fields', locals: { f: f }
-    .col-md-2.margin_top_15.margin_left_25
-      = render 'shared/markdown_help'
 
 - else
-  %h3= t('.post_a_response')
-  = render 'posts/sign_in'
+  .reply-login-prompt
+    %i.fa.fa-lock{ style: 'margin-right: 6px' }
+    = t('.post_a_response')
+    = render 'posts/sign_in'

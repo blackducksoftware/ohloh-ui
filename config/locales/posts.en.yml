@@ -35,6 +35,7 @@
       posted_ago: '%{date} ago'
     fields:
       submit: 'Submit'
+      write_reply: 'Write your reply...'
     sign_in:
       response: 'Open Hub welcomes your opinions.'
       login_required: 'Login Required'

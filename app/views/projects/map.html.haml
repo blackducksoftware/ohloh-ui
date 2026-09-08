@@ -1,6 +1,6 @@
 :ruby
   total_users = @project.user_count
-  total_contributors = @project.best_analysis.contributor_facts.size
+  total_contributors = @project.best_analysis.contributor_facts.count
   content_for(:html_title) { t('.page_title', name: @project.name) }
   page_context[:select_footer_nav] = :map
 
@@ -8,7 +8,7 @@
 %input{type: 'hidden', id: 'total_users', value: total_users }
 %input{type: 'hidden', id: 'total_contributors', value: total_contributors }
 
-.margin_top_10#map_container{ 'data-icon-image' => image_path('map/map_yellow.png') }
+.margin_top_10#map_container#projects_map_page{ 'data-icon-image' => image_path('map/map_yellow.png') }
   %p
     %strong Show:
     /=link_to "Contributors", "#", id: 'a_contributors'

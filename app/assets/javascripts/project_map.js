@@ -4,7 +4,7 @@ var ProjectMap = {
     project = $('#project').val();
     total_users = $('#total_users').val();
     total_contributors = $('#total_contributors').val();
-    ProjectMap.load(project, total_users, total_users);
+    ProjectMap.load(project, total_users, total_contributors);
   },
   load: function(project_param, totalUsers, totalContributors) {
     document.mapParams = { project_param: project_param, totalUsers: totalUsers, totalContributors: totalContributors };
@@ -58,8 +58,8 @@ var ProjectMap = {
         $('#map_status').html('No contributors located.');
       }
       $('#a_users').bind('change', ProjectMap.getStacks);
-      OH_Map.getMarkers();
     };
+    OH_Map.getMarkers();
     return false;
   }
 }

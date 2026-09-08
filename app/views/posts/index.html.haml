@@ -1,23 +1,36 @@
 - content_for(:html_title) { @account ? t('.openhub_posts_for_account', name: @account.name) : t('.openhub_posts') }
 
-- if @account
-  - account_post_context
-  - page_context[:select_footer_nav] = :posts
-  .mezzo
-  %h1= t('.posts')
-  - if @account.posts.count == 0
-    #no-posts= t('.no_posts')
+.forum-page-wrap
+  - if @account
+    - account_post_context
+    - page_context[:select_footer_nav] = :posts
+    .settings-page-header
+      .settings-page-header-row
+        .settings-page-icon
+          %i.fa.fa-comment
+        %h2.settings-page-h2= t('.posts')
+
+    - if @account.posts.count == 0
+      #no-posts.reply-login-prompt= t('.no_posts')
+    - else
+      = render partial: '/forums/notice'
+      = render partial: 'shared/search_dingus', locals: { collection: @posts, sort_context: :posts }
+      .account-posts-list
+        = render partial: 'posts/posts', collection: @posts
+      = render 'shared/modern_pagination', collection: @posts
+
   - else
+    .settings-page-header
+      .settings-page-header-row
+        .settings-page-icon
+          %i.fa.fa-comment
+        %h2.settings-page-h2
+          = link_to t('.forums'), forums_path
+          %span.account-basics-sep ›
+          = t('.posts')
+
     = render partial: '/forums/notice'
     = render partial: 'shared/search_dingus', locals: { collection: @posts, sort_context: :posts }
-    = render partial: 'posts/posts', collection: @posts
+    .account-posts-list
+      = render partial: 'posts/posts', collection: @posts
     = render 'shared/modern_pagination', collection: @posts
-- else
-  %h1
-    = link_to t('.forums'), forums_path
-    \:
-    = t('.posts')
-  = render partial: '/forums/notice'
-  = render partial: 'shared/search_dingus', locals: { collection: @posts, sort_context: :posts }
-  = render partial: 'posts/posts', collection: @posts
-  = render 'shared/modern_pagination', collection: @posts

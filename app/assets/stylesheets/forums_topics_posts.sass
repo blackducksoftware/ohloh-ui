@@ -1,83 +1,867 @@
-.border_bottom_color
-  border-bottom: 1px solid black
+// ─── Forums / Topics / Posts ─────────────────────────────────────────────────
 
-.topic_heading
-  max-width: 740px
-  display: block
-  float: left
-  margin-top: 10px
+// ── Shared ───────────────────────────────────────────────────────────────────
 
-.alert-color
-  color: $secondary-red
+.forum-page-wrap
+  max-width: 960px
+  margin: 0 auto
+  padding: 0 16px 40px
 
-.float_right
-  float: right
+// ── Forum Index ───────────────────────────────────────────────────────────────
 
-.float_left
-  float: left
+.forum-list
+  display: grid
+  grid-template-columns: 1fr
+  gap: 12px
+  margin-top: 8px
 
-.stale_specifications
-  background-color: $secondary-blue-40
+  @media (min-width: 640px)
+    grid-template-columns: 1fr 1fr
+
+.forum-card
+  background: #ffffff
+  border: 1px solid #e5e7eb
+  border-radius: 12px
+  padding: 20px
+  display: flex
+  gap: 16px
+  align-items: flex-start
+  transition: box-shadow 0.15s, border-color 0.15s
+  text-decoration: none
+  color: inherit
+
+  &:hover
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08)
+    border-color: #c4b5fd
+    text-decoration: none
+
+  html.dark &
+    background: #1e2130
+    border-color: #2d3148
+
+    &:hover
+      border-color: #7c3aed
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3)
+
+  .forum-card-icon
+    width: 40px
+    height: 40px
+    min-width: 40px
+    border-radius: 10px
+    background: linear-gradient(135deg, #5A2A82, #1D0631)
+    display: flex
+    align-items: center
+    justify-content: center
+    flex-shrink: 0
+
+    i
+      color: #ffffff
+      font-size: 18px
+
+  .forum-card-body
+    flex: 1
+    min-width: 0
+
+  .forum-card-name
+    font-size: 15px
+    font-weight: 600
+    color: #111827
+    margin: 0 0 4px
+    white-space: nowrap
+    overflow: hidden
+    text-overflow: ellipsis
+
+    html.dark &
+      color: #f9fafb
+
+    a
+      color: #5A2A82
+      text-decoration: none
+      &:hover
+        text-decoration: underline
+      html.dark &
+        color: #c084fc
+
+  .forum-card-desc
+    font-size: 13px
+    color: #6b7280
+    margin: 0 0 10px
+    line-height: 1.4
+
+    html.dark &
+      color: #9ca3af
+
+  .forum-card-meta
+    display: flex
+    gap: 16px
+
+  .forum-card-stat
+    display: flex
+    align-items: center
+    gap: 5px
+    font-size: 12px
+    color: #9ca3af
+
+    i
+      font-size: 11px
+
+    html.dark &
+      color: #6b7280
+
+.forum-index-actions
+  margin-top: 20px
+  display: flex
+  gap: 10px
+
+.forum-btn
+  display: inline-flex
+  align-items: center
+  gap: 6px
+  padding: 7px 14px
+  border-radius: 8px
+  font-size: 13px
+  font-weight: 500
+  text-decoration: none
+  transition: background 0.15s, color 0.15s
+  border: 1px solid transparent
+  cursor: pointer
+  background: none
+
+  i
+    font-size: 12px
+
+  &.forum-btn-primary
+    background: linear-gradient(135deg, #5A2A82, #1D0631)
+    color: #ffffff
+    border-color: transparent
+
+    &:hover
+      opacity: 0.9
+      color: #ffffff
+      text-decoration: none
+
+  &.forum-btn-outline
+    background: transparent
+    color: #5A2A82
+    border-color: #5A2A82
+
+    &:hover
+      background: rgba(90, 42, 130, 0.05)
+      text-decoration: none
+
+    html.dark &
+      color: #c084fc
+      border-color: #7c3aed
+      &:hover
+        background: rgba(124, 58, 237, 0.1)
+
+  &.forum-btn-sm
+    padding: 5px 10px
+    font-size: 12px
+
+  &.forum-btn-danger
+    color: #dc2626
+    border-color: #dc2626
+    background: transparent
+    &:hover
+      background: rgba(220, 38, 38, 0.06)
+      text-decoration: none
+    html.dark &
+      color: #f87171
+      border-color: #f87171
+
+  &.forum-btn-warning
+    color: #d97706
+    border-color: #d97706
+    background: transparent
+    &:hover
+      background: rgba(217, 119, 6, 0.06)
+      text-decoration: none
+    html.dark &
+      color: #fbbf24
+      border-color: #fbbf24
+
+// ── Forum Active Topics ───────────────────────────────────────────────────────
+
+.forum-section-label
+  font-size: 14px
+  font-weight: 600
+  color: #6b7280
+  text-transform: uppercase
+  letter-spacing: 0.06em
+  margin: 24px 0 12px
+
+  html.dark &
+    color: #9ca3af
+
+// ── Topic List (forum show) ───────────────────────────────────────────────────
+
+.topic-list-header
+  display: flex
+  align-items: center
+  justify-content: space-between
+  margin-bottom: 12px
+
+.topics-list
+  border: 1px solid #e5e7eb
+  border-radius: 12px
+  overflow: hidden
+  background: #ffffff
+
+  html.dark &
+    background: #1e2130
+    border-color: #2d3148
+
+.topic-row
+  display: flex
+  align-items: center
+  gap: 12px
+  padding: 14px 16px
+  border-bottom: 1px solid #f3f4f6
+  transition: background 0.12s
+
+  &:last-child
+    border-bottom: none
+
+  &:hover
+    background: #fafafa
+
+    html.dark &
+      background: rgba(255, 255, 255, 0.03)
+
+  html.dark &
+    border-bottom-color: #2d3148
+
+.topic-row-main
+  flex: 1
+  min-width: 0
+
+.topic-row-title
+  font-size: 14px
+  font-weight: 600
+  color: #111827
+  white-space: nowrap
+  overflow: hidden
+  text-overflow: ellipsis
+  margin-bottom: 2px
+
+  html.dark &
+    color: #f9fafb
+
+  a
+    color: #5A2A82
+    text-decoration: none
+    &:hover
+      text-decoration: underline
+    html.dark &
+      color: #c084fc
+
+.topic-row-meta
   font-size: 12px
-  border-radius: 0px
+  color: #9ca3af
+  display: flex
+  align-items: center
+  gap: 6px
 
-.close_specifications
-  font-size: 12px
-  border-radius: 0px
+  html.dark &
+    color: #6b7280
 
-.mark_specifications
-  @include forum-topics-mark-specifications-background-color
+.topic-row-badge
+  display: inline-flex
+  align-items: center
+  padding: 1px 7px
+  border-radius: 20px
+  font-size: 11px
+  font-weight: 500
+  white-space: nowrap
 
-.controls.check-box_specifications
-  margin-left: -20px
+  &.badge-new
+    background: #dbeafe
+    color: #1d4ed8
+    html.dark &
+      background: rgba(29, 78, 216, 0.2)
+      color: #93c5fd
 
-#closed_specifications
-  margin-left: -20px
+  &.badge-recent
+    background: #dcfce7
+    color: #15803d
+    html.dark &
+      background: rgba(21, 128, 61, 0.2)
+      color: #86efac
 
-#closed_status
-  font-size: 12px
-  border-radius: 0
-  background-color: $secondary-red
-  margin: 16px 0 0 10px
-  line-height: 39px
+  &.badge-stale
+    background: #f3f4f6
+    color: #6b7280
+    html.dark &
+      background: rgba(107, 114, 128, 0.2)
+      color: #9ca3af
 
-#submit_specifications
-  margin-top: 10px
-  margin-left: 17px
+  &.badge-closed
+    background: #fee2e2
+    color: #dc2626
+    html.dark &
+      background: rgba(220, 38, 38, 0.2)
+      color: #fca5a5
 
-.max_width
-  max-width: 700px
+.topic-row-stats
+  display: flex
+  gap: 16px
+  flex-shrink: 0
+  align-items: center
 
-.pager > li > a
-  border-radius: 0px
+.topic-row-stat
+  display: flex
+  flex-direction: column
+  align-items: center
+  min-width: 40px
 
-.post_stats
-  line-height: 25px
+  .stat-value
+    font-size: 15px
+    font-weight: 600
+    color: #374151
+    line-height: 1
+    html.dark &
+      color: #d1d5db
 
-#post_edit_specifications
-  color: white
+  .stat-label
+    font-size: 10px
+    color: #9ca3af
+    text-transform: uppercase
+    letter-spacing: 0.04em
+
+.topic-row-last
+  flex-shrink: 0
+  text-align: right
+  min-width: 90px
+  font-size: 11px
+  color: #9ca3af
+  line-height: 1.4
+
+  html.dark &
+    color: #6b7280
+
+  a
+    color: #5A2A82
+    text-decoration: none
+    &:hover
+      text-decoration: underline
+    html.dark &
+      color: #c084fc
+
+// ── Topic Show Page ───────────────────────────────────────────────────────────
+
+.topic-page-header
+  display: flex
+  align-items: flex-start
+  gap: 12px
+  margin-bottom: 20px
+
+.topic-page-title
+  font-size: 20px
+  font-weight: 700
+  color: #111827
+  margin: 0
+  line-height: 1.3
+  flex: 1
+
+  html.dark &
+    color: #f9fafb
+
+.topic-page-actions
+  display: flex
+  gap: 6px
+  flex-shrink: 0
+  align-items: center
+  margin-top: 2px
+
+// ── Post Thread ───────────────────────────────────────────────────────────────
+
+.post-thread
+  display: flex
+  flex-direction: column
+  gap: 12px
+
+.post-card
+  background: #ffffff
+  border: 1px solid #e5e7eb
+  border-radius: 12px
+  overflow: hidden
+
+  html.dark &
+    background: #1e2130
+    border-color: #2d3148
+
+  &.post-card-admin
+    border-color: #bfdbfe
+    html.dark &
+      border-color: #1d4ed8
+
+.post-card-body
+  padding: 16px 20px
+  font-size: 14px
+  line-height: 1.7
+  color: #374151
+
+  html.dark &
+    color: #d1d5db
+
+  p
+    margin: 0 0 12px
+    &:last-child
+      margin-bottom: 0
+
+  ul, ol
+    margin: 0 0 12px 20px
+
+  code
+    background: #f3f4f6
+    border-radius: 4px
+    padding: 1px 5px
+    font-size: 12px
+    html.dark &
+      background: #2d3148
+
+  pre
+    background: #f3f4f6
+    border-radius: 8px
+    padding: 12px
+    overflow-x: auto
+    html.dark &
+      background: #161b27
+
+.post-card-footer
+  padding: 10px 20px
+  background: #f9fafb
+  border-top: 1px solid #f3f4f6
+  display: flex
+  align-items: center
+  justify-content: space-between
+
+  html.dark &
+    background: #161b27
+    border-top-color: #2d3148
+
+.post-card-author
+  display: flex
+  align-items: center
+  gap: 10px
+
+.post-card-avatar
+  width: 32px
+  height: 32px
+  border-radius: 50%
+  overflow: hidden
+  flex-shrink: 0
+
+  img
+    width: 100%
+    height: 100%
+    object-fit: cover
+
+.post-card-author-info
+  display: flex
+  flex-direction: column
+
+.post-card-author-name
+  font-size: 13px
+  font-weight: 600
+  color: #374151
   text-decoration: none
 
-.oh-card.posts
-  border-radius: none
-  border: none
-  background-color: black
+  &:hover
+    text-decoration: underline
 
-#no_posts
-  border-top-color: grey
+  html.dark &
+    color: #d1d5db
 
-#post_body_link_size
-  font-size: 1.25em
+.post-card-date
+  font-size: 11px
+  color: #9ca3af
 
-#post_body_text_size
+  html.dark &
+    color: #6b7280
+
+.post-card-actions
+  display: flex
+  gap: 8px
+  align-items: center
+
+.post-action-link
+  font-size: 12px
+  color: #9ca3af
+  text-decoration: none
+  display: flex
+  align-items: center
+  gap: 4px
+  padding: 3px 6px
+  border-radius: 4px
+  transition: color 0.12s, background 0.12s
+
+  &:hover
+    color: #5A2A82
+    background: rgba(90, 42, 130, 0.06)
+    text-decoration: none
+
+  &.post-action-danger
+    &:hover
+      color: #dc2626
+      background: rgba(220, 38, 38, 0.06)
+
+  html.dark &
+    color: #6b7280
+    &:hover
+      color: #c084fc
+      background: rgba(192, 132, 252, 0.1)
+
+// ── Reply Form ────────────────────────────────────────────────────────────────
+
+.reply-section
+  margin-top: 24px
+  background: #ffffff
+  border: 1px solid #e5e7eb
+  border-radius: 12px
+  overflow: hidden
+
+  html.dark &
+    background: #1e2130
+    border-color: #2d3148
+
+.reply-section-header
+  padding: 14px 20px
+  border-bottom: 1px solid #f3f4f6
+  display: flex
+  align-items: center
+  gap: 8px
+
+  html.dark &
+    border-bottom-color: #2d3148
+
+  i
+    color: #5A2A82
+    html.dark &
+      color: #c084fc
+
+  h4
+    font-size: 14px
+    font-weight: 600
+    color: #374151
+    margin: 0
+
+    html.dark &
+      color: #d1d5db
+
+.reply-form-body
+  padding: 16px 20px
+
+.reply-textarea
+  width: 100%
+  min-height: 140px
+  padding: 10px 12px
+  border: 1px solid #d1d5db
+  border-radius: 8px
+  font-size: 14px
+  line-height: 1.6
+  color: #374151
+  background: #ffffff
+  resize: vertical
+  transition: border-color 0.15s, box-shadow 0.15s
+  box-sizing: border-box
+  font-family: inherit
+
+  &:focus
+    outline: none
+    border-color: #5A2A82
+    box-shadow: 0 0 0 3px rgba(90, 42, 130, 0.12)
+
+  html.dark &
+    background: #161b27
+    border-color: #374151
+    color: #d1d5db
+
+    &:focus
+      border-color: #7c3aed
+      box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15)
+
+.reply-form-actions
+  margin-top: 12px
+  display: flex
+  align-items: center
+  gap: 10px
+
+.reply-submit-btn
+  display: inline-flex
+  align-items: center
+  gap: 6px
+  padding: 8px 18px
+  border-radius: 8px
   font-size: 13px
+  font-weight: 500
+  background: linear-gradient(135deg, #5A2A82, #1D0631)
+  color: #ffffff
+  border: none
+  cursor: pointer
+  text-decoration: none
+  transition: opacity 0.15s
 
-.oh-card.posts ul li
-  margin-left: 20px
+  &:hover
+    opacity: 0.9
+    color: #ffffff
+    text-decoration: none
 
-.editor-preview.editor-preview-active li
-  margin-left: 1.5em
+// ── Post Edit Page ────────────────────────────────────────────────────────────
+
+.post-edit-wrap
+  max-width: 860px
+  margin: 0 auto
+  padding: 0 16px 40px
+
+.post-edit-card
+  background: #ffffff
+  border: 1px solid #e5e7eb
+  border-radius: 12px
+  overflow: hidden
+  display: grid
+  grid-template-columns: 1fr 220px
+  gap: 0
+
+  html.dark &
+    background: #1e2130
+    border-color: #2d3148
+
+  @media (max-width: 640px)
+    grid-template-columns: 1fr
+
+.post-edit-main
+  padding: 20px
+  border-right: 1px solid #f3f4f6
+  html.dark &
+    border-right-color: #2d3148
+
+.post-edit-sidebar
+  padding: 20px
+
+// ── Posts Index (account posts) ───────────────────────────────────────────────
+
+.account-posts-list
+  display: flex
+  flex-direction: column
+  gap: 10px
+
+.account-post-item
+  background: #ffffff
+  border: 1px solid #e5e7eb
+  border-radius: 10px
+  padding: 16px
+  display: grid
+  grid-template-columns: 1fr auto
+  gap: 12px
+  transition: box-shadow 0.15s
+
+  &:hover
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07)
+
+  html.dark &
+    background: #1e2130
+    border-color: #2d3148
+
+.account-post-breadcrumb
+  font-size: 12px
+  color: #9ca3af
+  margin-bottom: 6px
+  display: flex
+  align-items: center
+  gap: 4px
+
+  a
+    color: #5A2A82
+    text-decoration: none
+    &:hover
+      text-decoration: underline
+    html.dark &
+      color: #c084fc
+
+  html.dark &
+    color: #6b7280
+
+.account-post-topic
+  font-size: 14px
+  font-weight: 600
+  color: #111827
+  text-decoration: none
+  display: block
+  margin-bottom: 6px
+
+  &:hover
+    color: #5A2A82
+    text-decoration: none
+
+  html.dark &
+    color: #f9fafb
+    &:hover
+      color: #c084fc
+
+.account-post-excerpt
+  font-size: 13px
+  color: #6b7280
+  line-height: 1.5
+
+  html.dark &
+    color: #9ca3af
+
+.account-post-meta
+  text-align: right
+  flex-shrink: 0
+  display: flex
+  flex-direction: column
+  align-items: flex-end
+  justify-content: space-between
+
+.account-post-views
+  display: flex
+  align-items: center
+  gap: 4px
+  font-size: 12px
+  color: #9ca3af
+
+  i
+    font-size: 11px
+
+  html.dark &
+    color: #6b7280
+
+.account-post-date
+  font-size: 11px
+  color: #9ca3af
+  html.dark &
+    color: #6b7280
+
+// ── Forum Nav (recent posts / unanswered) ──────────────────────────────────────
+
+.forum-quick-links
+  display: flex
+  gap: 10px
+  margin: 16px 0
+
+// ── Topic Pager ───────────────────────────────────────────────────────────────
+
+.topic-pager
+  display: flex
+  justify-content: space-between
+  align-items: center
+  margin-top: 20px
+  gap: 8px
+
+.topic-pager-btn
+  display: inline-flex
+  align-items: center
+  gap: 6px
+  padding: 7px 14px
+  border-radius: 8px
+  font-size: 13px
+  color: #5A2A82
+  border: 1px solid #e5e7eb
+  background: #ffffff
+  text-decoration: none
+  transition: background 0.12s, border-color 0.12s
+
+  &:hover
+    background: #f5f3ff
+    border-color: #c4b5fd
+    text-decoration: none
+
+  &.disabled, &[disabled]
+    opacity: 0.4
+    pointer-events: none
+
+  html.dark &
+    color: #c084fc
+    background: #1e2130
+    border-color: #2d3148
+    &:hover
+      background: rgba(192, 132, 252, 0.08)
+      border-color: #7c3aed
+
+// ── Forum Notice ──────────────────────────────────────────────────────────────
+
+.forum-notice
+  padding: 10px 14px
+  background: #fffbeb
+  border: 1px solid #fde68a
+  border-radius: 8px
+  font-size: 13px
+  color: #92400e
+  margin-bottom: 16px
+
+  html.dark &
+    background: rgba(253, 230, 138, 0.08)
+    border-color: rgba(253, 230, 138, 0.2)
+    color: #fde68a
+
+// ── Closed Topic Banner ───────────────────────────────────────────────────────
+
+.topic-closed-banner
+  background: #fff7ed
+  border: 1px solid #fed7aa
+  border-radius: 10px
+  padding: 14px 18px
+  font-size: 13px
+  color: #9a3412
+  line-height: 1.5
+  margin-bottom: 12px
+
+  p
+    margin: 0 0 6px
+    &:last-child
+      margin: 0
+
+  a
+    color: #5A2A82
+    text-decoration: underline
+
+  html.dark &
+    background: rgba(254, 215, 170, 0.08)
+    border-color: rgba(254, 215, 170, 0.2)
+    color: #fdba74
+
+// ── Sign-in to Reply ──────────────────────────────────────────────────────────
+
+.reply-login-prompt
+  margin-top: 20px
+  text-align: center
+  padding: 20px
+  background: #f9fafb
+  border: 1px dashed #d1d5db
+  border-radius: 10px
+  font-size: 14px
+  color: #6b7280
+
+  html.dark &
+    background: rgba(255, 255, 255, 0.02)
+    border-color: #374151
+    color: #9ca3af
+
+  a
+    color: #5A2A82
+    font-weight: 500
+    text-decoration: none
+    &:hover
+      text-decoration: underline
+    html.dark &
+      color: #c084fc
+
+// ── Account post item grid fix ────────────────────────────────────────────────
+
+.account-post-item
+  .account-post-main
+    min-width: 0
+
+// ── Legacy overrides (remove old inline styles) ───────────────────────────────
+
+.border_bottom_color
+  border-bottom: 1px solid #e5e7eb
 
 .CodeMirror, .CodeMirror-scroll
   min-height: 160px
 
+.editor-preview.editor-preview-active li
+  margin-left: 1.5em
