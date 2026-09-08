@@ -42,6 +42,14 @@ class EditsControllerTest < ActionController::TestCase
       end
     end
 
+    it 'index should find rss subscription edits by searching target_type' do
+      login_as nil
+      rss_edit = CreateEdit.where(target_type: 'RssSubscription', project_id: @project.id).first
+      get :index, params: { project_id: @project.to_param, query: 'rsssubscription' }
+      assert_response :ok
+      assert assigns(:edits).map(&:id).include?(rss_edit.id)
+    end
+
     # update action
     it 'undo should require a logged in user' do
       login_as nil
