@@ -301,12 +301,12 @@ class ApplicationControllerTest < ActionController::TestCase
       end
     end
 
-    describe '#verify_api_access_for_xml_request' do
+    describe '#verify_xml_api_access' do
       it 'returns missing api key for xml request without any credentials' do
         @controller.stubs(:request_format).returns('xml')
         @controller.stubs(:api_client_id).returns(nil)
         @controller.expects(:render_missing_api_key).once
-        @controller.send(:verify_api_access_for_xml_request)
+        @controller.send(:verify_xml_api_access)
       end
 
       it 'proceeds for xml request with Bearer header credential' do
@@ -315,7 +315,7 @@ class ApplicationControllerTest < ActionController::TestCase
         @controller.stubs(:api_client_id).returns('valid-key')
         @controller.expects(:verify_api_key_standing).once
         @controller.expects(:render_missing_api_key).never
-        @controller.send(:verify_api_access_for_xml_request)
+        @controller.send(:verify_xml_api_access)
       end
 
       it 'proceeds for xml request with doorkeeper OAuth token' do
@@ -323,14 +323,14 @@ class ApplicationControllerTest < ActionController::TestCase
         @controller.stubs(:api_client_id).returns('doorkeeper-app-uid')
         @controller.expects(:verify_api_key_standing).once
         @controller.expects(:render_missing_api_key).never
-        @controller.send(:verify_api_access_for_xml_request)
+        @controller.send(:verify_xml_api_access)
       end
 
       it 'skips check entirely for non-xml/json similar requests' do
         @controller.stubs(:request_format).returns('html')
         @controller.expects(:render_missing_api_key).never
         @controller.expects(:verify_api_key_standing).never
-        @controller.send(:verify_api_access_for_xml_request)
+        @controller.send(:verify_xml_api_access)
       end
     end
   end
