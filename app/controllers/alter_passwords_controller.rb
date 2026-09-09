@@ -7,7 +7,8 @@ class AlterPasswordsController < ApplicationController
 
   def update
     @account.validate_current_password = true
-    if @account.update(account_params)
+    if update_password_and_rotate_token
+      clearance_session.sign_in(@account)
       redirect_to account_path, flash: { success: t('.password_changed') }
     else
       render :edit, status: :unprocessable_entity
@@ -27,6 +28,20 @@ class AlterPasswordsController < ApplicationController
     return if [@account.login, 'me'].include?(params[:id])
 
     access_denied
+  end
+
+  def update_password_and_rotate_token
+    success = false
+    ActiveRecord::Base.transaction do
+      raise ActiveRecord::Rollback unless @account.update(account_params)
+
+      @account.reset_remember_token!
+      success = true
+    end
+    success
+  rescue ActiveRecord::ActiveRecordError => e
+    Airbrake.notify(e)
+    false
   end
 
   def account_params
