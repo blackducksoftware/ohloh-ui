@@ -133,6 +133,16 @@ class AccountsControllerTest < ActionController::TestCase
       assert_response :ok
     end
 
+    it 'should return bad request for json show without api key' do
+      get :show, params: { id: admin.login, format: :json }
+      assert_response :bad_request
+    end
+
+    it 'should return bad request for json show with invalid api key' do
+      get :show, params: { id: admin.login, format: :json, api_key: 'invalid_key' }
+      assert_response :bad_request
+    end
+
     it 'should support accounts with account_analyses' do
       best_account_analysis = create(:best_account_analysis)
       key = create(:api_key, account_id: create(:account).id)
@@ -141,7 +151,16 @@ class AccountsControllerTest < ActionController::TestCase
       assert_response :ok
     end
 
-    it 'should respond to json format' do
+    it 'should respond to json format with api key' do
+      key = create(:api_key, account_id: create(:account).id)
+      get :show, params: { id: admin.login, format: 'json', api_key: key.oauth_application.uid }
+
+      assert_response :ok
+      _(assigns(:account)).must_equal admin
+    end
+
+    it 'should allow logged-in user to access json format without api key' do
+      login_as admin
       get :show, params: { id: admin.login, format: 'json' }
 
       assert_response :ok
