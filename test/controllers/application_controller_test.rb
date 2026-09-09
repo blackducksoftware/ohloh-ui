@@ -330,7 +330,7 @@ class ApplicationControllerTest < ActionController::TestCase
         @controller.stubs(:request_format).returns('html')
         @controller.expects(:render_missing_api_key).never
         @controller.expects(:verify_api_key_standing).never
-        @controller.send(:verify_xml_api_access)
+        @controller.send(:verify_api_access)
       end
     end
   end
