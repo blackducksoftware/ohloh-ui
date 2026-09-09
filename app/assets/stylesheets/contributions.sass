@@ -151,6 +151,31 @@
   @media (min-width: 768px)
     display: block
 
+  // Tablet: allow horizontal scroll so wide tables don't break layout
+  @media (min-width: 768px) and (max-width: 1023px)
+    overflow-x: auto
+    -webkit-overflow-scrolling: touch
+
+    table.table
+      min-width: 700px
+
+      // Shrink trend image on tablet to save space
+      td img[width="179"]
+        width: 120px !important
+        height: auto !important
+
+      // Tighten column padding on tablet
+      th, td
+        padding: 8px 6px !important
+        font-size: 11px !important
+
+      // Allow name column to truncate more aggressively
+      th.col-md-3, td:first-child
+        max-width: 120px
+        overflow: hidden
+        text-overflow: ellipsis
+        white-space: nowrap
+
 // Two-column layout specific grid display
 .two-column-layout.desktop-only
   @media (min-width: 768px)
