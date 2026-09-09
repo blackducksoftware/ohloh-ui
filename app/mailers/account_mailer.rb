@@ -45,6 +45,7 @@ class AccountMailer < ApplicationMailer
 
   def notify_jwt_temporary_lockout(account)
     @account = account
+    @lockout_minutes = JWT_WINDOW_MINUTES
     mail(to: account.email, subject: t('.subject'))
   end
 end
