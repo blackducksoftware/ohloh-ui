@@ -153,7 +153,7 @@ $pai_levels: (('very_high',0), ('high', 1), ('moderate', 2), ('low', 3), ('very_
       align-items: center
       justify-content: center
       gap: 8px
-      min-width: 80px
+      min-width: 120px
 
       [class^='thirtyfive_project_activity_level_']
         position: static
@@ -170,6 +170,7 @@ $pai_levels: (('very_high',0), ('high', 1), ('moderate', 2), ('low', 3), ('very_
         font-weight: 600
         color: white
         text-align: center
+        white-space: nowrap
 
     .stats-card
       background: white
@@ -235,9 +236,11 @@ $pai_levels: (('very_high',0), ('high', 1), ('moderate', 2), ('low', 3), ('very_
     flex: 1
     min-width: 0
     max-width: 900px
+    width: 100%
 
-    @media (min-width: 768px)
-      max-width: calc(100% - 280px)
+    @media (min-width: 640px)
+      max-width: calc(100% - 320px)
+      width: auto
 
     h1
       font-size: 32px
@@ -315,6 +318,13 @@ $pai_levels: (('very_high',0), ('high', 1), ('moderate', 2), ('low', 3), ('very_
       color: rgba(255, 255, 255, 0.9)
       line-height: 1.6
       margin-bottom: 12px
+      min-width: 0
+      max-width: 100%
+      word-wrap: break-word
+      overflow-wrap: break-word
+      word-break: break-word
+      white-space: normal
+      overflow: hidden
 
       @media (min-width: 768px)
         font-size: 16px
@@ -387,6 +397,10 @@ $pai_levels: (('very_high',0), ('high', 1), ('moderate', 2), ('low', 3), ('very_
     .edit-save-btn,
     .stacks-new-btn
       margin-left: auto
+
+      html.dark &
+        background-color: #5A2A82 !important
+        color: #ffff !important
 
   .settings-page-icon
     width: 36px
@@ -1566,7 +1580,7 @@ $dark-shadow-lg: 0 8px 16px rgba(0,0,0,0.48)
           html.dark &
             color: $dark-text-secondary
 
-          .read-more
+          .read-more, .read-less
             color: $primary-color
             font-weight: 500
             cursor: pointer

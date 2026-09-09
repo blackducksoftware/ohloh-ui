@@ -39,8 +39,14 @@
 
         .project-description
           - if project.description && project.description.strip.size > 220
-            = project.description.truncate(220)
-            %span.read-more [More]
+            %span.description-text{ id: "desc_#{project.id}", style: "display: inline" }
+              = project.description.truncate(220)
+            %a.read-more.js-expand-desc{ href: "#", data: { project_id: project.id } }
+              [More]
+            %span.description-full{ id: "desc_full_#{project.id}", style: "display: none" }
+              = project.description
+            %a.read-less.js-collapse-desc{ href: "#", data: { project_id: project.id }, style: "display: none" }
+              [Less]
           - elsif project.description
             = project.description
           - else
@@ -131,4 +137,4 @@
           - tag = tag.fix_encoding_if_invalid
           = link_to html_escape(tag), tags_path(names: tag), class: 'tag'
         - if tags.length > 8
-          %span.more-tags= t('.n_more', n: tags.length - 8)
+          = link_to t('.n_more', n: tags.length - 8), project_path(project), class: 'more-tags'
