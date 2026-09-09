@@ -65,7 +65,7 @@ module JwtLoginLockout
   end
 
   def send_lockout_notification(account)
-    AccountMailer.notify_jwt_temporary_lockout(account).deliver_now
+    AccountMailer.notify_jwt_temporary_lockout(account, JWT_WINDOW_MINUTES).deliver_now
     Airbrake.notify("JWT brute force lockout triggered for account: #{account.login}")
   rescue StandardError => e
     Rails.logger.warn("JWT lockout notification failed for account #{account.id}: #{e.class}: #{e.message}")
