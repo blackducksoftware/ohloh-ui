@@ -10,16 +10,7 @@ class SessionsController < Clearance::SessionsController
 
   def create
     account_or_nil = authenticate(params)
-
-    sign_in(account_or_nil) do |status|
-      if status.success?
-        reset_auth_fail_count
-        redirect_back_or url_after_create
-      else
-        increment_auth_fail_count
-        sign_in_failure(status.failure_message)
-      end
-    end
+    sign_in(account_or_nil) { |status| handle_sign_in_result(status) }
   end
 
   def health
@@ -27,6 +18,26 @@ class SessionsController < Clearance::SessionsController
   end
 
   private
+
+  def handle_sign_in_result(status)
+    if status.success?
+      set_remember_me_cookie
+      reset_auth_fail_count
+      redirect_back_or url_after_create
+    else
+      increment_auth_fail_count
+      sign_in_failure(status.failure_message)
+    end
+  end
+
+  def set_remember_me_cookie
+    checked = params.dig(:login, :remember_me) == '1'
+    cookies[:remember_me] = {
+      httponly: true, secure: Clearance.configuration.secure_cookie,
+      same_site: :lax, path: '/', value: checked ? '1' : '',
+      expires: checked ? REMEMBER_ME_DURATION.from_now.utc : 1.day.ago.utc
+    }
+  end
 
   def failed_login_thrice?
     account.auth_fail_count >= 3
