@@ -1,17 +1,10 @@
 User-agent: *
-Disallow: /accounts/*/near
 Disallow: /images/
 Disallow: /images
-Disallow: /edits/
-Disallow: /edits
-Disallow: /*/edits
-Disallow: /*/edits/*
 Disallow: /*/commits/*
 Disallow: /*/contributors/*.png
 Disallow: /*/positions/*.png
-Disallow: /p/*/permissions
 Disallow: /p/*/stacks/near
-Disallow: /sessions/new
 Disallow: /p/*/contributors/*
 Disallow: /p/*/contributors/*/commits
 Disallow: /p?
@@ -19,7 +12,6 @@ Disallow: /people?
 Disallow: /people/rankings?
 Disallow: /search
 Disallow: /p/*/factoids/*
-Disallow: /session_projects
 Crawl-Delay: 10
 
 User-agent: discobot
@@ -43,4 +35,4 @@ Disallow: /
 User-agent: AhrefsBot
 Crawl-Delay: 10 # No faster than ever 10 seconds
 
-Sitemap: http://www.openhub.net/sitemap_index.xml
+Sitemap: https://www.openhub.net/sitemap_index.xml
