@@ -24,7 +24,8 @@ module EnlistmentFilters
   end
 
   def parse_sort_term
-    Enlistment.respond_to?("by_#{params[:sort]}") ? "by_#{params[:sort]}" : 'by_url'
+    allowed = %w[by_url by_project by_type by_module_name by_last_update by_update_status]
+    allowed.include?("by_#{params[:sort]}") ? "by_#{params[:sort]}" : 'by_url'
   end
 
   def find_enlistment
