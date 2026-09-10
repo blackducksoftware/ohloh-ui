@@ -1,7 +1,16 @@
 # frozen_string_literal: true
 
 require File.expand_path('boot', __dir__)
-require 'rails/all'
+
+require 'active_record/railtie'
+require 'action_controller/railtie'
+require 'action_view/railtie'
+require 'action_mailer/railtie'
+require 'active_job/railtie'
+require 'action_cable/engine'
+require 'rails/test_unit/railtie'
+require 'sprockets/railtie'
+# active_storage/engine intentionally omitted — not used in this application
 
 Bundler.require(*Rails.groups)
 

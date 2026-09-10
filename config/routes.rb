@@ -4,11 +4,6 @@
 Rails.application.routes.draw do
   mount JasmineRails::Engine => '/specs' if defined?(JasmineRails)
 
-  constraints(Codeopenhub) do
-    get '/', to: 'codeopenhub#index'
-    get '/*other', to: 'codeopenhub#index'
-  end
-
   get 'admin/comments' => redirect('/404')
   get 'oh_admin/projects', to: 'admin/projects#index'
   get 'admin/spam', to: 'spam#redirect_to_first_potential_spammer'
@@ -413,8 +408,6 @@ Rails.application.routes.draw do
 
   get 'repositories/compare' => 'compare_repositories#index', as: :compare_repositories
   get 'repositories/chart' => 'compare_repositories#chart', as: :compare_repositories_chart
-
-  get 'server_info' => 'home#server_info'
 
   resources :committers, only: %i[index show] do
     member do
