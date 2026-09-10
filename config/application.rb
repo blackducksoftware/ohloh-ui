@@ -16,6 +16,10 @@ module OhlohUi
     require_relative '../app/middleware/mime_type_sanitizer'
     config.middleware.insert_before ActionDispatch::Static, MimeTypeSanitizer
 
+    # BREACH mitigation: disable gzip for API responses (CVE-2013-3587)
+    require_relative '../app/middleware/suppress_api_compression'
+    config.middleware.insert_before Rack::Deflater, SuppressApiCompression
+
     config.load_defaults 6.1
 
     config.generators.stylesheets = false
