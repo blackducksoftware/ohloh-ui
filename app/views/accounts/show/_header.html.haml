@@ -22,9 +22,9 @@
         - if current_user_is_admin?
           |
           = link_to bootstrap_icon('icon-legal', t('.view_job')), admin_account_account_analysis_jobs_path(@account)
-      - if @account.url.present?
+      - if @account.url.present? && @account.url.match?(%r{\Ahttps?://})
         .info
-          = link_to h(@account.url), target: '_blank', title: @account.url, itemprop: 'url', rel: 'nofollow' do
+          = link_to @account.url, target: '_blank', title: @account.url, itemprop: 'url', rel: 'nofollow noopener noreferrer' do
             %i.icon-external-link= "&nbsp; #{h(truncate(@account.url, length: 60))}".html_safe
       .info#account_affiliation
         = render partial: 'accounts/show/header/affiliation', locals: { account: @account }

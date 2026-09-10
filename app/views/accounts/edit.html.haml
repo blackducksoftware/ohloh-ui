@@ -41,8 +41,10 @@
             .form-group
               %label.control-label= t('.homepage_url')
               .controls
-                = f.text_field :url, class: 'form-control', value: @account.url
+                = f.text_field :url, class: 'form-control validate-url', value: @account.url,
+                                      pattern: 'https?://.*', title: t('accounts.edit.valid_url_format')
                 - error_tag @account, :url
+                %p.help-block= t('accounts.edit.url_format_help')
 
             .form-group
               %label.control-label= t('twitter_id')
