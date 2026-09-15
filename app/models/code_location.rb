@@ -68,8 +68,9 @@ class CodeLocation < FisbotApi
   end
 
   def save
-    return false unless safe_repo_url?(url)
+    return ssrf_blocked! unless safe_repo_url?(url)
 
+    self.url = pin_url_to_ip(url)
     super
   end
 
