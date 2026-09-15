@@ -108,6 +108,23 @@ class SsrfUrlValidatorTest < ActiveSupport::TestCase
     _(@v.safe_repo_url?('http://git.unknown-host.example/repo')).must_equal false
   end
 
+  # --- IPv4-mapped IPv6 bypass prevention ---
+
+  it 'blocks hostname resolving to ::ffff:127.0.0.1 (IPv4-mapped loopback)' do
+    Resolv.stubs(:getaddresses).with('mapped.example.com').returns(['::ffff:127.0.0.1'])
+    _(@v.safe_repo_url?('https://mapped.example.com/repo')).must_equal false
+  end
+
+  it 'blocks hostname resolving to ::ffff:10.0.0.1 (IPv4-mapped private)' do
+    Resolv.stubs(:getaddresses).with('mapped2.example.com').returns(['::ffff:10.0.0.1'])
+    _(@v.safe_repo_url?('https://mapped2.example.com/repo')).must_equal false
+  end
+
+  it 'blocks hostname resolving to ::ffff:169.254.169.254 (IPv4-mapped link-local)' do
+    Resolv.stubs(:getaddresses).with('metadata.example.com').returns(['::ffff:169.254.169.254'])
+    _(@v.safe_repo_url?('https://metadata.example.com/repo')).must_equal false
+  end
+
   # --- hostname allowlist ---
 
   it 'allows gitlab.com' do
@@ -134,26 +151,16 @@ class SsrfUrlValidatorTest < ActiveSupport::TestCase
     _(@v.safe_repo_url?('https://attacker-burp-collaborator.com/payload')).must_equal false
   end
 
-  # --- SCM subdomain prefix pattern ---
+  # --- SCM subdomain prefix pattern (removed — too broad, allows attacker-controlled hosts) ---
 
-  it 'allows git.company.com (SCM subdomain prefix, public IP)' do
+  it 'blocks git.company.com (not in allowlist)' do
     Resolv.stubs(:getaddresses).with('git.company.com').returns(['1.2.3.4'])
-    _(@v.safe_repo_url?('https://git.company.com/repo.git')).must_equal true
+    _(@v.safe_repo_url?('https://git.company.com/repo.git')).must_equal false
   end
 
-  it 'allows svn.university.edu (SCM subdomain prefix, public IP)' do
-    Resolv.stubs(:getaddresses).with('svn.university.edu').returns(['203.0.113.5'])
-    _(@v.safe_repo_url?('svn://svn.university.edu/project')).must_equal true
-  end
-
-  it 'blocks git.internal.corp (SCM prefix but resolves to private IP)' do
-    Resolv.stubs(:getaddresses).with('git.internal.corp').returns(['10.0.0.10'])
-    _(@v.safe_repo_url?('https://git.internal.corp/repo')).must_equal false
-  end
-
-  it 'blocks git.evil.internal (SCM prefix, private IP)' do
-    Resolv.stubs(:getaddresses).with('git.evil.internal').returns(['192.168.0.1'])
-    _(@v.safe_repo_url?('http://git.evil.internal/repo')).must_equal false
+  it 'blocks git.attacker.com (attacker-registered SCM-prefix domain)' do
+    Resolv.stubs(:getaddresses).with('git.attacker.com').returns(['1.2.3.4'])
+    _(@v.safe_repo_url?('https://git.attacker.com/repo.git')).must_equal false
   end
 
   # --- CVS pserver format ---
@@ -186,5 +193,44 @@ class SsrfUrlValidatorTest < ActiveSupport::TestCase
   it 'blocks git@internal.server:repo.git (resolves to private IP)' do
     Resolv.stubs(:getaddresses).with('internal.server').returns(['192.168.1.5'])
     _(@v.safe_repo_url?('git@internal.server:repo.git')).must_equal false
+  end
+
+  # --- DNS rebinding mitigation: pin_url_to_ip ---
+
+  class DummyHostWithPin
+    include SsrfUrlValidator
+    public :pin_url_to_ip
+  end
+
+  setup do
+    @p = DummyHostWithPin.new
+  end
+
+  it 'replaces hostname with resolved IP for http:// URL' do
+    Resolv.stubs(:getaddresses).with('github.com').returns(['140.82.121.4'])
+    result = @p.pin_url_to_ip('http://github.com/user/repo.git')
+    _(result).must_equal 'http://140.82.121.4/user/repo.git'
+  end
+
+  it 'replaces hostname with resolved IP for git:// URL' do
+    Resolv.stubs(:getaddresses).with('github.com').returns(['140.82.121.4'])
+    result = @p.pin_url_to_ip('git://github.com/user/repo.git')
+    _(result).must_equal 'git://140.82.121.4/user/repo.git'
+  end
+
+  it 'leaves https:// URL unchanged (TLS cert validation requires hostname)' do
+    Resolv.stubs(:getaddresses).with('github.com').returns(['140.82.121.4'])
+    result = @p.pin_url_to_ip('https://github.com/user/repo.git')
+    _(result).must_equal 'https://github.com/user/repo.git'
+  end
+
+  it 'leaves lp: shorthand unchanged' do
+    result = @p.pin_url_to_ip('lp:busybox')
+    _(result).must_equal 'lp:busybox'
+  end
+
+  it 'returns nil-safe on blank input' do
+    _(@p.pin_url_to_ip(nil)).must_be_nil
+    _(@p.pin_url_to_ip('')).must_equal ''
   end
 end

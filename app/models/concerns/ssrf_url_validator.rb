@@ -54,18 +54,14 @@ module SsrfUrlValidator
     svn2.assembla.com
   ].to_set.freeze
 
-  # Any subdomain with these prefixes is treated as a legitimate SCM host
-  # (e.g. git.company.com, svn.university.edu, gerrit.project.org).
-  # Combined with private IP blocking this prevents SSRF to internal hosts
-  # while supporting self-hosted instances.
-  ALLOWED_SCM_SUBDOMAINS = %w[git svn hg cvs gerrit scm anongit anonsvn bzr src].freeze
-
   # All subdomains of these hosting platforms are legitimate.
   ALLOWED_HOST_SUFFIXES = %w[
     .googlesource.com
     .sf.net
     .sourceforge.net
     .assembla.com
+    .savannah.gnu.org
+    .savannah.nongnu.org
   ].freeze
 
   ALLOWED_SCM_SCHEMES = %w[http https git svn bzr].freeze
@@ -98,6 +94,29 @@ module SsrfUrlValidator
     allowed_host?(host) && !private_host?(host)
   end
 
+  # Returns a URL with the hostname replaced by its resolved IP for non-HTTPS schemes.
+  # This prevents DNS rebinding: the FIS service receives an already-validated IP and
+  # cannot be redirected to a different address via a second DNS resolution.
+  #
+  # HTTPS URLs are returned unchanged — substituting an IP breaks TLS certificate
+  # validation. A full fix for HTTPS requires the FIS service to pin its connection to
+  # the IP it resolves at the moment of connection (TOCTOU limitation).
+  def pin_url_to_ip(url_string)
+    return url_string if url_string.blank?
+
+    url = url_string.to_s.strip
+    return url if url.start_with?('lp:')
+
+    uri = parseable_non_https_uri(url)
+    return url if uri.nil?
+
+    ip = safe_resolved_ip(uri.host)
+    return url unless ip
+
+    uri.host = ip
+    uri.to_s
+  end
+
   private
 
   def repository_host(url)
@@ -123,8 +142,7 @@ module SsrfUrlValidator
     return true if ALLOWED_HOSTS.include?(h)
     return true if ALLOWED_HOST_SUFFIXES.any? { |suffix| h.end_with?(suffix) }
 
-    parts = h.split('.')
-    parts.length >= 3 && ALLOWED_SCM_SUBDOMAINS.include?(parts.first)
+    false
   end
 
   def private_host?(host)
@@ -142,7 +160,27 @@ module SsrfUrlValidator
     true # fail closed on DNS errors
   end
 
+  # Returns the first resolved public IP for +host+, or nil if none is safe.
+  def safe_resolved_ip(host)
+    addrs = Resolv.getaddresses(host)
+    addrs.find { |a| !private_ip?(IPAddr.new(a)) }
+  rescue Resolv::ResolvTimeout, Resolv::ResolvError, IPAddr::InvalidAddressError
+    nil
+  end
+
+  def parseable_non_https_uri(url)
+    uri = URI.parse(url)
+    return nil if uri.scheme&.downcase == 'https'
+    return nil unless ALLOWED_SCM_SCHEMES.include?(uri.scheme&.downcase)
+    return nil if uri.host.blank?
+
+    uri
+  rescue URI::InvalidURIError
+    nil
+  end
+
   def private_ip?(ip)
+    ip = ip.native if ip.ipv4_mapped? || ip.ipv4_compat?
     PRIVATE_RANGES.any? { |range| range.include?(ip) }
   end
 end
