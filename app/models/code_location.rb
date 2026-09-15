@@ -2,6 +2,7 @@
 
 class CodeLocation < FisbotApi
   include CodeLocationJobs
+  include SsrfUrlValidator
   extend ActiveModel::Naming # for model_name used by form_for.
   SCM_NAME_DICT = { git: :Git, hg: :Mercurial, cvs: :CVS, bzr: :Bazaar, git_svn: :Subversion,
                     svn: :Subversion, svn_sync: 'Subversion (via SvnSync)' }.freeze
@@ -60,7 +61,24 @@ class CodeLocation < FisbotApi
     end
   end
 
+  def valid?
+    return ssrf_blocked! unless safe_repo_url?(url)
+
+    super
+  end
+
+  def save
+    return false unless safe_repo_url?(url)
+
+    super
+  end
+
   private
+
+  def ssrf_blocked!
+    @errors[:url] = [I18n.t('code_locations.url_not_allowed')]
+    false
+  end
 
   def timeout_interval
     ENV['SCM_URL_VALIDATION_TIMEOUT'].to_i
