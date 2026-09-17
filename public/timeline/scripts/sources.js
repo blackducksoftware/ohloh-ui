@@ -430,7 +430,10 @@ Timeline.DefaultEventSource.Event.prototype = {
         elmt.appendChild(divWiki);
 			
 				if (this._ajaxDescription != null) {
-      		$.ajax({ url: this._ajaxDescription, success: function(html) { $("#" + bodyId).html(html); } });
+      		$.ajax({ url: this._ajaxDescription, success: function(html) {
+					var parsed = $.parseHTML(html);
+					$("#" + bodyId).empty().append(parsed);
+					}});
 				}
     }
 };
