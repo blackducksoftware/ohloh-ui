@@ -13,6 +13,8 @@ Rails.application.configure do
       secret_access_key: ENV.fetch('OHLOH_S3_SECRET_ACCESS_KEY', nil)
     },
     s3_region: ENV.fetch('AWS_REGION', nil),
+    # Bucket has S3 Block Public Access enabled; do not send a public-read ACL on upload.
+    s3_permissions: :private,
     s3_protocol: :https,
     s3_host_name: 's3.amazonaws.com',
     endpoint: 'https://s3.amazonaws.com'
