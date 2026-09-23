@@ -13,8 +13,9 @@ OrganizationPictogram = {
       $.ajax({
         url: $(this).attr('url'),
         success: function(response) {
-          $('#org_infographic').replaceWith($.parseHTML(response.pictogram_html));
-          $(update).empty().append($.parseHTML(response.subview_html));
+          var svgArrowAttrs = { ADD_ATTR: ['svg-width', 'stick-height', 'tip-height', 'stroke', 'border-stroke', 'fill-color', 'arrow-direction'] };
+          $('#org_infographic').replaceWith($(DOMPurify.sanitize(response.pictogram_html, svgArrowAttrs)));
+          $(update).empty().append(DOMPurify.sanitize(response.subview_html, svgArrowAttrs));
           OrganizationPictogram.init();
           Expander.init();
           $.unblockUI();

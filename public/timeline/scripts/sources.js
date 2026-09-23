@@ -431,8 +431,8 @@ Timeline.DefaultEventSource.Event.prototype = {
 			
 				if (this._ajaxDescription != null) {
       		$.ajax({ url: this._ajaxDescription, success: function(html) {
-					var parsed = $.parseHTML(html);
-					$("#" + bodyId).empty().append(parsed);
+					var clean = DOMPurify.sanitize(html);
+					$("#" + bodyId).empty().html(clean);
 					}});
 				}
     }
