@@ -101,7 +101,7 @@ jQuery.fn.rest_in_place = function(url, objectName, attributeName) {
               dataType: "json",
               "beforeSend" : function(xhr) { xhr.setRequestHeader("Accept", "application/json"); },
               "success" : function(jsondata, status){
-                e.html(jsondata[attributeName]);
+                e.text(jsondata[attributeName]);
                 tearDown(e);
                 return false;
               }

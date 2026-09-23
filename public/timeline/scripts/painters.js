@@ -235,9 +235,11 @@ Timeline.DurationEventPainter.prototype.paint = function() {
                 endPixel2 = temp;
             }
             if (div == null) {
+                // no bar div was created (e.g. inverted pixel range); skip binding a click handler to it
                 console.log(evt);
+            } else {
+                attachClickEvent(div);
             }
-            attachClickEvent(div);
                 
             if (showText) {
                 var divLabel = doc.createElement("div");

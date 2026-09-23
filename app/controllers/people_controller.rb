@@ -44,6 +44,7 @@ class PeopleController < UnclaimedController
   end
 
   def parse_sort_term
-    Person.respond_to?("sort_by_#{params[:sort]}") ? "sort_by_#{params[:sort]}" : 'sort_by_kudo_position'
+    allowed = %w[sort_by_kudo_position sort_by_effective_name]
+    allowed.include?("sort_by_#{params[:sort]}") ? "sort_by_#{params[:sort]}" : 'sort_by_kudo_position'
   end
 end

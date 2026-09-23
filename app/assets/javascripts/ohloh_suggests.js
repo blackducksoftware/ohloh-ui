@@ -228,7 +228,7 @@ StackShow = {
         // we're going to slide up the new recommendations
         list.css('height', list.height()); // make height fixed, the larger div is overflow:hidde
         list.find("li").wrapAll("<div id='delete_me'></div>");
-        list.children("ul").append(result.recommendations);
+        list.children("ul").append(DOMPurify.sanitize(result.recommendations));
         list.find("#delete_me").slideUp(1000, function() {
           $(this).remove();
           list.css('height', 'auto');
@@ -243,7 +243,7 @@ StackShow = {
 
   update_count: function(json) {
     if (json.updated_count) {
-      $(".listing_result").html(json.updated_count);
+      $(".listing_result").text(json.updated_count);
       if (json.updated_count == 0) {
         $("#empty_stack_text").fadeIn("slow");
       } else {
@@ -265,7 +265,7 @@ StackShow = {
       $(".recommendations .controls").show();
       $(".recommendations a.clear_ignores").show();
       $(".recommendations .list ul").hide();
-      $(".recommendations .list ul").html(response.recommendations).slideDown();
+      $(".recommendations .list ul").html(DOMPurify.sanitize(response.recommendations)).slideDown();
       StackShow.recommendations_init(true);
       StackShow.enable_more_or_skip_link("skip");
       return false;

@@ -112,7 +112,8 @@ var OrgClaimProject = {
         type: "GET",
         url: url,
         success: function(data){
-          $('#'+link_id).replaceWith(data);
+          var clean = DOMPurify.sanitize(data);
+          $('#' + link_id).replaceWith($(clean));
         }
       });
       return false;
