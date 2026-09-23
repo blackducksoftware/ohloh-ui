@@ -26,7 +26,7 @@ module OhlohUi
     config.action_mailer.default_url_options = { host: ENV.fetch('URL_HOST', nil) }
     config.active_job.queue_adapter = :sidekiq
 
-    config.google_maps_api_key = ENV.fetch('GOOGLE_MAPS_API', nil)
+    config.google_maps_api_key = ENV.fetch('GOOGLE_MAPS_API_KEY', nil)
 
     config.eager_load_paths << Rails.root.join('lib')
     config.eager_load_paths << Rails.root.join('lib', 'reverification', '**', '*')
