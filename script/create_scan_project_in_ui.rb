@@ -94,7 +94,7 @@ class CreateScanProjectInUi
   end
 
   def git_branch(url)
-    out, _err, _status = Open3.capture3('git', 'ls-remote', '--symref', url, 'HEAD')
+    out, _err, _status = Open3.capture3('git', 'ls-remote', '--symref', '--', url, 'HEAD')
     out.lines.first.to_s.split[1].to_s.sub('refs/heads/', '')
   end
 
