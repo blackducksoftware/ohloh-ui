@@ -53,8 +53,8 @@ class AddGithubCodeLocations
   end
 
   def git_branch(url)
-    out, _err, _status = Open3.capture3("git ls-remote --symref #{url} HEAD | head -1 | awk '{print $2}'")
-    out.strip.gsub('refs/heads/', '')
+    out, _err, _status = Open3.capture3('git', 'ls-remote', '--symref', url, 'HEAD')
+    out.lines.first.to_s.split[1].to_s.gsub('refs/heads/', '')
   end
 
   def code_location_uri

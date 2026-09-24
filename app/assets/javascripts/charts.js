@@ -73,7 +73,6 @@ var Charts = {
           else
             return '<a href="/admin/projects?active=true&commit=Filter&q[created_at_gteq_datetime]=' + this.value + '&q[created_at_lteq_datetime]=' + this.value + '" target="_blank">' +
                     this.value + '</a>';
-          end
       }});
     }
     data.chart.renderTo = chart;
@@ -83,7 +82,7 @@ var Charts = {
     if( options.tooltips ) {
       if (data.tooltip.dateFormat) {
         data.tooltip.formatter = function() {
-          if (data.title == "Commits" || "Committers") {
+          if (data.title == "Commits" || data.title == "Committers") {
             if (this.points && this.points[0].series.name == "Current Month") {
               return "Partial " + Highcharts.dateFormat("%B", this.x) + "<br>" +
               "<span style=\"fill:#4572A7\">" + data.title + "</span>: " +
@@ -96,9 +95,9 @@ var Charts = {
             }
           }
           else {
-            return Highcharts.dateFormat(data.tooltip.dateFormat, chart.x) + "<br>" +
+            return Highcharts.dateFormat(data.tooltip.dateFormat, this.x) + "<br>" +
             "<span style=\"fill:#4572A7\">" + this.series.name + "</span>: " +
-            "<strong>" + Highcharts.numberFormat(chart.y, 0, ',') + "</strong>";
+            "<strong>" + Highcharts.numberFormat(this.y, 0, ',') + "</strong>";
           }
         };
       }

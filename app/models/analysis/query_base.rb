@@ -73,7 +73,8 @@ class Analysis::QueryBase
   end
 
   def truncate_date(value)
-    Arel::Nodes::NamedFunction.new('date_trunc', [Arel.sql("'month'"), Arel.sql("TIMESTAMP '#{value}'")])
+    quoted = ApplicationRecord.connection.quote(value.to_s)
+    Arel::Nodes::NamedFunction.new('date_trunc', [Arel.sql("'month'"), Arel.sql("#{quoted}::timestamp")])
   end
 
   def differential_sum(column_names)
