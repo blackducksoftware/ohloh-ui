@@ -19,8 +19,8 @@ class ProjectBadgesController < ApplicationController
   end
 
   def create
-    @project_badge = @project.project_badges.inactive.find_or_initialize_by(badge_params.except('identifier'))
-    @project_badge.identifier = badge_params['identifier']
+    @project_badge = @project.project_badges.inactive.find_or_initialize_by(badge_params.except(:identifier))
+    @project_badge.identifier = badge_params[:identifier]
     if @project_badge.save
       save_and_redirect_valid_badge
     else

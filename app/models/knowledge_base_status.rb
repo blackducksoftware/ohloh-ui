@@ -147,8 +147,8 @@ class KnowledgeBaseStatus < ApplicationRecord
     return unless code_location_id
 
     ApplicationRecord.connection
-                     .execute("select repository_id from code_locations where id= #{code_location_id}")
-                     .values[0].try(:first).to_i
+                     .exec_query('select repository_id from code_locations where id = $1', nil, [code_location_id])
+                     .rows[0].try(:first).to_i
   end
 
   def get_forge_match(forge_match)

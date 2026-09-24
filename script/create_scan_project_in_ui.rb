@@ -82,9 +82,10 @@ class CreateScanProjectInUi
   end
 
   def code_location_ids(url)
+    quoted = ApplicationRecord.connection.quote("%#{url}%")
     @code_location_ids = ApplicationRecord.connection
-                                          .execute("select c.id from code_locations c inner join repositories r
-                           on r.id = c.repository_id where r.url like '%#{url}%'").values.flatten
+                                          .execute("SELECT c.id FROM code_locations c INNER JOIN repositories r
+                           ON r.id = c.repository_id WHERE r.url LIKE #{quoted}").values.flatten
   end
 
   def project_params(row)
@@ -93,8 +94,8 @@ class CreateScanProjectInUi
   end
 
   def git_branch(url)
-    out, _err, _status = Open3.capture3("git ls-remote --symref #{url} HEAD | head -1 | awk '{print $2}'")
-    out.strip.sub('refs/heads/', '')
+    out, _err, _status = Open3.capture3('git', 'ls-remote', '--symref', '--', url, 'HEAD')
+    out.lines.first.to_s.split[1].to_s.sub('refs/heads/', '')
   end
 
   def create_enlistment(row, project_id)
