@@ -56,6 +56,7 @@ class Api::V1::EnlistmentsController < ApplicationController
   end
 
   def delete_all_subscriptions(code_location_id)
-    Enlistment.connection.execute("DELETE FROM fis.subscriptions WHERE code_location_id =#{code_location_id};")
+    Enlistment.connection.exec_query('DELETE FROM fis.subscriptions WHERE code_location_id = $1', 'SQL',
+                                     [code_location_id])
   end
 end

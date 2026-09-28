@@ -32,7 +32,11 @@ class FixTruncatedLinks
 
   def enable_sync_to_kb(project_id)
     ActiveRecord::Base.connection
-                      .execute("UPDATE knowledge_base_statuses SET in_sync=false WHERE project_id = #{project_id};")
+                      .exec_query(
+                        'UPDATE knowledge_base_statuses SET in_sync=false WHERE project_id = $1',
+                        'SQL',
+                        [project_id]
+                      )
   end
 
   def log_details(old_url, link)

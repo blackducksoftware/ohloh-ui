@@ -6,7 +6,7 @@ module AnonymousAccount
   class << self
     def create!
       anonymous_account = Account.new(name: 'Anonymous Coward', login: LOGIN,
-                                      email: 'anon@openhub.net', password: 'mailpass')
+                                      email: 'anon@openhub.net', password: SecureRandom.hex(16))
       anonymous_account.save!
       anonymous_account.access.activate!(nil)
 
