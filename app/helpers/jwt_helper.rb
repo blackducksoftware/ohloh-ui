@@ -39,44 +39,29 @@ module JwtHelper
     # Fall back to query parameter (deprecated method)
     if token.blank? && params[:JWT].present?
       token = params[:JWT]
-      log_jwt_deprecation_warning
+      log_deprecation_warning(
+        'JWT token should be passed in Authorization header as "Bearer <token>" instead of query parameter. ' \
+        'This method is deprecated and will be removed. Please update within 3 months.'
+      )
     end
 
     token
   end
 
-  def bearer_token
-    auth_header = request.headers['Authorization']
-    return nil unless auth_header&.start_with?('Bearer ')
-
-    auth_header.split('Bearer ', 2).last.presence
-  end
-
-  def log_jwt_deprecation_warning
-    message = 'JWT token should be passed in Authorization header as "Bearer <token>" instead of query parameter. ' \
-              'This method is deprecated and will be removed. Please update within 3 months.'
-    @deprecation_warning = message
-    @deprecation_deadline = 3.months.from_now.to_date.iso8601
-    logger.warn("[DEPRECATED] #{message}")
-    response.headers['X-Deprecation-Warning'] = message
-    response.headers['X-Deprecation-Deadline'] = @deprecation_deadline
-  end
-
   def jwt_decode_error
-    response_body = { error: 'Invalid authentication token' }
-    if @deprecation_warning.present?
-      response_body[:deprecation_warning] = @deprecation_warning
-      response_body[:deprecation_deadline] = @deprecation_deadline
-    end
-    render json: response_body, status: :bad_request
+    render_jwt_error('Invalid authentication token', :bad_request)
   end
 
   def auth_error
-    response_body = { error: 'Not an Admin' }
+    render_jwt_error('Not an Admin', :unauthorized)
+  end
+
+  def render_jwt_error(message, status)
+    response_body = { error: message }
     if @deprecation_warning.present?
       response_body[:deprecation_warning] = @deprecation_warning
       response_body[:deprecation_deadline] = @deprecation_deadline
     end
-    render json: response_body, status: :unauthorized
+    render json: response_body, status: status
   end
 end

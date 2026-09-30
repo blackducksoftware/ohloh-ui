@@ -442,10 +442,6 @@ class TestController < ApplicationController
   before_action :session_required, only: :session_required_action
   before_action :admin_session_required, only: :admin_session_required_action
 
-  def verify_api_xml
-    head :ok
-  end
-
   def renders_404
     render_404
   end

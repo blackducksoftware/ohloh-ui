@@ -298,12 +298,14 @@ class ApplicationController < ActionController::Base
   end
 
   def api_key_from_request
-    # Check Authorization header first (new method)
-    auth_header = request.headers['Authorization']
-    return auth_header.delete_prefix('Bearer ') if auth_header.present? && auth_header.start_with?('Bearer ')
+    bearer_token || params[:api_key]
+  end
 
-    # Fall back to query parameter (deprecated method)
-    params[:api_key]
+  def bearer_token
+    auth_header = request.headers['Authorization']
+    return nil unless auth_header&.start_with?('Bearer ')
+
+    auth_header.split('Bearer ', 2).last.presence
   end
 
   def check_deprecated_api_key_usage
