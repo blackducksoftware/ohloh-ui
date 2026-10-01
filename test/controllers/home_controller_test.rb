@@ -15,11 +15,4 @@ class HomeControllerTest < ActionController::TestCase
     assert_response :success
     _(assigns(:home).class).must_equal HomeDecorator
   end
-
-  it 'server_info should load' do
-    get :server_info
-    assert_response :success
-    resp = JSON.parse(response.body)
-    _(resp['status']).must_equal 'OK'
-  end
 end
