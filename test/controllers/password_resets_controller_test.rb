@@ -56,28 +56,28 @@ class PasswordResetsControllerTest < ActionController::TestCase
       end
     end
 
-    it 'must block at exactly 10 minute boundary' do
+    it 'must block at exactly 1 hour boundary' do
       account = create(:account)
       base_time = Time.current
       travel_to base_time do
         account.update_columns(password_reset_count: 3, password_reset_requested_at: base_time)
       end
 
-      travel_to base_time + 10.minutes do
+      travel_to base_time + 1.hour do
         post :create, params: { password: { email: account.email } }
         _(response.status).must_equal 429
         _(flash[:error]).must_equal I18n.t('passwords.create.rate_limit_exceeded')
       end
     end
 
-    it 'must allow request just after 10 minute boundary' do
+    it 'must allow request just after 1 hour boundary' do
       account = create(:account)
       base_time = Time.current
       travel_to base_time do
         account.update_columns(password_reset_count: 3, password_reset_requested_at: base_time)
       end
 
-      travel_to base_time + 10.minutes + 1.second do
+      travel_to base_time + 1.hour + 1.second do
         post :create, params: { password: { email: account.email } }
         _(response.status).must_equal 202
         email = ActionMailer::Base.deliveries.last
@@ -85,14 +85,14 @@ class PasswordResetsControllerTest < ActionController::TestCase
       end
     end
 
-    it 'must block just before 10 minute boundary (still in window)' do
+    it 'must block just before 1 hour boundary (still in window)' do
       account = create(:account)
       base_time = Time.current
       travel_to base_time do
         account.update_columns(password_reset_count: 3, password_reset_requested_at: base_time)
       end
 
-      travel_to base_time + 10.minutes - 1.second do
+      travel_to base_time + 1.hour - 1.second do
         post :create, params: { password: { email: account.email } }
         _(response.status).must_equal 429
         _(flash[:error]).must_equal I18n.t('passwords.create.rate_limit_exceeded')
@@ -127,7 +127,7 @@ class PasswordResetsControllerTest < ActionController::TestCase
         account.update_columns(password_reset_count: 3, password_reset_requested_at: base_time)
       end
 
-      travel_to base_time + 10.minutes + 1.second do
+      travel_to base_time + 1.hour + 1.second do
         post :create, params: { password: { email: account.email } }
         account.reload
         _(account.password_reset_count).must_equal 1
