@@ -56,6 +56,13 @@ class Api::V1::ProjectsControllerTest < ActionController::TestCase
       post :create, params: { project: { JWT: jwt, url: @url } }, format: :json
       _(response).wont_be :successful?
     end
+
+    it 'wont be successful when given an expired JWT' do
+      expired_jwt = JWT.encode({ exp: 1.hour.ago.to_i, user: create(:admin).login },
+                               ENV.fetch('JWT_SECRET_API_KEY', nil), 'HS256')
+      post :create, params: { JWT: expired_jwt, repo_url: @url }, format: :json
+      assert_response :unauthorized
+    end
   end
 
   describe 'code_location_branch' do
