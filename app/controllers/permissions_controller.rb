@@ -4,6 +4,7 @@ class PermissionsController < ApplicationController
   helper ProjectsHelper
   include ProjectOrOrganizationSetter
 
+  before_action { response.set_header('X-Robots-Tag', 'noindex, nofollow') }
   before_action :session_required, :redirect_unverified_account, only: :update
   before_action :find_model
   before_action :require_manage_authorization, only: :update

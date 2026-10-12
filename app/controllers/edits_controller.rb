@@ -3,6 +3,7 @@
 class EditsController < SettingsController
   helper ProjectsHelper
 
+  before_action { response.set_header('X-Robots-Tag', 'noindex, nofollow') }
   before_action :session_required, :redirect_unverified_account, only: [:update]
   before_action :find_parent, only: %i[index show update refresh]
   before_action :show_permissions_alert, only: :index, unless: :parent_is_account_or_license?
