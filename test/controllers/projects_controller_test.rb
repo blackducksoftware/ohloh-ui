@@ -1080,6 +1080,18 @@ class ProjectsControllerTest < ActionController::TestCase
       _(flash[:notice]).must_equal I18n.t('projects.report_outdated.notification')
       _(project.reload.reported_at).wont_be_nil
     end
+
+    it 'must redirect to fallback when Referer is an external host' do
+      @request.env['HTTP_REFERER'] = 'https://evil.com/phishing'
+      put :report_outdated, params: { id: project.id }
+      assert_redirected_to root_path
+    end
+
+    it 'must redirect to Referer when it is the same host' do
+      @request.env['HTTP_REFERER'] = 'http://test.host/p/metro-1'
+      put :report_outdated, params: { id: project.id }
+      assert_redirected_to 'http://test.host/p/metro-1'
+    end
   end
 end
 
