@@ -33,7 +33,7 @@ module PasswordResetRateLimiting
   end
 
   def check_account_rate_limit(email)
-    user = find_user_for_rate_limit(email)
+    user = Clearance.configuration.user_model.find_by(email: email)
     return true unless user
 
     enforce_account_rate_limit(user)
@@ -80,18 +80,8 @@ module PasswordResetRateLimiting
     window_start = now - RESET_WINDOW
     in_window = last && last >= window_start
     new_count = in_window ? account.password_reset_count + 1 : 1
-    account.update_columns(
-      password_reset_count: new_count,
-      password_reset_requested_at: now,
-      updated_at: now
-    )
+    account.update_columns(password_reset_count: new_count, password_reset_requested_at: now, updated_at: now)
   end
-
-  def find_user_for_rate_limit(email)
-    Clearance.configuration.user_model.find_by(email: email)
-  end
-
-  # Session-based tracking
 
   def session_key(email)
     "password_reset_attempts_#{email}"
