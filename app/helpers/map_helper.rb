@@ -35,13 +35,13 @@ module MapHelper
 
   def map_script_load
     key = Rails.application.config.google_maps_api_key
-    uri = "#{request.ssl? ? 'https' : 'http'}://maps.googleapis.com/maps/api/js?v=3&amp;key=#{key}"
+    uri = "https://maps.googleapis.com/maps/api/js?v=3&amp;key=#{key}"
     "<script src='#{uri}' type='text/javascript'></script>"
   end
 
   def map_js_initialization(id, zoom, lat = nil, lng = nil)
     jump_callback = lat && lng ? "EditMap.jumpMeTo(#{lat}, #{lng});" : ''
-    javascript_tag <<-JSCRIPT
+    javascript_tag(<<-JSCRIPT, nonce: true)
       function initOhMap() {
         OH_Map.load('#{id}', 25, 12, 2);
         OH_Map.moveTo(25, 12, #{zoom});

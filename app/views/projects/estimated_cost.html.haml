@@ -22,7 +22,7 @@
           &nbsp;
         .col-md-6
           - js = "var project_analysis = #{man_years.to_json};"
-          %script{ type: 'text/javascript' }
+          %script{ type: 'text/javascript', nonce: content_security_policy_nonce }
             \ //<![CDATA[
             \ #{js.html_safe}
             \ //]]>

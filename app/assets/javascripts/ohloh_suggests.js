@@ -94,7 +94,7 @@ StackShow = {
     if (StackShow.timeoutPreview != null) {
       clearTimeout(StackShow.timeoutPreview);
     }
-    StackShow.timeoutPreview = setTimeout('StackShow.update_callback()', StackShow.timeoutDelay);
+    StackShow.timeoutPreview = setTimeout(function() { StackShow.update_callback(); }, StackShow.timeoutDelay);
   },
   update_callback: function() {
     StackShow.update_widget_preview();
@@ -205,7 +205,7 @@ StackShow = {
     }
     if (StackShow.getting_more) {
       if (StackShow.get_more_timer != null) { clearTimeout(StackShow.get_more_timer); }
-      StackShow.get_more_timer = setTimeout('StackShow.get_more('+skip_projects+',null)', 1000);
+      StackShow.get_more_timer = setTimeout(function() { StackShow.get_more(skip_projects, null); }, 1000);
       return;
     } else {
       StackShow.getting_more = true;
