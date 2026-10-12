@@ -14,7 +14,7 @@
 # From active_admin -> jquery-rails # Using node_modules/jquery raises issues due to double jquery load.
 #= require jquery3
 #= require jquery/jquery-ui.min
-#= require twitter/bootstrap
+#= require bootstrap.min
 #= require underscore-min
 #= require jquery/chosen.jquery.min
 #= require highcharts/highstock.min
