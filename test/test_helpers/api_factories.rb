@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-def code_location_stub(scm_type: :git, url: Faker::Internet.url, branch: :main)
+def code_location_stub(scm_type: :git, url: "https://github.com/example/repo-#{rand(1_000_000)}", branch: :main)
   url = ":pserver:anonymous:@cvs.sourceforge.net:/#{Faker::Lorem.word}/#{Faker::Lorem.word}" if scm_type == :cvs
   CodeLocation.new(url: url, scm_type: scm_type, branch: branch)
 end
@@ -22,7 +22,8 @@ def create_enlistment_with_another_code_location(project = create(:project))
   unmocked_create_enlistment_with_code_location(project, {}, url)
 end
 
-def unmocked_create_enlistment_with_code_location(project = create(:project), data = {}, url = Faker::Internet.url)
+def unmocked_create_enlistment_with_code_location(project = create(:project), data = {},
+                                                  url = "https://github.com/example/repo-#{rand(1_000_000)}")
   code_location = CodeLocation.create({ url: url, branch: :main, scm_type: :git,
                                         client_relation_id: project.id }.merge(data))
   WebMocker.get_project_code_locations(true, id: code_location.id)
