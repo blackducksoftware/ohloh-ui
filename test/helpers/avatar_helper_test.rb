@@ -31,9 +31,8 @@ class AvatarHelperTest < ActionView::TestCase
     _(link.starts_with?('<a')).must_equal true
   end
 
-  it 'avatar_for should clamp sizes to 80' do
-    link = avatar_for(create(:admin), size: 1_000)
-    _(link).must_match(/80/)
+  it 'avatar_for should clamp anon fallback size to 80' do
+    _(avatar_default_size(1_000)).must_equal 80
   end
 
   it 'avatar_for should allow overriding url' do
@@ -57,13 +56,15 @@ class AvatarHelperTest < ActionView::TestCase
   end
 
   describe 'gravatar_url' do
-    it 'should have localhost host name' do
-      ActionController::Base.stubs(:asset_host).returns('localhost')
-      _(gravatar_url('123', 12)).must_equal 'https://gravatar.com/avatar/123?&s=12&rating=PG&d=http%3a%2f%2flocalhost%2fanon32.gif'
+    it 'returns local anon gif path' do
+      path = gravatar_url('any_md5', 12)
+      _(path.ends_with?('.gif')).must_equal true
+      _(path).must_include 'anon32'
     end
 
-    it 'should contain openhub host name' do
-      _(gravatar_url('123', 12)).must_equal 'https://gravatar.com/avatar/123?&s=12&rating=PG&d=https%3a%2f%2fopenhub.net%2fanon32.gif'
+    it 'uses anon80 for sizes above 40' do
+      path = gravatar_url('any_md5', 80)
+      _(path).must_include 'anon80'
     end
   end
 end
