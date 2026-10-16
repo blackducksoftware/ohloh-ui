@@ -14,7 +14,7 @@ module AvatarHelper
     return gravatar_url(who.email_md5, size) if who.is_a? Account
     return gravatar_url(who.account.email_md5, size) if who.respond_to?(:account) && who.account
 
-    anonymous_image_path(size)
+    anonymous_image_url(size)
   end
 
   def avatar_img_for(who, size = 32)
@@ -55,12 +55,21 @@ module AvatarHelper
     80
   end
 
-  def gravatar_url(_md5, size)
-    anonymous_image_path(size)
+  def gravatar_url(md5, size)
+    return anonymous_image_url(size) if ActionController::Base.asset_host.blank?
+
+    default_url = "https%3a%2f%2f#{ActionController::Base.asset_host}"
+    default_url += "%2fanon#{avatar_default_size(size)}.gif"
+    gravatar_host = 'https://gravatar.com'
+    "#{gravatar_host}/avatar/#{md5}?&s=#{size}&rating=PG&d=#{default_url}"
   end
 
   def anonymous_image_path(size)
     "anon/anon#{avatar_default_size(size)}.gif"
+  end
+
+  def anonymous_image_url(size)
+    image_url(anonymous_image_path(size))
   end
 
   def avatar_title(who)
