@@ -22,6 +22,7 @@
 #= require highcharts/solid-gauge.min
 #= require highcharts/exporting.min
 #= require app
+#= require purify.min
 #= require_tree .
 #= require d3.min
 #= require tagcloud

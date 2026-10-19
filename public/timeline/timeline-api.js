@@ -38,6 +38,7 @@ Timeline.Platform = new Object();
 		'ethers.js',
 		'ether-painters.js',
 		'labellers.js',
+		'purify.min.js',
 		'sources.js',
 		'layouts.js',
 		'painters.js',
