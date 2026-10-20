@@ -80,7 +80,7 @@ module OrgFilters
   def org_must_be_edit_authorized
     return if logged_in? && @organization.edit_authorized?
 
-    redirect_back fallback_location: @organization, notice: t('.unauthorized')
+    redirect_back fallback_location: @organization, notice: t('.unauthorized'), allow_other_host: false
   end
 
   def set_project
