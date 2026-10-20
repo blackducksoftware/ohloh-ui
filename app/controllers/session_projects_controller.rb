@@ -2,6 +2,7 @@
 
 class SessionProjectsController < ApplicationController
   skip_before_action :store_location
+  before_action { response.set_header('X-Robots-Tag', 'noindex, nofollow') }
   before_action :prevent_bot_access
   before_action :set_project, only: :create
   before_action :set_session_projects
