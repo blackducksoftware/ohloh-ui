@@ -17,14 +17,22 @@ module AvatarHelper
     anonymous_image_url(size)
   end
 
-  def avatar_img_for(who, size = 32)
+  def avatar_img_for(who, size = 32, options = {})
     return '' unless who
 
     src = avatar_img_path(who, size)
     fallback = anonymous_image_url(size)
-    image_tag src, style: "width: #{size}px; height: #{size}px;", class: 'avatar',
-                   onerror: 'this.onerror=null;this.src=this.dataset.fallback',
-                   data: { fallback: fallback }
+    attrs = { width: size, height: size, style: options[:style], class: options[:class] || 'avatar',
+              onerror: 'this.onerror=null;this.src=this.dataset.fallback',
+              data: { fallback: fallback } }
+    attrs[:itemprop] = options[:itemprop] if options[:itemprop]
+    image_tag src, attrs
+  end
+
+  def avatar_meta_url(who, size = 80)
+    return anonymous_image_url(size) unless who.is_a?(Account) && who.email_md5.present?
+
+    gravatar_url(who.email_md5, size)
   end
 
   def avatar_path(who)

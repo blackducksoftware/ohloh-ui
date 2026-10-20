@@ -1,6 +1,6 @@
 .account_header{ style: 'margin-top: 10px' }
   .col-xs-2.col-sm-2.col-md-2#account_icon
-    = avatar_img_for(@account, 128)
+    = avatar_img_for(@account, 128, itemprop: 'image')
     - lang = @account.most_experienced_language
     - if lang
       - lang_style = "background-color: ##{language_color(lang.name)}; color:##{language_text_color(lang.name)};"
