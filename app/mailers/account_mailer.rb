@@ -42,4 +42,10 @@ class AccountMailer < ApplicationMailer
     @account = account
     mail to: 'info@openhub.net', subject: I18n.t('mailers.account_mailer.review_account_spam')
   end
+
+  def notify_jwt_temporary_lockout(account, lockout_minutes)
+    @account = account
+    @lockout_minutes = lockout_minutes
+    mail(to: account.email, subject: t('.subject'))
+  end
 end

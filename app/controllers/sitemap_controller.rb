@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class SitemapController < ApplicationController
-  skip_before_action :verify_api_access_for_xml_request
+  skip_before_action :verify_api_access
 
   SITEMAPS = [{ ctrl: 'projects', model: Project, priority: 0.8, select: 'id, vanity_url' },
               { ctrl: 'accounts', model: Account, priority: 0.6, select: 'id, login' }].freeze
