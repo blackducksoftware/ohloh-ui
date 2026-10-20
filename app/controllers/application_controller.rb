@@ -28,7 +28,7 @@ class ApplicationController < ActionController::Base
   before_action :handle_me_account_paths
   before_action :strip_query_param
   before_action :clear_reminder
-  before_action :verify_api_access_for_xml_request, only: %i[show index similar]
+  before_action :verify_api_access, only: %i[show index similar]
   before_action :update_last_seen_at_and_ip
   before_action :check_maintenance_mode
   before_action :set_no_cache_for_authenticated_response
@@ -162,7 +162,10 @@ class ApplicationController < ActionController::Base
     params[:format] = 'html' unless FORMATS_THAT_WE_RENDER_ERRORS_FOR.include?(request_format)
     @error = { message: message }
     @page_context = {}
-    return render json: { error: message }, status: status if params[:controller] == 'api/v1/projects'
+    if params[:controller] == 'api/v1/projects'
+      return json_response_with_deprecation({ error: message },
+                                            status: status)
+    end
 
     render_with_format 'error', status: status
   end
@@ -188,7 +191,7 @@ class ApplicationController < ActionController::Base
 
   def render_limit_exceeded_api_key(limit)
     statsd_increment('Openhub.Api.limit_exceeded')
-    statsd_set('Openhub.Api.Key.limit_exceeded', params[:api_key])
+    statsd_set('Openhub.Api.Key.limit_exceeded', api_key_from_request)
     error(message: t(:overlimit_api_key, limit: limit), status: :unauthorized)
   end
 
@@ -249,10 +252,28 @@ class ApplicationController < ActionController::Base
 
   private
 
-  def verify_api_access_for_xml_request
-    return unless request_format == 'xml' || (params[:action] == 'similar' && request_format == 'json')
-    return render_missing_api_key if params[:api_key].blank?
+  def verify_api_access
+    return unless %w[xml json].include?(request_format)
 
+    if request_format == 'json'
+      verify_json_api_access
+    else
+      verify_xml_api_access
+    end
+  end
+
+  def verify_json_api_access
+    return if current_user.present?
+    return render_missing_api_key if api_client_id.blank?
+
+    check_deprecated_api_key_usage
+    verify_api_key_standing
+  end
+
+  def verify_xml_api_access
+    return render_missing_api_key if api_client_id.blank?
+
+    check_deprecated_api_key_usage
     verify_api_key_standing
   end
 
@@ -270,11 +291,49 @@ class ApplicationController < ActionController::Base
 
   def log_valid_api_request
     statsd_increment('Openhub.Api.success')
-    statsd_set('Openhub.Api.valid_api', params[:api_key])
+    statsd_set('Openhub.Api.valid_api', api_client_id)
   end
 
   def api_client_id
-    params[:api_key] || doorkeeper_token&.application&.uid
+    api_key_from_request || doorkeeper_token&.application&.uid
+  end
+
+  def api_key_from_request
+    bearer_token || params[:api_key]
+  end
+
+  def bearer_token
+    auth_header = request.headers['Authorization']
+    return nil unless auth_header&.start_with?('Bearer ')
+
+    auth_header.split('Bearer ', 2).last.presence
+  end
+
+  def check_deprecated_api_key_usage
+    return if params[:api_key].blank?
+
+    log_deprecation_warning(
+      'API key should be passed in Authorization header as "Bearer <api_key>" instead of query parameter. ' \
+      'This method is deprecated and will be removed. Please update within 3 months.'
+    )
+  end
+
+  def log_deprecation_warning(message)
+    @deprecation_warning = message
+    @deprecation_deadline = 3.months.from_now.to_date.iso8601
+    logger.warn("[DEPRECATED] #{message}")
+    response.headers['X-Deprecation-Warning'] = message
+    response.headers['X-Deprecation-Deadline'] = @deprecation_deadline
+  end
+
+  def json_response_with_deprecation(data, status: :ok)
+    if data.is_a?(Hash) && @deprecation_warning.present?
+      data = data.merge(
+        deprecation_warning: @deprecation_warning,
+        deprecation_deadline: @deprecation_deadline
+      )
+    end
+    render json: data, status: status
   end
 
   def strip_query_param
