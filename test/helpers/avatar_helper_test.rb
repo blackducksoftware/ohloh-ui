@@ -8,12 +8,12 @@ class AvatarHelperTest < ActionView::TestCase
 
   it 'avatar_img_path should handle accounts' do
     path = avatar_img_path(create(:admin))
-    _(path.ends_with?('.gif')).must_equal true
+    _(path).must_include 'gravatar.com/avatar'
   end
 
   it 'avatar_img_path should handle people' do
     path = avatar_img_path(person)
-    _(path.ends_with?('.gif')).must_equal true
+    _(path).must_include 'gravatar.com/avatar'
   end
 
   it 'avatar_img_path should handle garbage for who' do
@@ -56,15 +56,15 @@ class AvatarHelperTest < ActionView::TestCase
   end
 
   describe 'gravatar_url' do
-    it 'returns local anon gif path' do
+    it 'returns gravatar url with d=404' do
       path = gravatar_url('any_md5', 12)
-      _(path.ends_with?('.gif')).must_equal true
-      _(path).must_include 'anon32'
+      _(path).must_include 'gravatar.com/avatar/any_md5'
+      _(path).must_include 'd=404'
     end
 
-    it 'uses anon80 for sizes above 40' do
+    it 'uses requested size in gravatar url' do
       path = gravatar_url('any_md5', 80)
-      _(path).must_include 'anon80'
+      _(path).must_include 's=80'
     end
   end
 end

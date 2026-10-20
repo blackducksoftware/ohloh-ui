@@ -20,7 +20,11 @@ module AvatarHelper
   def avatar_img_for(who, size = 32)
     return '' unless who
 
-    image_tag avatar_img_path(who, size), style: "width: #{size}px; height: #{size}px;", class: 'avatar'
+    src = avatar_img_path(who, size)
+    fallback = anonymous_image_url(size)
+    image_tag src, style: "width: #{size}px; height: #{size}px;", class: 'avatar',
+                   onerror: 'this.onerror=null;this.src=this.dataset.fallback',
+                   data: { fallback: fallback }
   end
 
   def avatar_path(who)
@@ -56,12 +60,7 @@ module AvatarHelper
   end
 
   def gravatar_url(md5, size)
-    return anonymous_image_url(size) if ActionController::Base.asset_host.blank?
-
-    default_url = "https%3a%2f%2f#{ActionController::Base.asset_host}"
-    default_url += "%2fanon#{avatar_default_size(size)}.gif"
-    gravatar_host = 'https://gravatar.com'
-    "#{gravatar_host}/avatar/#{md5}?&s=#{size}&rating=PG&d=#{default_url}"
+    "https://gravatar.com/avatar/#{md5}?&s=#{size}&rating=PG&d=404"
   end
 
   def anonymous_image_path(size)
