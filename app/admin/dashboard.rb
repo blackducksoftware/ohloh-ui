@@ -9,4 +9,3 @@ ActiveAdmin.register_page 'OH Admin' do
     end
   end
 end
-
