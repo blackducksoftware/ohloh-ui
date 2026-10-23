@@ -10,7 +10,7 @@ class ActiveAdminTest < ActionDispatch::IntegrationTest
     create(:load_average)
     create_and_login_admin
     get admin_root_path
-    assert_response :ok
+    assert_redirected_to oh_admin_root_path
   end
 
   it 'disallows regular users' do
