@@ -22,4 +22,4 @@ var ProjectDashboard = {
     }
   }
 }
-setTimeout("ProjectDashboard.init()", 900);
+setTimeout(function() { ProjectDashboard.init(); }, 900);

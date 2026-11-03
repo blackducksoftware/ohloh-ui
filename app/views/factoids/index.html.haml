@@ -1,6 +1,6 @@
 - content_for(:html_title) { t('.page_title') }
 - content_for :javascript do
-  = javascript_tag '$(document).on("page:change", Factoids.highlight);'
+  = javascript_tag '$(document).on("page:change", Factoids.highlight);', nonce: true
 
 %h2.float_left
   = link_to t('.project_Summary'), project_path(@project)

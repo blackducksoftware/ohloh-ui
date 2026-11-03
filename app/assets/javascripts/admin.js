@@ -20,4 +20,4 @@ var AdminDashboard = {
     }
   }
 }
-setTimeout("AdminDashboard.init()", 900);
+setTimeout(function() { AdminDashboard.init(); }, 900);

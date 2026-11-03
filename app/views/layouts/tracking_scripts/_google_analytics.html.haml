@@ -1,6 +1,7 @@
 %script{async: "", src: "https://www.googletagmanager.com/gtag/js?id=G-6NX4NYJ2SJ"}
-:javascript
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-6NX4NYJ2SJ');
+%script{ nonce: content_security_policy_nonce }
+  :plain
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-6NX4NYJ2SJ');
