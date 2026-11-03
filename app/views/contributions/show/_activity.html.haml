@@ -3,7 +3,7 @@
     = t('.activity_on', name: @project.name, committer: committer)
     = link_to h(t('.see_full_profile', name: committer)), account_path(account) if account
   .committer-summary
-    = image_tag avatar_img_path(@contribution.person, 64), class: 'pull-left avatar', style: 'margin-bottom:65px;'
+    = avatar_img_for(@contribution.person, 64, class: 'pull-left avatar', style: 'margin-bottom:65px;')
     - unless fact.nil?
       - spark_url = commits_compound_spark_project_contributor_url(project_id: @project.to_param, id: fact.name_id)
       .col-md-3

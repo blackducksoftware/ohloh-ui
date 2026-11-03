@@ -27,7 +27,7 @@
         %tr
           %td.name
             %a.pull-left{ href: account_path(account) }
-              = image_tag avatar_img_path(account, 32), size: '32x32', style: 'margin-right:8px;'
+              = avatar_img_for(account, 32, style: 'margin-right:8px;')
             %a{ href: account_path(account), title: h(account.name) }
               = truncate(account.name, length: 20)
               - if current_user.id == account.id
