@@ -76,6 +76,10 @@ module EnlistmentFilters
 
   def build_code_location
     @code_location = CodeLocation.new(code_location_params.merge(client_relation_id: @project.id))
+    return if @code_location.safe_repo_url?(@code_location.url)
+
+    @code_location.errors.merge!(url: [I18n.t('code_locations.url_not_allowed')])
+    render :new, status: :unprocessable_entity
   end
 
   def project_has_code_location?

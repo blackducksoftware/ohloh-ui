@@ -8,7 +8,7 @@ class Api::V1::EnlistmentsControllerTest < ActionController::TestCase
   before do
     WebMocker.get_code_location
     WebMocker.create_code_location
-    @url = Faker::Internet.url
+    @url = "https://github.com/example/repo-#{rand(1_000_000)}"
     @enlistment = create_random_enlistment(@url)
     @project_id = @enlistment.project_id
     @account = create(:admin)
