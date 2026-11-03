@@ -16,7 +16,7 @@ class Edit < ApplicationRecord
   scope :for_target, ->(target) { where(target_type: target.class.to_s, target_id: target.id) }
   scope :for_editor, ->(editor) { where(account_id: editor.id) }
   scope :for_ip, ->(ip) { where(ip: ip) }
-  filterable_by %w[key value]
+  filterable_by %w[key value target_type]
 
   def previous_value
     previous_edit.try(:value)

@@ -19,6 +19,25 @@ class SessionsControllerTest < ActionController::TestCase
         post :create, params: { login: { login: account.login, password: password } }
         _(Account.find(account.id).auth_fail_count).must_equal 0
       end
+
+      it 'must set remember_me helper cookie when checkbox is checked' do
+        post :create, params: { login: { login: account.login, password: password, remember_me: '1' } }
+        cookie_headers = Array(response.headers['Set-Cookie'])
+        remember_me_header = cookie_headers.find { |h| h.include?('remember_me=') }
+        _(remember_me_header).wont_be_nil
+        assert remember_me_header.include?('remember_me=1'), 'Cookie value should be 1'
+        assert remember_me_header.include?('expires=') || remember_me_header.include?('Max-Age='),
+               'Cookie should have expiration set'
+      end
+
+      it 'must delete remember_me helper cookie when checkbox is not checked' do
+        post :create, params: { login: { login: account.login, password: password, remember_me: '0' } }
+        cookie_headers = Array(response.headers['Set-Cookie'])
+        remember_me_header = cookie_headers.find { |h| h.include?('remember_me=') }
+        assert remember_me_header, 'remember_me cookie should be sent in response'
+        assert remember_me_header.include?('expires=') || remember_me_header.include?('Max-Age=0'),
+               'Unchecked remember_me should be deleted with past expiry'
+      end
     end
 
     describe 'failure' do

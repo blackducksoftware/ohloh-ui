@@ -27,6 +27,8 @@ en:
     reset_password_link:
       subject: "Open Hub account reset password"
       body: "%{login}, please follow this link to reset your Open Hub account password:"
+    notify_jwt_temporary_lockout:
+      subject: "Your account has been temporarily locked"
     kudo_recipient:
       subject: "New kudo from %{from}"
       dear_blank: "Dear %{to},"

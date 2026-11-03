@@ -53,9 +53,9 @@ module AccountValidations
   end
 
   def valid_current_password?
-    return false if current_password_matches_existing? && access.active_and_not_disabled?
-
-    errors.add(:current_password)
+    valid = current_password_matches_existing? && access.active_and_not_disabled?
+    errors.add(:current_password) unless valid
+    valid
   end
 
   # Use _was since encrypted_password & salt have already changed in password=.
