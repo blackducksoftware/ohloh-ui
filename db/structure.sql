@@ -7077,7 +7077,9 @@ CREATE TABLE oh.accounts (
     organization_name text,
     auth_fail_count integer DEFAULT 0,
     twitter_id character varying,
-    jwt_failed_attempts integer DEFAULT 0,
+    password_reset_count integer DEFAULT 0 NOT NULL,
+    password_reset_requested_at timestamp without time zone,
+    jwt_failed_attempts integer DEFAULT 0 NOT NULL,
     jwt_failed_attempts_window_start timestamp without time zone,
     jwt_locked_until timestamp without time zone,
     CONSTRAINT accounts_email_check CHECK ((length(email) >= 3)),
@@ -27904,6 +27906,8 @@ INSERT INTO oh.schema_migrations (version) VALUES ('20250709184824');
 INSERT INTO oh.schema_migrations (version) VALUES ('20260603065929');
 
 INSERT INTO oh.schema_migrations (version) VALUES ('20260727000000');
+
+INSERT INTO oh.schema_migrations (version) VALUES ('20260804172050');
 
 INSERT INTO oh.schema_migrations (version) VALUES ('21');
 
