@@ -3,7 +3,7 @@
 require 'test_helper'
 
 class ProjectAdminTest < ActionDispatch::IntegrationTest
-  let(:admin) { create(:admin, password: TEST_PASSWORD) }
+  let(:admin) { create(:admin, password: PasswordGenerator.generate) }
   let(:project) { create(:project) }
 
   before do

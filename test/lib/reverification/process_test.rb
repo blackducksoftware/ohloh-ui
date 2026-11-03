@@ -58,6 +58,7 @@ class Reverification::ProcessTest < ActiveSupport::TestCase
     let(:bounce_undetermined_account) { create(:unverified_account, :bounce_undetermined) }
 
     before do
+      create(:anonymous_account)
       create(:reverification_tracker, account: hard_bounce_account)
       create(:reverification_tracker, account: soft_bounce_account)
       create(:reverification_tracker, account: bounce_undetermined_account)

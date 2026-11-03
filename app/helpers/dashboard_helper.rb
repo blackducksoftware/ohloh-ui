@@ -28,27 +28,42 @@ module DashboardHelper
 
   def accounts_count(level)
     Rails.cache.fetch("Admin-accounts-count-cache_#{level}", expires_in: 1.day) do
-      number_with_delimiter(Account.group(:level).size[level])
+      number_with_delimiter(Account.where(level: level).count)
     end
   end
 
   def days_projects_count
-    projects_count = Rails.cache.fetch('Admin-updated-project-count-cache')
-    number_to_percentage((projects_count.to_f / active_projects_count) * 100, precision: 2)
+    active = active_projects_count
+    return 'N/A' if active.zero?
+
+    projects_count = Rails.cache.fetch('Admin-updated-project-count-cache').to_i
+    number_to_percentage((projects_count.to_f / active) * 100, precision: 2)
   end
 
   def weeks_projects_count
-    projects_count = Rails.cache.fetch('Admin-weeks-updated-project-count-cache')
-    number_to_percentage((projects_count.to_f / active_projects_count) * 100, precision: 2)
+    active = active_projects_count
+    return 'N/A' if active.zero?
+
+    projects_count = Rails.cache.fetch('Admin-weeks-updated-project-count-cache').to_i
+    number_to_percentage((projects_count.to_f / active) * 100, precision: 2)
   end
 
   def outdated_projects
+    active = active_projects_count
+    return 'N/A' if active.zero?
+
     projects_count = Rails.cache.fetch('Admin-outdated-project-count-cache') || 0
-    number_to_percentage((projects_count.to_f / active_projects_count) * 100, precision: 2)
+    number_to_percentage((projects_count.to_f / active) * 100, precision: 2)
   end
 
   def active_projects_count
-    Rails.cache.fetch('Admin-active-project-count-cache') { Project.active_enlistments.distinct.size }
+    # Because this cache is regularly populated and kept up-to-date by a background cron job,
+    # explicit expiration isn't necessary here.
+    Rails.cache.fetch('Admin-active-project-count-cache') do
+      Project.active.where(
+        Enlistment.where('enlistments.project_id = projects.id and deleted = false').arel.exists
+      ).count
+    end
   end
 
   def analyses_count
@@ -56,8 +71,13 @@ module DashboardHelper
   end
 
   def without_analysis_projects_count
-    without_analysis_count = Project.active_enlistments.where(best_analysis_id: nil).distinct.size
-    number_to_percentage((without_analysis_count.to_f / active_projects_count) * 100, precision: 2)
+    active = active_projects_count
+    return 'N/A' if active.zero?
+
+    without_analysis_count = Project.active.where(
+      Enlistment.where('enlistments.project_id = projects.id and deleted = false').arel.exists
+    ).where(best_analysis_id: nil).count
+    number_to_percentage((without_analysis_count.to_f / active) * 100, precision: 2)
   end
 
   def project_count

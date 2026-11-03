@@ -6,7 +6,7 @@ class DuplicatesAdminTest < ActionDispatch::IntegrationTest
   it 'index loads' do
     create(:duplicate)
     create(:duplicate, resolved: true)
-    admin = create(:admin, password: TEST_PASSWORD)
+    admin = create(:admin, password: PasswordGenerator.generate)
     login_as admin
     get admin_duplicates_path
     assert_response :success
@@ -14,7 +14,7 @@ class DuplicatesAdminTest < ActionDispatch::IntegrationTest
 
   it 'show loads' do
     duplicate = create(:duplicate)
-    admin = create(:admin, password: TEST_PASSWORD)
+    admin = create(:admin, password: PasswordGenerator.generate)
     login_as admin
     get admin_duplicate_path(duplicate)
     assert_response :success

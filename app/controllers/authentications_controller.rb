@@ -91,7 +91,7 @@ class AuthenticationsController < ApplicationController
 
   def github_account_params
     login = Account::LoginFormatter.new(github_api.login).sanitized_and_unique
-    password = SecureRandom.uuid
+    password = PasswordGenerator.generate
     { login: login, email: github_api.email, password: password, activated_at: Time.current }
   end
 

@@ -1,9 +1,13 @@
 # frozen_string_literal: true
 
 class PasswordResetsController < Clearance::PasswordsController
+  include PasswordResetRateLimiting
+
   private
 
   def deliver_email(account)
+    return unless record_password_reset_request(account)
+
     ::ClearanceMailer.change_password(account).deliver_now
   end
 

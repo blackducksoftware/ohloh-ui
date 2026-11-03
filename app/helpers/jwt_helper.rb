@@ -23,9 +23,12 @@ module JwtHelper
   end
 
   def authenticate_jwt
-    account = decode_jwt(params[:JWT])
-    return jwt_expired_error if account == 'JWT::ExpiredSignature'
+    token = resolve_jwt_token
+    return jwt_decode_error if token.blank?
+   
+    account = decode_jwt(token)
     return jwt_decode_error if account == 'JWT::DecodeError'
+    return jwt_expired_error if account == 'JWT::ExpiredSignature'
     return auth_error unless account.present? && account.access.admin?
 
     clearance_session.sign_in(account)
@@ -44,12 +47,36 @@ module JwtHelper
   def jwt_expired_error
     render json: { error: 'Authentication token has expired' }, status: :unauthorized
   end
+ 
+  def resolve_jwt_token
+    token = bearer_token
+
+    # Fall back to query parameter (deprecated method)
+    if token.blank? && params[:JWT].present?
+      token = params[:JWT]
+      log_deprecation_warning(
+        'JWT token should be passed in Authorization header as "Bearer <token>" instead of query parameter. ' \
+        'This method is deprecated and will be removed. Please update within 3 months.'
+      )
+    end
+
+    token
+  end
 
   def jwt_decode_error
-    render json: { error: 'Invalid authentication token' }, status: :bad_request
+    render_jwt_error('Invalid authentication token', :bad_request)
   end
 
   def auth_error
-    render json: { error: 'Not an Admin' }, status: :unauthorized
+    render_jwt_error('Not an Admin', :unauthorized)
+  end
+
+  def render_jwt_error(message, status)
+    response_body = { error: message }
+    if @deprecation_warning.present?
+      response_body[:deprecation_warning] = @deprecation_warning
+      response_body[:deprecation_deadline] = @deprecation_deadline
+    end
+    render json: response_body, status: status
   end
 end

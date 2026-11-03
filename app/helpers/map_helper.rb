@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 module MapHelper
-  def map_init(id, zoom = 2)
-    map_script_load + map_js_initialization(id, zoom)
+  def map_init(id, zoom = 2, lat = nil, lng = nil)
+    map_script_load + map_js_initialization(id, zoom, lat, lng)
   end
 
   def map_near_stacks_json(project, params)
@@ -39,14 +39,15 @@ module MapHelper
     "<script src='#{uri}' type='text/javascript'></script>"
   end
 
-  def map_js_initialization(id, zoom)
+  def map_js_initialization(id, zoom, lat = nil, lng = nil)
+    jump_callback = lat && lng ? "EditMap.jumpMeTo(#{lat}, #{lng});" : ''
     javascript_tag <<-JSCRIPT
-      document.onreadystatechange = function () {
-        if (document.readyState == "complete") {
-          OH_Map.load('#{id}', 25, 12, 2);
-          OH_Map.moveTo(25, 12, #{zoom});
-        }
-      };
+      function initOhMap() {
+        OH_Map.load('#{id}', 25, 12, 2);
+        OH_Map.moveTo(25, 12, #{zoom});
+        #{jump_callback}
+      }
+      document.readyState === 'complete' ? initOhMap() : document.addEventListener('readystatechange', function() { if (document.readyState === 'complete') initOhMap(); });
     JSCRIPT
   end
 

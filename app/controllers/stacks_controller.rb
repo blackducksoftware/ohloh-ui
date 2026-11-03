@@ -12,7 +12,7 @@ class StacksController < ApplicationController
   before_action :auto_ignore, only: [:builder]
   before_action :set_project_or_fail, only: %i[near project_stacks]
   before_action :account_context, only: %i[index show similar]
-  before_action :verify_api_access_for_xml_request, only: [:project_stacks]
+  before_action :verify_api_access, only: [:project_stacks]
 
   def index
     @stacks = @account.stacks.paginate(page: page_param, per_page: 10)

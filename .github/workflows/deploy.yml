@@ -21,6 +21,8 @@ permissions:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    env:
+      OH_CONFIG_BRANCH: ${{ inputs.oh_config_branch || 'main' }}
     concurrency:
       group: deploy-${{ github.ref_name }}
       cancel-in-progress: true
@@ -62,7 +64,7 @@ jobs:
         uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
         with:
           repository: blackducksoftware/openhub-config
-          ref: ${{ inputs.oh_config_branch || 'main' }}
+          ref: ${{ env.OH_CONFIG_BRANCH }}
           token: ${{ steps.app-token.outputs.token }}
           path: openhub-config
 
@@ -113,7 +115,7 @@ jobs:
             MAJ_MIN_REV="$(cut -d. -f1-2 ${{ secrets.VERSION_FILE }})"
             PATCH_REV="$(cut -d. -f3 ${{ secrets.VERSION_FILE }} | cut -d- -f1)"
 
-            if [ "${{ github.ref_name }}" = 'main' ]; then
+            if [ "${{ github.ref_name }}" = 'main' ] && [ "$OH_CONFIG_BRANCH" = 'main' ]; then
               PATCH_REV=$(($PATCH_REV + 1))
               NEXT_VERSION="${MAJ_MIN_REV}.${PATCH_REV}"
             else
@@ -211,7 +213,7 @@ jobs:
 
           trigger "${{ steps.harness.outputs.webhook_url_stage }}" "stage"
 
-          if [ "${{ github.ref_name }}" = 'main' ]; then
+          if [ "${{ github.ref_name }}" = 'main' ] && [ "$OH_CONFIG_BRANCH" = 'main' ]; then
             trigger "${{ steps.harness.outputs.webhook_url_prod }}" "prod"
           fi
 

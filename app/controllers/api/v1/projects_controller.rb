@@ -14,9 +14,9 @@ class Api::V1::ProjectsController < ApplicationController
 
     if @project.save
       create_code_location_subscription if @project.enlistments.exists?
-      render json: @project.id, status: :created
+      json_response_with_deprecation(@project.id, status: :created)
     else
-      render json: @project.errors.messages.to_json, status: :bad_request
+      json_response_with_deprecation({ errors: @project.errors.messages }, status: :bad_request)
     end
   end
 
@@ -24,7 +24,7 @@ class Api::V1::ProjectsController < ApplicationController
     per_page = params[:per_page] || 10
     page = params[:page] || 1
     @project = Project.find_by(uuid: params[:id], deleted: false)
-    return render json: { error: 'Project does not exist' }, status: :bad_request unless @project
+    return json_response_with_deprecation({ error: 'Project does not exist' }, status: :bad_request) unless @project
 
     @similar_projects = @project.related_by_tags.paginate(per_page: per_page, page: page)
     render :similar, status: @similar_projects.present? ? :ok : :no_content

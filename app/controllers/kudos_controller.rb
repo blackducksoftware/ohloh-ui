@@ -2,7 +2,7 @@
 
 class KudosController < ApplicationController
   before_action :session_required, :redirect_unverified_account, except: %i[index sent]
-  before_action :verify_api_access_for_xml_request, only: %i[index sent]
+  before_action :verify_api_access, only: %i[index sent]
   before_action :find_account, only: %i[index sent]
   before_action :find_account_or_contribution, only: %i[new create]
   before_action :find_kudo, only: [:destroy]

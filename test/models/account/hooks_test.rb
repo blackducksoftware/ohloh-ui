@@ -42,6 +42,8 @@ class Account::HooksTest < ActiveSupport::TestCase
   end
 
   describe 'before_destroy' do
+    before { create(:anonymous_account) }
+
     it 'should destroy dependencies when marked as spam' do
       account = create(:account)
       create_list(:topic, 3, account: account)
@@ -104,14 +106,14 @@ class Account::HooksTest < ActiveSupport::TestCase
       create_position(account: account)
       _(account.positions.count).must_equal 1
       _(account.posts.count).must_equal 2
-      _(Account.find_or_create_anonymous_account.posts.count).must_equal 0
+      _(Account.anonymous_account.posts.count).must_equal 0
       assert_difference('DeletedAccount.count', 1) do
         account.destroy
       end
       _(account.verifications).must_be :empty?
       _(account.positions.count).must_equal 0
       _(account.posts.count).must_equal 0
-      _(Account.find_or_create_anonymous_account.posts.count).must_equal 2
+      _(Account.anonymous_account.posts.count).must_equal 2
     end
   end
 

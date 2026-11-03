@@ -204,6 +204,8 @@ class ReverificationTrackerTest < ActiveSupport::TestCase
   end
 
   describe 'cleanup' do
+    before { create(:anonymous_account) }
+
     it 'should invoke cleanup methods' do
       create(:reverification_tracker)
       rt_needs_to_be_disabled = create(:rev_tracker_needs_disabling)
@@ -218,6 +220,7 @@ class ReverificationTrackerTest < ActiveSupport::TestCase
 
   describe 'destroy_account' do
     before do
+      create(:anonymous_account)
       @account = create(:account)
     end
 
@@ -235,6 +238,8 @@ class ReverificationTrackerTest < ActiveSupport::TestCase
   end
 
   describe 'delete_expired_accounts' do
+    before { create(:anonymous_account) }
+
     it 'should retrieve the correct accounts for deletion' do
       create(:final_warning_rev_tracker, :delivered,
              sent_at: Time.now.utc - NOTIFICATION4_DUE_DAYS.days)

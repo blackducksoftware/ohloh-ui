@@ -23,7 +23,7 @@
     .control-group
       %label.control-label.required= t('password')
       = f.password_field(:password, id: :password)
-      - error_tag(@account, :password)
+      - password_error_tag(@account, :password)
       %p.help-block= t('.password_help')
 
     .control-group{ style: 'position: absolute; left: -9999px; opacity: 0;' }

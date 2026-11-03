@@ -7,7 +7,14 @@ module AccountValidations
     validates :email, presence: true, length: { in: 3..100 }, uniqueness: { case_sensitive: false },
                       email_format: true, allow_blank: false
 
-    validates :password, length: { in: 5..40 }, unless: :skip_password_validation?
+    validates :password,
+              length: { in: 12..64 },
+              format: {
+                with: /\A.*(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W).*\z/,
+                message: :invalid_format
+              },
+              allow_blank: true,
+              unless: :skip_password_validation?
 
     validate :valid_current_password?, on: :update, if: :validate_current_password
 
@@ -46,9 +53,9 @@ module AccountValidations
   end
 
   def valid_current_password?
-    return false if current_password_matches_existing? && access.active_and_not_disabled?
-
-    errors.add(:current_password)
+    valid = current_password_matches_existing? && access.active_and_not_disabled?
+    errors.add(:current_password) unless valid
+    valid
   end
 
   # Use _was since encrypted_password & salt have already changed in password=.

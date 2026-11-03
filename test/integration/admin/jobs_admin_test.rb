@@ -3,7 +3,7 @@
 require 'test_helper'
 
 class JobAdminTest < ActionDispatch::IntegrationTest
-  let(:admin) { create(:admin, password: TEST_PASSWORD) }
+  let(:admin) { create(:admin, password: PasswordGenerator.generate) }
 
   it 'mark_as_failed should work' do
     job = create(:project_analysis_job)

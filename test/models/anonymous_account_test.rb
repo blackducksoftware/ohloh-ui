@@ -6,7 +6,7 @@ class AnonymousAccountTest < ActiveSupport::TestCase
   describe 'create' do
     it 'must not send emails' do
       assert_no_difference -> { ActionMailer::Base.deliveries.count } do
-        AnonymousAccount.create!
+        create(:anonymous_account)
       end
     end
   end
