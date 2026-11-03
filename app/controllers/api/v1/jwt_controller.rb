@@ -4,7 +4,7 @@ class Api::V1::JwtController < ApplicationController
   include JwtHelper
   include JwtLoginLockout
   skip_before_action :verify_authenticity_token
-  before_action :get_params
+  before_action :get_params, only: :create
 
   def create
     account = Account.fetch_by_login_or_email(params[:username])
@@ -24,6 +24,18 @@ class Api::V1::JwtController < ApplicationController
       handle_jwt_auth_failure(account)
       render json: 'Not Authorized', status: :unauthorized
     end
+  end
+
+  def destroy
+    # Extract JWT from Authorization header (format: "Bearer <token>")
+    auth_header = request.headers['Authorization']
+    if auth_header&.start_with?('Bearer ')
+      jwt_token = auth_header.sub('Bearer ', '')
+      account = decode_jwt(jwt_token)
+      # Check if decoding was successful (not an error string)
+      Rails.logger.info("User #{account.login} logged out successfully") unless account.is_a?(String)
+    end
+    render json: { message: 'Logout successful' }, status: :ok
   end
 
   def get_params
