@@ -34,7 +34,7 @@ class SitemapControllerTest < ActionController::TestCase
 
       xml = xml_hash(@response.body)['urlset']
       active_count = Project.active.count
-      urls = xml['url'].map { |url| url['loc'] }
+      urls = xml['url'].pluck('loc')
 
       _(xml['xmlns']).must_equal 'http://www.sitemaps.org/schemas/sitemap/0.9'
       _(xml['url'].size).must_equal active_count
@@ -43,9 +43,9 @@ class SitemapControllerTest < ActionController::TestCase
       _(urls).must_include "http://test.host/p/#{@projects.third.vanity_url}"
       _(urls).must_include "http://test.host/p/#{@projects.fourth.vanity_url}"
       _(urls).must_include "http://test.host/p/#{@projects.last.vanity_url}"
-      _(xml['url'].map { |url| url['lastmod'] }).must_equal [Time.current.strftime('%Y-%m-%d')] * active_count
-      _(xml['url'].map { |url| url['priority'] }).must_equal ['0.8'] * active_count
-      _(xml['url'].map { |url| url['changefreq'] }).must_equal ['daily'] * active_count
+      _(xml['url'].pluck('lastmod')).must_equal [Time.current.strftime('%Y-%m-%d')] * active_count
+      _(xml['url'].pluck('priority')).must_equal ['0.8'] * active_count
+      _(xml['url'].pluck('changefreq')).must_equal ['daily'] * active_count
     end
 
     it 'should return accounts urls' do
@@ -54,7 +54,7 @@ class SitemapControllerTest < ActionController::TestCase
 
       xml = xml_hash(@response.body)['urlset']
       active_count = Account.active.count
-      urls = xml['url'].map { |url| url['loc'] }
+      urls = xml['url'].pluck('loc')
 
       _(xml['xmlns']).must_equal 'http://www.sitemaps.org/schemas/sitemap/0.9'
       _(xml['url'].size).must_equal active_count
@@ -63,9 +63,9 @@ class SitemapControllerTest < ActionController::TestCase
       _(urls).must_include "http://test.host/accounts/#{@accounts.third.login}"
       _(urls).must_include "http://test.host/accounts/#{@accounts.fourth.login}"
       _(urls).must_include "http://test.host/accounts/#{@accounts.last.login}"
-      _(xml['url'].map { |url| url['lastmod'] }).must_equal [Time.current.strftime('%Y-%m-%d')] * active_count
-      _(xml['url'].map { |url| url['priority'] }).must_equal ['0.6'] * active_count
-      _(xml['url'].map { |url| url['changefreq'] }).must_equal ['daily'] * active_count
+      _(xml['url'].pluck('lastmod')).must_equal [Time.current.strftime('%Y-%m-%d')] * active_count
+      _(xml['url'].pluck('priority')).must_equal ['0.6'] * active_count
+      _(xml['url'].pluck('changefreq')).must_equal ['daily'] * active_count
     end
   end
 end

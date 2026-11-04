@@ -391,7 +391,7 @@ class EnlistmentsControllerTest < ActionController::TestCase
   end
 end
 
-# rubocop:disable Style/OptionalArguments
+# rubocop:disable-next Style/OptionalArguments
 def mock_and_get(action, dnf = false, params)
   if action == :index
     Enlistment.connection.execute("insert into repositories (type, url) values ('GitRepository', 'url')")
@@ -408,4 +408,3 @@ def mock_and_get(action, dnf = false, params)
   WebMocker.get_code_location(@enlistment.code_location_id)
   get action, **params
 end
-# rubocop:enable Style/OptionalArguments

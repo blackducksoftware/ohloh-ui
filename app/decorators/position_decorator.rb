@@ -10,7 +10,7 @@ class PositionDecorator < Cherry::Decorator
     cbp[position.id].present?
   end
 
-  # rubocop:disable Metrics/AbcSize
+  # rubocop:disable-next Metrics/AbcSize
   def affiliation
     return if position.affiliation_type == 'unaffiliated'
     if position.affiliation_type == 'other' && position.organization_name.present?
@@ -20,7 +20,6 @@ class PositionDecorator < Cherry::Decorator
 
     I18n.t('position.affiliated_with', name: position.organization)
   end
-  # rubocop:enable Metrics/AbcSize
 
   def name_fact
     return @name_fact if @name_fact

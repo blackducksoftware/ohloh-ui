@@ -4,6 +4,7 @@ require 'forwardable'
 
 class Account::StackCore
   extend Forwardable
+
   attr_reader :account
 
   def initialize(account)

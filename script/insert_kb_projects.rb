@@ -46,6 +46,7 @@ class InsertKbProjects
   end
 end
 
+# rubocop:disable-next Style/OneClassPerFile
 class NoLicense
   def id
     0

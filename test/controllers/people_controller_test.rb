@@ -13,9 +13,8 @@ class PeopleControllerTest < ActionController::TestCase
     best_account_analysis = create(:best_account_analysis, account: account)
     account.update(best_vita_id: best_account_analysis.id)
     @claimed = create(:person, kudo_score: 12, kudo_rank: 3)
-    # rubocop:disable Style/RescueModifier
+    # rubocop:disable-next Style/RescueModifier
     @claimed.update(id: account.id, account_id: account.id) rescue nil
-    # rubocop:enable Style/RescueModifier
     @unclaimed = create(:person, kudo_score: 12, kudo_rank: 3, effective_name: 'Bubba Amon')
     @project1 = create(:project)
     @project2 = create(:project)

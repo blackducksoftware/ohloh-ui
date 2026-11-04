@@ -2,6 +2,7 @@
 
 class StacksController < ApplicationController
   include RedirectIfDisabled
+
   helper MapHelper
   helper RatingsHelper, ProjectsHelper
   before_action :session_required, :redirect_unverified_account,

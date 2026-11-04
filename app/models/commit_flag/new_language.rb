@@ -9,6 +9,6 @@ class CommitFlag::NewLanguage < CommitFlag
 
   def language_id=(language_id)
     self.data ||= {}
-    self.data[:language_id] = language_id
+    data[:language_id] = language_id
   end
 end

@@ -2,6 +2,7 @@
 
 class Analysis < ApplicationRecord
   include Report
+
   AVG_SALARY = 55_000
   EARLIEST_DATE = Time.utc(1971, 1, 1)
   EARLIEST_DATE_SQL_STRING = "TIMESTAMP '#{EARLIEST_DATE.strftime('%Y-%m-%d')}'".freeze
@@ -18,7 +19,7 @@ class Analysis < ApplicationRecord
   has_many :contributor_facts, class_name: 'ContributorFact'
   has_many :analysis_sloc_sets, dependent: :delete_all
   has_many :sloc_sets, through: :analysis_sloc_sets
-  has_many :factoids, -> { order('severity DESC') }, dependent: :delete_all
+  has_many :factoids, -> { order(severity: :desc) }, dependent: :delete_all
   has_many :activity_facts, dependent: :delete_all
   has_many :scan_analytics
 

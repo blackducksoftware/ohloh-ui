@@ -63,7 +63,7 @@ class ProjectParamsBuilder
     raise ProjectExistsError, "kb id:#{@kb_project_id} project already exists" if @row['owner'].nil?
   end
 
-  # rubocop:disable Metrics/MethodLength
+  # rubocop:disable-next Metrics/MethodLength
   def set_params
     name = @row['project_name']
     url = get_url(@row['owner_name'])
@@ -79,7 +79,6 @@ class ProjectParamsBuilder
       'enlistments_attributes' => { '0' => { 'code_location_attributes' =>
         { 'scm_type' => 'git', 'url' => url, 'branch' => row['module_branch'] } } } }
   end
-  # rubocop:enable Metrics/MethodLength
 
   def get_url(raw_url)
     "https://github.com/#{raw_url}"

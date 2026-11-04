@@ -5,6 +5,7 @@ require 'test_helper'
 describe EditsModalHelper do
   include FactoryBot::Syntax::Methods
   include ActionView::Helpers::UrlHelper
+  include ActionView::Helpers::SanitizeHelper
   include EditsHelper
   include ApplicationHelper
   # Add Rails routing helpers

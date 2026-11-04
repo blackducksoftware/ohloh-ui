@@ -14,7 +14,7 @@ class RemoveUnusedTables < ActiveRecord::Migration[4.2]
     remove_foreign_key :code_set_gestalts, :code_set
     remove_foreign_key :code_set_gestalts, :gestalt
 
-    execute <<-SQL.squish
+    execute <<~SQL.squish
       DROP VIEW project_gestalt_view;
     SQL
     drop_table :code_set_gestalts
@@ -24,7 +24,7 @@ class RemoveUnusedTables < ActiveRecord::Migration[4.2]
     drop_table :old_edits
   end
 
-  # rubocop:disable Metrics/AbcSize
+  # rubocop:disable-next Metrics/AbcSize
   def down
     create_table :old_edits do |t|
       t.references :project, foreign_key: true
@@ -67,12 +67,11 @@ class RemoveUnusedTables < ActiveRecord::Migration[4.2]
       t.references :gestalt, foreign_key: true, index: true
     end
 
-    execute <<-SQL.squish
+    execute <<~SQL.squish
       CREATE VIEW project_gestalt_view as SELECT p.id AS project_id, p.vanity_url AS url_name,
       g.id AS gestalt_id, g.name, g.type FROM projects p
       JOIN project_gestalts pg ON p.id = pg.project_id
       JOIN gestalts g ON g.id = pg.gestalt_id;
     SQL
   end
-  # rubocop:enable Metrics/AbcSize
 end

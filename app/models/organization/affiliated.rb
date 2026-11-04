@@ -7,7 +7,7 @@ class Organization::Affiliated < Organization::AccountFacts
   end
 
   def stats
-    Organization.connection.select_one <<-SQL.squish
+    Organization.connection.select_one <<~SQL.squish
       SELECT #{Organization.send(:sanitize_sql, selects)}
       FROM accounts A #{Organization.send(:sanitize_sql, account_facts_joins)}
       WHERE A.organization_id = #{@organization.id};
@@ -31,7 +31,7 @@ class Organization::Affiliated < Organization::AccountFacts
   private
 
   def selects
-    <<-SQL.squish
+    <<~SQL.squish
       #{affl_committers} AS affl_committers,
       #{affl_commits} AS affl_commits,
       #{affl_projects} AS affl_projects,

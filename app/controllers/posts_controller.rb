@@ -2,6 +2,7 @@
 
 class PostsController < ApplicationController
   include RedirectIfDisabled
+
   helper MarkdownHelper
   helper PageContextHelper
 

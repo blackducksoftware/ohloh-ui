@@ -17,7 +17,7 @@ class Commit < FisBase
   }
 
   scope :by_analysis, lambda { |analysis|
-    joins(code_set: [sloc_sets: :analysis_sloc_sets])
+    joins(code_set: [{ sloc_sets: :analysis_sloc_sets }])
       .joins('and commits.position <= analysis_sloc_sets.as_of')
       .where(analysis_sloc_sets: { analysis_id: analysis.id })
   }

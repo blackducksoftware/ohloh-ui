@@ -9,11 +9,12 @@ module OrganizationsHelper
   end
 
   def org_ticker_markup(diff, previous, klass = nil)
-    haml_tag :span, class: "delta #{diff.positive? ? 'good' : 'bad'} #{klass}" do
+    concat(content_tag(:span, class: "delta #{diff.positive? ? 'good' : 'bad'} #{klass}") do
       percentage = diff.abs.fdiv(previous.abs) * 100
-      concat "#{'+' if diff.positive?}#{diff}"
-      concat " (#{percentage.floor}%)" if previous.positive?
-    end
+      text = "#{'+' if diff.positive?}#{diff}"
+      text += " (#{percentage.floor}%)" if previous.positive?
+      text
+    end)
   end
 
   def organization_affiliated_committers_stats(account_stat)

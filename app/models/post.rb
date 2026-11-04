@@ -2,6 +2,7 @@
 
 class Post < ApplicationRecord
   include Tsearch
+
   belongs_to :forum, counter_cache: true, optional: true
   belongs_to :topic, inverse_of: :posts, counter_cache: true, touch: true, optional: true
   belongs_to :account, optional: true

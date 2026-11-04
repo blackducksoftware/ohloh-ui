@@ -3,6 +3,7 @@
 module Reverification
   class Mailer
     extend Amazon
+
     FROM = 'info@openhub.net'
 
     class << self

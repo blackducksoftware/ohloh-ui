@@ -2,6 +2,7 @@
 
 class ApiKey < ApplicationRecord
   include FilterBy
+
   DEFAULT_DAILY_LIMIT = 1000
   STATUS_OK = 0
   STATUS_LIMIT_EXCEEDED = 1

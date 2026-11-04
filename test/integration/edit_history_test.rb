@@ -4,6 +4,7 @@ require 'test_helper'
 
 class EditHistoryTest < ActionDispatch::IntegrationTest
   include EditsHelper
+
   let(:project) { create(:project) }
 
   describe 'Edit' do

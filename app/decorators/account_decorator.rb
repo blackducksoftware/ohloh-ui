@@ -43,17 +43,17 @@ class AccountDecorator < Cherry::Decorator
     end
   end
 
-  # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
+  # rubocop:disable-next Metrics/AbcSize, Metrics/MethodLength
   def sidebar_for(current_user)
     [
       [
         [:account_summary, I18n.t(:account_summary), h.account_path(account)],
         [:stacks, account == current_user ? I18n.t(:my_stacks) : I18n.t(:stacks_title), h.account_stacks_path(account)],
-        [:widgets,            'Widgets', h.account_widgets_path(account)]
+        [:widgets, 'Widgets', h.account_widgets_path(account)]
       ],
       [
-        [:contributions,      I18n.t(:contribution),        nil],
-        [:positions,          I18n.t(:contribution),        h.account_positions_path(account)],
+        [:contributions,      I18n.t(:contribution), nil],
+        [:positions,          I18n.t(:contribution), h.account_positions_path(account)],
         [:languages,          I18n.t(:languages_menu), h.account_languages_path(account)]
       ],
       [
@@ -73,7 +73,6 @@ class AccountDecorator < Cherry::Decorator
       append_unclaimed_contribution_menu(menus, current_user) if !current_user.nil? && (account.id == current_user.id)
     end
   end
-  # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 
   private
 

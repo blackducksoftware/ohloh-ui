@@ -3,6 +3,7 @@
 class Api::V1::JwtController < ApplicationController
   include JwtHelper
   include JwtLoginLockout
+
   skip_before_action :verify_authenticity_token
   before_action :get_params
 

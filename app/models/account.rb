@@ -149,7 +149,9 @@ class Account < ApplicationRecord # rubocop:disable Metrics/ClassLength
     end
 
     def uber_data_crawler
-      @uber_data_crawler ||= Account.find_by(login: 'uber_data_crawler')
+      return @uber_data_crawler if defined?(@uber_data_crawler)
+
+      @uber_data_crawler = Account.find_by(login: 'uber_data_crawler')
     end
 
     def non_human_ids

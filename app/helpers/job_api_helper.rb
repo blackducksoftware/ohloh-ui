@@ -41,11 +41,9 @@ module JobApiHelper
 
   def show_job_progress(job, css)
     percent = percentage_completed(job)
-    haml_tag(:div, class: css[0]) do
-      # rubocop:disable Lint/EmptyBlock
-      haml_tag(:div, class: css[1], style: "width: #{percent}%") {}
-      # rubocop:enable Lint/EmptyBlock
-    end
+    concat(content_tag(:div, class: css[0]) do
+      content_tag(:div, nil, class: css[1], style: "width: #{percent}%")
+    end)
   end
 
   def percentage_completed(job)

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module ForumsHelper
-  # rubocop:disable Metrics/MethodLength, Metrics/AbcSize, Style/MultilineIfModifier
+  # rubocop:disable-next Metrics/MethodLength, Metrics/AbcSize, Style/MultilineIfModifier
   def forums_sidebar
     menus = []
     menus << [
@@ -23,5 +23,4 @@ module ForumsHelper
 
     menus
   end
-  # rubocop:enable Metrics/MethodLength, Metrics/AbcSize, Style/MultilineIfModifier
 end

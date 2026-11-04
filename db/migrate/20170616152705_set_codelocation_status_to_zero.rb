@@ -10,6 +10,7 @@ class SetCodelocationStatusToZero < ActiveRecord::Migration[4.2]
   end
 end
 
+# rubocop:disable-next Style/OneClassPerFile
 class SetCodeLocationStatus
   def initialize
     @conn = ActiveRecord::Base.connection
@@ -44,9 +45,10 @@ class SetCodeLocationStatus
     rc = @conn.raw_connection
     rc.exec('COPY kbLocations (id) FROM STDIN WITH CSV')
 
-    file = File.open('vendor/oh-code-locations.csv', 'r')
-    # Add each row to copy data
-    rc.put_copy_data(file.readline) until file.eof?
+    File.open('vendor/oh-code-locations.csv', 'r') do |file|
+      # Add each row to copy data
+      rc.put_copy_data(file.readline) until file.eof?
+    end
 
     # We are done adding copy data
     rc.put_copy_end

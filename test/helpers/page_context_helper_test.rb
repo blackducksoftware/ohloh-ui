@@ -4,6 +4,7 @@ require 'test_helper'
 
 class PageContextHelperTest < ActionView::TestCase
   include PageContextHelper
+
   attr_accessor :page_context
 
   let(:page_context) { {} }

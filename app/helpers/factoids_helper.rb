@@ -3,11 +3,9 @@
 module FactoidsHelper
   def get_factoid_display(fact)
     text, type, url = factiod_info(fact)
-    haml_tag :span, class: type.to_s do
-      haml_tag :a, href: url do
-        concat text
-      end
-    end
+    concat(content_tag(:span, class: type.to_s) do
+      content_tag(:a, text, href: url)
+    end)
   end
 
   private
