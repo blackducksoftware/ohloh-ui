@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# rubocop:disable Metrics/ClassLength
+# rubocop:disable-next Metrics/ClassLength
 class Stack < ApplicationRecord
   SAMPLE_PROJECT_IDS = { lamp: [3141, 72, 4139, 28],
                          sash: [41, 3468, 3568, 55],
@@ -69,7 +69,7 @@ class Stack < ApplicationRecord
   end
 
   def similar_stacks_sql(limit)
-    <<-SQL.squish
+    <<~SQL.squish
       SELECT S.*, shared_count, s_count.count, shared_count/sqrt(s_count.count) as func
       FROM stacks S INNER JOIN (#{stack_entry_to_stack_join_sql}) AS se_to_s ON S.id = se_to_s.stack_id
       INNER JOIN ( SELECT count(*), stack_id from stack_entries where deleted_at IS NULL group by stack_id) as s_count
@@ -80,7 +80,7 @@ class Stack < ApplicationRecord
   end
 
   def stack_entry_to_stack_join_sql
-    <<-SQL.squish
+    <<~SQL.squish
       SELECT SE1.stack_id AS stack_id, count(*) AS shared_count
       FROM stack_entries SE0
       INNER JOIN stack_entries SE1
@@ -96,7 +96,7 @@ class Stack < ApplicationRecord
   end
 
   def proj_suggest_join_stack_entries
-    <<-SQL.squish
+    <<~SQL.squish
       INNER JOIN ( SELECT project_id_recommends, sum(weight) as total_weight
         FROM recommend_entries INNER JOIN stack_entries ON recommend_entries.project_id = stack_entries.project_id
         WHERE stack_entries.stack_id = #{id} AND stack_entries.deleted_at IS NULL
@@ -105,7 +105,7 @@ class Stack < ApplicationRecord
   end
 
   def proj_suggest_join_stack_ignores
-    <<-SQL.squish
+    <<~SQL.squish
       LEFT OUTER JOIN ( SELECT project_id_recommends as project_id_smells, sum(weight) as total_weight
         FROM recommend_entries WHERE project_id IN
         ( SELECT project_id FROM stack_ignores WHERE stack_id = #{id} ORDER BY created_at LIMIT 25 )
@@ -114,7 +114,7 @@ class Stack < ApplicationRecord
   end
 
   def proj_suggest_wheres
-    <<-SQL.squish
+    <<~SQL.squish
       WHERE projects.id NOT IN (SELECT project_id FROM stack_entries WHERE stack_id = #{id} AND deleted_at IS NULL)
       AND projects.id NOT IN (SELECT project_id FROM stack_ignores WHERE stack_id = #{id}) AND projects.deleted IS FALSE
     SQL
@@ -128,7 +128,7 @@ class Stack < ApplicationRecord
     return projects unless projects.size < limit
 
     xtra_where = projects.empty? ? '' : "AND projects.id NOT IN (#{projects.collect { |p| p.id.to_s }.join(',')})"
-    sql = <<-SQL.squish
+    sql = <<~SQL.squish
       SELECT projects.* FROM projects WHERE projects.deleted IS FALSE AND projects.user_count > 0 #{xtra_where}
       AND projects.id NOT IN (SELECT project_id FROM stack_ignores WHERE stack_id = #{id})
       AND projects.id NOT IN (SELECT project_id FROM stack_entries WHERE stack_id = #{id} AND deleted_at IS NULL)
@@ -138,4 +138,3 @@ class Stack < ApplicationRecord
     [projects, Project.find_by_sql(sql)].flatten
   end
 end
-# rubocop:enable Metrics/ClassLength

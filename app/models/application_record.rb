@@ -4,6 +4,7 @@ class ApplicationRecord < ActiveRecord::Base
   self.abstract_class = true
 
   extend StripAttributes
+
   after_find :fix_string_column_encodings
 
   private

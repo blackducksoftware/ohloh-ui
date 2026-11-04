@@ -27,7 +27,7 @@ class Kudo < ApplicationRecord
     def sort_by_created_at
       select(attribute_names)
         .select("#{max_created_at_per_account} AS sort_time")
-        .order('sort_time DESC, project_id DESC')
+        .order(sort_time: :desc, project_id: :desc)
         .readonly
     end
 

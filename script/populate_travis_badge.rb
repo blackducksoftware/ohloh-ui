@@ -12,6 +12,7 @@ class String
   end
 end
 
+# rubocop:disable-next Style/OneClassPerFile
 class PopulateTravis
   def initialize
     @repo_with_travis_badge = 0

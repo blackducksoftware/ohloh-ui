@@ -7,6 +7,6 @@ class CommitFlag::BackToLife < CommitFlag
 
   def time_elapsed=(interval)
     self.data ||= {}
-    self.data[:time_elapsed] = interval
+    data[:time_elapsed] = interval
   end
 end

@@ -34,13 +34,12 @@ class Review < ApplicationRecord
 
   filterable_by ['comment', 'title', 'accounts.login']
 
-  # rubocop:disable Style/MultilineIfModifier
+  # rubocop:disable-next Style/MultilineIfModifier
   scope :find_by_comment_or_title_or_accounts_login, lambda { |query|
     includes(:account)
       .references(:all)
       .filter_by(query) if query
   }
-  # rubocop:enable Style/MultilineIfModifier
 
   def score
     return 0 unless project_id && account_id

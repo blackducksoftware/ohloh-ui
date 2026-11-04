@@ -186,7 +186,7 @@ module VulnerabilitiesHelper
     end
   end
 
-  # rubocop: disable Metrics/MethodLength
+  # rubocop: disable-next Metrics/MethodLength
   def get_token_char_array(token)
     case token
     when 'rc'
@@ -206,6 +206,5 @@ module VulnerabilitiesHelper
       end
     end
   end
-  # rubocop: enable Metrics/MethodLength
 end
 # rubocop: enable Metrics/ModuleLength

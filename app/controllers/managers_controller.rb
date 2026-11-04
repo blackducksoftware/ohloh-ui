@@ -16,9 +16,8 @@ class ManagersController < SettingsController
   def index; end
 
   def new
-    # rubocop:disable Naming/MemoizedInstanceVariableName
+    # rubocop:disable-next Naming/MemoizedInstanceVariableName
     @manage ||= Manage.new
-    # rubocop:enable Naming/MemoizedInstanceVariableName
   end
 
   def edit

@@ -25,7 +25,7 @@ class ProjectDecorator < Cherry::Decorator
     end.group_by(&:category)
   end
 
-  # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
+  # rubocop:disable-next Metrics/MethodLength, Metrics/AbcSize
   def sidebar(account)
     [
       [
@@ -56,7 +56,6 @@ class ProjectDecorator < Cherry::Decorator
       append_sbom_menu(menus, account)
     end
   end
-  # rubocop:enable Metrics/MethodLength, Metrics/AbcSize
 
   def append_sbom_menu(menus, account)
     return unless (Rails.env.staging? || account.access.admin?) && project.sboms.exists?

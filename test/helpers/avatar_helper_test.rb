@@ -4,6 +4,7 @@ require 'test_helper'
 
 class AvatarHelperTest < ActionView::TestCase
   include AvatarHelper
+
   let(:person) { create(:account).person }
 
   it 'avatar_img_path should handle accounts' do

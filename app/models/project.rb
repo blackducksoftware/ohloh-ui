@@ -1,10 +1,11 @@
 # frozen_string_literal: true
 
-# rubocop:disable Metrics/ClassLength
+# rubocop:disable-next Metrics/ClassLength
 class Project < ApplicationRecord
   include ActsAsEditable
   include ActsAsProtected
   include ActsAsTaggable
+
   has_one :create_edit, as: :target
   acts_as_editable editable_attributes: %i[name vanity_url organization_id best_analysis_id
                                            description tag_list missing_source url download_url],
@@ -50,7 +51,7 @@ class Project < ApplicationRecord
     stack_weights = StackEntry.stack_weight_sql(id)
     Project.select('projects.*, shared_stacks, shared_stacks*sqrt(shared_stacks)/projects.user_count as value')
            .joins(sanitize("INNER JOIN (#{stack_weights}) AS stack_weights ON stack_weights.project_id = projects.id"))
-           .not_deleted.where('shared_stacks > 2').order('value DESC, shared_stacks DESC').limit(limit)
+           .not_deleted.where('shared_stacks > 2').order(value: :desc, shared_stacks: :desc).limit(limit)
   end
 
   def related_by_tags
@@ -166,4 +167,3 @@ class Project < ApplicationRecord
     tags.each(&:recalc_weight!)
   end
 end
-# rubocop:enable Metrics/ClassLength

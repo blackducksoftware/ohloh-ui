@@ -38,7 +38,7 @@ class Analysis::LanguageHistoryChart < Analysis::Chart
   end
 
   def series_langauge_code_total
-    series.each_with_object({}) { |data, hsh| hsh[data.language] = data.code_total }
+    series.to_h { |data| [data.language, data.code_total] }
   end
 
   def series

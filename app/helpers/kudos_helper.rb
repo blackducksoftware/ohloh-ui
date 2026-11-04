@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# rubocop: disable Metrics/ModuleLength
+# rubocop: disable-next Metrics/ModuleLength
 module KudosHelper
   def kudos_laurel_link_for(person)
     path = person.nil? ? '#' : rankings_people_path(show: person.id)
@@ -43,11 +43,11 @@ module KudosHelper
     confirm = kudo_delete_link_confirm(kudo)
     return nil unless confirm
 
-    haml_tag :a, href: kudo_path(kudo), class: 'command btn btn-minier btn-primary',
-                 data: { method: :delete, confirm: confirm } do
-      haml_tag :i, '', class: 'icon-undo rescind-kudos'
-      haml_tag :span, I18n.t('kudos.undo')
-    end
+    concat(content_tag(:a, href: kudo_path(kudo), class: 'command btn btn-minier btn-primary',
+                           data: { method: :delete, confirm: confirm }) do
+      content_tag(:i, '', class: 'icon-undo rescind-kudos') +
+        content_tag(:span, I18n.t('kudos.undo'))
+    end)
   end
 
   def kudos_grouped_sent(sent_kudos)
@@ -99,9 +99,7 @@ module KudosHelper
   end
 
   def remove_kudos_button(kudo)
-    haml_tag :div do
-      kudo_delete_link(kudo)
-    end
+    concat content_tag(:div) { capture { kudo_delete_link(kudo) } }
   end
 
   def give_kudos_button(target)
@@ -111,10 +109,10 @@ module KudosHelper
            else
              new_kudo_path(contribution_id: target.id)
            end
-    haml_tag :div do
-      haml_tag :a, I18n.t('kudos.give_kudos'), href: '#', class: 'btn kudo-btn btn-primary btn-mini',
-                                               onclick: "tb_show('#{label}', '#{path}', false); return false;"
-    end
+    concat(content_tag(:div) do
+      content_tag(:a, I18n.t('kudos.give_kudos'), href: '#', class: 'btn kudo-btn btn-primary btn-mini',
+                                                  onclick: "tb_show('#{label}', '#{path}', false); return false;")
+    end)
   end
 
   def kudo_account_link(kudo)
@@ -128,4 +126,3 @@ module KudosHelper
     link_to("#{h(kudo.name.name)} (#{h(kudo.project.name)})", path, id: "kudo_given_link_#{kudo.sender.login}")
   end
 end
-# rubocop: enable Metrics/ModuleLength

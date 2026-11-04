@@ -24,9 +24,9 @@ class SpamControllerTest < ActionController::TestCase
 
     it 'should redirect to admin path if there is nothing in oh.potential_spammers' do
       login_as admin
-      sql = <<-SQL.squish
-            DELETE FROM OH.MARKUPS;
-            DELETE FROM oh.reviewed_non_spammers;
+      sql = <<~SQL.squish
+        DELETE FROM OH.MARKUPS;
+        DELETE FROM oh.reviewed_non_spammers;
       SQL
       ActiveRecord::Base.connection.execute(sql)
       get :redirect_to_first_potential_spammer

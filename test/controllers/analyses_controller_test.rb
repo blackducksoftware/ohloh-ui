@@ -225,7 +225,7 @@ class AnalysesControllerTest < ActionController::TestCase
 
       _(series.first['id']).must_equal 'code'
       _(series.map { |d| d['data'].last }).must_equal [[time_integer, 5], [time_integer, 10], [time_integer, 3]]
-      _(series.map { |d| d['name'] }).must_equal %w[Code Comments Blanks]
+      _(series.pluck('name')).must_equal %w[Code Comments Blanks]
       _(result['scrollbar']).must_be_nil
     end
   end
@@ -250,7 +250,7 @@ class AnalysesControllerTest < ActionController::TestCase
 
       _(series.first['id']).must_equal 'code'
       _(series.map { |d| d['data'].last }).must_equal [[time_integer, 5], [time_integer, 10], [time_integer, 3]]
-      _(series.map { |d| d['name'] }).must_equal %w[Code Comments Blanks]
+      _(series.pluck('name')).must_equal %w[Code Comments Blanks]
       _(result['scrollbar']['enabled']).must_equal false
     end
   end

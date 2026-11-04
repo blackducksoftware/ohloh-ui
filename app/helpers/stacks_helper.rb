@@ -2,9 +2,7 @@
 
 module StacksHelper
   def stack_edit_in_place
-    haml_tag :a, class: 'rest_in_place_helper' do
-      concat I18n.t('stacks.edit_in_place')
-    end
+    concat content_tag(:a, I18n.t('stacks.edit_in_place'), class: 'rest_in_place_helper')
   end
 
   def stack_similar_project_list(projects)
@@ -17,7 +15,7 @@ module StacksHelper
     img_relative_path = "flags/#{code.to_s.downcase}.png"
     return '' unless asset_exists?(img_relative_path)
 
-    haml_tag 'img', src: asset_url(img_relative_path)
+    concat tag.img(src: asset_url(img_relative_path))
   end
 
   def asset_exists?(path)

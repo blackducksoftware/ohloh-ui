@@ -41,7 +41,7 @@ class WidgetsController < ApplicationController
   def render_not_supported_for_image_format
     return unless request.format.gif? || request.format.png?
 
-    image = Rails.cache.fetch('not_supported_widget') { WidgetBadge::Thin.create([text: 'Not supported']) }
+    image = Rails.cache.fetch('not_supported_widget') { WidgetBadge::Thin.create([{ text: 'Not supported' }]) }
     send_data(image, disposition: 'inline', type: image_mime_type, filename: image_filename, status: 406)
   end
 

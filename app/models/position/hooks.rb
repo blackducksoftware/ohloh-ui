@@ -69,7 +69,7 @@ class Position::Hooks
     access_verified && alias_object.project.managers.include?(account) ? account : Account.hamster
   end
 
-  # rubocop:disable Metrics/AbcSize
+  # rubocop:disable-next Metrics/AbcSize
   def transfer_kudos_to_account_person(unclaimed_person)
     if account.person.kudo_score
       account.person.update(kudo_score: [unclaimed_person.kudo_score, account.person.kudo_score].max,
@@ -80,7 +80,6 @@ class Position::Hooks
                             kudo_position: unclaimed_person.kudo_position)
     end
   end
-  # rubocop:enable Metrics/AbcSize
 
   def name_or_project_changed?
     saved_change_to_name_id? || saved_change_to_project_id?

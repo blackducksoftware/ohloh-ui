@@ -2,7 +2,7 @@
 
 class CreateCommitContributorsView < ActiveRecord::Migration[4.2]
   def up
-    execute <<-SQL.squish
+    execute <<~SQL.squish
       CREATE VIEW commit_contributors as SELECT analysis_aliases.commit_name_id AS id,
       sloc_sets.code_set_id AS code_set_id,
       analysis_aliases.commit_name_id AS name_id,
@@ -27,7 +27,7 @@ class CreateCommitContributorsView < ActiveRecord::Migration[4.2]
   end
 
   def down
-    execute <<-SQL.squish
+    execute <<~SQL.squish
       DROP VIEW commit_contributors;
     SQL
   end
