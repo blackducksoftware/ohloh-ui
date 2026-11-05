@@ -2,7 +2,7 @@
 
 require_relative 'api_access'
 
-# rubocop:disable Metrics/ClassLength
+# rubocop:disable-next Metrics/ClassLength
 class FisbotApi
   attr_accessor :errors
   attr_reader :attributes
@@ -131,4 +131,3 @@ class FisbotApi
     Net::HTTP.new(uri.host, uri.port).tap { |http| http.use_ssl = (uri.scheme == 'https') }
   end
 end
-# rubocop:enable Metrics/ClassLength

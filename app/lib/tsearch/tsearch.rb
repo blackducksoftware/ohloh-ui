@@ -3,7 +3,7 @@
 module Tsearch
   extend ActiveSupport::Concern
 
-  # rubocop:disable Metrics/BlockLength
+  # rubocop:disable-next Metrics/BlockLength
   included do
     # update_columns doesn't support string interpolation so we have used update_all.
     # Why interpolation? because the entire set_vector result is a postgres function
@@ -71,5 +71,4 @@ module Tsearch
       attr_value.to_s.gsub(/['?\\:]/, ' ')
     end
   end
-  # rubocop:enable Metrics/BlockLength
 end

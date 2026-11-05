@@ -25,14 +25,14 @@ class ProjectSecuritySet < ApplicationRecord
     vulnerabilities.order(published_on: :asc).first
   end
 
-  # rubocop:disable Metrics/MethodLength
+  # rubocop:disable-next Metrics/MethodLength
   def release_history(release_ids = [], bdsa_visible = false)
     condition = "where R.project_security_set_id = #{id}"
     condition += " AND R.id IN(#{release_ids.join(',')})" if release_ids.present?
     non_bdsa_query = " AND (V.cve_id not like 'BDSA%' OR V.cve_id is null)"
     bdsa_query = " AND V.cve_id like 'BDSA%'"
     condition += non_bdsa_query unless bdsa_visible
-    sql = <<-SQL.squish
+    sql = <<~SQL.squish
       select R.id, R.version, R.released_on, sum (case when V.severity = 0 #{non_bdsa_query} then 1 else 0 end) low,
       sum (case when V.severity = 1 #{non_bdsa_query} then 1 else 0 end) medium,
       sum (case when V.severity = 2 #{non_bdsa_query} then 1 else 0 end) high,
@@ -48,7 +48,6 @@ class ProjectSecuritySet < ApplicationRecord
     SQL
     self.class.find_by_sql(sql)
   end
-  # rubocop:enable Metrics/MethodLength
 
   def self.ransackable_attributes(_auth_object = nil)
     authorizable_ransackable_attributes

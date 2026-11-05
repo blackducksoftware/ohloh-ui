@@ -49,7 +49,7 @@ class UpdateProjectCiiBadge
     project
   end
 
-  # rubocop:disable Lint/DuplicateBranch
+  # rubocop:disable-next Lint/DuplicateBranch
   def normalize_url(url)
     case url
     when /^https?:\/\/\w+@github.com\/(.+)\.git$/
@@ -60,7 +60,6 @@ class UpdateProjectCiiBadge
       url
     end
   end
-  # rubocop:enable Lint/DuplicateBranch
 
   def url_probabilities(url)
     url = url.chomp('/')

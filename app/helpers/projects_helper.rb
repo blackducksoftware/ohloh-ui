@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# rubocop: disable Metrics/ModuleLength
+# rubocop: disable-next Metrics/ModuleLength
 module ProjectsHelper
   include ProjectVulnerabilityReportsHelper
   include SiteFeaturesHelper
@@ -128,4 +128,3 @@ module ProjectsHelper
     project.description && project.description.size > 800
   end
 end
-# rubocop: enable Metrics/ModuleLength

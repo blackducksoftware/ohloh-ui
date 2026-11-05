@@ -40,7 +40,11 @@ class Position < ApplicationRecord
   def name_fact
     return nil unless project.best_analysis_id && name_id
 
-    @name_fact ||= NameFact.find_by('analysis_id = ? AND name_id = ?', project.best_analysis_id, name_id)
+    if defined?(@name_fact)
+      @name_fact
+    else
+      @name_fact = NameFact.find_by('analysis_id = ? AND name_id = ?', project.best_analysis_id, name_id)
+    end
   end
 
   def committer_name

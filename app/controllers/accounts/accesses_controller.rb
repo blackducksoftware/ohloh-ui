@@ -36,9 +36,9 @@ class Accounts::AccessesController < ApplicationController
   end
 
   def make_non_spammer
-    sql = <<-SQL.squish
-             INSERT INTO oh.reviewed_non_spammers (account_id, created_at, updated_at)
-             VALUES (#{@account.id}, NOW()::timestamp, NOW()::timestamp);
+    sql = <<~SQL.squish
+      INSERT INTO oh.reviewed_non_spammers (account_id, created_at, updated_at)
+      VALUES (#{@account.id}, NOW()::timestamp, NOW()::timestamp);
     SQL
     ActiveRecord::Base.connection.execute(sql)
     flash[:success] = t('.success', name: CGI.escapeHTML(@account.name))

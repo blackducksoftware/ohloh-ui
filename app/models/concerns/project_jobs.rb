@@ -2,6 +2,7 @@
 
 module ProjectJobs
   extend ActiveSupport::Concern
+
   ACTIVITY_LEVEL = { na: 0, new: 10, inactive: 20, very_low: 30, low: 40,
                      moderate: 50, high: 60, very_high: 70 }.freeze
 

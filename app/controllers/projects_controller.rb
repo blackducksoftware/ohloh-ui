@@ -84,7 +84,7 @@ class ProjectsController < ApplicationController
     params.require(:project).permit(
       :name, :description, :vanity_url, :url, :download_url, :managed_by_creator,
       project_licenses_attributes: [:license_id],
-      enlistments_attributes: [code_location_attributes: %i[branch url scm_type]]
+      enlistments_attributes: [{ code_location_attributes: %i[branch url scm_type] }]
     )
   end
 

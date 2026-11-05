@@ -127,9 +127,9 @@ class Accounts::AccessesControllerTest < ActionController::TestCase
       post :make_non_spammer, params: { account_id: account.id }
 
       assert_redirected_to admin_spam_path
-      sql = <<-SQL.squish
-             SELECT 1 FROM  oh.reviewed_non_spammers
-             WHERE account_id = #{account.id};
+      sql = <<~SQL.squish
+        SELECT 1 FROM  oh.reviewed_non_spammers
+        WHERE account_id = #{account.id};
       SQL
       _(ActiveRecord::Base.connection.execute(sql).num_tuples).must_equal 1
       expected = ERB::Util.html_escape(I18n.t('accounts.accesses.make_non_spammer.success', name: account.name))
