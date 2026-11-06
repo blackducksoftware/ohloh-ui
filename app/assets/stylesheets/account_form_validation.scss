@@ -1,0 +1,23 @@
+input.validate-url {
+  &.is-invalid {
+    border-color: #dc3545;
+    background-color: #f8d7da;
+    color: #721c24;
+
+    &:focus {
+      border-color: #c82333;
+      box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+    }
+  }
+
+  &.is-valid {
+    border-color: #28a745;
+    background-color: #d4edda;
+    color: #155724;
+
+    &:focus {
+      border-color: #1e7e34;
+      box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+    }
+  }
+}
