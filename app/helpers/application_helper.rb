@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# rubocop: disable Metrics/ModuleLength
+# rubocop: disable-next Metrics/ModuleLength
 module ApplicationHelper
   include EmailObfuscation
   include ChartHelper
@@ -37,7 +37,7 @@ module ApplicationHelper
     current_user.actions.where(status: [Action::STATUSES[:nag_once], Action::STATUSES[:remind]]).first
   end
 
-  # rubocop: disable Metrics/ParameterLists
+  # rubocop: disable-next Metrics/ParameterLists
   def expander(text, min = 250, max = 350, regex = /\s/, regex_offset = -1)
     return unless text
 
@@ -48,7 +48,6 @@ module ApplicationHelper
     l -= 1 if text[l..l] == ','
     render_expander(text, l).html_safe
   end
-  # rubocop: enable Metrics/ParameterLists
 
   def pluralize_without_count(count, singular, plural = nil)
     count == 1 ? singular : (plural || singular.pluralize)
@@ -181,4 +180,3 @@ module ApplicationHelper
     :needs_verification
   end
 end
-# rubocop: enable Metrics/ModuleLength

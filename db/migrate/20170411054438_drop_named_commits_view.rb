@@ -2,13 +2,13 @@
 
 class DropNamedCommitsView < ActiveRecord::Migration[4.2]
   def up
-    execute <<-SQL.squish
+    execute <<~SQL.squish
       DROP VIEW IF EXISTS named_commits;
     SQL
   end
 
   def down
-    execute <<-SQL.squish
+    execute <<~SQL.squish
       CREATE VIEW named_commits as SELECT commits.id,
       commits.id AS commit_id,
       analysis_sloc_sets.analysis_id,

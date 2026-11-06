@@ -3,6 +3,7 @@
 module Reverification
   class Process
     extend Amazon
+
     class << self
       def bounce_rate(stats)
         no_of_bounces = stats.inject(0.0) { |a, e| a + e[:bounces] }

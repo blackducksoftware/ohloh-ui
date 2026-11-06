@@ -53,7 +53,7 @@ class ReverificationTrackerTest < ActiveSupport::TestCase
       exp_noti = ReverificationTracker.expired_initial_phase_notifications
       _(exp_noti).must_equal [initial_tracker1, initial_tracker2]
       assert_equal ['initial'], exp_noti.map(&:phase).uniq
-      assert_equal [true, true], (exp_noti.map { |n| (Time.now.utc - n.sent_at).to_i >= NOTIFICATION1_DUE_DAYS })
+      assert_equal([true, true], exp_noti.map { |n| (Time.now.utc - n.sent_at).to_i >= NOTIFICATION1_DUE_DAYS })
     end
 
     it 'should return initial notifications tracker which are successfully delivered to recipients' do
@@ -95,7 +95,7 @@ class ReverificationTrackerTest < ActiveSupport::TestCase
       exp_noti = ReverificationTracker.expired_second_phase_notifications
       _(exp_noti).must_equal [marked_disable_tracker1, marked_disable_tracker2]
       assert_equal ['marked_for_disable'], exp_noti.map(&:phase).uniq
-      assert_equal [true, true], (exp_noti.map { |n| (Time.now.utc - n.sent_at).to_i >= NOTIFICATION2_DUE_DAYS })
+      assert_equal([true, true], exp_noti.map { |n| (Time.now.utc - n.sent_at).to_i >= NOTIFICATION2_DUE_DAYS })
     end
 
     it 'should return marked for disable notifications tracker which are successfully delivered to recipients' do
@@ -137,7 +137,7 @@ class ReverificationTrackerTest < ActiveSupport::TestCase
       exp_noti = ReverificationTracker.expired_third_phase_notifications
       _(exp_noti).must_equal [disable_tracker1, disable_tracker2]
       assert_equal ['disabled'], exp_noti.map(&:phase).uniq
-      assert_equal [true, true], (exp_noti.map { |n| (Time.now.utc - n.sent_at).to_i >= NOTIFICATION3_DUE_DAYS })
+      assert_equal([true, true], exp_noti.map { |n| (Time.now.utc - n.sent_at).to_i >= NOTIFICATION3_DUE_DAYS })
     end
 
     it 'should return disablemed notifications trackers which are successfully delivered to recipients' do
@@ -179,7 +179,7 @@ class ReverificationTrackerTest < ActiveSupport::TestCase
       exp_noti = ReverificationTracker.expired_final_phase_notifications
       _(exp_noti).must_equal [final_warning_rev_tracker1, final_warning_rev_tracker2]
       assert_equal ['final_warning'], exp_noti.map(&:phase).uniq
-      assert_equal [true, true], (exp_noti.map { |n| (Time.now.utc - n.sent_at).to_i >= NOTIFICATION4_DUE_DAYS })
+      assert_equal([true, true], exp_noti.map { |n| (Time.now.utc - n.sent_at).to_i >= NOTIFICATION4_DUE_DAYS })
     end
 
     it 'should return final warning notifications trackers which are successfully delivered to recipients' do

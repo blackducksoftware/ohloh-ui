@@ -7,7 +7,7 @@ class CreateReviewedNonSpammer < ActiveRecord::Migration[5.2]
       t.timestamps
     end
 
-    execute <<-SQL.squish
+    execute <<~SQL.squish
       CREATE VIEW potential_spammers AS
       SELECT ac.id
       FROM oh.markups
@@ -18,7 +18,7 @@ class CreateReviewedNonSpammer < ActiveRecord::Migration[5.2]
   end
 
   def down
-    execute <<-SQL.squish
+    execute <<~SQL.squish
       DROP VIEW IF EXISTS potential_spammers
     SQL
     drop_table :reviewed_non_spammers

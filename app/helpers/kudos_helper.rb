@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# rubocop: disable Metrics/ModuleLength
+# rubocop: disable-next Metrics/ModuleLength
 module KudosHelper
   def kudos_laurel_link_for(person)
     path = person.nil? ? '#' : rankings_people_path(show: person.id)
@@ -128,4 +128,3 @@ module KudosHelper
     link_to("#{h(kudo.name.name)} (#{h(kudo.project.name)})", path, id: "kudo_given_link_#{kudo.sender.login}")
   end
 end
-# rubocop: enable Metrics/ModuleLength

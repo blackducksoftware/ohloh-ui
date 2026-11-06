@@ -12,7 +12,7 @@ class DeleteGoogleCodeProjects
     @editor = Account.find_by(login: 'ohloh_slave')
   end
 
-  # rubocop:disable Metrics/MethodLength
+  # rubocop:disable-next Metrics/MethodLength
   def execute
     AppLogger.info 'starting script'
     @project_ids = fetch_googlecode_projects_array
@@ -28,7 +28,6 @@ class DeleteGoogleCodeProjects
       'Successfully completed script - Please check deleted_googlecode_log_file.log to view any exceptions'
     )
   end
-  # rubocop:enable Metrics/MethodLength
 
   def fetch_googlecode_projects_array
     ActiveRecord::Base.connection.select_values("SELECT p.id as project_id

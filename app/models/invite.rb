@@ -2,6 +2,7 @@
 
 class Invite < ApplicationRecord
   include OnBehalf
+
   belongs_to :project, optional: true
   belongs_to :name, optional: true
   belongs_to :contribution, optional: true

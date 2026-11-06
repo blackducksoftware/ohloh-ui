@@ -52,16 +52,16 @@ class CommitsByLanguage < Cherry::Decorator
   # rubocop:enable Style/OpenStructUse
 
   def commits_by_months(entries)
-    commits_hash = entries.each_with_object({}) do |f, hsh|
-      hsh[f['month']] = f['commits'].to_i
+    commits_hash = entries.to_h do |f|
+      [f['month'], f['commits'].to_i]
     end
     commits_hash.reverse_merge!(months_without_commits)
     commits_hash.sort.map(&:last)
   end
 
   def months_without_commits
-    dates.each_with_object({}) do |date, hsh|
-      hsh[date.strftime('%Y-%m-01')] = 0
+    dates.to_h do |date|
+      [date.strftime('%Y-%m-01'), 0]
     end
   end
 end

@@ -12,7 +12,7 @@ class AnalysisSlocSet < FisBase
     conditions = ignore_prefixes.collect do |prefix|
       AnalysisSlocSet.sanitize_sql_condition(prefix)
     end.join(' OR ')
-    conditions.concat(" and fyles.code_set_id = #{sloc_set.code_set_id}") if conditions.present?
+    conditions.presence&.concat(" and fyles.code_set_id = #{sloc_set.code_set_id}")
   end
 
   def ignore_prefixes
@@ -23,7 +23,7 @@ class AnalysisSlocSet < FisBase
     conditions = allow_prefixes.collect do |prefix|
       AnalysisSlocSet.sanitize_sql_condition(prefix)
     end.join(' OR ')
-    conditions.concat(" and fyles.code_set_id = #{sloc_set.code_set_id}") if conditions.present?
+    conditions.presence&.concat(" and fyles.code_set_id = #{sloc_set.code_set_id}")
   end
 
   def allow_prefixes
