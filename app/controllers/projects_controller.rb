@@ -75,7 +75,7 @@ class ProjectsController < ApplicationController
       ProjectMailer.report_outdated(current_user, @project).deliver
     end
     flash[:notice] = t('.notification')
-    redirect_back(fallback_location: root_path)
+    redirect_back(fallback_location: root_path, allow_other_host: false)
   end
 
   private

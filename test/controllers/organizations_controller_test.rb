@@ -356,6 +356,16 @@ class OrganizationsControllerTest < ActionController::TestCase
       _(flash[:notice]).must_equal I18n.t('organizations.unauthorized')
       _(project.reload.organization_id).must_equal organization.id
     end
+
+    it 'must redirect to organization fallback, not external Referer, when unauthorized' do
+      restrict_edits_to_managers(organization)
+      project = create(:project, name: 'test name1', organization_id: organization.id)
+      @request.env['HTTP_REFERER'] = 'https://evil.com/phishing'
+
+      put :remove_project, params: { id: organization.to_param, project_id: project.id, source: 'claim_projects_list' }
+
+      assert_redirected_to organization_path(organization)
+    end
   end
 
   describe 'new_manager' do
