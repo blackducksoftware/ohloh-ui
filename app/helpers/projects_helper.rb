@@ -17,9 +17,9 @@ module ProjectsHelper
   end
 
   def project_iusethis_button(project)
+    css_class = "#{needs_login_or_verification_or_default('new-stack-entry')} btn btn-primary btn-mini"
     concat content_tag(:a, t('projects.i_use_this'), href: '#',
-                           data: { project_id: project.to_param },
-                           class: "#{needs_login_or_verification_or_default('new-stack-entry')} btn btn-primary btn-mini")
+                                                     data: { project_id: project.to_param }, class: css_class)
   end
 
   def project_compare_button(project, label = project.name)
@@ -27,8 +27,8 @@ module ProjectsHelper
     concat content_tag(:form, class: "sp_form styled form-inline #{'selected' if selected}",
                               style: 'min-width: 94px;', id: "sp_form_#{project.to_param}") do
       content_tag(:span, label.truncate(35), class: 'sp_label', title: label) +
-        tag(:input, style: 'margin-top: 2px;', type: 'checkbox', id: "sp_chk_#{project.to_param}",
-                    checked: selected, project_id: project.to_param, class: 'sp_input') +
+        tag.input(style: 'margin-top: 2px;', type: 'checkbox', id: "sp_chk_#{project.to_param}",
+                  checked: selected, project_id: project.to_param, class: 'sp_input') +
         content_tag(:div, nil, class: 'clear_both')
     end
   end
