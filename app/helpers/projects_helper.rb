@@ -7,32 +7,29 @@ module ProjectsHelper
 
   def project_activity_level_class(project, image_size)
     url = 'https://community.blackduck.com/s/article/Black-Duck-Open-Hub-About-Project-Activity-Icons'
-    haml_tag :a, href: url, target: '_blank',
-                 class: project_activity_css_class(project, image_size),
-                 title: project_activity_text(project, true)
+    concat content_tag(:a, nil, href: url, target: '_blank',
+                                class: project_activity_css_class(project, image_size),
+                                title: project_activity_text(project, true))
   end
 
   def project_activity_level_text(project, image_size)
-    haml_tag :div, project_activity_text(project, true), class: project_activity_level_text_class(image_size)
+    concat content_tag(:div, project_activity_text(project, true), class: project_activity_level_text_class(image_size))
   end
 
   def project_iusethis_button(project)
-    haml_tag :a, href: '#', data: { project_id: project.to_param },
-                 class: "#{needs_login_or_verification_or_default('new-stack-entry')} btn btn-primary btn-mini" do
-      concat t('projects.i_use_this')
-    end
+    concat content_tag(:a, t('projects.i_use_this'), href: '#',
+                           data: { project_id: project.to_param },
+                           class: "#{needs_login_or_verification_or_default('new-stack-entry')} btn btn-primary btn-mini")
   end
 
   def project_compare_button(project, label = project.name)
     selected = (@session_projects || []).include?(project)
-    haml_tag :form, class: "sp_form styled form-inline #{'selected' if selected}",
-                    style: 'min-width: 94px;', id: "sp_form_#{project.to_param}" do
-      haml_tag :span, class: 'sp_label', title: label do
-        concat label.truncate(35)
-      end
-      haml_tag :input, style: 'margin-top: 2px;', type: 'checkbox', id: "sp_chk_#{project.to_param}",
-                       checked: selected, project_id: project.to_param, class: 'sp_input'
-      haml_tag :div, class: 'clear_both'
+    concat content_tag(:form, class: "sp_form styled form-inline #{'selected' if selected}",
+                              style: 'min-width: 94px;', id: "sp_form_#{project.to_param}") do
+      content_tag(:span, label.truncate(35), class: 'sp_label', title: label) +
+        tag(:input, style: 'margin-top: 2px;', type: 'checkbox', id: "sp_chk_#{project.to_param}",
+                    checked: selected, project_id: project.to_param, class: 'sp_input') +
+        content_tag(:div, nil, class: 'clear_both')
     end
   end
 
