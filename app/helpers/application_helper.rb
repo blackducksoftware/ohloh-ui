@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# rubocop: disable Metrics/ModuleLength
+# rubocop: disable-next Metrics/ModuleLength
 module ApplicationHelper
   include EmailObfuscation
   include ChartHelper
@@ -13,7 +13,7 @@ module ApplicationHelper
     err = model.errors[attr]
     return '' if err.blank?
 
-    haml_tag 'p', [err].flatten.join('<br />').html_safe, opts.reverse_merge(class: 'error').merge(rel: attr)
+    concat content_tag(:p, [err].flatten.join('<br />').html_safe, opts.reverse_merge(class: 'error').merge(rel: attr))
   end
 
   def password_error_tag(model, attr, opts = {})
@@ -21,7 +21,7 @@ module ApplicationHelper
     return '' if err.blank? || err == ["can't be blank"]
 
     err = err.first if err.size == 2
-    haml_tag 'p', [err].flatten.join('<br />').html_safe, opts.reverse_merge(class: 'error').merge(rel: attr)
+    concat content_tag(:p, [err].flatten.join('<br />').html_safe, opts.reverse_merge(class: 'error').merge(rel: attr))
   end
 
   def project_pages_title(page_name = nil, project_name = nil)
@@ -37,18 +37,17 @@ module ApplicationHelper
     current_user.actions.where(status: [Action::STATUSES[:nag_once], Action::STATUSES[:remind]]).first
   end
 
-  # rubocop: disable Metrics/ParameterLists
+  # rubocop: disable-next Metrics/ParameterLists
   def expander(text, min = 250, max = 350, regex = /\s/, regex_offset = -1)
     return unless text
 
-    text = text.sanitize
+    text = sanitize(text)
     return text.html_safe if text.length < max
 
     l = (text[0..min].rindex(regex) || (min + 1)) + regex_offset
     l -= 1 if text[l..l] == ','
     render_expander(text, l).html_safe
   end
-  # rubocop: enable Metrics/ParameterLists
 
   def pluralize_without_count(count, singular, plural = nil)
     count == 1 ? singular : (plural || singular.pluralize)
@@ -101,13 +100,13 @@ module ApplicationHelper
     main_language = project.main_language
     opts[:color] = language_text_color(main_language)
     opts[:bg]    = language_color(main_language)
-    haml_tag(:p, p_name, style: default_icon_styles(size, opts))
+    concat content_tag(:p, p_name, style: default_icon_styles(size, opts))
   end
 
   def project_link(project, size = :small, opts = {})
     opts = opts.merge(href: "/p/#{project.to_param}")
-    inner = capture_haml { project_icon(project, size, opts) }
-    haml_tag :a, inner, opts
+    inner = capture { project_icon(project, size, opts) }
+    concat content_tag(:a, inner, opts)
   end
 
   def xml_date_to_time(date)
@@ -181,4 +180,3 @@ module ApplicationHelper
     :needs_verification
   end
 end
-# rubocop: enable Metrics/ModuleLength

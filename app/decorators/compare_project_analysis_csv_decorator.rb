@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# rubocop:disable Metrics/ClassLength
+# rubocop:disable-next Metrics/ClassLength
 class CompareProjectAnalysisCsvDecorator
   include ActionView::Helpers::DateHelper
   include ActionView::Helpers::NumberHelper
@@ -134,4 +134,3 @@ class CompareProjectAnalysisCsvDecorator
     end
   end
 end
-# rubocop:enable Metrics/ClassLength

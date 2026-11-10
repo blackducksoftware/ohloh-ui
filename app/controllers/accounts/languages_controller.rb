@@ -2,6 +2,7 @@
 
 class Accounts::LanguagesController < ApplicationController
   include SetAccountByAccountId
+
   helper :Projects
 
   before_action :account_context

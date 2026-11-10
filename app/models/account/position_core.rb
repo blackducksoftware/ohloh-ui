@@ -3,6 +3,7 @@
 require 'forwardable'
 class Account::PositionCore
   extend Forwardable
+
   attr_reader :account
 
   def initialize(account)
@@ -17,7 +18,7 @@ class Account::PositionCore
                .order(Project.arel_table[:name].lower)
   end
 
-  # rubocop:disable Metrics/AbcSize
+  # rubocop:disable-next Metrics/AbcSize
   def ordered
     preloaded_positions.sort do |position_a, position_b|
       position_a_name_fact = name_facts["#{position_a.project.best_analysis_id}_#{position_a.name_id}"].try(:first)
@@ -30,7 +31,6 @@ class Account::PositionCore
       end
     end
   end
-  # rubocop:enable Metrics/AbcSize
 
   # Returns a mapping of (position.project.analysis_id)_(position.name_id) => [position.name_fact] for all positions.
   def name_facts

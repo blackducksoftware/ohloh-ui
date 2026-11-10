@@ -11,7 +11,7 @@ class SlocMetric < FisBase
 
     SlocMetric.select_summary_attributes
               .select('languages.nice_name as language_name, languages.name as name')
-              .joins([[diff: [commit: :fyle]], :language])
+              .joins([[{ diff: [{ commit: :fyle }] }], :language])
               .where(diffs: { commit_id: commit })
               .where('diffs.fyle_id = fyles.id')
               .where(sloc_set_id: AnalysisSlocSet.for_analysis(analysis_id).select(:sloc_set_id))

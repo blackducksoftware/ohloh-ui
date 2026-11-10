@@ -29,8 +29,8 @@ class AnalysisSummary < ApplicationRecord
       project_id = analysis.project_id
       name_ids = recent_contributors[1..]
       person_with_name_sql = Person.where(project_id: project_id, name_id: name_ids).to_sql
-      person_with_account_sql = Person.where(account_id: Position.select(:account_id)
-                                .where(project_id: project_id, name_id: name_ids)).to_sql
+      positions = Position.select(:account_id).where(project_id: project_id, name_id: name_ids)
+      person_with_account_sql = Person.where(account_id: positions).to_sql
       Person.from("(#{person_with_name_sql} union #{person_with_account_sql}) people")
     else
       Person.where(id: recent_contributors)

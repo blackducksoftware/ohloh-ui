@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# rubocop:disable Metrics/ClassLength
+# rubocop:disable-next Metrics/ClassLength
 class CommitsController < SettingsController
   helper ProjectsHelper
 
@@ -161,4 +161,3 @@ class CommitsController < SettingsController
     @commit_contributor = @project.commit_contributors.find_by(contribution_id: params[:contributor_id])
   end
 end
-# rubocop:enable Metrics/ClassLength

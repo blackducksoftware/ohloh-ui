@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# rubocop:disable Metrics/MethodLength, Metrics/ClassLength, Layout/LineLength
+# rubocop:disable-next Metrics/MethodLength, Metrics/ClassLength, Layout/LineLength
 module Reverification
   class Template
     class << self
@@ -150,4 +150,3 @@ module Reverification
     end
   end
 end
-# rubocop:enable Metrics/MethodLength, Metrics/ClassLength, Layout/LineLength

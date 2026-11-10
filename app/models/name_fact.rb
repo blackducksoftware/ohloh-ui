@@ -2,6 +2,7 @@
 
 class NameFact < ApplicationRecord
   include Comparable
+
   serialize :commits_by_project
   serialize :commits_by_language
 

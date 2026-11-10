@@ -34,7 +34,7 @@ class Tag < ApplicationRecord
   end
 
   def recalc_taggings_count
-    sql = <<-SQL.squish
+    sql = <<~SQL.squish
       SELECT COUNT(*) FROM taggings AS t INNER JOIN projects p ON t.taggable_id = p.id AND t.taggable_type = 'Project'
       WHERE t.tag_id = #{id} AND p.deleted = FALSE
     SQL

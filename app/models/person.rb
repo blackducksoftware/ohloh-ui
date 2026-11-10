@@ -31,7 +31,6 @@ class Person < ApplicationRecord
   alias_attribute :person_name, :effective_name
 
   def searchable_factor
-    # rubocop:disable Style/CollectionQuerying
     return 0.0 if kudo_position.nil? || Person.count == 1
 
     num = (Person.count - kudo_position).to_f
@@ -41,7 +40,6 @@ class Person < ApplicationRecord
     num /= 10 unless account_id
 
     num / denum
-    # rubocop:enable Style/CollectionQuerying
   end
 
   class << self
@@ -111,7 +109,7 @@ class Person < ApplicationRecord
     end
   end
 
-  # rubocop:disable Metrics/AbcSize
+  # rubocop:disable-next Metrics/AbcSize
   def searchable_vector
     # this function allow us to assign weight value to vector column. 'a' has highest weigtage followed by b,c and d
     return { a: effective_name } if account_id.blank?
@@ -123,7 +121,6 @@ class Person < ApplicationRecord
       d: "#{account.markup.try(:formatted)} #{projects_name}"
     }
   end
-  # rubocop:enable Metrics/AbcSize
 
   private
 

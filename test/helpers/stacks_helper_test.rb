@@ -7,10 +7,8 @@ class StacksHelperTest < ActionView::TestCase
 
   describe 'stack_country_flag' do
     it 'must return an html with the flag image' do
-      dummy_html = '<img/>'
-      expects(:haml_tag).once.returns(dummy_html)
-
-      _(stack_country_flag('Us')).must_equal dummy_html
+      result = stack_country_flag('Us')
+      _(result.to_s).must_include '<img'
     end
 
     it 'must handle invalid country codes' do

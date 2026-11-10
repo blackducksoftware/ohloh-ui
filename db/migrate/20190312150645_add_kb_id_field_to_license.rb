@@ -8,7 +8,7 @@ class AddKbIdFieldToLicense < ActiveRecord::Migration[4.2]
 
   private
 
-  # rubocop:disable Metrics/AbcSize
+  # rubocop:disable-next Metrics/AbcSize
   def update_records
     insert_kb_id('ad705c59-6893-4980-bdbf-0837f1823cc4', 'mit', ['MIT', 'MIT License', 'mit2'])
     insert_kb_id('7cae335f-1193-421e-92f1-8802b4243e93', 'apache_2',
@@ -56,7 +56,6 @@ class AddKbIdFieldToLicense < ActiveRecord::Migration[4.2]
     # insert_kb_id('0507cbf4-6404-4033-b93e-9e0de2c11ae1','','mitv2withadclauselicense')
     # insert_kb_id('11290952-7cb0-492a-b312-ee675a8a9e5e' 'JasPer-2.0'
   end
-  # rubocop:enable Metrics/AbcSize
 
   def insert_kb_id(kb_id, vanity_url, _kb_reference)
     sql = "Update licenses set kb_id = '#{kb_id}' where id =
