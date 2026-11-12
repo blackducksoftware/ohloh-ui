@@ -1,0 +1,12 @@
+# Supply-chain pinning check (DEVOPS-12629). Logic lives in one central place:
+# blackduck-common/pipelines-library/.github/workflows/supply-chain-check.yml
+name: supply-chain-check
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  supply-chain-check:
+    uses: blackduck-common/pipelines-library/.github/workflows/supply-chain-check.yml@5d40c20125ebb97fd442693bfb5a1107d286d18d  # DEVOPS-12629 central check
