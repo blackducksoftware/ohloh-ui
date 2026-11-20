@@ -31,7 +31,7 @@ var EditMap = {
         if (json.success) {
           marker = EditMap.jumpMeTo(json.latitude, json.longitude);
           $('#account_country_code').val(json.country);
-          $('#account_location_mirror').html(json.location);
+          $('#account_location_mirror').text(json.location);
           $('#account_location').val(json.location);
           $('#account_latitude').val(json.latitude);
           $('#account_longitude').val(json.longitude);
@@ -61,7 +61,7 @@ var EditMap = {
       marker = EditMap.jumpMeTo(loc.lat(), loc.lng());
 
       $('#account_country_code').val(countryCode);
-      $('#account_location_mirror').html(address);
+      $('#account_location_mirror').text(address);
       $('#account_location').val(address);
       $('#account_latitude').val(loc.lat());
       $('#account_longitude').val(loc.lng());

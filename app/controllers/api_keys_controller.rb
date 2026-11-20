@@ -93,7 +93,8 @@ class ApiKeysController < ApplicationController
   end
 
   def parse_sort_term
-    ApiKey.respond_to?("by_#{params[:sort]}") ? "by_#{params[:sort]}" : 'by_newest'
+    allowed = %w[by_account_name by_newest by_oldest by_most_requests_today by_most_requests by_most_recent_request]
+    allowed.include?("by_#{params[:sort]}") ? "by_#{params[:sort]}" : 'by_newest'
   end
 
   def default_or_csv_limit

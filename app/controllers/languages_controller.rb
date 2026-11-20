@@ -49,6 +49,7 @@ class LanguagesController < ApplicationController
   end
 
   def parse_sort_term
-    Language.respond_to?("by_#{params[:sort]}") ? "by_#{params[:sort]}" : 'by_nice_name'
+    allowed = %w[by_name by_nice_name by_total by_code by_comment_ratio by_projects by_contributors by_commits]
+    allowed.include?("by_#{params[:sort]}") ? "by_#{params[:sort]}" : 'by_nice_name'
   end
 end
