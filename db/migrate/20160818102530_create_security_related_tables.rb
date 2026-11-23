@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# rubocop:disable Metrics/AbcSize
+# rubocop:disable-next Metrics/AbcSize
 class CreateSecurityRelatedTables < ActiveRecord::Migration[4.2]
   def change
     create_table :project_security_sets do |t|
@@ -32,4 +32,3 @@ class CreateSecurityRelatedTables < ActiveRecord::Migration[4.2]
     add_foreign_key :projects, :project_security_sets, column: :best_project_security_set_id
   end
 end
-# rubocop:enable Metrics/AbcSize

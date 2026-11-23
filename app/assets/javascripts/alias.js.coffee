@@ -1,19 +1,22 @@
 App.Alias =
   init: ->
-    $('.alias #commit_name_id').change(App.Alias.update_preferred_names).change()
+    $('#alias-new-page #commit_name_id').change(App.Alias.update_preferred_names).change()
   before: ->
-    $('.alias #submit_button').hide()
-    $('.alias .spinner').show()
+    $('#alias-new-page #submit_button').hide()
+    $('#alias-new-page .spinner').show()
   after: ->
-    $('.alias #submit_button').show()
-    $('.alias .spinner').hide()
-    $('.alias select#preferred_name_id').chosen()
+    $('#alias-new-page #submit_button').show()
+    $('#alias-new-page .spinner').hide()
+    $select = $('#alias-new-page select#preferred_name_id')
+    $select.chosen('destroy') if $select.data('chosen')
+    $select.chosen()
   update_preferred_names: ->
     App.Alias.before()
+    commitNameId = $('#alias-new-page #commit_name_id').val()
     $.ajax
-      url: $(this).attr('url') + '?commit_name_id=' + $('#commit_name_id').val()
+      url: $(this).attr('url') + '?commit_name_id=' + commitNameId
       success: (html) ->
-        $('.alias #preferred_name').html html
+        $('#alias-new-page #preferred_name').html html
         App.Alias.after()
 
 $(document).on 'page:change', ->

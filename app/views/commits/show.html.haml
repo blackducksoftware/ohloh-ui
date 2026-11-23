@@ -4,22 +4,26 @@
   lines_added, lines_removed = @commit.lines_added_and_removed(@project.best_analysis_id)
   commit_contributor = CommitContributor.where(analysis_id: @project.best_analysis_id).find_by(name_id: @commit.name_id)
 
-.project_content_title
-  %h2.pull-left
-    = link_to t('.commits'), summary_project_commits_path(@project)
-    = t('.individual_commit')
-  = project_analysis_timestamp(@project)
+#commits-summary-page
+  .settings-page-header
+    .settings-page-header-row
+      .settings-page-icon
+        %i.fa.fa-code-fork
+      %h2.settings-page-h2
+        = link_to t('.commits'), summary_project_commits_path(@project)
+        = t('.individual_commit')
 
 .col-md-10.col-md-offset-1
-  .well
+  .oh-card
     %p.commit_id
       = t('.commit_id')
-      = @commit.nice_id
+      %code.commit-hash= @commit.nice_id
     %table.commit_info
       - if commit_contributor
         %tr
-          %td.text-top{ width: '13%', rowspan: '4' }
-            = avatar_for(commit_contributor.person, size: 64)
+          - if commit_contributor.person
+            %td.text-top.avatar-cell{ width: '13%', rowspan: '4' }
+              = avatar_for(commit_contributor.person, size: 64)
           %td.text-right{ width: '15%' }= t('.contributor')
           %td.info{ width: '40%' }
             = render 'committer_name', commit_contributor: commit_contributor
@@ -47,7 +51,7 @@
 - if sloc_metrics_summaries.blank?
   %p.inset= t('.no_code_detected')
 - else
-  .col-md-10.col-md-offset-1.padding_left_30
+  .col-md-12.padding_left_30
     %table.table.table-striped.language_total.center
       %thead
         %tr
@@ -110,7 +114,7 @@
                   - else
                     = render 'commits/code_added_removed', summary: summary, klass: ''
 
-= will_paginate @diffs
+= render 'shared/modern_pagination', collection: @diffs
 
 .clearfix
 - if @diffs.blank?

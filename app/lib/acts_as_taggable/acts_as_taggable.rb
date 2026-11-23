@@ -19,7 +19,7 @@ module ActsAsTaggable
       return if tag_list == list
 
       self.tag_list_is_dirty = true
-      self.tags = parse_tag_list(list).map { |tag| Tag.where(name: tag).first_or_create }
+      self.tags = parse_tag_list(list).uniq.map { |tag| Tag.where(name: tag).first_or_create }
     end
 
     def tag_list

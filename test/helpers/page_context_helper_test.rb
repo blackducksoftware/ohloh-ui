@@ -4,6 +4,7 @@ require 'test_helper'
 
 class PageContextHelperTest < ActionView::TestCase
   include PageContextHelper
+
   attr_accessor :page_context
 
   let(:page_context) { {} }
@@ -16,7 +17,7 @@ class PageContextHelperTest < ActionView::TestCase
     {
       select_footer_nav: :account_summary,
       select_top_menu_nav: :select_people,
-      page_header: 'accounts/mini_header',
+      page_header: 'accounts/show/header',
       nav_type: 'footer_nav'
     }
   end

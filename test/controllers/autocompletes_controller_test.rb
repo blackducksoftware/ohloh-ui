@@ -77,7 +77,7 @@ class AutocompletesControllerTest < ActionController::TestCase
 
       resp = JSON.parse(response.body)
       _(resp.length).must_equal 2
-      _(resp.map { |hsh| hsh['value'] }).must_equal %w[Foo Foobar]
+      _(resp.pluck('value')).must_equal %w[Foo Foobar]
     end
 
     it 'must handle a blank exclude_project_id' do
@@ -97,7 +97,7 @@ class AutocompletesControllerTest < ActionController::TestCase
       get :project, params: { term: 'foo' }, format: :json
 
       resp = JSON.parse(response.body)
-      _(resp.map { |hsh| hsh['value'] }).must_equal %w[Foo Foobar]
+      _(resp.pluck('value')).must_equal %w[Foo Foobar]
     end
   end
 
@@ -109,7 +109,7 @@ class AutocompletesControllerTest < ActionController::TestCase
       get :project_duplicates, params: { term: 'foo' }, format: :json
 
       resp = JSON.parse(response.body)
-      _(resp.map { |hsh| hsh['value'] }).must_equal %w[Foo Foobar]
+      _(resp.pluck('value')).must_equal %w[Foo Foobar]
     end
   end
 

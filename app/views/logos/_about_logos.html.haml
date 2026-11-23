@@ -1,12 +1,37 @@
-%h4.nomargin
-  %col-md.soft= t('about')
-  = t('.title')
-.col-md-5
-  %ul.margin_left_20.margin_top_10
-    %li= t('.first')
-    %li= t('.second')
-    %li= t('.third')
-.col-md-5
-  %ul.margin_left_20.margin_top_10
-    %li= t('.fourth')
-    %li= t('.fifth')
+.about-account-basics-card
+  .card-header
+    .card-header-left
+      .card-header-icon
+        %i.fa.fa-image
+      .card-header-text
+        %h4.card-title= t('about') + ' ' + t('.title')
+        %p.card-subtitle= t('.title')
+    %button.expand-toggle{ type: 'button', 'aria-label' => 'Toggle about section' }
+      %i.fa.fa-chevron-down
+  .card-content
+    .tips-grid
+      .tip-item
+        .tip-icon
+          %i.fa.fa-upload
+        .tip-body
+          %p.tip-text= t('.first')
+      .tip-item
+        .tip-icon
+          %i.fa.fa-check-circle
+        .tip-body
+          %p.tip-text= t('.second')
+      .tip-item
+        .tip-icon
+          %i.fa.fa-file-image-o
+        .tip-body
+          %p.tip-text= t('.third')
+      .tip-item
+        .tip-icon
+          %i.fa.fa-link
+        .tip-body
+          %p.tip-text= t('.fourth')
+      .tip-item
+        .tip-icon
+          %i.fa.fa-info-circle
+        .tip-body
+          %p.tip-text= t('.fifth')

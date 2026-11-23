@@ -2,14 +2,15 @@
 
 - content_for(:html_title) { t('.page_title', who: @account.name) }
 
-.clearfix
-.project_content_title.margin_bottom_10
-  %h2= t('.widgets')
-  %p
-    = t('.embed')
-    = t('.select')
+#account-widgets-index
+  .settings-page-header
+    .settings-page-header-row
+      .settings-page-icon
+        %i.fa.fa-puzzle-piece
+      %h2.settings-page-h2
+        = t('.widgets')
+    %p.settings-page-description= t('.embed')
 
-.clearfix
   = render partial: 'widget', collection: @widgets
 
-  %p.soft= t('.asks')
+  %p.widget-footer-note= t('.asks')

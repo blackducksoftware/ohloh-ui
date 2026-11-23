@@ -4,6 +4,7 @@ require 'forwardable'
 
 class Account::Access
   extend Forwardable
+
   def_delegator :account, :level
 
   attr_reader :account

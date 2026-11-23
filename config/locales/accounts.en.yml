@@ -48,7 +48,7 @@ en:
       page_title: '%{name} : Account Basics - Open Hub'
       email_help: 'We use your email address to show your'
       affiliation_help: "Enter the company or organization you're affiliated with."
-      city_and_country: 'City &amp; Country'
+      city_and_country: 'City & Country'
       location_error_message: 'Sorry, that location was not found.'
       about_raw_help: 'A short (less than 500 characters) description of you.'
       delete_account: 'Delete Account'
@@ -190,6 +190,7 @@ en:
     settings:
       settings_title: '%{name} : Settings - Open Hub'
       settings: 'Settings'
+      configure_desc: 'Configure every aspect of the %{name} account on Open Hub.'
       account_basics: 'Account Basics'
       password: 'Password'
       api_keys: 'API Keys'
@@ -229,7 +230,7 @@ en:
 
     fields:
       new_account: 'New Account'
-      sign_up: 'Sign Up'
+      sign_up: 'Create Account'
       login_help: 'Your login is your public name on Open Hub and will be associated with all of your contributions.'
       login: 'Login'
       email_help_1: 'You must provide a valid email to activate your account.'

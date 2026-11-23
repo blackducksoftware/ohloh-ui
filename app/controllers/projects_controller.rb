@@ -72,7 +72,7 @@ class ProjectsController < ApplicationController
   def report_outdated
     if @project.reported_at.blank?
       @project.update!(reported_at: Time.current, editor_account: Account.hamster)
-      ProjectMailer.report_outdated(current_user, @project).deliver
+      ProjectMailer.report_outdated(current_user, @project).deliver_now
     end
     flash[:notice] = t('.notification')
     redirect_back(fallback_location: root_path)
@@ -84,7 +84,7 @@ class ProjectsController < ApplicationController
     params.require(:project).permit(
       :name, :description, :vanity_url, :url, :download_url, :managed_by_creator,
       project_licenses_attributes: [:license_id],
-      enlistments_attributes: [code_location_attributes: %i[branch url scm_type]]
+      enlistments_attributes: [{ code_location_attributes: %i[branch url scm_type] }]
     )
   end
 

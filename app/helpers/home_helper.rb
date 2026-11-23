@@ -28,7 +28,7 @@ module HomeHelper
     if project.is_a?(Account)
       link_to(image_tag(avatar_img_path(project), height: 32, width: 32), account_path(project), class: 'top_ten_icon')
     else
-      link_to(capture_haml { project_icon(project) }, project_path(project), class: 'top_ten_icon')
+      link_to(capture { project_icon(project) }, project_path(project), class: 'top_ten_icon')
     end
   end
 

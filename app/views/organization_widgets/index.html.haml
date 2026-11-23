@@ -1,10 +1,18 @@
 - page_context[:select_footer_nav] = :widgets
 - content_for(:html_title) { t('.page_title', name: @organization.name) }
 
-.project_content_title.margin_bottom_10
-  %h2= t('.title')
-  %p= t('.embed')
+.org-settings-wrap
+  .settings-page-header
+    .settings-page-header-row
+      .settings-page-icon
+        %i.fa.fa-bar-chart
+      %h2.settings-page-h2
+        = link_to t('.settings'), settings_organization_path(@organization)
+        %span.account-basics-sep :
+        = t('.title')
 
-.clearfix
-  - @widgets.each do |widget|
-    = render partial: 'widget', locals: { widget: widget, type: 'organization' }
+  %p.widgets-intro-text= t('.embed')
+
+  .widgets-list
+    - @widgets.each do |widget|
+      = render partial: 'widget', locals: { widget: widget, type: 'organization' }

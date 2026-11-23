@@ -1,19 +1,37 @@
 - content_for(:html_title) { t('.page_title') }
 
-%h3= t('.title')
+#duplicate-index-page
+  .settings-page-header
+    .settings-page-header-row
+      .settings-page-icon
+        %i.fa.fa-clone
+      %h2.settings-page-h2
+        = t('.title')
 
-.col-md-12
-  %ul.nav.nav-tabs
-    %li.active
-      = link_to t('.unresolved'), '#unresolved-duplicates', 'data-toggle' => :tab
-    %li
-      = link_to t('.resolved'), '#resolved-duplicates', 'data-toggle' => :tab
+  .duplicate-page-content
+    .duplicate-pill-tabs
+      %ul.duplicate-pill-list{ role: 'tablist' }
+        %li.duplicate-pill-item.active{ role: 'presentation' }
+          %a.duplicate-pill-link{ href: '#unresolved-duplicates', 'data-toggle' => 'tab', role: 'tab' }
+            = t('.unresolved')
+        %li.duplicate-pill-item{ role: 'presentation' }
+          %a.duplicate-pill-link{ href: '#resolved-duplicates', 'data-toggle' => 'tab', role: 'tab' }
+            = t('.resolved')
 
-  .tab-content
-    .tab-pane.fade.in.active#unresolved-duplicates
-      = render collection: @unresolved_duplicates, partial: 'duplicate', locals: { resolved: false }
-      = will_paginate @unresolved_duplicates
+    .duplicate-list-card
+      .tab-content
+        .tab-pane.fade.in.active#unresolved-duplicates
+          .duplicate-list-inner
+            = render collection: @unresolved_duplicates, partial: 'duplicate', locals: { resolved: false }
+          - if @unresolved_duplicates.empty?
+            .duplicate-empty-state
+              %p= t('.no_unresolved', default: 'No unresolved duplicates found.')
+          = render 'shared/modern_pagination', collection: @unresolved_duplicates
 
-    .tab-pane.fade#resolved-duplicates
-      = render collection: @resolved_duplicates, partial: 'duplicate', locals: { resolved: true }
-      = will_paginate @resolved_duplicates
+        .tab-pane.fade#resolved-duplicates
+          .duplicate-list-inner
+            = render collection: @resolved_duplicates, partial: 'duplicate', locals: { resolved: true }
+          - if @resolved_duplicates.empty?
+            .duplicate-empty-state
+              %p= t('.no_resolved', default: 'No resolved duplicates found.')
+          = render 'shared/modern_pagination', collection: @resolved_duplicates

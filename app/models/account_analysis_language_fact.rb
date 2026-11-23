@@ -8,11 +8,11 @@ class AccountAnalysisLanguageFact < NameLanguageFact
 
   scope :ordered, lambda {
     joins(:language)
-      .order('category, total_months desc, total_commits desc, total_activity_lines desc')
+      .order(:category, total_months: :desc, total_commits: :desc, total_activity_lines: :desc)
   }
 
   scope :with_language_and_projects, lambda {
     includes(%i[language most_commits_project recent_commit_project])
-      .order('most_commits DESC')
+      .order(most_commits: :desc)
   }
 end

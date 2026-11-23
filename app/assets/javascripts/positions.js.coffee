@@ -63,6 +63,14 @@ class SetupProjectAndLanguagesSections
       $(this).addClass('hidden')
       $('a.expanded').removeClass('hidden')
       $('#project-experience-form').find('input').autocomplete({ source: '/autocompletes/project' })
+      # Defer chosen re-init until the browser has reflowed the now-visible section.
+      # Without setTimeout, chosen reads offsetWidth before layout and gets 0px.
+      $select = $('#position_languages .chzn-select')
+      setTimeout ->
+        $select.chosen('destroy')
+        $select.chosen()
+        $('#position_languages .chosen-container').css('width', '100%')
+      , 0
     $('a.expanded').click ->
       $('#additional-fields').addClass('hidden')
       $(this).addClass('hidden')

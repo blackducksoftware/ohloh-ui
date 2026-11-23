@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# rubocop:disable Metrics/BlockLength
+# rubocop:disable-next Metrics/BlockLength
 Rails.application.routes.draw do
   mount JasmineRails::Engine => '/specs' if defined?(JasmineRails)
 
@@ -93,6 +93,8 @@ Rails.application.routes.draw do
       get :confirm_delete
       get :disabled
       get :settings
+      get :theme_preference, defaults: { format: :json }
+      post :set_theme_preference
       get 'alter_password/edit', to: 'alter_passwords#edit'
       patch 'alter_password/edit', to: 'alter_passwords#update'
       get :edit_privacy, to: 'privacy#edit', as: :edit_account_privacy
@@ -510,4 +512,3 @@ Rails.application.routes.draw do
   # the unmatched_route must be last as it matches everything
   match '*unmatched_route', to: 'application#raise_not_found!', via: :all
 end
-# rubocop:enable Metrics/BlockLength

@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
-# rubocop:disable Metrics/ClassLength
+# rubocop:disable-next Metrics/ClassLength
 class ApplicationController < ActionController::Base
   include ClearanceSetup
+
   BOT_REGEX = /\b(Baiduspider|Googlebot|libwww-perl|msnbot|SiteUptime|Slurp)\b/i
   FORMATS_THAT_WE_RENDER_ERRORS_FOR = %w[html xml json].freeze
 
@@ -402,4 +403,3 @@ class ApplicationController < ActionController::Base
     current_user.update_columns(last_seen_at: Time.current, last_seen_ip: request.remote_ip)
   end
 end
-# rubocop:enable Metrics/ClassLength

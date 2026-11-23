@@ -1,22 +1,119 @@
 #sbom-details
+  .modal-content
+    border-radius: 14px
+    border: none
+    overflow: hidden
+
   .modal-header
-    padding: 8px !important
-    background: #0082C6
-    color: #FFF
+    padding: 14px 20px !important
+    background: linear-gradient(135deg, #5A2A82, #7c3aed)
+    color: #fff
+    border-bottom: none
+
+  .modal-title
+    font-size: 16px
+    font-weight: 700
+    color: #fff
+
   button.close
-    padding: 1px
-    opacity: 0.4
-    border: 1px solid #FFF
-    border-radius: 5px
+    background: rgba(255,255,255,0.15)
+    border: none
+    border-radius: 6px
+    width: 28px
+    height: 28px
+    opacity: 1
+    padding: 0
+    color: #fff
+    text-shadow: none
+    font-size: 18px
+    line-height: 28px
     &:hover
-      opacity: 0.5
+      background: rgba(255,255,255,0.28)
+      opacity: 1
+
   .modal-body
-    .row
-      padding-bottom: 5px
-  .package-details
-    .icon
-      line-height: 15px
-      color: #ddd
+    padding: 20px
+
+  .sbom-agent-row
+    display: flex
+    align-items: center
+    justify-content: space-between
+    flex-wrap: wrap
+    gap: 10px
+    margin-bottom: 8px
+
+  .sbom-agent-options
+    display: flex
+    gap: 8px
+    flex-wrap: wrap
+
+  .radio-inline
+    display: inline-flex !important
+    align-items: center !important
+    padding: 5px 32px !important
+    border-radius: 20px
+    border: 1.5px solid #5A2A82
+    font-size: 13px
+    font-weight: 500
+    color: #ffff
+    background-color: #5A2A82
+    cursor: pointer
+    margin: 0 !important
+    input[type="radio"]
+      accent-color: #ffff
+      padding: 0 !important
+      flex-shrink: 0
+
   .download
-    margin-top: -8px
-    height: 38px
+    float: none !important
+    background-color: #5A2A82 !important
+    color: #fff !important
+    border: none !important
+    border-radius: 8px
+    font-size: 13px
+    font-weight: 600
+    padding: 7px 16px
+    margin-top: 0
+    height: auto
+    transition: background-color 0.2s ease
+    &:hover
+      background-color: #4a1f6e !important
+    html.dark &
+      background-color: #5A2A82 !important
+    html.dark &:hover
+      background-color: #6d35a0 !important
+
+  .package-details
+    display: none !important
+    border-top: 1px solid #e9d8ff
+    padding-top: 14px
+    margin-top: 4px
+    hr
+      display: none
+    .icon
+      color: #9f6ec8
+      line-height: 15px
+    .h5
+      font-weight: 600
+      color: #374151
+    ul
+      list-style: none
+      padding: 0
+      margin: 8px 0 0
+      max-height: 40vh
+      overflow-y: auto
+    li
+      display: flex
+      align-items: center
+      padding: 7px 12px
+      margin-bottom: 4px
+      background: #f8f7ff
+      border-radius: 6px
+      font-size: 12px
+      font-family: 'Courier New', monospace
+      color: #374151
+      border-left: 3px solid #9f6ec8
+
+  .modal-footer
+    border-top: 1px solid #f0e8f8
+    padding: 12px 20px

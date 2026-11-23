@@ -1,11 +1,28 @@
-%h4.nomargin
-  %span.soft= t('.about')
-  = t('.aliases')
-.col-md-6.margin_left_30
-  %ul
-    %li
-      = t('.about_desc_1')
-    %li
-      = t('.about_desc_2')
-    %li
-      = t('.about_desc_3')
+.about-account-basics-card
+  .card-header
+    .card-header-left
+      .card-header-icon
+        %i.fa.fa-users
+      .card-header-text
+        %h4.card-title= t('.about') + ' ' + t('.aliases')
+        %p.card-subtitle= t('.aliases')
+    %button.expand-toggle{ type: 'button', 'aria-label' => 'Toggle about section' }
+      %i.fa.fa-chevron-down
+
+  .card-content
+    .tips-grid
+      .tip-item
+        .tip-icon
+          %i.fa.fa-code-fork
+        .tip-body
+          %p.tip-text= t('.about_desc_1')
+      .tip-item
+        .tip-icon
+          %i.fa.fa-exchange
+        .tip-body
+          %p.tip-text= t('.about_desc_2')
+      .tip-item
+        .tip-icon
+          %i.fa.fa-info-circle
+        .tip-body
+          %p.tip-text= t('.about_desc_3')

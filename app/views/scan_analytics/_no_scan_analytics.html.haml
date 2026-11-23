@@ -1,7 +1,13 @@
-.row.row-eq-height.project_row
-  %h4#scan_analytic.text-left= t('.page_title')
-.no_analysis_message
-  .alert.alert-info.alert-block{ style: 'padding-left: 30px;' }
-    .title
-      = t('.no_data')
-    .indent{ style: 'margin-top: 15px;' }
+.scan-analytics-section
+  .settings-page-header
+    .settings-page-header-row
+      .settings-page-icon
+        %i.fa.fa-shield
+      %h2.settings-page-h2
+        = link_to @project.name, project_path(@project)
+        %span.account-basics-sep :
+        = t('.page_title')
+
+  .scan-empty-state
+    %i.fa.fa-bar-chart.scan-empty-icon
+    %p.scan-empty-message= t('.no_data')

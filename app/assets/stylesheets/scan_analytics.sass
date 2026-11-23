@@ -7,51 +7,40 @@
       display: table-cell
       width: 1%
       padding: 0 2em
-#scan_analytic_table
-  margin-top: -190px
-#scan_dropdown
-  padding-left: 15px !important
-  padding-right: 15px !important
-  margin-top: 5px
-  .chosen-container-single
-    width: auto!important
 
-.box
-  display: inline
-  padding: 0 20px 10px 0
-  float: left
-dl.kpi
-  width: 130px
-  height: 88px
-  background-color: #d9edf7
-  float: left
-  padding: 10px 0
-  border: 1px solid darken(#d9edf7, 15%)
-  em
-    vertical-align: bottom
-    font-style: normal
-  dd 
-    color: #31708f
-    text-align: center
-    font-family: arial,helvetica,clean,sans-serif
-    font-size: 18px
-    margin-left: 0
-    padding: 10px 5px
-    line-height: 20px
-    
-  dd.snapshot-date
-    font-size: 18px
+// ─── Chart Divs: hidden until JS renders data into them ──────────────────────
 
-  dt 
-    text-align: center
-    font-size: 12px
-    font-weight: normal
-    color: #31708f
-    line-height: 18px
+#chart_data
+  #chart1, #chart2, #chart3, #chart4
+    display: none
 
-  p.information
-    text-align: left
-    font-size: 14px
-    margin-left: 0
-    padding-left: 10px
-    padding-bottom: 5px
+// ─── Chart Section Dark Mode ─────────────────────────────────────────────────
+
+html.dark .scan-charts-section
+  #chart_data
+    #chart1, #chart2, #chart3, #chart4
+      background-color: #1c2433
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4)
+
+// Highcharts SVG text color overrides in dark mode
+html.dark .scan-charts-section
+  .highcharts-title,
+  .highcharts-axis-title
+    fill: #e5e7eb !important
+
+  .highcharts-axis-labels text,
+  .highcharts-legend-item text
+    fill: #9ca3af !important
+
+  .highcharts-background
+    fill: #1c2433 !important
+
+  .highcharts-plot-background
+    fill: #1c2433 !important
+
+  .highcharts-grid-line
+    stroke: rgba(255, 255, 255, 0.08) !important
+
+  .highcharts-axis-line,
+  .highcharts-tick
+    stroke: rgba(255, 255, 255, 0.15) !important

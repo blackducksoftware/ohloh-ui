@@ -7,7 +7,7 @@ class Topic < ApplicationRecord
 
   belongs_to :account, optional: true
   belongs_to :forum, counter_cache: true, optional: true
-  has_many :posts, -> { order('created_at asc') }, inverse_of: :topic, dependent: :destroy
+  has_many :posts, -> { order(:created_at) }, inverse_of: :topic, dependent: :destroy
   belongs_to :replied_by_account, foreign_key: 'replied_by', class_name: 'Account', optional: true
 
   accepts_nested_attributes_for :posts

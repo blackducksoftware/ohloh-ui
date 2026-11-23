@@ -9,15 +9,15 @@ class Analysis::SparkData
     private
 
     def series_for_last_two_months
-      Analysis::AgeHistogram.execute.each_with_object({}) do |analysis, hsh|
-        hsh[analysis.logged_date] = analysis.value
+      Analysis::AgeHistogram.execute.to_h do |analysis|
+        [analysis.logged_date, analysis.value]
       end
     end
 
     def default_series
       current_date = Date.current
-      ((current_date - 63)..current_date).to_a.each_with_object({}) do |date, hsh|
-        hsh[date.to_time(:utc)] = 0
+      ((current_date - 63)..current_date).to_a.to_h do |date|
+        [date.to_time(:utc), 0]
       end
     end
   end

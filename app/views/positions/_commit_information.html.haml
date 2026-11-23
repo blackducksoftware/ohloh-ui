@@ -4,7 +4,7 @@
     - if name_fact
       = link_to position.decorate.project_contributor_or_show_path do
         - if name_fact.commits > 1
-          = name_fact.commits
+          = number_with_delimiter(name_fact.commits)
           = t('commits_menu')
         - else
           1

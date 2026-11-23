@@ -1,88 +1,131 @@
 - page_context[:select_footer_nav] = :settings
+- terms_link = blog_link_to(link: :terms, link_text: t('api_keys.terms_link'))
+- terms_2_link = blog_link_to(link: :additional_terms, link_text: t('api_keys.terms_2_link'))
+- contacts_link = blog_link_to(link: :contact_form, link_text: t('api_keys.contacts_link'))
 
-:ruby
-  terms_link = blog_link_to(link: :terms, link_text: t('api_keys.terms_link'))
-  terms_2_link = blog_link_to(link: :additional_terms, link_text: t('api_keys.terms_2_link'))
-  contacts_link = blog_link_to(link: :contact_form, link_text: t('api_keys.contacts_link'))
-  settings_link = link_to(t(:settings), settings_account_path(@account))
-  account_api_keys_link = link_to(t(:api_keys_title), account_api_keys_url(@account))
+#api-keys-form
+  .settings-page-header
+    .settings-page-header-row
+      .settings-page-icon
+        %i.fa.fa-key
+      %h2.settings-page-h2
+        = link_to t(:settings), settings_account_path(@account)
+        %span.account-basics-sep :
+        = link_to t(:api_keys_title), account_api_keys_url(@account)
+        %span.account-basics-sep :
+        = @api_key.new_record? ? t(:new) : t(:edit)
+    %p.settings-page-description= @api_key.new_record? ? t('api_keys.request_new') : t('api_keys.edit.page_title')
 
-%h2! #{settings_link} : #{account_api_keys_link} : #{@api_key.new_record? ? t(:new) : t(:edit)}
+  = form_for [@account, @api_key] do |f|
+    .edit-section
+      .edit-section-header
+        .edit-section-icon
+          %i.fa.fa-cog
+        %h3.edit-section-title= @api_key.new_record? ? t('api_keys.request_new') : t('api_keys.edit.page_title')
 
-= form_for [@account, @api_key] do |f|
-  .col-md-11.center-block.well.margin_left_20.padding_right_0
-    %fieldset
       - @api_key.oauth_application || @api_key.build_oauth_application
       = f.fields_for :oauth_application do |ff|
-        .control-group
-          %label.control-label.required= t 'api_keys.form.application_name'
-          .controls
-            = ff.text_field :name, max_length: 50, class: 'col-md-7'
-            - error_tag @api_key.oauth_application, :name
+        .edit-field-group
+          = ff.label :name, t('api_keys.form.application_name'), class: 'edit-field-label'
+          .edit-field-input-wrapper
+            %i.fa.fa-tag.edit-field-icon
+            = ff.text_field :name, max_length: 50, class: 'edit-field-input',
+                                   placeholder: t('api_keys.form.application_name')
+          - error_tag @api_key.oauth_application, :name
 
-        .clearfix &nbsp;
-        .control-group
-          %label.control-label.required= t 'api_keys.redirect_uri'
-          .controls
-            = ff.text_field :redirect_uri, max_length: 50, class: 'col-md-7'
-            - error_tag @api_key.oauth_application, :redirect_uri
+        .edit-field-group
+          = ff.label :redirect_uri, t('api_keys.redirect_uri'), class: 'edit-field-label'
+          .edit-field-input-wrapper
+            %i.fa.fa-exchange.edit-field-icon
+            = ff.text_field :redirect_uri, max_length: 50, class: 'edit-field-input',
+                                           placeholder: 'https://'
+          - error_tag @api_key.oauth_application, :redirect_uri
 
-      .clearfix &nbsp;
-      .control-group
-        %label.control-label= t 'api_keys.form.home_page_url'
-        .controls
-          = f.text_field :url, max_length: 50, class: 'col-md-7'
-          - error_tag @api_key, :url
-          %p.help-block= t 'api_keys.form.home_page_url_info'
+      .edit-field-group
+        = f.label :url, t('api_keys.form.home_page_url'), class: 'edit-field-label'
+        .edit-field-input-wrapper
+          %i.fa.fa-globe.edit-field-icon
+          = f.text_field :url, max_length: 50, class: 'edit-field-input',
+                                placeholder: 'https://'
+        - error_tag @api_key, :url
+        %p.edit-field-hint= t('api_keys.form.home_page_url_info')
 
-      .control-group
-        %label.control-label.required= t 'api_keys.form.description'
-        .controls
-          = f.text_area :description, rows: 10, max_length: 2000, class: 'col-md-7'
-          - error_tag @api_key, :description
-          .clearfix &nbsp;
-          %p.help-block= t 'api_keys.form.description_info'
+      .edit-field-group
+        = f.label :description, t('api_keys.form.description'), class: 'edit-field-label'
+        = f.text_area :description, rows: 6, max_length: 2000, class: 'edit-field-textarea',
+                                    placeholder: t('api_keys.form.description_info')
+        - error_tag @api_key, :description
+        %p.edit-field-hint= t('api_keys.form.description_info')
 
-      - if current_user_is_admin?
-        .control-group
-          %label.control-label= t 'api_keys.form.daily_request_limit'
-          .controls
-            = f.text_field :daily_limit, max_length: 10, class: 'col-md-4'
-            - error_tag @api_key, :daily_limit
-          .clearfix
-          %p.help-block= t 'api_keys.form.daily_request_limit_admin'
-      - else
-        .control-group
-          %label.control-label
-            = t 'api_keys.form.daily_request_limit'
-            &#58;
-            = @api_key.daily_limit || current_object.class::DEFAULT_DAILY_LIMIT
+      .edit-field-group
+        - if current_user_is_admin?
+          = f.label :daily_limit, t('api_keys.form.daily_request_limit'), class: 'edit-field-label'
+          .edit-field-input-wrapper
+            %i.fa.fa-tachometer.edit-field-icon
+            = f.text_field :daily_limit, max_length: 10, class: 'edit-field-input'
+          - error_tag @api_key, :daily_limit
+          %p.edit-field-hint= t('api_keys.form.daily_request_limit_admin')
+        - else
+          %label.edit-field-label
+            = t('api_keys.form.daily_request_limit')
           - default_daily_limit = @api_key.class::DEFAULT_DAILY_LIMIT
-          %p.help-block= t 'api_keys.form.daily_request_limit_user', default_daily_limit: default_daily_limit
-      - if @api_key.new_record?
-        .control-group
-          %label.checkbox.no_padding#request_limit
-            = f.check_box :terms
-            != t 'api_keys.form.agree_to_terms', terms_link: terms_link, terms_2_link: terms_2_link
-          - error_tag @api_key, :terms
-      .actions
-        %input.btn.btn-primary.btn-small{ type: 'submit', value: t(:save_changes) }
-        - unless @api_key.new_record?
-          %a.btn.btn-small.btn-danger{ href: account_api_key_path(@account, @api_key),
-                                       data: { method: :delete, confirm: t('api_keys.form.delete_confirm') },
-                                       style: 'padding: 6px 6px 5px 6px;' }
-            %i.icon-trash= t 'api_keys.form.delete'
+          %p.edit-field-hint= t('api_keys.form.daily_request_limit_user', default_daily_limit: default_daily_limit)
 
-.clearfix
-%h4.margin_bottom_0
-  %span.soft= t :about
-  = t :api_keys_title
-.col-md-5.margin_left_30
-  %ul
-    %li!= t('api_keys.help_1', terms_link: terms_link, terms_2_link: terms_2_link)
-    %li= t('api_keys.help_4')
-    %li= t('api_keys.help_5')
-.col-md-5.margin_left_20
-  %ul
-    %li= t('api_keys.help_6')
-    %li!= t('api_keys.help_7', contacts_link: contacts_link)
+      - if @api_key.new_record?
+        .edit-field-group
+          %label.api-key-terms-label#request_limit
+            = f.check_box :terms
+            %span!= t('api_keys.form.agree_to_terms', terms_link: terms_link, terms_2_link: terms_2_link)
+          - error_tag @api_key, :terms
+
+      .edit-form-actions
+        = submit_tag t(:save_changes), class: 'edit-save-btn'
+        - unless @api_key.new_record?
+          = link_to account_api_key_path(@account, @api_key), class: 'edit-delete-btn',
+                    data: { method: :delete, confirm: t('api_keys.form.delete_confirm') } do
+            %i.fa.fa-trash
+            = t('api_keys.form.delete')
+
+  .about-account-basics-card
+    .card-header
+      .card-header-left
+        .card-header-icon
+          %i.fa.fa-info-circle
+        .card-header-text
+          %h4.card-title= t(:about) + ' ' + t(:api_keys_title)
+          %p.card-subtitle= t('api_keys.request_new')
+      %button.expand-toggle{ type: 'button', 'aria-label' => 'Toggle about section' }
+        %i.fa.fa-chevron-down
+
+    .card-content
+      .tips-grid
+        .tip-item
+          .tip-icon
+            %i.fa.fa-file-text-o
+          .tip-body
+            %p.tip-text!= t('api_keys.help_1', terms_link: terms_link, terms_2_link: terms_2_link)
+
+        .tip-item
+          .tip-icon
+            %i.fa.fa-bar-chart
+          .tip-body
+            %p.tip-text= t('api_keys.help_4')
+
+        .tip-item
+          .tip-icon
+            %i.fa.fa-check-square-o
+          .tip-body
+            %p.tip-text= t('api_keys.help_5')
+
+        .tip-item
+          .tip-icon
+            %i.fa.fa-unlock-alt
+          .tip-body
+            %p.tip-text= t('api_keys.help_6')
+
+        .tip-item
+          .tip-icon
+            %i.fa.fa-envelope-o
+          .tip-body
+            %p.tip-text!= t('api_keys.help_7', contacts_link: contacts_link)
+

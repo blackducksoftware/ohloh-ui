@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# rubocop:disable Style/OneClassPerFile
+
 module WillPaginate
   module ActionView
     def will_paginate(collection = nil, options = {})
@@ -20,8 +22,6 @@ module BootstrapPagination
   end
 end
 
-# frozen_string_literal: true
-
 # Add pagination capabilities to Array objects
 class Array
   # Simple paginate method for Array to make it compatible with will_paginate
@@ -35,3 +35,4 @@ class Array
     end
   end
 end
+# rubocop:enable Style/OneClassPerFile

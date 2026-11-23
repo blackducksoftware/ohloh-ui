@@ -1,22 +1,21 @@
-%fieldset
+%fieldset.margin_left_10.link-form
   - if @category_name
-    %h2
+    %h3
       = @category_name
       = t('links.title')
-  .control-group
-    %label.control-label.required
-      = t('title')
+  .control-group.margin_top_10
+    %label.control-label.required{ for: 'link_title' }= t('title')
     .controls
-      = f.text_field :title, class: 'col-md-6'
+      = f.text_field :title, class: 'form-control'
       - error_tag @link, :title
       %p.help-block= t('help.max_characters', number: 60)
 
   .control-group
-    %label.control-label.required= t('links.title')
+    %label.control-label.required{ for: 'link_url' }= t('links.title')
     - read_only = (@link.new_record? ? false : true)
     - title_text = (@link.new_record? ? '' : t('.url_edit'))
     .controls
-      = f.text_field :url, class: 'col-md-6', readonly: read_only, rel: 'tooltip', title: title_text
+      = f.text_field :url, class: 'form-control', readonly: read_only, rel: 'tooltip', title: title_text
       - error_tag @link, :url
       %p.help-block= t('.full_url')
 
@@ -24,13 +23,15 @@
       = f.hidden_field :link_category_id, value: params[:category_id] || @link.link_category_id
     - else
       .control-group
-        %label.control-label.required= t('category')
+        %label.control-label.required{ for: 'link_link_category_id' }= t('category')
         .controls
-          = f.select :link_category_id, options_for_select(@categories)
+          = f.select :link_category_id, options_for_select(@categories), {}, class: 'form-control'
 
   .actions
-    %input.btn.btn-primary.btn-xs{ type: 'submit',
+    %input.btn.btn-primary.btn-md{ type: 'submit',
       value: @link.new_record? ? t('save_model', model: t('links.title')) : t('save_changes') }
     - unless @link.new_record?
-      = link_to bootstrap_icon('icon-trash', t('.remove')), project_link_path(@project, @link), method: :delete,
-          data: { confirm: t(:are_you_sure) }, class: 'btn btn-xs btn-danger'
+      = link_to project_link_path(@project, @link), method: :delete,
+          data: { confirm: t(:are_you_sure) }, class: 'btn btn-md btn-danger' do
+        %i.icon-trash
+        = t('.remove')

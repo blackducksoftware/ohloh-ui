@@ -65,7 +65,7 @@ class HomeHelperTest < ActionView::TestCase
     it 'must return a project link when argument is not an account' do
       project = create(:project)
       name = Faker::Name.name
-      stubs(:capture_haml).returns(name)
+      stubs(:capture).returns(name)
       link = link_to(name, project_path(project), class: 'top_ten_icon')
       _(set_link(project)).must_equal link
     end

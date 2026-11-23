@@ -1,18 +1,32 @@
 - content_for(:html_title) { project_pages_title t('.page_title') }
 
-%h2.pull-left
-  = link_to t(:settings), settings_parent_path(@parent)
-  &#58;
-  = link_to t(:managers_link_name), parent_managers_path(@parent)
-  &#58;
-  = t(:edit)
-= project_analysis_timestamp(@project)
+#managers-page
+  .settings-page-header
+    .settings-page-header-row
+      .settings-page-icon
+        %i.fa.fa-shield
+      %h2.settings-page-h2
+        = link_to t(:settings), settings_parent_path(@parent)
+        %span.account-basics-sep :
+        = link_to t(:managers_link_name), parent_managers_path(@parent)
+        %span.account-basics-sep :
+        = t(:edit)
+    %p.settings-page-description= t('.page_title')
 
-.clear
-.col-md-8
-  .well
-    = form_for(@manage, url: parent_manager_path(@parent, @manage), html: { method: :put }) do |form|
-      = render partial: 'form', locals: { form: form }
+  .project-edit-layout
+    .project-edit-main
+      .edit-section
+        .edit-section-header
+          .edit-section-icon
+            %i.fa.fa-pencil
+          %h3.edit-section-title= t(:edit) + ' ' + t(:managers_link_name)
 
-.clear
-= render partial: 'about'
+        - unless @manage.errors.empty?
+          .manager-form-errors
+            = @manage.errors.full_messages.reject { |k| k =~ /^ssh.public.key/i || k =~ /^message/i }.join('. ')
+
+        = form_for(@manage, url: parent_manager_path(@parent, @manage), html: { method: :put, class: 'manager-form-body' }) do |form|
+          = render partial: 'form', locals: { form: form }
+
+    .project-edit-aside
+      = render partial: 'about'

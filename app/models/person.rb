@@ -31,7 +31,6 @@ class Person < ApplicationRecord
   alias_attribute :person_name, :effective_name
 
   def searchable_factor
-    # rubocop:disable Style/CollectionQuerying
     return 0.0 if kudo_position.nil? || Person.count == 1
 
     num = (Person.count - kudo_position).to_f
@@ -41,7 +40,6 @@ class Person < ApplicationRecord
     num /= 10 unless account_id
 
     num / denum
-    # rubocop:enable Style/CollectionQuerying
   end
 
   class << self
@@ -65,7 +63,7 @@ class Person < ApplicationRecord
     def rebuild_by_project_id(project_id)
       return if project_id.blank?
 
-      Person..where(project_id: project_id).delete_all
+      Person.where(project_id: project_id).delete_all
       connection.execute("insert into people (select * from people_view where project_id = #{sanitize_sql project_id})")
     end
 
@@ -88,10 +86,13 @@ class Person < ApplicationRecord
     end
 
     def find_by_name_or_email(opts)
-      return tsearch(opts[:q]) unless opts[:find_by].eql?('email')
+      if opts[:find_by].eql?('email')
+        return where("name_facts.email_address_ids && (#{EmailAddress.search_sql(opts[:q])})")
+               .joins(:contributor_fact)
+      end
 
-      where("name_facts.email_address_ids && (#{EmailAddress.search_sql(opts[:q])})")
-        .joins(:contributor_fact)
+      like_q = "%#{sanitize_sql_like(opts[:q])}%"
+      where("(#{tsearch_where_clause(opts[:q])}) OR lower(effective_name) LIKE lower(:q)", q: like_q)
     end
 
     private
@@ -111,7 +112,7 @@ class Person < ApplicationRecord
     end
   end
 
-  # rubocop:disable Metrics/AbcSize
+  # rubocop:disable-next Metrics/AbcSize
   def searchable_vector
     # this function allow us to assign weight value to vector column. 'a' has highest weigtage followed by b,c and d
     return { a: effective_name } if account_id.blank?
@@ -123,7 +124,6 @@ class Person < ApplicationRecord
       d: "#{account.markup.try(:formatted)} #{projects_name}"
     }
   end
-  # rubocop:enable Metrics/AbcSize
 
   private
 

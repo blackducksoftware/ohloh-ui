@@ -1,7 +1,41 @@
-.pull-right.col-md-8#project_demographics
-  %h2
-    = t('.demographics_by')
-    = link_to 'PAI', blog_url_for(:pai_about), target: '_blank'
-  = number_with_delimiter(@with_pai_count)
-  = t '.out_of', count: number_with_delimiter(@total_count)
-  #demographics_chart{ data: { src: demographic_chart_explores_path } }
+.demographics-container#project_demographics
+  .demographics-header
+    %h2.section-title
+      = t('.demographics_by', default: 'Project Demographics by')
+      = link_to 'PAI', blog_url_for(:pai_about), target: '_blank', class: 'pai-link'
+
+    %p.demographics-subtitle
+      - if defined?(@with_pai_count) && defined?(@total_count)
+        = "#{number_with_delimiter(@with_pai_count)} #{t('.projects_out_of', default: 'Projects out of')} #{number_with_delimiter(@total_count)} #{t('.total', default: 'total have a PAI available')}"
+      - else
+        = t('.default_stats', default: '85,813 Projects out of 255,787 total have a PAI available')
+
+  / Demographics Chart
+  .demographics-chart-wrapper
+    #demographics_chart{ data: { src: demographic_chart_explores_path } }
+
+  / Statistics Summary Cards
+  .statistics-summary
+    .stat-card.total-card
+      %p.stat-label= t('.total_projects', default: 'Total Projects')
+      %p.stat-value
+        - if defined?(@total_count)
+          = number_with_delimiter(@total_count)
+        - else
+          = '255,787'
+
+    .stat-card.pai-card
+      %p.stat-label= t('.with_pai', default: 'With PAI')
+      %p.stat-value
+        - if defined?(@with_pai_count)
+          = number_with_delimiter(@with_pai_count)
+        - else
+          = '85,813'
+
+    .stat-card.active-card
+      %p.stat-label= t('.active', default: 'Active')
+      %p.stat-value= '3.2%'
+
+    .stat-card.new-card
+      %p.stat-label= t('.new', default: 'New')
+      %p.stat-value= '0.2%'

@@ -2,21 +2,24 @@
   locals = { widget: widget, ref: 'sample' }
   widget_html = render(template: "#{controller_name}/#{widget.name.underscore}", locals: locals)
 
-.widget_list
-  .row{ style: 'margin-left: -15px' }
-    .col-md-10
-      %h3.inset_top.no_padding_top
-        = widget.short_nice_name
-    .col-md-5.col
-      = widget_html
-    .col-md-6.col
-      %h6.no_margin_top HTML
-      %p= t('.embed')
-      %pre.prettyprint
-        = CGI.unescapeHTML(CGI.escapeHTML(widget_html))
-      .clearfix.margin_top_40
-      %h6= t('.bbc_code')
-      %p
-        %span.soft= t('.bbc')
-      %pre.prettyprint
-        = h render(template: "#{controller_name}/#{widget.name.underscore}", locals: locals.merge(bbc: true))
+.widget-card
+  .widget-card-header
+    .widget-card-icon
+      %i.fa.fa-code
+    %h3.widget-card-title= widget.short_nice_name
+
+  .widget-card-body
+    .widget-preview
+      .widget-preview-inner
+        = widget_html
+
+    .widget-embed-codes
+      .widget-code-block
+        %h5.widget-code-label HTML
+        %p.widget-code-desc= t('.embed')
+        %pre.widget-pre= CGI.unescapeHTML(CGI.escapeHTML(widget_html))
+
+      .widget-code-block
+        %h5.widget-code-label= t('.bbc_code')
+        %p.widget-code-desc= t('.bbc')
+        %pre.widget-pre= h render(template: "#{controller_name}/#{widget.name.underscore}", locals: locals.merge(bbc: true))

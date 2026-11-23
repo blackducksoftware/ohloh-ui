@@ -73,7 +73,7 @@ StackShow = {
     if (stack_entry == null) {
       return;
     }
-    var list = $(".stack_item_list > table")
+    var list = $(".stack_item_list > table, .stack-projects-section table.stack_list")
 
     if (json.newly_added == true){
       list.prepend(stack_entry);
@@ -84,7 +84,7 @@ StackShow = {
     new_entry.slideDown(1000, function() {
       RestInPlace.init();
     });
-    $(".empty_stack_text").slideUp();
+    $(".empty_stack_text, .stacks-empty-state").slideUp();
     StackShow.update_previews();
   },
 
@@ -245,9 +245,9 @@ StackShow = {
     if (json.updated_count) {
       $(".listing_result").html(json.updated_count);
       if (json.updated_count == 0) {
-        $("#empty_stack_text").fadeIn("slow");
+        $("#empty_stack_text, .stacks-empty-state").fadeIn("slow");
       } else {
-        $("#empty_stack_text").fadeOut("slow");
+        $("#empty_stack_text, .stacks-empty-state").fadeOut("slow");
       }
     }
   },
@@ -257,10 +257,8 @@ StackShow = {
     $.getJSON('/stacks/'+StackShow.stack_id()+'/builder.json', function(response) {
       var show_div = $("a#show").parent().parent();
       $("a#show").siblings('.busy').remove();
-      $(".recomendations").css('height', $("recommendations").height);
       show_div.hide();
       show_div.siblings('.clear').show();
-      $(".recomendations").css('height', 'auto');
 
       $(".recommendations .controls").show();
       $(".recommendations a.clear_ignores").show();
@@ -275,10 +273,7 @@ StackShow = {
     var hide_div = $("a#hide").parent().parent();
     $(".recommendations .controls").hide();
     $(".recommendations .list ul").slideUp().html("");
-
-    //$(".recomendations").css('height', $("recommendations").height);
     hide_div.hide();
     hide_div.siblings('.clear').show();
-    $(".recomendations").css('height', 'auto');
   }
 }

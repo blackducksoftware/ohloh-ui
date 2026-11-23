@@ -49,7 +49,7 @@ class TopicsControllerTest < ActionController::TestCase
 
     assert_response :success
     _(assigns(:posts).length).must_equal TopicDecorator::PER_PAGE
-    assert_select '.posts', TopicDecorator::PER_PAGE
+    assert_select '.post-card', TopicDecorator::PER_PAGE
   end
 
   it 'show responds to atom format' do
@@ -217,7 +217,7 @@ class TopicsControllerTest < ActionController::TestCase
     get :show, params: { id: topic.id }
 
     assert_response :success
-    assert_select '.posts', TopicDecorator::PER_PAGE
+    assert_select '.post-card', TopicDecorator::PER_PAGE
   end
 
   it 'user show responds to atom format' do
@@ -296,7 +296,7 @@ class TopicsControllerTest < ActionController::TestCase
     get :show, params: { id: topic.id }
 
     assert_response :success
-    assert_select '.posts', TopicDecorator::PER_PAGE
+    assert_select '.post-card', TopicDecorator::PER_PAGE
   end
 
   it 'admin edit' do

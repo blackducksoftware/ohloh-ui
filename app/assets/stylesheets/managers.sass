@@ -1,0 +1,243 @@
+// ── Managers Page ─────────────────────────────────────────────────────────────
+
+#managers-page
+  @media (max-width: 639px)
+    padding: 0 16px 24px
+
+  .settings-page-header
+    margin-top: 16px
+
+  // Add manager button — matches edit-save-btn but compact
+  .managers-add-btn
+    margin-left: auto
+    display: inline-flex
+    align-items: center
+    gap: 6px
+    font-size: 13px !important
+    padding: 6px 14px !important
+
+    .fa
+      font-size: 11px
+
+  // Amber icon variant for help sections
+  .edit-section-icon--amber
+    background: linear-gradient(135deg, #f59e0b, #d97706) !important
+    box-shadow: 0 2px 6px rgba(217, 119, 6, 0.3) !important
+
+  // ── Manager list ────────────────────────────────────────────────────────────
+  .managers-list
+    display: flex
+    flex-direction: column
+    gap: 0
+
+  // ── Individual manager card ──────────────────────────────────────────────────
+  .header_flex_container
+    display: flex
+    align-items: flex-start
+    gap: 16px
+    padding: 16px 0
+    border-bottom: 1px solid #f3f4f6
+
+    &:last-child
+      border-bottom: none
+      padding-bottom: 4px
+
+    html.dark &
+      border-bottom-color: rgba(255, 255, 255, 0.06)
+
+  .account_icon
+    flex-shrink: 0
+
+    img, .gravatar
+      width: 52px
+      height: 52px
+      border-radius: 10px
+      object-fit: cover
+
+  .manage_content
+    flex: 1
+    min-width: 0
+
+    h3
+      font-size: 15px !important
+      font-weight: 600 !important
+      color: #111827 !important
+      margin: 0 0 4px !important
+
+      html.dark &
+        color: #f3f4f6 !important
+
+      a
+        color: #5A2A82 !important
+        text-decoration: none
+        &:hover
+          text-decoration: underline
+        html.dark &
+          color: #c084fc !important
+
+    .position
+      margin-bottom: 4px
+      .title, .at, .organization
+        font-size: 13px
+        color: #6b7280
+        html.dark &
+          color: #9ca3af
+
+    .soft
+      font-size: 13px
+      color: #6b7280
+      margin: 0 0 8px
+      html.dark &
+        color: #9ca3af
+
+  .manage-pending
+    display: inline-block
+    margin-left: 8px
+    font-size: 11px
+    font-weight: 600
+    color: #d97706
+    background: rgba(217, 119, 6, 0.1)
+    border: 1px solid rgba(217, 119, 6, 0.3)
+    border-radius: 20px
+    padding: 1px 8px
+    vertical-align: middle
+
+    html.dark &
+      color: #fbbf24
+      background: rgba(251, 191, 36, 0.1)
+      border-color: rgba(251, 191, 36, 0.3)
+
+  // ── Help section ─────────────────────────────────────────────────────────────
+  .managers-help-section
+    margin-top: 20px
+
+  .managers-help-subhead
+    font-size: 14px !important
+    font-weight: 600 !important
+    color: #374151 !important
+    margin: 16px 0 6px !important
+
+    html.dark &
+      color: #d1d5db !important
+
+  .managers-help-text
+    font-size: 14px
+    color: #4b5563
+    line-height: 1.6
+    margin-bottom: 8px
+
+    html.dark &
+      color: #9ca3af
+
+  // ── About card footer link ────────────────────────────────────────────────────
+  .managers-learn-more
+    margin-top: 16px
+    padding-top: 12px
+    border-top: 1px solid #f3f4f6
+    font-size: 13px
+
+    html.dark &
+      border-top-color: rgba(255, 255, 255, 0.08)
+
+    a
+      color: #5A2A82
+      text-decoration: none
+      font-weight: 500
+      &:hover
+        text-decoration: underline
+      html.dark &
+        color: #c084fc
+
+// ── Manager form (new/edit) ────────────────────────────────────────────────────
+
+#managers-page
+  // Scope textarea to this page
+  textarea.manager-textarea
+    display: block !important
+    width: 100% !important
+    padding: 12px 16px !important
+    border: 1px solid #e5e7eb !important
+    border-radius: 12px !important
+    font-size: 14px !important
+    background: #f9fafb !important
+    color: #111827 !important
+    line-height: 1.6 !important
+    resize: vertical
+    min-height: 160px
+    box-sizing: border-box !important
+    outline: none !important
+    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s
+
+    &:focus, &:focus-visible
+      border-color: #5A2A82 !important
+      box-shadow: 0 0 0 2px rgba(90, 42, 130, 0.25) !important
+      background: #ffffff !important
+      outline: none !important
+
+    html.dark &
+      background: #0d1117 !important
+      border-color: rgba(255, 255, 255, 0.15) !important
+      color: #ffffff !important
+
+      &:focus, &:focus-visible
+        border-color: #c084fc !important
+        box-shadow: 0 0 0 2px rgba(90, 42, 130, 0.25) !important
+        background: #0d1117 !important
+
+  .manager-form-hints
+    margin-top: 8px
+    display: flex
+    flex-direction: column
+    gap: 2px
+
+  .manager-form-promise
+    font-size: 13px
+    color: #5A2A82
+    font-weight: 500
+    margin-top: 12px
+    padding: 10px 14px
+    background: rgba(90, 42, 130, 0.06)
+    border-radius: 8px
+    border-left: 3px solid #5A2A82
+
+    html.dark &
+      color: #c084fc
+      background: rgba(192, 132, 252, 0.08)
+      border-left-color: #c084fc
+
+  .manager-cancel-btn
+    color: #374151 !important
+    background: #f3f4f6 !important
+    border: 1px solid #d1d5db !important
+    border-radius: 8px
+    padding: 9px 18px
+    font-size: 14px
+    font-weight: 500
+    text-decoration: none
+    transition: background 0.15s, color 0.15s
+    &:hover
+      background: #e5e7eb !important
+      color: #111827 !important
+      text-decoration: none
+
+    html.dark &
+      color: #9ca3af !important
+      background: rgba(255, 255, 255, 0.06) !important
+      border-color: #374151 !important
+      &:hover
+        background: rgba(255, 255, 255, 0.1) !important
+        color: #d1d5db !important
+
+  .manager-form-errors
+    background: #fef2f2
+    border: 1px solid #fecaca
+    border-radius: 8px
+    color: #b91c1c
+    font-size: 13px
+    padding: 10px 14px
+    margin-bottom: 20px
+
+    html.dark &
+      background: rgba(185, 28, 28, 0.1)
+      border-color: rgba(185, 28, 28, 0.3)
+      color: #fca5a5

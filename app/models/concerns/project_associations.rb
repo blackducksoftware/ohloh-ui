@@ -62,7 +62,7 @@ module ProjectAssociations
     def rss_articles
       RssArticle.joins(rss_feed: :rss_subscriptions)
                 .where("rss_subscriptions.project_id = #{id} and rss_subscriptions.deleted = false")
-                .order('time DESC')
+                .order(time: :desc)
     end
 
     def contributions_within_timespan(options)

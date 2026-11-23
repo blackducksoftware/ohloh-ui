@@ -9,7 +9,7 @@
     - @similar_stacks.each do |similar_stack|
       - account = similar_stack[:stack].account
 
-      .well.col-md-5{ style: 'margin: 0 0 20px 20px;' }
+      .oh-card.oh-card--hoverable.col-md-5{ style: 'margin: 0 0 20px 20px;' }
         .account.clear
           .avtr= avatar_for account, size: 60
           .a_left{ style: 'margin-left: 80px' }

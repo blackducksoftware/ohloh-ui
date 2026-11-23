@@ -1,73 +1,110 @@
-:ruby
-  content_for(:html_title) { t('.page_title', who: @stack.account.name, what: @stack.title) }
-  editable = current_user && (@stack.account == current_user)
-  page_context[:select_top_menu_nav] = 'select_people'
-  page_context[:select_footer_nav] = :stacks
+- content_for(:html_title) { t('.page_title', who: @stack.account.name, what: @stack.title) }
+- editable = current_user && (@stack.account == current_user)
+- page_context[:select_top_menu_nav] = 'select_people'
+- page_context[:select_footer_nav] = :stacks
 
-.row{ id: "stack_#{@stack.id}" }
-  .col-md-9
-    %h1{ style: 'float: left;' }
-      %span{ class: editable ? 'rest_in_place' : '', attribute: 'title', col: 20, max_length: 20, rows: 1 }
-        = @stack.title
-      - stack_edit_in_place if editable
-    - if editable
-      = icon_button(stack_path(@stack), text: t('.remove'), size: 'mini', type: 'danger', icon: 'trash',
-        data: { confirm: t('.delete_confirm') }, method: :delete,
-        style: 'float: right; display: block; margin-top: 10px;')
-.clear
-.row{ id: "stack_#{@stack.id}" }
-  .col-md-9
-    %p.description.nomargin
-      %span{ class: editable ? 'rest_in_place' : '', attribute: 'description', col: 35, max_length: 120, rows: 3 }
+#stack-show
+  .settings-page-header
+    .settings-page-header-row
+      .settings-page-icon
+        %i.fa.fa-clone
+      %h2.settings-page-h2
+        - if editable
+          %span.rest_in_place{ attribute: 'title', col: 20, max_length: 20, rows: 1 }= @stack.title
+          - stack_edit_in_place
+        - else
+          = @stack.title
+      - if editable
+        = link_to stack_path(@stack), class: 'edit-delete-btn edit-delete-btn--sm',
+                  data: { method: :delete, confirm: t('.delete_confirm') } do
+          %i.fa.fa-trash
+          = ' ' + t('.remove')
+    %p.settings-page-description
+      - if editable
+        %span.rest_in_place{ attribute: 'description', col: 35, max_length: 120, rows: 3 }
+          = @stack.description.present? ? @stack.description : t('.stack_desc', name: @stack.name)
+        - stack_edit_in_place
+      - else
         = @stack.description.present? ? @stack.description : t('.stack_desc', name: @stack.name)
-      - stack_edit_in_place if editable
-    - if editable
-      - show_them = @stack.project_count == 0
-      .padding_one_top
-        .recommendations
-          .clear{ style: ('display:none' if show_them) }
-            %h4.soft.nomargin.show
-              %a.link_no_underline#show= t('.show_recommends')
-          .clear#recommendations{ style: ('display:none' unless show_them) }
-            %h4.soft{ style: 'margin-bottom: 0.3em;' }
-              = t('.recommends_for_this_stack')
-              &nbsp;
-              %a.command#hide= t('.hide')
-          .list
-            %ul.stack_sm_suggestions
-              - if show_them
-                = render partial: 'small_suggestion', collection: @stack.suggest_projects(5)
-          .controls{ style: ('display:none' unless show_them) }
-            %a.btn.btn-mini.command#skip_all= t('.skip_all')
-            %a.command.btn.btn-mini#more{ style: 'display:none' }= t('.show_me_more')
-            %a.btn.btn-mini.clear_ignores.command{ title: t('.unignore_all') }= t('.show_all_projects')
-      .clear &nbsp;
-      = form_for StackEntry.new, as: :stack_entry, url: stack_stack_entries_path(@stack),
-                                 html: { class: 'form-inline', id: 'add_project_form' } do |f|
-        - source_url = "/accounts/#{current_user.id}/autocompletes/#{@stack.id}/projects_for_stack"
-        = f.text_field :project_name, size: 20, class: 'autocompletable',
-                                      data: { source: source_url, select: 'submitForm' }
-        %input.btn.btn-small.btn-primary{ type: 'submit', id: 'new_stack_entry', value: 'Add Project to Stack' }
-        = f.hidden_field :stack_id, value: @stack.id
-    .stack_item_list
-      %table.table.table-bordered.stack_list{ id: "stack_list_#{@stack.id}" }
-        = render partial: 'stack_entry', collection: @stack_entries, locals: { editable: editable }
-      - if @stack_entries.blank?
-        #empty_stack_text
-          - if editable
-            %p= t('.recommented_projects_desc')
-            .margin_left_30
+
+  .stack-show-layout
+    .stack-show-main
+
+      - if editable
+        .edit-section.stack-recommendations-section
+          .edit-section-header
+            .edit-section-icon
+              %i.fa.fa-lightbulb-o
+            %h3.edit-section-title= t('.recommends_for_this_stack')
+
+          - show_them = @stack.project_count == 0
+          .recommendations
+            .clear{ style: ('display:none' if show_them) }
+              %span.stack-toggle-inner
+                %a.stack-toggle-link#show{ href: 'javascript:void(0)', role: 'button' }
+                  %i.fa.fa-chevron-down
+                  = t('.show_recommends')
+            .clear#recommendations{ style: ('display:none' unless show_them) }
+              %span.stack-toggle-inner
+                %a.stack-toggle-link#hide{ href: 'javascript:void(0)', role: 'button', 'aria-label' => t('.recommends_for_this_stack') }
+                  %i.fa.fa-chevron-up
+                  = t('.hide', default: '[hide]')
+            .list
+              %ul.stack_sm_suggestions
+                - if show_them
+                  = render partial: 'small_suggestion', collection: @stack.suggest_projects(5)
+            .controls{ style: ('display:none' unless show_them) }
+              %a.btn.btn-mini.btn-primary.command#skip_all{ href: 'javascript:void(0)', role: 'button' }= t('.skip_all')
+              %a.command.btn.btn-mini.btn-primary#more{ style: 'display:none', href: 'javascript:void(0)', role: 'button' }= t('.show_me_more')
+              %a.btn.btn-mini.btn-primary.clear_ignores.command{ title: t('.unignore_all'), href: 'javascript:void(0)', role: 'button' }= t('.show_all_projects')
+
+        .edit-section.stack-add-project-section
+          .edit-section-header
+            .edit-section-icon
+              %i.fa.fa-plus-circle
+            %h3.edit-section-title Add Project to Stack
+
+          = form_for StackEntry.new, as: :stack_entry, url: stack_stack_entries_path(@stack),
+                                     html: { class: 'stack-add-form autocomplete-submit', id: 'add_project_form' } do |f|
+            .edit-field-group
+              = f.label :project_name, 'Add Project to Stack', class: 'edit-field-label'
+              .edit-field-input-wrapper
+                %i.fa.fa-search.edit-field-icon
+                = f.text_field :project_name, class: 'edit-field-input autocompletable',
+                                              placeholder: 'Search for a project…',
+                                              data: { source: "/accounts/#{current_user.id}/autocompletes/#{@stack.id}/projects_for_stack", select: 'submitForm' }
+            = f.hidden_field :stack_id, value: @stack.id
+            = submit_tag 'Add Project to Stack', id: 'new_stack_entry', class: 'edit-save-btn edit-save-btn--sm'
+
+      .edit-section.stack-projects-section
+        .edit-section-header
+          .edit-section-icon
+            %i.fa.fa-cubes
+          %h3.edit-section-title Projects
+
+        %table.stack-entries-table.stack_list{ id: "stack_list_#{@stack.id}" }
+          = render partial: 'stack_entry', collection: @stack_entries, locals: { editable: editable }
+
+        - if @stack_entries.blank?
+          .stacks-empty-state
+            %i.fa.fa-cubes.stacks-empty-icon{ 'aria-hidden' => 'true' }
+            - if editable
+              %p.stacks-empty-text= t('.recommented_projects_desc')
               = render 'sample_stacks', stack: @stack
-          - else
-            %p= t('.empty_stack_msg')
-    = will_paginate @stack_entries
-  .col-md-3
-    .well
-      .inset.stack_definition
-        %h5.soft= t('.what_is_a_stack')
-        - lamp_link = link_to('LAMP', 'http://wikipedia.org/wiki/LAMP_(software_bundle)')
-        %p!= t('.stack_explanation', link: lamp_link)
-        %p
+            - else
+              %p.stacks-empty-text= t('.empty_stack_msg')
+
+        = render 'shared/modern_pagination', collection: @stack_entries
+
+    .stack-show-sidebar
+      .edit-section.stacks-info-card
+        .edit-section-header.margin_top_10
+          .edit-section-icon.margin_left_15
+            %i.fa.fa-info-circle
+          %h3.edit-section-title= t('.what_is_a_stack')
+        - lamp_link = link_to('LAMP', 'http://wikipedia.org/wiki/LAMP_(software_bundle)', target: '_blank', rel: 'noopener noreferrer')
+        %p.stacks-info-text!= t('.stack_explanation', link: lamp_link)
+        %p.stacks-info-text
           - if @stack.project_count == 0
             = t('.stack_explanation_empty')
           - else
@@ -77,3 +114,4 @@
 
       = render 'stack_widgets/promo', href: stack_widgets_path(@stack),
         widget_params: { widget: StackWidget.new(stack_id: @stack.id, projects_shown: 8), stack: @stack, width: 98 }
+

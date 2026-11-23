@@ -12,6 +12,7 @@ en:
       confirm_text: 'Are you sure you want to delete this RSS feed?'
       page_title: "The %{name} Open Source Project on Open Hub : News Feeds Page"
       remove: 'Remove'
+      actions: 'Actions'
       no_feed_exists: 'No news feeds exists'
       explain: 'Subscribed to RSS feed %{url}'
     new:
@@ -20,6 +21,7 @@ en:
       news_feed: 'News Feed'
       new: ': New'
       about: 'About News Feeds'
+      about_subtitle: 'News Feeds'
       about_1: 'Open Hub supports Atom, RSS 0.9, RSS 1.0, and RSS 2.0 feeds.'
       about_2: 'Feeds must be "live" (e.g. respond to a web request) in order to be added'
     fields:

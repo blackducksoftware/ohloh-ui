@@ -1,30 +1,22 @@
-.searchable.project{ id: "project_#{project.id}" }
-  .row
-    .col-md-12
-      %h3= link_to h(truncate_project_name(project.name, link: true)), project_path(project), title: project.name
-  .row
-    .col-md-2
-      = link_to project_path(project)
-    .col-md-10.last
-      %p.description= expander(project.description, 300, 350)
-  .row
-    .col-md-12.statsContainer
-      .stars
-        != rating_stars('average_rating_stars', project.rating_average || 0, mini: true)
-      &nbsp;
+.duplicate-project-detail{ id: "project_#{project.id}" }
+  %h3.duplicate-project-detail-name= link_to h(truncate_project_name(project.name, link: true)), project_path(project), title: project.name
+  - if project.description.present?
+    %p.duplicate-project-detail-desc= expander(project.description, 300, 350)
+  .duplicate-project-detail-stats
+    .duplicate-project-detail-stat
+      != rating_stars('average_rating_stars', project.rating_average || 0, mini: true)
       = link_to pluralize_with_delimiter(project.reviews.count, 'review'), project_reviews_path(project)
-      %span.seperator &nbsp;|&nbsp;
-      = link_to pluralize_with_delimiter(project.user_count, 'user'), '#'
-      - unless project.best_analysis.empty?
-        %span.seperator &nbsp;|&nbsp;
+    .duplicate-project-detail-stat
+      %i.fa.fa-users
+      = pluralize_with_delimiter(project.user_count, 'user')
+    - unless project.best_analysis.empty?
+      .duplicate-project-detail-stat
+        %i.fa.fa-code
         = link_to t('.lines_of_code', lines: pluralize_with_delimiter(project.best_analysis.code_total, 'line')),
         project_analysis_path(project, 'latest')
-  .row
-    .col-md-12.tags
-      - unless project.tag_list.empty?
-        = tag_icon_link(project)
-        = tag_links(project.tag_list.split, 12)
-        - if project.tag_list.split.size > 12
-          = link_to "#{(project.tag_list.split.size - 12)}#{t('.more')}", project_tags_path(project)
-  .row
-    .col-md-12.last &nbsp;
+  - unless project.tag_list.empty?
+    .duplicate-project-detail-tags
+      %i.fa.fa-tags
+      = tag_links(project.tag_list.split, 8)
+      - if project.tag_list.split.size > 8
+        = link_to "#{(project.tag_list.split.size - 8)}#{t('.more')}", project_tags_path(project), class: 'duplicate-tag-more'

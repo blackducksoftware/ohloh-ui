@@ -18,7 +18,7 @@ class Analysis::AgeHistogram
               .where(oldest_code_set_time_not_null)
               .where(in_last_two_months)
               .group('logged_date')
-              .order('logged_date')
+              .order(:logged_date)
     end
 
     def projects

@@ -6,17 +6,41 @@
 %meta{ name: 'ROBOTS', content: 'NOINDEX, NOFOLLOW' }
 
 #edits_account
-  %h2.float_left
-    = link_to t(:settings), settings_account_path(@parent)
-    &nbsp;:&nbsp;#{t('.openhub_edit_history')}
+  .settings-page-header
+    .settings-page-header-row
+      .settings-page-icon
+        %i.fa.fa-history
+      %h2.settings-page-h2
+        = link_to t(:settings), settings_account_path(@parent)
+        %span.account-basics-sep :
+        = t('.openhub_edit_history')
 
   = render partial: 'index'
 
-  .col-md-6
-    %h4.margin_bottom_0
-      .soft.inline= t(:about)
-      = t('.edit_history')
-    %ul.margin_left_50
-      %li= t('.help_1')
-      %li= t('.help_2')
-      %li= t('.help_3')
+  .about-account-basics-card.margin_top_15
+    .card-header
+      .card-header-left
+        .card-header-icon
+          %i.fa.fa-info-circle
+        .card-header-text
+          %h4.card-title= t(:about) + ' ' + t('.edit_history')
+          %p.card-subtitle= t('.openhub_edit_history')
+      %button.expand-toggle{ type: 'button', 'aria-label' => 'Toggle about section' }
+        %i.fa.fa-chevron-down
+    .card-content
+      .tips-grid
+        .tip-item
+          .tip-icon
+            %i.fa.fa-list-alt
+          .tip-body
+            %p.tip-text= t('.help_1')
+        .tip-item
+          .tip-icon
+            %i.fa.fa-unlock-alt
+          .tip-body
+            %p.tip-text= t('.help_2')
+        .tip-item
+          .tip-icon
+            %i.fa.fa-undo
+          .tip-body
+            %p.tip-text= t('.help_3')

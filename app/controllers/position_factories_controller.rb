@@ -48,7 +48,7 @@ class PositionFactoriesController < ApplicationController
     redirect_to project_contributors_path(@project)
   end
 
-  # rubocop:disable Metrics/AbcSize
+  # rubocop:disable-next Metrics/AbcSize
   def claim_existing_position_or_create_alias
     result = @account.position_core.ensure_position_or_alias!(@project, @name)
     return unless result
@@ -62,5 +62,4 @@ class PositionFactoriesController < ApplicationController
 
     redirect_to account_positions_path(@account)
   end
-  # rubocop:enable Metrics/AbcSize
 end

@@ -1,5 +1,6 @@
 - content_for(:html_title) { t('compare_repositories_page_title') }
 
-.compare_repositories.margin_left_10
-  %h3= t('compare_repositories')
-  .chart.watermark440{ style: 'height:480px', 'datasrc' => compare_repositories_chart_url }
+.compare_repositories
+  .container
+    %h3= t('compare_repositories')
+    .chart.watermark440{ style: 'height:480px', 'datasrc' => compare_repositories_chart_url }

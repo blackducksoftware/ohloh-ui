@@ -48,8 +48,8 @@ class InviteTest < ActiveSupport::TestCase
 
   it 'should not send a duplicate invite' do
     hash = { invitor: Account.last, invitee_email: 'test@domain.com' }
-    first_invite = create(:invite,  hash)
-    second_invite = build(:invite,  hash)
+    first_invite = create(:invite, hash)
+    second_invite = build(:invite, hash)
     second_invite.contribution = first_invite.contribution
     _(second_invite).wont_be :save
     _(second_invite).wont_be :valid?

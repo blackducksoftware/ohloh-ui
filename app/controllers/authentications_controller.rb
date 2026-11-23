@@ -51,12 +51,12 @@ class AuthenticationsController < ApplicationController
     { github_verification_attributes: { unique_id: github_api.login, token: github_api.access_token } }
   end
 
+  # rubocop:disable-next Rails/FindByOrAssignmentMemoization
+  # rubocop:disable-next Naming/MemoizedInstanceVariableName
   def github_api_account
-    # rubocop:disable Naming/MemoizedInstanceVariableName
     @account ||= Account.find_by(email: github_api.email)
     @account ||= Account.where(email: github_api.secondary_emails).first
     @account ||= GithubVerification.find_by(unique_id: github_api.login).try(:account)
-    # rubocop:enable Naming/MemoizedInstanceVariableName
   end
 
   def redirect_matching_account

@@ -26,7 +26,7 @@ class TagsController < ApplicationController
 
   def find_projects_by_names
     @projects = Project.tagged_with(params[:names])
-                       .includes([[best_analysis: :main_language], :logo, :organization, :licenses])
+                       .includes([[{ best_analysis: :main_language }], :logo, :organization, :licenses])
                        .order(user_count: :desc)
                        .page(page_param).per_page(10)
     @projects.each { |proj| proj.editor_account = current_user }

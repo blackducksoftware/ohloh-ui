@@ -3,21 +3,31 @@
 - content_for(:html_title) { t('.title', current_user: current_user.nil? ? nil : "#{current_user.name}  : ") }
 - page_context[:select_top_menu_nav] = :select_people
 
-%h1.margin_bottom_15= t('.people')
-%h2= t('.heading')
-%h3.margin_top_15.margin_bottom_25
-  = link_to t('.unclaimed_committer_ids'), committers_path
-  &nbsp;:&nbsp;
-  = link_to h(@name.name), committer_path(@name.id)
-  = t('.claim')
-.clearfix
+.committers-page-body
+  .settings-page-header
+    .settings-page-header-row
+      .settings-page-icon
+        %i.fa.fa-code-fork
+      %h2.settings-page-h2
+        = link_to t('.unclaimed_committer_ids'), committers_path
+        = ' : '
+        = link_to h(@name.name), committer_path(@name.id)
+        = ' : '
+        = t('.claim')
+    %p.settings-page-description= t('.heading')
 
-- if @positions.present?
-  .well.col-md-12.unclaimed_committers_box
+  - if @positions.present?
     = form_tag(save_claim_committer_path(@name.id), method: :post) do
-      = render partial: 'position', collection: @positions
-      .clearfix
-      .col-md-4.margin_bottom_10
-        %input.btn.btn-primary.btn-small{ type: 'submit', value: t('.save_claim') }
-- else
-  %p= t('.nothing_to_claim')
+      .claim-positions-grid
+        = render partial: 'position', collection: @positions
+      .claim-submit-row
+        %button.edit-save-btn{ type: 'submit' }
+          %i.fa.fa-check
+          = t('.save_claim')
+  - else
+    .edit-section.claim-empty-section
+      .edit-section-header
+        .edit-section-icon
+          %i.fa.fa-inbox
+        %h3.edit-section-title= t('.nothing_to_claim')
+      %p.claim-empty= t('.nothing_to_claim')

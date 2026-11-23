@@ -1,4 +1,9 @@
-- if @scan_data
-  = render partial: 'scan_analytics/index'
-- else
-  = render partial: 'scan_analytics/no_scan_analytics'
+:ruby
+  content_for(:html_title) { "#{@project.name} : #{t('scan_analytics.index.page_title')} - Open Hub" }
+  page_context[:select_top_menu_nav] = 'select_projects'
+
+#scan-analytics-page.project-show-redesign
+  - if @scan_data
+    = render partial: 'scan_analytics/index'
+  - else
+    = render partial: 'scan_analytics/no_scan_analytics'

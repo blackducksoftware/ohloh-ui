@@ -1,13 +1,18 @@
 #accounts_show
-  %h2.pull-left= t('.title')
-  = render partial: 'accounts/show/account_analysis_timestamp', locals: { best_account_analysis: @account.best_account_analysis }
-  .clearfix
-  .col-sm-5.col-md-5
-    .margin_bottom_10px{ itemprop: 'description' }
-      = render partial: 'accounts/show/description', locals: { markup: @account.markup, desc_size: ACCOUNT_DESC_LENGTH }
-    %h4.projects_used
-      = link_to t('.projects_used'), account_stacks_path(@account)
-    .stacked_projects
-      = render partial: 'accounts/show/stacked_projects'
-  .col-sm-7.baseball_card
-    = render partial: 'accounts/show/baseball_card'
+  %h2= t('.title')
+
+  / Card wrapper with grid layout (stacks on mobile, 2-col on md+)
+  .summary_card_wrapper
+    .summary_grid
+      / Left column: Projects Used
+      .summary_column_left
+        .margin_bottom_10px{ itemprop: 'description' }
+          = render partial: 'accounts/show/description', locals: { markup: @account.markup, desc_size: ACCOUNT_DESC_LENGTH }
+        %h4.projects_used
+          = link_to t('.projects_used'), account_stacks_path(@account)
+        .stacked_projects
+          = render partial: 'accounts/show/stacked_projects'
+
+      / Right column: Baseball Card stats
+      .summary_column_right.baseball_card
+        = render partial: 'accounts/show/baseball_card'

@@ -26,7 +26,7 @@ class Analysis::CodeHistoryChartTest < ActiveSupport::TestCase
 
       _(series.first['id']).must_equal 'code'
       _(series.map { |d| d['data'].last }).must_equal [[@time_integer, 5], [@time_integer, 10], [@time_integer, 3]]
-      _(series.map { |d| d['name'] }).must_equal %w[Code Comments Blanks]
+      _(series.pluck('name')).must_equal %w[Code Comments Blanks]
       _(chart.data['scrollbar']).must_be_nil
     end
   end
@@ -37,7 +37,7 @@ class Analysis::CodeHistoryChartTest < ActiveSupport::TestCase
       series = chart.data_for_lines_of_code['series']
 
       _(series.first['id']).must_equal 'code'
-      _(series.map { |d| d['name'] }).must_equal %w[Code Comments Blanks]
+      _(series.pluck('name')).must_equal %w[Code Comments Blanks]
       _(series.map { |d| d['data'].last }).must_equal [[@time_integer, 5], [@time_integer, 10], [@time_integer, 3]]
       _(data['scrollbar']['enabled']).must_equal false
     end

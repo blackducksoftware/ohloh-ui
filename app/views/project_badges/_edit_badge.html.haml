@@ -1,25 +1,38 @@
-%tr
-  %td.col-xs-2.no-left-padding= badge.code_location.url
-  %td.col-xs-2= badge.class.badge_name
+%tr.pb-badge-row
+  %td.pb-col-repo
+    %span.pb-repo-url= badge.code_location.url
+  %td.pb-col-type
+    %span.pb-badge-type-label
+      %i.fa.fa-certificate.pb-badge-type-icon
+      = badge.class.badge_name
   = hidden_field_tag :url_hidden, badge.class, class: 'selected_badge_val'
-  %td.col-xs-3
-    - if badge.type == 'TravisBadge'
-      = ENV['TRAVIS_API_BASE_URL']
-    - else
-      = ENV['CII_API_BASE_URL'] + 'projects/'
-    = text_field_tag('url', badge.identifier,
-                            class: 'edit_url_field badge_url_holder',
-                            'data-url': project_project_badge_path(@project, badge))
+  %td.pb-col-url
+    .pb-url-display
+      %span.pb-url-prefix
+        - if badge.type == 'TravisBadge'
+          = ENV['TRAVIS_API_BASE_URL']
+        - else
+          = ENV['CII_API_BASE_URL'] + 'projects/'
+      = text_field_tag('url', badge.identifier,
+                              class: 'edit_url_field badge_url_holder',
+                              'aria-label': t('project_badges.badge_url'),
+                              'data-url': project_project_badge_path(@project, badge))
+      - if badge.type == 'CiiBadge'
+        %span.pb-url-suffix /badge
     .dirty_url_container.hidden
-      = text_field_tag('dirty_url', badge.identifier, class: 'dirty_url_field form-control')
-      %i.fa.fa-check-circle.url_update_btn{ data: { 'url': project_project_badge_path(@project, badge) } }
-      %i.fa.fa-times-circle.edit_url_close_btn
-    .error.hidden
-    = '/badge' if badge.type == 'CiiBadge'
-  %td.col-xs-3.badge_image_container
+      .pb-dirty-url-row
+        = text_field_tag('dirty_url', badge.identifier, class: 'dirty_url_field form-control', 'aria-label': t('project_badges.badge_url'))
+        %button.pb-url-confirm-btn.url_update_btn{ type: 'button', title: 'Save URL', data: { 'url': project_project_badge_path(@project, badge) } }
+          %i.fa.fa-check
+        %button.pb-url-cancel-btn.edit_url_close_btn{ type: 'button', title: 'Cancel' }
+          %i.fa.fa-times
+    .pb-url-error.error.hidden
+  %td.pb-col-image.badge_image_container
     = image_tag badge.badge_url, alt: 'Badge not available'
-  %td.col-xs-2
-    = link_to t('project_badges.remove'),
-              project_project_badge_path(@project, badge),
-              class: 'icon-trash btn btn-mini btn-danger col-xs-12',
-              method: :delete
+  %td.pb-col-actions
+    = link_to project_project_badge_path(@project, badge),
+              class: 'pb-remove-btn btn btn-mini btn-danger',
+              method: :delete,
+              data: { confirm: t('project_badges.remove') + '?' } do
+      %i.fa.fa-trash
+      = t('project_badges.remove')

@@ -1,11 +1,23 @@
-%h4.nomargin
-  %span.soft= t(:about)
-  = t('.licenses')
-.col-md-5
-  %ul{ style: 'padding: 15px;' }
-    %li= t('.help1')
-    %li= t('.help2')
-.col-md-5
-  %ul{ style: 'padding: 15px;' }
-    %li= t('.help3')
-    %li= t('.help4')
+.about-account-basics-card
+  .card-header
+    .card-header-left
+      .card-header-icon
+        %i.fa.fa-certificate
+      .card-header-text
+        %h4.card-title= t('.about') + ' ' + t('.licenses')
+        %p.card-subtitle= t('.licenses')
+    %button.expand-toggle{ type: 'button', 'aria-label' => 'Toggle about section' }
+      %i.fa.fa-chevron-down
+
+  .card-content
+    .tips-grid
+      .tip-item
+        .tip-icon
+          %i.fa.fa-file-text-o
+        .tip-body
+          %p.tip-text= t('.help3')
+      .tip-item
+        .tip-icon
+          %i.fa.fa-info-circle
+        .tip-body
+          %p.tip-text= t('.help4')

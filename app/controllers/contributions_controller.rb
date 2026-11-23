@@ -58,6 +58,7 @@ class ContributionsController < ApplicationController
 
     id = params[:id].to_i
     @contributor = Contribution.find(id).name_fact if id > (1 << 32)
+    # rubocop:disable-next Rails/FindByOrAssignmentMemoization
     @contributor ||= ContributorFact.joins(:name).where(names: { id: id })
                                     .find_by(analysis_id: @project.best_analysis_id)
     raise ParamRecordNotFound unless @contributor
