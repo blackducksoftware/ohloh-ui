@@ -3,7 +3,7 @@
 require 'test_helper'
 
 class ThemePreferenceTest < ActionDispatch::IntegrationTest
-  let(:user_account) { create(:account, password: TEST_PASSWORD) }
+  let(:user_account) { create(:account) }
 
   describe 'Theme Preference API' do
     it 'denies access to unauthenticated users' do
