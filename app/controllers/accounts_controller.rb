@@ -23,6 +23,10 @@ class AccountsController < ApplicationController
 
   rescue_from ActionController::ParameterMissing, with: :handle_parameter_missing
 
+  # Prevent clickjacking (CWE-1021): block account pages from being embedded in external iframes.
+  # Uses after_action (not content_security_policy DSL) so it runs even when a before_action redirects.
+  after_action :set_clickjacking_headers
+
   def index
     @cbp_map = PeopleDecorator.new(@people).commits_by_project_map
     @positions_map = Position.where(id: @cbp_map.values.map(&:first).flatten)
@@ -92,6 +96,15 @@ class AccountsController < ApplicationController
   def settings; end
 
   private
+
+  def set_clickjacking_headers
+    response.headers['X-Frame-Options'] = 'SAMEORIGIN'
+    if (policy = request.content_security_policy)
+      modified = policy.clone
+      modified.frame_ancestors :self
+      request.content_security_policy = modified
+    end
+  end
 
   def find_claimed_people
     total_entries = params[:query].blank? ? Person::Count.claimed : nil
