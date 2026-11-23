@@ -18,8 +18,8 @@ class ActivationResendsControllerTest < ActionController::TestCase
       post :create, params: { email: account.email }
       _(ActionMailer::Base.deliveries.count).must_equal before
       assert_response :redirect
-      assert_redirected_to new_session_path
-      _(flash[:notice]).must_equal I18n.t('activation_resends.create.already_active')
+      assert_redirected_to root_path
+      _(flash[:notice]).must_equal I18n.t('activation_resends.create.success')
     end
 
     it 'should not send email for recently activated account' do
@@ -29,16 +29,16 @@ class ActivationResendsControllerTest < ActionController::TestCase
       _(ActionMailer::Base.deliveries.count).must_equal before
       assert_response :redirect
       assert_redirected_to root_path
-      _(flash[:success]).must_equal I18n.t('activation_resends.create.recently_activated')
+      _(flash[:notice]).must_equal I18n.t('activation_resends.create.success')
     end
 
-    it 'Should not allow if email is invalid' do
+    it 'should not send email if account does not exist' do
       before = ActionMailer::Base.deliveries.count
-      post :create, params: { email: 'InvalidEmail' }
+      post :create, params: { email: 'nonexistent@example.com' }
       _(ActionMailer::Base.deliveries.count).must_equal before
-      assert_response :ok
-      assert_template :new
-      _(assigns(:errors)).must_equal I18n.t('activation_resends.create.no_account')
+      assert_response :redirect
+      assert_redirected_to root_path
+      _(flash[:notice]).must_equal I18n.t('activation_resends.create.success')
     end
 
     it 'should resend activation mail' do
