@@ -25,7 +25,7 @@ module JwtHelper
   def authenticate_jwt
     token = resolve_jwt_token
     return jwt_decode_error if token.blank?
-   
+
     account = decode_jwt(token)
     return jwt_decode_error if account == 'JWT::DecodeError'
     return jwt_expired_error if account == 'JWT::ExpiredSignature'
@@ -47,7 +47,7 @@ module JwtHelper
   def jwt_expired_error
     render json: { error: 'Authentication token has expired' }, status: :unauthorized
   end
- 
+
   def resolve_jwt_token
     token = bearer_token
 

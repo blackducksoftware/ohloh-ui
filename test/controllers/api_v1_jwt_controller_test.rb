@@ -57,7 +57,7 @@ class Api::V1::JwtControllerTest < ActionController::TestCase
       _(response.parsed_body['message']).must_equal 'Logout successful'
     end
   end
-  
+
   describe 'JWT lockout behavior' do
     it 'increments failed attempts on wrong password' do
       post :create, params: { username: @account.login, password: 'wrong' }
