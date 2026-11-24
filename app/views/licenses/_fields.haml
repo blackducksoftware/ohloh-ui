@@ -30,8 +30,8 @@
 .control-group
   %label.control-label= t('.license_text')
   .controls
-    = find_and_preserve(f.text_area(:description, max_length: 50_000, rows: 10,
-      class: 'col-md-11 no_padding_right'))
+    = f.text_area(:description, max_length: 50_000, rows: 10,
+      class: 'col-md-11 no_padding_right')
     - error_tag @license, :description
     .clearfix
     %p.help-block= t('.license_help')

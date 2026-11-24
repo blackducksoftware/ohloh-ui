@@ -56,7 +56,7 @@
           %span.summary-title No Data
     - if @response['description'].present?
       .content-container.description-container
-        %p= find_and_preserve(markdown_format(@response['description']))
+        %p!= markdown_format(@response['description'])
         %span.bold.date Severity:
         %span.bordered{class: "#{@response['cvss3']['severity'].downcase}"}= @response['cvss3']['severity'].titleize
         - if @response['credit'].present?

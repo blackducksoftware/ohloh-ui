@@ -93,7 +93,7 @@
             .control-group
               %label.control-label= t('.description')
               .controls
-                = find_and_preserve(f.text_area(:description, max_length: 800, style: 'width: 376px; height: 200px;'))
+                = f.text_area(:description, max_length: 800, style: 'width: 376px; height: 200px;')
                 - error_tag @project, :description
                 %p.help-block
                   = t('.description_help1')

@@ -34,7 +34,7 @@
     .control-group
       %label.control-label= t('.description')
       .controls
-        = find_and_preserve f.text_area(:description, max_length: 800, style: 'width: 83%', rows: '10')
+        = f.text_area(:description, max_length: 800, style: 'width: 83%', rows: '10')
         - error_tag @organization, :description
     .clearfix
 
