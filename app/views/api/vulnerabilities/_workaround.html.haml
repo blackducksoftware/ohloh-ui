@@ -6,12 +6,12 @@
       %span.bold.fix-text How to fix it
       - if @response['solution'].present?
         %span.bold Solution - Fix available
-        %p= find_and_preserve(markdown_format(@response['solution']))
+        %p!= markdown_format(@response['solution'])
       - else
         %span.bold No Solution
         %br
       - if @response['workaround'].present?
         %span.bold Workaround
-        %p= find_and_preserve(markdown_format(@response['workaround']))
+        %p!= markdown_format(@response['workaround'])
       - else
         %span.bold No Workaround

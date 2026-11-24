@@ -2,4 +2,4 @@
   %span.bold.date Common Weakness Enumeration (CWE) 
   - @cwe_data.each do |cwe|
     %p.cwe-title= cwe[0] + ' - ' + cwe[1]
-    %p= find_and_preserve(markdown_format(cwe[2]))
+    %p!= markdown_format(cwe[2])

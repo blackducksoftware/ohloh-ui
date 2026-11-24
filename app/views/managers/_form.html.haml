@@ -8,7 +8,7 @@
   .control-group
     %label.control-label= t '.message_label'
     .controls
-      = find_and_preserve(form.text_area(:message, rows: 10, max_length: 200, style: 'width: 100%'))
+      = form.text_area(:message, rows: 10, max_length: 200, style: 'width: 100%')
     %p.help-block
     .center.soft
       = t('.message_help1', target_type: @parent.class.to_s.downcase)
