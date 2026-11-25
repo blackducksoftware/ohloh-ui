@@ -177,7 +177,9 @@ jobs:
         if: ${{ github.ref_name == 'main' && !inputs.chart_version }}
         working-directory: ohloh-ui
         run: |
-          (curl -s -L https://detect.synopsys.com/detect9.sh | bash -s -- \
+          curl -fsSL -o "$RUNNER_TEMP/synopsys-detect-9.10.1.jar" https://repo.blackduck.com/bds-integrations-release/com/synopsys/integration/synopsys-detect/9.10.1/synopsys-detect-9.10.1.jar
+          echo "221fc96a6db0369484a55eac921deb41c779d4426dc98d499f4b6b8a99d99a43  $RUNNER_TEMP/synopsys-detect-9.10.1.jar" | sha256sum -c -
+          (java -jar "$RUNNER_TEMP/synopsys-detect-9.10.1.jar" \
             --blackduck.url=${{ secrets.BLACKDUCK_URL }} \
             --blackduck.api.token=${{ secrets.BLACKDUCK_TOKEN }} \
             --detect.project.name=${{ secrets.BLACKDUCK_PROJECT_NAME }} \
@@ -187,7 +189,7 @@ jobs:
       - name: SAST scan (Polaris)
         id: polaris-scan
         if: ${{ github.ref_name == 'main' && !inputs.chart_version }}
-        uses: blackduck-inc/black-duck-security-scan@v2
+        uses: blackduck-inc/black-duck-security-scan@152247222aa9cd38124acd5c0cf60f4db71adc3f  # v2.11.0
         with: 
           polaris_server_url: ${{ secrets.POLARIS_SERVER_URL }}
           polaris_access_token: ${{ secrets.POLARIS_ACCESS_TOKEN }}
