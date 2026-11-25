@@ -8,7 +8,7 @@
   %meta{ content: '@bdopenhub', name: 'twitter:site' }
   %meta{ content: h(@account.name).to_s, name: 'twitter:title' }
   %meta{ content: @twitter_detail.description.to_s, name: 'twitter:description' }
-  %meta{ content: avatar_img_path(@account, 80).to_s, name: 'twitter:image' }
+  %meta{ content: avatar_meta_url(@account, 80), name: 'twitter:image' }
   %meta{ content: 'https://www.openhub.net', name: 'twitter:domain' }
 
 = render partial: 'accounts/show/summary'

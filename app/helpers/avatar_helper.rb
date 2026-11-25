@@ -14,13 +14,25 @@ module AvatarHelper
     return gravatar_url(who.email_md5, size) if who.is_a? Account
     return gravatar_url(who.account.email_md5, size) if who.respond_to?(:account) && who.account
 
-    anonymous_image_path(size)
+    anonymous_image_url(size)
   end
 
-  def avatar_img_for(who, size = 32)
+  def avatar_img_for(who, size = 32, options = {})
     return '' unless who
 
-    image_tag avatar_img_path(who, size), style: "width: #{size}px; height: #{size}px;", class: 'avatar'
+    src = avatar_img_path(who, size)
+    fallback = anonymous_image_url(size)
+    attrs = { width: size, height: size, style: options[:style], class: options[:class] || 'avatar',
+              onerror: 'this.onerror=null;this.src=this.dataset.fallback',
+              data: { fallback: fallback } }
+    attrs[:itemprop] = options[:itemprop] if options[:itemprop]
+    image_tag src, attrs
+  end
+
+  def avatar_meta_url(who, size = 80)
+    return anonymous_image_url(size) unless who.is_a?(Account) && who.email_md5.present?
+
+    gravatar_url(who.email_md5, size)
   end
 
   def avatar_path(who)
@@ -56,18 +68,15 @@ module AvatarHelper
   end
 
   def gravatar_url(md5, size)
-    default_url = if ActionController::Base.asset_host.blank?
-                    'https%3a%2f%2fopenhub.net'
-                  else
-                    "http#{'s' if request&.ssl?}%3a%2f%2f#{ActionController::Base.asset_host}"
-                  end
-    default_url += "%2fanon#{avatar_default_size(size)}.gif"
-    gravatar_host = 'https://gravatar.com'
-    "#{gravatar_host}/avatar/#{md5}?&s=#{size}&rating=PG&d=#{default_url}"
+    "https://gravatar.com/avatar/#{md5}?&s=#{size}&rating=PG&d=404"
   end
 
   def anonymous_image_path(size)
     "anon/anon#{avatar_default_size(size)}.gif"
+  end
+
+  def anonymous_image_url(size)
+    image_url(anonymous_image_path(size))
   end
 
   def avatar_title(who)

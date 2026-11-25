@@ -20,14 +20,14 @@
               %ul.nav.navbar-nav
                 %li.dropdown.user.user-menu
                   %a.dropdown-toggle{ 'data-toggle': 'dropdown' }
-                    %img.user-image{ alt: 'User Image', src: avatar_img_path(current_user) }
+                    = avatar_img_for(current_user, 32, class: 'user-image')
                     %span.hidden-xs= current_user.name
       %aside.main-sidebar
         %section.sidebar
           - if current_user.present?
             .user-panel
               .pull-left.image
-                %img.img-circle{ alt: 'User Image', src: avatar_img_path(current_user, 160) }
+                = avatar_img_for(current_user, 160, class: 'img-circle')
               .pull-left.info
                 %p
                   = current_user.name

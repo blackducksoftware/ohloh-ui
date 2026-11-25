@@ -38,7 +38,7 @@
         %tr
           %td
             %a.float_left{ href: account_path(a) }
-              = image_tag avatar_img_path(a, 32), size: '32x32', style: 'margin-right:8px;'
+              = avatar_img_for(a, 32, style: 'margin-right:8px;')
             %a{ href: account_path(a), title: h(a.name) }
               = a.name.truncate(20)
               - if @current_user && @current_user.id == a.id
